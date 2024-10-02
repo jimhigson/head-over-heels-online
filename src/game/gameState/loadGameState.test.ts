@@ -69,6 +69,7 @@ test("if there is a saved game with both characters in the same room, only load 
               userId: "@@original",
               version: -1,
             },
+            freeCharacters: {},
           },
         },
       },

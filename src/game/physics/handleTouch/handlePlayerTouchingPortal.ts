@@ -1,10 +1,20 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { CharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
+import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import {
+  type CharacterName,
+  otherIndividualCharacterName,
+} from "../../../model/modelTypes";
+import {
+  characterReachesFreedom,
+  gameOver,
+} from "../../../store/slices/gameMenus/gameMenusSlice";
+import { store } from "../../../store/store";
 import { dotProductXyz } from "../../../utils/vectors/vectors";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
+import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 
 /**
  *
@@ -15,6 +25,7 @@ export const handlePlayerTouchingPortal = <
   RoomItemId extends string,
 >({
   gameState,
+  room,
   movingItem: playableItem,
   touchedItem: portalItem,
   /** the movement that caused the player to touch the portal */
@@ -45,11 +56,37 @@ export const handlePlayerTouchingPortal = <
     return;
   }
 
-  changeCharacterRoom({
-    playableItem,
-    gameState,
-    toRoomId: toRoom,
-    sourceItem: portalItem,
-    changeType: "portal",
-  });
+  if (toRoom === exitGameRoomId) {
+    delete gameState.characterRooms[playableItem.type];
+    deleteItemFromRoom({ room, item: playableItem });
+
+    if (playableItem.type === "headOverHeels") {
+      store.dispatch(characterReachesFreedom("head"));
+      store.dispatch(characterReachesFreedom("heels"));
+      // exited the game
+      store.dispatch(gameOver({ offerReincarnation: false }));
+    } else {
+      store.dispatch(characterReachesFreedom(playableItem.type));
+
+      const otherCharacterPlaying =
+        otherIndividualCharacterName(playableItem.type) in
+        gameState.characterRooms;
+      if (otherCharacterPlaying) {
+        gameState.currentCharacterName = otherIndividualCharacterName(
+          playableItem.type,
+        );
+      } else {
+        // exited the game
+        store.dispatch(gameOver({ offerReincarnation: false }));
+      }
+    }
+  } else {
+    changeCharacterRoom({
+      playableItem,
+      gameState,
+      toRoomId: toRoom,
+      sourceItem: portalItem,
+      changeType: "portal",
+    });
+  }
 };

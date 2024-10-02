@@ -67,8 +67,13 @@ export type DeadlyBlockStyle = "toaster" | "volcano";
 
 export type FloorType = "deadly" | "none" | "standable";
 
+/** "$$final" is a special value - the door exits the game, ie, at the end of the game */
+export const exitGameRoomId = "$$final";
+/** "$$final" is a special value - the door exits the game, ie, at the end of the game */
+export type ExitGameRoomId = typeof exitGameRoomId;
+
 export type DoorConfig<RoomId extends string> = {
-  toRoom: RoomId;
+  toRoom: ExitGameRoomId | RoomId;
   /**
    * the id of the door in the destination room. This usually does not need to be given
    * since the game can choose the door facing the right way from the destination room.

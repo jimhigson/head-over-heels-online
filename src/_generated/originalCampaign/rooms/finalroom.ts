@@ -60,6 +60,21 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 1.5 },
       type: "emitter",
     },
+    endGameInstructions: {
+      config: {
+        gives: "scroll",
+        markdown:
+          "## Congratulations!\n\nYou have returned to *freedom*.\n\nExit this room to **finish the game**.\n\nFor a **100%** score:\n\n* Collect **all the crowns**\n\n* Explore **all rooms**\n\n* Both players must be free\n\nMaybe try the **sequel game** next",
+        source: "inline",
+      },
+      position: { x: 5, y: 1, z: 1.5 },
+      type: "pickup",
+    },
+    exitDoor: {
+      config: { direction: "away", toRoom: "$$final" },
+      position: { x: 10, y: 8, z: 0 },
+      type: "door",
+    },
     "floor@0,0,0": {
       config: {
         floorType: "standable",
@@ -213,8 +228,6 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: [
-          "bars",
-          "bars",
           "bars",
           "bars",
           "bars",

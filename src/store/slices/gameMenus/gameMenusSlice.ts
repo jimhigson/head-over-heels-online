@@ -2,12 +2,15 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Container } from "pixi.js";
 import type { EmptyObject, ValueOf } from "type-fest";
 
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
 import { REHYDRATE } from "redux-persist";
 
 import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
-import type { SavedGame } from "../../../game/gameState/saving/SavedGameState";
+import type {
+  SavedGame,
+  SavedStoreGameInPlay,
+} from "../../../game/gameState/saving/SavedGameState";
 import type { BooleanAction } from "../../../game/input/actions";
 import type {
   ActionInputAssignment,
@@ -19,7 +22,11 @@ import type { PlayableItem } from "../../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../../manual/pages";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
-import type { CampaignLocator, CharacterName } from "../../../model/modelTypes";
+import type {
+  CampaignLocator,
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../model/modelTypes";
 import type { ResolutionName } from "../../../originalGame";
 import type { PlanetName } from "../../../sprites/planets";
 import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
@@ -138,6 +145,10 @@ export type ScrollsRead = {
   [m in MarkdownPageName]?: true;
 };
 
+export type FreeCharacters = {
+  [C in IndividualCharacterName]?: true;
+};
+
 /**
  * the parts of a game in play state that are kept in the store. Not everything
  * goes in the store because in-play rooms etc need to be mutated in-place fo
@@ -168,6 +179,9 @@ export type GameInPlayStoreState = {
    * the userid/name of the campaign being played, or undefined if none
    */
   campaignLocator?: CampaignLocator;
+
+  /** which characters have exited the game and found freedom? */
+  freeCharacters: FreeCharacters;
 };
 
 export const noPlanetsLiberated = {
@@ -182,7 +196,8 @@ const initialGameInPlayStoreState = {
   roomsExplored: {},
   scrollsRead: {},
   reincarnationPoint: undefined,
-};
+  freeCharacters: {},
+} satisfies GameInPlayStoreState;
 
 export type GameMenusState = {
   /**
@@ -275,8 +290,6 @@ export const initialGameMenuSliceState: GameMenusState = {
   assigningInput: undefined,
   cheatsOn,
 
-  // optional fields given explicitly as undefined so that on restoring
-  // a blank state after a crash, this can be used to overwrite the store
   savedGames: {
     saves: {},
   },
@@ -647,18 +660,12 @@ export const gameMenusSlice = createSlice({
         const currentCampaignLocator = state.gameInPlay.campaignLocator;
         const locatorKey =
           currentCampaignLocator && gameStateLocatorKey(currentCampaignLocator);
-        console.log(current(state.savedGames));
+
         if (locatorKey) {
           delete state.savedGames.saves[locatorKey];
           delete state.savedGames.lastSavedCampaignLocator;
         }
-        console.log(current(state.savedGames));
-        /*
-        keep these for the scores dialog
-        state.gameInPlay.planetsLiberated = noPlanetsLiberated;
-        state.gameInPlay.roomsExplored = {};
-        state.gameInPlay.scrollsRead = {};
-        */
+
         state.openMenus = [
           {
             menuId: "score",
@@ -709,9 +716,17 @@ export const gameMenusSlice = createSlice({
     },
     gameRestoreFromSave(
       state,
-      { payload }: PayloadAction<GameInPlayStoreState>,
+      { payload }: PayloadAction<SavedStoreGameInPlay>,
     ) {
-      state.gameInPlay = payload;
+      state.gameInPlay = {
+        freeCharacters: {},
+        ...payload,
+      };
+      if (payload.freeCharacters === undefined) {
+        // this is not possible as per the current ts types, but we could be loading from
+        // an old save state
+        state.gameInPlay.freeCharacters = {};
+      }
     },
     errorCaught(
       state,
@@ -774,6 +789,17 @@ export const gameMenusSlice = createSlice({
       // Could be used to update the player rooms if this state
       // is moved into the store
     },
+    /**
+     * Woohoo! Won the game!
+     */
+    characterReachesFreedom(
+      state,
+      {
+        payload: individualCharacterName,
+      }: PayloadAction<IndividualCharacterName>,
+    ) {
+      state.gameInPlay.freeCharacters[individualCharacterName] = true;
+    },
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
@@ -827,8 +853,11 @@ export const gameMenusSlice = createSlice({
           if (savedGameForParamCampaign) {
             // have a campaign url and a save for that campaign:
             state.gameRunning = true;
-            state.gameInPlay =
-              savedGameForParamCampaign.store.gameMenus.gameInPlay;
+            state.gameInPlay = {
+              // in case the saved game is old and doesn't have all the properties:
+              freeCharacters: {},
+              ...savedGameForParamCampaign.store.gameMenus.gameInPlay,
+            };
             state.openMenus = menusAfterRestore;
             return;
           } else {
@@ -854,7 +883,11 @@ export const gameMenusSlice = createSlice({
         if (inPlaySave) {
           // we have just loaded and a game is already in progress from a previous session
           state.gameRunning = true;
-          state.gameInPlay = inPlaySave.store.gameMenus.gameInPlay;
+          state.gameInPlay = {
+            // in case the saved game is old and doesn't have all the properties:
+            freeCharacters: {},
+            ...inPlaySave.store.gameMenus.gameInPlay,
+          };
           state.openMenus = menusAfterRestore;
         }
       },
@@ -884,6 +917,7 @@ export type GameMenusSliceActionCreator = ValueOf<
 export const {
   assignInputStart,
   backToParentMenu,
+  characterReachesFreedom,
   /**
    * @deprecated characterRoomChange is redundant and can be merged with roomExplored
    * since they do almost the same thing, and are (almost) always fired together

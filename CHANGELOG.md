@@ -1,3 +1,9 @@
+## 2025-10-02
+* Final room has a door that lets player end the game
+* Getting to freedom contributes to final score
+* Getting to freedom shown on final score dialog
+* Palette swop on scenery players (citizens of Freedom in the final room) to make them look different from players
+
 ## 2025-09-30
 * update to version 0.3.3 of [the crt shaders](https://github.com/jimhigson/jims_shaders.git)
 

@@ -6,6 +6,7 @@ import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "./ItemInPlay";
+import type { ExitGameRoomId } from "./json/ItemConfigMap";
 
 type ItemId = "ball" | "bat";
 
@@ -16,7 +17,7 @@ test("portals to lead to room ids", () => {
     ItemId
   >["config"]["toRoom"];
 
-  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom">();
+  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom" | ExitGameRoomId>();
 });
 
 test("doorframes to lead to room ids", () => {
@@ -26,7 +27,7 @@ test("doorframes to lead to room ids", () => {
     ItemId
   >["config"]["toRoom"];
 
-  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom">();
+  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom" | ExitGameRoomId>();
 });
 
 test("smaller unions are subsets of union of all items types", () => {

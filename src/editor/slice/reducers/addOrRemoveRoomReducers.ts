@@ -7,6 +7,7 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
+import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
@@ -47,7 +48,7 @@ export const addOrRemoveRoomReducers = {
         ),
       ) as EditorRoomId | undefined);
 
-    if (nextRoom === undefined) {
+    if (nextRoom === undefined || nextRoom === exitGameRoomId) {
       // refuse to delete the last room
       return;
     }

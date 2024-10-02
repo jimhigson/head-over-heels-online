@@ -24,7 +24,7 @@ import {
 } from "./ItemAppearance";
 import { monsterAppearance } from "./monsterAppearance";
 import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
-import { sceneryPlayerAppearance } from "./sceneryPlayer";
+import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
 import { spikyBallAppearance } from "./spikyBallAppearance";
 import { springAppearance } from "./springAppearance";
 import { switchAppearance } from "./switchAppearance";
