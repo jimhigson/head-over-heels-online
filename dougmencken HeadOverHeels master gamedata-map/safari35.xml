@@ -1,0 +1,133 @@
+<room scenery="safari">
+    <xTiles>10</xTiles>
+    <yTiles>9</yTiles>
+    <color>yellow.reduced</color>
+    <floorKind>absent</floorKind>
+    <walls>
+        <wall along="x">
+            <position>1</position>
+            <picture>safari-wall-x-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>2</position>
+            <picture>safari-wall-x-3.png</picture>
+        </wall>
+        <wall along="x">
+            <position>3</position>
+            <picture>safari-wall-x-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>4</position>
+            <picture>safari-wall-x-2.png</picture>
+        </wall>
+        <wall along="x">
+            <position>5</position>
+            <picture>safari-wall-x-2.png</picture>
+        </wall>
+        <wall along="x">
+            <position>6</position>
+            <picture>safari-wall-x-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>7</position>
+            <picture>safari-wall-x-3.png</picture>
+        </wall>
+        <wall along="x">
+            <position>8</position>
+            <picture>safari-wall-x-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>1</position>
+            <picture>safari-wall-y-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>2</position>
+            <picture>safari-wall-y-3.png</picture>
+        </wall>
+        <wall along="y">
+            <position>3</position>
+            <picture>safari-wall-y-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>4</position>
+            <picture>safari-wall-y-2.png</picture>
+        </wall>
+        <wall along="y">
+            <position>5</position>
+            <picture>safari-wall-y-2.png</picture>
+        </wall>
+        <wall along="y">
+            <position>6</position>
+            <picture>safari-wall-y-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>7</position>
+            <picture>safari-wall-y-3.png</picture>
+        </wall>
+        <wall along="y">
+            <position>8</position>
+            <picture>safari-wall-y-1.png</picture>
+        </wall>
+    </walls>
+    <items>
+        <item x="1" y="1" z="0">
+            <kind>brick2</kind>
+            <class>griditem</class>
+        </item>
+        <item x="1" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="2" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="3" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="4" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="5" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="6" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="7" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="8" y="3" z="0">
+            <kind>vulcano</kind>
+            <class>griditem</class>
+        </item>
+        <item x="9" y="4" z="0">
+            <kind>safari-capital-south</kind>
+            <class>griditem</class>
+        </item>
+        <item x="8" y="5" z="0">
+            <kind>brick2</kind>
+            <class>griditem</class>
+        </item>
+        <item x="9" y="5" z="0">
+            <kind>safari-capital-south</kind>
+            <class>griditem</class>
+        </item>
+        <item x="1" y="3" z="1">
+            <kind>sandwich</kind>
+            <orientation>south</orientation>
+            <behavior>behavior of driven</behavior>
+            <class>freeitem</class>
+        </item>
+        <item x="9" y="4" z="-1">
+            <kind>safari-door-south</kind>
+            <where>south</where>
+            <class>door</class>
+        </item>
+    </items>
+</room>

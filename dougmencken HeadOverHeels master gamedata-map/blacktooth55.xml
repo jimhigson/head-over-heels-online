@@ -1,0 +1,76 @@
+<room scenery="jail">
+    <xTiles>9</xTiles>
+    <yTiles>7</yTiles>
+    <color>yellow.reduced</color>
+    <floorKind>plain</floorKind>
+    <walls>
+        <wall along="x">
+            <position>0</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>1</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="y">
+            <position>1</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="x">
+            <position>2</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="y">
+            <position>2</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>3</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>4</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>5</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="x">
+            <position>6</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="y">
+            <position>6</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="x">
+            <position>7</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>5</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+    </walls>
+    <items>
+        <item x="4" y="6" z="0">
+            <kind>elevator</kind>
+            <behavior>behavior of elevator</behavior>
+            <top>9</top>
+            <bottom>0</bottom>
+            <ascent>false</ascent>
+            <class>freeitem</class>
+        </item>
+        <item x="3" y="0" z="-1">
+            <kind>jail-door-east</kind>
+            <where>east</where>
+            <class>door</class>
+        </item>
+        <item x="8" y="3" z="-1">
+            <kind>jail-door-south</kind>
+            <where>south</where>
+            <class>door</class>
+        </item>
+    </items>
+</room>

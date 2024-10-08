@@ -1,0 +1,98 @@
+<room scenery="jail">
+    <xTiles>7</xTiles>
+    <yTiles>8</yTiles>
+    <color>yellow</color>
+    <floorKind>plain</floorKind>
+    <walls>
+        <wall along="x">
+            <position>0</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>1</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>2</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>3</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>4</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="x">
+            <position>5</position>
+            <picture>jail-wall-x.png</picture>
+        </wall>
+        <wall along="y">
+            <position>0</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>1</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>2</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>3</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>4</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>5</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>6</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+        <wall along="y">
+            <position>7</position>
+            <picture>jail-wall-y.png</picture>
+        </wall>
+    </walls>
+    <items>
+        <item x="0" y="0" z="0">
+            <kind>teleport</kind>
+            <behavior>behavior of teletransport</behavior>
+            <class>griditem</class>
+        </item>
+        <item x="0" y="7" z="0">
+            <kind>bars-ns</kind>
+            <class>freeitem</class>
+        </item>
+        <item x="0" y="7" z="2">
+            <kind>bars-ns</kind>
+            <class>freeitem</class>
+        </item>
+        <item x="0" y="7" z="4">
+            <kind>bars-ns</kind>
+            <class>freeitem</class>
+        </item>
+        <item x="0" y="7" z="6">
+            <kind>bars-ns</kind>
+            <class>freeitem</class>
+        </item>
+        <item x="0" y="7" z="7">
+            <kind>extra-life</kind>
+            <orientation>west</orientation>
+            <behavior>behavior of bonus</behavior>
+            <class>freeitem</class>
+        </item>
+        <item x="6" y="3" z="-1">
+            <kind>jail-door-south</kind>
+            <where>south</where>
+            <class>door</class>
+        </item>
+    </items>
+</room>

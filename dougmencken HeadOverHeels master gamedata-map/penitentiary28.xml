@@ -1,0 +1,127 @@
+<room scenery="penitentiary">
+    <xTiles>10</xTiles>
+    <yTiles>9</yTiles>
+    <color>white</color>
+    <floorKind>plain</floorKind>
+    <walls>
+        <wall along="y">
+            <position>0</position>
+            <picture>penitentiary-wall-y-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>1</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>1</position>
+            <picture>penitentiary-wall-y-2.png</picture>
+        </wall>
+        <wall along="x">
+            <position>2</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>2</position>
+            <picture>penitentiary-wall-y-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>3</position>
+            <picture>penitentiary-wall-x-2.png</picture>
+        </wall>
+        <wall along="x">
+            <position>4</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>5</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>6</position>
+            <picture>penitentiary-wall-x-2.png</picture>
+        </wall>
+        <wall along="y">
+            <position>6</position>
+            <picture>penitentiary-wall-y-2.png</picture>
+        </wall>
+        <wall along="x">
+            <position>7</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>7</position>
+            <picture>penitentiary-wall-y-1.png</picture>
+        </wall>
+        <wall along="x">
+            <position>8</position>
+            <picture>penitentiary-wall-x-1.png</picture>
+        </wall>
+        <wall along="y">
+            <position>5</position>
+            <picture>penitentiary-wall-y-1.png</picture>
+        </wall>
+    </walls>
+    <items>
+        <item x="9" y="3" z="3">
+            <kind>penitentiary-capital-south</kind>
+            <class>griditem</class>
+        </item>
+        <item x="8" y="4" z="0">
+            <kind>brick2</kind>
+            <class>griditem</class>
+        </item>
+        <item x="8" y="4" z="1">
+            <kind>brick2</kind>
+            <class>griditem</class>
+        </item>
+        <item x="8" y="4" z="3">
+            <kind>brick2</kind>
+            <class>griditem</class>
+        </item>
+        <item x="9" y="4" z="3">
+            <kind>penitentiary-capital-south</kind>
+            <class>griditem</class>
+        </item>
+        <item x="4" y="7" z="2">
+            <kind>puppy</kind>
+            <orientation>west</orientation>
+            <behavior>behavior of disappearance as soon as Head appears</behavior>
+            <class>griditem</class>
+        </item>
+        <item x="5" y="7" z="1">
+            <kind>puppy</kind>
+            <orientation>west</orientation>
+            <behavior>behavior of disappearance as soon as Head appears</behavior>
+            <class>griditem</class>
+        </item>
+        <item x="6" y="7" z="0">
+            <kind>puppy</kind>
+            <orientation>west</orientation>
+            <behavior>behavior of disappearance as soon as Head appears</behavior>
+            <class>griditem</class>
+        </item>
+        <item x="4" y="8" z="3">
+            <kind>penitentiary-capital-west</kind>
+            <class>griditem</class>
+        </item>
+        <item x="5" y="8" z="3">
+            <kind>penitentiary-capital-west</kind>
+            <class>griditem</class>
+        </item>
+        <item x="0" y="3" z="-1">
+            <kind>penitentiary-door-north</kind>
+            <where>north</where>
+            <class>door</class>
+        </item>
+        <item x="9" y="3" z="-1">
+            <kind>penitentiary-door-south</kind>
+            <where>south</where>
+            <class>door</class>
+        </item>
+        <item x="4" y="8" z="-1">
+            <kind>penitentiary-door-west</kind>
+            <where>west</where>
+            <class>door</class>
+        </item>
+    </items>
+</room>
