@@ -111,8 +111,7 @@ export const renderWorld = async (app: Application, room: Room) => {
 
     // move origin to centre of screen
     worldContainer.x = zxSpectrumResolution.width / 2;
-    worldContainer.y = zxSpectrumResolution.height / 2;
-
+    worldContainer.y = zxSpectrumResolution.height * 0.75;
 
     const roomContainer = await renderRoom(app, room);
     worldContainer.addChild(roomContainer);
