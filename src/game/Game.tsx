@@ -39,14 +39,13 @@ export const Game = () => {
         id: 'ex',
         planet: 'blacktooth',
         zxSpectrumColor: 'cyan-basic',
-      };
+      } as const;
       renderWorld(app, simpleRoom);
     }
 
     go();
 
     return () => {
-      console.log('unmounting');
       if (appRef.current === undefined)
         return;
 

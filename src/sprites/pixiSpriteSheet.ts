@@ -1,69 +1,38 @@
-import { Assets, Spritesheet, type Texture } from "pixi.js"
+import { Assets, Spritesheet, SpritesheetFrameData, type Texture } from "pixi.js"
 import spritesheetUrl from '../../gfx/sprites.png'
 import { wallTileSize } from "./spriteFrames";
+import { Planet } from "../modelTypes";
 
-//Object.entries(spriteFrames.background);
+type BackgroundFrame<TPlanet extends Planet, TWallname extends string> = `${TPlanet}.wall.${TWallname}.${'l' | 'r'}` | `${TPlanet}.floor`;
 
-/*const backgroundFrames = {};
-
-const pixiSpriteSheetData: SpritesheetData = {
-    frames: {
-        ...backgroundFrames
-    },
-    meta: {
-        scale: 1
-    }
-};
-*/
-
-const blacktoothWalls = () => {
-    let x = 316;
-    let y = 124;
+function* backgroundFramesGenerator<TPlanet extends Planet, TWallname extends string>(planet: TPlanet, wallNames: TWallname[], startX: number, startY: number): Generator<[BackgroundFrame<TPlanet, TWallname>, SpritesheetFrameData]> {
     const { w, h } = wallTileSize;
+    const yStep = w / 2;
+    const n = wallNames.length;
 
-    return {
-        'blacktooth.wall.plain.l': {
-            frame: { x: x, y: 124, w, h }
-        },
-        'blacktooth.wall.shield.l': {
-            frame: {
-                x: x += w, y: y -= (w / 2), w, h
-            }
-        },
-        'blacktooth.wall.armour.l': {
-            frame: { x: x += w, y: y -= (w / 2), w, h }
-        },
-        'blacktooth.wall.window.l': {
-            frame: { x: x += w, y: y -= (w / 2), w, h }
-        },
-        'blacktooth.wall.window.r': {
-            frame: { x: x += w, y: y, w, h }
-        },
-        'blacktooth.wall.armour.r': {
-            frame: {
-                x: x += w, y: y += (w / 2), w, h
-            }
-        },
-        'blacktooth.wall.shield.r': {
-            frame: { x: x += w, y: y += (w / 2), w, h }
-        },
-        'blacktooth.wall.plain.r': {
-            frame: { x: x += w, y: y += (w / 2), w, h }
-        }
-    };
+    for (let i = 0; i < wallNames.length; i++) {
+        yield [`${planet}.wall.${wallNames[i]}.l`, { frame: { x: startX + w * i, y: startY - yStep * i, w, h } }];
+    }
+
+    const lastI = n - 1;
+    yield [`${planet}.floor`, { frame: { x: startX + lastI * w, y: startY - lastI * yStep + h + 1, w: 32, h: 16 } }];
+
+    wallNames.reverse();
+    const topY = startY - yStep * (n - 1);
+
+    for (let i = 0; i < wallNames.length; i++) {
+        yield [`${planet}.wall.${wallNames[i]}.r`, { frame: { x: startX + (w * (i + n)), y: topY + yStep * i, w, h } }];
+    }
+}
+const backgroundFrames = <TPlanet extends Planet, TWallname extends string>(planet: TPlanet, wallNames: TWallname[], startX: number, startY: number): Record<BackgroundFrame<TPlanet, TWallname>, SpritesheetFrameData> => {
+    return Object.fromEntries(backgroundFramesGenerator(planet, wallNames, startX, startY)) as Record<BackgroundFrame<TPlanet, TWallname>, SpritesheetFrameData>;
 }
 
 const spritesTexture = await Assets.load<Texture>(spritesheetUrl);
+
 export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
     frames: {
-        'blacktooth.floor': {
-            frame: { x: 364, y: 156, w: 32, h: 16 }
-            //frame: { x: 0, y: 0, w: 100, h: 100 }
-        },
-        ...blacktoothWalls(),
-        'blacktooth.wall.plain.r': {
-            frame: { x: 428, y: 124, w: 16, h: 55 }
-        },
+        ...backgroundFrames('blacktooth', ['plain', 'shield', 'armour', 'window'], 316, 124),
         'generic.edge.r': {
             frame: { x: 285, y: 146, w: 16, h: 32 }
         },

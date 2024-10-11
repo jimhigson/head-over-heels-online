@@ -100,7 +100,7 @@ export const renderWorld = async (app: Application, room: Room) => {
     // Create a graphics object to define our mask
     const rightSide = xyzBlockPosition(0, room.blockDepth).x;
     const leftSide = xyzBlockPosition(room.blockWidth, 0).x;
-    console.log(leftSide);
+
     const mask = new Graphics()
         // Add the rectangular area to show
         .rect(leftSide, -zxSpectrumResolution.height, rightSide - leftSide, zxSpectrumResolution.height)
