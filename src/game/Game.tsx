@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Application } from 'pixi.js';
-import { renderRoom } from './renderRoom';
+import { renderWorld } from './renderRoom';
+import { resize } from './resize';
+import { tick } from './tick';
+
+
 
 /** 
  * React wrapper to give a space to pixi.js and start the rest of the game engine
@@ -10,6 +14,10 @@ export const Game = () => {
   const appRef = useRef<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
 
+  /*useResizeObserver(gameArea, () => {
+    console.log('resize obs callback', appRef.current)
+    return appRef.current !== undefined && resize(appRef.current);
+  });*/
   useEffect(() => {
 
     if (gameArea === null)
@@ -18,10 +26,21 @@ export const Game = () => {
     const go = async () => {
       const app = new Application();
       await app.init({ background: '#000000', resizeTo: window });
+      // todo: load assets in parallel with init
       gameArea.appendChild(app.canvas);
       appRef.current = app;
 
-      renderRoom(app);
+      resize(app);
+      app.ticker.add(() => tick(app));
+      const simpleRoom = {
+        blockDepth: 5,
+        blockWidth: 5,
+        floorType: 'normal',
+        id: 'ex',
+        planet: 'blacktooth',
+        zxSpectrumColor: 'cyan-basic',
+      };
+      renderWorld(app, simpleRoom);
     }
 
     go();
