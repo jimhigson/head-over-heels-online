@@ -28,10 +28,10 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
             frame: { x: 428, y: 124, w: 16, h: 55 }
         },
         'generic.edge.r': {
-            frame: { x: 285, y: 146, w: 16, h: 24 }
+            frame: { x: 285, y: 146, w: 16, h: 32 }
         },
         'generic.edge.l': {
-            frame: { x: 268, y: 146, w: 16, h: 24 }
+            frame: { x: 268, y: 146, w: 16, h: 32 }
         }
     },
     meta: { scale: 1 }
