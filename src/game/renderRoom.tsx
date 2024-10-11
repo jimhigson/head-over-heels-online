@@ -2,7 +2,7 @@ import { Application, Assets, Container, Graphics, PointData, Sprite, type Textu
 import { Room } from '../modelTypes';
 import { blockSizePx, floorTileSize } from '../sprites/spriteFrames';
 import { zxSpectrumResolution } from '../originalGame';
-import { pixiSpriteSheet } from '../sprites/pixiSpriteSheet';
+import { blacktoothWallTextureIdsL, blacktoothWallTextureIdsR, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
 const xyzPosition = (x: number, y: number, z: number = 0) => {
     return { x: y - x, y: -(x + y) / 2 - z };
@@ -14,8 +14,6 @@ const xyzBlockPosition = (xBlock: number, yBlock: number, zBlock: number = 0) =>
 
     return xyzPosition(x, y, z);
 }
-
-type TextureId = keyof typeof pixiSpriteSheet['textures'];
 
 const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, anchor?: PointData, pivot?: PointData): Sprite => {
     const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
@@ -75,12 +73,14 @@ const renderRoom = async (app: Application, room: Room) => {
 
     // sprites for wall edge on x-axis (left wall):
     for (let iy = 0; iy < room.blockDepth; iy++) {
-        roomContainer.addChild(spriteAtBlock(room.blockWidth, iy, 'blacktooth.wall.plain.l', { x: 0, y: 1 }));
+        const textureId = blacktoothWallTextureIdsL[iy % 4];
+        roomContainer.addChild(spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 }));
     }
 
     // sprites for wall edge on y-axis (right wall):
     for (let ix = 0; ix < room.blockWidth; ix++) {
-        roomContainer.addChild(spriteAtBlock(ix, room.blockDepth, 'blacktooth.wall.plain.r', { x: 1, y: 1 }));
+        const textureId = blacktoothWallTextureIdsR[ix % 4];
+        roomContainer.addChild(spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 }));
     }
 
 

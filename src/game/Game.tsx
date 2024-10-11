@@ -34,7 +34,7 @@ export const Game = () => {
       app.ticker.add(() => tick(app));
       const simpleRoom = {
         blockDepth: 5,
-        blockWidth: 5,
+        blockWidth: 6,
         floorType: 'normal',
         id: 'ex',
         planet: 'blacktooth',
