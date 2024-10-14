@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Application } from 'pixi.js';
-import { renderWorld } from './renderRoom';
+import { renderWorld } from './renderWorld';
 import { resize } from './resize';
 import { tick } from './tick';
-
-
+import { simpleRoom } from './simpleRoom';
 
 /** 
  * React wrapper to give a space to pixi.js and start the rest of the game engine
@@ -32,15 +31,8 @@ export const Game = () => {
 
       resize(app);
       app.ticker.add(() => tick(app));
-      const simpleRoom = {
-        blockDepth: 5,
-        blockWidth: 6,
-        floorType: 'normal',
-        id: 'ex',
-        planet: 'blacktooth',
-        zxSpectrumColor: 'cyan-basic',
-      } as const;
-      renderWorld(app, simpleRoom);
+
+      renderWorld(app, simpleRoom('blacktooth', 7, 5));
     }
 
     go();

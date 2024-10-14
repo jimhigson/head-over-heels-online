@@ -1,8 +1,7 @@
-import { Application, Assets, Container, Graphics, PointData, Sprite, type Texture } from 'pixi.js';
-import { Room } from '../modelTypes';
-import { blockSizePx, floorTileSize } from '../sprites/spriteFrames';
+import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
+import { AnyRoom, blockSizePx, Planet, Room, wallTextureId } from '../modelTypes';
 import { zxSpectrumResolution } from '../originalGame';
-import { blacktoothWallTextureIdsL, blacktoothWallTextureIdsR, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
+import { pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
 const xyzPosition = (x: number, y: number, z: number = 0) => {
     return { x: y - x, y: -(x + y) / 2 - z };
@@ -33,7 +32,7 @@ const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, anc
     return sprite;
 }
 
-const renderRoom = async (app: Application, room: Room) => {
+const renderRoom = async <P extends Planet>(room: Room<P>) => {
 
     // NB: floor could be a tiling sprite and a graphics map:
     //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
@@ -42,21 +41,25 @@ const renderRoom = async (app: Application, room: Room) => {
     const roomContainer = new Container();
 
     // sprites for floor tiles:
-    for (let ix = -1; ix <= room.blockWidth; ix++) {
-        for (let iy = -1; iy <= room.blockDepth; iy++) {
-            // each sprite covers enough graphics for 2 blocks. we only need to
-            // render a sprite for the 'white' squares on the chessboard (render or
-            // not according to a checkerboard pattern)
-            if ((ix % 2 === 0) !== (iy % 2 === 0))
-                continue;
+    if (room.floorType !== 'none') {
+        const floorTexture: TextureId = room.floorType === 'deadly' ? 'generic.floor.deadly' : `${room.planet}.floor`;
 
-            if (ix === room.blockWidth && iy === -1)
-                continue;
+        for (let ix = -1; ix <= room.blockWidth; ix++) {
+            for (let iy = -1; iy <= room.blockDepth; iy++) {
+                // each sprite covers enough graphics for 2 blocks. we only need to
+                // render a sprite for the 'white' squares on the chessboard (render or
+                // not according to a checkerboard pattern)
+                if ((ix % 2 === 0) !== (iy % 2 === 0))
+                    continue;
 
-            if (ix === -1 && iy === room.blockDepth)
-                continue;
+                if (ix === room.blockWidth && iy === -1)
+                    continue;
 
-            roomContainer.addChild(spriteAtBlock(ix, iy, 'blacktooth.floor', { x: 0.5, y: 1 }));
+                if (ix === -1 && iy === room.blockDepth)
+                    continue;
+
+                roomContainer.addChild(spriteAtBlock(ix, iy, floorTexture, { x: 0.5, y: 1 }));
+            }
         }
     }
 
@@ -75,26 +78,24 @@ const renderRoom = async (app: Application, room: Room) => {
 
     // sprites for wall on x-axis (left wall):
     for (let iy = 0; iy < room.blockDepth; iy++) {
-        const textureId = blacktoothWallTextureIdsL[iy % 4];
+        const textureId: TextureId = wallTextureId(room.planet, room.walls.l[iy], 'l') as TextureId;
+        console.log(textureId);
         roomContainer.addChild(spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 }));
     }
 
     // sprites for wall on y-axis (right wall):
     for (let ix = 0; ix < room.blockWidth; ix++) {
-        const textureId = blacktoothWallTextureIdsR[ix % 4];
+        const textureId = `${room.planet}.wall.${room.walls.r[ix]}.r` as TextureId;
         roomContainer.addChild(spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 }));
     }
 
     return roomContainer;
 };
 
-export const renderWorld = async (app: Application, room: Room) => {
-    // doesn't work:
-    //TexturePool.textureOptions.scaleMode = 'nearest';
+export const renderWorld = async (app: Application, room: AnyRoom) => {
+    console.log('rendering room', room);
 
     // TODO: render a bit extra for any side with a door (to go under the door - about half a block)
-
-    //const wallsContainer = new Container();
 
     const worldContainer = new Container();
 
@@ -115,14 +116,12 @@ export const renderWorld = async (app: Application, room: Room) => {
     worldContainer.addChild(mask);
     worldContainer.mask = mask;
 
-    const roomContainer = await renderRoom(app, room);
+    const roomContainer = await renderRoom(room);
     worldContainer.addChild(roomContainer);
 
     app.stage.addChild(worldContainer);
-    //app.stage.addChild(wallsContainer);
 
     return () => {
         app.stage.removeChild(roomContainer);
-        //app.stage.removeChild(wallsContainer);
     }
 };
