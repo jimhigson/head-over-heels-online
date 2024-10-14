@@ -32,14 +32,7 @@ const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, anc
     return sprite;
 }
 
-const renderRoom = async <P extends Planet>(room: Room<P>) => {
-
-    // NB: floor could be a tiling sprite and a graphics map:
-    //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
-    //  * https://pixijs.com/8.x/examples/masks/graphics
-
-    const roomContainer = new Container();
-
+function* renderFloorTiles(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     // sprites for floor tiles:
     if (room.floorType !== 'none') {
         const floorTexture: TextureId = room.floorType === 'deadly' ? 'generic.floor.deadly' : `${room.planet}.floor`;
@@ -58,35 +51,78 @@ const renderRoom = async <P extends Planet>(room: Room<P>) => {
                 if (ix === -1 && iy === room.blockDepth)
                     continue;
 
-                roomContainer.addChild(spriteAtBlock(ix, iy, floorTexture, { x: 0.5, y: 1 }));
+                yield spriteAtBlock(ix, iy, floorTexture, { x: 0.5, y: 1 });
             }
         }
     }
+}
 
-    // sprites for floor edge on x-axis (left side of screen):
+function* renderFloorEdges(room: AnyRoom): Generator<Sprite, undefined, undefined> {
+
+    const hasDoorTowards = !!room.doors.towards;
+    const hasDoorRight = !!room.doors.right;
+
+    // sprites for floor edge along x-axis (left side of screen):
     // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
     // floor over-draw
-    for (let ix = 0; ix <= room.blockWidth; ix++) {
-        roomContainer.addChild(spriteAtBlock(ix, 0, 'generic.edge.l', undefined, { x: 15, y: 5 }));
+    const lStart = hasDoorRight ? -0.5 : 0;
+    const lEnd = room.blockWidth - 0.5;// += hasDoorRight ? 0.5 : 0;
+    for (let ix = lStart; ix <= lEnd; ix += 0.5) {
+        yield spriteAtBlock(ix, hasDoorTowards ? -0.5 : 0, 'generic.edge.towards', undefined, { x: 7, y: 1 });
     }
-    // sprites for floor edge on y-axis (left side of screen):
+    // sprites for floor edge towards us along y-axis (right side of screen):
     // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
     // floor over-draw    
-    for (let iy = 0; iy <= room.blockDepth; iy++) {
-        roomContainer.addChild(spriteAtBlock(0, iy, 'generic.edge.r', undefined, { x: -1, y: 5 }));
+    const tFirst = hasDoorTowards ? -0.5 : 0;
+    const tLast = room.blockDepth;
+    for (let iy = tFirst; iy <= tLast; iy += 0.5) {
+        yield spriteAtBlock(hasDoorRight ? -0.5 : 0, iy, 'generic.edge.right', undefined, { x: 0, y: 1 });
     }
+}
+
+function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
+    // TODO: skip walls where there are doors:
 
     // sprites for wall on x-axis (left wall):
     for (let iy = 0; iy < room.blockDepth; iy++) {
-        const textureId: TextureId = wallTextureId(room.planet, room.walls.l[iy], 'l') as TextureId;
-        console.log(textureId);
-        roomContainer.addChild(spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 }));
+        const textureId = wallTextureId(room.planet, room.walls.left[iy], 'left') as TextureId;
+        yield spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 });
     }
 
     // sprites for wall on y-axis (right wall):
     for (let ix = 0; ix < room.blockWidth; ix++) {
-        const textureId = `${room.planet}.wall.${room.walls.r[ix]}.r` as TextureId;
-        roomContainer.addChild(spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 }));
+        const textureId = wallTextureId(room.planet, room.walls.away[ix], 'away') as TextureId;
+        yield spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 });
+    }
+}
+
+
+function* renderDoors(room: AnyRoom): Generator<Sprite, undefined, undefined> {
+    // TODO: backs and fronts need to be rendered with content in-between
+    const doorHandle = { x: 0, y: 52 };
+    if (room.doors.right) {
+        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.leftRight', undefined, doorHandle);
+        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.leftRight', undefined, doorHandle);
+    }
+}
+
+function* renderBackground(room: AnyRoom): Generator<Sprite, undefined, undefined> {
+    yield* renderFloorTiles(room);
+    yield* renderFloorEdges(room);
+    yield* renderWalls(room);
+    yield* renderDoors(room);
+}
+
+const renderRoom = async <P extends Planet>(room: Room<P>) => {
+
+    // NB: floor could be a tiling sprite and a graphics map:
+    //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
+    //  * https://pixijs.com/8.x/examples/masks/graphics
+
+    const roomContainer = new Container();
+
+    for (const sprite of renderBackground(room)) {
+        roomContainer.addChild(sprite);
     }
 
     return roomContainer;
@@ -105,7 +141,9 @@ export const renderWorld = async (app: Application, room: AnyRoom) => {
     worldContainer.y = zxSpectrumResolution.height * 0.75;
 
     // Create a graphics object to define our mask
-    const rightSide = xyzBlockPosition(0, room.blockDepth).x;
+    const hasDoorTowards = !!room.doors.towards;
+    const hasDoorRight = !!room.doors.right;
+    const rightSide = xyzBlockPosition(0, room.blockDepth + (hasDoorRight ? 0.5 : 0)).x;
     const leftSide = xyzBlockPosition(room.blockWidth, 0).x;
 
     const mask = new Graphics()

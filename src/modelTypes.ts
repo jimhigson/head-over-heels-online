@@ -29,13 +29,16 @@ export type Room<P extends Planet> = {
     blockDepth: number,
     planet: P,
     floorType: FloorType,
-    roomAbove?: Room<P>,
-    roomBelow?: Room<P>,
+    aboveRoomId?: string,
+    belowRoomId?: string,
     walls: {
-        l: WallType<P>[],
-        r: WallType<P>[],
+        left: WallType<P>[],
+        away: WallType<P>[],
     },
     zxSpectrumColor: ZxSpectrumColor,
+    // for now, can only have one room per direction - this seems to work with the original game
+    // levels but could be expanded to support multiple
+    doors: Partial<Record<Direction, { ordinal: number, toRoomId: string }>>
 }
 
 export type AnyRoom = Room<Planet>
@@ -49,7 +52,7 @@ export const blockSizePx = { w: 16, d: 16, h: 8 /* z is a guess and possibly wro
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
 
-export type WallTextureId<P extends Planet, W extends WallType<P>> = `${P}.wall.${W}.${'l' | 'r'}`;
+export type WallTextureId<P extends Planet, W extends WallType<P> = WallType<P>> = `${P}.wall.${W}.${'left' | 'away'}`;
 
-export const wallTextureId = <P extends Planet, W extends WallType<P>>(planet: P, wallName: WallType<P>, side: 'l' | 'r') =>
+export const wallTextureId = <P extends Planet, W extends WallType<P>>(planet: P, wallName: WallType<P>, side: 'left' | 'away') =>
     `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;

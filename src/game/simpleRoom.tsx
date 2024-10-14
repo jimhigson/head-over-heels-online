@@ -19,8 +19,11 @@ export const simpleRoom = <P extends Planet>(planet: P, width: number, depth: nu
         planet,
         zxSpectrumColor: 'cyan-basic',
         walls: {
-            l: [...sequentialRowTypes(planet).take(depth)],
-            r: [...sequentialRowTypes(planet).take(width)],
+            left: [...sequentialRowTypes(planet).take(depth)],
+            away: [...sequentialRowTypes(planet).take(width)],
+        },
+        doors: {
+            right: { ordinal: 1, toRoomId: 'nowhere' }
         }
     } as const);
 };

@@ -1,8 +1,8 @@
 import { Assets, Spritesheet, SpritesheetFrameData, type Texture } from "pixi.js"
 import spritesheetUrl from '../../gfx/sprites.png'
-import { Planet, wallTypes, WallType, wallTileSize, floorTileSize } from "../modelTypes";
+import { Planet, wallTypes, wallTileSize, floorTileSize, WallTextureId } from "../modelTypes";
 
-type BackgroundFrame<TPlanet extends Planet> = `${TPlanet}.wall.${WallType<TPlanet>}.${'l' | 'r'}` | `${TPlanet}.floor`;
+type BackgroundFrame<TPlanet extends Planet> = WallTextureId<TPlanet> | `${TPlanet}.floor`;
 
 function* backgroundFramesGenerator<TPlanet extends Planet>(planet: TPlanet, startX: number, startY: number): Generator<[BackgroundFrame<TPlanet>, SpritesheetFrameData]> {
     const wallNames = wallTypes[planet];
@@ -13,8 +13,8 @@ function* backgroundFramesGenerator<TPlanet extends Planet>(planet: TPlanet, sta
 
     let i = 0;
     for (; i < wallNames.length; i++) {
-        yield [`${planet}.wall.${wallNames[i]}.l`, { frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize } }];
-        yield [`${planet}.wall.${wallNames[i]}.r`, { frame: { x: startX + w * ((n << 1) - i - 1), y: startY - yStep * i, ...wallTileSize } }];
+        yield [`${planet}.wall.${wallNames[i]}.left`, { frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize } }];
+        yield [`${planet}.wall.${wallNames[i]}.away`, { frame: { x: startX + w * ((n << 1) - i - 1), y: startY - yStep * i, ...wallTileSize } }];
     }
 
     const lastI = i - 1;
@@ -35,14 +35,21 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         ...backgroundFrames('moonbase', 459, 124),
         ...backgroundFrames('market', 384, 210),
         ...backgroundFrames('safari', 488, 210),
-        'generic.edge.r': {
-            frame: { x: 285, y: 146, w: 16, h: 32 }
+        'generic.edge.right': {
+            frame: { x: 277, y: 146, w: 8, h: 32 }
         },
-        'generic.edge.l': {
-            frame: { x: 268, y: 146, w: 16, h: 32 }
+        'generic.edge.towards': {
+            frame: { x: 268, y: 146, w: 8, h: 32 }
         },
         'generic.floor.deadly': {
-            frame: { x: 341, y: 424, ...floorTileSize }
+            frame: { x: 381, y: 424, ...floorTileSize }
+        },
+        // doors:
+        'generic.door.front.leftRight': {
+            frame: { x: 227, y: 13, w: 24, h: 56 }
+        },
+        'generic.door.back.leftRight': {
+            frame: { x: 243, y: 5, w: 24, h: 56 }
         }
     },
     meta: { scale: 1 }
