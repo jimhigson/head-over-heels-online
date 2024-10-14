@@ -7,14 +7,19 @@ TODO
     * With layout overall at: [map.xml](https://github.com/dougmencken/HeadOverHeels/blob/master/gamedata/map/map.xml)
 [ ] Convert original game map data xml to json (and a nicer format)
 
-[ ] render a black rectangle "game space" using pixi
-[ ] render a single floor tile from a sprite in sprites.png
-[ ] render a single, empty room to a web page
+[x] render a black rectangle "game space" using pixi
+[x] render a single floor tile from a sprite in sprites.png
+[x] render a single, empty room to a web page
     * blacktooth
     * floor and walls
     * just one wall type
     impl:
         * use spritesheets for graphics - https://pixijs.download/release/docs/assets.Spritesheet.html
+
+[x] render all planets
+[x] render a door
+    [x] plus the extra space in the room for it        
+[x] render doors on all sides    
 
 
 

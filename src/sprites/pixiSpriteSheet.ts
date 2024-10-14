@@ -1,6 +1,12 @@
 import { Assets, Spritesheet, SpritesheetFrameData, type Texture } from "pixi.js"
 import spritesheetUrl from '../../gfx/sprites.png'
-import { Planet, wallTypes, wallTileSize, floorTileSize, WallTextureId } from "../modelTypes";
+import { Planet, wallTypes, WallTextureId, SpriteSize } from "../modelTypes";
+
+export const blockSizePx = { w: 16, d: 16, h: 8 /* z is a guess and possibly wrong */ };
+export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
+export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
+export const doorTextureHandleX = { x: 0, y: 52 };
+export const doorTextureHandleY = { x: 24, y: 52 };
 
 type BackgroundFrame<TPlanet extends Planet> = WallTextureId<TPlanet> | `${TPlanet}.floor`;
 
@@ -44,12 +50,18 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         'generic.floor.deadly': {
             frame: { x: 381, y: 424, ...floorTileSize }
         },
-        // doors:
-        'generic.door.front.leftRight': {
-            frame: { x: 227, y: 13, w: 24, h: 56 }
+        // doors: x=left/right, y=towards/away
+        'generic.door.front.x': {
+            frame: { x: 227, y: 13, w: 24, h: 56 },
         },
-        'generic.door.back.leftRight': {
+        'generic.door.back.x': {
             frame: { x: 243, y: 5, w: 24, h: 56 }
+        },
+        'generic.door.front.y': {
+            frame: { x: 286, y: 13, w: 24, h: 56 }
+        },
+        'generic.door.back.y': {
+            frame: { x: 270, y: 5, w: 24, h: 56 }
         }
     },
     meta: { scale: 1 }

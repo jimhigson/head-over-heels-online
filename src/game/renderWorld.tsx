@@ -1,7 +1,7 @@
 import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
-import { AnyRoom, blockSizePx, Planet, Room, wallTextureId } from '../modelTypes';
+import { AnyRoom, Planet, Room, wallTextureId } from '../modelTypes';
 import { zxSpectrumResolution } from '../originalGame';
-import { pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
+import { blockSizePx, doorTextureHandleX, doorTextureHandleY, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
 const xyzPosition = (x: number, y: number, z: number = 0) => {
     return { x: y - x, y: -(x + y) / 2 - z };
@@ -84,25 +84,49 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     // TODO: skip walls where there are doors:
 
     // sprites for wall on x-axis (left wall):
-    for (let iy = 0; iy < room.blockDepth; iy++) {
-        const textureId = wallTextureId(room.planet, room.walls.left[iy], 'left') as TextureId;
-        yield spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 });
+    const leftDoor = room.doors.left;
+    for (let i = room.blockDepth - 1; i >= 0; i--) {
+
+
+        if (leftDoor?.ordinal === i - 1) {
+            // if there is a door, do not render the normal wall- render the door instead
+            // TODO: only render the door back. The front needs to overdraw items in-game
+            // but subsequent walls also need to over-render the door(!)
+            // this means that maybe everything needs to be treated like a sortable object (?)
+            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.door.back.x', undefined, doorTextureHandleX);
+            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, 'generic.door.front.x', undefined, doorTextureHandleX);
+            i--;
+        } else {
+            const textureId = wallTextureId(room.planet, room.walls.left[i], 'left') as TextureId;
+            yield spriteAtBlock(room.blockWidth, i, textureId, { x: 0, y: 1 });
+        }
     }
 
     // sprites for wall on y-axis (right wall):
-    for (let ix = 0; ix < room.blockWidth; ix++) {
-        const textureId = wallTextureId(room.planet, room.walls.away[ix], 'away') as TextureId;
-        yield spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 });
+    const awayDoor = room.doors.away;
+    for (let i = room.blockWidth - 1; i >= 0; i--) {
+        if (awayDoor?.ordinal === i - 1) {
+            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.door.back.y', undefined, doorTextureHandleY);
+            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, 'generic.door.front.y', undefined, doorTextureHandleY);
+            i--;
+            continue;
+        } else {
+            const textureId = wallTextureId(room.planet, room.walls.away[i], 'away') as TextureId;
+            yield spriteAtBlock(i, room.blockDepth, textureId, { x: 1, y: 1 });
+        }
     }
 }
 
 
 function* renderDoors(room: AnyRoom): Generator<Sprite, undefined, undefined> {
-    // TODO: backs and fronts need to be rendered with content in-between
-    const doorHandle = { x: 0, y: 52 };
+    // TODO: backs and fronts need to be rendered with content in-between    
     if (room.doors.right) {
-        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.leftRight', undefined, doorHandle);
-        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.leftRight', undefined, doorHandle);
+        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.x', undefined, doorTextureHandleX);
+        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.x', undefined, doorTextureHandleX);
+    }
+    if (room.doors.towards) {
+        yield spriteAtBlock(room.doors.towards.ordinal, 0, 'generic.door.front.y', undefined, doorTextureHandleY);
+        yield spriteAtBlock(room.doors.towards.ordinal + 1, 0, 'generic.door.back.y', undefined, doorTextureHandleY);
     }
 }
 

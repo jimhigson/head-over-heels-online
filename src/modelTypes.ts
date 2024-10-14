@@ -48,10 +48,6 @@ export type SpriteFrame = SpritesheetFrameData['frame'];
 export type SpritePosition = Pick<SpriteFrame, 'x' | 'y'>;
 export type SpriteSize = Pick<SpriteFrame, 'w' | 'h'>;
 
-export const blockSizePx = { w: 16, d: 16, h: 8 /* z is a guess and possibly wrong */ };
-export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
-export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
-
 export type WallTextureId<P extends Planet, W extends WallType<P> = WallType<P>> = `${P}.wall.${W}.${'left' | 'away'}`;
 
 export const wallTextureId = <P extends Planet, W extends WallType<P>>(planet: P, wallName: WallType<P>, side: 'left' | 'away') =>

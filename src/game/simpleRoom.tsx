@@ -23,7 +23,10 @@ export const simpleRoom = <P extends Planet>(planet: P, width: number, depth: nu
             away: [...sequentialRowTypes(planet).take(width)],
         },
         doors: {
-            right: { ordinal: 1, toRoomId: 'nowhere' }
+            right: { ordinal: 1, toRoomId: 'nowhere' },
+            left: { ordinal: 3, toRoomId: 'nowhere' },
+            away: { ordinal: 3, toRoomId: 'nowhere' },
+            towards: { ordinal: 1, toRoomId: 'nowhere' }
         }
     } as const);
 };
