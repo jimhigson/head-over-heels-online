@@ -60,29 +60,30 @@ const renderRoom = async (app: Application, room: Room) => {
         }
     }
 
-    // sprites for floor edge on x-axis:
-
-
-    for (let ix = 0; ix < room.blockWidth; ix++) {
-        roomContainer.addChild(spriteAtBlock(ix, 0, 'generic.edge.l', undefined, { x: 16, y: 9 }));
+    // sprites for floor edge on x-axis (left side of screen):
+    // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
+    // floor over-draw
+    for (let ix = 0; ix <= room.blockWidth; ix++) {
+        roomContainer.addChild(spriteAtBlock(ix, 0, 'generic.edge.l', undefined, { x: 15, y: 5 }));
     }
-    // sprites for floor edge on y-axis:
-    for (let iy = 0; iy < room.blockDepth; iy++) {
-        roomContainer.addChild(spriteAtBlock(0, iy, 'generic.edge.r', undefined, { x: 0, y: 9 }));
+    // sprites for floor edge on y-axis (left side of screen):
+    // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
+    // floor over-draw    
+    for (let iy = 0; iy <= room.blockDepth; iy++) {
+        roomContainer.addChild(spriteAtBlock(0, iy, 'generic.edge.r', undefined, { x: -1, y: 5 }));
     }
 
-    // sprites for wall edge on x-axis (left wall):
+    // sprites for wall on x-axis (left wall):
     for (let iy = 0; iy < room.blockDepth; iy++) {
         const textureId = blacktoothWallTextureIdsL[iy % 4];
         roomContainer.addChild(spriteAtBlock(room.blockWidth, iy, textureId, { x: 0, y: 1 }));
     }
 
-    // sprites for wall edge on y-axis (right wall):
+    // sprites for wall on y-axis (right wall):
     for (let ix = 0; ix < room.blockWidth; ix++) {
         const textureId = blacktoothWallTextureIdsR[ix % 4];
         roomContainer.addChild(spriteAtBlock(ix, room.blockDepth, textureId, { x: 1, y: 1 }));
     }
-
 
     return roomContainer;
 };
@@ -97,21 +98,22 @@ export const renderWorld = async (app: Application, room: Room) => {
 
     const worldContainer = new Container();
 
+    // move origin to centre of screen 
+    // TODO: change depending on geometry of current room
+    worldContainer.x = zxSpectrumResolution.width / 2;
+    worldContainer.y = zxSpectrumResolution.height * 0.75;
+
     // Create a graphics object to define our mask
     const rightSide = xyzBlockPosition(0, room.blockDepth).x;
     const leftSide = xyzBlockPosition(room.blockWidth, 0).x;
 
     const mask = new Graphics()
         // Add the rectangular area to show
-        .rect(leftSide, -zxSpectrumResolution.height, rightSide - leftSide, zxSpectrumResolution.height)
-        .fill(0xffffff);
+        .rect(leftSide, -worldContainer.y, rightSide - leftSide, zxSpectrumResolution.height)
+        .fill(0xff0000);
 
     worldContainer.addChild(mask);
     worldContainer.mask = mask;
-
-    // move origin to centre of screen
-    worldContainer.x = zxSpectrumResolution.width / 2;
-    worldContainer.y = zxSpectrumResolution.height * 0.75;
 
     const roomContainer = await renderRoom(app, room);
     worldContainer.addChild(roomContainer);
