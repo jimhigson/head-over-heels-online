@@ -32,7 +32,7 @@ export const Game = () => {
       resize(app);
       app.ticker.add(() => tick(app));
 
-      renderWorld(app, simpleRoom('blacktooth', 7, 5));
+      renderWorld(app, simpleRoom('moonbase', 5, 7));
     }
 
     go();

@@ -1,12 +1,13 @@
-import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
+import { Application, Container, Graphics, PointData, Sprite, TilingSprite, ViewContainer } from 'pixi.js';
 import { AnyRoom, Planet, Room, wallTextureId } from '../modelTypes';
 import { zxSpectrumResolution } from '../originalGame';
-import { blockSizePx, doorTextureHandleX, doorTextureHandleY, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
+import { blockSizePx, doorTexturePivotX, doorTexturePivotY, floorTileSize, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
+/* position on 2d screen for a given xyz in game-space 3d pixels */
 const xyzPosition = (x: number, y: number, z: number = 0) => {
     return { x: y - x, y: -(x + y) / 2 - z };
 }
-const xyzBlockPosition = (xBlock: number, yBlock: number, zBlock: number = 0) => {
+const xyzBlockPosition = (xBlock: number, yBlock: number, zBlock: number = 0): PointData => {
     const x = xBlock * blockSizePx.w;
     const y = yBlock * blockSizePx.d;
     const z = zBlock * blockSizePx.h;
@@ -14,7 +15,12 @@ const xyzBlockPosition = (xBlock: number, yBlock: number, zBlock: number = 0) =>
     return xyzPosition(x, y, z);
 }
 
-const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, anchor?: PointData, pivot?: PointData): Sprite => {
+type SpriteAtBlockOptions = {
+    anchor?: PointData;
+    pivot?: PointData;
+    flipX?: true;
+};
+const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, { anchor, flipX, pivot }: SpriteAtBlockOptions): Sprite => {
     const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
     if (anchor !== undefined)
         sprite.anchor = anchor;
@@ -29,55 +35,105 @@ const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, anc
     sprite.eventMode = 'static';
     sprite.on('click', () => { console.log(`tile (xB=${xBlock}) (yB=${yBlock}) xpx=${pos.x} ypx=${pos.y} tex=${textureId}`) });
 
+    if (flipX === true) {
+        sprite.scale.x = -1;
+    }
+
     return sprite;
 }
 
-function* renderFloorTiles(room: AnyRoom): Generator<Sprite, undefined, undefined> {
-    // sprites for floor tiles:
-    if (room.floorType !== 'none') {
-        const floorTexture: TextureId = room.floorType === 'deadly' ? 'generic.floor.deadly' : `${room.planet}.floor`;
+function* renderFloorTiles(room: AnyRoom): Generator<Container, undefined, undefined> {
 
-        for (let ix = -1; ix <= room.blockWidth; ix++) {
-            for (let iy = -1; iy <= room.blockDepth; iy++) {
-                // each sprite covers enough graphics for 2 blocks. we only need to
-                // render a sprite for the 'white' squares on the chessboard (render or
-                // not according to a checkerboard pattern)
-                if ((ix % 2 === 0) !== (iy % 2 === 0))
-                    continue;
-
-                if (ix === room.blockWidth && iy === -1)
-                    continue;
-
-                if (ix === -1 && iy === room.blockDepth)
-                    continue;
-
-                yield spriteAtBlock(ix, iy, floorTexture, { x: 0.5, y: 1 });
-            }
-        }
+    if (room.floorType === 'none') {
+        return;
     }
-}
-
-function* renderFloorEdges(room: AnyRoom): Generator<Sprite, undefined, undefined> {
 
     const hasDoorTowards = !!room.doors.towards;
     const hasDoorRight = !!room.doors.right;
 
-    // sprites for floor edge along x-axis (left side of screen):
-    // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
-    // floor over-draw
-    const lStart = hasDoorRight ? -0.5 : 0;
-    const lEnd = room.blockWidth - 0.5;// += hasDoorRight ? 0.5 : 0;
-    for (let ix = lStart; ix <= lEnd; ix += 0.5) {
-        yield spriteAtBlock(ix, hasDoorTowards ? -0.5 : 0, 'generic.edge.towards', undefined, { x: 7, y: 1 });
+    const blockXMin = room.doors.right ? -0.5 : 0;
+    const blockXMax = room.blockWidth + (room.doors.left ? 0.5 : 0);
+    const blockYMin = room.doors.towards ? -0.5 : 0;
+    const blockYMax = room.blockDepth + (room.doors.towards ? 0.5 : 0);
+
+    const rightSide = xyzBlockPosition(blockXMin, blockYMax);
+    const leftSide = xyzBlockPosition(blockXMax, blockYMin);
+    const frontSide = xyzBlockPosition(blockXMin, blockYMin); // aka the origin
+    const backSide = xyzBlockPosition(blockXMax, blockYMax); // aka the origin
+
+    const floorTileTexture: TextureId = room.floorType === 'deadly' ? 'generic.floor.deadly' : `${room.planet}.floor`;
+
+    const floorContainer = new Container();
+    const tilesContainer = new Container();
+
+    for (let ix = - 1; ix <= room.blockWidth; ix++) {
+        for (let iy = -1; iy <= room.blockDepth; iy++) {
+            // each sprite covers enough graphics for 2 blocks. we only need to
+            // render a sprite for the 'white' squares on the chessboard (render or
+            // not according to a checkerboard pattern)
+            if ((ix % 2 === 0) !== (iy % 2 === 0))
+                continue;
+
+            tilesContainer.addChild(spriteAtBlock(ix, iy, floorTileTexture, { anchor: { x: 0.5, y: 1 } }));
+        }
     }
-    // sprites for floor edge towards us along y-axis (right side of screen):
-    // note - we draw one more than needed (<=) to cover rooms with doors and obscure a bit more
-    // floor over-draw    
-    const tFirst = hasDoorTowards ? -0.5 : 0;
-    const tLast = room.blockDepth;
-    for (let iy = tFirst; iy <= tLast; iy += 0.5) {
-        yield spriteAtBlock(hasDoorRight ? -0.5 : 0, iy, 'generic.edge.right', undefined, { x: 0, y: 1 });
+
+    const tilesMask = new Graphics()
+        // Add the rectangular area to show
+        .poly(
+            [
+                frontSide,
+                rightSide,
+                backSide,
+                leftSide
+            ],
+            true
+        )
+        .fill(0xff0000)
+        // use a stroke to draw more than is strictly on the floor for the purpose of extending
+        // under the pixelated edges of other sprites that are otherdrawn - otherwise the edge
+        // would be a very smooth diagonal on modern screens
+        .stroke({ width: 8 })
+
+    tilesContainer.addChild(tilesMask);
+    tilesContainer.mask = tilesMask;
+
+    floorContainer.addChild(tilesContainer);
+
+    // render the floor edges
+    const edgeContainer = new Container();
+
+    for (let ix = blockXMin; ix <= room.blockWidth; ix += 0.5) {
+        edgeContainer.addChild(spriteAtBlock(ix, hasDoorTowards ? -0.5 : 0, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
     }
+    for (let iy = blockYMin; iy <= room.blockDepth; iy += 0.5) {
+        edgeContainer.addChild(spriteAtBlock(hasDoorRight ? -0.5 : 0, iy, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
+    }
+
+    const edgeRightPoint = xyzBlockPosition(0, room.blockDepth);
+    const edgeLeftPoint = xyzBlockPosition(room.blockWidth, 0);
+
+    // rendering strategy differs slightly from original here - we don't render floors added in for near-side
+    // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
+    const floorMask = new Graphics()
+        // Add the rectangular area to show
+        .poly(
+            [
+                { x: frontSide.x, y: frontSide.y + 16 },
+                { x: edgeRightPoint.x, y: edgeRightPoint.y + 16 },
+                { x: edgeRightPoint.x, y: -999 },
+                { x: edgeLeftPoint.x, y: -999 },
+                { x: edgeLeftPoint.x, y: edgeLeftPoint.y + 16 },
+            ],
+            true
+        )
+        .fill(0xffff00)
+
+    floorContainer.addChild(floorMask);
+    floorContainer.addChild(edgeContainer);
+    floorContainer.mask = floorMask;
+
+    yield floorContainer;
 }
 
 function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
@@ -87,18 +143,18 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     const leftDoor = room.doors.left;
     for (let i = room.blockDepth - 1; i >= 0; i--) {
 
-
         if (leftDoor?.ordinal === i - 1) {
             // if there is a door, do not render the normal wall- render the door instead
             // TODO: only render the door back. The front needs to overdraw items in-game
             // but subsequent walls also need to over-render the door(!)
             // this means that maybe everything needs to be treated like a sortable object (?)
-            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.door.back.x', undefined, doorTextureHandleX);
-            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, 'generic.door.front.x', undefined, doorTextureHandleX);
+            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
+            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.door.back.x', { pivot: doorTexturePivotX });
+            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, 'generic.door.front.x', { pivot: doorTexturePivotX });
             i--;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.left[i], 'left') as TextureId;
-            yield spriteAtBlock(room.blockWidth, i, textureId, { x: 0, y: 1 });
+            yield spriteAtBlock(room.blockWidth, i, textureId, { anchor: { x: 0, y: 1 } });
         }
     }
 
@@ -106,33 +162,35 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     const awayDoor = room.doors.away;
     for (let i = room.blockWidth - 1; i >= 0; i--) {
         if (awayDoor?.ordinal === i - 1) {
-            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.door.back.y', undefined, doorTextureHandleY);
-            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, 'generic.door.front.y', undefined, doorTextureHandleY);
+            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
+            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.door.back.y', { pivot: doorTexturePivotY });
+            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, 'generic.door.front.y', { pivot: doorTexturePivotY });
             i--;
             continue;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.away[i], 'away') as TextureId;
-            yield spriteAtBlock(i, room.blockDepth, textureId, { x: 1, y: 1 });
+            yield spriteAtBlock(i, room.blockDepth, textureId, { anchor: { x: 1, y: 1 } });
         }
     }
+
 }
 
 
 function* renderDoors(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     // TODO: backs and fronts need to be rendered with content in-between    
     if (room.doors.right) {
-        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.x', undefined, doorTextureHandleX);
-        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.x', undefined, doorTextureHandleX);
+        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.x', { pivot: doorTexturePivotX });
+        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.x', { pivot: doorTexturePivotX });
     }
     if (room.doors.towards) {
-        yield spriteAtBlock(room.doors.towards.ordinal, 0, 'generic.door.front.y', undefined, doorTextureHandleY);
-        yield spriteAtBlock(room.doors.towards.ordinal + 1, 0, 'generic.door.back.y', undefined, doorTextureHandleY);
+        yield spriteAtBlock(room.doors.towards.ordinal, 0, 'generic.door.front.y', { pivot: doorTexturePivotY });
+        yield spriteAtBlock(room.doors.towards.ordinal + 1, 0, 'generic.door.back.y', { pivot: doorTexturePivotY });
     }
 }
 
-function* renderBackground(room: AnyRoom): Generator<Sprite, undefined, undefined> {
+function* renderBackground(room: AnyRoom): Generator<Container, undefined, undefined> {
     yield* renderFloorTiles(room);
-    yield* renderFloorEdges(room);
+    //yield* renderFloorEdges(room);
     yield* renderWalls(room);
     yield* renderDoors(room);
 }
@@ -163,20 +221,6 @@ export const renderWorld = async (app: Application, room: AnyRoom) => {
     // TODO: change depending on geometry of current room
     worldContainer.x = zxSpectrumResolution.width / 2;
     worldContainer.y = zxSpectrumResolution.height * 0.75;
-
-    // Create a graphics object to define our mask
-    const hasDoorTowards = !!room.doors.towards;
-    const hasDoorRight = !!room.doors.right;
-    const rightSide = xyzBlockPosition(0, room.blockDepth + (hasDoorRight ? 0.5 : 0)).x;
-    const leftSide = xyzBlockPosition(room.blockWidth, 0).x;
-
-    const mask = new Graphics()
-        // Add the rectangular area to show
-        .rect(leftSide, -worldContainer.y, rightSide - leftSide, zxSpectrumResolution.height)
-        .fill(0xff0000);
-
-    worldContainer.addChild(mask);
-    worldContainer.mask = mask;
 
     const roomContainer = await renderRoom(room);
     worldContainer.addChild(roomContainer);

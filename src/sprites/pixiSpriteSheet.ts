@@ -5,8 +5,8 @@ import { Planet, wallTypes, WallTextureId, SpriteSize } from "../modelTypes";
 export const blockSizePx = { w: 16, d: 16, h: 8 /* z is a guess and possibly wrong */ };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
-export const doorTextureHandleX = { x: 0, y: 52 };
-export const doorTextureHandleY = { x: 24, y: 52 };
+export const doorTexturePivotX = { x: 0, y: 52 };
+export const doorTexturePivotY = { x: 24, y: 52 };
 
 type BackgroundFrame<TPlanet extends Planet> = WallTextureId<TPlanet> | `${TPlanet}.floor`;
 
@@ -42,10 +42,13 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         ...backgroundFrames('market', 384, 210),
         ...backgroundFrames('safari', 488, 210),
         'generic.edge.right': {
-            frame: { x: 277, y: 146, w: 8, h: 32 }
+            frame: { x: 277, y: 146, w: 8, h: 9 }
         },
         'generic.edge.towards': {
-            frame: { x: 268, y: 146, w: 8, h: 32 }
+            frame: { x: 268, y: 146, w: 8, h: 9 }
+        },
+        'generic.wall.overdraw': {
+            frame: { x: 313, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
         },
         'generic.floor.deadly': {
             frame: { x: 381, y: 424, ...floorTileSize }

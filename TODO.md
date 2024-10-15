@@ -21,6 +21,15 @@ TODO
     [x] plus the extra space in the room for it        
 [x] render doors on all sides    
 
+[x] pixelated blanker sprites for edges of floor
+
+[ ] convert basic room xml to Room typescript type:
+    [ ] planet
+    [ ] dimensions
+    [ ] floor type
+    [ ] room colour
+    [ ] wall graphics
+
 
 
 Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1%20ratio%20can,to%20move%201.732%20pixels%20vertically.
