@@ -34,13 +34,13 @@ const spritesTexture = await Assets.load<Texture>(spritesheetUrl);
 
 export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
     frames: {
-        ...backgroundFrames('blacktooth', 316, 124),
+        ...backgroundFrames('blacktooth', 450, 334),
         ...backgroundFrames('bookworld', 356, 23),
         ...backgroundFrames('egyptus', 435, 23),
         ...backgroundFrames('penitentiary', 513, 23),
-        ...backgroundFrames('moonbase', 459, 124),
-        ...backgroundFrames('market', 384, 210),
-        ...backgroundFrames('safari', 488, 210),
+        ...backgroundFrames('moonbase', 384, 141),
+        ...backgroundFrames('market', 378, 244),
+        ...backgroundFrames('safari', 482, 244),
         'generic.edge.right': {
             frame: { x: 277, y: 146, w: 8, h: 9 }
         },
@@ -65,7 +65,19 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         },
         'generic.door.back.y': {
             frame: { x: 270, y: 5, w: 24, h: 56 }
-        }
+        },
+        'moonbase.door.front.x': {
+            frame: { x: 344, y: 161, w: 24, h: 56 },
+        },
+        'moonbase.door.back.x': {
+            frame: { x: 360, y: 153, w: 24, h: 56 }
+        },
+        'moonbase.door.front.y': {
+            frame: { x: 529, y: 161, w: 24, h: 56 },
+        },
+        'moonbase.door.back.y': {
+            frame: { x: 512, y: 153, w: 24, h: 56 }
+        },
     },
     meta: { scale: 1 }
 });

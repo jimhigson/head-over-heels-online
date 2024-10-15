@@ -136,6 +136,18 @@ function* renderFloorTiles(room: AnyRoom): Generator<Container, undefined, undef
     yield floorContainer;
 }
 
+const doorTexture = (room: AnyRoom, axis: 'x' | 'y') => {
+    const worldSpecificTexture = pixiSpriteSheet.textures[`${room.planet}.door.front.${axis}` as TextureId] !== undefined;
+
+    const frontTexture = (worldSpecificTexture ? `${room.planet}.door.front.${axis}` : `generic.door.front.${axis}`) as TextureId;
+    const backTexture = (worldSpecificTexture ? `${room.planet}.door.back.${axis}` : `generic.door.back.${axis}`) as TextureId;
+
+    return {
+        frontTexture,
+        backTexture
+    }
+}
+
 function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     // TODO: skip walls where there are doors:
 
@@ -144,13 +156,15 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     for (let i = room.blockDepth - 1; i >= 0; i--) {
 
         if (leftDoor?.ordinal === i - 1) {
+            const { backTexture, frontTexture } = doorTexture(room, 'x');
+
             // if there is a door, do not render the normal wall- render the door instead
             // TODO: only render the door back. The front needs to overdraw items in-game
             // but subsequent walls also need to over-render the door(!)
             // this means that maybe everything needs to be treated like a sortable object (?)
             yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
-            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.door.back.x', { pivot: doorTexturePivotX });
-            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, 'generic.door.front.x', { pivot: doorTexturePivotX });
+            yield spriteAtBlock(room.blockWidth + 0.5, i, backTexture, { pivot: doorTexturePivotX });
+            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, frontTexture, { pivot: doorTexturePivotX });
             i--;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.left[i], 'left') as TextureId;
@@ -162,9 +176,11 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     const awayDoor = room.doors.away;
     for (let i = room.blockWidth - 1; i >= 0; i--) {
         if (awayDoor?.ordinal === i - 1) {
+            const { backTexture, frontTexture } = doorTexture(room, 'y');
+
             yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
-            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.door.back.y', { pivot: doorTexturePivotY });
-            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, 'generic.door.front.y', { pivot: doorTexturePivotY });
+            yield spriteAtBlock(i, room.blockDepth + 0.5, backTexture, { pivot: doorTexturePivotY });
+            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, frontTexture, { pivot: doorTexturePivotY });
             i--;
             continue;
         } else {
@@ -179,12 +195,14 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
 function* renderDoors(room: AnyRoom): Generator<Sprite, undefined, undefined> {
     // TODO: backs and fronts need to be rendered with content in-between    
     if (room.doors.right) {
-        yield spriteAtBlock(0, room.doors.right.ordinal, 'generic.door.front.x', { pivot: doorTexturePivotX });
-        yield spriteAtBlock(0, room.doors.right.ordinal + 1, 'generic.door.back.x', { pivot: doorTexturePivotX });
+        const { backTexture, frontTexture } = doorTexture(room, 'x');
+        yield spriteAtBlock(0, room.doors.right.ordinal + 1, backTexture, { pivot: doorTexturePivotX });
+        yield spriteAtBlock(0, room.doors.right.ordinal, frontTexture, { pivot: doorTexturePivotX });
     }
     if (room.doors.towards) {
-        yield spriteAtBlock(room.doors.towards.ordinal, 0, 'generic.door.front.y', { pivot: doorTexturePivotY });
-        yield spriteAtBlock(room.doors.towards.ordinal + 1, 0, 'generic.door.back.y', { pivot: doorTexturePivotY });
+        const { backTexture, frontTexture } = doorTexture(room, 'y');
+        yield spriteAtBlock(room.doors.towards.ordinal + 1, 0, backTexture, { pivot: doorTexturePivotY });
+        yield spriteAtBlock(room.doors.towards.ordinal, 0, frontTexture, { pivot: doorTexturePivotY });
     }
 }
 
