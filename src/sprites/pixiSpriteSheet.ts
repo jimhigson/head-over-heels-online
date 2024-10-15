@@ -67,13 +67,13 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
             frame: { x: 270, y: 5, w: 24, h: 56 }
         },
         'moonbase.door.front.x': {
-            frame: { x: 344, y: 161, w: 24, h: 56 },
+            frame: { x: 344, y: 161, w: 23, h: 56 },
         },
         'moonbase.door.back.x': {
             frame: { x: 360, y: 153, w: 24, h: 56 }
         },
         'moonbase.door.front.y': {
-            frame: { x: 529, y: 161, w: 24, h: 56 },
+            frame: { x: 529, y: 161, w: 23, h: 56 },
         },
         'moonbase.door.back.y': {
             frame: { x: 512, y: 153, w: 24, h: 56 }
