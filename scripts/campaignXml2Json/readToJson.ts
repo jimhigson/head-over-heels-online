@@ -33,17 +33,18 @@ type CompassDirectionsNS = 'north' | 'south';
 type CompassDirectionsEW = 'east' | 'west';
 export type CompassDirections = `${CompassDirectionsNS}${CompassDirectionsEW}` | `${CompassDirectionsEW}${CompassDirectionsNS}` | CompassDirectionsEW | CompassDirectionsNS;
 
-export type Item = {
-    class: 'door',
-    where: CompassDirections;
+export type Xml2JsonItem = {
     x: string;
     y: string;
-    z: string;
+    z: string
+} & ({
+    kind: `${string}-door-${string}`;
+    class: 'door',
+    where: CompassDirections;
 } | {
-    class: 'freeitem'
-} | {
+    kind: 'teleport'
     class: 'griditem'
-};
+});
 
 export type XmlScenery = 'moon' | 'egyptus' | /* huh? */ 'byblos' | 'penitentiary' | 'safari';
 
@@ -53,17 +54,17 @@ export type Xml2JsonWall = {
     picture: string;
 };
 
-export type RoomJson = {
+export type Xml2JsonRoom = {
     xTiles: string;
     yTiles: string;
     scenery?: XmlScenery;
     color: string;
     floorKind: 'plain';
     walls: Array<Xml2JsonWall>;
-    items: Array<Item>
+    items: Array<Xml2JsonItem>
 }
 
-export const readRoomToJson = async (roomName: string): Promise<RoomJson> => {
+export const readRoomToJson = async (roomName: string): Promise<Xml2JsonRoom> => {
     let roomJson = await readXmlToJson(roomName) as any;
 
     roomJson = roomJson.room;
@@ -74,7 +75,7 @@ export const readRoomToJson = async (roomName: string): Promise<RoomJson> => {
     roomJson.walls.forEach((w: { _attributes?: object; }) => delete w._attributes);
     roomJson.items.forEach((i: { _attributes?: object; }) => delete i._attributes);
 
-    return roomJson as RoomJson;
+    return roomJson as Xml2JsonRoom;
 }
 
 export const roomNameFromXmlFilename = (xmlFileName: string) => {
@@ -87,7 +88,7 @@ export const roomNameFromXmlFilename = (xmlFileName: string) => {
     return match![1];
 }
 
-export type MapJsonRoom = Record<CompassDirections | 'above' | 'below', string>;
+export type MapJsonRoom = Partial<Record<CompassDirections | 'above' | 'below' | 'teleport', string>>;
 export type MapJson = Record<string, MapJsonRoom>;
 
 export const readMapToJson = async (): Promise<MapJson> => {

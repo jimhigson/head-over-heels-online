@@ -1,6 +1,6 @@
-import { CompassDirections, readMapToJson, readRoomToJson, roomNameFromXmlFilename, Xml2JsonWall, XmlScenery } from "./readToJson";
+import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery } from "./readToJson";
 import { readdir, open } from 'node:fs/promises';
-import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets } from '../../src/modelTypes';
+import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
 
 const map = await readMapToJson();
@@ -69,19 +69,40 @@ const convertPlanetName = (xmlSceneryName: XmlScenery | undefined): PlanetName =
     }
 }
 
-const convertWalls = (planet: PlanetName, direction: 'left' | 'away', xmlJsonWalls: Xml2JsonWall[]): AnyWall[] => {
+type RoomDimensions = {
+    depth: number,
+    width: number
+}
+const convertRoomDimensions = ({ xTiles, yTiles }: Xml2JsonRoom, doorMap: DoorMap): RoomDimensions => {
+    const depth = parseInt(yTiles) - (doorMap.towards ? 1 : 0) - (doorMap.away ? 1 : 0)
+    const width = parseInt(xTiles) - (doorMap.left ? 1 : 0) - (doorMap.right ? 1 : 0)
 
-    return xmlJsonWalls.filter(wall => wall.along === 'y').map(wall => convertWallName(planet, wall.picture));
+    return { depth, width };
 }
 
-const convertRoomJson = async (roomName: string) => {
-    const { items: jsonItems, walls: xmlJsonWalls, floorKind: jsonFloorKind, scenery: jsonScenery, xTiles, yTiles, color }
-        = await readRoomToJson(roomName);
+const convertWalls = (roomJson: Xml2JsonRoom, direction: 'left' | 'away', doorMap: DoorMap): AnyWall[] => {
+
+    const dims = convertRoomDimensions(roomJson, doorMap);
+    const wallLength = direction === 'away' ? dims.width : dims.depth;
+
+    const xmlJsonAxis = direction === 'left' ? 'y' : 'x';
+    const planet = convertPlanetName(roomJson.scenery);
+    const result: AnyWall[] = new Array(wallLength);
+    result.fill('door');
+
+    // compensate for the xml basing from 1 when there's a door in that direction:
+    const offset = doorMap[direction] === undefined ? 0 : 1;
+
+    roomJson.walls
+        .filter(wall => wall.along === xmlJsonAxis)
+        .forEach(wall => result[wall.position - offset] = convertWallName(planet, wall.picture));
+
+    return result;
+}
+
+const convertDoors = (roomName: string, { items: jsonItems }: Xml2JsonRoom): DoorMap => {
 
     const roomOnMap = map[roomName];
-    if (roomOnMap === undefined) {
-        throw new Error(`${roomName} not on the map`);
-    }
 
     const doorEntries = jsonItems
         .filter(i => i.class === 'door')
@@ -98,10 +119,49 @@ const convertRoomJson = async (roomName: string) => {
 
             const toRoomId = roomNameFromXmlFilename(roomOnMap[where]!);
 
-            const door: Door = { ordinal: parseInt(where === 'south' ? x : y), z: 0, toRoom: toRoomId };
+            const door: Door = { ordinal: parseInt(where === 'south' ? y : x), z: 0, toRoom: toRoomId };
             return [convertDirection(where), door] as [Direction, Door];
         });
-    const doors = Object.fromEntries(doorEntries) as DoorMap;
+    return Object.fromEntries(doorEntries) as DoorMap;
+
+}
+
+const convertItems = (roomName: string, { items: jsonItems }: Xml2JsonRoom, roomDimensions: RoomDimensions): Item[] => {
+
+    return jsonItems
+        .filter((xmlJsonItem) => xmlJsonItem.kind === 'teleport')
+        .map(({ x, y, z }): Item => {
+            const roomOnMap = map[roomName];
+            const destination = roomOnMap.teleport;
+
+            if (destination === undefined) {
+                throw new Error();
+            }
+
+            return ({
+                type: "teleporter",
+                toRoom: roomNameFromXmlFilename(destination),
+                // TODO: probably needs to compensate for doors
+                x: roomDimensions.width - parseInt(x) - 1,
+                y: roomDimensions.depth - parseInt(y) - 1,
+                z: parseInt(z)
+            });
+        });
+}
+
+const convertRoomJson = async (roomName: string) => {
+    const roomJson = await readRoomToJson(roomName);
+    const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomJson;
+
+    const roomOnMap = map[roomName];
+    if (roomOnMap === undefined) {
+        throw new Error(`${roomName} not on the map`);
+    }
+
+    const doors = convertDoors(roomName, roomJson);
+
+    // the xml adds extra tiles for doors - compensate for this by deleting them:
+    const roomDimensions = convertRoomDimensions(roomJson, doors);
 
     // the xml calls bookworld "byblos" 🤷‍♂️
     const planet = convertPlanetName(jsonScenery);
@@ -118,13 +178,13 @@ const convertRoomJson = async (roomName: string) => {
         planet,
         roomBelow: roomOnMap['below'] && roomNameFromXmlFilename(roomOnMap['below']),
         roomAbove: roomOnMap['above'] && roomNameFromXmlFilename(roomOnMap['above']),
-        depth: parseInt(yTiles),
-        width: parseInt(xTiles),
+        ...roomDimensions,
         doors,
         walls: {
-            away: convertWalls(planet, 'away', xmlJsonWalls),
-            left: convertWalls(planet, 'left', xmlJsonWalls),
+            away: convertWalls(roomJson, 'away', doors),
+            left: convertWalls(roomJson, 'left', doors),
         },
+        items: convertItems(roomName, roomJson, roomDimensions),
         zxSpectrumColor: color as ZxSpectrumColor,
     };
 
@@ -149,5 +209,6 @@ writeOut.write(`export const originalCampaign = {\n`);
 for (const [roomName, room] of Object.entries(rooms)) {
     await writeOut.write(`    "${roomName}": ${JSON.stringify(room)} satisfies Room<"${room.planet}">,\n`);
 }
-await writeOut.write(`} as const;`);
+await writeOut.write(`} as const;\n`);
+await writeOut.write(`export type RoomId = keyof typeof originalCampaign;\n`);
 await writeOut.close();

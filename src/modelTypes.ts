@@ -20,7 +20,10 @@ export const planets = {
 export type PlanetName = keyof (typeof planets);
 
 export type AllPlanets = typeof planets;
-export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number];
+export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number] |
+    /**
+     * no wall specified because there is a door there:
+     */'door';
 export type AnyWall = Wall<PlanetName>;
 
 export type Door = {
@@ -49,6 +52,16 @@ export type Room<P extends PlanetName> = {
     // for now, can only have one room per direction - this seems to work with the original game
     // levels but could be expanded to support multiple
     doors: DoorMap
+    items: Item[];
+}
+
+export type Item = Teleporter; // or others!
+
+type itemLocation = { x: number, y: number, z: number }
+
+export type Teleporter = itemLocation & {
+    type: 'teleporter',
+    toRoom: string
 }
 
 export type AnyRoom = Room<PlanetName>

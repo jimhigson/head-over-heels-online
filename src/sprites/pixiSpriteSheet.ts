@@ -52,7 +52,7 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
             frame: { x: 313, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
         },
         'generic.floor.deadly': {
-            frame: { x: 381, y: 424, ...floorTileSize }
+            frame: { x: 379, y: 444, ...floorTileSize }
         },
         // doors: x=left/right, y=towards/away
         'generic.door.front.x': {
@@ -79,6 +79,9 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         'moonbase.door.back.y': {
             frame: { x: 512, y: 153, w: 24, h: 56 }
         },
+        'items.teleporter': {
+            frame: { x: 4, y: 450, w: 32, h: 28 }
+        }
     },
     meta: { scale: 1 }
 });
