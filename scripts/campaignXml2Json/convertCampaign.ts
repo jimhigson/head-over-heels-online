@@ -1,10 +1,8 @@
-import { inspect } from "node:util";
-import { CompassDirections, readMapToJson, readRoomToJson, roomNameFromXmlFilename, XmlScenery } from "./readToJson";
-import { readdir, writeFile, open } from 'node:fs/promises';
-import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets, Wall } from '../../src/modelTypes';
+import { CompassDirections, readMapToJson, readRoomToJson, roomNameFromXmlFilename, Xml2JsonWall, XmlScenery } from "./readToJson";
+import { readdir, open } from 'node:fs/promises';
+import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
 
-const inspectOptions = { depth: 8, maxArrayLength: Number.MAX_SAFE_INTEGER, colors: true };
 const map = await readMapToJson();
 
 const allRoomNames = (await readdir('gamedata-map-xml')).filter(name => name.endsWith('.xml') && name !== 'map.xml').map(roomNameFromXmlFilename);
@@ -71,8 +69,13 @@ const convertPlanetName = (xmlSceneryName: XmlScenery | undefined): PlanetName =
     }
 }
 
+const convertWalls = (planet: PlanetName, direction: 'left' | 'away', xmlJsonWalls: Xml2JsonWall[]): AnyWall[] => {
+
+    return xmlJsonWalls.filter(wall => wall.along === 'y').map(wall => convertWallName(planet, wall.picture));
+}
+
 const convertRoomJson = async (roomName: string) => {
-    const { items: jsonItems, walls: jsonWalls, floorKind: jsonFloorKind, scenery: jsonScenery, xTiles, yTiles, color }
+    const { items: jsonItems, walls: xmlJsonWalls, floorKind: jsonFloorKind, scenery: jsonScenery, xTiles, yTiles, color }
         = await readRoomToJson(roomName);
 
     const roomOnMap = map[roomName];
@@ -95,15 +98,13 @@ const convertRoomJson = async (roomName: string) => {
 
             const toRoomId = roomNameFromXmlFilename(roomOnMap[where]!);
 
-            const door: Door = { ordinal: parseInt(where === 'south' ? x : y), z: 0, toRoomId };
+            const door: Door = { ordinal: parseInt(where === 'south' ? x : y), z: 0, toRoom: toRoomId };
             return [convertDirection(where), door] as [Direction, Door];
         });
     const doors = Object.fromEntries(doorEntries) as DoorMap;
 
     // the xml calls bookworld "byblos" 🤷‍♂️
     const planet = convertPlanetName(jsonScenery);
-    const wallsLeft = jsonWalls.filter(wall => wall.along === 'x').map(wall => convertWallName(planet, wall.picture));
-    const wallsAway = jsonWalls.filter(wall => wall.along === 'y').map(wall => convertWallName(planet, wall.picture));
 
     const floorMap: Record<string, Floor> = {
         'plain': planet,
@@ -115,12 +116,14 @@ const convertRoomJson = async (roomName: string) => {
         id: roomName,
         floor: floorMap[jsonFloorKind],
         planet,
+        roomBelow: roomOnMap['below'] && roomNameFromXmlFilename(roomOnMap['below']),
+        roomAbove: roomOnMap['above'] && roomNameFromXmlFilename(roomOnMap['above']),
         depth: parseInt(yTiles),
         width: parseInt(xTiles),
         doors,
         walls: {
-            away: wallsAway,
-            left: wallsLeft
+            away: convertWalls(planet, 'away', xmlJsonWalls),
+            left: convertWalls(planet, 'left', xmlJsonWalls),
         },
         zxSpectrumColor: color as ZxSpectrumColor,
     };
@@ -142,7 +145,7 @@ for (const roomName of allRoomNames) {
 
 const writeOut = await open('src/originalCampaign.ts', 'w');
 writeOut.write(`import type {Room} from "./modelTypes.ts"\n`);
-writeOut.write(`export const rooms = {\n`);
+writeOut.write(`export const originalCampaign = {\n`);
 for (const [roomName, room] of Object.entries(rooms)) {
     await writeOut.write(`    "${roomName}": ${JSON.stringify(room)} satisfies Room<"${room.planet}">,\n`);
 }

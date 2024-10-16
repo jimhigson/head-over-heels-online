@@ -3,7 +3,7 @@ import { Application } from 'pixi.js';
 import { renderWorld } from './renderWorld';
 import { resize } from './resize';
 import { tick } from './tick';
-import { simpleRoom } from './simpleRoom';
+import { originalCampaign } from '../originalCampaign';
 
 /** 
  * React wrapper to give a space to pixi.js and start the rest of the game engine
@@ -32,7 +32,7 @@ export const Game = () => {
       resize(app);
       app.ticker.add(() => tick(app));
 
-      renderWorld(app, simpleRoom('jail', 7, 9));
+      renderWorld(app, originalCampaign.blacktooth23heels);
     }
 
     go();

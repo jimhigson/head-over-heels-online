@@ -26,7 +26,7 @@ export type AnyWall = Wall<PlanetName>;
 export type Door = {
     ordinal: number;
     z: number;
-    toRoomId: string;
+    toRoom: string;
 };
 
 export type DoorMap = Partial<Record<Direction, Door>>;
@@ -39,8 +39,8 @@ export type Room<P extends PlanetName> = {
     depth: number,
     planet: P,
     floor: Floor,
-    aboveRoomId?: string,
-    belowRoomId?: string,
+    roomAbove?: string,
+    roomBelow?: string,
     walls: {
         left: Wall<P>[],
         away: Wall<P>[],

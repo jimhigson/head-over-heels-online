@@ -47,13 +47,19 @@ export type Item = {
 
 export type XmlScenery = 'moon' | 'egyptus' | /* huh? */ 'byblos' | 'penitentiary' | 'safari';
 
+export type Xml2JsonWall = {
+    position: number;
+    along: 'x' | 'y';
+    picture: string;
+};
+
 export type RoomJson = {
     xTiles: string;
     yTiles: string;
     scenery?: XmlScenery;
     color: string;
     floorKind: 'plain';
-    walls: Array<{ position: number, along: 'x' | 'y', picture: string }>;
+    walls: Array<Xml2JsonWall>;
     items: Array<Item>
 }
 
@@ -81,14 +87,7 @@ export const roomNameFromXmlFilename = (xmlFileName: string) => {
     return match![1];
 }
 
-export type MapJsonRoom = {
-    above?: string;
-    below?: string;
-    north?: string;
-    east?: string;
-    south?: string;
-    west?: string;
-}
+export type MapJsonRoom = Record<CompassDirections | 'above' | 'below', string>;
 export type MapJson = Record<string, MapJsonRoom>;
 
 export const readMapToJson = async (): Promise<MapJson> => {
