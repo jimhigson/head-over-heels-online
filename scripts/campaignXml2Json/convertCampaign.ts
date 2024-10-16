@@ -1,6 +1,6 @@
 import { inspect } from "node:util";
 import { CompassDirections, readMapToJson, readRoomToJson, roomNameFromXmlFilename, XmlScenery } from "./readToJson";
-import { readdir, writeFile } from 'node:fs/promises';
+import { readdir, writeFile, open } from 'node:fs/promises';
 import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets, Wall } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
 
@@ -140,4 +140,11 @@ for (const roomName of allRoomNames) {
     }
 }
 
-writeFile('src/originalCampaign.json', JSON.stringify(rooms, undefined, 4));
+const writeOut = await open('src/originalCampaign.ts', 'w');
+writeOut.write(`import type {Room} from "./modelTypes.ts"\n`);
+writeOut.write(`export const rooms = {\n`);
+for (const [roomName, room] of Object.entries(rooms)) {
+    await writeOut.write(`    "${roomName}": ${JSON.stringify(room)} satisfies Room<"${room.planet}">,\n`);
+}
+await writeOut.write(`} as const;`);
+await writeOut.close();
