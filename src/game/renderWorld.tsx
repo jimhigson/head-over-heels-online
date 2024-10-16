@@ -44,7 +44,7 @@ const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, { a
 
 function* renderFloor(room: AnyRoom): Generator<Container, undefined, undefined> {
 
-    if (room.floorType === 'none') {
+    if (room.floor === 'none') {
         return;
     }
 
@@ -52,16 +52,16 @@ function* renderFloor(room: AnyRoom): Generator<Container, undefined, undefined>
     const hasDoorRight = !!room.doors.right;
 
     const blockXMin = room.doors.right ? -0.5 : 0;
-    const blockXMax = room.blockWidth + (room.doors.left ? 0.5 : 0);
+    const blockXMax = room.width + (room.doors.left ? 0.5 : 0);
     const blockYMin = room.doors.towards ? -0.5 : 0;
-    const blockYMax = room.blockDepth + (room.doors.towards ? 0.5 : 0);
+    const blockYMax = room.depth + (room.doors.towards ? 0.5 : 0);
 
     const rightSide = xyzBlockPosition(blockXMin, blockYMax);
     const leftSide = xyzBlockPosition(blockXMax, blockYMin);
     const frontSide = xyzBlockPosition(blockXMin, blockYMin); // aka the origin
     const backSide = xyzBlockPosition(blockXMax, blockYMax); // aka the origin
 
-    const { floorType } = room;
+    const { floor: floorType } = room;
     const floorTileTexture: TextureId = floorType === 'deadly' ? 'generic.floor.deadly' : `${floorType}.floor`;
 
     const floorContainer = new Container();
@@ -70,8 +70,8 @@ function* renderFloor(room: AnyRoom): Generator<Container, undefined, undefined>
     // each sprite covers enough graphics for 2 blocks. we only need to
     // render a sprite for the 'white' squares on the chessboard (render or
     // not according to a checkerboard pattern)
-    for (let ix = - 1; ix <= room.blockWidth; ix++) {
-        for (let iy = ix % 2 - 1; iy <= room.blockDepth; iy += 2) {
+    for (let ix = - 1; ix <= room.width; ix++) {
+        for (let iy = ix % 2 - 1; iy <= room.depth; iy += 2) {
             tilesContainer.addChild(spriteAtBlock(ix, iy, floorTileTexture, { anchor: { x: 0.5, y: 1 } }));
         }
     }
@@ -101,15 +101,15 @@ function* renderFloor(room: AnyRoom): Generator<Container, undefined, undefined>
     // render the floor edges
     const edgeContainer = new Container();
 
-    for (let ix = blockXMin; ix <= room.blockWidth; ix += 0.5) {
+    for (let ix = blockXMin; ix <= room.width; ix += 0.5) {
         edgeContainer.addChild(spriteAtBlock(ix, hasDoorTowards ? -0.5 : 0, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
     }
-    for (let iy = blockYMin; iy <= room.blockDepth; iy += 0.5) {
+    for (let iy = blockYMin; iy <= room.depth; iy += 0.5) {
         edgeContainer.addChild(spriteAtBlock(hasDoorRight ? -0.5 : 0, iy, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
     }
 
-    const edgeRightPoint = xyzBlockPosition(0, room.blockDepth);
-    const edgeLeftPoint = xyzBlockPosition(room.blockWidth, 0);
+    const edgeRightPoint = xyzBlockPosition(0, room.depth);
+    const edgeLeftPoint = xyzBlockPosition(room.width, 0);
 
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
@@ -151,7 +151,7 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
 
     // sprites for wall on x-axis (left wall):
     const leftDoor = room.doors.left;
-    for (let i = room.blockDepth - 1; i >= 0; i--) {
+    for (let i = room.depth - 1; i >= 0; i--) {
 
         if (leftDoor?.ordinal === i - 1) {
             const { backTexture, frontTexture } = doorTexture(room, 'x');
@@ -160,30 +160,30 @@ function* renderWalls(room: AnyRoom): Generator<Sprite, undefined, undefined> {
             // TODO: only render the door back. The front needs to overdraw items in-game
             // but subsequent walls also need to over-render the door(!)
             // this means that maybe everything needs to be treated like a sortable object (?)
-            yield spriteAtBlock(room.blockWidth + 0.5, i, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
-            yield spriteAtBlock(room.blockWidth + 0.5, i, backTexture, { pivot: doorTexturePivotX });
-            yield spriteAtBlock(room.blockWidth + 0.5, i - 1, frontTexture, { pivot: doorTexturePivotX });
+            yield spriteAtBlock(room.width + 0.5, i, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
+            yield spriteAtBlock(room.width + 0.5, i, backTexture, { pivot: doorTexturePivotX });
+            yield spriteAtBlock(room.width + 0.5, i - 1, frontTexture, { pivot: doorTexturePivotX });
             i--;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.left[i], 'left') as TextureId;
-            yield spriteAtBlock(room.blockWidth, i, textureId, { anchor: { x: 0, y: 1 } });
+            yield spriteAtBlock(room.width, i, textureId, { anchor: { x: 0, y: 1 } });
         }
     }
 
     // sprites for wall on y-axis (right wall):
     const awayDoor = room.doors.away;
-    for (let i = room.blockWidth - 1; i >= 0; i--) {
+    for (let i = room.width - 1; i >= 0; i--) {
         if (awayDoor?.ordinal === i - 1) {
             const { backTexture, frontTexture } = doorTexture(room, 'y');
 
-            yield spriteAtBlock(i, room.blockDepth + 0.5, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
-            yield spriteAtBlock(i, room.blockDepth + 0.5, backTexture, { pivot: doorTexturePivotY });
-            yield spriteAtBlock(i - 1, room.blockDepth + 0.5, frontTexture, { pivot: doorTexturePivotY });
+            yield spriteAtBlock(i, room.depth + 0.5, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
+            yield spriteAtBlock(i, room.depth + 0.5, backTexture, { pivot: doorTexturePivotY });
+            yield spriteAtBlock(i - 1, room.depth + 0.5, frontTexture, { pivot: doorTexturePivotY });
             i--;
             continue;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.away[i], 'away') as TextureId;
-            yield spriteAtBlock(i, room.blockDepth, textureId, { anchor: { x: 1, y: 1 } });
+            yield spriteAtBlock(i, room.depth, textureId, { anchor: { x: 1, y: 1 } });
         }
     }
 

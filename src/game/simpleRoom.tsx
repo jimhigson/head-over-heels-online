@@ -1,6 +1,6 @@
-import { PlanetName, Room, WallType, planets } from "../modelTypes";
+import { PlanetName, Room, Wall, planets } from "../modelTypes";
 
-function* sequentialRowTypes<P extends PlanetName>(planet: P): Generator<WallType<P>> {
+function* sequentialRowTypes<P extends PlanetName>(planet: P): Generator<Wall<P>> {
     const planetWallTypes = planets[planet].walls;
     console.log(planetWallTypes);
 
@@ -13,10 +13,10 @@ export const simpleRoom = <P extends PlanetName>(planet: P, width: number, depth
 
     return ({
         id: 'simple',
-        blockWidth: width,
-        blockDepth: depth,
+        width: width,
+        depth: depth,
         // jail doesn't have its own floor tiles (at least not yet)
-        floorType: planet,
+        floor: planet,
         planet,
         zxSpectrumColor: 'cyan-basic',
         walls: {
