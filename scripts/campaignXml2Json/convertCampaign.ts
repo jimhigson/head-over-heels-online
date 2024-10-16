@@ -1,4 +1,4 @@
-import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery } from "./readToJson";
+import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery, Xml2JsonItem } from "./readToJson";
 import { readdir, open } from 'node:fs/promises';
 import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
@@ -144,6 +144,26 @@ const convertY = (xmlY: number | string, roomJson: Xml2JsonRoom, doorMap: LooseD
 
     return result;
 }
+const convertZ = (xmlZ: number | string): number => {
+    return typeof xmlZ === 'string' ? parseInt(xmlZ) : xmlZ;
+}
+const convertXYZ = ({ x, y, z }: { x: number | string, y: number | string, z: number | string }, roomJson: Xml2JsonRoom, doorMap: LooseDoorMap) => {
+    return {
+        x: convertX(x, roomJson, doorMap),
+        y: convertY(y, roomJson, doorMap),
+        z: convertZ(z)
+    }
+}
+
+/** sometimes items are given with z=-1; in which case, place them on top of the highest other item */
+const autoZ = ({ x, y }: { x: number, y: number }, xml2JsonRoom: Xml2JsonRoom) => {
+    return xml2JsonRoom.items.reduce<number>((ac, i) => {
+        if (i.class === 'griditem' && parseInt(i.x) === x && parseInt(i.y) === y) {
+            return Math.max(parseInt(i.z) + 1, ac);
+        }
+        return ac;
+    }, 0);
+}
 
 const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => {
 
@@ -180,9 +200,7 @@ const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => 
                 ? convertY(parseInt(y), xml2JsonRoom, looseDoorMap) - 1
                 : convertX(parseInt(x), xml2JsonRoom, looseDoorMap) - 1;
 
-            // TODO: need to convert ordinal to compensate for doors - AFTER we discovered all the doors!
-
-            const door: Door = { ordinal, z: 0, toRoom: toRoomId };
+            const door: Door = { ordinal, z: autoZ({ x: parseInt(x), y: parseInt(y) }, xml2JsonRoom), toRoom: toRoomId };
             return [convertDirection(where), door] as [Direction, Door];
         });
     return Object.fromEntries(doorEntries) as DoorMap;
@@ -190,25 +208,36 @@ const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => 
 
 const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorMap: LooseDoorMap): Item[] => {
 
-    return xml2JsonRoom.items
-        .filter((xmlJsonItem) => xmlJsonItem.kind === 'teleport')
-        .map(({ x, y, z }): Item => {
-            const roomOnMap = map[roomName];
-            const destination = roomOnMap.teleport;
+    return xml2JsonRoom.items.map((item): Item | undefined => {
+        switch (true) {
+            case item.kind === 'teleport': {
 
-            if (destination === undefined) {
-                throw new Error();
+                const roomOnMap = map[roomName];
+                const destination = roomOnMap.teleport;
+
+                if (destination === undefined) {
+                    throw new Error('teleporter with no destination');
+                }
+
+                return {
+                    type: "teleporter",
+                    toRoom: roomNameFromXmlFilename(destination),
+                    ...convertXYZ(item, xml2JsonRoom, doorMap)
+                };
             }
 
-            return ({
-                type: "teleporter",
-                toRoom: roomNameFromXmlFilename(destination),
-                // TODO: probably needs to compensate for doors
-                x: convertX(x, xml2JsonRoom, doorMap),
-                y: convertY(y, xml2JsonRoom, doorMap),
-                z: parseInt(z)
-            });
-        });
+            case item.kind === 'bars-ns' || item.kind === 'bars-ew': {
+                return {
+                    type: 'barrier',
+                    alongAxis: item.kind === 'bars-ns' ? 'y' : 'x',
+                    ...convertXYZ(item, xml2JsonRoom, doorMap)
+                };
+            }
+
+            default:
+                return undefined;
+        }
+    }).filter((x): x is Item => x !== undefined);
 }
 
 const convertRoomJson = async (roomName: string) => {

@@ -53,14 +53,19 @@ export type Room<P extends PlanetName> = {
     items: Item[];
 }
 
-export type Item = Teleporter; // or others!
-
 type itemLocation = { x: number, y: number, z: number }
 
 export type Teleporter = itemLocation & {
     type: 'teleporter',
     toRoom: string
 }
+
+export type Barrier = itemLocation & {
+    type: 'barrier',
+    alongAxis: 'x' | 'y'
+}
+
+export type Item = Teleporter | Barrier; // or others!
 
 export type AnyRoom = Room<PlanetName>
 

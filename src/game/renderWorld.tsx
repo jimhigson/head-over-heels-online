@@ -27,20 +27,20 @@ type SpriteAtBlockOptions = {
     pivot?: PointData;
     flipX?: true;
 };
-const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, { anchor, flipX, pivot }: SpriteAtBlockOptions): Sprite => {
+const spriteAtBlock = ({ x, y, z = 0 }: { x: number, y: number, z?: number }, textureId: TextureId, { anchor, flipX, pivot }: SpriteAtBlockOptions): Sprite => {
     const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
     if (anchor !== undefined)
         sprite.anchor = anchor;
     if (pivot !== undefined)
         sprite.pivot = pivot;
 
-    const pos = xyzPosition(xBlock * blockSizePx.w, yBlock * blockSizePx.d, 0);
+    const pos = xyzPosition(x * blockSizePx.w, y * blockSizePx.d, z * blockSizePx.h);
 
     sprite.x = pos.x;
     sprite.y = pos.y;
 
     sprite.eventMode = 'static';
-    sprite.on('click', () => { console.log(`tile (xB=${xBlock}) (yB=${yBlock}) xpx=${pos.x} ypx=${pos.y} tex=${textureId}`) });
+    sprite.on('click', () => { console.log(`tile (xB=${x}) (yB=${y}) xpx=${pos.x} ypx=${pos.y} tex=${textureId}`) });
 
     if (flipX === true) {
         sprite.scale.x = -1;
@@ -79,7 +79,7 @@ function* renderFloor(room: AnyRoom, options: RenderWorldOptions): Generator<Con
         // not according to a checkerboard pattern)
         for (let ix = - 1; ix <= room.width; ix++) {
             for (let iy = ix % 2 - 1; iy <= room.depth; iy += 2) {
-                tilesContainer.addChild(spriteAtBlock(ix, iy, floorTileTexture, { anchor: { x: 0.5, y: 1 } }));
+                tilesContainer.addChild(spriteAtBlock({ x: ix, y: iy }, floorTileTexture, { anchor: { x: 0.5, y: 1 } }));
             }
         }
 
@@ -110,10 +110,10 @@ function* renderFloor(room: AnyRoom, options: RenderWorldOptions): Generator<Con
     const edgeContainer = new Container();
 
     for (let ix = blockXMin; ix <= room.width; ix += 0.5) {
-        edgeContainer.addChild(spriteAtBlock(ix, hasDoorTowards ? -0.5 : 0, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
+        edgeContainer.addChild(spriteAtBlock({ x: ix, y: hasDoorTowards ? -0.5 : 0 }, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
     }
     for (let iy = blockYMin; iy <= room.depth; iy += 0.5) {
-        edgeContainer.addChild(spriteAtBlock(hasDoorRight ? -0.5 : 0, iy, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
+        edgeContainer.addChild(spriteAtBlock({ x: hasDoorRight ? -0.5 : 0, y: iy }, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
     }
     if (room.roomBelow) {
         makeClickPortal(room.roomBelow as RoomId, options, ...edgeContainer.children)
@@ -172,16 +172,18 @@ function* renderWalls(room: AnyRoom, options: RenderWorldOptions): Generator<Spr
             // TODO: only render the door back. The front needs to overdraw items in-game
             // but subsequent walls also need to over-render the door(!)
             // this means that maybe everything needs to be treated like a sortable object (?)
-            yield spriteAtBlock(room.width + 0.5, i, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
-            const backSprite = spriteAtBlock(room.width + 0.5, i, backTexture, { pivot: doorTexturePivotX });
-            const frontSprite = spriteAtBlock(room.width + 0.5, i - 1, frontTexture, { pivot: doorTexturePivotX });
+            if (leftDoor.z === 0)
+                yield spriteAtBlock({ x: room.width + 0.5, y: i }, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 } });
+
+            const backSprite = spriteAtBlock({ x: room.width + 0.5, y: i, z: leftDoor.z }, backTexture, { pivot: doorTexturePivotX });
+            const frontSprite = spriteAtBlock({ x: room.width + 0.5, y: i - 1, z: leftDoor.z }, frontTexture, { pivot: doorTexturePivotX });
             makeClickPortal(leftDoor.toRoom as RoomId, options, backSprite, frontSprite);
             yield backSprite;
             yield frontSprite;
             i--;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.left[i], 'left') as TextureId;
-            yield spriteAtBlock(room.width, i, textureId, { anchor: { x: 0, y: 1 } });
+            yield spriteAtBlock({ x: room.width, y: i }, textureId, { anchor: { x: 0, y: 1 } });
         }
     }
 
@@ -191,9 +193,11 @@ function* renderWalls(room: AnyRoom, options: RenderWorldOptions): Generator<Spr
         if (awayDoor?.ordinal === i - 1) {
             const { backTexture, frontTexture } = doorTexture(room, 'y');
 
-            yield spriteAtBlock(i, room.depth + 0.5, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
-            const backSprite = spriteAtBlock(i, room.depth + 0.5, backTexture, { pivot: doorTexturePivotY });
-            const frontSprite = spriteAtBlock(i - 1, room.depth + 0.5, frontTexture, { pivot: doorTexturePivotY });
+            if (awayDoor.z === 0)
+                yield spriteAtBlock({ x: i, y: room.depth + 0.5 }, 'generic.wall.overdraw', { anchor: { x: 0, y: 1 }, flipX: true });
+
+            const backSprite = spriteAtBlock({ x: i, y: room.depth + 0.5, z: awayDoor.z }, backTexture, { pivot: doorTexturePivotY });
+            const frontSprite = spriteAtBlock({ x: i - 1, y: room.depth + 0.5, z: awayDoor.z }, frontTexture, { pivot: doorTexturePivotY });
             makeClickPortal(awayDoor.toRoom as RoomId, options, backSprite, frontSprite);
             yield backSprite;
             yield frontSprite;
@@ -201,7 +205,7 @@ function* renderWalls(room: AnyRoom, options: RenderWorldOptions): Generator<Spr
             continue;
         } else {
             const textureId = wallTextureId(room.planet, room.walls.away[i], 'away') as TextureId;
-            yield spriteAtBlock(i, room.depth, textureId, { anchor: { x: 1, y: 1 } });
+            yield spriteAtBlock({ x: i, y: room.depth }, textureId, { anchor: { x: 1, y: 1 } });
         }
     }
 
@@ -215,18 +219,18 @@ function* renderFrontDoors(room: AnyRoom, options: RenderWorldOptions): Generato
     // TODO: backs and fronts need to be rendered with content in-between    
     if (room.doors.right) {
         const { backTexture, frontTexture } = doorTexture(room, 'x');
-        const { toRoom, ordinal } = room.doors.right;
-        const backSprite = spriteAtBlock(0, ordinal + 1, backTexture, { pivot: doorTexturePivotX });
-        const frontSprite = spriteAtBlock(0, ordinal, frontTexture, { pivot: doorTexturePivotX });
+        const { toRoom, ordinal, z } = room.doors.right;
+        const backSprite = spriteAtBlock({ x: 0, y: ordinal + 1, z }, backTexture, { pivot: doorTexturePivotX });
+        const frontSprite = spriteAtBlock({ x: 0, y: ordinal, z }, frontTexture, { pivot: doorTexturePivotX });
         makeClickPortal(toRoom as RoomId, options, backSprite, frontSprite);
         yield backSprite;
         yield frontSprite;
     }
     if (room.doors.towards) {
         const { backTexture, frontTexture } = doorTexture(room, 'y');
-        const { toRoom, ordinal } = room.doors.towards;
-        const backSprite = spriteAtBlock(ordinal + 1, 0, backTexture, { pivot: doorTexturePivotY });
-        const frontSprite = spriteAtBlock(ordinal, 0, frontTexture, { pivot: doorTexturePivotY });
+        const { toRoom, ordinal, z } = room.doors.towards;
+        const backSprite = spriteAtBlock({ x: ordinal + 1, y: 0, z }, backTexture, { pivot: doorTexturePivotY });
+        const frontSprite = spriteAtBlock({ x: ordinal, y: 0, z }, frontTexture, { pivot: doorTexturePivotY });
         makeClickPortal(toRoom as RoomId, options, backSprite, frontSprite);
         yield backSprite;
         yield frontSprite;
@@ -235,9 +239,17 @@ function* renderFrontDoors(room: AnyRoom, options: RenderWorldOptions): Generato
 
 function* renderItems(room: AnyRoom, options: RenderWorldOptions): Generator<Container, undefined, undefined> {
     for (const item of room.items) {
-        const sprite = spriteAtBlock(item.x, item.y, 'items.teleporter', { anchor: { x: 0.5, y: 1 } });
-        makeClickPortal(item.toRoom as RoomId, options, sprite)
-        yield sprite;
+        switch (item.type) {
+            case 'teleporter': {
+                const sprite = spriteAtBlock(item, 'items.teleporter', { anchor: { x: 0.5, y: 1 } });
+                makeClickPortal(item.toRoom as RoomId, options, sprite)
+                yield sprite;
+                continue;
+            }
+            case 'barrier': {
+                yield spriteAtBlock(item, 'items.barrier', { anchor: { x: 0.5, y: 1 } });
+            }
+        }
     }
 }
 

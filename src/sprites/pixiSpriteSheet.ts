@@ -2,7 +2,7 @@ import { Assets, Spritesheet, SpritesheetFrameData, type Texture } from "pixi.js
 import spritesheetUrl from '../../gfx/sprites.png'
 import { PlanetName, WallTextureId, SpriteSize, planets } from "../modelTypes";
 
-export const blockSizePx = { w: 16, d: 16, h: 8 /* z is a guess and possibly wrong */ };
+export const blockSizePx = { w: 16, d: 16, h: 12 };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
 export const doorTexturePivotX = { x: 0, y: 52 };
@@ -81,6 +81,9 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
         },
         'items.teleporter': {
             frame: { x: 4, y: 450, w: 32, h: 28 }
+        },
+        'items.barrier': {
+            frame: { x: 313, y: 414, w: 24, h: 24 }
         }
     },
     meta: { scale: 1 }

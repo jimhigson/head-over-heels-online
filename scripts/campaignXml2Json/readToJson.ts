@@ -44,6 +44,9 @@ export type Xml2JsonItem = {
 } | {
     kind: 'teleport'
     class: 'griditem'
+} | {
+    kind: 'bars-ns' | 'bars-ew'
+    class: 'freeitem'
 });
 
 export type XmlScenery = 'moon' | 'egyptus' | /* huh? */ 'byblos' | 'penitentiary' | 'safari';
