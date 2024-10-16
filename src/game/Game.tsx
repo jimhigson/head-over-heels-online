@@ -32,7 +32,7 @@ export const Game = () => {
       resize(app);
       app.ticker.add(() => tick(app));
 
-      renderWorld(app, simpleRoom('moonbase', 5, 9));
+      renderWorld(app, simpleRoom('jail', 7, 9));
     }
 
     go();

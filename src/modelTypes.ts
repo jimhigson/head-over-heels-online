@@ -3,25 +3,26 @@ import { SpritesheetFrameData } from "pixi.js";
 
 export const directions = ['away', 'towards', 'left', 'right'] as const;
 export type Direction = (typeof directions)[number];
-export const planets = ['blacktooth', 'moonbase', 'market', 'bookworld', 'penitentiary', 'safari', 'egyptus'] as const;
-export type Planet = (typeof planets)[number]
 
-type FloorType = 'normal' | 'deadly' | 'none';
+type FloorType = 'deadly' | 'none' | `${PlanetName}`;
 
-export const wallTypes = {
-    blacktooth: ['plain', 'shield', 'armour', 'window'],
-    bookworld: ['person', 'book'],
-    egyptus: ['sarcophagus', 'hieroglyphics'],
-    market: ['passage', 'fruits', 'more-fruits'],
-    moonbase: ['window1', 'window2', 'window3', 'coil'],
-    penitentiary: ['loop', 'skeleton'],
-    safari: ['window', 'shield', 'wall']
-} as const satisfies { [P in Planet]: string[] };
+export const planets = {
+    jail: { walls: ['bars'] },
+    blacktooth: { walls: ['plain', 'shield', 'armour'] },
+    bookworld: { walls: ['person', 'book'] },
+    egyptus: { walls: ['sarcophagus', 'hieroglyphics'] },
+    market: { walls: ['passage', 'fruits', 'more-fruits'] },
+    moonbase: { walls: ['window1', 'window2', 'window3', 'coil'] },
+    penitentiary: { walls: ['loop', 'skeleton'] },
+    safari: { walls: ['window', 'shield', 'wall'] }
+} as const satisfies Record<string, { walls: string[]; }>;
 
-export type AllWallTypes = typeof wallTypes;
-export type WallType<P extends Planet> = AllWallTypes[P][number];
+export type PlanetName = keyof (typeof planets);
 
-export type Room<P extends Planet> = {
+export type AllPlanets = typeof planets;
+export type WallType<P extends PlanetName> = AllPlanets[P]['walls'][number];
+
+export type Room<P extends PlanetName> = {
     id: string,
     /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
     blockWidth: number,
@@ -41,14 +42,14 @@ export type Room<P extends Planet> = {
     doors: Partial<Record<Direction, { ordinal: number, toRoomId: string }>>
 }
 
-export type AnyRoom = Room<Planet>
+export type AnyRoom = Room<PlanetName>
 
 
 export type SpriteFrame = SpritesheetFrameData['frame'];
 export type SpritePosition = Pick<SpriteFrame, 'x' | 'y'>;
 export type SpriteSize = Pick<SpriteFrame, 'w' | 'h'>;
 
-export type WallTextureId<P extends Planet, W extends WallType<P> = WallType<P>> = `${P}.wall.${W}.${'left' | 'away'}`;
+export type WallTextureId<P extends PlanetName, W extends WallType<P> = WallType<P>> = `${P}.wall.${W}.${'left' | 'away'}`;
 
-export const wallTextureId = <P extends Planet, W extends WallType<P>>(planet: P, wallName: WallType<P>, side: 'left' | 'away') =>
+export const wallTextureId = <P extends PlanetName, W extends WallType<P>>(planet: P, wallName: WallType<P>, side: 'left' | 'away') =>
     `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;

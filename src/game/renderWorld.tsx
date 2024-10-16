@@ -1,7 +1,7 @@
-import { Application, Container, Graphics, PointData, Sprite, TilingSprite, ViewContainer } from 'pixi.js';
-import { AnyRoom, Planet, Room, wallTextureId } from '../modelTypes';
+import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
+import { AnyRoom, PlanetName, Room, wallTextureId } from '../modelTypes';
 import { zxSpectrumResolution } from '../originalGame';
-import { blockSizePx, doorTexturePivotX, doorTexturePivotY, floorTileSize, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
+import { blockSizePx, doorTexturePivotX, doorTexturePivotY, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 const xyzPosition = (x: number, y: number, z: number = 0) => {
@@ -42,7 +42,7 @@ const spriteAtBlock = (xBlock: number, yBlock: number, textureId: TextureId, { a
     return sprite;
 }
 
-function* renderFloorTiles(room: AnyRoom): Generator<Container, undefined, undefined> {
+function* renderFloor(room: AnyRoom): Generator<Container, undefined, undefined> {
 
     if (room.floorType === 'none') {
         return;
@@ -61,19 +61,17 @@ function* renderFloorTiles(room: AnyRoom): Generator<Container, undefined, undef
     const frontSide = xyzBlockPosition(blockXMin, blockYMin); // aka the origin
     const backSide = xyzBlockPosition(blockXMax, blockYMax); // aka the origin
 
-    const floorTileTexture: TextureId = room.floorType === 'deadly' ? 'generic.floor.deadly' : `${room.planet}.floor`;
+    const { floorType } = room;
+    const floorTileTexture: TextureId = floorType === 'deadly' ? 'generic.floor.deadly' : `${floorType}.floor`;
 
     const floorContainer = new Container();
     const tilesContainer = new Container();
 
+    // each sprite covers enough graphics for 2 blocks. we only need to
+    // render a sprite for the 'white' squares on the chessboard (render or
+    // not according to a checkerboard pattern)
     for (let ix = - 1; ix <= room.blockWidth; ix++) {
-        for (let iy = -1; iy <= room.blockDepth; iy++) {
-            // each sprite covers enough graphics for 2 blocks. we only need to
-            // render a sprite for the 'white' squares on the chessboard (render or
-            // not according to a checkerboard pattern)
-            if ((ix % 2 === 0) !== (iy % 2 === 0))
-                continue;
-
+        for (let iy = ix % 2 - 1; iy <= room.blockDepth; iy += 2) {
             tilesContainer.addChild(spriteAtBlock(ix, iy, floorTileTexture, { anchor: { x: 0.5, y: 1 } }));
         }
     }
@@ -207,13 +205,13 @@ function* renderDoors(room: AnyRoom): Generator<Sprite, undefined, undefined> {
 }
 
 function* renderBackground(room: AnyRoom): Generator<Container, undefined, undefined> {
-    yield* renderFloorTiles(room);
+    yield* renderFloor(room);
     //yield* renderFloorEdges(room);
     yield* renderWalls(room);
     yield* renderDoors(room);
 }
 
-const renderRoom = async <P extends Planet>(room: Room<P>) => {
+const renderRoom = async <P extends PlanetName>(room: Room<P>) => {
 
     // NB: floor could be a tiling sprite and a graphics map:
     //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
