@@ -2,13 +2,13 @@ import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNam
 import { readdir, open } from 'node:fs/promises';
 import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
+import { wallNumbers } from "./wallNumbers";
 
 const map = await readMapToJson();
 
 const allRoomNames = (await readdir('gamedata-map-xml')).filter(name => name.endsWith('.xml') && name !== 'map.xml').map(roomNameFromXmlFilename);
 
 const convertWallName = (planetName: PlanetName, pictureName: string): AnyWall => {
-
     // the remake I got the xml from has special tree walls for the final room, but the original
     // game uses the bars:
     if (pictureName.startsWith('trees')) {
@@ -25,7 +25,7 @@ const convertWallName = (planetName: PlanetName, pictureName: string): AnyWall =
 
     const wallTypeIndex = regexMatch.groups['n'] ? parseInt(regexMatch.groups['n']) : 1;
 
-    return planets[planetName].walls[wallTypeIndex - 1];
+    return wallNumbers[planetName][wallTypeIndex - 1];
 }
 
 const convertDirection = (compassDirection: CompassDirections): Direction => {
@@ -73,14 +73,15 @@ type RoomDimensions = {
     depth: number,
     width: number
 }
-const convertRoomDimensions = ({ xTiles, yTiles }: Xml2JsonRoom, doorMap: DoorMap): RoomDimensions => {
+const convertRoomDimensions = ({ xTiles, yTiles }: Xml2JsonRoom, doorMap: LooseDoorMap): RoomDimensions => {
     const depth = parseInt(yTiles) - (doorMap.towards ? 1 : 0) - (doorMap.away ? 1 : 0)
     const width = parseInt(xTiles) - (doorMap.left ? 1 : 0) - (doorMap.right ? 1 : 0)
 
     return { depth, width };
 }
 
-const convertWalls = (roomJson: Xml2JsonRoom, direction: 'left' | 'away', doorMap: DoorMap): AnyWall[] => {
+
+const convertWalls = (roomJson: Xml2JsonRoom, direction: 'left' | 'away', doorMap: LooseDoorMap): AnyWall[] => {
 
     const dims = convertRoomDimensions(roomJson, doorMap);
     const wallLength = direction === 'away' ? dims.width : dims.depth;
@@ -88,23 +89,67 @@ const convertWalls = (roomJson: Xml2JsonRoom, direction: 'left' | 'away', doorMa
     const xmlJsonAxis = direction === 'left' ? 'y' : 'x';
     const planet = convertPlanetName(roomJson.scenery);
     const result: AnyWall[] = new Array(wallLength);
-    result.fill('door');
 
-    // compensate for the xml basing from 1 when there's a door in that direction:
-    const offset = doorMap[direction] === undefined ? 0 : 1;
+    // the xml sometimes is missing some walls. In this case, use the first time from the appropriate
+    // world to repair it. This also means that we will have the default world specified as the tiles over
+    // the doors
+    const defaultWall = planets[convertPlanetName(roomJson.scenery)].walls[0];
+
+    result.fill(defaultWall);
 
     roomJson.walls
         .filter(wall => wall.along === xmlJsonAxis)
-        .forEach(wall => result[wall.position - offset] = convertWallName(planet, wall.picture));
+        .forEach(({ position, picture }) => {
+            const ordinal = xmlJsonAxis === 'x' ?
+                convertX(position, roomJson, doorMap)
+                : convertY(position, roomJson, doorMap);
+
+            return result[ordinal] = convertWallName(planet, picture);
+        });
 
     return result;
 }
 
-const convertDoors = (roomName: string, { items: jsonItems }: Xml2JsonRoom): DoorMap => {
+/** 
+ * a door map that can be used to just know if there is a door on a side, not necessarily
+ * to have the door object
+ */
+export type LooseDoorMap = Partial<Record<Direction, Door | true>>;
+
+const convertX = (xmlX: number | string, roomJson: Xml2JsonRoom, doorMap: LooseDoorMap): number => {
+    let result = typeof xmlX === 'string' ? parseInt(xmlX) : xmlX;
+
+    // first flip to my model - origin on the bottom corner (as rendered) - not top:
+    result = parseInt(roomJson.xTiles) - result - 1;
+
+    if (doorMap.right) {
+        // their x origin is on the left - remove one if there's a door since they bump everything
+        // up to fit the door:
+        result--;
+    }
+
+    return result;
+}
+const convertY = (xmlY: number | string, roomJson: Xml2JsonRoom, doorMap: LooseDoorMap): number => {
+    let result = typeof xmlY === 'string' ? parseInt(xmlY) : xmlY;
+
+    // first flip to my model - origin on the bottom corner (as rendered) - not top:
+    result = parseInt(roomJson.yTiles) - result - 1;
+
+    if (doorMap.towards) {
+        // their x origin is on the left - remove one if there's a door since they bump everything
+        // up to fit the door:
+        result--;
+    }
+
+    return result;
+}
+
+const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => {
 
     const roomOnMap = map[roomName];
 
-    const doorEntries = jsonItems
+    const doorXmlJsonItems = xml2JsonRoom.items
         .filter(i => i.class === 'door')
         // filter out doors to nowhere (huh?)
         .filter(({ where }) => {
@@ -114,21 +159,38 @@ const convertDoors = (roomName: string, { items: jsonItems }: Xml2JsonRoom): Doo
                 console.warn(`room ${roomName} has a ${where} door that goes nowhere on the map`);
             }
             return goesSomewhere;
-        })
+        });
+
+    // to convert door locations, we need to know where doors are first (yay) since doors
+    // warp the space in the xml file's version of the game world. Make a map of just which
+    // sides have doors:
+    const looseDoorMapEntries = doorXmlJsonItems.map(({ where }) => {
+        return [convertDirection(where), true] as [Direction, true];
+    });
+    const looseDoorMap = Object.fromEntries(looseDoorMapEntries) as LooseDoorMap;
+
+    const doorEntries = doorXmlJsonItems
         .map(({ where, x, y }) => {
 
             const toRoomId = roomNameFromXmlFilename(roomOnMap[where]!);
 
-            const door: Door = { ordinal: parseInt(where === 'south' ? y : x), z: 0, toRoom: toRoomId };
+            const useYOrdinal = where === 'south' || where === 'north';
+            const ordinal = useYOrdinal
+                // -1 because doors take up two slots, and are indexed by the lower number. So, we need to adjust this!
+                ? convertY(parseInt(y), xml2JsonRoom, looseDoorMap) - 1
+                : convertX(parseInt(x), xml2JsonRoom, looseDoorMap) - 1;
+
+            // TODO: need to convert ordinal to compensate for doors - AFTER we discovered all the doors!
+
+            const door: Door = { ordinal, z: 0, toRoom: toRoomId };
             return [convertDirection(where), door] as [Direction, Door];
         });
     return Object.fromEntries(doorEntries) as DoorMap;
-
 }
 
-const convertItems = (roomName: string, { items: jsonItems }: Xml2JsonRoom, roomDimensions: RoomDimensions): Item[] => {
+const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorMap: LooseDoorMap): Item[] => {
 
-    return jsonItems
+    return xml2JsonRoom.items
         .filter((xmlJsonItem) => xmlJsonItem.kind === 'teleport')
         .map(({ x, y, z }): Item => {
             const roomOnMap = map[roomName];
@@ -142,8 +204,8 @@ const convertItems = (roomName: string, { items: jsonItems }: Xml2JsonRoom, room
                 type: "teleporter",
                 toRoom: roomNameFromXmlFilename(destination),
                 // TODO: probably needs to compensate for doors
-                x: roomDimensions.width - parseInt(x) - 1,
-                y: roomDimensions.depth - parseInt(y) - 1,
+                x: convertX(x, xml2JsonRoom, doorMap),
+                y: convertY(y, xml2JsonRoom, doorMap),
                 z: parseInt(z)
             });
         });
@@ -158,10 +220,10 @@ const convertRoomJson = async (roomName: string) => {
         throw new Error(`${roomName} not on the map`);
     }
 
-    const doors = convertDoors(roomName, roomJson);
+    const doorMap = convertDoors(roomName, roomJson);
 
     // the xml adds extra tiles for doors - compensate for this by deleting them:
-    const roomDimensions = convertRoomDimensions(roomJson, doors);
+    const roomDimensions = convertRoomDimensions(roomJson, doorMap);
 
     // the xml calls bookworld "byblos" 🤷‍♂️
     const planet = convertPlanetName(jsonScenery);
@@ -179,12 +241,12 @@ const convertRoomJson = async (roomName: string) => {
         roomBelow: roomOnMap['below'] && roomNameFromXmlFilename(roomOnMap['below']),
         roomAbove: roomOnMap['above'] && roomNameFromXmlFilename(roomOnMap['above']),
         ...roomDimensions,
-        doors,
+        doors: doorMap,
         walls: {
-            away: convertWalls(roomJson, 'away', doors),
-            left: convertWalls(roomJson, 'left', doors),
+            away: convertWalls(roomJson, 'away', doorMap),
+            left: convertWalls(roomJson, 'left', doorMap),
         },
-        items: convertItems(roomName, roomJson, roomDimensions),
+        items: convertItems(roomName, roomJson, doorMap),
         zxSpectrumColor: color as ZxSpectrumColor,
     };
 

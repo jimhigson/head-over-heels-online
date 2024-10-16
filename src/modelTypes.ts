@@ -20,10 +20,8 @@ export const planets = {
 export type PlanetName = keyof (typeof planets);
 
 export type AllPlanets = typeof planets;
-export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number] |
-    /**
-     * no wall specified because there is a door there:
-     */'door';
+export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number];
+
 export type AnyWall = Wall<PlanetName>;
 
 export type Door = {
