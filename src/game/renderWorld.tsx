@@ -1,5 +1,5 @@
 import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
-import { AnyRoom, Direction, Door, PlanetName, Room, RoomId, wallTextureId, Xy } from '../modelTypes';
+import { AnyRoom, Direction, Door, PlanetName, Room, RoomId, wallTextureId, Xy, Xyz } from '../modelTypes';
 import { zxSpectrumResolution } from '../originalGame';
 import { blockSizePx, doorTexturePivot, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 
@@ -16,36 +16,50 @@ function* makeClickPortals(toRoom: RoomId, options: RenderWorldOptions, sprites:
 }
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
-const xyzPosition = (x: number, y: number, z: number = 0) => {
-    return { x: y - x, y: -(x + y) / 2 - z };
+const projectToScreen = (x: number, y: number, z: number = 0): Xyz => {
+    const projY = -(x + y) / 2 - z;
+    return {
+        x: y - x, y: projY,
+        // z here is the z-index, for if the renderer needs it
+        z: (z << 8) + projY
+    };
 }
 const xyzBlockPosition = (xBlock: number, yBlock: number, zBlock: number = 0): PointData => {
     const x = xBlock * blockSizePx.w;
     const y = yBlock * blockSizePx.d;
     const z = zBlock * blockSizePx.h;
 
-    return xyzPosition(x, y, z);
+    return projectToScreen(x, y, z);
 }
 
 type SpriteAtBlockOptions = {
     anchor?: PointData;
     pivot?: PointData;
     flipX?: true;
+    /** 
+     * if set, will give the sprite a z-index. this isn't needed for sprites that
+     * can render themselves in a known-good order - ie, back-to-front 
+     */
+    giveZIndex?: true;
 };
-const spriteAtBlock = ({ x, y, z = 0 }: { x: number, y: number, z?: number }, textureId: TextureId, { anchor, flipX, pivot }: SpriteAtBlockOptions): Sprite => {
+const spriteAtBlock = ({ x, y, z = 0 }: { x: number, y: number, z?: number }, textureId: TextureId, { anchor, flipX, pivot, giveZIndex }: SpriteAtBlockOptions): Sprite => {
     const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
     if (anchor !== undefined)
         sprite.anchor = anchor;
     if (pivot !== undefined)
         sprite.pivot = pivot;
 
-    const pos = xyzPosition(x * blockSizePx.w, y * blockSizePx.d, z * blockSizePx.h);
+    const projection = projectToScreen(x * blockSizePx.w, y * blockSizePx.d, z * blockSizePx.h);
 
-    sprite.x = pos.x;
-    sprite.y = pos.y;
+    sprite.x = projection.x;
+    sprite.y = projection.y;
+    if (giveZIndex)
+        sprite.zIndex = projection.z;
 
     sprite.eventMode = 'static';
-    sprite.on('click', () => { console.log(`tile (xB=${x}) (yB=${y}) xpx=${pos.x} ypx=${pos.y} tex=${textureId}`) });
+    sprite.on('click', () => { console.log(`tile (xB=${x}) (yB=${y}) xpx=${projection.x} ypx=${projection.y} tex=${textureId}`) });
+
+    //sprite.zIndex = pos.z * 1024 + 
 
     if (flipX === true) {
         sprite.scale.x = -1;
@@ -274,23 +288,31 @@ function* renderItems(room: AnyRoom, options: RenderWorldOptions): Generator<Con
     for (const item of room.items) {
         switch (item.type) {
             case 'teleporter': {
-                const sprite = spriteAtBlock(item, 'items.teleporter', { anchor: { x: 0.5, y: 1 } });
+                const sprite = spriteAtBlock(item, 'items.teleporter', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
                 makeClickPortal(item.toRoom as RoomId, options, sprite)
                 yield sprite;
                 continue;
             }
             case 'barrier': {
-                yield spriteAtBlock(item, 'items.barrier', { anchor: { x: 0.5, y: 1 } });
+                yield spriteAtBlock(item, 'items.barrier', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
             }
         }
     }
+}
+
+function inContainer(gen: Generator<Container>) {
+    const c = new Container();
+    for (const s of gen) {
+        c.addChild(s);
+    }
+    return c;
 }
 
 function* renderBackground(room: AnyRoom, options: RenderWorldOptions): Generator<Container, undefined, undefined> {
     yield* renderFloor(room, options);
     //yield* renderFloorEdges(room);
     yield* renderWalls(room, options);
-    yield* renderItems(room, options);
+    yield inContainer(renderItems(room, options));
     yield* renderFrontDoors(room, options);
 }
 

@@ -86,6 +86,18 @@ export const testCampaign = () => ({
                 // comes after in the list but should be drawn behind in terms of z-index:
                 type: 'barrier',
                 alongAxis: 'y',
+                x: 1, y: 2, z: 1
+            },
+            {
+                // comes after in the list but should be drawn behind in terms of z-index:
+                type: 'barrier',
+                alongAxis: 'y',
+                x: 1, y: 2, z: 0
+            },
+            {
+                // comes after in the list but should be drawn behind in terms of z-index:
+                type: 'barrier',
+                alongAxis: 'y',
                 x: 1, y: 3, z: 3
             },
             {
