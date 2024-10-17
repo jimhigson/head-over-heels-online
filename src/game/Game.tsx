@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Application } from 'pixi.js';
 import { renderWorld } from './renderWorld';
 import { resize } from './resize';
-import { tick } from './tick';
-import { originalCampaign, RoomId } from '../originalCampaign';
+import { RoomId } from '../modelTypes';
+import { originalCampaign } from '../originalCampaign';
+import { testCampaign } from '../testCampaign';
 
 /** 
  * React wrapper to give a space to pixi.js and start the rest of the game engine
@@ -12,7 +13,12 @@ export const Game = () => {
 
   const [app, setApp] = useState<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-  const [roomId, setRoomId] = useState<RoomId>('blacktooth1head');
+  const [roomId, setRoomId] = useState<RoomId>('doorsRoom');
+
+  const allCampaigns = {
+    ...originalCampaign,
+    ...testCampaign()
+  }
 
   useEffect(() => {
 
@@ -42,13 +48,14 @@ export const Game = () => {
   }, [gameArea]);
 
   useEffect(() => {
-    if (app === undefined) {
+    if (app === undefined || app.stage === null) {
       return;
     }
-    return renderWorld(app, originalCampaign[roomId], {
+
+    return renderWorld(app, allCampaigns[roomId], {
       onPortalClick: (roomId: RoomId) => {
+        console.log('Game: going to toom', roomId);
         setRoomId(roomId);
-        console.log('going to', roomId);
       }
     });
 

@@ -1,10 +1,22 @@
+import { OriginalCampaignRoomId } from "./originalCampaign";
 import { ZxSpectrumColor } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
+import { TestCampaignRoomId } from "./testCampaign";
 
 export const directions = ['away', 'towards', 'left', 'right'] as const;
 export type Direction = (typeof directions)[number];
 
 export type Floor = 'deadly' | 'none' | `${PlanetName}`;
+
+export type Xy = {
+    x: number;
+    y: number;
+};
+export type Xyz = {
+    x: number;
+    y: number;
+    z: number;
+};
 
 export const planets = {
     jail: { walls: ['bars'] },
@@ -32,20 +44,25 @@ export type Door = {
 
 export type DoorMap = Partial<Record<Direction, Door>>;
 
+/* which graphics to use for all the walls in a room? */
+export type RoomWalls<P extends PlanetName> = {
+    left: Wall<P>[];
+    away: Wall<P>[];
+};
+
 export type Room<P extends PlanetName> = {
     id: string,
-    /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
-    width: number,
-    /* depth in game blocks. this is the integer unit of room size and different from the width in pixels */
-    depth: number,
+    size: {
+        /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
+        x: number,
+        /* depth in game blocks. this is the integer unit of room size and different from the width in pixels */
+        y: number,
+    }
     planet: P,
     floor: Floor,
     roomAbove?: string,
     roomBelow?: string,
-    walls: {
-        left: Wall<P>[],
-        away: Wall<P>[],
-    },
+    walls: RoomWalls<P>,
     zxSpectrumColor: ZxSpectrumColor,
     // for now, can only have one room per direction - this seems to work with the original game
     // levels but could be expanded to support multiple
@@ -78,3 +95,6 @@ export type WallTextureId<P extends PlanetName, W extends Wall<P> = Wall<P>> = `
 
 export const wallTextureId = <P extends PlanetName, W extends Wall<P>>(planet: P, wallName: Wall<P>, side: 'left' | 'away') =>
     `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;
+
+
+export type RoomId = OriginalCampaignRoomId | TestCampaignRoomId;

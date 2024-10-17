@@ -1,6 +1,6 @@
 import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery, Xml2JsonItem } from "./readToJson";
 import { readdir, open } from 'node:fs/promises';
-import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets } from '../../src/modelTypes';
+import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets, Xy } from '../../src/modelTypes';
 import { ZxSpectrumColor } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
 
@@ -69,22 +69,18 @@ const convertPlanetName = (xmlSceneryName: XmlScenery | undefined): PlanetName =
     }
 }
 
-type RoomDimensions = {
-    depth: number,
-    width: number
-}
-const convertRoomDimensions = ({ xTiles, yTiles }: Xml2JsonRoom, doorMap: LooseDoorMap): RoomDimensions => {
-    const depth = parseInt(yTiles) - (doorMap.towards ? 1 : 0) - (doorMap.away ? 1 : 0)
-    const width = parseInt(xTiles) - (doorMap.left ? 1 : 0) - (doorMap.right ? 1 : 0)
+const convertRoomDimensions = ({ xTiles, yTiles }: Xml2JsonRoom, doorMap: LooseDoorMap): Xy => {
+    const y = parseInt(yTiles) - (doorMap.towards ? 1 : 0) - (doorMap.away ? 1 : 0)
+    const x = parseInt(xTiles) - (doorMap.left ? 1 : 0) - (doorMap.right ? 1 : 0)
 
-    return { depth, width };
+    return { x, y };
 }
 
 
 const convertWalls = (roomJson: Xml2JsonRoom, direction: 'left' | 'away', doorMap: LooseDoorMap): AnyWall[] => {
 
     const dims = convertRoomDimensions(roomJson, doorMap);
-    const wallLength = direction === 'away' ? dims.width : dims.depth;
+    const wallLength = direction === 'away' ? dims.x : dims.y;
 
     const xmlJsonAxis = direction === 'left' ? 'y' : 'x';
     const planet = convertPlanetName(roomJson.scenery);
@@ -269,7 +265,7 @@ const convertRoomJson = async (roomName: string) => {
         planet,
         roomBelow: roomOnMap['below'] && roomNameFromXmlFilename(roomOnMap['below']),
         roomAbove: roomOnMap['above'] && roomNameFromXmlFilename(roomOnMap['above']),
-        ...roomDimensions,
+        size: roomDimensions,
         doors: doorMap,
         walls: {
             away: convertWalls(roomJson, 'away', doorMap),
@@ -301,5 +297,5 @@ for (const [roomName, room] of Object.entries(rooms)) {
     await writeOut.write(`    "${roomName}": ${JSON.stringify(room)} satisfies Room<"${room.planet}">,\n`);
 }
 await writeOut.write(`} as const;\n`);
-await writeOut.write(`export type RoomId = keyof typeof originalCampaign;\n`);
+await writeOut.write(`export type OriginalCampaignRoomId = keyof typeof originalCampaign;\n`);
 await writeOut.close();
