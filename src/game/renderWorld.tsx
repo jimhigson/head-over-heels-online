@@ -1,7 +1,8 @@
 import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
 import { AnyRoom, Direction, Door, PlanetName, Room, RoomId, wallTextureId, Xy, Xyz } from '../modelTypes';
-import { zxSpectrumResolution } from '../originalGame';
+import { zxSpectrumPalette, zxSpectrumResolution } from '../originalGame';
 import { blockSizePx, doorTexturePivot, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
+import { ColorReplaceFilter } from 'pixi-filters';
 
 const makeClickPortal = (toRoom: RoomId, { onPortalClick }: RenderWorldOptions, ...sprite: Container[]) => {
     sprite.forEach(sprite => sprite.on('click', () => {
@@ -300,8 +301,8 @@ function* renderItems(room: AnyRoom, options: RenderWorldOptions): Generator<Con
     }
 }
 
-function inContainer(gen: Generator<Container>) {
-    const c = new Container();
+function iterateToContainer(gen: Generator<Container>, into?: Container) {
+    const c = into || new Container();
     for (const s of gen) {
         c.addChild(s);
     }
@@ -309,10 +310,16 @@ function inContainer(gen: Generator<Container>) {
 }
 
 function* renderBackground(room: AnyRoom, options: RenderWorldOptions): Generator<Container, undefined, undefined> {
-    yield* renderFloor(room, options);
+    const colourables = new Container();
+
+    iterateToContainer(renderFloor(room, options), colourables);
+    iterateToContainer(renderWalls(room, options), colourables);
+
+    colourables.filters = [new ColorReplaceFilter({ originalColor: 0x00FFFF, targetColor: zxSpectrumPalette[room.zxSpectrumColor], tolerance: 0.01 })]
+
     //yield* renderFloorEdges(room);
-    yield* renderWalls(room, options);
-    yield inContainer(renderItems(room, options));
+    yield colourables;
+    yield iterateToContainer(renderItems(room, options));
     yield* renderFrontDoors(room, options);
 }
 
