@@ -1,8 +1,9 @@
 import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery, Xml2JsonItem } from "./readToJson";
 import { readdir, open } from 'node:fs/promises';
-import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, Item, PlanetName, planets, Xy } from '../../src/modelTypes';
-import { ZxSpectrumColor } from "../../src/originalGame";
+import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets, Xy } from '../../src/modelTypes';
+import { ZxSpectrumRoomColours } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
+import { Barrier, Item, Teleporter } from "../../src/Item";
 
 const map = await readMapToJson();
 
@@ -218,22 +219,27 @@ const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorMap: Loo
                 return {
                     type: "teleporter",
                     toRoom: roomNameFromXmlFilename(destination),
-                    ...convertXYZ(item, xml2JsonRoom, doorMap)
-                };
+                    position: convertXYZ(item, xml2JsonRoom, doorMap)
+                } satisfies Teleporter;
             }
 
             case item.kind === 'bars-ns' || item.kind === 'bars-ew': {
                 return {
                     type: 'barrier',
                     alongAxis: item.kind === 'bars-ns' ? 'y' : 'x',
-                    ...convertXYZ(item, xml2JsonRoom, doorMap)
-                };
+                    position: convertXYZ(item, xml2JsonRoom, doorMap)
+                } satisfies Barrier;
             }
 
             default:
                 return undefined;
         }
     }).filter((x): x is Item => x !== undefined);
+}
+
+/** strip off the ".reduced" from the end of, eg "yellow.reduced */
+const basicColor = (color: string) => {
+    return /([^.]*)(?:\.reduced)?/.exec(color)![1] as ZxSpectrumRoomColours;
 }
 
 const convertRoomJson = async (roomName: string) => {
@@ -272,7 +278,7 @@ const convertRoomJson = async (roomName: string) => {
             left: convertWalls(roomJson, 'left', doorMap),
         },
         items: convertItems(roomName, roomJson, doorMap),
-        zxSpectrumColor: color as ZxSpectrumColor,
+        color: basicColor(color),
     };
 
     return room;

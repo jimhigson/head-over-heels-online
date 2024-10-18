@@ -13,7 +13,7 @@ export const Game = () => {
 
   const [app, setApp] = useState<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-  const [roomId, setRoomId] = useState<RoomId>('doorsRoom');
+  const [roomId, setRoomId] = useState<RoomId>('blacktooth1head');
 
   const allCampaigns = {
     ...originalCampaign,

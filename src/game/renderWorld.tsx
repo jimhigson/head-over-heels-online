@@ -1,6 +1,7 @@
 import { Application, Container, Graphics, PointData, Sprite } from 'pixi.js';
 import { AnyRoom, Direction, Door, PlanetName, Room, RoomId, wallTextureId, Xy, Xyz } from '../modelTypes';
-import { zxSpectrumPalette, zxSpectrumResolution } from '../originalGame';
+import { zxSpectrumResolution } from '../originalGame';
+import { hintColours, Shades } from "../hintColours";
 import { blockSizePx, doorTexturePivot, pixiSpriteSheet, type TextureId } from '../sprites/pixiSpriteSheet';
 import { ColorReplaceFilter } from 'pixi-filters';
 
@@ -126,17 +127,18 @@ function* renderFloor(room: AnyRoom, options: RenderWorldOptions): Generator<Con
         floorContainer.addChild(tilesContainer);
     }
 
-    // render the floor edges
-    const edgeContainer = new Container();
-
+    const rightEdge = new Container();
     for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
-        edgeContainer.addChild(spriteAtBlock({ x: ix, y: hasDoorTowards ? -0.5 : 0 }, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
+        rightEdge.addChild(spriteAtBlock({ x: ix, y: hasDoorTowards ? -0.5 : 0 }, 'generic.edge.towards', { pivot: { x: 7, y: 1 } }));
     }
+    rightEdge.filters = paletteSwapFilters(hintColours[room.color].edges.right);
+    const towardsEdge = new Container();
     for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
-        edgeContainer.addChild(spriteAtBlock({ x: hasDoorRight ? -0.5 : 0, y: iy }, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
+        towardsEdge.addChild(spriteAtBlock({ x: hasDoorRight ? -0.5 : 0, y: iy }, 'generic.edge.right', { pivot: { x: 0, y: 1 } }));
     }
+    towardsEdge.filters = paletteSwapFilters(hintColours[room.color].edges.towards);
     if (room.roomBelow) {
-        makeClickPortal(room.roomBelow as RoomId, options, ...edgeContainer.children)
+        makeClickPortal(room.roomBelow as RoomId, options, ...[...towardsEdge.children, ...rightEdge.children])
     }
 
     const edgeRightPoint = xyzBlockPosition(0, room.size.y);
@@ -160,7 +162,8 @@ function* renderFloor(room: AnyRoom, options: RenderWorldOptions): Generator<Con
 
 
     floorContainer.addChild(floorMask);
-    floorContainer.addChild(edgeContainer);
+    floorContainer.addChild(rightEdge);
+    floorContainer.addChild(towardsEdge);
     floorContainer.mask = floorMask;
 
     yield floorContainer;
@@ -289,13 +292,13 @@ function* renderItems(room: AnyRoom, options: RenderWorldOptions): Generator<Con
     for (const item of room.items) {
         switch (item.type) {
             case 'teleporter': {
-                const sprite = spriteAtBlock(item, 'items.teleporter', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
+                const sprite = spriteAtBlock(item.position, 'items.teleporter', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
                 makeClickPortal(item.toRoom as RoomId, options, sprite)
                 yield sprite;
                 continue;
             }
             case 'barrier': {
-                yield spriteAtBlock(item, 'items.barrier', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
+                yield spriteAtBlock(item.position, 'items.barrier', { anchor: { x: 0.5, y: 1 }, giveZIndex: true });
             }
         }
     }
@@ -310,18 +313,18 @@ function iterateToContainer(gen: Generator<Container>, into?: Container) {
 }
 
 function* renderBackground(room: AnyRoom, options: RenderWorldOptions): Generator<Container, undefined, undefined> {
-    const colourables = new Container();
 
-    iterateToContainer(renderFloor(room, options), colourables);
-    iterateToContainer(renderWalls(room, options), colourables);
+    yield* renderFloor(room, options);
+    yield* renderWalls(room, options);
 
-    colourables.filters = [new ColorReplaceFilter({ originalColor: 0x00FFFF, targetColor: zxSpectrumPalette[room.zxSpectrumColor], tolerance: 0.01 })]
-
-    //yield* renderFloorEdges(room);
-    yield colourables;
     yield iterateToContainer(renderItems(room, options));
     yield* renderFrontDoors(room, options);
 }
+
+const paletteSwapFilters = (shades: Shades) => [
+    new ColorReplaceFilter({ originalColor: 0x00FFFF, targetColor: shades.basic, tolerance: 0.05 }),
+    new ColorReplaceFilter({ originalColor: 0x008888, targetColor: shades.dimmed, tolerance: 0.05 })
+];
 
 const renderRoom = <P extends PlanetName>(room: Room<P>, options: RenderWorldOptions) => {
 
@@ -334,6 +337,8 @@ const renderRoom = <P extends PlanetName>(room: Room<P>, options: RenderWorldOpt
     for (const container of renderBackground(room, options)) {
         roomContainer.addChild(container);
     }
+
+    roomContainer.filters = paletteSwapFilters(hintColours[room.color].main);
 
     return roomContainer;
 };

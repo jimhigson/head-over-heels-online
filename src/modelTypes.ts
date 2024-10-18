@@ -1,7 +1,8 @@
 import { OriginalCampaignRoomId } from "./originalCampaign";
-import { ZxSpectrumColor } from "./originalGame";
+import { ZxSpectrumRoomColours } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { TestCampaignRoomId } from "./testCampaign";
+import { Item } from "./Item";
 
 export const directions = ['away', 'towards', 'left', 'right'] as const;
 export type Direction = (typeof directions)[number];
@@ -30,6 +31,7 @@ export const planets = {
 } as const satisfies Record<string, { walls: string[]; }>;
 
 export type PlanetName = keyof (typeof planets);
+export const planetNames = Object.keys(planets) as PlanetName[];
 
 export type AllPlanets = typeof planets;
 export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number];
@@ -63,29 +65,16 @@ export type Room<P extends PlanetName> = {
     roomAbove?: string,
     roomBelow?: string,
     walls: RoomWalls<P>,
-    zxSpectrumColor: ZxSpectrumColor,
+    // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
+    // colours in each room
+    color: ZxSpectrumRoomColours,
     // for now, can only have one room per direction - this seems to work with the original game
     // levels but could be expanded to support multiple
     doors: DoorMap
     items: Item[];
 }
 
-type itemLocation = { x: number, y: number, z: number }
-
-export type Teleporter = itemLocation & {
-    type: 'teleporter',
-    toRoom: string
-}
-
-export type Barrier = itemLocation & {
-    type: 'barrier',
-    alongAxis: 'x' | 'y'
-}
-
-export type Item = Teleporter | Barrier; // or others!
-
 export type AnyRoom = Room<PlanetName>
-
 
 export type SpriteFrame = SpritesheetFrameData['frame'];
 export type SpritePosition = Pick<SpriteFrame, 'x' | 'y'>;
