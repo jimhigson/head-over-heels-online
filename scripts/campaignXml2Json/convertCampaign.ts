@@ -4,6 +4,7 @@ import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets,
 import { ZxSpectrumRoomColours } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
 import { convertItems } from "./convertItems";
+import { convertRoomId } from "./convertRoomId";
 
 export const map = await readMapToJson();
 
@@ -189,7 +190,7 @@ const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => 
     const doorEntries = doorXmlJsonItems
         .map(({ where, x, y }) => {
 
-            const toRoomId = roomNameFromXmlFilename(roomOnMap[where]!);
+            const toRoomId = convertRoomId(roomNameFromXmlFilename(roomOnMap[where]!));
 
             const useYOrdinal = where === 'south' || where === 'north';
             const ordinal = useYOrdinal
@@ -208,16 +209,16 @@ const basicColor = (color: string) => {
     return /([^.]*)(?:\.reduced)?/.exec(color)![1] as ZxSpectrumRoomColours;
 }
 
-const convertRoomJson = async (roomName: string) => {
-    const roomJson = await readRoomToJson(roomName);
+const convertRoomJson = async (xmlRoomName: string) => {
+    const roomJson = await readRoomToJson(xmlRoomName);
     const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomJson;
 
-    const roomOnMap = map[roomName];
+    const roomOnMap = map[xmlRoomName];
     if (roomOnMap === undefined) {
-        throw new Error(`${roomName} not on the map`);
+        throw new Error(`${xmlRoomName} not on the map`);
     }
 
-    const doorMap = convertDoors(roomName, roomJson);
+    const doorMap = convertDoors(xmlRoomName, roomJson);
 
     // the xml adds extra tiles for doors - compensate for this by deleting them:
     const roomDimensions = convertRoomDimensions(roomJson, doorMap);
@@ -232,18 +233,18 @@ const convertRoomJson = async (roomName: string) => {
     };
 
     const room: AnyRoom = {
-        id: roomName,
+        id: convertRoomId(xmlRoomName),
         floor: floorMap[jsonFloorKind],
         planet,
-        roomBelow: roomOnMap['below'] && roomNameFromXmlFilename(roomOnMap['below']),
-        roomAbove: roomOnMap['above'] && roomNameFromXmlFilename(roomOnMap['above']),
+        roomBelow: roomOnMap['below'] && convertRoomId(roomNameFromXmlFilename(roomOnMap['below'])),
+        roomAbove: roomOnMap['above'] && convertRoomId(roomNameFromXmlFilename(roomOnMap['above'])),
         size: roomDimensions,
         doors: doorMap,
         walls: {
             away: convertWalls(roomJson, 'away', doorMap),
             left: convertWalls(roomJson, 'left', doorMap),
         },
-        items: convertItems(roomName, roomJson, doorMap),
+        items: convertItems(xmlRoomName, roomJson, doorMap),
         color: basicColor(color),
     };
 
@@ -255,7 +256,7 @@ for (const roomName of allRoomNames) {
     try {
         const room = await convertRoomJson(roomName);
 
-        rooms[roomName] = room;
+        rooms[convertRoomId(roomName)] = room;
     } catch (e) {
         throw new Error(`error converting room ${roomName} :: ${(e as Error).message}
             ${(e as Error).stack}`);

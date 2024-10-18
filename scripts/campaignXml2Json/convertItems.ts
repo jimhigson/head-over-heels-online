@@ -1,5 +1,6 @@
 import { Item, Teleporter, Barrier } from "../../src/Item";
 import { LooseDoorMap, map, convertXYZ, convertDirection } from "./convertCampaign";
+import { convertRoomId } from "./convertRoomId";
 import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 
 export const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorMap: LooseDoorMap): Item[] => {
@@ -17,7 +18,7 @@ export const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorM
 
                 return {
                     type: "teleporter",
-                    toRoom: roomNameFromXmlFilename(destination),
+                    toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
                     position: convertXYZ(item, xml2JsonRoom, doorMap)
                 } satisfies Teleporter;
             }
