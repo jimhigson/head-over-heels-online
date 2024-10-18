@@ -3,7 +3,7 @@ import { ZxSpectrumRoomColours } from "./originalGame";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 export type Shades = { basic: Color, dimmed: Color };
-const white = { basic: new Color('rgb(200, 200, 200)'), dimmed: new Color('rgb(160, 160, 160)') };
+const white = { basic: new Color('rgb(200, 200, 200)'), dimmed: new Color('rgb(120, 120, 120)') };
 const yellow = { basic: new Color('rgb(208, 189, 102)'), dimmed: new Color('rgb(119, 118, 79)') };
 const magenta = { basic: new Color('rgb(203, 154, 212)'), dimmed: new Color('rgb(156, 119, 164)') };
 const cyan = { basic: new Color('rgb(108, 148, 150)'), dimmed: new Color('rgb(75, 105, 107)') };

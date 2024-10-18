@@ -7,6 +7,10 @@ export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
 export const doorTextureSize = { w: 24, h: 56 };
 export const doorLegsTextureSize = { w: 16, h: 32 };
+
+export const largeItemTextureSize = { w: 32, h: 28 };
+export const smallItemTextureSize = { w: 24, h: 24 };
+
 // doors are position so the face we can see (maybe facing away from the room) is on the position
 // given. This means that doors facing towards the camera need to be given negative x or y (value of -0.5)
 export const doorTexturePivot = {
@@ -111,10 +115,49 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
             frame: { x: 512, y: 153, ...doorTextureSize }
         },
         'items.teleporter': {
-            frame: { x: 4, y: 450, w: 32, h: 28 }
+            frame: { x: 4, y: 450, ...largeItemTextureSize }
         },
         'items.barrier': {
             frame: { x: 313, y: 414, w: 24, h: 24 }
+        },
+        'items.block.organic': {
+            frame: { x: 172, y: 388, ...largeItemTextureSize }
+        },
+        'items.block.artificial': {
+            frame: { x: 138, y: 388, ...largeItemTextureSize }
+        },
+        'items.volcano': {
+            frame: { x: 344, y: 414, ...largeItemTextureSize }
+        },
+        'items.conveyor.x': {
+            frame: { x: 259, y: 440, ...largeItemTextureSize }
+        },
+        'items.conveyor.y': {
+            frame: { x: 292, y: 440, ...largeItemTextureSize }
+        },
+        'items.bunny': {
+            frame: { x: 340, y: 358, ...smallItemTextureSize }
+        },
+        'items.donuts': {
+            frame: { x: 313, y: 358, ...smallItemTextureSize }
+        },
+        'items.hooter': {
+            frame: { x: 286, y: 358, ...smallItemTextureSize }
+        },
+        'items.bag': {
+            frame: { x: 259, y: 358, ...smallItemTextureSize }
+        },
+        'items.fish1': {
+            frame: { x: 259, y: 388, ...smallItemTextureSize }
+        },
+        'items.fish2': {
+            frame: { x: 284, y: 388, ...smallItemTextureSize }
+        },
+        'items.spring.rest': {
+            frame: { x: 4, y: 421, ...smallItemTextureSize }
+        },
+        'items.spring.sprung': {
+            frame: { x: 29, y: 421, ...smallItemTextureSize }
         }
     },
     meta: { scale: 1 }

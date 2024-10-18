@@ -31,6 +31,7 @@ const readXmlToJson = async (fileName: string) => {
 // compass directions as found in room xml - some unusual notation in there, eg "westsouth" as well as "southwest"
 type CompassDirectionsNS = 'north' | 'south';
 type CompassDirectionsEW = 'east' | 'west';
+type CompassDirectionsNESW = CompassDirectionsNS | CompassDirectionsEW;
 export type CompassDirections = `${CompassDirectionsNS}${CompassDirectionsEW}` | `${CompassDirectionsEW}${CompassDirectionsNS}` | CompassDirectionsEW | CompassDirectionsNS;
 
 export type Xml2JsonItem = {
@@ -42,11 +43,15 @@ export type Xml2JsonItem = {
     class: 'door',
     where: CompassDirections;
 } | {
-    kind: 'teleport'
+    kind: 'teleport' | 'brick1' | 'brick2' | 'vulcano' /* sic */
     class: 'griditem'
 } | {
-    kind: 'bars-ns' | 'bars-ew'
+    kind: 'bars-ns' | 'bars-ew' | 'extra-life' | 'donuts' | 'handbag' | 'reincarnation-fish' | 'mortal-fish' | 'trampoline' | 'horn'
     class: 'freeitem'
+} | {
+    kind: 'conveyor',
+    orientation: CompassDirectionsNESW,
+    class: 'griditem'
 });
 
 export type XmlScenery = 'moon' | 'egyptus' | /* huh? */ 'byblos' | 'penitentiary' | 'safari';

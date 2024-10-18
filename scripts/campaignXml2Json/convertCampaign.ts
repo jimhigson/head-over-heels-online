@@ -3,9 +3,9 @@ import { readdir, open } from 'node:fs/promises';
 import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets, Xy } from '../../src/modelTypes';
 import { ZxSpectrumRoomColours } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
-import { Barrier, Item, Teleporter } from "../../src/Item";
+import { convertItems } from "./convertItems";
 
-const map = await readMapToJson();
+export const map = await readMapToJson();
 
 const allRoomNames = (await readdir('gamedata-map-xml')).filter(name => name.endsWith('.xml') && name !== 'map.xml').map(roomNameFromXmlFilename);
 
@@ -29,7 +29,7 @@ const convertWallName = (planetName: PlanetName, pictureName: string): AnyWall =
     return wallNumbers[planetName][wallTypeIndex - 1];
 }
 
-const convertDirection = (compassDirection: CompassDirections): Direction => {
+export const convertDirection = (compassDirection: CompassDirections): Direction => {
     // directions other than NESW are guesses and might be wrong - need to look into
     // why we have these.
 
@@ -144,7 +144,7 @@ const convertY = (xmlY: number | string, roomJson: Xml2JsonRoom, doorMap: LooseD
 const convertZ = (xmlZ: number | string): number => {
     return typeof xmlZ === 'string' ? parseInt(xmlZ) : xmlZ;
 }
-const convertXYZ = ({ x, y, z }: { x: number | string, y: number | string, z: number | string }, roomJson: Xml2JsonRoom, doorMap: LooseDoorMap) => {
+export const convertXYZ = ({ x, y, z }: { x: number | string, y: number | string, z: number | string }, roomJson: Xml2JsonRoom, doorMap: LooseDoorMap) => {
     return {
         x: convertX(x, roomJson, doorMap),
         y: convertY(y, roomJson, doorMap),
@@ -201,40 +201,6 @@ const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => 
             return [convertDirection(where), door] as [Direction, Door];
         });
     return Object.fromEntries(doorEntries) as DoorMap;
-}
-
-const convertItems = (roomName: string, xml2JsonRoom: Xml2JsonRoom, doorMap: LooseDoorMap): Item[] => {
-
-    return xml2JsonRoom.items.map((item): Item | undefined => {
-        switch (true) {
-            case item.kind === 'teleport': {
-
-                const roomOnMap = map[roomName];
-                const destination = roomOnMap.teleport;
-
-                if (destination === undefined) {
-                    throw new Error('teleporter with no destination');
-                }
-
-                return {
-                    type: "teleporter",
-                    toRoom: roomNameFromXmlFilename(destination),
-                    position: convertXYZ(item, xml2JsonRoom, doorMap)
-                } satisfies Teleporter;
-            }
-
-            case item.kind === 'bars-ns' || item.kind === 'bars-ew': {
-                return {
-                    type: 'barrier',
-                    alongAxis: item.kind === 'bars-ns' ? 'y' : 'x',
-                    position: convertXYZ(item, xml2JsonRoom, doorMap)
-                } satisfies Barrier;
-            }
-
-            default:
-                return undefined;
-        }
-    }).filter((x): x is Item => x !== undefined);
 }
 
 /** strip off the ".reduced" from the end of, eg "yellow.reduced */
