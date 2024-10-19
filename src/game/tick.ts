@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
 
-export const tick = (app: Application) => {
+export const tick = (_app: Application) => {
   //gameScale(app);
 };

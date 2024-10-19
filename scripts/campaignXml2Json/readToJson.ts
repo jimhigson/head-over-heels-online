@@ -9,7 +9,7 @@ const readXmlToJson = async (fileName: string) => {
     compact: true,
     ignoreComment: true,
     ignoreDeclaration: true,
-    textFn: function (value, parentElement) {
+    textFn(value, parentElement) {
       const parentObject = parentElement as unknown as Record<
         string,
         string | object

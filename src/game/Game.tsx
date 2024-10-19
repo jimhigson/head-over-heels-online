@@ -6,6 +6,11 @@ import { RoomId } from "../modelTypes";
 import { originalCampaign } from "../originalCampaign";
 import { testCampaign } from "../testCampaign";
 
+const allCampaigns = {
+  ...originalCampaign,
+  ...testCampaign(),
+};
+
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
@@ -13,11 +18,6 @@ export const Game = () => {
   const [app, setApp] = useState<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
   const [roomId, setRoomId] = useState<RoomId>("blacktooth1head");
-
-  const allCampaigns = {
-    ...originalCampaign,
-    ...testCampaign(),
-  };
 
   useEffect(() => {
     if (gameArea === null) return;
@@ -49,7 +49,7 @@ export const Game = () => {
     }
 
     return renderWorld(app, allCampaigns[roomId], {
-      onPortalClick: (roomId: RoomId) => {
+      onPortalClick(roomId: RoomId) {
         console.log("Game: going to toom", roomId);
         setRoomId(roomId);
       },

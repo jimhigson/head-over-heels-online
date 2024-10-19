@@ -1,0 +1,19 @@
+{
+    "cSpell.words": [
+        "blacktooth",
+        "bookworld",
+        "colour",
+        "colourables",
+        "colours",
+        "eastsouth",
+        "egyptus",
+        "freeitem",
+        "griditem",
+        "moonbase",
+        "pixi",
+        "Renderable",
+        "Spritesheet",
+        "teleporter"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
+}
