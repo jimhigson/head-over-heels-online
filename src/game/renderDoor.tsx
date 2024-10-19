@@ -6,7 +6,7 @@ import { doorTexture, RenderWorldOptions } from "./renderWorld";
 import { spriteAtBlock } from "./spriteAtBlock";
 
 
-export function* renderDoor(room: AnyRoom, door: Door, side: Direction) {
+export function* renderDoor(room: AnyRoom, door: Door<string>, side: Direction) {
 
     const isBack = side === 'left' || side === 'away';
     const axis = side === 'away' || side === 'towards' ? 'x' : 'y';

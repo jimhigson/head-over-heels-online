@@ -1,5 +1,5 @@
 import { Color } from "pixi.js";
-import { ZxSpectrumRoomColours } from "./originalGame";
+import { ZxSpectrumRoomColour } from "./originalGame";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 export type Shades = { basic: Color, dimmed: Color };
@@ -15,5 +15,5 @@ export const hintColours = {
     magenta: { main: magenta, edges: { towards: green, right: cyan } },
     cyan: { main: cyan, edges: { towards: magenta, right: white } },
     green: { main: green, edges: { towards: cyan, right: yellow } },
-} as const satisfies Record<ZxSpectrumRoomColours, { main: Shades, edges: { right: Shades, towards: Shades } }>;
+} as const satisfies Record<ZxSpectrumRoomColour, { main: Shades, edges: { right: Shades, towards: Shades } }>;
 

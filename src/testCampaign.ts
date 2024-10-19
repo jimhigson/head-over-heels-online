@@ -1,5 +1,5 @@
 import { planetNames, planets, Xy, type PlanetName, type Room, type RoomWalls, type Wall } from "./modelTypes.ts"
-import { zxSpectrumRoomColours, ZxSpectrumRoomColours } from "./originalGame.ts";
+import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
 
 const generateWalls = <P extends PlanetName>(roomSize: Xy, planet: P): RoomWalls<P> => {
 
@@ -22,7 +22,7 @@ const generateWalls = <P extends PlanetName>(roomSize: Xy, planet: P): RoomWalls
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
-    type Entry<P extends PlanetName> = [`${P}-${ZxSpectrumRoomColours}`, Room<P>];
+    type Entry<P extends PlanetName> = [`${P}-${ZxSpectrumRoomColour}`, Room<P, `${PlanetName}-${ZxSpectrumRoomColour}`>];
 
     function* room(): Generator<Entry<PlanetName>> {
         for (let ip = 0; ip < planetNames.length; ip++) {
@@ -117,7 +117,7 @@ export const testCampaign = () => ({
         }],
         planet: 'blacktooth',
         color: 'cyan'
-    } satisfies Room<'blacktooth'>,
+    } satisfies Room<'blacktooth', string>,
     'zRoom': {
         size: { x: 4, y: 5 },
         walls: generateWalls({ x: 4, y: 5 }, 'egyptus'),
@@ -205,7 +205,7 @@ export const testCampaign = () => ({
         ],
         planet: 'egyptus',
         color: 'cyan'
-    } satisfies Room<'egyptus'>,
+    } satisfies Room<'egyptus', string>,
     'wide': {
         size: { x: 10, y: 3 },
         walls: generateWalls({ x: 10, y: 3 }, 'market'),
@@ -221,7 +221,7 @@ export const testCampaign = () => ({
         items: [],
         planet: 'market',
         color: 'cyan'
-    } satisfies Room<'market'>,
+    } satisfies Room<'market', string>,
     'deep': {
         size: { x: 3, y: 10 },
         walls: generateWalls({ x: 3, y: 10 }, 'moonbase'),
@@ -237,7 +237,7 @@ export const testCampaign = () => ({
         items: [],
         planet: 'moonbase',
         color: 'cyan'
-    } satisfies Room<'moonbase'>,
+    } satisfies Room<'moonbase', string>,
     'big': {
         size: { x: 10, y: 10 },
         walls: generateWalls({ x: 10, y: 10 }, 'moonbase'),
@@ -253,7 +253,7 @@ export const testCampaign = () => ({
         items: [],
         planet: 'moonbase',
         color: 'cyan'
-    } satisfies Room<'moonbase'>,
+    } satisfies Room<'moonbase', string>,
     ...colourRooms()
 });
 export type TestCampaignRoomId = keyof ReturnType<typeof testCampaign>;

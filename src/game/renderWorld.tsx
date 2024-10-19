@@ -72,7 +72,7 @@ export const paletteSwapFilters = (shades: Shades) => [
     new ColorReplaceFilter({ originalColor: 0x008888, targetColor: shades.dimmed, tolerance: 0.05 })
 ];
 
-const renderRoom = <P extends PlanetName>(room: Room<P>, options: RenderWorldOptions) => {
+const renderRoom = <P extends PlanetName>(room: Room<P, string>, options: RenderWorldOptions) => {
 
     // NB: floor could be a tiling sprite and a graphics map:
     //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite

@@ -1,5 +1,5 @@
 import { OriginalCampaignRoomId } from "./originalCampaign";
-import { ZxSpectrumRoomColours } from "./originalGame";
+import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { TestCampaignRoomId } from "./testCampaign";
 import { Item } from "./Item";
@@ -38,13 +38,13 @@ export type Wall<P extends PlanetName> = AllPlanets[P]['walls'][number];
 
 export type AnyWall = Wall<PlanetName>;
 
-export type Door = {
+export type Door<RoomIds extends string> = {
     ordinal: number;
     z: number;
-    toRoom: string;
+    toRoom: RoomIds;
 };
 
-export type DoorMap = Partial<Record<Direction, Door>>;
+export type DoorMap<RoomIds extends string> = Partial<Record<Direction, Door<RoomIds>>>;
 
 /* which graphics to use for all the walls in a room? */
 export type RoomWalls<P extends PlanetName> = {
@@ -52,8 +52,8 @@ export type RoomWalls<P extends PlanetName> = {
     away: Wall<P>[];
 };
 
-export type Room<P extends PlanetName> = {
-    id: string,
+export type Room<P extends PlanetName, RoomIds extends string> = {
+    id: RoomIds,
     size: {
         /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
         x: number,
@@ -62,19 +62,21 @@ export type Room<P extends PlanetName> = {
     }
     planet: P,
     floor: Floor,
-    roomAbove?: string,
-    roomBelow?: string,
+    roomAbove?: RoomIds,
+    roomBelow?: RoomIds,
     walls: RoomWalls<P>,
     // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
     // colours in each room
-    color: ZxSpectrumRoomColours,
+    color: ZxSpectrumRoomColour,
     // for now, can only have one room per direction - this seems to work with the original game
     // levels but could be expanded to support multiple
-    doors: DoorMap
+    doors: DoorMap<RoomIds>
     items: Item[];
 }
 
-export type AnyRoom = Room<PlanetName>
+export type Campaign<RoomIds extends string> = Record<RoomIds, Room<PlanetName, RoomIds>>
+
+export type AnyRoom = Room<PlanetName, string>
 
 export type SpriteFrame = SpritesheetFrameData['frame'];
 export type SpritePosition = Pick<SpriteFrame, 'x' | 'y'>;

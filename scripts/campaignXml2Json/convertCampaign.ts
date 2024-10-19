@@ -1,7 +1,7 @@
-import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery, Xml2JsonItem } from "./readToJson";
+import { CompassDirections, readMapToJson, readRoomToJson, Xml2JsonRoom, roomNameFromXmlFilename, XmlScenery } from "./readToJson";
 import { readdir, open } from 'node:fs/promises';
 import { AnyRoom, AnyWall, Direction, Door, DoorMap, Floor, PlanetName, planets, Xy } from '../../src/modelTypes';
-import { ZxSpectrumRoomColours } from "../../src/originalGame";
+import { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
 import { convertItems } from "./convertItems";
 import { convertRoomId } from "./convertRoomId";
@@ -206,7 +206,7 @@ const convertDoors = (roomName: string, xml2JsonRoom: Xml2JsonRoom): DoorMap => 
 
 /** strip off the ".reduced" from the end of, eg "yellow.reduced */
 const basicColor = (color: string) => {
-    return /([^.]*)(?:\.reduced)?/.exec(color)![1] as ZxSpectrumRoomColours;
+    return /([^.]*)(?:\.reduced)?/.exec(color)![1] as ZxSpectrumRoomColour;
 }
 
 const convertRoomJson = async (xmlRoomName: string) => {
@@ -264,11 +264,11 @@ for (const roomName of allRoomNames) {
 }
 
 const writeOut = await open('src/originalCampaign.ts', 'w');
-writeOut.write(`import type {Room} from "./modelTypes.ts"\n`);
+writeOut.write(`import type {Campaign} from "./modelTypes.ts"\n`);
+writeOut.write(`export type OriginalCampaignRoomId = ${Object.keys(rooms).map(rid => `"${rid}"`).join('|')};\n`);
 writeOut.write(`export const originalCampaign = {\n`);
 for (const [roomName, room] of Object.entries(rooms)) {
-    await writeOut.write(`    "${roomName}": ${JSON.stringify(room)} satisfies Room<"${room.planet}">,\n`);
+    await writeOut.write(`    "${roomName}": ${JSON.stringify(room)},\n`);
 }
-await writeOut.write(`} as const;\n`);
-await writeOut.write(`export type OriginalCampaignRoomId = keyof typeof originalCampaign;\n`);
+await writeOut.write(`} as const satisfies Campaign<OriginalCampaignRoomId>;\n`);
 await writeOut.close();
