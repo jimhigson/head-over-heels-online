@@ -8,6 +8,6 @@ export const projectToScreen = (x: number, y: number, z: number = 0): Xyz => {
     x: y - x,
     y: projY,
     // z here is the z-index, for if the renderer needs it
-    z: x + y + z,
+    z: z - x - y,
   };
 };

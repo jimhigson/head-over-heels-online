@@ -206,6 +206,12 @@ export const testCampaign = () => ({
         position: { x: 0, y: 0, z: 0 },
       },
       {
+        type: "teleporter",
+        toRoom: "doorsRoom",
+        // normally nothing in a room is at factional values, but this makes it easy to test:
+        position: { x: 0, y: 1, z: 0.5 },
+      },
+      {
         // comes after in the list but should be drawn behind:
         type: "teleporter",
         toRoom: "doorsRoom",
