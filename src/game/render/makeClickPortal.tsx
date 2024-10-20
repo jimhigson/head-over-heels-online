@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
-import { RoomId } from "../modelTypes";
-import { RenderWorldOptions } from "./renderWorld";
+import { RoomId } from "../../modelTypes";
+import { RenderWorldOptions } from "../renderWorld";
 
 export const makeClickPortal = (
   toRoom: RoomId,

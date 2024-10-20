@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
-import { hintColours } from "../hintColours";
-import { AnyRoom, RoomId } from "../modelTypes";
-import type { TextureId } from "../sprites/pixiSpriteSheet";
+import { hintColours } from "../../hintColours";
+import { AnyRoom, RoomId } from "../../modelTypes";
+import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import {
   RenderWorldOptions,

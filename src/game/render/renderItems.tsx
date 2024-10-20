@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
-import { AnyRoom, RoomId } from "../modelTypes";
-import { Pickup } from "../Item";
+import { AnyRoom, RoomId } from "../../modelTypes";
+import { Pickup } from "../../Item";
 import { RenderWorldOptions } from "./renderWorld";
 import { makeClickPortal } from "./makeClickPortal";
 import { spriteAtBlock } from "./spriteAtBlock";
-import { TextureId } from "../sprites/pixiSpriteSheet";
+import { TextureId } from "../../sprites/pixiSpriteSheet";
 
 const pickupIcons: Record<Pickup["gives"], TextureId> = {
   "extra-life": "items.bunny",

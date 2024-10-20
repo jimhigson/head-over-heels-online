@@ -1,10 +1,11 @@
 import { Sprite } from "pixi.js";
 import {
-  type TextureId,
-  pixiSpriteSheet,
   blockSizePx,
-} from "../sprites/pixiSpriteSheet";
-import { SpriteAtBlockOptions, projectToScreen } from "./renderWorld";
+  pixiSpriteSheet,
+  TextureId,
+} from "../../sprites/pixiSpriteSheet";
+import { SpriteAtBlockOptions } from "./renderWorld";
+import { projectToScreen } from "./projectToScreen";
 
 export const spriteAtBlock = (
   { x, y, z = 0 }: { x: number; y: number; z?: number },

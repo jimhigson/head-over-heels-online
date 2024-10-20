@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Application } from "pixi.js";
-import { renderWorld } from "./renderWorld";
 import { resize } from "./resize";
 import { RoomId } from "../modelTypes";
 import { originalCampaign } from "../originalCampaign";
 import { testCampaign } from "../testCampaign";
+import { renderWorld } from "./render/renderWorld";
 
 const allCampaigns = {
   ...originalCampaign,
@@ -17,7 +17,7 @@ const allCampaigns = {
 export const Game = () => {
   const [app, setApp] = useState<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-  const [roomId, setRoomId] = useState<RoomId>("blacktooth1head");
+  const [roomId, setRoomId] = useState<RoomId>("zRoom");
 
   useEffect(() => {
     if (gameArea === null) return;

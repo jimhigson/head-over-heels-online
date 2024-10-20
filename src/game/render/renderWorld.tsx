@@ -1,28 +1,19 @@
-import { Application, Container, PointData } from "pixi.js";
-import { AnyRoom, PlanetName, Room, RoomId, Xyz } from "../modelTypes";
-import { zxSpectrumResolution } from "../originalGame";
-import { hintColours, Shades } from "../hintColours";
+import { Application, Color, Container, PointData } from "pixi.js";
+import { AnyRoom, PlanetName, Room, RoomId } from "../../modelTypes";
+import { zxSpectrumResolution } from "../../originalGame";
+import { hintColours, Shades } from "../../hintColours";
 import {
   blockSizePx,
   pixiSpriteSheet,
   type TextureId,
-} from "../sprites/pixiSpriteSheet";
+} from "../../sprites/pixiSpriteSheet";
 import { ColorReplaceFilter } from "pixi-filters";
 import { renderItems } from "./renderItems";
 import { renderWalls } from "./renderWalls";
 import { renderFrontDoors } from "./renderDoor";
 import { renderFloor } from "./renderFloor";
+import { projectToScreen } from "./projectToScreen";
 
-/* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectToScreen = (x: number, y: number, z: number = 0): Xyz => {
-  const projY = -(x + y) / 2 - z;
-  return {
-    x: y - x,
-    y: projY,
-    // z here is the z-index, for if the renderer needs it
-    z: (z << 8) + projY,
-  };
-};
 export const xyzBlockPosition = (
   xBlock: number,
   yBlock: number,

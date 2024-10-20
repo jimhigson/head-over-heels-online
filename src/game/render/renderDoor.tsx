@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
-import { AnyRoom, Door, Direction, Xy, RoomId } from "../modelTypes";
-import { doorTexturePivot } from "../sprites/pixiSpriteSheet";
+import { AnyRoom, Door, Direction, Xy, RoomId } from "../../modelTypes";
+import { doorTexturePivot } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { doorTexture, RenderWorldOptions } from "./renderWorld";
 import { spriteAtBlock } from "./spriteAtBlock";

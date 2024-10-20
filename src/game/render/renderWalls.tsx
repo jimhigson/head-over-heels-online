@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
-import { AnyRoom, RoomId, wallTextureId } from "../modelTypes";
-import type { TextureId } from "../sprites/pixiSpriteSheet";
+import { AnyRoom, RoomId, wallTextureId } from "../../modelTypes";
+import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { RenderWorldOptions } from "./renderWorld";
 import { renderDoor } from "./renderDoor";
