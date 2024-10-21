@@ -35,7 +35,7 @@ export default tseslint.config(
         "error",
         {
           props: true,
-          ignorePropertyModificationsForRegex: ["^(draft|app)"],
+          ignorePropertyModificationsForRegex: ["^(draft|app|container|sprite)"],
         },
       ],
       "prettier/prettier": "error",
@@ -43,7 +43,7 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
-          "argsIgnorePattern": "^(_|app)",           
+          "argsIgnorePattern": "^_",           
           "caughtErrorsIgnorePattern": "^_"
         }
     ]

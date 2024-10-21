@@ -62,4 +62,8 @@ export const itemAppearances: {
     anchor: { x: 0.5, y: 1 },
     texture: (d) => pickupIcons[d.gives],
   },
+  player: {
+    anchor: { x: 0.5, y: 1 },
+    texture: ({ which }) => `items.${which}.toward1`,
+  },
 };

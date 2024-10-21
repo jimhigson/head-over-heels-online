@@ -9,7 +9,8 @@ export type ItemType =
   | "conveyor"
   | "pickup"
   | "fish"
-  | "spring";
+  | "spring"
+  | "player";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfig = {
@@ -43,6 +44,9 @@ export type ItemConfig = {
     alive: boolean;
   };
   spring: EmptyObject;
+  player: {
+    which: "head" | "heels";
+  };
 };
 
 export type Item<T extends ItemType> = Simplify<

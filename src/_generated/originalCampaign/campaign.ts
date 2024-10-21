@@ -1,4 +1,5 @@
-import type { Campaign } from "./modelTypes.ts";
+import type { Campaign } from "../../modelTypes.ts";
+
 export type OriginalCampaignRoomId =
   | "blacktooth10"
   | "blacktooth11"
@@ -275,7 +276,8 @@ export type OriginalCampaignRoomId =
   | "safari7"
   | "safari8"
   | "safari9";
-export const originalCampaign = {
+
+export const campaign = {
   blacktooth10: {
     id: "blacktooth10",
     floor: "blacktooth",
@@ -1235,6 +1237,11 @@ export const originalCampaign = {
         config: { gives: "extra-life" },
         position: { x: 5, y: 0, z: 7 },
       },
+      {
+        type: "player",
+        config: { which: "head" },
+        position: { x: 2.5, y: 3.5, z: 0 },
+      },
     ],
     color: "yellow",
   },
@@ -1456,39 +1463,9 @@ export const originalCampaign = {
         position: { x: 0, y: 5, z: 0 },
       },
       {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 3, y: 4, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 2, y: 4, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 1, y: 4, z: 0 },
-      },
-      {
         type: "conveyor",
         config: { direction: "away" },
         position: { x: 0, y: 4, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 3, y: 3, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 2, y: 3, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 1, y: 3, z: 0 },
       },
       {
         type: "conveyor",
@@ -1629,6 +1606,11 @@ export const originalCampaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 0, z: 2 },
+      },
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: { x: 3.5, y: 3.5, z: 0 },
       },
     ],
     color: "cyan",

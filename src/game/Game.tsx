@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Application } from "pixi.js";
 import { resize } from "./resize";
 import { RoomId } from "../modelTypes";
-import { originalCampaign } from "../originalCampaign";
+import { campaign as originalCampaign } from "../_generated/originalCampaign/campaign";
 import { testCampaign } from "../testCampaign";
 import { renderWorld } from "./render/renderWorld";
 

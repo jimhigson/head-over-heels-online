@@ -9,6 +9,7 @@ import {
   paletteSwapFilters,
 } from "./renderWorld";
 import { spriteAtBlock } from "./spriteAtBlock";
+import { renderExtent } from "./renderExtent";
 
 export function* renderFloor(
   room: AnyRoom,
@@ -17,15 +18,8 @@ export function* renderFloor(
   const hasDoorTowards = !!room.doors.towards;
   const hasDoorRight = !!room.doors.right;
 
-  const blockXMin = room.doors.right ? -0.5 : 0;
-  const blockXMax = room.size.x + (room.doors.left ? 0.5 : 0);
-  const blockYMin = room.doors.towards ? -0.5 : 0;
-  const blockYMax = room.size.y + (room.doors.towards ? 0.5 : 0);
-
-  const rightSide = xyzBlockPosition(blockXMin, blockYMax);
-  const leftSide = xyzBlockPosition(blockXMax, blockYMin);
-  const frontSide = xyzBlockPosition(blockXMin, blockYMin); // aka the origin
-  const backSide = xyzBlockPosition(blockXMax, blockYMax); // aka the origin
+  const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
+    renderExtent(room);
 
   const { floor: floorType } = room;
 

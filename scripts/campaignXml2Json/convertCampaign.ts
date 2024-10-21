@@ -6,7 +6,7 @@ import {
   roomNameFromXmlFilename,
   XmlScenery,
 } from "./readToJson";
-import { readdir, open } from "node:fs/promises";
+import { readdir, writeFile } from "node:fs/promises";
 import {
   AnyRoom,
   AnyWall,
@@ -149,7 +149,7 @@ const convertWalls = (
  * a door map that can be used to just know if there is a door on a side, not necessarily
  * to have the door object
  */
-export type LooseDoorMap = Partial<Record<Direction, Door | true>>;
+export type LooseDoorMap = Partial<Record<Direction, Door<Direction> | true>>;
 
 const convertX = (
   xmlX: number | string,
@@ -325,20 +325,33 @@ for (const roomName of allRoomNames) {
   }
 }
 
-const outputFilename = "src/originalCampaign.ts";
-const writeOut = await open(outputFilename, "w");
-writeOut.write(`import type {Campaign} from "./modelTypes.ts"\n`);
-writeOut.write(
-  `export type OriginalCampaignRoomId = ${Object.keys(rooms)
-    .map((rid) => `"${rid}"`)
-    .join("|")};\n`,
-);
-writeOut.write(`export const originalCampaign = {\n`);
-for (const [roomName, room] of Object.entries(rooms)) {
-  await writeOut.write(`    "${roomName}": ${JSON.stringify(room)},\n`);
-}
-await writeOut.write(
-  `} as const satisfies Campaign<OriginalCampaignRoomId>;\n`,
-);
-await writeOut.close();
+const targetDir = "src/_generated/originalCampaign/";
+const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
+const tsFilename = `${targetDir}/campaign.ts`;
 
+import patch from "../../src/_generated/originalCampaign/patch.json";
+import fastJsonPatch, { Operation } from "fast-json-patch";
+
+const writeConvertedJsonPromise = writeFile(
+  jsonConvertedFilename,
+  JSON.stringify(rooms),
+);
+
+const patchedJson = fastJsonPatch.applyPatch(
+  rooms,
+  patch as Operation[],
+).newDocument;
+
+const writeTsPromise = writeFile(
+  tsFilename,
+  `
+import type {Campaign} from "../../modelTypes.ts";\n
+
+export type OriginalCampaignRoomId = ${Object.keys(rooms)
+    .map((rid) => `"${rid}"`)
+    .join("|")};\n
+    
+export const campaign = ${JSON.stringify(patchedJson)} as const satisfies Campaign<OriginalCampaignRoomId>;\n`,
+);
+
+await Promise.all([writeTsPromise, writeConvertedJsonPromise]);

@@ -1,5 +1,5 @@
 import { Application, Container, PointData } from "pixi.js";
-import { AnyRoom, PlanetName, RoomJson, RoomId } from "../../modelTypes";
+import { AnyRoom, PlanetName, RoomJson, RoomId, Xy } from "../../modelTypes";
 import { zxSpectrumResolution } from "../../originalGame";
 import { hintColours, Shades } from "../../hintColours";
 import {
@@ -13,6 +13,7 @@ import { renderWalls } from "./renderWalls";
 import { renderFrontDoors } from "./renderDoor";
 import { renderFloor } from "./renderFloor";
 import { projectToScreen } from "./projectToScreen";
+import { renderExtent } from "./renderExtent";
 
 export const xyzBlockPosition = (
   xBlock: number,
@@ -105,6 +106,18 @@ export type RenderWorldOptions = {
   onPortalClick: (roomId: RoomId) => void;
 };
 
+const centreRoomInRendering = (room: AnyRoom, container: Container): void => {
+  const { leftSide, rightSide, frontSide, top } = renderExtent(room);
+
+  console.log(renderExtent(room));
+
+  const renderingMedianX = (rightSide.x + leftSide.x) / 2;
+  const renderingMedianY = (top + frontSide.y) / 2;
+
+  container.x = -renderingMedianX;
+  container.y = -renderingMedianY;
+};
+
 export const renderWorld = (
   app: Application,
   room: AnyRoom,
@@ -119,9 +132,12 @@ export const renderWorld = (
   // move origin to centre of screen
   // TODO: change depending on geometry of current room
   worldContainer.x = zxSpectrumResolution.width / 2;
-  worldContainer.y = zxSpectrumResolution.height * 0.75;
+  worldContainer.y = zxSpectrumResolution.height * 0.7;
 
   const roomContainer = renderRoom(room, options);
+
+  centreRoomInRendering(room, roomContainer);
+
   worldContainer.addChild(roomContainer);
 
   app.stage.addChild(worldContainer);

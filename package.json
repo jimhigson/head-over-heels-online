@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "check:format": "prettier . --check",
     "fix:format": "prettier . --write",
-    "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/originalCampaign.ts --write"
+    "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
+    "makeCampaignDiff": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write"
   },
   "dependencies": {
     "pixi.js": "^8.4.1",
@@ -33,6 +34,7 @@
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
+    "fast-json-patch": "^3.1.1",
     "globals": "^15.9.0",
     "pixi-filters": "^6.0.5",
     "postcss": "^8.4.47",

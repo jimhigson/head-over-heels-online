@@ -206,6 +206,12 @@ const spritesheetData = {
     "items.spring.released": {
       frame: { x: 29, y: 421, ...smallItemTextureSize },
     },
+    "items.head.toward1": {
+      frame: { x: 29, y: 266, ...smallItemTextureSize },
+    },
+    "items.heels.toward1": {
+      frame: { x: 184, y: 266, ...smallItemTextureSize },
+    },
   },
   animations: {
     fish: ["items.fish1", "items.fish2"],
