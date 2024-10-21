@@ -2,6 +2,7 @@ import { Color } from "pixi.js";
 import { ZxSpectrumRoomColour } from "./originalGame";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
+// use to convert: https://convertacolor.com/
 export type Shades = { basic: Color; dimmed: Color };
 const white = {
   basic: new Color("rgb(200, 200, 200)"),
@@ -12,16 +13,16 @@ const yellow = {
   dimmed: new Color("rgb(119, 118, 79)"),
 };
 const magenta = {
-  basic: new Color("rgb(203, 154, 212)"),
-  dimmed: new Color("rgb(156, 119, 164)"),
+  basic: new Color("hsl(290,40.3%,60%)"),
+  dimmed: new Color("hsl(290,19.8%,40%)"),
 };
 const cyan = {
-  basic: new Color("rgb(108, 148, 150)"),
-  dimmed: new Color("rgb(75, 105, 107)"),
+  basic: new Color("hsl(183, 28%, 50%)"),
+  dimmed: new Color("hsl(183, 28%,30%)"),
 };
 const green = {
-  basic: new Color("rgb(140, 154, 90)"),
-  dimmed: new Color("rgb(97, 110, 47)"),
+  basic: new Color("hsl(73,35%,48%)"),
+  dimmed: new Color("hsl(73,35%,30%)"),
 };
 
 export const hintColours = {
