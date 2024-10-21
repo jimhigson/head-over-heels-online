@@ -22,7 +22,7 @@ type SpriteAppearance = Omit<ItemAppearance<ItemType>, "texture"> & {
 
 export const spriteAtBlock = (
   { x, y, z = 0 }: { x: number; y: number; z?: number },
-  { texture: textureId, anchor, flipX, pivot }: SpriteAppearance,
+  { texture: textureId, anchor, flipX, pivot, animationSpeed }: SpriteAppearance,
   { giveZIndex }: RenderItemOptions = { giveZIndex: false },
 ): Sprite => {
   const isAnimated = Array.isArray(textureId);
@@ -31,7 +31,7 @@ export const spriteAtBlock = (
     : new Sprite(pixiSpriteSheet.textures[textureId]);
 
   if (isAnimated) {
-    (sprite as AnimatedSprite).animationSpeed = 0.1;
+    (sprite as AnimatedSprite).animationSpeed = animationSpeed || 0.1;
     (sprite as AnimatedSprite).play();
   }
 

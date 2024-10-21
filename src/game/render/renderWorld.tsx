@@ -109,8 +109,6 @@ export type RenderWorldOptions = {
 const centreRoomInRendering = (room: AnyRoom, container: Container): void => {
   const { leftSide, rightSide, frontSide, top } = renderExtent(room);
 
-  console.log(renderExtent(room));
-
   const renderingMedianX = (rightSide.x + leftSide.x) / 2;
   const renderingMedianY = (top + frontSide.y) / 2;
 

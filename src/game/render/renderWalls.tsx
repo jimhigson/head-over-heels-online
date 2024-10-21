@@ -20,7 +20,6 @@ export function* renderWalls(
         renderDoor(room, leftDoor, "left"),
       );
       i--;
-      //continue wallLoop;
     } else {
       const textureId = wallTextureId(
         room.planet,
@@ -47,7 +46,6 @@ export function* renderWalls(
         renderDoor(room, awayDoor, "away"),
       );
       i--;
-      //continue wallLoop;
     } else {
       const textureId = wallTextureId(
         room.planet,

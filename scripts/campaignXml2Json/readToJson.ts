@@ -52,7 +52,7 @@ export type Xml2JsonItem = {
       where: CompassDirections;
     }
   | {
-      kind: "teleport" | "brick1" | "brick2" | "vulcano" /* sic */ | 'toaster';
+      kind: "teleport" | "brick1" | "brick2" | "vulcano" /* sic */ | "toaster";
       class: "griditem";
     }
   | {
@@ -66,14 +66,18 @@ export type Xml2JsonItem = {
         | "mortal-fish"
         | "trampoline"
         | "horn"
-        | 'cylinder' // the tower - how is this "free"?
-        ;
+        | "cylinder"; // the tower - how is this "free"?
       class: "freeitem";
     }
   | {
       kind: "conveyor";
       orientation: CompassDirectionsNESW;
       class: "griditem";
+    }
+  | {
+      kind: "elevator";
+      top: string;
+      bottom: string;
     }
 );
 

@@ -15,8 +15,8 @@ export const convertItems = (
 ): UnknownItem[] => {
   return xml2JsonRoom.items
     .map((item): UnknownItem | undefined => {
-      switch (true) {
-        case item.kind === "teleport": {
+      switch (item.kind) {
+        case "teleport": {
           const roomOnMap = map[roomName];
           const destination = roomOnMap.teleport;
 
@@ -33,7 +33,8 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "bars-ns" || item.kind === "bars-ew": {
+        case "bars-ns":
+        case "bars-ew": {
           return {
             type: "barrier",
             config: {
@@ -43,14 +44,17 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "cylinder":
-        case item.kind === "brick1":
-        case item.kind === "brick2": {
-          const styleConversion: Record<typeof item.kind, ItemConfig['block']['style']> = {
-            brick1: 'artificial',
-            brick2: 'organic',
-            cylinder: 'tower'
-          }
+        case "cylinder":
+        case "brick1":
+        case "brick2": {
+          const styleConversion: Record<
+            typeof item.kind,
+            ItemConfig["block"]["style"]
+          > = {
+            brick1: "artificial",
+            brick2: "organic",
+            cylinder: "tower",
+          };
 
           return {
             type: "block",
@@ -61,18 +65,18 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "toaster":
-        case item.kind === "vulcano": {
+        case "toaster":
+        case "vulcano": {
           return {
             type: "deadly-block",
             config: {
-              style: item.kind === "vulcano" ? "volcano" : 'toaster',
+              style: item.kind === "vulcano" ? "volcano" : "toaster",
             },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
 
-        case item.kind === "conveyor": {
+        case "conveyor": {
           return {
             type: "conveyor",
             config: {
@@ -82,10 +86,10 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "extra-life":
-        case item.kind === "donuts":
-        case item.kind === "horn":
-        case item.kind === "handbag": {
+        case "extra-life":
+        case "donuts":
+        case "horn":
+        case "handbag": {
           const conversions = {
             horn: "hooter",
             handbag: "bag",
@@ -100,8 +104,8 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "mortal-fish":
-        case item.kind === "reincarnation-fish": {
+        case "mortal-fish":
+        case "reincarnation-fish": {
           return {
             type: "fish",
             config: {
@@ -111,10 +115,18 @@ export const convertItems = (
           };
         }
 
-        case item.kind === "trampoline": {
+        case "trampoline": {
           return {
             type: "spring",
             config: {},
+            position: convertXYZ(item, xml2JsonRoom, doorMap),
+          };
+        }
+
+        case "elevator": {
+          return {
+            type: "lift", // HoH is a British game :-)
+            config: { top: parseInt(item.top), bottom: parseInt(item.bottom) },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }

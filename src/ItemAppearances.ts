@@ -7,6 +7,7 @@ export type ItemAppearance<T extends ItemType> = {
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
+  animationSpeed?: number;
   texture:
     | TextureId
     | Texture[]
@@ -49,6 +50,12 @@ export const itemAppearances: {
     anchor: { x: 0.5, y: 1 },
     texture: ({ alive }) =>
       alive ? pixiSpriteSheet.animations.fish : "items.fish1",
+    animationSpeed: 0.1,
+  },
+  lift: {
+    anchor: { x: 0.5, y: 1 },
+    texture: pixiSpriteSheet.animations.lift,
+    animationSpeed: 0.25  
   },
   spring: {
     anchor: { x: 0.5, y: 1 },

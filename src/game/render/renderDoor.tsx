@@ -24,8 +24,6 @@ export function* renderDoor(
     [crossAxis]: isBack ? room.size[crossAxis] : -0.5,
   } as Xy;
 
-  console.log("rendering door on side", side, "at", backPos, frontPos);
-
   if (isBack) {
     if (door.z === 0) {
       yield spriteAtBlock(

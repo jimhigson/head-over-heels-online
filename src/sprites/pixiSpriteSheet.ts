@@ -212,9 +212,22 @@ const spritesheetData = {
     "items.heels.toward1": {
       frame: { x: 184, y: 266, ...smallItemTextureSize },
     },
+    "items.lift.4": {
+      frame: { x: 259, y: 474, ...smallItemTextureSize },
+    },
+    "items.lift.3": {
+      frame: { x: 284, y: 474, ...smallItemTextureSize },
+    },
+    "items.lift.2": {
+      frame: { x: 309, y: 474, ...smallItemTextureSize },
+    },
+    "items.lift.1": {
+      frame: { x: 334, y: 474, ...smallItemTextureSize },
+    },
   },
   animations: {
     fish: ["items.fish1", "items.fish2"],
+    lift: ["items.lift.1", "items.lift.2", "items.lift.3", "items.lift.4"],
   },
   meta: { scale: 1 },
 };

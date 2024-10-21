@@ -10,7 +10,8 @@ export type ItemType =
   | "pickup"
   | "fish"
   | "spring"
-  | "player";
+  | "player"
+  | "lift";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfig = {
@@ -46,6 +47,10 @@ export type ItemConfig = {
   spring: EmptyObject;
   player: {
     which: "head" | "heels";
+  };
+  lift: {
+    top: number;
+    bottom: number;
   };
 };
 

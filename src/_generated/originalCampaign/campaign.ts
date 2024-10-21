@@ -1193,6 +1193,11 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 2, y: 2, z: 2 },
       },
+      {
+        type: "lift",
+        config: { top: 7, bottom: 0 },
+        position: { x: 1, y: 2, z: 0 },
+      },
     ],
     color: "white",
   },
@@ -1675,6 +1680,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 0, y: 5, z: 0 },
       },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 5, y: 0, z: 7 },
+      },
     ],
     color: "cyan",
   },
@@ -1724,6 +1734,11 @@ export const campaign = {
         type: "conveyor",
         config: { direction: "away" },
         position: { x: 5, y: 2, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 7, bottom: 0 },
+        position: { x: 5, y: 0, z: 0 },
       },
     ],
     color: "cyan",
@@ -1898,7 +1913,13 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 7, z: 7 },
+      },
+    ],
     color: "white",
   },
   blacktooth3: {
@@ -2180,7 +2201,13 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 7, y: 7, z: 0 },
+      },
+    ],
     color: "cyan",
   },
   blacktooth34: {
@@ -2214,6 +2241,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 6, bottom: 0 },
+        position: { x: 7, y: 7, z: 0 },
       },
     ],
     color: "cyan",
@@ -2369,7 +2401,13 @@ export const campaign = {
       away: ["plain", "shield", "armour", "armour", "shield", "plain"],
       left: ["plain", "shield", "armour", "armour", "shield", "plain"],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 2, y: 0, z: 0 },
+      },
+    ],
     color: "magenta",
   },
   blacktooth4: {
@@ -2392,7 +2430,13 @@ export const campaign = {
       ],
       left: ["plain", "armour", "shield", "shield", "armour", "plain"],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 3, y: 5, z: 0 },
+      },
+    ],
     color: "green",
   },
   blacktooth40fish: {
@@ -3229,7 +3273,13 @@ export const campaign = {
       away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 3, y: 0, z: 0 },
+      },
+    ],
     color: "yellow",
   },
   blacktooth56: {
@@ -5273,6 +5323,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 1, y: 0, z: 1 },
       },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 1, y: 1, z: 0 },
+      },
     ],
     color: "white",
   },
@@ -7262,6 +7317,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 3, y: 3, z: 1 },
+      },
     ],
     color: "white",
   },
@@ -7436,6 +7496,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 6, bottom: 0 },
+        position: { x: 3, y: 3, z: 0 },
       },
     ],
     color: "white",
@@ -8027,7 +8092,13 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   },
   bookworld41crown: {
@@ -8439,6 +8510,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 7, y: 1, z: 3 },
       },
+      {
+        type: "lift",
+        config: { top: 8, bottom: 0 },
+        position: { x: 7, y: 0, z: 0 },
+      },
     ],
     color: "white",
   },
@@ -8513,6 +8589,11 @@ export const campaign = {
         position: { x: 2, y: 0, z: 4 },
       },
       { type: "spring", config: {}, position: { x: 7, y: 0, z: 7 } },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 2 },
+        position: { x: 0, y: 0, z: 2 },
+      },
     ],
     color: "white",
   },
@@ -8587,6 +8668,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 6 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 7, z: 0 },
       },
     ],
     color: "white",
@@ -8950,6 +9036,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 7 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 5, y: 7, z: 0 },
       },
       {
         type: "barrier",
@@ -9891,7 +9982,13 @@ export const campaign = {
         "sarcophagus",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 5, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   },
   egyptus31: {
@@ -9921,7 +10018,13 @@ export const campaign = {
         "hieroglyphics",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 5, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   },
   egyptus32: {
@@ -10192,6 +10295,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 1, y: 0, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -13766,6 +13874,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 1, z: 0 },
+      },
     ],
     color: "white",
   },
@@ -14067,6 +14180,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 3, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -15069,6 +15187,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 4, y: 3, z: 0 },
+      },
     ],
     color: "white",
   },
@@ -15102,7 +15225,13 @@ export const campaign = {
         "loop",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 6, bottom: 0 },
+        position: { x: 4, y: 3, z: 0 },
+      },
+    ],
     color: "white",
   },
   penitentiary25: {
@@ -16124,7 +16253,13 @@ export const campaign = {
         "loop",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 0, y: 4, z: 0 },
+      },
+    ],
     color: "white",
   },
   safari1: {
@@ -16331,6 +16466,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 1, z: 0 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 7, y: 5, z: 0 },
       },
       {
         type: "barrier",
@@ -17921,6 +18061,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 1, y: 0, z: 0 },
       },
+      {
+        type: "lift",
+        config: { top: 8, bottom: 0 },
+        position: { x: 1, y: 4, z: 0 },
+      },
     ],
     color: "cyan",
   },
@@ -18300,6 +18445,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 4, y: 0, z: 3 },
+      },
+      {
+        type: "lift",
+        config: { top: 9, bottom: 0 },
+        position: { x: 7, y: 7, z: 0 },
       },
     ],
     color: "yellow",

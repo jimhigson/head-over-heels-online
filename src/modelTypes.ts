@@ -1,9 +1,9 @@
-import { OriginalCampaignRoomId } from "./originalCampaign";
 import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { TestCampaignRoomId } from "./testCampaign";
 import { ItemType, UnknownItem } from "./Item";
 import { Simplify } from "type-fest";
+import { OriginalCampaignRoomId } from "./_generated/originalCampaign/campaign";
 
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
