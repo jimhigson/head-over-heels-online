@@ -1939,7 +1939,7 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
-        "bars", 
+        "bars",
       ],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
@@ -2207,6 +2207,11 @@ export const campaign = {
         config: { top: 9, bottom: 0 },
         position: { x: 7, y: 7, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 7, y: 4, z: 0 },
+      },
     ],
     color: "cyan",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2402,6 +2407,11 @@ export const campaign = {
       left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 3, z: 0 },
+      },
       {
         type: "lift",
         config: { top: 9, bottom: 0 },
@@ -3752,6 +3762,11 @@ export const campaign = {
         config: { gives: "donuts" },
         position: { x: 7, y: 7, z: 1 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 0, z: 1 },
+      },
     ],
     color: "cyan",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -3950,7 +3965,13 @@ export const campaign = {
       away: ["bars", "none", "none", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 7, z: 1 },
+      },
+    ],
     color: "magenta",
   } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth62fish: {
@@ -4664,6 +4685,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 2, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 3, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -4705,6 +4731,16 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 3, z: 2 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 7, y: 4, z: 0 },
       },
     ],
     color: "white",
@@ -4969,6 +5005,16 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 1, y: 3, z: 0 },
       },
     ],
     color: "white",
@@ -5303,6 +5349,11 @@ export const campaign = {
         position: { x: 1, y: 0, z: 1 },
       },
       {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
         type: "lift",
         config: { top: 9, bottom: 0 },
         position: { x: 1, y: 1, z: 0 },
@@ -5548,6 +5599,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 6, y: 7, z: 1 },
       },
     ],
     color: "white",
@@ -6014,6 +6070,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 6, y: 1, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 3, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6041,6 +6102,11 @@ export const campaign = {
     },
     items: [
       { type: "spring", config: {}, position: { x: 3, y: 3, z: 0 } },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 3, z: 1 },
+      },
       {
         type: "block",
         config: { style: "tower" },
@@ -6437,6 +6503,11 @@ export const campaign = {
         position: { x: 6, y: 4, z: 2 },
       },
       {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 6, y: 3, z: 0 },
@@ -6450,6 +6521,11 @@ export const campaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 6, y: 3, z: 2 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 3, z: 0 },
       },
       {
         type: "barrier",
@@ -6548,7 +6624,19 @@ export const campaign = {
       ],
       left: ["book", "book", "none", "none", "book", "book"],
     },
-    items: [{ type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } }],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 3, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 2, z: 0 },
+      },
+      { type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld18: {
@@ -7005,6 +7093,11 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 7, z: 0 },
+      },
       {
         type: "pickup",
         config: { gives: "donuts" },
@@ -7531,7 +7624,18 @@ export const campaign = {
       ],
       left: ["book", "none", "none", "book"],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 1, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld31: {
@@ -7842,7 +7946,13 @@ export const campaign = {
       ],
       left: ["book", "book", "none", "none", "book", "book"],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 1, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld37: {
@@ -8101,9 +8211,19 @@ export const campaign = {
     },
     items: [
       {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 3, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 4, z: 0 },
       },
     ],
     color: "white",
@@ -9101,7 +9221,17 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 0, y: 3, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 4, z: 0 },
+      },
       { type: "spring", config: {}, position: { x: 6, y: 3, z: 4 } },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 3, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -9283,6 +9413,11 @@ export const campaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 2, y: 2, z: 2 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -9701,6 +9836,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 5, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 7, y: 5, z: 1 },
       },
       {
         type: "pickup",
@@ -10134,6 +10274,11 @@ export const campaign = {
         position: { x: 0, y: 2, z: 0 },
       },
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 5, y: 4, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10517,6 +10662,16 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 3, y: 3, z: 2 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 3, y: 0, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10899,6 +11054,16 @@ export const campaign = {
         type: "block",
         config: { style: "tower" },
         position: { x: 1, y: 6, z: 2 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 2, z: 0 },
       },
       {
         type: "block",
@@ -11747,6 +11912,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 7, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 5, z: 0 },
       },
     ],
     color: "white",
@@ -14428,7 +14598,18 @@ export const campaign = {
         "loop",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 1, y: 3, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary2: {
@@ -14514,6 +14695,11 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 0, y: 3, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 6, y: 3, z: 2 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -14528,7 +14714,14 @@ export const campaign = {
       away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
     },
-    items: [{ type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } }],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 3, z: 1 },
+      },
+      { type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } },
+    ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary21: {
@@ -15779,6 +15972,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 2, y: 0, z: 4 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 1, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16452,6 +16650,11 @@ export const campaign = {
         position: { x: 7, y: 5, z: 0 },
       },
       {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 5, y: 5, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 5, z: 0 },
@@ -16697,6 +16900,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 3, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 2, y: 12, z: 1 },
       },
     ],
     color: "white",
@@ -17167,6 +17375,11 @@ export const campaign = {
         config: { axis: "y" },
         position: { x: 13, y: 0, z: 1 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 12, y: 0, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -17355,6 +17568,11 @@ export const campaign = {
         config: { gives: "donuts" },
         position: { x: 0, y: 7, z: 5 },
       },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 4, y: 4, z: 0 },
+      },
     ],
     color: "yellow",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -17410,6 +17628,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 1, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 0, y: 4, z: 0 },
       },
     ],
     color: "white",
@@ -18821,6 +19044,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 3, z: 2 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek" },
+        position: { x: 7, y: 4, z: 1 },
       },
     ],
     color: "cyan",

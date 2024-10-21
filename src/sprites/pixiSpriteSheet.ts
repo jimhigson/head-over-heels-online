@@ -224,10 +224,17 @@ const spritesheetData = {
     "items.lift.1": {
       frame: { x: 334, y: 474, ...smallItemTextureSize },
     },
+    "items.baddies.dalek.1": {
+      frame: { x: 4, y: 4, ...smallItemTextureSize },
+    },
+    "items.baddies.dalek.2": {
+      frame: { x: 29, y: 4, ...smallItemTextureSize },
+    },
   },
   animations: {
     fish: ["items.fish1", "items.fish2"],
     lift: ["items.lift.1", "items.lift.2", "items.lift.3", "items.lift.4"],
+    dalek: ["items.baddies.dalek.1", "items.baddies.dalek.2"],
   },
   meta: { scale: 1 },
 };

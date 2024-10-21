@@ -55,7 +55,7 @@ export const itemAppearances: {
   lift: {
     anchor: { x: 0.5, y: 1 },
     texture: pixiSpriteSheet.animations.lift,
-    animationSpeed: 0.25  
+    animationSpeed: 0.2,
   },
   spring: {
     anchor: { x: 0.5, y: 1 },
@@ -72,5 +72,11 @@ export const itemAppearances: {
   player: {
     anchor: { x: 0.5, y: 1 },
     texture: ({ which }) => `items.${which}.toward1`,
+  },
+  baddie: {
+    anchor: { x: 0.5, y: 1 },
+    // TODO: render other baddies
+    texture: pixiSpriteSheet.animations.dalek,
+    animationSpeed: 0.2,
   },
 };

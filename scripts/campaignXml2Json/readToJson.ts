@@ -66,7 +66,8 @@ export type Xml2JsonItem = {
         | "mortal-fish"
         | "trampoline"
         | "horn"
-        | "cylinder"; // the tower - how is this "free"?
+        | "cylinder" // the tower - how is this "free"?
+        | "siren"; // daleks!
       class: "freeitem";
     }
   | {

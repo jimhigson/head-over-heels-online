@@ -11,6 +11,7 @@ export type ItemType =
   | "fish"
   | "spring"
   | "player"
+  | "baddie"
   | "lift";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
@@ -51,6 +52,9 @@ export type ItemConfig = {
   lift: {
     top: number;
     bottom: number;
+  };
+  baddie: {
+    which: "dalek";
   };
 };
 

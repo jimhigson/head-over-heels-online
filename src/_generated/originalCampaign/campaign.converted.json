@@ -1961,6 +1961,11 @@
         "type": "lift",
         "config": { "top": 9, "bottom": 0 },
         "position": { "x": 7, "y": 7, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 7, "y": 4, "z": 0 }
       }
     ],
     "color": "cyan"
@@ -2161,6 +2166,11 @@
       "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
       {
         "type": "lift",
         "config": { "top": 9, "bottom": 0 },
@@ -3539,6 +3549,11 @@
         "type": "pickup",
         "config": { "gives": "donuts" },
         "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 0, "z": 1 }
       }
     ],
     "color": "cyan"
@@ -3738,7 +3753,13 @@
       "away": ["bars", "none", "none", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 7, "z": 1 }
+      }
+    ],
     "color": "magenta"
   },
   "blacktooth62fish": {
@@ -4459,6 +4480,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 2, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 3, "z": 0 }
       }
     ],
     "color": "white"
@@ -4501,6 +4527,16 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 7, "y": 3, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 7, "y": 4, "z": 0 }
       }
     ],
     "color": "white"
@@ -4765,6 +4801,16 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 1, "y": 3, "z": 0 }
       }
     ],
     "color": "white"
@@ -5099,6 +5145,11 @@
         "position": { "x": 1, "y": 0, "z": 1 }
       },
       {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
         "type": "lift",
         "config": { "top": 9, "bottom": 0 },
         "position": { "x": 1, "y": 1, "z": 0 }
@@ -5348,6 +5399,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 7, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 6, "y": 7, "z": 1 }
       }
     ],
     "color": "white"
@@ -5813,6 +5869,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 6, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 3, "z": 0 }
       }
     ],
     "color": "white"
@@ -5844,6 +5905,11 @@
         "type": "spring",
         "config": {},
         "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 3, "z": 1 }
       },
       {
         "type": "block",
@@ -6249,6 +6315,11 @@
         "position": { "x": 6, "y": 4, "z": 2 }
       },
       {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 6, "y": 3, "z": 0 }
@@ -6262,6 +6333,11 @@
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 6, "y": 3, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 3, "z": 0 }
       },
       {
         "type": "barrier",
@@ -6361,6 +6437,16 @@
       "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 2, "z": 0 }
+      },
       { "type": "spring", "config": {}, "position": { "x": 2, "y": 2, "z": 0 } }
     ],
     "color": "white"
@@ -6819,6 +6905,11 @@
       ]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 7, "z": 0 }
+      },
       {
         "type": "pickup",
         "config": { "gives": "donuts" },
@@ -7345,7 +7436,18 @@
       ],
       "left": ["book", "none", "none", "book"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 1, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld31": {
@@ -7656,7 +7758,13 @@
       ],
       "left": ["book", "book", "none", "none", "book", "book"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 1, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld37": {
@@ -7915,9 +8023,19 @@
     },
     "items": [
       {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 3, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 4, "z": 0 }
       }
     ],
     "color": "white"
@@ -8919,7 +9037,21 @@
         "config": { "style": "artificial" },
         "position": { "x": 0, "y": 3, "z": 0 }
       },
-      { "type": "spring", "config": {}, "position": { "x": 6, "y": 3, "z": 4 } }
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "spring",
+        "config": {},
+        "position": { "x": 6, "y": 3, "z": 4 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 3, "z": 0 }
+      }
     ],
     "color": "white"
   },
@@ -9101,6 +9233,11 @@
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 2, "y": 2, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -9519,6 +9656,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 5, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 7, "y": 5, "z": 1 }
       },
       {
         "type": "pickup",
@@ -9957,6 +10099,11 @@
         "type": "fish",
         "config": { "alive": true },
         "position": { "x": 0, "y": 7, "z": 5 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 5, "y": 4, "z": 0 }
       }
     ],
     "color": "white"
@@ -10340,6 +10487,16 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 3, "y": 3, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 7, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 3, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -10723,6 +10880,16 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 6, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 5, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 2, "z": 0 }
       },
       {
         "type": "block",
@@ -11575,6 +11742,11 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 7, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 5, "z": 0 }
       }
     ],
     "color": "white"
@@ -14260,7 +14432,18 @@
         "loop"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 1, "y": 3, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "penitentiary2": {
@@ -14345,6 +14528,11 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 6, "y": 3, "z": 2 }
       }
     ],
     "color": "white"
@@ -14361,6 +14549,11 @@
       "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 3, "z": 1 }
+      },
       { "type": "spring", "config": {}, "position": { "x": 3, "y": 2, "z": 1 } }
     ],
     "color": "white"
@@ -15616,6 +15809,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 2, "y": 0, "z": 4 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 1, "z": 0 }
       }
     ],
     "color": "white"
@@ -16294,6 +16492,11 @@
         "position": { "x": 7, "y": 5, "z": 0 }
       },
       {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 5, "y": 5, "z": 0 }
+      },
+      {
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 4, "y": 5, "z": 0 }
@@ -16539,6 +16742,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 3, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 2, "y": 12, "z": 1 }
       }
     ],
     "color": "white"
@@ -17016,6 +17224,11 @@
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 13, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 12, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -17204,6 +17417,11 @@
         "type": "pickup",
         "config": { "gives": "donuts" },
         "position": { "x": 0, "y": 7, "z": 5 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 4, "y": 4, "z": 0 }
       }
     ],
     "color": "yellow"
@@ -17260,6 +17478,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 1, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 0, "y": 4, "z": 0 }
       }
     ],
     "color": "white"
@@ -18673,6 +18896,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 7, "y": 3, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": { "which": "dalek" },
+        "position": { "x": 7, "y": 4, "z": 1 }
       }
     ],
     "color": "cyan"

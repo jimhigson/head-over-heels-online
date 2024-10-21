@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { ItemConfig, ItemType, UnknownItem } from "../../src/Item";
 import {
   LooseDoorMap,
@@ -15,6 +16,8 @@ export const convertItems = (
 ): UnknownItem[] => {
   return xml2JsonRoom.items
     .map((item): UnknownItem | undefined => {
+      const position = convertXYZ(item, xml2JsonRoom, doorMap);
+
       switch (item.kind) {
         case "teleport": {
           const roomOnMap = map[roomName];
@@ -29,7 +32,7 @@ export const convertItems = (
             config: {
               toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -40,7 +43,7 @@ export const convertItems = (
             config: {
               axis: item.kind === "bars-ns" ? "y" : "x",
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -61,7 +64,7 @@ export const convertItems = (
             config: {
               style: styleConversion[item.kind],
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -72,7 +75,7 @@ export const convertItems = (
             config: {
               style: item.kind === "vulcano" ? "volcano" : "toaster",
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -82,7 +85,7 @@ export const convertItems = (
             config: {
               direction: convertDirection(item.orientation),
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -100,7 +103,7 @@ export const convertItems = (
             config: {
               gives: conversions[item.kind] || item.kind,
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -111,7 +114,7 @@ export const convertItems = (
             config: {
               alive: item.kind === "reincarnation-fish",
             },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -119,7 +122,7 @@ export const convertItems = (
           return {
             type: "spring",
             config: {},
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
           };
         }
 
@@ -127,7 +130,15 @@ export const convertItems = (
           return {
             type: "lift", // HoH is a British game :-)
             config: { top: parseInt(item.top), bottom: parseInt(item.bottom) },
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
+            position,
+          };
+        }
+
+        case "siren": {
+          return {
+            type: "baddie",
+            config: { which: "dalek" },
+            position,
           };
         }
 
