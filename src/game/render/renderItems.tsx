@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { AnyRoom, RoomId } from "../../modelTypes";
 import { RenderWorldOptions } from "./renderWorld";
 import { makeClickPortal } from "./makeClickPortal";
@@ -7,9 +7,11 @@ import { TextureId } from "../../sprites/pixiSpriteSheet";
 import { ItemAppearance, itemAppearances } from "../../ItemAppearances";
 import { Item, ItemType } from "../../Item";
 
-const reifyTexture = <T extends ItemType>(item: Item<T>): TextureId => {
+const reifyTexture = <T extends ItemType>(
+  item: Item<T>,
+): TextureId | Texture[] => {
   const appearanceTexture = itemAppearances[item.type]
-    .textureId as ItemAppearance<T>["textureId"];
+    .texture as ItemAppearance<T>["texture"];
   return typeof appearanceTexture === "function"
     ? appearanceTexture(item.config)
     : appearanceTexture;
@@ -20,9 +22,12 @@ export function* renderItems(
   options: RenderWorldOptions,
 ): Generator<Container, undefined, undefined> {
   for (const item of room.items) {
+    const reifiedTextureId = reifyTexture(item);
+    const itemAppearance = itemAppearances[item.type];
+
     const sprite = spriteAtBlock(
       item.position,
-      { ...itemAppearances[item.type], textureId: reifyTexture(item) },
+      { ...itemAppearance, texture: reifiedTextureId },
       {
         giveZIndex: true,
       },

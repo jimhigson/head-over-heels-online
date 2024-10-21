@@ -38,7 +38,7 @@ export function* renderDoor(
         {
           anchor: { x: 0, y: 1 },
           flipX: side === "away",
-          textureId: "generic.wall.overdraw",
+          texture: "generic.wall.overdraw",
         },
       );
     } else {
@@ -46,14 +46,14 @@ export function* renderDoor(
       for (const p of [backPos, frontPos]) {
         yield spriteAtBlock(p, {
           pivot: { x: pivotX, y: 9 },
-          textureId: "generic.door.legs.base",
+          texture: "generic.door.legs.base",
         });
         for (let z = 1; z <= door.z; z++) {
           yield spriteAtBlock(
             { ...p, z },
             {
               pivot: { x: pivotX, y: 9 },
-              textureId: "generic.door.legs.pillar",
+              texture: "generic.door.legs.pillar",
             },
           );
         }
@@ -61,7 +61,7 @@ export function* renderDoor(
           { ...p, z: door.z },
           {
             pivot: { x: pivotX, y: 15 },
-            textureId: `generic.door.legs.threshold.${axis}`,
+            texture: `generic.door.legs.threshold.${axis}`,
           },
         );
       }
@@ -75,7 +75,7 @@ export function* renderDoor(
 
           {
             pivot: { x: pivotX, y: 12 },
-            textureId: `generic.door.threshold.${axis}`,
+            texture: `generic.door.threshold.${axis}`,
           },
         );
       }
@@ -88,14 +88,14 @@ export function* renderDoor(
     { ...backPos, z: door.z },
     {
       pivot: doorTexturePivot[axis],
-      textureId: backTexture,
+      texture: backTexture,
     },
   );
   yield spriteAtBlock(
     { ...frontPos, z: door.z },
     {
       pivot: doorTexturePivot[axis],
-      textureId: frontTexture,
+      texture: frontTexture,
     },
   );
 }

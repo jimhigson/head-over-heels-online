@@ -31,7 +31,7 @@ export function* renderWalls(
         { x: room.size.x, y: i },
         {
           anchor: { x: 0, y: 1 },
-          textureId,
+          texture: textureId,
         },
       );
     }
@@ -58,7 +58,7 @@ export function* renderWalls(
         { x: i, y: room.size.y },
         {
           anchor: { x: 1, y: 1 },
-          textureId,
+          texture: textureId,
         },
       );
     }

@@ -79,7 +79,7 @@ const colourRooms = () => {
                   y: 2,
                   z: 0,
                 },
-                config: {toRoom: "doorsRoom"},
+                config: { toRoom: "doorsRoom" },
               },
             ],
             id: `${p}-${c}`,
@@ -122,7 +122,7 @@ export const testCampaign = () => ({
     items: [
       {
         type: "teleporter",
-        config:{toRoom: "blacktooth-cyan"},
+        config: { toRoom: "blacktooth-cyan" },
         position: {
           x: 1,
           y: 0,
@@ -149,78 +149,78 @@ export const testCampaign = () => ({
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 0, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 1, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 2, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 2, z: 1 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 2, z: 0 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 3, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 4, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 3, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config:{axis: "y"},
+        config: { axis: "y" },
         position: { x: 1, y: 4, z: 2 },
       },
       {
         type: "teleporter",
-        config: {toRoom: "doorsRoom"},
+        config: { toRoom: "doorsRoom" },
         position: { x: 0, y: 0, z: 0 },
       },
       {
         type: "teleporter",
-        config: {toRoom: "doorsRoom"},
+        config: { toRoom: "doorsRoom" },
         // normally nothing in a room is at factional values, but this makes it easy to test:
         position: { x: 0, y: 1, z: 0.5 },
       },
       {
         // comes after in the list but should be drawn behind:
         type: "teleporter",
-        config: {toRoom: "doorsRoom"},
+        config: { toRoom: "doorsRoom" },
         position: { x: 1, y: 1, z: 0 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "teleporter",
-        config: {toRoom: "doorsRoom"},
+        config: { toRoom: "doorsRoom" },
         position: { x: 2, y: 2, z: 0 },
       },
     ],

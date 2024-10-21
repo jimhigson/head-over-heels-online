@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 import {
   blockSizePx,
   pixiSpriteSheet,
@@ -16,16 +16,25 @@ export type RenderItemOptions = {
   giveZIndex?: boolean;
 };
 
-type SpriteAppearance = Omit<ItemAppearance<ItemType>, "textureId"> & {
-  textureId: TextureId;
+type SpriteAppearance = Omit<ItemAppearance<ItemType>, "texture"> & {
+  texture: TextureId | Texture[];
 };
 
 export const spriteAtBlock = (
   { x, y, z = 0 }: { x: number; y: number; z?: number },
-  { textureId, anchor, flipX, pivot }: SpriteAppearance,
+  { texture: textureId, anchor, flipX, pivot }: SpriteAppearance,
   { giveZIndex }: RenderItemOptions = { giveZIndex: false },
 ): Sprite => {
-  const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
+  const isAnimated = Array.isArray(textureId);
+  const sprite = isAnimated
+    ? new AnimatedSprite(textureId)
+    : new Sprite(pixiSpriteSheet.textures[textureId]);
+
+  if (isAnimated) {
+    (sprite as AnimatedSprite).animationSpeed = 0.1;
+    (sprite as AnimatedSprite).play();
+  }
+
   if (anchor !== undefined) sprite.anchor = anchor;
   if (pivot !== undefined) sprite.pivot = pivot;
 

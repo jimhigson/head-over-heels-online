@@ -47,7 +47,7 @@ export function* renderFloor(
             { x: ix, y: iy },
             {
               anchor: { x: 0.5, y: 1 },
-              textureId: floorTileTexture,
+              texture: floorTileTexture,
             },
           ),
         );
@@ -74,7 +74,7 @@ export function* renderFloor(
     rightEdge.addChild(
       spriteAtBlock(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
-        { pivot: { x: 7, y: 1 }, textureId: "generic.edge.towards" },
+        { pivot: { x: 7, y: 1 }, texture: "generic.edge.towards" },
       ),
     );
   }
@@ -84,7 +84,7 @@ export function* renderFloor(
     towardsEdge.addChild(
       spriteAtBlock(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
-        { pivot: { x: 0, y: 1 }, textureId: "generic.edge.right" },
+        { pivot: { x: 0, y: 1 }, texture: "generic.edge.right" },
       ),
     );
   }

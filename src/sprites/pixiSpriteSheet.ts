@@ -81,7 +81,7 @@ const backgroundFrames = <TPlanet extends PlanetName>(
 
 const spritesTexture = await Assets.load<Texture>(spritesheetUrl);
 
-export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
+const spritesheetData = {
   frames: {
     ...backgroundFrames("blacktooth", 487, 335),
     ...backgroundFrames("bookworld", 356, 23),
@@ -164,7 +164,7 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
     "items.block.organic": {
       frame: { x: 172, y: 388, ...largeItemTextureSize },
     },
-    "items.block.artificial": { 
+    "items.block.artificial": {
       frame: { x: 138, y: 388, ...largeItemTextureSize },
     },
     "items.block.tower": {
@@ -207,10 +207,16 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
       frame: { x: 29, y: 421, ...smallItemTextureSize },
     },
   },
+  animations: {
+    fish: ["items.fish1", "items.fish2"],
+  },
   meta: { scale: 1 },
-});
+};
+
+export const pixiSpriteSheet = new Spritesheet(spritesTexture, spritesheetData);
 
 await pixiSpriteSheet.parse();
 pixiSpriteSheet.textureSource.scaleMode = "nearest";
 
 export type TextureId = keyof (typeof pixiSpriteSheet)["textures"];
+export type AnimationId = keyof (typeof pixiSpriteSheet)["animations"];

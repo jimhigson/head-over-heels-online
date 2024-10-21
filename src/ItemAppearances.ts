@@ -1,13 +1,16 @@
-import { PointData } from "pixi.js";
+import { PointData, Texture } from "pixi.js";
 import { ItemType, ItemConfig } from "./Item";
-import { TextureId } from "./sprites/pixiSpriteSheet";
+import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = {
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
-  textureId: TextureId | ((data: ItemConfig[T]) => TextureId);
+  texture:
+    | TextureId
+    | Texture[]
+    | ((data: ItemConfig[T]) => TextureId | Texture[]);
 };
 
 const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
@@ -25,37 +28,38 @@ export const itemAppearances: {
 } = {
   barrier: {
     anchor: { x: 0.5, y: 1 },
-    textureId: (d) => `items.barrier.${d.axis}`,
+    texture: (d) => `items.barrier.${d.axis}`,
   },
   "deadly-block": {
     anchor: { x: 0.5, y: 1 },
-    textureId: (d) => `items.${d.style}`,
+    texture: (d) => `items.${d.style}`,
   },
   block: {
     anchor: { x: 0.5, y: 1 },
-    textureId: (d) => `items.block.${d.style}`,
+    texture: ({ style }) => `items.block.${style}`,
   },
   conveyor: {
     anchor: { x: 0.5, y: 1 },
-    textureId: (d) =>
-      d.direction === "left" || d.direction === "right"
+    texture: ({ direction }) =>
+      direction === "left" || direction === "right"
         ? "items.conveyor.x"
         : "items.conveyor.y",
   },
   fish: {
     anchor: { x: 0.5, y: 1 },
-    textureId: "items.fish1", // TODO: animate if alive
+    texture: ({ alive }) =>
+      alive ? pixiSpriteSheet.animations.fish : "items.fish1",
   },
   spring: {
     anchor: { x: 0.5, y: 1 },
-    textureId: "items.spring.released",
+    texture: "items.spring.released",
   },
   teleporter: {
     anchor: { x: 0.5, y: 1 },
-    textureId: "items.teleporter",
+    texture: "items.teleporter",
   },
   pickup: {
     anchor: { x: 0.5, y: 1 },
-    textureId: (d) => pickupIcons[d.gives],
+    texture: (d) => pickupIcons[d.gives],
   },
 };
