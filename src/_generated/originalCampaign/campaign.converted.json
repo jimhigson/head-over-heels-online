@@ -23,7 +23,7 @@
         "armour",
         "plain"
       ],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -101,8 +101,8 @@
       "towards": { "ordinal": 3, "z": 0, "toRoom": "blacktooth31" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "away": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -368,7 +368,7 @@
         "armour",
         "plain"
       ],
-      "left": ["armour", "armour"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -415,8 +415,8 @@
       "right": { "ordinal": 2, "z": 0, "toRoom": "blacktooth12" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -590,7 +590,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth13" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "armour",
@@ -629,8 +629,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -656,26 +656,26 @@
         "shield",
         "armour",
         "plain",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ],
       "left": [
         "plain",
         "shield",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "shield",
         "plain",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ]
     },
     "items": [
@@ -822,7 +822,7 @@
         "armour",
         "plain"
       ],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [],
     "color": "cyan"
@@ -841,8 +841,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -1007,7 +1007,7 @@
       "towards": { "ordinal": 2, "z": 0, "toRoom": "blacktooth19" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
     },
     "items": [],
@@ -1027,8 +1027,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -1148,8 +1148,8 @@
       "towards": { "ordinal": 2, "z": 1, "toRoom": "blacktooth21fish" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
     },
     "items": [
       {
@@ -1173,7 +1173,7 @@
     "doors": { "left": { "ordinal": 3, "z": 0, "toRoom": "blacktooth1head" } },
     "walls": {
       "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -1390,8 +1390,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -1445,7 +1445,7 @@
     "size": { "x": 7, "y": 6 },
     "doors": { "away": { "ordinal": 2, "z": 2, "toRoom": "blacktooth27fish" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      "away": ["bars", "bars", "none", "none", "bars", "bars", "none"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -1503,7 +1503,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "blacktooth26" }
     },
     "walls": {
-      "away": ["shield", "armour", "armour", "shield"],
+      "away": ["shield", "none", "none", "shield"],
       "left": [
         "plain",
         "armour",
@@ -1545,8 +1545,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -1689,12 +1689,12 @@
         "bars",
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars"
+        "none"
       ],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
@@ -1720,7 +1720,7 @@
     "size": { "x": 7, "y": 9 },
     "doors": { "right": { "ordinal": 3, "z": 1, "toRoom": "blacktooth31" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
       "left": [
         "bars",
         "bars",
@@ -1730,7 +1730,7 @@
         "bars",
         "bars",
         "bars",
-        "bars"
+        "none"
       ]
     },
     "items": [
@@ -1787,12 +1787,12 @@
       "left": { "ordinal": 2, "z": 3, "toRoom": "blacktooth30" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": [
         "plain",
         "shield",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "shield",
         "plain",
         "plain",
@@ -1912,7 +1912,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth11" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "armour",
@@ -1977,12 +1977,12 @@
         "bars",
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars"
+        "none"
       ],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
@@ -2028,8 +2028,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -2090,7 +2090,7 @@
       "right": { "ordinal": 2, "z": 0, "toRoom": "blacktooth35" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
     },
     "items": [],
@@ -2106,7 +2106,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "blacktooth36" }
     },
     "walls": {
-      "away": ["shield", "armour", "armour", "shield"],
+      "away": ["shield", "none", "none", "shield"],
       "left": [
         "plain",
         "armour",
@@ -2129,8 +2129,8 @@
     "size": { "x": 7, "y": 7 },
     "doors": { "towards": { "ordinal": 2, "z": 1, "toRoom": "blacktooth37" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
     },
     "items": [
       {
@@ -2157,8 +2157,8 @@
       "left": { "ordinal": 2, "z": 5, "toRoom": "blacktooth41" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -2379,7 +2379,7 @@
         "armour",
         "plain"
       ],
-      "left": ["armour", "armour"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -2404,7 +2404,7 @@
         "armour",
         "plain"
       ],
-      "left": ["armour", "armour"]
+      "left": ["none", "none"]
     },
     "items": [
       { "type": "spring", "config": {}, "position": { "x": 1, "y": 1, "z": 0 } }
@@ -2419,8 +2419,8 @@
     "size": { "x": 7, "y": 7 },
     "doors": { "right": { "ordinal": 2, "z": 1, "toRoom": "blacktooth42" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
     },
     "items": [
       {
@@ -2480,8 +2480,8 @@
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage"
@@ -2490,8 +2490,8 @@
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage"
@@ -2555,8 +2555,8 @@
       "away": [
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits"
       ],
@@ -2586,8 +2586,8 @@
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage"
@@ -2692,8 +2692,8 @@
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage"
@@ -2722,7 +2722,7 @@
         "more-fruits",
         "fruits"
       ],
-      "left": ["passage", "passage"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -2769,13 +2769,13 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth7" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -2820,8 +2820,8 @@
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage"
@@ -2839,7 +2839,7 @@
       "away": { "ordinal": 2, "z": 0, "toRoom": "blacktooth50market" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+      "away": ["bars", "bars", "none", "none", "bars", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -2879,8 +2879,8 @@
       "away": [
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits"
       ],
@@ -2970,8 +2970,8 @@
       "away": [
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits"
       ],
@@ -3008,9 +3008,9 @@
         "bars",
         "bars",
         "bars",
-        "bars"
+        "none"
       ],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
     },
     "items": [
       {
@@ -3037,7 +3037,7 @@
       "right": { "ordinal": 2, "z": 0, "toRoom": "blacktooth56" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      "away": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -3060,7 +3060,7 @@
     },
     "walls": {
       "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -3115,8 +3115,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -3125,8 +3125,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -3169,18 +3169,18 @@
       "away": [
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ],
       "left": [
         "bars",
@@ -3189,14 +3189,14 @@
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ]
     },
     "items": [
@@ -3414,8 +3414,8 @@
       "towards": { "ordinal": 3, "z": 4, "toRoom": "blacktooth58triple" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+      "away": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -3735,7 +3735,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "blacktooth55" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars"],
+      "away": ["bars", "none", "none", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [],
@@ -3922,7 +3922,7 @@
     },
     "walls": {
       "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      "left": ["bars", "bars"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -3955,7 +3955,7 @@
     "size": { "x": 6, "y": 6 },
     "doors": { "away": { "ordinal": 2, "z": 0, "toRoom": "blacktooth65" } },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
     },
     "items": [
@@ -3992,7 +3992,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth64" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "armour",
@@ -4018,7 +4018,7 @@
       "towards": { "ordinal": 2, "z": 0, "toRoom": "blacktooth65" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": [
         "plain",
         "armour",
@@ -4048,8 +4048,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4058,8 +4058,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4164,8 +4164,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4258,7 +4258,7 @@
     "doors": { "left": { "ordinal": 2, "z": 0, "toRoom": "blacktooth67" } },
     "walls": {
       "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -4295,13 +4295,13 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth8fish" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4320,7 +4320,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "blacktooth67" }
     },
     "walls": {
-      "away": ["armour", "armour"],
+      "away": ["none", "none"],
       "left": [
         "plain",
         "armour",
@@ -4411,8 +4411,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4484,7 +4484,7 @@
         "armour",
         "plain"
       ],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -4525,7 +4525,7 @@
         "armour",
         "plain"
       ],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -4683,7 +4683,7 @@
       "towards": { "ordinal": 2, "z": 1, "toRoom": "blacktooth76" }
     },
     "walls": {
-      "away": ["plain", "shield", "armour", "armour", "shield", "plain"],
+      "away": ["plain", "shield", "none", "none", "shield", "plain"],
       "left": [
         "plain",
         "armour",
@@ -4783,8 +4783,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -4889,7 +4889,7 @@
         "armour",
         "plain"
       ],
-      "left": ["shield", "armour", "armour", "shield"]
+      "left": ["shield", "none", "none", "shield"]
     },
     "items": [
       {
@@ -5025,8 +5025,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5035,8 +5035,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5123,7 +5123,7 @@
         "plain",
         "armour",
         "plain",
-        "armour"
+        "none"
       ],
       "left": [
         "plain",
@@ -5134,7 +5134,7 @@
         "plain",
         "armour",
         "plain",
-        "armour"
+        "none"
       ]
     },
     "items": [
@@ -5206,7 +5206,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "blacktooth78" }
     },
     "walls": {
-      "away": ["shield", "armour", "armour", "shield"],
+      "away": ["shield", "none", "none", "shield"],
       "left": [
         "plain",
         "armour",
@@ -5296,8 +5296,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5372,7 +5372,7 @@
         "armour",
         "plain"
       ],
-      "left": ["plain", "shield", "armour", "armour", "shield", "plain"]
+      "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
       {
@@ -5584,8 +5584,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5659,8 +5659,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5715,7 +5715,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "blacktooth87crown" }
     },
     "walls": {
-      "away": ["shield", "armour", "armour", "shield"],
+      "away": ["shield", "none", "none", "shield"],
       "left": [
         "plain",
         "armour",
@@ -5741,8 +5741,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -5827,7 +5827,7 @@
       "right": { "ordinal": 3, "z": 0, "toRoom": "blacktooth9" }
     },
     "walls": {
-      "away": ["shield", "armour", "armour", "shield"],
+      "away": ["shield", "none", "none", "shield"],
       "left": [
         "plain",
         "armour",
@@ -5889,8 +5889,8 @@
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain"
@@ -6070,8 +6070,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -6100,7 +6100,7 @@
         "book",
         "book"
       ],
-      "left": ["person", "person"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -6156,7 +6156,7 @@
         "book",
         "book"
       ],
-      "left": ["person", "person"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -6185,8 +6185,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -6295,8 +6295,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -6326,7 +6326,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "bookworld18" }
     },
     "walls": {
-      "away": ["book", "person", "person", "book"],
+      "away": ["book", "none", "none", "book"],
       "left": [
         "book",
         "book",
@@ -6358,7 +6358,7 @@
         "book",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [
       { "type": "spring", "config": {}, "position": { "x": 2, "y": 2, "z": 0 } }
@@ -6375,7 +6375,7 @@
       "towards": { "ordinal": 2, "z": 2, "toRoom": "bookworld19" }
     },
     "walls": {
-      "away": ["book", "book", "person", "person", "book", "book"],
+      "away": ["book", "book", "none", "none", "book", "book"],
       "left": [
         "book",
         "book",
@@ -6400,7 +6400,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "bookworld20" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "book",
@@ -6470,7 +6470,7 @@
         "person",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [
       {
@@ -6632,8 +6632,8 @@
       "towards": { "ordinal": 2, "z": 4, "toRoom": "bookworld34" }
     },
     "walls": {
-      "away": ["book", "book", "person", "person", "book", "book"],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "away": ["book", "book", "none", "none", "book", "book"],
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [],
     "color": "white"
@@ -6652,8 +6652,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -6682,7 +6682,7 @@
       "right": { "ordinal": 3, "z": 0, "toRoom": "bookworld23" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "book",
@@ -6715,7 +6715,7 @@
     },
     "walls": {
       "away": ["book", "person", "book", "book", "person", "book"],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [],
     "color": "white"
@@ -6740,7 +6740,7 @@
         "book",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [
       {
@@ -6791,7 +6791,7 @@
         "book",
         "book"
       ],
-      "left": ["person", "person"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -6811,8 +6811,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -6837,7 +6837,7 @@
       "towards": { "ordinal": 0, "z": 4, "toRoom": "bookworld28" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "book",
@@ -6864,8 +6864,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7135,7 +7135,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ],
       "left": [
         "book",
@@ -7146,7 +7146,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ]
     },
     "items": [
@@ -7318,7 +7318,7 @@
         "book",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [],
     "color": "white"
@@ -7343,7 +7343,7 @@
         "book",
         "book"
       ],
-      "left": ["book", "person", "person", "book"]
+      "left": ["book", "none", "none", "book"]
     },
     "items": [],
     "color": "white"
@@ -7376,7 +7376,7 @@
         "person",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [
       {
@@ -7494,12 +7494,12 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ]
     },
     "items": [],
@@ -7520,8 +7520,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7550,7 +7550,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "bookworld33" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "person",
@@ -7597,8 +7597,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7648,13 +7648,13 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
       ],
-      "left": ["book", "book", "person", "person", "book", "book"]
+      "left": ["book", "book", "none", "none", "book", "book"]
     },
     "items": [],
     "color": "white"
@@ -7669,7 +7669,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "bookworld36" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "book",
@@ -7722,7 +7722,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ],
       "left": [
         "book",
@@ -7733,7 +7733,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ]
     },
     "items": [],
@@ -7757,7 +7757,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ],
       "left": [
         "book",
@@ -7768,7 +7768,7 @@
         "person",
         "book",
         "book",
-        "person"
+        "none"
       ]
     },
     "items": [
@@ -7841,13 +7841,13 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "bookworld5" }
     },
     "walls": {
-      "away": ["person", "person"],
+      "away": ["none", "none"],
       "left": [
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7868,8 +7868,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7932,7 +7932,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "bookworld6" }
     },
     "walls": {
-      "away": ["book", "person", "person", "book"],
+      "away": ["book", "none", "none", "book"],
       "left": [
         "book",
         "book",
@@ -7957,13 +7957,13 @@
       "left": { "ordinal": 3, "z": 3, "toRoom": "bookworld11" }
     },
     "walls": {
-      "away": ["book", "person", "person", "book"],
+      "away": ["book", "none", "none", "book"],
       "left": [
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -7988,7 +7988,7 @@
       "towards": { "ordinal": 1, "z": 4, "toRoom": "bookworld8" }
     },
     "walls": {
-      "away": ["book", "person", "person", "book"],
+      "away": ["book", "none", "none", "book"],
       "left": [
         "book",
         "book",
@@ -8017,8 +8017,8 @@
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book"
@@ -8058,7 +8058,7 @@
         "book",
         "book"
       ],
-      "left": ["book", "person", "person", "book"]
+      "left": ["book", "none", "none", "book"]
     },
     "items": [],
     "color": "white"
@@ -8084,8 +8084,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -8130,8 +8130,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -8140,8 +8140,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -8196,7 +8196,7 @@
         "hieroglyphics",
         "hieroglyphics"
       ],
-      "left": ["sarcophagus", "sarcophagus"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -8215,8 +8215,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -8407,12 +8407,12 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ],
       "left": [
         "hieroglyphics",
@@ -8555,11 +8555,11 @@
       "away": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ],
       "left": [
         "hieroglyphics",
@@ -8631,8 +8631,8 @@
       "left": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics"
       ]
@@ -8794,7 +8794,7 @@
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ],
       "left": [
         "hieroglyphics",
@@ -8805,7 +8805,7 @@
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -8881,8 +8881,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -8945,12 +8945,12 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -9007,7 +9007,7 @@
         "hieroglyphics",
         "hieroglyphics"
       ],
-      "left": ["sarcophagus", "sarcophagus"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -9026,8 +9026,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -9119,8 +9119,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -9389,13 +9389,13 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
       ],
-      "left": ["hieroglyphics", "sarcophagus", "sarcophagus", "hieroglyphics"]
+      "left": ["hieroglyphics", "none", "none", "hieroglyphics"]
     },
     "items": [],
     "color": "white"
@@ -9542,8 +9542,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -9552,8 +9552,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -9662,8 +9662,8 @@
       "left": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics"
       ]
@@ -9697,12 +9697,12 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -9744,7 +9744,7 @@
         "hieroglyphics",
         "hieroglyphics"
       ],
-      "left": ["sarcophagus", "sarcophagus"]
+      "left": ["none", "none"]
     },
     "items": [
       { "type": "spring", "config": {}, "position": { "x": 4, "y": 1, "z": 0 } }
@@ -9767,7 +9767,7 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ],
       "left": [
         "hieroglyphics",
@@ -9778,7 +9778,7 @@
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -9844,7 +9844,7 @@
         "hieroglyphics",
         "hieroglyphics"
       ],
-      "left": ["sarcophagus", "sarcophagus", "sarcophagus"]
+      "left": ["none", "none", "none"]
     },
     "items": [
       {
@@ -9872,8 +9872,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -9896,8 +9896,8 @@
       "away": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics"
       ],
@@ -10045,7 +10045,7 @@
     "size": { "x": 3, "y": 9 },
     "doors": {},
     "walls": {
-      "away": ["hieroglyphics", "hieroglyphics", "sarcophagus"],
+      "away": ["hieroglyphics", "hieroglyphics", "none"],
       "left": [
         "hieroglyphics",
         "hieroglyphics",
@@ -10055,7 +10055,7 @@
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -10120,12 +10120,12 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus"
+        "none"
       ]
     },
     "items": [
@@ -10171,8 +10171,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -10358,8 +10358,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -10473,16 +10473,16 @@
       "away": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics"
       ],
       "left": [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics"
       ]
@@ -10545,8 +10545,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -10605,8 +10605,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -10676,8 +10676,8 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics"
@@ -10767,7 +10767,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "egyptus8" }
     },
     "walls": {
-      "away": ["hieroglyphics", "sarcophagus", "sarcophagus", "hieroglyphics"],
+      "away": ["hieroglyphics", "none", "none", "hieroglyphics"],
       "left": [
         "hieroglyphics",
         "hieroglyphics",
@@ -10959,8 +10959,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11064,8 +11064,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11121,13 +11121,13 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "moonbase10" }
     },
     "walls": {
-      "away": ["window1", "window1"],
+      "away": ["none", "none"],
       "left": [
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11227,13 +11227,13 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "moonbase3" }
     },
     "walls": {
-      "away": ["window3", "window1", "window1", "window1"],
+      "away": ["window3", "none", "none", "window1"],
       "left": [
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11329,7 +11329,7 @@
         "window2",
         "window1"
       ],
-      "left": ["window1", "window1"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "white"
@@ -11431,14 +11431,7 @@
     "size": { "x": 6, "y": 6 },
     "doors": { "away": { "ordinal": 2, "z": 0, "toRoom": "moonbase16" } },
     "walls": {
-      "away": [
-        "window3",
-        "window2",
-        "window1",
-        "window1",
-        "window2",
-        "window1"
-      ],
+      "away": ["window3", "window2", "none", "none", "window2", "window1"],
       "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
     },
     "items": [
@@ -11473,7 +11466,7 @@
     "doors": { "left": { "ordinal": 2, "z": 0, "toRoom": "moonbase12" } },
     "walls": {
       "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-      "left": ["window3", "window2", "window1", "window1", "window2", "window1"]
+      "left": ["window3", "window2", "none", "none", "window2", "window1"]
     },
     "items": [
       {
@@ -11519,7 +11512,7 @@
         "window2",
         "window1"
       ],
-      "left": ["window1", "window1"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -11554,8 +11547,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11602,8 +11595,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11612,8 +11605,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11702,14 +11695,7 @@
     "size": { "x": 6, "y": 8 },
     "doors": { "away": { "ordinal": 2, "z": 0, "toRoom": "moonbase20" } },
     "walls": {
-      "away": [
-        "window3",
-        "window2",
-        "window1",
-        "window1",
-        "window2",
-        "window1"
-      ],
+      "away": ["window3", "window2", "none", "none", "window2", "window1"],
       "left": [
         "window2",
         "window1",
@@ -11791,8 +11777,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11801,8 +11787,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -11934,8 +11920,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12055,7 +12041,7 @@
         "window2",
         "window1"
       ],
-      "left": ["window1", "window1"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -12092,7 +12078,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "moonbase30" }
     },
     "walls": {
-      "away": ["window1", "window1"],
+      "away": ["none", "none"],
       "left": [
         "window2",
         "window1",
@@ -12118,7 +12104,7 @@
     },
     "walls": {
       "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-      "left": ["window3", "window2", "window1", "window1", "window2", "window1"]
+      "left": ["window3", "window2", "none", "none", "window2", "window1"]
     },
     "items": [],
     "color": "white"
@@ -12249,8 +12235,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12321,15 +12307,8 @@
       "left": { "ordinal": 2, "z": 0, "toRoom": "moonbase31" }
     },
     "walls": {
-      "away": [
-        "window3",
-        "window2",
-        "window1",
-        "window1",
-        "window2",
-        "window1"
-      ],
-      "left": ["window3", "window2", "window1", "window1", "window2", "window1"]
+      "away": ["window3", "window2", "none", "none", "window2", "window1"],
+      "left": ["window3", "window2", "none", "none", "window2", "window1"]
     },
     "items": [],
     "color": "white"
@@ -12379,8 +12358,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12494,8 +12473,8 @@
       "away": [
         "window3",
         "window2",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window2",
         "window1",
         "window1",
@@ -12517,8 +12496,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12657,8 +12636,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12853,8 +12832,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12863,8 +12842,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -12989,7 +12968,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "moonbase4" }
     },
     "walls": {
-      "away": ["window3", "window1", "window1", "window1"],
+      "away": ["window3", "none", "none", "window1"],
       "left": [
         "window2",
         "window1",
@@ -13018,8 +12997,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -13124,8 +13103,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -13206,8 +13185,8 @@
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1"
@@ -13295,7 +13274,7 @@
     "doors": { "left": { "ordinal": 2, "z": 0, "toRoom": "moonbase10" } },
     "walls": {
       "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-      "left": ["window3", "window2", "window1", "window1", "window2", "window1"]
+      "left": ["window3", "window2", "none", "none", "window2", "window1"]
     },
     "items": [
       {
@@ -13328,7 +13307,7 @@
     "size": { "x": 6, "y": 8 },
     "doors": { "away": { "ordinal": 2, "z": 0, "toRoom": "penitentiary2" } },
     "walls": {
-      "away": ["loop", "loop", "loop", "loop", "loop", "loop"],
+      "away": ["loop", "loop", "none", "none", "loop", "loop"],
       "left": [
         "loop",
         "loop",
@@ -13372,7 +13351,7 @@
     "size": { "x": 3, "y": 8 },
     "doors": { "away": { "ordinal": 0, "z": 2, "toRoom": "penitentiary11" } },
     "walls": {
-      "away": ["loop", "loop", "loop"],
+      "away": ["none", "none", "none"],
       "left": [
         "loop",
         "loop",
@@ -13455,8 +13434,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -13465,8 +13444,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -13614,9 +13593,9 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
-      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"]
+      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"]
     },
     "items": [
       {
@@ -13730,7 +13709,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -13741,7 +13720,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -13956,7 +13935,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -13967,7 +13946,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -14033,12 +14012,12 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -14163,7 +14142,7 @@
         "loop",
         "loop"
       ],
-      "left": ["loop", "loop", "loop", "loop", "loop", "loop"]
+      "left": ["loop", "loop", "none", "none", "loop", "loop"]
     },
     "items": [
       {
@@ -14269,7 +14248,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "penitentiary12" }
     },
     "walls": {
-      "away": ["loop", "loop", "loop", "loop"],
+      "away": ["loop", "none", "none", "loop"],
       "left": [
         "loop",
         "loop",
@@ -14299,8 +14278,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -14309,8 +14288,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -14406,7 +14385,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -14417,7 +14396,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -14632,7 +14611,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -14643,7 +14622,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -14853,7 +14832,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -14864,7 +14843,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -15043,12 +15022,12 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
-        "loop"
+        "none"
       ],
       "left": [
         "loop",
@@ -15080,7 +15059,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "penitentiary24" }
     },
     "walls": {
-      "away": ["loop", "loop"],
+      "away": ["none", "none"],
       "left": [
         "loop",
         "loop",
@@ -15175,7 +15154,7 @@
         "loop",
         "loop"
       ],
-      "left": ["loop", "loop"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -15231,8 +15210,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -15275,7 +15254,7 @@
         "loop",
         "loop"
       ],
-      "left": ["loop", "loop", "loop"]
+      "left": ["none", "none", "none"]
     },
     "items": [
       {
@@ -15365,8 +15344,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -15422,8 +15401,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -15487,9 +15466,9 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ],
-      "left": ["loop", "loop", "loop"]
+      "left": ["loop", "loop", "none"]
     },
     "items": [
       {
@@ -15655,8 +15634,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -15767,8 +15746,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -15892,8 +15871,8 @@
     "size": { "x": 7, "y": 7 },
     "doors": {},
     "walls": {
-      "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"],
-      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"]
+      "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
+      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"]
     },
     "items": [
       {
@@ -15938,7 +15917,7 @@
     "doors": { "left": { "ordinal": 2, "z": 3, "toRoom": "penitentiary7" } },
     "walls": {
       "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
-      "left": ["loop", "loop", "loop", "loop", "loop", "loop", "loop"]
+      "left": ["loop", "loop", "none", "none", "loop", "loop", "none"]
     },
     "items": [
       {
@@ -15993,8 +15972,8 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop"
@@ -16078,7 +16057,7 @@
     "size": { "x": 3, "y": 9 },
     "doors": {},
     "walls": {
-      "away": ["loop", "loop", "loop"],
+      "away": ["loop", "loop", "none"],
       "left": [
         "loop",
         "loop",
@@ -16088,7 +16067,7 @@
         "skeleton",
         "loop",
         "loop",
-        "loop"
+        "none"
       ]
     },
     "items": [
@@ -16107,7 +16086,7 @@
     "size": { "x": 6, "y": 8 },
     "doors": { "away": { "ordinal": 2, "z": 0, "toRoom": "safari2" } },
     "walls": {
-      "away": ["wall", "shield", "window", "window", "shield", "wall"],
+      "away": ["wall", "shield", "none", "none", "shield", "wall"],
       "left": [
         "wall",
         "window",
@@ -16161,7 +16140,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       {
@@ -16273,7 +16252,7 @@
     },
     "walls": {
       "away": ["shield", "wall", "window", "window", "wall", "shield"],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [],
     "color": "white"
@@ -16417,12 +16396,12 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window"
+        "none"
       ],
       "left": ["shield", "wall", "window", "window", "wall", "shield"]
     },
@@ -16484,8 +16463,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -16525,7 +16504,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "safari13" }
     },
     "walls": {
-      "away": ["wall", "window", "window", "wall"],
+      "away": ["wall", "none", "none", "wall"],
       "left": [
         "wall",
         "window",
@@ -16574,7 +16553,7 @@
       "towards": { "ordinal": 1, "z": 0, "toRoom": "safari15" }
     },
     "walls": {
-      "away": ["wall", "window", "window", "wall"],
+      "away": ["wall", "none", "none", "wall"],
       "left": [
         "wall",
         "window",
@@ -16665,8 +16644,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -16675,8 +16654,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -16781,7 +16760,7 @@
       "towards": { "ordinal": 0, "z": 3, "toRoom": "safari4" }
     },
     "walls": {
-      "away": ["window", "window"],
+      "away": ["none", "none"],
       "left": [
         "wall",
         "window",
@@ -16895,31 +16874,31 @@
         "wall",
         "window",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ],
       "left": [
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ]
     },
     "items": [
@@ -17055,8 +17034,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -17157,13 +17136,13 @@
       "right": { "ordinal": 3, "z": 0, "toRoom": "safari19triple" }
     },
     "walls": {
-      "away": ["wall", "window", "window", "wall"],
+      "away": ["wall", "none", "none", "wall"],
       "left": [
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -17239,7 +17218,7 @@
       "towards": { "ordinal": 0, "z": 0, "toRoom": "safari20" }
     },
     "walls": {
-      "away": ["window", "window"],
+      "away": ["none", "none"],
       "left": [
         "wall",
         "window",
@@ -17297,7 +17276,7 @@
     },
     "walls": {
       "away": ["shield", "wall", "window", "window", "wall", "shield"],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       {
@@ -17383,7 +17362,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       {
@@ -17453,8 +17432,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -17508,8 +17487,8 @@
         "shield",
         "wall",
         "shield",
-        "window",
-        "window",
+        "none",
+        "none",
         "shield",
         "wall"
       ]
@@ -17768,7 +17747,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       { "type": "spring", "config": {}, "position": { "x": 3, "y": 2, "z": 0 } }
@@ -17799,8 +17778,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -17844,8 +17823,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -17880,7 +17859,7 @@
       "towards": { "ordinal": 1, "z": 5, "toRoom": "safari2" }
     },
     "walls": {
-      "away": ["wall", "window", "window", "wall"],
+      "away": ["wall", "none", "none", "wall"],
       "left": [
         "wall",
         "window",
@@ -17970,8 +17949,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -18121,7 +18100,7 @@
         "window",
         "wall"
       ],
-      "left": ["window", "window"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "magenta"
@@ -18142,8 +18121,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -18152,8 +18131,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -18323,7 +18302,7 @@
         "wall",
         "window",
         "wall",
-        "window"
+        "none"
       ],
       "left": [
         "wall",
@@ -18334,7 +18313,7 @@
         "wall",
         "window",
         "wall",
-        "window"
+        "none"
       ]
     },
     "items": [
@@ -18413,12 +18392,12 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window"
+        "none"
       ]
     },
     "items": [
@@ -18642,8 +18621,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -18652,8 +18631,8 @@
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall"
@@ -18718,7 +18697,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "window", "window", "wall"]
+      "left": ["wall", "none", "none", "wall"]
     },
     "items": [],
     "color": "yellow"
@@ -18741,12 +18720,12 @@
         "window",
         "wall",
         "shield",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ],
       "left": [
         "shield",
@@ -18755,12 +18734,12 @@
         "window",
         "wall",
         "shield",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window"
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
       ]
     },
     "items": [
@@ -18904,7 +18883,7 @@
     },
     "walls": {
       "away": ["shield", "wall", "window", "window", "wall", "shield"],
-      "left": ["wall", "shield", "window", "window", "shield", "wall"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       {
@@ -18975,7 +18954,7 @@
         "window",
         "wall"
       ],
-      "left": ["window", "window"]
+      "left": ["none", "none"]
     },
     "items": [],
     "color": "green"
@@ -19001,7 +18980,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "shield", "window", "window", "shield", "wall", "window"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall", "none"]
     },
     "items": [
       {

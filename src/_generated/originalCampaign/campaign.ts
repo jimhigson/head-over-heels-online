@@ -1,4 +1,4 @@
-import type { Campaign } from "../../modelTypes.ts";
+import type { Campaign, RoomJson } from "../../modelTypes.ts";
 
 export type OriginalCampaignRoomId =
   | "blacktooth10"
@@ -302,7 +302,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -367,7 +367,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth11: {
     id: "blacktooth11",
     floor: "jail",
@@ -380,8 +380,8 @@ export const campaign = {
       towards: { ordinal: 3, z: 0, toRoom: "blacktooth31" },
     },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -626,7 +626,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth12: {
     id: "blacktooth12",
     floor: "deadly",
@@ -647,7 +647,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["armour", "armour"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -682,7 +682,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth13: {
     id: "blacktooth13",
     floor: "blacktooth",
@@ -694,8 +694,8 @@ export const campaign = {
       right: { ordinal: 2, z: 0, toRoom: "blacktooth12" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -740,7 +740,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth14: {
     id: "blacktooth14",
     floor: "blacktooth",
@@ -858,7 +858,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth15: {
     id: "blacktooth15",
     floor: "blacktooth",
@@ -869,7 +869,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth13" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "armour",
@@ -883,7 +883,7 @@ export const campaign = {
     },
     items: [],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth16: {
     id: "blacktooth16",
     floor: "blacktooth",
@@ -908,8 +908,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -917,7 +917,7 @@ export const campaign = {
     },
     items: [],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth17triple: {
     id: "blacktooth17triple",
     floor: "blacktooth",
@@ -935,26 +935,26 @@ export const campaign = {
         "shield",
         "armour",
         "plain",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
       left: [
         "plain",
         "shield",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "shield",
         "plain",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
-        "armour",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
     },
     items: [
@@ -1080,7 +1080,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth18: {
     id: "blacktooth18",
     floor: "blacktooth",
@@ -1101,11 +1101,11 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth19: {
     id: "blacktooth19",
     floor: "blacktooth",
@@ -1120,8 +1120,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -1200,7 +1200,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth1head: {
     id: "blacktooth1head",
     floor: "jail",
@@ -1249,7 +1249,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth2: {
     id: "blacktooth2",
     floor: "blacktooth",
@@ -1277,7 +1277,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth20: {
     id: "blacktooth20",
     floor: "blacktooth",
@@ -1289,12 +1289,12 @@ export const campaign = {
       towards: { ordinal: 2, z: 0, toRoom: "blacktooth19" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: ["plain", "armour", "shield", "shield", "armour", "plain"],
     },
     items: [],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth21fish: {
     id: "blacktooth21fish",
     floor: "deadly",
@@ -1309,8 +1309,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -1415,7 +1415,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 7, y: 4, z: 3 } },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth22: {
     id: "blacktooth22",
     floor: "none",
@@ -1424,8 +1424,8 @@ export const campaign = {
     size: { x: 7, y: 7 },
     doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth21fish" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
     },
     items: [
       {
@@ -1440,7 +1440,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth23heels: {
     id: "blacktooth23heels",
     floor: "jail",
@@ -1449,7 +1449,7 @@ export const campaign = {
     doors: { left: { ordinal: 3, z: 0, toRoom: "blacktooth1head" } },
     walls: {
       away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -1619,7 +1619,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth24: {
     id: "blacktooth24",
     floor: "blacktooth",
@@ -1641,8 +1641,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -1657,7 +1657,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 4, y: 4, z: 0 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth25: {
     id: "blacktooth25",
     floor: "blacktooth",
@@ -1687,7 +1687,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth26: {
     id: "blacktooth26",
     floor: "none",
@@ -1696,7 +1696,7 @@ export const campaign = {
     size: { x: 7, y: 6 },
     doors: { away: { ordinal: 2, z: 2, toRoom: "blacktooth27fish" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "none", "none", "bars", "bars", "none"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -1742,7 +1742,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth27fish: {
     id: "blacktooth27fish",
     floor: "blacktooth",
@@ -1754,7 +1754,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "blacktooth26" },
     },
     walls: {
-      away: ["shield", "armour", "armour", "shield"],
+      away: ["shield", "none", "none", "shield"],
       left: [
         "plain",
         "armour",
@@ -1770,7 +1770,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 2, y: 3, z: 1 } },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth28: {
     id: "blacktooth28",
     floor: "deadly",
@@ -1792,8 +1792,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -1892,7 +1892,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth29: {
     id: "blacktooth29",
     floor: "blacktooth",
@@ -1921,7 +1921,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth3: {
     id: "blacktooth3",
     floor: "none",
@@ -1934,12 +1934,12 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
+        "bars", 
       ],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
@@ -1956,7 +1956,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth30: {
     id: "blacktooth30",
     floor: "none",
@@ -1965,7 +1965,7 @@ export const campaign = {
     size: { x: 7, y: 9 },
     doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth31" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
       left: [
         "bars",
         "bars",
@@ -1975,7 +1975,7 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
-        "bars",
+        "none",
       ],
     },
     items: [
@@ -2021,7 +2021,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth31: {
     id: "blacktooth31",
     floor: "blacktooth",
@@ -2032,12 +2032,12 @@ export const campaign = {
       left: { ordinal: 2, z: 3, toRoom: "blacktooth30" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: [
         "plain",
         "shield",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "shield",
         "plain",
         "plain",
@@ -2146,7 +2146,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth32: {
     id: "blacktooth32",
     floor: "blacktooth",
@@ -2157,7 +2157,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth11" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "armour",
@@ -2171,7 +2171,7 @@ export const campaign = {
     },
     items: [],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth33: {
     id: "blacktooth33",
     floor: "blacktooth",
@@ -2209,7 +2209,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth34: {
     id: "blacktooth34",
     floor: "none",
@@ -2222,12 +2222,12 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
+        "none",
       ],
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
@@ -2249,7 +2249,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth35: {
     id: "blacktooth35",
     floor: "deadly",
@@ -2273,8 +2273,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -2320,7 +2320,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 1, y: 2, z: 0 } },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth36: {
     id: "blacktooth36",
     floor: "blacktooth",
@@ -2331,12 +2331,12 @@ export const campaign = {
       right: { ordinal: 2, z: 0, toRoom: "blacktooth35" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: ["plain", "armour", "shield", "shield", "armour", "plain"],
     },
     items: [],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth37: {
     id: "blacktooth37",
     floor: "blacktooth",
@@ -2347,7 +2347,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "blacktooth36" },
     },
     walls: {
-      away: ["shield", "armour", "armour", "shield"],
+      away: ["shield", "none", "none", "shield"],
       left: [
         "plain",
         "armour",
@@ -2361,7 +2361,7 @@ export const campaign = {
     },
     items: [],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth38: {
     id: "blacktooth38",
     floor: "none",
@@ -2370,8 +2370,8 @@ export const campaign = {
     size: { x: 7, y: 7 },
     doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth37" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
     },
     items: [
       {
@@ -2386,7 +2386,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth39: {
     id: "blacktooth39",
     floor: "blacktooth",
@@ -2398,8 +2398,8 @@ export const campaign = {
       left: { ordinal: 2, z: 5, toRoom: "blacktooth41" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -2409,7 +2409,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth4: {
     id: "blacktooth4",
     floor: "blacktooth",
@@ -2438,7 +2438,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth40fish: {
     id: "blacktooth40fish",
     floor: "deadly",
@@ -2599,7 +2599,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth41: {
     id: "blacktooth41",
     floor: "blacktooth",
@@ -2620,11 +2620,11 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["armour", "armour"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth42: {
     id: "blacktooth42",
     floor: "blacktooth",
@@ -2645,11 +2645,11 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["armour", "armour"],
+      left: ["none", "none"],
     },
     items: [{ type: "spring", config: {}, position: { x: 1, y: 1, z: 0 } }],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth43: {
     id: "blacktooth43",
     floor: "none",
@@ -2658,8 +2658,8 @@ export const campaign = {
     size: { x: 7, y: 7 },
     doors: { right: { ordinal: 2, z: 1, toRoom: "blacktooth42" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
     },
     items: [
       {
@@ -2674,7 +2674,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth44market: {
     id: "blacktooth44market",
     floor: "market",
@@ -2702,7 +2702,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth45market: {
     id: "blacktooth45market",
     floor: "market",
@@ -2717,8 +2717,8 @@ export const campaign = {
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage",
@@ -2727,8 +2727,8 @@ export const campaign = {
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage",
@@ -2777,7 +2777,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth46market: {
     id: "blacktooth46market",
     floor: "market",
@@ -2789,14 +2789,7 @@ export const campaign = {
       towards: { ordinal: 2, z: 0, toRoom: "blacktooth45market" },
     },
     walls: {
-      away: [
-        "more-fruits",
-        "fruits",
-        "passage",
-        "passage",
-        "more-fruits",
-        "fruits",
-      ],
+      away: ["more-fruits", "fruits", "none", "none", "more-fruits", "fruits"],
       left: [
         "passage",
         "more-fruits",
@@ -2808,7 +2801,7 @@ export const campaign = {
     },
     items: [],
     color: "yellow",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth47market: {
     id: "blacktooth47market",
     floor: "deadly",
@@ -2823,8 +2816,8 @@ export const campaign = {
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage",
@@ -2913,7 +2906,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth48market: {
     id: "blacktooth48market",
     floor: "market",
@@ -2929,8 +2922,8 @@ export const campaign = {
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage",
@@ -2938,7 +2931,7 @@ export const campaign = {
     },
     items: [],
     color: "magenta",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth49market: {
     id: "blacktooth49market",
     floor: "market",
@@ -2959,7 +2952,7 @@ export const campaign = {
         "more-fruits",
         "fruits",
       ],
-      left: ["passage", "passage"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -2994,7 +2987,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth5: {
     id: "blacktooth5",
     floor: "blacktooth",
@@ -3006,13 +2999,13 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth7" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -3031,7 +3024,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth50market: {
     id: "blacktooth50market",
     floor: "market",
@@ -3057,8 +3050,8 @@ export const campaign = {
         "passage",
         "more-fruits",
         "fruits",
-        "passage",
-        "passage",
+        "none",
+        "none",
         "more-fruits",
         "fruits",
         "passage",
@@ -3066,7 +3059,7 @@ export const campaign = {
     },
     items: [],
     color: "cyan",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth51: {
     id: "blacktooth51",
     floor: "jail",
@@ -3074,7 +3067,7 @@ export const campaign = {
     size: { x: 6, y: 8 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth50market" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "none", "none", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -3100,7 +3093,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth52market: {
     id: "blacktooth52market",
     floor: "market",
@@ -3111,14 +3104,7 @@ export const campaign = {
       right: { ordinal: 2, z: 0, toRoom: "blacktooth50market" },
     },
     walls: {
-      away: [
-        "more-fruits",
-        "fruits",
-        "passage",
-        "passage",
-        "more-fruits",
-        "fruits",
-      ],
+      away: ["more-fruits", "fruits", "none", "none", "more-fruits", "fruits"],
       left: [
         "passage",
         "more-fruits",
@@ -3191,7 +3177,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth53market: {
     id: "blacktooth53market",
     floor: "market",
@@ -3202,14 +3188,7 @@ export const campaign = {
       towards: { ordinal: 2, z: 0, toRoom: "blacktooth52market" },
     },
     walls: {
-      away: [
-        "more-fruits",
-        "fruits",
-        "passage",
-        "passage",
-        "more-fruits",
-        "fruits",
-      ],
+      away: ["more-fruits", "fruits", "none", "none", "more-fruits", "fruits"],
       left: [
         "more-fruits",
         "fruits",
@@ -3223,7 +3202,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth54: {
     id: "blacktooth54",
     floor: "none",
@@ -3241,9 +3220,9 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
-        "bars",
+        "none",
       ],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
     },
     items: [
       {
@@ -3258,7 +3237,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth55: {
     id: "blacktooth55",
     floor: "jail",
@@ -3270,7 +3249,7 @@ export const campaign = {
       right: { ordinal: 2, z: 0, toRoom: "blacktooth56" },
     },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -3281,7 +3260,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth56: {
     id: "blacktooth56",
     floor: "jail",
@@ -3293,7 +3272,7 @@ export const campaign = {
     },
     walls: {
       away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -3333,7 +3312,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth57: {
     id: "blacktooth57",
     floor: "blacktooth",
@@ -3348,8 +3327,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -3358,8 +3337,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -3388,7 +3367,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth58triple: {
     id: "blacktooth58triple",
     floor: "deadly",
@@ -3402,18 +3381,18 @@ export const campaign = {
       away: [
         "bars",
         "bars",
+        "none",
+        "none",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
       left: [
         "bars",
@@ -3422,14 +3401,14 @@ export const campaign = {
         "bars",
         "bars",
         "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
     },
     items: [
@@ -3635,7 +3614,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth59: {
     id: "blacktooth59",
     floor: "jail",
@@ -3647,8 +3626,8 @@ export const campaign = {
       towards: { ordinal: 3, z: 4, toRoom: "blacktooth58triple" },
     },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -3698,7 +3677,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth6: {
     id: "blacktooth6",
     floor: "deadly",
@@ -3775,7 +3754,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth60: {
     id: "blacktooth60",
     floor: "blacktooth",
@@ -3957,7 +3936,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth61: {
     id: "blacktooth61",
     floor: "jail",
@@ -3968,12 +3947,12 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "blacktooth55" },
     },
     walls: {
-      away: ["bars", "bars", "bars", "bars"],
+      away: ["bars", "none", "none", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [],
     color: "magenta",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth62fish: {
     id: "blacktooth62fish",
     floor: "deadly",
@@ -4135,7 +4114,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 0, y: 6, z: 0 } },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth63: {
     id: "blacktooth63",
     floor: "jail",
@@ -4147,7 +4126,7 @@ export const campaign = {
     },
     walls: {
       away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      left: ["bars", "bars"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -4172,7 +4151,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   blacktooth64: {
     id: "blacktooth64",
     floor: "blacktooth",
@@ -4180,7 +4159,7 @@ export const campaign = {
     size: { x: 6, y: 6 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth65" } },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: ["plain", "armour", "shield", "shield", "armour", "plain"],
     },
     items: [
@@ -4206,7 +4185,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth65: {
     id: "blacktooth65",
     floor: "blacktooth",
@@ -4217,7 +4196,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth64" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "armour",
@@ -4231,7 +4210,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth66: {
     id: "blacktooth66",
     floor: "blacktooth",
@@ -4243,7 +4222,7 @@ export const campaign = {
       towards: { ordinal: 2, z: 0, toRoom: "blacktooth65" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: [
         "plain",
         "armour",
@@ -4257,7 +4236,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth67: {
     id: "blacktooth67",
     floor: "blacktooth",
@@ -4273,8 +4252,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -4283,8 +4262,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -4364,7 +4343,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 0, y: 0, z: 5 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth68: {
     id: "blacktooth68",
     floor: "deadly",
@@ -4389,8 +4368,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -4474,7 +4453,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth69: {
     id: "blacktooth69",
     floor: "blacktooth",
@@ -4483,7 +4462,7 @@ export const campaign = {
     doors: { left: { ordinal: 2, z: 0, toRoom: "blacktooth67" } },
     walls: {
       away: ["plain", "armour", "shield", "shield", "armour", "plain"],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -4508,7 +4487,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth7: {
     id: "blacktooth7",
     floor: "blacktooth",
@@ -4520,13 +4499,13 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth8fish" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -4534,7 +4513,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth70: {
     id: "blacktooth70",
     floor: "blacktooth",
@@ -4545,7 +4524,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "blacktooth67" },
     },
     walls: {
-      away: ["armour", "armour"],
+      away: ["none", "none"],
       left: [
         "plain",
         "armour",
@@ -4620,7 +4599,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth71: {
     id: "blacktooth71",
     floor: "blacktooth",
@@ -4636,8 +4615,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -4687,7 +4666,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth72: {
     id: "blacktooth72",
     floor: "blacktooth",
@@ -4709,7 +4688,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -4729,7 +4708,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth73: {
     id: "blacktooth73",
     floor: "deadly",
@@ -4750,7 +4729,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -4840,7 +4819,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth74: {
     id: "blacktooth74",
     floor: "blacktooth",
@@ -4897,7 +4876,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth75: {
     id: "blacktooth75",
     floor: "blacktooth",
@@ -4908,7 +4887,7 @@ export const campaign = {
       towards: { ordinal: 2, z: 1, toRoom: "blacktooth76" },
     },
     walls: {
-      away: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      away: ["plain", "shield", "none", "none", "shield", "plain"],
       left: [
         "plain",
         "armour",
@@ -4993,7 +4972,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth76: {
     id: "blacktooth76",
     floor: "blacktooth",
@@ -5008,8 +4987,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5093,7 +5072,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth77: {
     id: "blacktooth77",
     floor: "blacktooth",
@@ -5114,7 +5093,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["shield", "armour", "armour", "shield"],
+      left: ["shield", "none", "none", "shield"],
     },
     items: [
       {
@@ -5234,7 +5213,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth78: {
     id: "blacktooth78",
     floor: "blacktooth",
@@ -5250,8 +5229,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5260,8 +5239,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5330,7 +5309,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth79fish: {
     id: "blacktooth79fish",
     floor: "none",
@@ -5348,7 +5327,7 @@ export const campaign = {
         "plain",
         "armour",
         "plain",
-        "armour",
+        "none",
       ],
       left: [
         "plain",
@@ -5359,7 +5338,7 @@ export const campaign = {
         "plain",
         "armour",
         "plain",
-        "armour",
+        "none",
       ],
     },
     items: [
@@ -5416,7 +5395,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 7, y: 0, z: 1 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth80: {
     id: "blacktooth80",
     floor: "blacktooth",
@@ -5427,7 +5406,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "blacktooth78" },
     },
     walls: {
-      away: ["shield", "armour", "armour", "shield"],
+      away: ["shield", "none", "none", "shield"],
       left: [
         "plain",
         "armour",
@@ -5492,7 +5471,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth81: {
     id: "blacktooth81",
     floor: "blacktooth",
@@ -5517,8 +5496,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5572,7 +5551,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth82: {
     id: "blacktooth82",
     floor: "blacktooth",
@@ -5593,7 +5572,7 @@ export const campaign = {
         "armour",
         "plain",
       ],
-      left: ["plain", "shield", "armour", "armour", "shield", "plain"],
+      left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
       {
@@ -5658,7 +5637,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth83tofreedom: {
     id: "blacktooth83tofreedom",
     floor: "deadly",
@@ -5780,7 +5759,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth84: {
     id: "blacktooth84",
     floor: "deadly",
@@ -5805,8 +5784,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5855,7 +5834,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth85: {
     id: "blacktooth85",
     floor: "blacktooth",
@@ -5880,8 +5859,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -5925,7 +5904,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth86: {
     id: "blacktooth86",
     floor: "blacktooth",
@@ -5936,7 +5915,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "blacktooth87crown" },
     },
     walls: {
-      away: ["shield", "armour", "armour", "shield"],
+      away: ["shield", "none", "none", "shield"],
       left: [
         "plain",
         "armour",
@@ -5950,7 +5929,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth87crown: {
     id: "blacktooth87crown",
     floor: "blacktooth",
@@ -5962,8 +5941,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -6037,7 +6016,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth8fish: {
     id: "blacktooth8fish",
     floor: "blacktooth",
@@ -6048,7 +6027,7 @@ export const campaign = {
       right: { ordinal: 3, z: 0, toRoom: "blacktooth9" },
     },
     walls: {
-      away: ["shield", "armour", "armour", "shield"],
+      away: ["shield", "none", "none", "shield"],
       left: [
         "plain",
         "armour",
@@ -6080,7 +6059,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 3, y: 0, z: 3 } },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth9: {
     id: "blacktooth9",
     floor: "deadly",
@@ -6102,8 +6081,8 @@ export const campaign = {
         "plain",
         "shield",
         "plain",
-        "armour",
-        "armour",
+        "none",
+        "none",
         "plain",
         "shield",
         "plain",
@@ -6212,7 +6191,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   bookworld1: {
     id: "bookworld1",
     floor: "bookworld",
@@ -6267,7 +6246,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld10: {
     id: "bookworld10",
     floor: "bookworld",
@@ -6283,8 +6262,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -6292,7 +6271,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld11: {
     id: "bookworld11",
     floor: "bookworld",
@@ -6313,11 +6292,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["person", "person"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld12fish: {
     id: "bookworld12fish",
     floor: "bookworld",
@@ -6344,7 +6323,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld13: {
     id: "bookworld13",
     floor: "bookworld",
@@ -6365,11 +6344,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["person", "person"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld14: {
     id: "bookworld14",
     floor: "bookworld",
@@ -6394,8 +6373,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -6489,7 +6468,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld15: {
     id: "bookworld15",
     floor: "deadly",
@@ -6504,8 +6483,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -6523,7 +6502,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld16: {
     id: "bookworld16",
     floor: "bookworld",
@@ -6535,7 +6514,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "bookworld18" },
     },
     walls: {
-      away: ["book", "person", "person", "book"],
+      away: ["book", "none", "none", "book"],
       left: [
         "book",
         "book",
@@ -6549,7 +6528,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld17: {
     id: "bookworld17",
     floor: "bookworld",
@@ -6567,11 +6546,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [{ type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } }],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld18: {
     id: "bookworld18",
     floor: "deadly",
@@ -6582,7 +6561,7 @@ export const campaign = {
       towards: { ordinal: 2, z: 2, toRoom: "bookworld19" },
     },
     walls: {
-      away: ["book", "book", "person", "person", "book", "book"],
+      away: ["book", "book", "none", "none", "book", "book"],
       left: [
         "book",
         "book",
@@ -6596,7 +6575,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld19: {
     id: "bookworld19",
     floor: "bookworld",
@@ -6607,7 +6586,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "bookworld20" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "book",
@@ -6652,7 +6631,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld2: {
     id: "bookworld2",
     floor: "deadly",
@@ -6677,7 +6656,7 @@ export const campaign = {
         "person",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [
       {
@@ -6827,7 +6806,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld20: {
     id: "bookworld20",
     floor: "bookworld",
@@ -6839,12 +6818,12 @@ export const campaign = {
       towards: { ordinal: 2, z: 4, toRoom: "bookworld34" },
     },
     walls: {
-      away: ["book", "book", "person", "person", "book", "book"],
-      left: ["book", "book", "person", "person", "book", "book"],
+      away: ["book", "book", "none", "none", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld21: {
     id: "bookworld21",
     floor: "bookworld",
@@ -6859,8 +6838,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -6878,7 +6857,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld22: {
     id: "bookworld22",
     floor: "bookworld",
@@ -6889,7 +6868,7 @@ export const campaign = {
       right: { ordinal: 3, z: 0, toRoom: "bookworld23" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "book",
@@ -6909,7 +6888,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld23: {
     id: "bookworld23",
     floor: "bookworld",
@@ -6922,11 +6901,11 @@ export const campaign = {
     },
     walls: {
       away: ["book", "person", "book", "book", "person", "book"],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld24: {
     id: "bookworld24",
     floor: "deadly",
@@ -6947,7 +6926,7 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [
       {
@@ -6977,7 +6956,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld25: {
     id: "bookworld25",
     floor: "bookworld",
@@ -6998,11 +6977,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["person", "person"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld26: {
     id: "bookworld26",
     floor: "bookworld",
@@ -7018,8 +6997,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -7033,7 +7012,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld27: {
     id: "bookworld27",
     floor: "bookworld",
@@ -7044,7 +7023,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 4, toRoom: "bookworld28" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "book",
@@ -7058,7 +7037,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld28: {
     id: "bookworld28",
     floor: "deadly",
@@ -7071,8 +7050,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -7324,7 +7303,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld29: {
     id: "bookworld29",
     floor: "none",
@@ -7342,7 +7321,7 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
       left: [
         "book",
@@ -7353,7 +7332,7 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
     },
     items: [
@@ -7504,7 +7483,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld3: {
     id: "bookworld3",
     floor: "bookworld",
@@ -7525,11 +7504,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld30: {
     id: "bookworld30",
     floor: "bookworld",
@@ -7550,11 +7529,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["book", "person", "person", "book"],
+      left: ["book", "none", "none", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld31: {
     id: "bookworld31",
     floor: "bookworld",
@@ -7583,7 +7562,7 @@ export const campaign = {
         "person",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [
       {
@@ -7678,7 +7657,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld32: {
     id: "bookworld32",
     floor: "none",
@@ -7701,17 +7680,17 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld33: {
     id: "bookworld33",
     floor: "bookworld",
@@ -7727,8 +7706,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -7746,7 +7725,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld34: {
     id: "bookworld34",
     floor: "bookworld",
@@ -7757,7 +7736,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "bookworld33" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "person",
@@ -7779,7 +7758,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld35: {
     id: "bookworld35",
     floor: "bookworld",
@@ -7804,8 +7783,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -7840,7 +7819,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 1, y: 7, z: 4 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld36: {
     id: "bookworld36",
     floor: "bookworld",
@@ -7855,17 +7834,17 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
       ],
-      left: ["book", "book", "person", "person", "book", "book"],
+      left: ["book", "book", "none", "none", "book", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld37: {
     id: "bookworld37",
     floor: "bookworld",
@@ -7876,7 +7855,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "bookworld36" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "book",
@@ -7911,7 +7890,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld38: {
     id: "bookworld38",
     floor: "none",
@@ -7929,7 +7908,7 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
       left: [
         "book",
@@ -7940,12 +7919,12 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld39: {
     id: "bookworld39",
     floor: "none",
@@ -7964,7 +7943,7 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
       left: [
         "book",
@@ -7975,7 +7954,7 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "person",
+        "none",
       ],
     },
     items: [
@@ -8036,7 +8015,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld4: {
     id: "bookworld4",
     floor: "bookworld",
@@ -8048,13 +8027,13 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "bookworld5" },
     },
     walls: {
-      away: ["person", "person"],
+      away: ["none", "none"],
       left: [
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -8062,7 +8041,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld40: {
     id: "bookworld40",
     floor: "bookworld",
@@ -8075,8 +8054,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -8100,7 +8079,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld41crown: {
     id: "bookworld41crown",
     floor: "bookworld",
@@ -8128,7 +8107,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld5: {
     id: "bookworld5",
     floor: "bookworld",
@@ -8139,7 +8118,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "bookworld6" },
     },
     walls: {
-      away: ["book", "person", "person", "book"],
+      away: ["book", "none", "none", "book"],
       left: [
         "book",
         "book",
@@ -8153,7 +8132,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld6: {
     id: "bookworld6",
     floor: "bookworld",
@@ -8164,13 +8143,13 @@ export const campaign = {
       left: { ordinal: 3, z: 3, toRoom: "bookworld11" },
     },
     walls: {
-      away: ["book", "person", "person", "book"],
+      away: ["book", "none", "none", "book"],
       left: [
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -8184,7 +8163,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld7: {
     id: "bookworld7",
     floor: "bookworld",
@@ -8195,7 +8174,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 4, toRoom: "bookworld8" },
     },
     walls: {
-      away: ["book", "person", "person", "book"],
+      away: ["book", "none", "none", "book"],
       left: [
         "book",
         "book",
@@ -8209,7 +8188,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld8: {
     id: "bookworld8",
     floor: "bookworld",
@@ -8224,8 +8203,8 @@ export const campaign = {
         "book",
         "book",
         "person",
-        "person",
-        "person",
+        "none",
+        "none",
         "person",
         "book",
         "book",
@@ -8243,7 +8222,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld9: {
     id: "bookworld9",
     floor: "bookworld",
@@ -8265,11 +8244,11 @@ export const campaign = {
         "book",
         "book",
       ],
-      left: ["book", "person", "person", "book"],
+      left: ["book", "none", "none", "book"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   egyptus1: {
     id: "egyptus1",
     floor: "egyptus",
@@ -8291,8 +8270,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -8321,7 +8300,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus10: {
     id: "egyptus10",
     floor: "egyptus",
@@ -8337,8 +8316,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -8347,8 +8326,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -8382,7 +8361,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus11: {
     id: "egyptus11",
     floor: "egyptus",
@@ -8403,11 +8382,11 @@ export const campaign = {
         "hieroglyphics",
         "hieroglyphics",
       ],
-      left: ["sarcophagus", "sarcophagus"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus12: {
     id: "egyptus12",
     floor: "egyptus",
@@ -8422,8 +8401,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -8517,7 +8496,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus13: {
     id: "egyptus13",
     floor: "egyptus",
@@ -8596,7 +8575,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus14: {
     id: "egyptus14",
     floor: "none",
@@ -8610,12 +8589,12 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
       left: [
         "hieroglyphics",
@@ -8676,7 +8655,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus15: {
     id: "egyptus15",
     floor: "egyptus",
@@ -8746,7 +8725,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 0, y: 5, z: 7 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus16: {
     id: "egyptus16",
     floor: "none",
@@ -8758,11 +8737,11 @@ export const campaign = {
       away: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
       left: [
         "hieroglyphics",
@@ -8806,7 +8785,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus17: {
     id: "egyptus17",
     floor: "deadly",
@@ -8834,8 +8813,8 @@ export const campaign = {
       left: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
       ],
@@ -8948,7 +8927,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus18: {
     id: "egyptus18",
     floor: "egyptus",
@@ -8978,7 +8957,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus19: {
     id: "egyptus19",
     floor: "none",
@@ -8997,7 +8976,7 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
       left: [
         "hieroglyphics",
@@ -9008,7 +8987,7 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -9059,7 +9038,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus2: {
     id: "egyptus2",
     floor: "egyptus",
@@ -9084,8 +9063,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -9125,7 +9104,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 6, y: 3, z: 4 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus20: {
     id: "egyptus20",
     floor: "none",
@@ -9148,12 +9127,12 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -9189,7 +9168,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus21: {
     id: "egyptus21",
     floor: "egyptus",
@@ -9210,11 +9189,11 @@ export const campaign = {
         "hieroglyphics",
         "hieroglyphics",
       ],
-      left: ["sarcophagus", "sarcophagus"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus22: {
     id: "egyptus22",
     floor: "egyptus",
@@ -9229,8 +9208,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -9307,7 +9286,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus23: {
     id: "egyptus23",
     floor: "egyptus",
@@ -9322,8 +9301,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -9505,7 +9484,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus24: {
     id: "egyptus24",
     floor: "egyptus",
@@ -9576,7 +9555,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus25: {
     id: "egyptus25",
     floor: "egyptus",
@@ -9592,17 +9571,17 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
       ],
-      left: ["hieroglyphics", "sarcophagus", "sarcophagus", "hieroglyphics"],
+      left: ["hieroglyphics", "none", "none", "hieroglyphics"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus26: {
     id: "egyptus26",
     floor: "egyptus",
@@ -9730,7 +9709,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus27: {
     id: "egyptus27",
     floor: "deadly",
@@ -9745,8 +9724,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -9755,8 +9734,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -9840,7 +9819,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus28: {
     id: "egyptus28",
     floor: "egyptus",
@@ -9865,8 +9844,8 @@ export const campaign = {
       left: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
       ],
@@ -9879,7 +9858,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus29: {
     id: "egyptus29",
     floor: "none",
@@ -9900,12 +9879,12 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -9926,7 +9905,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus3: {
     id: "egyptus3",
     floor: "egyptus",
@@ -9947,11 +9926,11 @@ export const campaign = {
         "hieroglyphics",
         "hieroglyphics",
       ],
-      left: ["sarcophagus", "sarcophagus"],
+      left: ["none", "none"],
     },
     items: [{ type: "spring", config: {}, position: { x: 4, y: 1, z: 0 } }],
     color: "magenta",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus30: {
     id: "egyptus30",
     floor: "none",
@@ -9968,7 +9947,7 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
       left: [
         "hieroglyphics",
@@ -9979,7 +9958,7 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -9990,7 +9969,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus31: {
     id: "egyptus31",
     floor: "egyptus",
@@ -10026,7 +10005,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus32: {
     id: "egyptus32",
     floor: "none",
@@ -10045,7 +10024,7 @@ export const campaign = {
         "hieroglyphics",
         "hieroglyphics",
       ],
-      left: ["sarcophagus", "sarcophagus", "sarcophagus"],
+      left: ["none", "none", "none"],
     },
     items: [
       {
@@ -10060,7 +10039,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus33: {
     id: "egyptus33",
     floor: "egyptus",
@@ -10073,8 +10052,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10083,7 +10062,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus34fish: {
     id: "egyptus34fish",
     floor: "egyptus",
@@ -10097,8 +10076,8 @@ export const campaign = {
       away: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
       ],
@@ -10157,7 +10136,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus35: {
     id: "egyptus35",
     floor: "egyptus",
@@ -10232,7 +10211,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 1, y: 2, z: 5 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus36: {
     id: "egyptus36",
     floor: "none",
@@ -10242,7 +10221,7 @@ export const campaign = {
     size: { x: 3, y: 9 },
     doors: {},
     walls: {
-      away: ["hieroglyphics", "hieroglyphics", "sarcophagus"],
+      away: ["hieroglyphics", "hieroglyphics", "none"],
       left: [
         "hieroglyphics",
         "hieroglyphics",
@@ -10252,7 +10231,7 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -10303,7 +10282,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus37: {
     id: "egyptus37",
     floor: "none",
@@ -10317,12 +10296,12 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
+        "none",
       ],
     },
     items: [
@@ -10343,7 +10322,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus38: {
     id: "egyptus38",
     floor: "egyptus",
@@ -10368,8 +10347,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10458,7 +10437,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus39crown: {
     id: "egyptus39crown",
     floor: "egyptus",
@@ -10540,7 +10519,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus4: {
     id: "egyptus4",
     floor: "egyptus",
@@ -10555,8 +10534,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10655,7 +10634,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus5: {
     id: "egyptus5",
     floor: "egyptus",
@@ -10670,16 +10649,16 @@ export const campaign = {
       away: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
       ],
       left: [
         "hieroglyphics",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "hieroglyphics",
       ],
@@ -10727,7 +10706,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus6: {
     id: "egyptus6",
     floor: "egyptus",
@@ -10742,8 +10721,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10777,7 +10756,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus7: {
     id: "egyptus7",
     floor: "deadly",
@@ -10802,8 +10781,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10857,7 +10836,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus8: {
     id: "egyptus8",
     floor: "egyptus",
@@ -10873,8 +10852,8 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "sarcophagus",
-        "sarcophagus",
+        "none",
+        "none",
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
@@ -10953,7 +10932,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   egyptus9fish: {
     id: "egyptus9fish",
     floor: "egyptus",
@@ -10964,7 +10943,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "egyptus8" },
     },
     walls: {
-      away: ["hieroglyphics", "sarcophagus", "sarcophagus", "hieroglyphics"],
+      away: ["hieroglyphics", "none", "none", "hieroglyphics"],
       left: [
         "hieroglyphics",
         "hieroglyphics",
@@ -11030,7 +11009,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 3, y: 3, z: 5 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
   finalroom: {
     id: "finalroom",
     floor: "jail",
@@ -11127,7 +11106,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
   moonbase1: {
     id: "moonbase1",
     floor: "moonbase",
@@ -11152,8 +11131,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11242,7 +11221,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase10: {
     id: "moonbase10",
     floor: "deadly",
@@ -11257,8 +11236,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11302,7 +11281,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase11: {
     id: "moonbase11",
     floor: "moonbase",
@@ -11314,13 +11293,13 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "moonbase10" },
     },
     walls: {
-      away: ["window1", "window1"],
+      away: ["none", "none"],
       left: [
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11328,7 +11307,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase12: {
     id: "moonbase12",
     floor: "moonbase",
@@ -11408,7 +11387,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase13: {
     id: "moonbase13",
     floor: "moonbase",
@@ -11420,13 +11399,13 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "moonbase3" },
     },
     walls: {
-      away: ["window3", "window1", "window1", "window1"],
+      away: ["window3", "none", "none", "window1"],
       left: [
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11455,7 +11434,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase14: {
     id: "moonbase14",
     floor: "moonbase",
@@ -11501,7 +11480,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase15: {
     id: "moonbase15",
     floor: "moonbase",
@@ -11522,11 +11501,11 @@ export const campaign = {
         "window2",
         "window1",
       ],
-      left: ["window1", "window1"],
+      left: ["none", "none"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase16: {
     id: "moonbase16",
     floor: "moonbase",
@@ -11616,7 +11595,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase17: {
     id: "moonbase17",
     floor: "moonbase",
@@ -11624,7 +11603,7 @@ export const campaign = {
     size: { x: 6, y: 6 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase16" } },
     walls: {
-      away: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      away: ["window3", "window2", "none", "none", "window2", "window1"],
       left: ["window1", "coil", "window3", "window2", "coil", "window1"],
     },
     items: [
@@ -11650,7 +11629,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase18: {
     id: "moonbase18",
     floor: "moonbase",
@@ -11659,7 +11638,7 @@ export const campaign = {
     doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase12" } },
     walls: {
       away: ["window1", "coil", "window3", "window2", "coil", "window1"],
-      left: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      left: ["window3", "window2", "none", "none", "window2", "window1"],
     },
     items: [
       {
@@ -11684,7 +11663,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase19: {
     id: "moonbase19",
     floor: "moonbase",
@@ -11705,7 +11684,7 @@ export const campaign = {
         "window2",
         "window1",
       ],
-      left: ["window1", "window1"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -11725,7 +11704,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase2: {
     id: "moonbase2",
     floor: "moonbase",
@@ -11740,8 +11719,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11771,7 +11750,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase20: {
     id: "moonbase20",
     floor: "moonbase",
@@ -11788,8 +11767,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11798,8 +11777,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11807,7 +11786,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase21tosafari: {
     id: "moonbase21tosafari",
     floor: "moonbase",
@@ -11880,7 +11859,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase22topenitentiary: {
     id: "moonbase22topenitentiary",
     floor: "moonbase",
@@ -11888,7 +11867,7 @@ export const campaign = {
     size: { x: 6, y: 8 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase20" } },
     walls: {
-      away: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      away: ["window3", "window2", "none", "none", "window2", "window1"],
       left: [
         "window2",
         "window1",
@@ -11953,7 +11932,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase23: {
     id: "moonbase23",
     floor: "moonbase",
@@ -11970,8 +11949,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11980,8 +11959,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -11989,7 +11968,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase24toegyptus: {
     id: "moonbase24toegyptus",
     floor: "moonbase",
@@ -12101,7 +12080,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase25tobookworld: {
     id: "moonbase25tobookworld",
     floor: "moonbase",
@@ -12113,8 +12092,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -12213,7 +12192,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase26: {
     id: "moonbase26",
     floor: "moonbase",
@@ -12234,7 +12213,7 @@ export const campaign = {
         "window2",
         "window1",
       ],
-      left: ["window1", "window1"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -12259,7 +12238,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase27: {
     id: "moonbase27",
     floor: "moonbase",
@@ -12271,7 +12250,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "moonbase30" },
     },
     walls: {
-      away: ["window1", "window1"],
+      away: ["none", "none"],
       left: [
         "window2",
         "window1",
@@ -12285,7 +12264,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase28: {
     id: "moonbase28",
     floor: "moonbase",
@@ -12297,11 +12276,11 @@ export const campaign = {
     },
     walls: {
       away: ["window1", "coil", "window3", "window2", "coil", "window1"],
-      left: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      left: ["window3", "window2", "none", "none", "window2", "window1"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase29: {
     id: "moonbase29",
     floor: "moonbase",
@@ -12413,7 +12392,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase3: {
     id: "moonbase3",
     floor: "deadly",
@@ -12428,8 +12407,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -12489,7 +12468,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 4, y: 7, z: 0 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase30: {
     id: "moonbase30",
     floor: "moonbase",
@@ -12500,12 +12479,12 @@ export const campaign = {
       left: { ordinal: 2, z: 0, toRoom: "moonbase31" },
     },
     walls: {
-      away: ["window3", "window2", "window1", "window1", "window2", "window1"],
-      left: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      away: ["window3", "window2", "none", "none", "window2", "window1"],
+      left: ["window3", "window2", "none", "none", "window2", "window1"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase31: {
     id: "moonbase31",
     floor: "moonbase",
@@ -12539,7 +12518,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase32: {
     id: "moonbase32",
     floor: "moonbase",
@@ -12551,8 +12530,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -12651,7 +12630,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase33triple: {
     id: "moonbase33triple",
     floor: "moonbase",
@@ -12666,8 +12645,8 @@ export const campaign = {
       away: [
         "window3",
         "window2",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window2",
         "window1",
         "window1",
@@ -12689,8 +12668,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -12814,7 +12793,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase34: {
     id: "moonbase34",
     floor: "moonbase",
@@ -12829,8 +12808,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -12860,7 +12839,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase35: {
     id: "moonbase35",
     floor: "moonbase",
@@ -12934,7 +12913,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase36: {
     id: "moonbase36",
     floor: "moonbase",
@@ -13008,7 +12987,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase4: {
     id: "moonbase4",
     floor: "moonbase",
@@ -13023,8 +13002,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -13033,8 +13012,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -13148,7 +13127,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase5: {
     id: "moonbase5",
     floor: "moonbase",
@@ -13159,7 +13138,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "moonbase4" },
     },
     walls: {
-      away: ["window3", "window1", "window1", "window1"],
+      away: ["window3", "none", "none", "window1"],
       left: [
         "window2",
         "window1",
@@ -13173,7 +13152,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase6: {
     id: "moonbase6",
     floor: "moonbase",
@@ -13188,8 +13167,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -13268,7 +13247,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase7: {
     id: "moonbase7",
     floor: "moonbase",
@@ -13294,8 +13273,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -13354,7 +13333,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase8: {
     id: "moonbase8",
     floor: "moonbase",
@@ -13376,8 +13355,8 @@ export const campaign = {
         "window2",
         "coil",
         "window3",
-        "window1",
-        "window1",
+        "none",
+        "none",
         "window3",
         "coil",
         "window1",
@@ -13456,7 +13435,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase9: {
     id: "moonbase9",
     floor: "moonbase",
@@ -13465,7 +13444,7 @@ export const campaign = {
     doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase10" } },
     walls: {
       away: ["window1", "coil", "window3", "window2", "coil", "window1"],
-      left: ["window3", "window2", "window1", "window1", "window2", "window1"],
+      left: ["window3", "window2", "none", "none", "window2", "window1"],
     },
     items: [
       {
@@ -13490,7 +13469,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   penitentiary1: {
     id: "penitentiary1",
     floor: "penitentiary",
@@ -13498,7 +13477,7 @@ export const campaign = {
     size: { x: 6, y: 8 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "penitentiary2" } },
     walls: {
-      away: ["loop", "loop", "loop", "loop", "loop", "loop"],
+      away: ["loop", "loop", "none", "none", "loop", "loop"],
       left: [
         "loop",
         "loop",
@@ -13533,7 +13512,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary10: {
     id: "penitentiary10",
     floor: "none",
@@ -13542,7 +13521,7 @@ export const campaign = {
     size: { x: 3, y: 8 },
     doors: { away: { ordinal: 0, z: 2, toRoom: "penitentiary11" } },
     walls: {
-      away: ["loop", "loop", "loop"],
+      away: ["none", "none", "none"],
       left: [
         "loop",
         "loop",
@@ -13572,7 +13551,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary11: {
     id: "penitentiary11",
     floor: "penitentiary",
@@ -13609,7 +13588,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary12: {
     id: "penitentiary12",
     floor: "penitentiary",
@@ -13625,8 +13604,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -13635,8 +13614,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -13680,7 +13659,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary13: {
     id: "penitentiary13",
     floor: "penitentiary",
@@ -13765,7 +13744,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 2, y: 3, z: 7 } },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary14: {
     id: "penitentiary14",
     floor: "none",
@@ -13784,9 +13763,9 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
-      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"],
+      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
     },
     items: [
       {
@@ -13881,7 +13860,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary15: {
     id: "penitentiary15",
     floor: "none",
@@ -13900,7 +13879,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -13911,7 +13890,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -14107,7 +14086,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary16: {
     id: "penitentiary16",
     floor: "none",
@@ -14126,7 +14105,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -14137,7 +14116,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -14188,7 +14167,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary17: {
     id: "penitentiary17",
     floor: "none",
@@ -14201,12 +14180,12 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -14302,7 +14281,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary18fish: {
     id: "penitentiary18fish",
     floor: "penitentiary",
@@ -14331,7 +14310,7 @@ export const campaign = {
         "loop",
         "loop",
       ],
-      left: ["loop", "loop", "loop", "loop", "loop", "loop"],
+      left: ["loop", "loop", "none", "none", "loop", "loop"],
     },
     items: [
       {
@@ -14426,7 +14405,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary19: {
     id: "penitentiary19",
     floor: "penitentiary",
@@ -14437,7 +14416,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "penitentiary12" },
     },
     walls: {
-      away: ["loop", "loop", "loop", "loop"],
+      away: ["loop", "none", "none", "loop"],
       left: [
         "loop",
         "loop",
@@ -14451,7 +14430,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary2: {
     id: "penitentiary2",
     floor: "penitentiary",
@@ -14467,8 +14446,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -14477,8 +14456,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -14537,7 +14516,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary20: {
     id: "penitentiary20",
     floor: "penitentiary",
@@ -14551,7 +14530,7 @@ export const campaign = {
     },
     items: [{ type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } }],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary21: {
     id: "penitentiary21",
     floor: "none",
@@ -14570,7 +14549,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -14581,7 +14560,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -14777,7 +14756,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary22: {
     id: "penitentiary22",
     floor: "none",
@@ -14796,7 +14775,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -14807,7 +14786,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -14998,7 +14977,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary23: {
     id: "penitentiary23",
     floor: "none",
@@ -15017,7 +14996,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -15028,7 +15007,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -15194,7 +15173,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary24: {
     id: "penitentiary24",
     floor: "none",
@@ -15207,12 +15186,12 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
-        "loop",
+        "none",
       ],
       left: [
         "loop",
@@ -15233,7 +15212,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary25: {
     id: "penitentiary25",
     floor: "penitentiary",
@@ -15244,7 +15223,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "penitentiary24" },
     },
     walls: {
-      away: ["loop", "loop"],
+      away: ["none", "none"],
       left: [
         "loop",
         "loop",
@@ -15258,7 +15237,7 @@ export const campaign = {
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary26: {
     id: "penitentiary26",
     floor: "deadly",
@@ -15318,7 +15297,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary27: {
     id: "penitentiary27",
     floor: "deadly",
@@ -15339,7 +15318,7 @@ export const campaign = {
         "loop",
         "loop",
       ],
-      left: ["loop", "loop"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -15369,7 +15348,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary28: {
     id: "penitentiary28",
     floor: "penitentiary",
@@ -15395,8 +15374,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -15420,7 +15399,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary29: {
     id: "penitentiary29",
     floor: "none",
@@ -15439,7 +15418,7 @@ export const campaign = {
         "loop",
         "loop",
       ],
-      left: ["loop", "loop", "loop"],
+      left: ["none", "none", "none"],
     },
     items: [
       {
@@ -15504,7 +15483,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary3: {
     id: "penitentiary3",
     floor: "deadly",
@@ -15529,8 +15508,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -15574,7 +15553,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary30: {
     id: "penitentiary30",
     floor: "penitentiary",
@@ -15586,8 +15565,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -15632,7 +15611,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary31: {
     id: "penitentiary31",
     floor: "none",
@@ -15651,9 +15630,9 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
-      left: ["loop", "loop", "loop"],
+      left: ["loop", "loop", "none"],
     },
     items: [
       {
@@ -15718,7 +15697,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary32: {
     id: "penitentiary32",
     floor: "penitentiary",
@@ -15802,7 +15781,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary33: {
     id: "penitentiary33",
     floor: "penitentiary",
@@ -15817,8 +15796,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -15917,7 +15896,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary34crown: {
     id: "penitentiary34crown",
     floor: "penitentiary",
@@ -15929,8 +15908,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -15999,7 +15978,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary4: {
     id: "penitentiary4",
     floor: "penitentiary",
@@ -16044,7 +16023,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary5: {
     id: "penitentiary5",
     floor: "none",
@@ -16054,8 +16033,8 @@ export const campaign = {
     size: { x: 7, y: 7 },
     doors: {},
     walls: {
-      away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"],
-      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "loop"],
+      away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
+      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
     },
     items: [
       {
@@ -16090,7 +16069,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary6: {
     id: "penitentiary6",
     floor: "none",
@@ -16100,7 +16079,7 @@ export const campaign = {
     doors: { left: { ordinal: 2, z: 3, toRoom: "penitentiary7" } },
     walls: {
       away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
-      left: ["loop", "loop", "loop", "loop", "loop", "loop", "loop"],
+      left: ["loop", "loop", "none", "none", "loop", "loop", "none"],
     },
     items: [
       {
@@ -16140,7 +16119,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary7: {
     id: "penitentiary7",
     floor: "penitentiary",
@@ -16155,8 +16134,8 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "loop",
+        "none",
+        "none",
         "loop",
         "skeleton",
         "loop",
@@ -16181,7 +16160,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary8: {
     id: "penitentiary8",
     floor: "penitentiary",
@@ -16230,7 +16209,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   penitentiary9: {
     id: "penitentiary9",
     floor: "none",
@@ -16240,7 +16219,7 @@ export const campaign = {
     size: { x: 3, y: 9 },
     doors: {},
     walls: {
-      away: ["loop", "loop", "loop"],
+      away: ["loop", "loop", "none"],
       left: [
         "loop",
         "loop",
@@ -16250,7 +16229,7 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "loop",
+        "none",
       ],
     },
     items: [
@@ -16261,7 +16240,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
   safari1: {
     id: "safari1",
     floor: "safari",
@@ -16269,7 +16248,7 @@ export const campaign = {
     size: { x: 6, y: 8 },
     doors: { away: { ordinal: 2, z: 0, toRoom: "safari2" } },
     walls: {
-      away: ["wall", "shield", "window", "window", "shield", "wall"],
+      away: ["wall", "shield", "none", "none", "shield", "wall"],
       left: [
         "wall",
         "window",
@@ -16304,7 +16283,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari10: {
     id: "safari10",
     floor: "safari",
@@ -16323,7 +16302,7 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [
       {
@@ -16419,7 +16398,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari11: {
     id: "safari11",
     floor: "safari",
@@ -16431,11 +16410,11 @@ export const campaign = {
     },
     walls: {
       away: ["shield", "wall", "window", "window", "wall", "shield"],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari12: {
     id: "safari12",
     floor: "safari",
@@ -16559,7 +16538,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari13: {
     id: "safari13",
     floor: "none",
@@ -16575,12 +16554,12 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window",
+        "none",
       ],
       left: ["shield", "wall", "window", "window", "wall", "shield"],
     },
@@ -16617,7 +16596,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari14: {
     id: "safari14",
     floor: "safari",
@@ -16642,8 +16621,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -16672,7 +16651,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari15: {
     id: "safari15",
     floor: "safari",
@@ -16683,7 +16662,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "safari13" },
     },
     walls: {
-      away: ["wall", "window", "window", "wall"],
+      away: ["wall", "none", "none", "wall"],
       left: [
         "wall",
         "window",
@@ -16721,7 +16700,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari16: {
     id: "safari16",
     floor: "safari",
@@ -16732,7 +16711,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 0, toRoom: "safari15" },
     },
     walls: {
-      away: ["wall", "window", "window", "wall"],
+      away: ["wall", "none", "none", "wall"],
       left: [
         "wall",
         "window",
@@ -16807,7 +16786,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari17fish: {
     id: "safari17fish",
     floor: "safari",
@@ -16823,8 +16802,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -16833,8 +16812,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -16924,7 +16903,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 4, y: 7, z: 4 } },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari18: {
     id: "safari18",
     floor: "deadly",
@@ -16935,7 +16914,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 3, toRoom: "safari4" },
     },
     walls: {
-      away: ["window", "window"],
+      away: ["none", "none"],
       left: [
         "wall",
         "window",
@@ -17033,7 +17012,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari19triple: {
     id: "safari19triple",
     floor: "safari",
@@ -17049,31 +17028,31 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
       left: [
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
     },
     items: [
@@ -17190,7 +17169,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari2: {
     id: "safari2",
     floor: "deadly",
@@ -17205,8 +17184,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -17295,7 +17274,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari20: {
     id: "safari20",
     floor: "safari",
@@ -17307,13 +17286,13 @@ export const campaign = {
       right: { ordinal: 3, z: 0, toRoom: "safari19triple" },
     },
     walls: {
-      away: ["wall", "window", "window", "wall"],
+      away: ["wall", "none", "none", "wall"],
       left: [
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -17321,7 +17300,7 @@ export const campaign = {
     },
     items: [],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari21: {
     id: "safari21",
     floor: "safari",
@@ -17378,7 +17357,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari22: {
     id: "safari22",
     floor: "safari",
@@ -17389,7 +17368,7 @@ export const campaign = {
       towards: { ordinal: 0, z: 0, toRoom: "safari20" },
     },
     walls: {
-      away: ["window", "window"],
+      away: ["none", "none"],
       left: [
         "wall",
         "window",
@@ -17434,7 +17413,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari23: {
     id: "safari23",
     floor: "safari",
@@ -17447,7 +17426,7 @@ export const campaign = {
     },
     walls: {
       away: ["shield", "wall", "window", "window", "wall", "shield"],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [
       {
@@ -17512,7 +17491,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari24: {
     id: "safari24",
     floor: "deadly",
@@ -17533,7 +17512,7 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [
       {
@@ -17578,7 +17557,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari25: {
     id: "safari25",
     floor: "deadly",
@@ -17603,8 +17582,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -17628,7 +17607,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari26: {
     id: "safari26",
     floor: "safari",
@@ -17658,8 +17637,8 @@ export const campaign = {
         "shield",
         "wall",
         "shield",
-        "window",
-        "window",
+        "none",
+        "none",
         "shield",
         "wall",
       ],
@@ -17897,7 +17876,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari27: {
     id: "safari27",
     floor: "safari",
@@ -17918,11 +17897,11 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [{ type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } }],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari28: {
     id: "safari28",
     floor: "safari",
@@ -17947,8 +17926,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -17967,7 +17946,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari29: {
     id: "safari29",
     floor: "safari",
@@ -17992,8 +17971,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18017,7 +17996,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari3: {
     id: "safari3",
     floor: "deadly",
@@ -18028,7 +18007,7 @@ export const campaign = {
       towards: { ordinal: 1, z: 5, toRoom: "safari2" },
     },
     walls: {
-      away: ["wall", "window", "window", "wall"],
+      away: ["wall", "none", "none", "wall"],
       left: [
         "wall",
         "window",
@@ -18068,7 +18047,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari30: {
     id: "safari30",
     floor: "safari",
@@ -18093,7 +18072,7 @@ export const campaign = {
     },
     items: [],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari31: {
     id: "safari31",
     floor: "deadly",
@@ -18118,8 +18097,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18248,7 +18227,7 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari32: {
     id: "safari32",
     floor: "safari",
@@ -18269,11 +18248,11 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["window", "window"],
+      left: ["none", "none"],
     },
     items: [],
     color: "magenta",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari33: {
     id: "safari33",
     floor: "safari",
@@ -18290,8 +18269,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18300,8 +18279,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18325,7 +18304,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari34: {
     id: "safari34",
     floor: "safari",
@@ -18453,7 +18432,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari35: {
     id: "safari35",
     floor: "none",
@@ -18471,7 +18450,7 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "window",
+        "none",
       ],
       left: [
         "wall",
@@ -18482,7 +18461,7 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "window",
+        "none",
       ],
     },
     items: [
@@ -18538,7 +18517,7 @@ export const campaign = {
       },
     ],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari36: {
     id: "safari36",
     floor: "none",
@@ -18561,12 +18540,12 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
-        "window",
+        "none",
       ],
     },
     items: [
@@ -18612,7 +18591,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari37crown: {
     id: "safari37crown",
     floor: "safari",
@@ -18774,7 +18753,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari4: {
     id: "safari4",
     floor: "safari",
@@ -18790,8 +18769,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18800,8 +18779,8 @@ export const campaign = {
         "wall",
         "shield",
         "wall",
-        "window",
-        "window",
+        "none",
+        "none",
         "wall",
         "window",
         "wall",
@@ -18845,7 +18824,7 @@ export const campaign = {
       },
     ],
     color: "cyan",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari5: {
     id: "safari5",
     floor: "safari",
@@ -18866,11 +18845,11 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "window", "window", "wall"],
+      left: ["wall", "none", "none", "wall"],
     },
     items: [],
     color: "yellow",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari6triple: {
     id: "safari6triple",
     floor: "deadly",
@@ -18889,12 +18868,12 @@ export const campaign = {
         "window",
         "wall",
         "shield",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
       left: [
         "shield",
@@ -18903,12 +18882,12 @@ export const campaign = {
         "window",
         "wall",
         "shield",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
-        "window",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
       ],
     },
     items: [
@@ -19039,7 +19018,7 @@ export const campaign = {
       },
     ],
     color: "white",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari7: {
     id: "safari7",
     floor: "deadly",
@@ -19052,7 +19031,7 @@ export const campaign = {
     },
     walls: {
       away: ["shield", "wall", "window", "window", "wall", "shield"],
-      left: ["wall", "shield", "window", "window", "shield", "wall"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [
       {
@@ -19102,7 +19081,7 @@ export const campaign = {
       },
     ],
     color: "magenta",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari8: {
     id: "safari8",
     floor: "safari",
@@ -19123,11 +19102,11 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["window", "window"],
+      left: ["none", "none"],
     },
     items: [],
     color: "green",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari9: {
     id: "safari9",
     floor: "none",
@@ -19149,7 +19128,7 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "shield", "window", "window", "shield", "wall", "window"],
+      left: ["wall", "shield", "none", "none", "shield", "wall", "none"],
     },
     items: [
       {
@@ -19204,5 +19183,5 @@ export const campaign = {
       },
     ],
     color: "green",
-  },
+  } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
 } as const satisfies Campaign<OriginalCampaignRoomId>;

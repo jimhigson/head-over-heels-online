@@ -35,7 +35,13 @@ export type PlanetName = keyof typeof planets;
 export const planetNames = Object.keys(planets) as PlanetName[];
 
 export type AllPlanets = typeof planets;
-export type Wall<P extends PlanetName> = AllPlanets[P]["walls"][number];
+export type Wall<P extends PlanetName> =
+  | AllPlanets[P]["walls"][number]
+  /**
+   * none means render nothing in this space - if this is a mistake in the xml,
+   * overide it with jsonpatch
+   */
+  | "none";
 
 export type AnyWall = Wall<PlanetName>;
 

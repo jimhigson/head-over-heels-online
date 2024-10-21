@@ -15,13 +15,13 @@ import {
   DoorMap,
   Floor,
   PlanetName,
-  planets,
   Xy,
 } from "../../src/modelTypes";
 import { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { wallNumbers } from "./wallNumbers";
 import { convertItems } from "./convertItems";
 import { convertRoomId } from "./convertRoomId";
+import { writeOut } from "./writeOut";
 
 export const map = await readMapToJson();
 
@@ -49,7 +49,7 @@ const convertWallName = (
 
   const wallTypeIndex = regexMatch.groups["n"]
     ? parseInt(regexMatch.groups["n"])
-    : 1;
+    : 1; // jail walls only have one tile so in the xml there's no number
 
   return wallNumbers[planetName][wallTypeIndex - 1];
 };
@@ -124,12 +124,8 @@ const convertWalls = (
   const planet = convertPlanetName(roomJson.scenery);
   const result: AnyWall[] = new Array(wallLength);
 
-  // the xml sometimes is missing some walls. In this case, use the first time from the appropriate
-  // world to repair it. This also means that we will have the default world specified as the tiles over
-  // the doors
-  const defaultWall = planets[convertPlanetName(roomJson.scenery)].walls[0];
-
-  result.fill(defaultWall);
+  // we expect this to be overwritten:
+  result.fill("none");
 
   roomJson.walls
     .filter((wall) => wall.along === xmlJsonAxis)
@@ -325,33 +321,4 @@ for (const roomName of allRoomNames) {
   }
 }
 
-const targetDir = "src/_generated/originalCampaign/";
-const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
-const tsFilename = `${targetDir}/campaign.ts`;
-
-import patch from "../../src/_generated/originalCampaign/patch.json";
-import fastJsonPatch, { Operation } from "fast-json-patch";
-
-const writeConvertedJsonPromise = writeFile(
-  jsonConvertedFilename,
-  JSON.stringify(rooms),
-);
-
-const patchedJson = fastJsonPatch.applyPatch(
-  rooms,
-  patch as Operation[],
-).newDocument;
-
-const writeTsPromise = writeFile(
-  tsFilename,
-  `
-import type {Campaign} from "../../modelTypes.ts";\n
-
-export type OriginalCampaignRoomId = ${Object.keys(rooms)
-    .map((rid) => `"${rid}"`)
-    .join("|")};\n
-    
-export const campaign = ${JSON.stringify(patchedJson)} as const satisfies Campaign<OriginalCampaignRoomId>;\n`,
-);
-
-await Promise.all([writeTsPromise, writeConvertedJsonPromise]);
+await writeOut(rooms);

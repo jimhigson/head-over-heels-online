@@ -1,4 +1,5 @@
 [
+  { "op": "replace", "path": "/blacktooth3/walls/away/8", "value": "bars" },
   { "op": "remove", "path": "/blacktooth23heels/items/37" },
   { "op": "remove", "path": "/blacktooth23heels/items/36" },
   { "op": "remove", "path": "/blacktooth23heels/items/35" },

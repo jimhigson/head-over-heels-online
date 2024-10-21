@@ -78,6 +78,7 @@ export type Xml2JsonItem = {
       kind: "elevator";
       top: string;
       bottom: string;
+      class: "freeitem";
     }
 );
 
