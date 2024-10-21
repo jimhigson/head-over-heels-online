@@ -1,58 +1,57 @@
+import { EmptyObject, Simplify } from "type-fest";
 import { Direction, Xyz } from "./modelTypes";
 
-export type Teleporter = {
-  type: "teleporter";
-  toRoom: string;
-  position: Xyz;
+export type ItemType =
+  | "teleporter"
+  | "barrier"
+  | "block"
+  | "deadly-block"
+  | "conveyor"
+  | "pickup"
+  | "fish"
+  | "spring";
+
+/** properties of items that do not change - ie, if it is a barrier in x or y axis */
+export type ItemConfig = {
+  teleporter: {
+    toRoom: string;
+  };
+  barrier: {
+    // the axis the barrier runs along
+    axis: "x" | "y";
+  };
+  block: {
+    style: "organic" | "artificial" | "tower";
+  };
+  "deadly-block": {
+    style: "volcano" | "toaster";
+  };
+  conveyor: {
+    direction: Direction;
+  };
+  pickup: {
+    gives:
+      | "extra-life"
+      | "fast"
+      | "jumps"
+      | "shield"
+      | "donuts"
+      | "bag"
+      | "hooter";
+  };
+  fish: {
+    alive: boolean;
+  };
+  spring: EmptyObject;
 };
 
-export type Barrier = {
-  type: "barrier";
-  alongAxis: "x" | "y";
+export type Item<T extends ItemType> = Simplify<
+  { type: ItemType } & { config: ItemConfig[T] } & { position: Xyz }
+>;
+
+export type UnknownItem = Item<ItemType>;
+
+export type ItemInPlay = {
+  // needs everything from item, plus some item state
   position: Xyz;
 };
-
-export type Block = {
-  type: "block";
-  style: "organic" | "artificial";
-  position: Xyz;
-};
-
-export type DeadlyBlock = {
-  type: "deadly-block";
-  style: "volcano" | "toaster";
-  position: Xyz;
-};
-
-export type Conveyor = {
-  type: "conveyor";
-  direction: Direction;
-  position: Xyz;
-};
-
-export type Pickup = {
-  type: "pickup";
-  gives: "extra-life" | "donuts" | "bag" | "hooter";
-  position: Xyz;
-};
-
-export type Fish = {
-  type: "fish";
-  alive: boolean;
-  position: Xyz;
-};
-
-export type Spring = {
-  type: "spring";
-  position: Xyz;
-};
-
-export type Item =
-  | Teleporter
-  | Barrier
-  | Block
-  | DeadlyBlock
-  | Conveyor
-  | Pickup
-  | Fish
-  | Spring;

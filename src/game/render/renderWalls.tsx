@@ -27,9 +27,13 @@ export function* renderWalls(
         room.walls.left[i],
         "left",
       ) as TextureId;
-      yield spriteAtBlock({ x: room.size.x, y: i }, textureId, {
-        anchor: { x: 0, y: 1 },
-      });
+      yield spriteAtBlock(
+        { x: room.size.x, y: i },
+        {
+          anchor: { x: 0, y: 1 },
+          textureId,
+        },
+      );
     }
   }
 
@@ -50,9 +54,13 @@ export function* renderWalls(
         room.walls.away[i],
         "away",
       ) as TextureId;
-      yield spriteAtBlock({ x: i, y: room.size.y }, textureId, {
-        anchor: { x: 1, y: 1 },
-      });
+      yield spriteAtBlock(
+        { x: i, y: room.size.y },
+        {
+          anchor: { x: 1, y: 1 },
+          textureId,
+        },
+      );
     }
   }
 }

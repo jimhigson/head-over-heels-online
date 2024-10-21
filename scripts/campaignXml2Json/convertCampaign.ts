@@ -325,7 +325,8 @@ for (const roomName of allRoomNames) {
   }
 }
 
-const writeOut = await open("src/originalCampaign.ts", "w");
+const outputFilename = "src/originalCampaign.ts";
+const writeOut = await open(outputFilename, "w");
 writeOut.write(`import type {Campaign} from "./modelTypes.ts"\n`);
 writeOut.write(
   `export type OriginalCampaignRoomId = ${Object.keys(rooms)
@@ -340,3 +341,4 @@ await writeOut.write(
   `} as const satisfies Campaign<OriginalCampaignRoomId>;\n`,
 );
 await writeOut.close();
+

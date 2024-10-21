@@ -52,7 +52,7 @@ export type Xml2JsonItem = {
       where: CompassDirections;
     }
   | {
-      kind: "teleport" | "brick1" | "brick2" | "vulcano" /* sic */;
+      kind: "teleport" | "brick1" | "brick2" | "vulcano" /* sic */ | 'toaster';
       class: "griditem";
     }
   | {
@@ -65,7 +65,9 @@ export type Xml2JsonItem = {
         | "reincarnation-fish"
         | "mortal-fish"
         | "trampoline"
-        | "horn";
+        | "horn"
+        | 'cylinder' // the tower - how is this "free"?
+        ;
       class: "freeitem";
     }
   | {

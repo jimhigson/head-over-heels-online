@@ -2,7 +2,8 @@ import { OriginalCampaignRoomId } from "./originalCampaign";
 import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { TestCampaignRoomId } from "./testCampaign";
-import { Item } from "./Item";
+import { ItemType, UnknownItem } from "./Item";
+import { Simplify } from "type-fest";
 
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
@@ -54,7 +55,7 @@ export type RoomWalls<P extends PlanetName> = {
   away: Wall<P>[];
 };
 
-export type Room<P extends PlanetName, RoomIds extends string> = {
+export type RoomJson<P extends PlanetName, RoomIds extends string> = {
   id: RoomIds;
   size: {
     /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
@@ -73,15 +74,45 @@ export type Room<P extends PlanetName, RoomIds extends string> = {
   // for now, can only have one room per direction - this seems to work with the original game
   // levels but could be expanded to support multiple
   doors: DoorMap<RoomIds>;
-  items: Item[];
+  items: UnknownItem[];
+};
+
+export type RoomState = {
+  items: UnknownItem[];
+};
+
+export type EitherCharacterState = {
+  lives: number;
+  shield: number;
+  // if both chars are in same room, will be ===
+  roomState: RoomState;
+};
+
+export type GameState = {
+  head: Simplify<
+    EitherCharacterState & {
+      hasHooter: boolean;
+      /** how many big jumps we can do */
+      jumps: number;
+      donuts: number;
+    }
+  >;
+  heels: Simplify<
+    EitherCharacterState & {
+      hasBag: boolean;
+      /** how many steps we can go fast for */
+      fast: number;
+      carrying: ItemType;
+    }
+  >;
 };
 
 export type Campaign<RoomIds extends string> = Record<
   RoomIds,
-  Room<PlanetName, RoomIds>
+  RoomJson<PlanetName, RoomIds>
 >;
 
-export type AnyRoom = Room<PlanetName, string>;
+export type AnyRoom = RoomJson<PlanetName, string>;
 
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;

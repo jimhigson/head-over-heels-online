@@ -4,13 +4,26 @@ import {
   pixiSpriteSheet,
   TextureId,
 } from "../../sprites/pixiSpriteSheet";
-import { SpriteAtBlockOptions } from "./renderWorld";
 import { projectToScreen } from "./projectToScreen";
+import { ItemAppearance } from "../../ItemAppearances";
+import { ItemType } from "../../Item";
+
+export type RenderItemOptions = {
+  /**
+   * if set, will give the sprite a z-index. this isn't needed for sprites that
+   * can render themselves in a known-good order - ie, back-to-front
+   */
+  giveZIndex?: boolean;
+};
+
+type SpriteAppearance = Omit<ItemAppearance<ItemType>, "textureId"> & {
+  textureId: TextureId;
+};
 
 export const spriteAtBlock = (
   { x, y, z = 0 }: { x: number; y: number; z?: number },
-  textureId: TextureId,
-  { anchor, flipX, pivot, giveZIndex }: SpriteAtBlockOptions,
+  { textureId, anchor, flipX, pivot }: SpriteAppearance,
+  { giveZIndex }: RenderItemOptions = { giveZIndex: false },
 ): Sprite => {
   const sprite = new Sprite(pixiSpriteSheet.textures[textureId]);
   if (anchor !== undefined) sprite.anchor = anchor;

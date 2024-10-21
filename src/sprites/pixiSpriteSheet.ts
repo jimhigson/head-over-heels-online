@@ -155,17 +155,26 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
     "items.teleporter": {
       frame: { x: 4, y: 450, ...largeItemTextureSize },
     },
-    "items.barrier": {
+    "items.barrier.x": {
+      frame: { x: 313, y: 389, w: 24, h: 24 },
+    },
+    "items.barrier.y": {
       frame: { x: 313, y: 414, w: 24, h: 24 },
     },
     "items.block.organic": {
       frame: { x: 172, y: 388, ...largeItemTextureSize },
     },
-    "items.block.artificial": {
+    "items.block.artificial": { 
       frame: { x: 138, y: 388, ...largeItemTextureSize },
+    },
+    "items.block.tower": {
+      frame: { x: 286, y: 414, ...smallItemTextureSize },
     },
     "items.volcano": {
       frame: { x: 344, y: 414, ...largeItemTextureSize },
+    },
+    "items.toaster": {
+      frame: { x: 111, y: 423, ...largeItemTextureSize },
     },
     "items.conveyor.x": {
       frame: { x: 259, y: 440, ...largeItemTextureSize },
@@ -191,10 +200,10 @@ export const pixiSpriteSheet = new Spritesheet(spritesTexture, {
     "items.fish2": {
       frame: { x: 284, y: 388, ...smallItemTextureSize },
     },
-    "items.spring.rest": {
+    "items.spring.compressed": {
       frame: { x: 4, y: 421, ...smallItemTextureSize },
     },
-    "items.spring.sprung": {
+    "items.spring.released": {
       frame: { x: 29, y: 421, ...smallItemTextureSize },
     },
   },

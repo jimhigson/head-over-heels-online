@@ -1,5 +1,5 @@
-import { Application, Color, Container, PointData } from "pixi.js";
-import { AnyRoom, PlanetName, Room, RoomId } from "../../modelTypes";
+import { Application, Container, PointData } from "pixi.js";
+import { AnyRoom, PlanetName, RoomJson, RoomId } from "../../modelTypes";
 import { zxSpectrumResolution } from "../../originalGame";
 import { hintColours, Shades } from "../../hintColours";
 import {
@@ -26,16 +26,6 @@ export const xyzBlockPosition = (
   return projectToScreen(x, y, z);
 };
 
-export type SpriteAtBlockOptions = {
-  anchor?: PointData;
-  pivot?: PointData;
-  flipX?: true;
-  /**
-   * if set, will give the sprite a z-index. this isn't needed for sprites that
-   * can render themselves in a known-good order - ie, back-to-front
-   */
-  giveZIndex?: true;
-};
 export const doorTexture = (room: AnyRoom, axis: "x" | "y") => {
   const worldSpecificTexture =
     pixiSpriteSheet.textures[
@@ -93,7 +83,7 @@ export const paletteSwapFilters = (shades: Shades) => [
 ];
 
 const renderRoom = <P extends PlanetName>(
-  room: Room<P, string>,
+  room: RoomJson<P, string>,
   options: RenderWorldOptions,
 ) => {
   // NB: floor could be a tiling sprite and a graphics map:

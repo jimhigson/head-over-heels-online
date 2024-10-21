@@ -1,4 +1,4 @@
-import { Item, Teleporter, Barrier } from "../../src/Item";
+import { ItemConfig, ItemType, UnknownItem } from "../../src/Item";
 import {
   LooseDoorMap,
   map,
@@ -12,9 +12,9 @@ export const convertItems = (
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): Item[] => {
+): UnknownItem[] => {
   return xml2JsonRoom.items
-    .map((item): Item | undefined => {
+    .map((item): UnknownItem | undefined => {
       switch (true) {
         case item.kind === "teleport": {
           const roomOnMap = map[roomName];
@@ -26,32 +26,48 @@ export const convertItems = (
 
           return {
             type: "teleporter",
-            toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
+            config: {
+              toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
-          } satisfies Teleporter;
+          };
         }
 
         case item.kind === "bars-ns" || item.kind === "bars-ew": {
           return {
             type: "barrier",
-            alongAxis: item.kind === "bars-ns" ? "y" : "x",
-            position: convertXYZ(item, xml2JsonRoom, doorMap),
-          } satisfies Barrier;
-        }
-
-        case item.kind === "brick1":
-        case item.kind === "brick2": {
-          return {
-            type: "block",
-            style: item.kind === "brick1" ? "artificial" : "organic",
+            config: {
+              axis: item.kind === "bars-ns" ? "y" : "x",
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
 
+        case item.kind === "cylinder":
+        case item.kind === "brick1":
+        case item.kind === "brick2": {
+          const styleConversion: Record<typeof item.kind, ItemConfig['block']['style']> = {
+            brick1: 'artificial',
+            brick2: 'organic',
+            cylinder: 'tower'
+          }
+
+          return {
+            type: "block",
+            config: {
+              style: styleConversion[item.kind],
+            },
+            position: convertXYZ(item, xml2JsonRoom, doorMap),
+          };
+        }
+
+        case item.kind === "toaster":
         case item.kind === "vulcano": {
           return {
             type: "deadly-block",
-            style: "volcano",
+            config: {
+              style: item.kind === "vulcano" ? "volcano" : 'toaster',
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
@@ -59,7 +75,9 @@ export const convertItems = (
         case item.kind === "conveyor": {
           return {
             type: "conveyor",
-            direction: convertDirection(item.orientation),
+            config: {
+              direction: convertDirection(item.orientation),
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
@@ -75,7 +93,9 @@ export const convertItems = (
 
           return {
             type: "pickup",
-            gives: conversions[item.kind] || item.kind,
+            config: {
+              gives: conversions[item.kind] || item.kind,
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
@@ -84,7 +104,9 @@ export const convertItems = (
         case item.kind === "reincarnation-fish": {
           return {
             type: "fish",
-            alive: item.kind === "reincarnation-fish",
+            config: {
+              alive: item.kind === "reincarnation-fish",
+            },
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
@@ -92,6 +114,7 @@ export const convertItems = (
         case item.kind === "trampoline": {
           return {
             type: "spring",
+            config: {},
             position: convertXYZ(item, xml2JsonRoom, doorMap),
           };
         }
@@ -101,5 +124,5 @@ export const convertItems = (
           return undefined;
       }
     })
-    .filter((x): x is Item => x !== undefined);
+    .filter((x): x is UnknownItem => x !== undefined);
 };

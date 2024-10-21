@@ -3,7 +3,7 @@ import {
   planets,
   Xy,
   type PlanetName,
-  type Room,
+  type RoomJson,
   type RoomWalls,
   type Wall,
 } from "./modelTypes.ts";
@@ -33,7 +33,7 @@ const generateWalls = <P extends PlanetName>(
 const colourRooms = () => {
   type Entry<P extends PlanetName> = [
     `${P}-${ZxSpectrumRoomColour}`,
-    Room<P, `${PlanetName}-${ZxSpectrumRoomColour}`>,
+    RoomJson<P, `${PlanetName}-${ZxSpectrumRoomColour}`>,
   ];
 
   function* room(): Generator<Entry<PlanetName>> {
@@ -79,7 +79,7 @@ const colourRooms = () => {
                   y: 2,
                   z: 0,
                 },
-                toRoom: "doorsRoom",
+                config: {toRoom: "doorsRoom"},
               },
             ],
             id: `${p}-${c}`,
@@ -122,7 +122,7 @@ export const testCampaign = () => ({
     items: [
       {
         type: "teleporter",
-        toRoom: "blacktooth-cyan",
+        config:{toRoom: "blacktooth-cyan"},
         position: {
           x: 1,
           y: 0,
@@ -132,7 +132,7 @@ export const testCampaign = () => ({
     ],
     planet: "blacktooth",
     color: "cyan",
-  } satisfies Room<"blacktooth", string>,
+  } satisfies RoomJson<"blacktooth", string>,
   zRoom: {
     size: { x: 4, y: 5 },
     walls: generateWalls({ x: 4, y: 5 }, "egyptus"),
@@ -149,84 +149,84 @@ export const testCampaign = () => ({
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 0, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 1, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 2, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 2, z: 1 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 2, z: 0 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 3, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 4, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 3, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        alongAxis: "y",
+        config:{axis: "y"},
         position: { x: 1, y: 4, z: 2 },
       },
       {
         type: "teleporter",
-        toRoom: "doorsRoom",
+        config: {toRoom: "doorsRoom"},
         position: { x: 0, y: 0, z: 0 },
       },
       {
         type: "teleporter",
-        toRoom: "doorsRoom",
+        config: {toRoom: "doorsRoom"},
         // normally nothing in a room is at factional values, but this makes it easy to test:
         position: { x: 0, y: 1, z: 0.5 },
       },
       {
         // comes after in the list but should be drawn behind:
         type: "teleporter",
-        toRoom: "doorsRoom",
+        config: {toRoom: "doorsRoom"},
         position: { x: 1, y: 1, z: 0 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "teleporter",
-        toRoom: "doorsRoom",
+        config: {toRoom: "doorsRoom"},
         position: { x: 2, y: 2, z: 0 },
       },
     ],
     planet: "egyptus",
     color: "cyan",
-  } satisfies Room<"egyptus", string>,
+  } satisfies RoomJson<"egyptus", string>,
   wide: {
     size: { x: 10, y: 3 },
     walls: generateWalls({ x: 10, y: 3 }, "market"),
@@ -242,7 +242,7 @@ export const testCampaign = () => ({
     items: [],
     planet: "market",
     color: "cyan",
-  } satisfies Room<"market", string>,
+  } satisfies RoomJson<"market", string>,
   deep: {
     size: { x: 3, y: 10 },
     walls: generateWalls({ x: 3, y: 10 }, "moonbase"),
@@ -258,7 +258,7 @@ export const testCampaign = () => ({
     items: [],
     planet: "moonbase",
     color: "cyan",
-  } satisfies Room<"moonbase", string>,
+  } satisfies RoomJson<"moonbase", string>,
   big: {
     size: { x: 10, y: 10 },
     walls: generateWalls({ x: 10, y: 10 }, "moonbase"),
@@ -274,7 +274,7 @@ export const testCampaign = () => ({
     items: [],
     planet: "moonbase",
     color: "cyan",
-  } satisfies Room<"moonbase", string>,
+  } satisfies RoomJson<"moonbase", string>,
   ...colourRooms(),
 });
 export type TestCampaignRoomId = keyof ReturnType<typeof testCampaign>;

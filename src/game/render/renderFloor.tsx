@@ -43,9 +43,13 @@ export function* renderFloor(
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
         tilesContainer.addChild(
-          spriteAtBlock({ x: ix, y: iy }, floorTileTexture, {
-            anchor: { x: 0.5, y: 1 },
-          }),
+          spriteAtBlock(
+            { x: ix, y: iy },
+            {
+              anchor: { x: 0.5, y: 1 },
+              textureId: floorTileTexture,
+            },
+          ),
         );
       }
     }
@@ -70,8 +74,7 @@ export function* renderFloor(
     rightEdge.addChild(
       spriteAtBlock(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
-        "generic.edge.towards",
-        { pivot: { x: 7, y: 1 } },
+        { pivot: { x: 7, y: 1 }, textureId: "generic.edge.towards" },
       ),
     );
   }
@@ -81,8 +84,7 @@ export function* renderFloor(
     towardsEdge.addChild(
       spriteAtBlock(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
-        "generic.edge.right",
-        { pivot: { x: 0, y: 1 } },
+        { pivot: { x: 0, y: 1 }, textureId: "generic.edge.right" },
       ),
     );
   }
