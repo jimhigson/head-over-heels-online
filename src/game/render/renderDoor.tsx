@@ -26,31 +26,43 @@ export function* renderDoor(
 
   console.log("rendering door on side", side, "at", backPos, frontPos);
 
-  // if there is a door, do not render the normal wall- render the door instead
-  // TODO: only render the door back. The front needs to overdraw items in-game
-  // but subsequent walls also need to over-render the door(!)
-  // this means that maybe everything needs to be treated like a sortable object (?)
   if (isBack) {
     if (door.z === 0) {
-      //TODO: flip like before
-      yield spriteAtBlock(frontPos, "generic.wall.overdraw", {
-        anchor: { x: 0, y: 1 },
-      });
+      yield spriteAtBlock(
+        {
+          [axis]: door.ordinal + 1,
+          // the overdraw sprite is like a wall, but set back half a block
+          // from where a wall would normally be
+          [crossAxis]: room.size[crossAxis] + 0.5,
+        } as Xy,
+        {
+          anchor: { x: 0, y: 1 },
+          flipX: side === "away",
+          textureId: "generic.wall.overdraw",
+        },
+      );
     } else {
       const pivotX = side === "left" ? 0 : 16;
       for (const p of [backPos, frontPos]) {
-        yield spriteAtBlock(p, "generic.door.legs.base", {
+        yield spriteAtBlock(p, {
           pivot: { x: pivotX, y: 9 },
+          textureId: "generic.door.legs.base",
         });
         for (let z = 1; z <= door.z; z++) {
-          yield spriteAtBlock({ ...p, z }, "generic.door.legs.pillar", {
-            pivot: { x: pivotX, y: 9 },
-          });
+          yield spriteAtBlock(
+            { ...p, z },
+            {
+              pivot: { x: pivotX, y: 9 },
+              textureId: "generic.door.legs.pillar",
+            },
+          );
         }
         yield spriteAtBlock(
           { ...p, z: door.z },
-          `generic.door.legs.threshold.${axis}`,
-          { pivot: { x: pivotX, y: 15 } },
+          {
+            pivot: { x: pivotX, y: 15 },
+            textureId: `generic.door.legs.threshold.${axis}`,
+          },
         );
       }
     }
@@ -60,8 +72,11 @@ export function* renderDoor(
         const pivotX = side === "towards" ? 18 : 8;
         yield spriteAtBlock(
           { ...p, z: door.z },
-          `generic.door.threshold.${axis}`,
-          { pivot: { x: pivotX, y: 12 } },
+
+          {
+            pivot: { x: pivotX, y: 12 },
+            textureId: `generic.door.threshold.${axis}`,
+          },
         );
       }
     }
@@ -69,12 +84,20 @@ export function* renderDoor(
 
   const { backTexture, frontTexture } = doorTexture(room, axis);
 
-  yield spriteAtBlock({ ...backPos, z: door.z }, backTexture, {
-    pivot: doorTexturePivot[axis],
-  });
-  yield spriteAtBlock({ ...frontPos, z: door.z }, frontTexture, {
-    pivot: doorTexturePivot[axis],
-  });
+  yield spriteAtBlock(
+    { ...backPos, z: door.z },
+    {
+      pivot: doorTexturePivot[axis],
+      textureId: backTexture,
+    },
+  );
+  yield spriteAtBlock(
+    { ...frontPos, z: door.z },
+    {
+      pivot: doorTexturePivot[axis],
+      textureId: frontTexture,
+    },
+  );
 }
 
 /**
