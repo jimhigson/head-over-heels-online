@@ -28,9 +28,10 @@ export const convertItems = (
       }
 
       switch (item.kind) {
-        case "teleport": {
+        case "teleport":         
+        case "teleport-too": {
           const roomOnMap = map[roomName];
-          const destination = roomOnMap.teleport;
+          const destination = roomOnMap[item.kind === 'teleport'? 'teleport' : 'teleport2'];
 
           if (destination === undefined) {
             throw new Error("teleporter with no destination");

@@ -13,6 +13,7 @@ export type Xml2JsonItem = {
   | {
       kind:
         | "teleport"
+        | "teleport-too"
         | "brick1"
         | "brick2"
         | "vulcano" /* sic */
