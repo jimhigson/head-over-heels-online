@@ -80,6 +80,8 @@ export const itemAppearances: {
         case "helicopter-bug":
         case "dalek":
           return pixiSpriteSheet.animations[which];
+        case "headless-base":
+          return "headless-base";
         default:
           // TODO: make stack
           return `${which}.${startDirection}`;

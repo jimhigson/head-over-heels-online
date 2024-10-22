@@ -279,6 +279,9 @@ const spritesheetData = {
     "baddies.dalek.2": {
       frame: { x: 29, y: 4, ...smallItemTextureSize },
     },
+    "headless-base" : {
+      frame: { x: 57, y: 4, ...smallItemTextureSize },
+    },
     joystick: {
       frame: { x: 259, y: 414, ...smallItemTextureSize },
     },

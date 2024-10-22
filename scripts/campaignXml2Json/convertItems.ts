@@ -100,6 +100,7 @@ export const convertItems = (
 
         case "extra-life":
         case "high-jumps":
+        case "quick-steps":
         case "donuts":
         case "horn":
         case "shield":
@@ -114,6 +115,7 @@ export const convertItems = (
             "extra-life": "extra-life",
             shield: "shield",
             donuts: "donuts",
+            "quick-steps": "fast",
           };
 
           return {
@@ -217,6 +219,7 @@ export const convertItems = (
         case "helicopter-bug":
         case "imperial-guard":
         case "imperial-guard-head":
+        case "bomb":
         case "diver": {
           const baddieConversions: Record<
             typeof item.kind,
@@ -226,6 +229,7 @@ export const convertItems = (
             "imperial-guard": "cyberman",
             "imperial-guard-head": "cyberman",
             siren: "dalek",
+            bomb: "headless-base",
             diver: "american-football-head",
             monkey: "monkey",
             elephant: "elephant",

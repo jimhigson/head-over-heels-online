@@ -777,6 +777,11 @@ export const campaign = {
         position: { x: 4, y: 5, z: 2 },
       },
       {
+        type: "pickup",
+        config: { gives: "fast" },
+        position: { x: 7, y: 4, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 4, z: 0 },
@@ -3851,6 +3856,29 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 2, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 4, y: 9, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 7, y: 3, z: 1 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "fast" },
+        position: { x: 13, y: 5, z: 1 },
       },
     ],
     color: "white",
@@ -7559,6 +7587,15 @@ export const campaign = {
         type: "book",
         config: { slider: false },
         position: { x: 6, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 0, y: 4, z: 0 },
       },
     ],
     color: "white",
@@ -12873,6 +12910,15 @@ export const campaign = {
       },
       {
         type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 2, y: 7, z: 0 },
+      },
+      {
+        type: "baddie",
         config: { which: "cyberman", startDirection: "right", charging: true },
         position: { x: 5, y: 5, z: 1 },
       },
@@ -15429,7 +15475,35 @@ export const campaign = {
         "window1",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 3, y: 6, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 0, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 3, y: 2, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase6: {
@@ -15520,9 +15594,27 @@ export const campaign = {
         position: { x: 0, y: 3, z: 0 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 7, y: 5, z: 0 },
+      },
+      {
         type: "pickup",
         config: { gives: "extra-life" },
         position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 0, y: 4, z: 0 },
       },
     ],
     color: "white",
@@ -19998,8 +20090,35 @@ export const campaign = {
       },
       {
         type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 2, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 5, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
         config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "headless-base",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 3, y: 2, z: 0 },
       },
     ],
     color: "yellow",

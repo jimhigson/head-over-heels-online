@@ -28,6 +28,7 @@ export type Xml2JsonItem = {
         | "bars-ew"
         | "extra-life"
         | "high-jumps"
+        | "quick-steps"
         | "shield"
         | "donuts"
         | "handbag"
@@ -39,6 +40,7 @@ export type Xml2JsonItem = {
         | "siren" // daleks!
         | "remote-control" //joystick
         | "stool" // anvil
+        | "bomb"
         | "another-portable-brick"
         | "drum"
         | "charles-robot"

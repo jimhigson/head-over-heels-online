@@ -69,6 +69,7 @@ export type ItemConfig = {
       | "helicopter-bug"
       | "cyberman"
       | "american-football-head"
+      | "headless-base"
       | "monkey"
       | "elephant"
       | "computer-bot";
