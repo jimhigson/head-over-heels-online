@@ -37,7 +37,7 @@ export type ItemConfig = {
     style: "organic" | "artificial" | "tower";
   };
   "deadly-block": {
-    style: "volcano" | "toaster" | "spikes";
+    style: "volcano" | "toaster" | "spikes" | "puck";
   };
   conveyor: {
     direction: Direction;
@@ -72,9 +72,11 @@ export type ItemConfig = {
       | "headless-base"
       | "monkey"
       | "elephant"
+      | "turtle"
+      | 'flying-ball'
       | "computer-bot";
-    startDirection: Direction;
-    charging: boolean;
+    startDirection?: Direction;
+    charging?: boolean;
   };
   joystick: EmptyObject;
   "portable-block": {

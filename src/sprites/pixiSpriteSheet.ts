@@ -92,6 +92,7 @@ const backgroundFrames = <TPlanet extends PlanetName>(
 type DirectionalTexture<TName extends string> = `${TName}.${Direction}`;
 const fourDirections = <TName extends string>(
   name: TName,
+
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
 ): Record<`${TName}.${Direction}`, SpritesheetFrameData> => {
@@ -121,6 +122,29 @@ const fourDirections = <TName extends string>(
 
   return Object.fromEntries(generator()) as Record<
     DirectionalTexture<TName>,
+    SpritesheetFrameData
+  >;
+};
+
+//technically not all our animations have four frames but that's the maximum and it'll do ok
+// could be a bit smarter here really
+type AnimatedTextureName<TName extends string> = `${TName}.${'1'|'2'|'3'|'4'}`;
+const animatedSeries = <TName extends string>(
+  name: TName,
+  n: number,
+  { x: startX, y: startY }: Xy,
+  textureSize: SpriteSize,
+): Record<AnimatedTextureName<TName>, SpritesheetFrameData> => {
+  function* generator(): Generator<
+    [AnimatedTextureName<TName>, SpritesheetFrameData]
+  > {
+    for (let i = 0; i < n; i++) {
+      yield [`${name}.${i+1}` as AnimatedTextureName<TName>, { frame: { x: startX + i * (textureSize.w +1), y: startY, ...textureSize } }];  
+    }
+  }
+
+  return Object.fromEntries(generator()) as Record<
+    AnimatedTextureName<TName>,
     SpritesheetFrameData
   >;
 };
@@ -243,12 +267,7 @@ const spritesheetData = {
     bag: {
       frame: { x: 259, y: 358, ...smallItemTextureSize },
     },
-    fish1: {
-      frame: { x: 259, y: 388, ...smallItemTextureSize },
-    },
-    fish2: {
-      frame: { x: 284, y: 388, ...smallItemTextureSize },
-    },
+    ...animatedSeries("fish", 2, { x: 259, y: 388 }, smallItemTextureSize ),    
     "spring.compressed": {
       frame: { x: 4, y: 421, ...smallItemTextureSize },
     },
@@ -261,24 +280,10 @@ const spritesheetData = {
     "heels.toward1": {
       frame: { x: 184, y: 266, ...smallItemTextureSize },
     },
-    "lift.4": {
-      frame: { x: 259, y: 474, ...smallItemTextureSize },
-    },
-    "lift.3": {
-      frame: { x: 284, y: 474, ...smallItemTextureSize },
-    },
-    "lift.2": {
-      frame: { x: 309, y: 474, ...smallItemTextureSize },
-    },
-    "lift.1": {
-      frame: { x: 334, y: 474, ...smallItemTextureSize },
-    },
-    "baddies.dalek.1": {
-      frame: { x: 4, y: 4, ...smallItemTextureSize },
-    },
-    "baddies.dalek.2": {
-      frame: { x: 29, y: 4, ...smallItemTextureSize },
-    },
+
+    ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize ),
+    ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize ),
+
     "headless-base" : {
       frame: { x: 57, y: 4, ...smallItemTextureSize },
     },
@@ -322,18 +327,14 @@ const spritesheetData = {
     ...fourDirections("monkey", { x: 118, y: 90 }, smallItemTextureSize),
     ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
     ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
-    "helicopter-bug.1": {
-      frame: { x: 4, y: 167, ...smallItemTextureSize },
-    },
-    "helicopter-bug.2": {
-      frame: { x: 29, y: 167, ...smallItemTextureSize },
-    },
-    "helicopter-bug.3": {
-      frame: { x: 54, y: 167, ...smallItemTextureSize },
-    },
-    "helicopter-bug.4": {
-      frame: { x: 79, y: 167, ...smallItemTextureSize },
-    },
+
+    ...animatedSeries("turtle.left", 2, { x: 4, y: 137}, smallItemTextureSize ),
+    ...animatedSeries("turtle.away", 2, { x: 55, y: 137}, smallItemTextureSize ),
+    ...animatedSeries("turtle.towards", 2, { x: 4, y: 163}, smallItemTextureSize ),
+    ...animatedSeries("turtle.right", 2, { x: 55, y: 163}, smallItemTextureSize ),
+
+    ...animatedSeries("helicopter-bug", 4, { x: 4, y: 194}, smallItemTextureSize ),
+
     "hush-puppy": {
       frame: { x: 163, y: 300, ...largeItemTextureSize },
     },
@@ -345,9 +346,13 @@ const spritesheetData = {
     },
   },
   animations: {
-    fish: ["fish1", "fish2"],
+    fish: ["fish.1", "fish.2"],
     lift: ["lift.1", "lift.2", "lift.3", "lift.4"],
-    dalek: ["baddies.dalek.1", "baddies.dalek.2"],
+    dalek: ["dalek.1", "dalek.2"],
+    "turtle.left": ["turtle.left.1", "turtle.left.2"],
+    "turtle.away": ["turtle.away.1", "turtle.away.2"],
+    "turtle.towards": ["turtle.towards.1", "turtle.towards.2"],
+    "turtle.right": ["turtle.right.1", "turtle.right.2"],
     "helicopter-bug": [
       "helicopter-bug.1",
       "helicopter-bug.2",

@@ -79,11 +79,23 @@ export const convertItems = (
 
         case "toaster":
         case "spikes":
+        case "mortal-cap":
         case "vulcano": {
+
+          const styleConversion: Record<
+            typeof item.kind,
+            ItemConfig["deadly-block"]["style"]
+          > = {
+            vulcano: 'volcano',
+            spikes: 'spikes',
+            toaster: 'toaster',
+            'mortal-cap': 'puck'
+          };
+
           return {
             type: "deadly-block",
             config: {
-              style: item.kind === "vulcano" ? "volcano" : item.kind,
+              style: styleConversion[item.kind],
             },
             position,
           };
@@ -218,9 +230,11 @@ export const convertItems = (
         case "monkey":
         case "elephant":
         case "helicopter-bug":
+        case "throne-guard":
         case "imperial-guard":
         case "imperial-guard-head":
         case "bomb":
+        case "turtle":
         case "diver": {
           const baddieConversions: Record<
             typeof item.kind,
@@ -234,17 +248,18 @@ export const convertItems = (
             diver: "american-football-head",
             monkey: "monkey",
             elephant: "elephant",
+            turtle: "turtle",
+            "throne-guard": "flying-ball"
           };
 
-          const defaultStartDirection = "left";
           return {
             type: "baddie",
             config: {
               which: baddieConversions[item.kind],
               startDirection:
-                item.kind === "diver" || item.kind === "imperial-guard-head"
+                item.kind === "diver" || item.kind === "imperial-guard-head" || item.kind === "turtle"
                   ? convertDirection(item.orientation)
-                  : defaultStartDirection,
+                  : undefined,
               charging: item.kind === "imperial-guard-head",
             },
             position,

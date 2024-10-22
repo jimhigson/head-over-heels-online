@@ -33,7 +33,7 @@ export const itemAppearances: {
   },
   "deadly-block": {
     anchor: { x: 0.5, y: 1 },
-    texture: (d) => `${d.style}`,
+    texture: ({style}) => style,
   },
   block: {
     anchor: { x: 0.5, y: 1 },
@@ -48,7 +48,7 @@ export const itemAppearances: {
   },
   fish: {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ alive }) => (alive ? pixiSpriteSheet.animations.fish : "fish1"),
+    texture: ({ alive }) => (alive ? pixiSpriteSheet.animations.fish : "fish.1"),
     animationSpeed: 0.1,
   },
   lift: {
@@ -82,9 +82,13 @@ export const itemAppearances: {
           return pixiSpriteSheet.animations[which];
         case "headless-base":
           return "headless-base";
+        case "turtle":
+          return pixiSpriteSheet.animations[`turtle.${startDirection!}`];
+        case "flying-ball": 
+          return "ball"; // TODO: needs bubbles under it too
         default:
           // TODO: make stack
-          return `${which}.${startDirection}`;
+          return `${which}.${startDirection || 'towards'}`;
       }
     },
     animationSpeed: 0.2,

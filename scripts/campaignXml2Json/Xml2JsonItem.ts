@@ -25,34 +25,37 @@ export type Xml2JsonItem = {
     }
   | {
       kind:
-        | "bars-ns"
-        | "bars-ew"
-        | "extra-life"
-        | "high-jumps"
-        | "quick-steps"
-        | "shield"
-        | "donuts"
-        | "handbag"
-        | "reincarnation-fish"
-        | "mortal-fish"
-        | "trampoline"
-        | "horn"
-        | "cylinder" // the tower - how is this "free"?
-        | "siren" // daleks!
-        | "remote-control" //joystick
-        | "stool" // anvil
-        | "bomb"
+        | "portable-brick"
         | "another-portable-brick"
-        | "drum"
-        | "charles-robot"
-        | "switch"
-        | "helicopter-bug"
         | "ball"
+        | "bars-ew"
+        | "bars-ns"
+        | "bomb"
         | "cap"
+        | "charles-robot"
+        | "cylinder" // the tower - how is this "free"?
+        | "donuts"
+        | "drum"
+        | "elephant"
+        | "extra-life"
+        | "handbag"
+        | "helicopter-bug"
+        | "high-jumps"
+        | "horn"
         | "imperial-guard"
         | "monkey"
-        | "elephant"
-        | "sandwich";
+        | "mortal-fish"
+        | "quick-steps"
+        | "reincarnation-fish"
+        | "remote-control" //joystick
+        | "sandwich"
+        | "shield"
+        | "siren" // daleks!
+        | "stool" // anvil
+        | "switch"
+        | "throne-guard"
+        | "trampoline"
+        | "mortal-cap"
       class: "freeitem";
     }
   | {
@@ -67,7 +70,7 @@ export type Xml2JsonItem = {
       class: "freeitem";
     }
   | {
-      kind: "imperial-guard-head" | "diver" | "book";
+      kind: "imperial-guard-head" | "diver" | "turtle" | "book";
       orientation: CompassDirectionsNESW;
       class: "freeitem";
     }

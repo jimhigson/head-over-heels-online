@@ -813,11 +813,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 7, y: 2, z: 0 },
       },
       {
@@ -929,7 +925,18 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 3, y: 3, z: 0 },
+      },
+    ],
     color: "green",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth17triple: {
@@ -1099,11 +1106,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 3, y: 0, z: 0 },
       },
     ],
@@ -2006,7 +2009,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman", startDirection: "left", charging: false },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 6, z: 0 },
       },
     ],
@@ -2294,12 +2297,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 7, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "cyberman", startDirection: "left", charging: false },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 3, z: 0 },
       },
     ],
@@ -2529,7 +2532,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -3231,25 +3234,17 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "cyberman", startDirection: "left", charging: false },
+        config: { which: "cyberman", charging: false },
         position: { x: 4, y: 7, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 7, y: 0, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 0, y: 0, z: 0 },
       },
     ],
@@ -3418,11 +3413,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
     ],
@@ -3859,20 +3850,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 4, y: 9, z: 1 },
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 7, y: 3, z: 1 },
       },
       {
@@ -4078,7 +4061,7 @@ export const campaign = {
       { type: "switch", config: {}, position: { x: 6, y: 0, z: 1 } },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 0, z: 1 },
       },
     ],
@@ -4293,7 +4276,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 7, z: 1 },
       },
     ],
@@ -4518,11 +4501,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 4, y: 1, z: 0 },
       },
     ],
@@ -4584,7 +4563,13 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "right", charging: false },
+        position: { x: 1, y: 4, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth66: {
@@ -5047,7 +5032,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 3, z: 0 },
       },
     ],
@@ -5094,12 +5079,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 7, y: 4, z: 0 },
       },
     ],
@@ -5282,7 +5267,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "monkey", startDirection: "left", charging: false },
+        config: { which: "monkey", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -5393,12 +5378,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 1, y: 3, z: 0 },
       },
     ],
@@ -5500,6 +5485,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "right", charging: false },
+        position: { x: 2, y: 7, z: 0 },
       },
       {
         type: "baddie",
@@ -5759,7 +5749,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -6033,7 +6023,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 6, y: 7, z: 1 },
       },
       { type: "charles", config: {}, position: { x: 0, y: 7, z: 3 } },
@@ -6424,7 +6414,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "monkey", startDirection: "left", charging: false },
+        config: { which: "monkey", charging: false },
         position: { x: 0, y: 7, z: 1 },
       },
       {
@@ -6462,7 +6452,13 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "flying-ball", charging: false },
+        position: { x: 1, y: 3, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth87crown: {
@@ -6551,7 +6547,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
     ],
@@ -6583,7 +6579,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 3, y: 3, z: 0 } },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 3, z: 1 },
       },
       {
@@ -6832,7 +6828,7 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "monkey", startDirection: "left", charging: false },
+        config: { which: "monkey", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
     ],
@@ -7043,7 +7039,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -7063,7 +7059,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -7192,12 +7188,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 3, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } },
@@ -7590,11 +7586,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -7824,7 +7816,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 7, z: 0 },
       },
       {
@@ -8345,12 +8337,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "monkey", startDirection: "left", charging: false },
+        config: { which: "monkey", charging: false },
         position: { x: 3, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "monkey", startDirection: "left", charging: false },
+        config: { which: "monkey", charging: false },
         position: { x: 4, y: 0, z: 0 },
       },
     ],
@@ -8381,12 +8373,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 1, z: 0 },
       },
     ],
@@ -8896,7 +8888,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 1, y: 0, z: 0 },
       },
     ],
@@ -9191,7 +9183,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -9206,7 +9198,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -9237,20 +9229,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 1, y: 3, z: 0 },
       },
     ],
@@ -10141,6 +10125,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "away", charging: false },
+        position: { x: 5, y: 1, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10320,13 +10309,13 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 6, y: 3, z: 4 } },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 3, z: 0 },
       },
     ],
@@ -10497,11 +10486,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 4, y: 2, z: 0 },
       },
       {
@@ -10521,7 +10506,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 0, z: 0 },
       },
     ],
@@ -10954,7 +10939,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 7, y: 5, z: 1 },
       },
       {
@@ -11393,7 +11378,7 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 5, y: 4, z: 0 },
       },
       { type: "ball", config: {}, position: { x: 0, y: 2, z: 1 } },
@@ -11789,7 +11774,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 7, z: 0 },
       },
       {
@@ -11799,7 +11784,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 3, y: 0, z: 0 },
       },
     ],
@@ -12208,12 +12193,12 @@ export const campaign = {
       { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 2, z: 0 },
       },
       {
@@ -12910,11 +12895,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 2, y: 7, z: 0 },
       },
       {
@@ -13259,7 +13240,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 5, z: 0 },
       },
       {
@@ -14187,7 +14168,7 @@ export const campaign = {
       { type: "hush-puppy", config: {}, position: { x: 3, y: 3, z: 0 } },
       {
         type: "baddie",
-        config: { which: "cyberman", startDirection: "left", charging: false },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 5, z: 0 },
       },
     ],
@@ -15478,29 +15459,17 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 3, y: 6, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
     ],
@@ -15595,11 +15564,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 7, y: 5, z: 0 },
       },
       {
@@ -15609,11 +15574,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -16541,6 +16502,11 @@ export const campaign = {
         position: { x: 0, y: 0, z: 0 },
       },
       {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "right", charging: false },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
         type: "portable-block",
         config: { style: "cube" },
         position: { x: 1, y: 1, z: 2 },
@@ -16797,6 +16763,11 @@ export const campaign = {
         position: { x: 15, y: 4, z: 3 },
       },
       {
+        type: "teleporter",
+        config: { toRoom: "penitentiary34crown" },
+        position: { x: 15, y: 4, z: 4 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 14, y: 4, z: 3 },
@@ -16909,7 +16880,7 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
       {
@@ -16919,7 +16890,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 1, y: 3, z: 0 },
       },
     ],
@@ -17013,7 +16984,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 6, y: 3, z: 2 },
       },
     ],
@@ -17048,7 +17019,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 3, z: 1 },
       },
       {
@@ -17300,6 +17271,11 @@ export const campaign = {
         type: "portable-block",
         config: { style: "drum" },
         position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "right", charging: false },
+        position: { x: 6, y: 7, z: 1 },
       },
     ],
     color: "white",
@@ -18036,6 +18012,16 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 2, y: 0, z: 0 },
       },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 1, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18256,6 +18242,26 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 1, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 1, z: 2 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 0, z: 2 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18341,9 +18347,19 @@ export const campaign = {
         position: { x: 2, y: 0, z: 4 },
       },
       {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 1, z: 5 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 0, z: 5 },
       },
     ],
     color: "white",
@@ -18500,6 +18516,11 @@ export const campaign = {
         type: "block",
         config: { style: "artificial" },
         position: { x: 0, y: 7, z: 2 },
+      },
+      {
+        type: "teleporter",
+        config: { toRoom: "penitentiary18fish" },
+        position: { x: 7, y: 5, z: 4 },
       },
       {
         type: "block",
@@ -19019,7 +19040,7 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "elephant", startDirection: "left", charging: false },
+        config: { which: "elephant", charging: false },
         position: { x: 0, y: 0, z: 0 },
       },
     ],
@@ -19063,7 +19084,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 5, y: 5, z: 0 },
       },
       {
@@ -19145,6 +19166,11 @@ export const campaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 1, z: 2 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 0, z: 0 },
       },
       {
         type: "barrier",
@@ -19269,6 +19295,11 @@ export const campaign = {
         position: { x: 4, y: 6, z: 0 },
       },
       {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 7, z: 0 },
+      },
+      {
         type: "pickup",
         config: { gives: "jumps" },
         position: { x: 4, y: 7, z: 0 },
@@ -19277,6 +19308,11 @@ export const campaign = {
         type: "portable-block",
         config: { style: "drum" },
         position: { x: 4, y: 7, z: 2 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "puck" },
+        position: { x: 3, y: 7, z: 0 },
       },
     ],
     color: "white",
@@ -19391,7 +19427,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 2, y: 12, z: 1 },
       },
     ],
@@ -19892,7 +19928,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 12, y: 0, z: 0 },
       },
     ],
@@ -20090,34 +20126,22 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 2, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 5, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "headless-base",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "headless-base", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
     ],
@@ -20178,7 +20202,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -20678,25 +20702,17 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "elephant", startDirection: "left", charging: false },
+        config: { which: "elephant", charging: false },
         position: { x: 4, y: 3, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
         type: "baddie",
-        config: {
-          which: "helicopter-bug",
-          startDirection: "left",
-          charging: false,
-        },
+        config: { which: "helicopter-bug", charging: false },
         position: { x: 4, y: 2, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } },
@@ -20797,7 +20813,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman", startDirection: "left", charging: false },
+        config: { which: "cyberman", charging: false },
         position: { x: 7, y: 7, z: 0 },
       },
     ],
@@ -21120,7 +21136,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "elephant", startDirection: "left", charging: false },
+        config: { which: "elephant", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -21686,7 +21702,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek", startDirection: "left", charging: false },
+        config: { which: "dalek", charging: false },
         position: { x: 7, y: 4, z: 1 },
       },
     ],

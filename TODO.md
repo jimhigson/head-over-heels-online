@@ -33,6 +33,8 @@ _ use spritesheets for graphics - https://pixijs.download/release/docs/assets.Sp
 [x] prettier
 [x] render supports under doors with z!=0
 
+[ ] support stacked sprites
+
 [ ] investigate rooms:
     moonbase12 - puppies seem to go nowhere!
 

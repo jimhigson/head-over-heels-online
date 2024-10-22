@@ -317,6 +317,36 @@ export const testCampaign = () =>
           position: { x: 6, y: 9, z: 0 },
         },
         {
+          type: "baddie",
+          config: { which: "turtle", startDirection: "away" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "turtle", startDirection: "towards" },
+          position: { x: 0, y: 6, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "turtle", startDirection: "left" },
+          position: { x: 0, y: 4, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "helicopter-bug"},
+          position: { x: 0, y: 1, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "headless-base" },
+          position: { x: 10, y: 4, z: 0 },
+        },
+        {
+          type: "charles",
+          config: {},
+          position: { x: 10, y: 6, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 0 },
@@ -360,6 +390,16 @@ export const testCampaign = () =>
           type: "pickup",
           config: { gives: "hooter" },
           position: { x: 7, y: 5, z: 0 },
+        },
+        {
+          type: "fish",
+          config: { alive: true },
+          position: { x: 7, y: 4, z: 0 },
+        },
+        {
+          type: "fish",
+          config: { alive: false },
+          position: { x: 5, y: 4, z: 0 },
         },
         {
           type: "joystick",
