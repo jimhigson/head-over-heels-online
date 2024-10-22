@@ -92,6 +92,7 @@ export const convertItems = (
         case "extra-life":
         case "donuts":
         case "horn":
+        case "shield":
         case "handbag": {
           const conversions = {
             horn: "hooter",
@@ -138,6 +139,39 @@ export const convertItems = (
           return {
             type: "baddie",
             config: { which: "dalek" },
+            position,
+          };
+        }
+
+        case "remote-control": {
+          return {
+            type: "joystick",
+            config: {},
+            position,
+          };
+        }
+
+        case "stool": {
+          return {
+            type: "movable-block",
+            config: { style: "anvil" },
+            position,
+          };
+        }
+
+        case "drum":
+        case "another-portable-brick": {
+          return {
+            type: "portable-block",
+            config: { style: item.kind === "drum" ? "drum" : "cube" },
+            position,
+          };
+        }
+
+        case "charles-robot": {
+          return {
+            type: "charles",
+            config: {},
             position,
           };
         }

@@ -60,6 +60,7 @@ export type Xml2JsonItem = {
         | "bars-ns"
         | "bars-ew"
         | "extra-life"
+        | "shield"
         | "donuts"
         | "handbag"
         | "reincarnation-fish"
@@ -67,7 +68,12 @@ export type Xml2JsonItem = {
         | "trampoline"
         | "horn"
         | "cylinder" // the tower - how is this "free"?
-        | "siren"; // daleks!
+        | "siren" // daleks!
+        | "remote-control" //joystick
+        | "stool" // anvil
+        | "another-portable-brick"
+        | "drum"
+        | "charles-robot";
       class: "freeitem";
     }
   | {

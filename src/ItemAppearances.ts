@@ -24,6 +24,10 @@ const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
   hooter: "items.hooter",
 };
 
+// TODO: this probably isn't the long-term solution vs just putting them in the middle of the space
+// when items aren't positioned by blocks any more
+const centreSmallBlock = { x: 12, y: 26 };
+
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
@@ -74,9 +78,30 @@ export const itemAppearances: {
     texture: ({ which }) => `items.${which}.toward1`,
   },
   baddie: {
-    anchor: { x: 0.5, y: 1 },
+    pivot: centreSmallBlock,
     // TODO: render other baddies
     texture: pixiSpriteSheet.animations.dalek,
     animationSpeed: 0.2,
   },
+  joystick: {
+    // bumped up 2 is pixel-correct with the original game, but in the remake it might
+    // look better to not do this and let it be a bit recessed
+    //pivot: { x: smallItemTextureSize.w/2, y: smallItemTextureSize.h +2 },
+    anchor: { x: 0.5, y: 1 },
+    // TODO: render other baddies
+    texture: "items.joystick",
+  },
+  "movable-block": {
+    anchor: { x: 0.5, y: 1 },
+    texture: ({ style }) => `items.${style}`,
+  },
+  "portable-block": {
+    anchor: { x: 0.5, y: 1 },
+    texture: ({ style }) => `items.${style}`,
+  },
+  "charles": {
+    anchor: { x: 0.5, y: 1 },
+    texture: 'charles.right',
+  },
+
 };

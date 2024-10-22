@@ -1078,6 +1078,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 2, y: 1, z: 0 },
       },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 3, y: 9, z: 0 },
+      },
     ],
     color: "yellow",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1103,7 +1108,13 @@ export const campaign = {
       ],
       left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
-    items: [],
+    items: [
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 3, z: 2 },
+      },
+    ],
     color: "cyan",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth19: {
@@ -1177,6 +1188,21 @@ export const campaign = {
         type: "block",
         config: { style: "tower" },
         position: { x: 6, y: 2, z: 2 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 5, y: 2, z: 4 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 4, y: 2, z: 4 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 3, y: 2, z: 4 },
       },
       {
         type: "block",
@@ -1523,24 +1549,19 @@ export const campaign = {
         position: { x: 4, y: 6, z: 2 },
       },
       {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 1, y: 5, z: 1 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 1, y: 5, z: 1 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 5, z: 0 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 5, z: 1 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 5, z: 2 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "barrier",
@@ -1555,7 +1576,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 3, z: 0 },
+        position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "barrier",
@@ -1570,7 +1591,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 2, z: 0 },
+        position: { x: 4, y: 3, z: 0 },
       },
       {
         type: "barrier",
@@ -1585,7 +1606,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 1, z: 0 },
+        position: { x: 4, y: 2, z: 0 },
       },
       {
         type: "barrier",
@@ -1600,7 +1621,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 0, z: 0 },
+        position: { x: 4, y: 1, z: 0 },
       },
       {
         type: "barrier",
@@ -1613,9 +1634,24 @@ export const campaign = {
         position: { x: 4, y: 0, z: 2 },
       },
       {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 0, z: 0 },
+      },
+      {
         type: "player",
         config: { which: "heels" },
-        position: { x: 3.5, y: 3.5, z: 0 },
+        position: { x: 3.5, y: 3.5, z: 1 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 0, z: 1 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 0, z: 2 },
       },
     ],
     color: "cyan",
@@ -1767,7 +1803,17 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 2, y: 3, z: 0 },
+      },
       { type: "fish", config: { alive: true }, position: { x: 2, y: 3, z: 1 } },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 0, y: 0, z: 0 },
+      },
     ],
     color: "yellow",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1890,6 +1936,13 @@ export const campaign = {
         config: { gives: "bag" },
         position: { x: 2, y: 7, z: 7 },
       },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 7, z: 0 },
+      },
+      { type: "charles", config: {}, position: { x: 3, y: 4, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 6, y: 1, z: 1 } },
     ],
     color: "cyan",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2143,6 +2196,16 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 1, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 3, y: 9, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 2, y: 8, z: 0 },
       },
     ],
     color: "green",
@@ -2408,9 +2471,29 @@ export const campaign = {
     },
     items: [
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 4, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 3, y: 3, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 1, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 1, z: 0 },
       },
       {
         type: "lift",
@@ -2601,6 +2684,11 @@ export const campaign = {
         type: "fish",
         config: { alive: true },
         position: { x: 5, y: 15, z: 1 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 4, y: 15, z: 1 },
       },
       {
         type: "pickup",
@@ -2809,7 +2897,13 @@ export const campaign = {
         "passage",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ],
     color: "yellow",
   } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth47market: {
@@ -2914,6 +3008,15 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 1, y: 0, z: 0 },
       },
+      { type: "joystick", config: {}, position: { x: 6, y: 7, z: 1 } },
+      { type: "charles", config: {}, position: { x: 0, y: 7, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 7, y: 6, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 5, y: 6, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 6, y: 5, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 2, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 2, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 0, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 0, z: 1 } },
     ],
     color: "white",
   } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3967,6 +4070,11 @@ export const campaign = {
     },
     items: [
       {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 3, y: 7, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 3, y: 7, z: 1 },
@@ -4133,6 +4241,16 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 4, y: 15, z: 0 } },
       { type: "spring", config: {}, position: { x: 5, y: 12, z: 0 } },
       { type: "spring", config: {}, position: { x: 0, y: 6, z: 0 } },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 1, z: 0 },
+      },
     ],
     color: "green",
   } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4686,6 +4804,11 @@ export const campaign = {
         position: { x: 2, y: 0, z: 0 },
       },
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 2, y: 3, z: 0 },
@@ -4906,9 +5029,24 @@ export const campaign = {
         position: { x: 0, y: 2, z: 4 },
       },
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 5, z: 0 },
+      },
+      {
         type: "pickup",
         config: { gives: "donuts" },
         position: { x: 5, y: 3, z: 5 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 5, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -5173,6 +5311,11 @@ export const campaign = {
         position: { x: 4, y: 3, z: 5 },
       },
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 2, z: 0 },
@@ -5228,6 +5371,11 @@ export const campaign = {
         position: { x: 4, y: 1, z: 5 },
       },
       {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 3, y: 1, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 0, z: 0 },
@@ -5256,6 +5404,11 @@ export const campaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 0, z: 5 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 0, z: 6 },
       },
     ],
     color: "white",
@@ -5357,6 +5510,16 @@ export const campaign = {
         type: "lift",
         config: { top: 9, bottom: 0 },
         position: { x: 1, y: 1, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 1, y: 1, z: 1 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 0, y: 1, z: 1 },
       },
     ],
     color: "white",
@@ -5601,10 +5764,20 @@ export const campaign = {
         position: { x: 7, y: 0, z: 0 },
       },
       {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 6, y: 7, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 6, y: 7, z: 1 },
       },
+      { type: "charles", config: {}, position: { x: 0, y: 7, z: 3 } },
+      { type: "joystick", config: {}, position: { x: 4, y: 5, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 5, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 4, y: 2, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 2, z: 0 } },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5888,6 +6061,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 7, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5954,9 +6132,19 @@ export const campaign = {
         position: { x: 3, y: 0, z: 4 },
       },
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "tower" },
         position: { x: 3, y: 4, z: 2 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 4, z: 5 },
       },
     ],
     color: "white",
@@ -6386,7 +6574,17 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 5, y: 7, z: 0 },
+      },
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 3, y: 4, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -6973,6 +7171,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 1, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -7759,6 +7962,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 3, y: 0, z: 0 },
       },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 9, y: 2, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7920,7 +8128,12 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 6, y: 0, z: 0 },
       },
+      { type: "charles", config: {}, position: { x: 5, y: 7, z: 5 } },
       { type: "spring", config: {}, position: { x: 1, y: 7, z: 4 } },
+      { type: "joystick", config: {}, position: { x: 6, y: 2, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 7, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 5, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 6, y: 0, z: 1 } },
     ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8281,6 +8494,16 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 3, y: 0, z: 0 },
       },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 2, y: 5, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 2, y: 4, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8340,7 +8563,18 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 3, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 3, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld9: {
@@ -8609,6 +8843,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 7, y: 1, z: 3 },
       },
+      { type: "joystick", config: {}, position: { x: 3, y: 4, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 4, y: 3, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 2, y: 3, z: 1 } },
+      { type: "charles", config: {}, position: { x: 7, y: 2, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 3, y: 2, z: 1 } },
       {
         type: "lift",
         config: { top: 8, bottom: 0 },
@@ -8688,6 +8927,11 @@ export const campaign = {
         position: { x: 2, y: 0, z: 4 },
       },
       { type: "spring", config: {}, position: { x: 7, y: 0, z: 7 } },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 1, y: 0, z: 0 },
+      },
       {
         type: "lift",
         config: { top: 9, bottom: 2 },
@@ -9957,6 +10201,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 0 },
       },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 2, y: 2, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10354,6 +10603,11 @@ export const campaign = {
         position: { x: 1, y: 2, z: 4 },
       },
       { type: "spring", config: {}, position: { x: 1, y: 2, z: 5 } },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 0, y: 2, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10666,6 +10920,11 @@ export const campaign = {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 3, z: 3 },
       },
       {
         type: "baddie",
@@ -11260,6 +11519,11 @@ export const campaign = {
         position: { x: 1, y: 2, z: 1 },
       },
       {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "artificial" },
         position: { x: 0, y: 2, z: 1 },
@@ -11757,6 +12021,31 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 4, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 3, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 11, y: 5, z: 0 },
       },
     ],
     color: "white",
@@ -12635,7 +12924,12 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 2, y: 0, z: 0 },
       },
+      { type: "charles", config: {}, position: { x: 7, y: 7, z: 1 } },
       { type: "spring", config: {}, position: { x: 4, y: 7, z: 0 } },
+      { type: "joystick", config: {}, position: { x: 2, y: 2, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 3, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 1, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 2, y: 0, z: 1 } },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14254,6 +14548,16 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 1, z: 2 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 1, z: 3 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -14329,6 +14633,21 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 7, y: 6, z: 1 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 7, y: 5, z: 1 },
       },
       {
         type: "lift",
@@ -14605,6 +14924,11 @@ export const campaign = {
         position: { x: 2, y: 4, z: 0 },
       },
       {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 2, y: 3, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 1, y: 3, z: 0 },
@@ -14716,11 +15040,46 @@ export const campaign = {
     },
     items: [
       {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 4, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 2, y: 3, z: 0 },
+      },
+      {
         type: "baddie",
         config: { which: "dalek" },
         position: { x: 2, y: 3, z: 1 },
       },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 3, y: 2, z: 0 },
+      },
       { type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 2, y: 2, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 4, y: 1, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "cube" },
+        position: { x: 1, y: 1, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -14946,6 +15305,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 7, y: 7, z: 1 },
       },
     ],
     color: "white",
@@ -16315,6 +16679,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 3, y: 0, z: 0 },
       },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 3, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16404,6 +16773,21 @@ export const campaign = {
         type: "block",
         config: { style: "artificial" },
         position: { x: 1, y: 2, z: 2 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 1, y: 2, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 1, y: 2, z: 1 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 1, y: 2, z: 3 },
       },
     ],
     color: "white",
@@ -16670,6 +17054,11 @@ export const campaign = {
         position: { x: 4, y: 5, z: 2 },
       },
       {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 3, y: 5, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 4, z: 0 },
@@ -16851,6 +17240,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 4, y: 6, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 4, y: 7, z: 2 },
       },
     ],
     color: "white",
@@ -17280,6 +17674,11 @@ export const campaign = {
         position: { x: 6, y: 6, z: 0 },
       },
       {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 12, y: 0, z: 1 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 13, y: 0, z: 2 },
@@ -17326,6 +17725,11 @@ export const campaign = {
       },
       { type: "spring", config: {}, position: { x: 6, y: 7, z: 1 } },
       {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 6, y: 8, z: 1 },
+      },
+      {
         type: "block",
         config: { style: "tower" },
         position: { x: 0, y: 9, z: 0 },
@@ -17344,6 +17748,11 @@ export const campaign = {
         type: "pickup",
         config: { gives: "extra-life" },
         position: { x: 0, y: 9, z: 6 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 6, y: 6, z: 1 },
       },
       {
         type: "barrier",
@@ -18448,6 +18857,16 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 0, y: 0, z: 0 },
       },
+      { type: "joystick", config: {}, position: { x: 1, y: 7, z: 1 } },
+      { type: "charles", config: {}, position: { x: 6, y: 6, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 2, y: 6, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 0, y: 6, z: 1 } },
+      { type: "joystick", config: {}, position: { x: 1, y: 5, z: 1 } },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 4, y: 0, z: 1 },
+      },
     ],
     color: "green",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -18524,6 +18943,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 7, y: 3, z: 2 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 1, y: 1, z: 0 },
       },
     ],
     color: "cyan",
@@ -18652,6 +19076,11 @@ export const campaign = {
         type: "lift",
         config: { top: 9, bottom: 0 },
         position: { x: 7, y: 7, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 1, y: 0, z: 0 },
       },
     ],
     color: "yellow",
@@ -18960,6 +19389,21 @@ export const campaign = {
         position: { x: 0, y: 2, z: 0 },
       },
       {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 0, y: 7, z: 6 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "anvil" },
+        position: { x: 3, y: 5, z: 0 },
+      },
+      {
+        type: "portable-block",
+        config: { style: "drum" },
+        position: { x: 7, y: 3, z: 1 },
+      },
+      {
         type: "block",
         config: { style: "tower" },
         position: { x: 6, y: 3, z: 0 },
@@ -19243,6 +19687,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 0, y: 11, z: 1 },
       },
     ],
     color: "white",

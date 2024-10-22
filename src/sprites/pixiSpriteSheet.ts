@@ -230,6 +230,42 @@ const spritesheetData = {
     "items.baddies.dalek.2": {
       frame: { x: 29, y: 4, ...smallItemTextureSize },
     },
+    "items.joystick": {
+      frame: { x: 259, y: 414, ...smallItemTextureSize },
+    },
+    "items.anvil": {
+      frame: { x: 144, y: 423, ...largeItemTextureSize },
+    },
+    "items.sandwich": {
+      frame: { x: 4, y: 356, ...largeItemTextureSize },
+    },
+    "items.sticks": {
+      frame: { x: 4, y: 391, ...smallItemTextureSize },
+    },
+    "items.cube": {
+      frame: { x: 31, y: 391, ...smallItemTextureSize },
+    },
+    "items.drum": {
+      frame: { x: 58, y: 391, ...smallItemTextureSize },
+    },
+    "items.switch.off": {
+      frame: { x: 111, y: 454, ...smallItemTextureSize },
+    },
+    "items.switch.on": {
+      frame: { x: 136, y: 454, ...smallItemTextureSize },
+    },
+    "charles.left": {
+      frame: { x: 118, y: 34, ...smallItemTextureSize },
+    },
+    "charles.away": {
+      frame: { x: 144, y: 34, ...smallItemTextureSize },
+    },
+    "charles.towards": {
+      frame: { x: 118, y: 60, ...smallItemTextureSize },
+    },
+    "charles.right": {
+      frame: { x: 144, y: 60, ...smallItemTextureSize },
+    }
   },
   animations: {
     fish: ["items.fish1", "items.fish2"],

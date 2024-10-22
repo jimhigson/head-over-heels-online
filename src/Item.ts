@@ -6,13 +6,19 @@ export type ItemType =
   | "barrier"
   | "block"
   | "deadly-block"
+  // something heels can pick up in her bag
+  | "portable-block"
+  // something that can be pushed or moves on a switch
+  | "movable-block"
   | "conveyor"
   | "pickup"
   | "fish"
   | "spring"
   | "player"
   | "baddie"
-  | "lift";
+  | "lift"
+  | "joystick"
+  | "charles";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfig = {
@@ -56,13 +62,23 @@ export type ItemConfig = {
   baddie: {
     which: "dalek";
   };
+  joystick: EmptyObject;
+  "portable-block": {
+    style: "drum" | "sticks" | "cube";
+  };
+  "movable-block": {
+    style: "anvil" | "sandwich";
+  };
+  charles: EmptyObject;
 };
 
-export type Item<T extends ItemType> = Simplify<
-  { type: ItemType } & { config: ItemConfig[T] } & { position: Xyz }
->;
+export type Item<T extends ItemType> = {
+  type: T;
+  config: ItemConfig[T];
+  position: Xyz;
+};
 
-export type UnknownItem = Item<ItemType>;
+export type UnknownItem = { [I in ItemType]: Item<I> }[ItemType];
 
 export type ItemInPlay = {
   // needs everything from item, plus some item state

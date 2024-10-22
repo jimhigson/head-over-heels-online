@@ -10,7 +10,13 @@ import { Item, ItemType } from "../../Item";
 const reifyTexture = <T extends ItemType>(
   item: Item<T>,
 ): TextureId | Texture[] => {
-  const appearanceTexture = itemAppearances[item.type]
+  const appearance = itemAppearances[item.type];
+
+  if( appearance === undefined ) {
+    throw new Error(`item type "${item.type}" has no appearance`);
+  }
+
+  const appearanceTexture = appearance
     .texture as ItemAppearance<T>["texture"];
   return typeof appearanceTexture === "function"
     ? appearanceTexture(item.config)
@@ -39,6 +45,10 @@ export function* renderItems(
         options,
         sprite,
       );
+    }
+
+    if (item.type === "lift" && room.roomAbove !== undefined) {
+      makeClickPortal(room.roomAbove as RoomId, options, sprite);
     }
 
     yield sprite;
