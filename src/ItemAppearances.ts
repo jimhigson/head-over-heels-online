@@ -1,133 +1,107 @@
-import { PointData, Texture } from "pixi.js";
+import { Container } from "pixi.js";
 import { ItemType, ItemConfig } from "./Item";
 import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
+import { createSprite } from "./game/render/spriteAtBlock";
 
 // how an item is rendered
-export type ItemAppearance<T extends ItemType> = {
-  anchor?: PointData;
-  pivot?: PointData;
-  flipX?: boolean;
-  animationSpeed?: number;
-  texture:
-    | TextureId
-    | Texture[]
-    | ((data: ItemConfig[T]) => TextureId | Texture[]);
-};
-
-const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
-  shield: "bunny",
-  jumps: "bunny",
-  fast: "bunny",
-  "extra-life": "bunny",
-  bag: "bag",
-  donuts: "donuts",
-  hooter: "hooter",
-};
+export type ItemAppearance<T extends ItemType> = (
+  data: ItemConfig[T],
+) => Container;
 
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
-  barrier: {
-    anchor: { x: 0.5, y: 1 },
-    texture: (d) => `barrier.${d.axis}`,
-  },
-  "deadly-block": {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({style}) => style,
-  },
-  block: {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `block.${style}`,
-  },
-  conveyor: {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ direction }) =>
+  barrier: ({ axis }) =>
+    createSprite({
+      texture: `barrier.${axis}`,
+    }),
+
+  "deadly-block": ({ style }) => createSprite(style),
+
+  block: ({ style }) => createSprite(`block.${style}`),
+
+  conveyor: ({ direction }) =>
+    createSprite(
       direction === "left" || direction === "right"
         ? "conveyor.x"
         : "conveyor.y",
+    ),
+
+  fish: ({ alive }) =>
+    createSprite(
+      alive
+        ? {
+            frames: pixiSpriteSheet.animations.fish,
+            animationSpeed: 0.1,
+          }
+        : {
+            texture: "fish.1",
+          },
+    ),
+
+  lift: () =>
+    createSprite({
+      frames: pixiSpriteSheet.animations.lift,
+      animationSpeed: 0.2,
+    }),
+
+  spring: () => createSprite("spring.released"),
+
+  teleporter: () => createSprite("teleporter"),
+
+  pickup({ gives }) {
+    const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
+      shield: "bunny",
+      jumps: "bunny",
+      fast: "bunny",
+      "extra-life": "bunny",
+      bag: "bag",
+      donuts: "donuts",
+      hooter: "hooter",
+    };
+
+    return createSprite(pickupIcons[gives]);
   },
-  fish: {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ alive }) => (alive ? pixiSpriteSheet.animations.fish : "fish.1"),
-    animationSpeed: 0.1,
+
+  player: ({ which }) => createSprite(`${which}.toward1`),
+
+  baddie({ which, startDirection }) {
+    switch (which) {
+      case "helicopter-bug":
+      case "dalek":
+        return createSprite({
+          frames: pixiSpriteSheet.animations[which],
+          animationSpeed: 0.2,
+        });
+      case "headless-base":
+        return createSprite({ texture: "headless-base" });
+      case "turtle":
+        return createSprite({
+          frames: pixiSpriteSheet.animations[`turtle.${startDirection!}`],
+          animationSpeed: 0.1,
+        });
+      case "flying-ball":
+        //TODO: stack the sprites
+        return createSprite({ texture: "ball" }); // TODO: needs bubbles under it too
+      default:
+        // TODO: make stack
+        return createSprite({
+          texture: `${which}.${startDirection || "towards"}`,
+        });
+    }
   },
-  lift: {
-    anchor: { x: 0.5, y: 1 },
-    texture: pixiSpriteSheet.animations.lift,
-    animationSpeed: 0.2,
-  },
-  spring: {
-    anchor: { x: 0.5, y: 1 },
-    texture: "spring.released",
-  },
-  teleporter: {
-    anchor: { x: 0.5, y: 1 },
-    texture: "teleporter",
-  },
-  pickup: {
-    anchor: { x: 0.5, y: 1 },
-    texture: (d) => pickupIcons[d.gives],
-  },
-  player: {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ which }) => `${which}.toward1`,
-  },
-  baddie: {
-    anchor: { x: 0.5, y: 1 },
-    // TODO: render other baddies
-    texture({ which, startDirection }) {
-      switch (which) {
-        case "helicopter-bug":
-        case "dalek":
-          return pixiSpriteSheet.animations[which];
-        case "headless-base":
-          return "headless-base";
-        case "turtle":
-          return pixiSpriteSheet.animations[`turtle.${startDirection!}`];
-        case "flying-ball": 
-          return "ball"; // TODO: needs bubbles under it too
-        default:
-          // TODO: make stack
-          return `${which}.${startDirection || 'towards'}`;
-      }
-    },
-    animationSpeed: 0.2,
-  },
-  joystick: {
-    // bumped up 2 is pixel-correct with the original game, but in the remake it might
-    // look better to not do this and let it be a bit recessed
-    //pivot: { x: smallItemTextureSize.w/2, y: smallItemTextureSize.h +2 },
-    anchor: { x: 0.5, y: 1 },
-    // TODO: render other baddies
-    texture: "joystick",
-  },
-  "movable-block": {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `${style}`,
-  },
-  book: {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ slider }) => `book.${slider ? "y" : "x"}`,
-  },
-  "portable-block": {
-    anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `${style}`,
-  },
-  charles: {
-    anchor: { x: 0.5, y: 1 },
-    // TODO: make stack
-    texture: "charles.right",
-  },
-  switch: {
-    anchor: { x: 0.5, y: 1 },
-    texture: "switch.off",
-  },
-  "hush-puppy": {
-    anchor: { x: 0.5, y: 1 },
-    texture: "hush-puppy",
-  },
-  ball: {
-    anchor: { x: 0.5, y: 1 },
-    texture: "ball",
-  },
+
+  joystick: () => createSprite("joystick"),
+
+  "movable-block": ({ style }) => createSprite(style),
+
+  book: ({ slider }) => createSprite(`book.${slider ? "y" : "x"}`),
+
+  "portable-block": ({ style }) => createSprite(style),
+
+  charles: () => createSprite("charles.right"),
+
+  switch: () => createSprite("switch.off"),
+  "hush-puppy": () => createSprite("hush-puppy"),
+  ball: () => createSprite("ball"),
 };

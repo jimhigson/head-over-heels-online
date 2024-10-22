@@ -55,7 +55,7 @@ export type Xml2JsonItem = {
         | "switch"
         | "throne-guard"
         | "trampoline"
-        | "mortal-cap"
+        | "mortal-cap";
       class: "freeitem";
     }
   | {

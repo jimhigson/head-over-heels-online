@@ -128,7 +128,8 @@ const fourDirections = <TName extends string>(
 
 //technically not all our animations have four frames but that's the maximum and it'll do ok
 // could be a bit smarter here really
-type AnimatedTextureName<TName extends string> = `${TName}.${'1'|'2'|'3'|'4'}`;
+type AnimatedTextureName<TName extends string> =
+  `${TName}.${"1" | "2" | "3" | "4"}`;
 const animatedSeries = <TName extends string>(
   name: TName,
   n: number,
@@ -139,7 +140,16 @@ const animatedSeries = <TName extends string>(
     [AnimatedTextureName<TName>, SpritesheetFrameData]
   > {
     for (let i = 0; i < n; i++) {
-      yield [`${name}.${i+1}` as AnimatedTextureName<TName>, { frame: { x: startX + i * (textureSize.w +1), y: startY, ...textureSize } }];  
+      yield [
+        `${name}.${i + 1}` as AnimatedTextureName<TName>,
+        {
+          frame: {
+            x: startX + i * (textureSize.w + 1),
+            y: startY,
+            ...textureSize,
+          },
+        },
+      ];
     }
   }
 
@@ -267,7 +277,7 @@ const spritesheetData = {
     bag: {
       frame: { x: 259, y: 358, ...smallItemTextureSize },
     },
-    ...animatedSeries("fish", 2, { x: 259, y: 388 }, smallItemTextureSize ),    
+    ...animatedSeries("fish", 2, { x: 259, y: 388 }, smallItemTextureSize),
     "spring.compressed": {
       frame: { x: 4, y: 421, ...smallItemTextureSize },
     },
@@ -281,10 +291,10 @@ const spritesheetData = {
       frame: { x: 184, y: 266, ...smallItemTextureSize },
     },
 
-    ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize ),
-    ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize ),
+    ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize),
+    ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),
 
-    "headless-base" : {
+    "headless-base": {
       frame: { x: 57, y: 4, ...smallItemTextureSize },
     },
     joystick: {
@@ -328,12 +338,32 @@ const spritesheetData = {
     ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
     ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
 
-    ...animatedSeries("turtle.left", 2, { x: 4, y: 137}, smallItemTextureSize ),
-    ...animatedSeries("turtle.away", 2, { x: 55, y: 137}, smallItemTextureSize ),
-    ...animatedSeries("turtle.towards", 2, { x: 4, y: 163}, smallItemTextureSize ),
-    ...animatedSeries("turtle.right", 2, { x: 55, y: 163}, smallItemTextureSize ),
+    ...animatedSeries("turtle.left", 2, { x: 4, y: 137 }, smallItemTextureSize),
+    ...animatedSeries(
+      "turtle.away",
+      2,
+      { x: 55, y: 137 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "turtle.towards",
+      2,
+      { x: 4, y: 163 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "turtle.right",
+      2,
+      { x: 55, y: 163 },
+      smallItemTextureSize,
+    ),
 
-    ...animatedSeries("helicopter-bug", 4, { x: 4, y: 194}, smallItemTextureSize ),
+    ...animatedSeries(
+      "helicopter-bug",
+      4,
+      { x: 4, y: 194 },
+      smallItemTextureSize,
+    ),
 
     "hush-puppy": {
       frame: { x: 163, y: 300, ...largeItemTextureSize },

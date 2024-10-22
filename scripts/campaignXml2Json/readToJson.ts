@@ -96,7 +96,10 @@ export const roomNameFromXmlFilename = (xmlFileName: string) => {
 };
 
 export type MapJsonRoom = Partial<
-  Record<CompassDirections | "above" | "below" | "teleport" | "teleport2", string>
+  Record<
+    CompassDirections | "above" | "below" | "teleport" | "teleport2",
+    string
+  >
 >;
 export type MapJson = Record<string, MapJsonRoom>;
 

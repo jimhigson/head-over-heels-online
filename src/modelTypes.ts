@@ -19,6 +19,11 @@ export type Xyz = {
   y: number;
   z: number;
 };
+export type XyMaybeZ = {
+  x: number;
+  y: number;
+  z?: number;
+};
 
 export const planets = {
   jail: { walls: ["bars"] },

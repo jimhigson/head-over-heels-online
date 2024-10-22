@@ -1,25 +1,21 @@
-import { Container, Texture } from "pixi.js";
+import { Container } from "pixi.js";
 import { AnyRoom, RoomId } from "../../modelTypes";
 import { RenderWorldOptions } from "./renderWorld";
 import { makeClickPortal } from "./makeClickPortal";
-import { spriteAtBlock } from "./spriteAtBlock";
-import { TextureId } from "../../sprites/pixiSpriteSheet";
-import { ItemAppearance, itemAppearances } from "../../ItemAppearances";
+import { moveToBlock } from "./spriteAtBlock";
+import { itemAppearances } from "../../ItemAppearances";
 import { Item, ItemType } from "../../Item";
 
-const reifyTexture = <T extends ItemType>(
-  item: Item<T>,
-): TextureId | Texture[] => {
-  const appearance = itemAppearances[item.type];
+const renderItem = <T extends ItemType>(item: Item<T>) => {
+  const itemAppearance = itemAppearances[item.type];
 
-  if (appearance === undefined) {
+  if (itemAppearance === undefined) {
     throw new Error(`item type "${item.type}" has no appearance`);
   }
 
-  const appearanceTexture = appearance.texture as ItemAppearance<T>["texture"];
-  return typeof appearanceTexture === "function"
-    ? appearanceTexture(item.config)
-    : appearanceTexture;
+  const sprite = itemAppearance(item.config);
+
+  return sprite;
 };
 
 export function* renderItems(
@@ -27,16 +23,9 @@ export function* renderItems(
   options: RenderWorldOptions,
 ): Generator<Container, undefined, undefined> {
   for (const item of room.items) {
-    const reifiedTextureId = reifyTexture(item);
-    const itemAppearance = itemAppearances[item.type];
+    const sprite = renderItem(item);
 
-    const sprite = spriteAtBlock(
-      item.position,
-      { ...itemAppearance, texture: reifiedTextureId },
-      {
-        giveZIndex: true,
-      },
-    );
+    moveToBlock(item.position, sprite);
 
     if (item.type === "teleporter") {
       makeClickPortal(

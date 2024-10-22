@@ -73,7 +73,7 @@ export type ItemConfig = {
       | "monkey"
       | "elephant"
       | "turtle"
-      | 'flying-ball'
+      | "flying-ball"
       | "computer-bot";
     startDirection?: Direction;
     charging?: boolean;

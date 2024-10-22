@@ -4,7 +4,7 @@ import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { RenderWorldOptions } from "./renderWorld";
 import { renderDoor } from "./renderDoor";
-import { spriteAtBlock } from "./spriteAtBlock";
+import { createSprite, moveToBlock } from "./spriteAtBlock";
 
 export function* renderWalls(
   room: AnyRoom,
@@ -26,12 +26,12 @@ export function* renderWalls(
         room.walls.left[i],
         "left",
       ) as TextureId;
-      yield spriteAtBlock(
+      yield moveToBlock(
         { x: room.size.x, y: i },
-        {
+        createSprite({
           anchor: { x: 0, y: 1 },
           texture: textureId,
-        },
+        }),
       );
     }
   }
@@ -52,12 +52,12 @@ export function* renderWalls(
         room.walls.away[i],
         "away",
       ) as TextureId;
-      yield spriteAtBlock(
+      yield moveToBlock(
         { x: i, y: room.size.y },
-        {
+        createSprite({
           anchor: { x: 1, y: 1 },
           texture: textureId,
-        },
+        }),
       );
     }
   }

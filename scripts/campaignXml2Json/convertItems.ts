@@ -28,10 +28,11 @@ export const convertItems = (
       }
 
       switch (item.kind) {
-        case "teleport":         
+        case "teleport":
         case "teleport-too": {
           const roomOnMap = map[roomName];
-          const destination = roomOnMap[item.kind === 'teleport'? 'teleport' : 'teleport2'];
+          const destination =
+            roomOnMap[item.kind === "teleport" ? "teleport" : "teleport2"];
 
           if (destination === undefined) {
             throw new Error("teleporter with no destination");
@@ -81,15 +82,14 @@ export const convertItems = (
         case "spikes":
         case "mortal-cap":
         case "vulcano": {
-
           const styleConversion: Record<
             typeof item.kind,
             ItemConfig["deadly-block"]["style"]
           > = {
-            vulcano: 'volcano',
-            spikes: 'spikes',
-            toaster: 'toaster',
-            'mortal-cap': 'puck'
+            vulcano: "volcano",
+            spikes: "spikes",
+            toaster: "toaster",
+            "mortal-cap": "puck",
           };
 
           return {
@@ -249,7 +249,7 @@ export const convertItems = (
             monkey: "monkey",
             elephant: "elephant",
             turtle: "turtle",
-            "throne-guard": "flying-ball"
+            "throne-guard": "flying-ball",
           };
 
           return {
@@ -257,7 +257,9 @@ export const convertItems = (
             config: {
               which: baddieConversions[item.kind],
               startDirection:
-                item.kind === "diver" || item.kind === "imperial-guard-head" || item.kind === "turtle"
+                item.kind === "diver" ||
+                item.kind === "imperial-guard-head" ||
+                item.kind === "turtle"
                   ? convertDirection(item.orientation)
                   : undefined,
               charging: item.kind === "imperial-guard-head",

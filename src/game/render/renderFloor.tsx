@@ -8,7 +8,7 @@ import {
   xyzBlockPosition,
   paletteSwapFilters,
 } from "./renderWorld";
-import { spriteAtBlock } from "./spriteAtBlock";
+import { createSprite, moveToBlock } from "./spriteAtBlock";
 import { renderExtent } from "./renderExtent";
 
 export function* renderFloor(
@@ -37,12 +37,12 @@ export function* renderFloor(
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
         tilesContainer.addChild(
-          spriteAtBlock(
+          moveToBlock(
             { x: ix, y: iy },
-            {
+            createSprite({
               anchor: { x: 0.5, y: 1 },
               texture: floorTileTexture,
-            },
+            }),
           ),
         );
       }
@@ -66,9 +66,12 @@ export function* renderFloor(
   const rightEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
     rightEdge.addChild(
-      spriteAtBlock(
+      moveToBlock(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
-        { pivot: { x: 7, y: 1 }, texture: "generic.edge.towards" },
+        createSprite({
+          pivot: { x: 7, y: 1 },
+          texture: "generic.edge.towards",
+        }),
       ),
     );
   }
@@ -76,9 +79,9 @@ export function* renderFloor(
   const towardsEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
     towardsEdge.addChild(
-      spriteAtBlock(
+      moveToBlock(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
-        { pivot: { x: 0, y: 1 }, texture: "generic.edge.right" },
+        createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),
     );
   }

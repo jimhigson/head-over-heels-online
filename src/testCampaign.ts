@@ -333,7 +333,7 @@ export const testCampaign = () =>
         },
         {
           type: "baddie",
-          config: { which: "helicopter-bug"},
+          config: { which: "helicopter-bug" },
           position: { x: 0, y: 1, z: 0 },
         },
         {
