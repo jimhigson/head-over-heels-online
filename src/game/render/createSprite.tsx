@@ -65,12 +65,7 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     }
 
     sprite.eventMode = "static";
-    sprite.on("click", () => {
-      console.log(`tex=${JSON.stringify(options)}`);
-    });
-
-    //sprite.zIndex = pos.z * 1024 +
-    if (flipX === true) {
+        if (flipX === true) {
       sprite.scale.x = -1;
     }
 
