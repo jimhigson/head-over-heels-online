@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { AnyRoom, RoomId } from "../../modelTypes";
 import { RenderWorldOptions } from "./renderWorld";
 import { makeClickPortal } from "./makeClickPortal";
-import { moveToBlock } from "./spriteAtBlock";
+import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { itemAppearances } from "../../ItemAppearances";
 import { Item, ItemType } from "../../Item";
 
@@ -13,9 +13,7 @@ const renderItem = <T extends ItemType>(item: Item<T>) => {
     throw new Error(`item type "${item.type}" has no appearance`);
   }
 
-  const sprite = itemAppearance(item.config);
-
-  return sprite;
+  return itemAppearance(item.config);
 };
 
 export function* renderItems(
@@ -25,7 +23,7 @@ export function* renderItems(
   for (const item of room.items) {
     const sprite = renderItem(item);
 
-    moveToBlock(item.position, sprite);
+    moveSpriteToBlock(item.position, sprite, {giveZIndex: true});
 
     if (item.type === "teleporter") {
       makeClickPortal(

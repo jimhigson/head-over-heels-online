@@ -54,6 +54,8 @@ export type Xml2JsonItem = {
         | "stool" // anvil
         | "switch"
         | "throne-guard"
+        | "bubble-robot"
+        | "bighead-robot"
         | "trampoline"
         | "mortal-cap";
       class: "freeitem";

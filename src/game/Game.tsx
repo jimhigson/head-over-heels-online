@@ -17,7 +17,7 @@ const allCampaigns = {
 export const Game = () => {
   const [app, setApp] = useState<Application>();
   const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-  const [roomId, setRoomId] = useState<RoomId>("blacktooth28");
+  const [roomId, setRoomId] = useState<RoomId>("blacktooth17triple");
 
   useEffect(() => {
     if (gameArea === null) return;

@@ -8,7 +8,8 @@ import {
   xyzBlockPosition,
   paletteSwapFilters,
 } from "./renderWorld";
-import { createSprite, moveToBlock } from "./spriteAtBlock";
+import { createSprite } from "./createSprite";
+import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { renderExtent } from "./renderExtent";
 
 export function* renderFloor(
@@ -37,7 +38,7 @@ export function* renderFloor(
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
         tilesContainer.addChild(
-          moveToBlock(
+          moveSpriteToBlock(
             { x: ix, y: iy },
             createSprite({
               anchor: { x: 0.5, y: 1 },
@@ -66,7 +67,7 @@ export function* renderFloor(
   const rightEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
     rightEdge.addChild(
-      moveToBlock(
+      moveSpriteToBlock(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
           pivot: { x: 7, y: 1 },
@@ -79,7 +80,7 @@ export function* renderFloor(
   const towardsEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
     towardsEdge.addChild(
-      moveToBlock(
+      moveSpriteToBlock(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
         createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),

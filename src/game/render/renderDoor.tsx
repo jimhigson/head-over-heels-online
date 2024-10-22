@@ -3,7 +3,8 @@ import { AnyRoom, Door, Direction, Xy, RoomId } from "../../modelTypes";
 import { doorTexturePivot } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { doorTexture, RenderWorldOptions } from "./renderWorld";
-import { createSprite, moveToBlock } from "./spriteAtBlock";
+import { createSprite } from "./createSprite";
+import { moveSpriteToBlock } from "./moveSpriteToBlock";
 
 export function* renderDoor(
   room: AnyRoom,
@@ -26,7 +27,7 @@ export function* renderDoor(
 
   if (isBack) {
     if (door.z === 0) {
-      yield moveToBlock(
+      yield moveSpriteToBlock(
         {
           [axis]: door.ordinal + 1,
           // the overdraw sprite is like a wall, but set back half a block
@@ -42,7 +43,7 @@ export function* renderDoor(
     } else {
       const pivotX = side === "left" ? 0 : 16;
       for (const p of [backPos, frontPos]) {
-        yield moveToBlock(
+        yield moveSpriteToBlock(
           p,
           createSprite({
             pivot: { x: pivotX, y: 9 },
@@ -50,7 +51,7 @@ export function* renderDoor(
           }),
         );
         for (let z = 1; z <= door.z; z++) {
-          yield moveToBlock(
+          yield moveSpriteToBlock(
             { ...p, z },
             createSprite({
               pivot: { x: pivotX, y: 9 },
@@ -58,7 +59,7 @@ export function* renderDoor(
             }),
           );
         }
-        yield moveToBlock(
+        yield moveSpriteToBlock(
           { ...p, z: door.z },
           createSprite({
             pivot: { x: pivotX, y: 15 },
@@ -71,7 +72,7 @@ export function* renderDoor(
     if (door.z !== 0) {
       for (const p of [backPos, frontPos]) {
         const pivotX = side === "towards" ? 18 : 8;
-        yield moveToBlock(
+        yield moveSpriteToBlock(
           { ...p, z: door.z },
           createSprite({
             pivot: { x: pivotX, y: 12 },
@@ -84,14 +85,14 @@ export function* renderDoor(
 
   const { backTexture, frontTexture } = doorTexture(room, axis);
 
-  yield moveToBlock(
+  yield moveSpriteToBlock(
     { ...backPos, z: door.z },
     createSprite({
       pivot: doorTexturePivot[axis],
       texture: backTexture,
     }),
   );
-  yield moveToBlock(
+  yield moveSpriteToBlock(
     { ...frontPos, z: door.z },
     createSprite({
       pivot: doorTexturePivot[axis],

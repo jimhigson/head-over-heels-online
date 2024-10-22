@@ -1,12 +1,8 @@
-import { AnimatedSprite, Container, PointData, Sprite, Texture } from "pixi.js";
+import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
 import {
-  blockSizePx,
   pixiSpriteSheet,
   TextureId,
 } from "../../sprites/pixiSpriteSheet";
-import { projectToScreen } from "./projectToScreen";
-import { XyMaybeZ } from "../../modelTypes";
-import { create } from "domain";
 
 export type MoveSpriteOptions = {
   /**
@@ -14,25 +10,6 @@ export type MoveSpriteOptions = {
    * can render themselves in a known-good order - ie, back-to-front
    */
   giveZIndex?: boolean;
-};
-
-export const moveToBlock = (
-  { x, y, z = 0 }: XyMaybeZ,
-  sprite: Container,
-  { giveZIndex }: MoveSpriteOptions = { giveZIndex: false },
-) => {
-  const projection = projectToScreen(
-    x * blockSizePx.w,
-    y * blockSizePx.d,
-    z * blockSizePx.h,
-  );
-
-  sprite.x = projection.x;
-  sprite.y = projection.y;
-
-  if (giveZIndex) sprite.zIndex = projection.z;
-
-  return sprite;
 };
 
 type AnimatedCreateSpriteOptions = {
@@ -44,7 +21,7 @@ type AnimatedCreateSpriteOptions = {
   frames: Texture[];
 };
 
-type CreateSpriteOptions =
+export type CreateSpriteOptions =
   | TextureId
   | {
       // not animated

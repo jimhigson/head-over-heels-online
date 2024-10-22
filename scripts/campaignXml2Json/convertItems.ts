@@ -10,6 +10,24 @@ import { convertRoomId } from "./convertRoomId";
 import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 
+const baddieConversions = {
+            "helicopter-bug": "helicopter-bug",
+            "imperial-guard": "cyberman",
+            "imperial-guard-head": "cyberman",
+            siren: "dalek",
+            bomb: "headless-base",
+            diver: "american-football-head",
+            "bubble-robot": "bubble-robot",
+            monkey: "monkey",
+            elephant: "elephant",
+            turtle: "turtle",
+            "throne-guard": "flying-ball",
+            "bighead-robot": "computer-bot"
+          } as const satisfies Record<
+          string,
+          ItemConfig["baddie"]["which"]
+        >;
+
 export const convertItems = (
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
@@ -202,10 +220,20 @@ export const convertItems = (
           };
 
         case "drum":
+        case "portable-brick": 
         case "another-portable-brick": {
+            const conversions: Record<
+            typeof item.kind,
+            ItemConfig["portable-block"]["style"]
+          > = {
+            drum: "drum",
+            "portable-brick": "cube",
+            "another-portable-brick": "sticks",
+          };
+
           return {
             type: "portable-block",
-            config: { style: item.kind === "drum" ? "drum" : "cube" },
+            config: { style: conversions[item.kind] },
             position,
           };
         }
@@ -226,43 +254,50 @@ export const convertItems = (
           };
         }
 
+        case "imperial-guard":
+          return {
+            type: 'baddie',
+            config: {
+              which: 'cyberman',
+              charging: false
+            },
+            position
+          };
+
+        case "imperial-guard-head":
+          return {
+            type: "baddie",
+            config: {
+              which: 'cyberman',
+              startDirection: convertDirection(item.orientation),
+              charging: true
+            },
+            position,
+          };          
+
         case "siren":
         case "monkey":
         case "elephant":
         case "helicopter-bug":
         case "throne-guard":
-        case "imperial-guard":
-        case "imperial-guard-head":
         case "bomb":
-        case "turtle":
-        case "diver": {
-          const baddieConversions: Record<
-            typeof item.kind,
-            ItemConfig["baddie"]["which"]
-          > = {
-            "helicopter-bug": "helicopter-bug",
-            "imperial-guard": "cyberman",
-            "imperial-guard-head": "cyberman",
-            siren: "dalek",
-            bomb: "headless-base",
-            diver: "american-football-head",
-            monkey: "monkey",
-            elephant: "elephant",
-            turtle: "turtle",
-            "throne-guard": "flying-ball",
-          };
+        case "bubble-robot":
+        case "bighead-robot":
+          return {
+            type:'baddie',
+            config: {
+              which: baddieConversions[item.kind],
+            },
+            position
+          }
 
+        case "turtle":
+        case "diver": {        
           return {
             type: "baddie",
             config: {
               which: baddieConversions[item.kind],
-              startDirection:
-                item.kind === "diver" ||
-                item.kind === "imperial-guard-head" ||
-                item.kind === "turtle"
-                  ? convertDirection(item.orientation)
-                  : undefined,
-              charging: item.kind === "imperial-guard-head",
+              startDirection: convertDirection(item.orientation)
             },
             position,
           };

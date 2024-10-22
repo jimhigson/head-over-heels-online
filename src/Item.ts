@@ -67,16 +67,26 @@ export type ItemConfig = {
     which:
       | "dalek"
       | "helicopter-bug"
-      | "cyberman"
-      | "american-football-head"
       | "headless-base"
       | "monkey"
       | "elephant"
-      | "turtle"
       | "flying-ball"
+      | "bubble-robot"
       | "computer-bot";
-    startDirection?: Direction;
-    charging?: boolean;
+  } | {
+    // with a starting direction
+    which:
+      | "american-football-head"
+      | "turtle"
+    startDirection: Direction;
+  } | 
+  {
+    which: "cyberman";
+    startDirection: Direction;
+    charging: true;
+  } | {
+    which: "cyberman";
+    charging: false;
   };
   joystick: EmptyObject;
   "portable-block": {

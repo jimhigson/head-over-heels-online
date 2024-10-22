@@ -338,6 +338,8 @@ const spritesheetData = {
     ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
     ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
 
+    ...animatedSeries("bubbles", 3, { x: 4, y: 107 }, smallItemTextureSize),
+
     ...animatedSeries("turtle.left", 2, { x: 4, y: 137 }, smallItemTextureSize),
     ...animatedSeries(
       "turtle.away",
@@ -389,6 +391,7 @@ const spritesheetData = {
       "helicopter-bug.3",
       "helicopter-bug.4",
     ],
+    "bubbles": ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/]
   },
   meta: { scale: 1 },
 };

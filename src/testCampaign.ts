@@ -280,9 +280,15 @@ export const testCampaign = () =>
       items: [
         {
           type: "baddie",
-          config: { which: "dalek", startDirection: "away" },
+          config: { which: "dalek" },
           position: { x: 1, y: 1, z: 0 },
         },
+        {
+          type: "baddie",
+          config: { which: "bubble-robot" },
+          position: { x: 1, y: 10, z: 0 },
+        },
+        
         {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "away" },
@@ -308,13 +314,23 @@ export const testCampaign = () =>
         },
         {
           type: "baddie",
-          config: { which: "cyberman", startDirection: "towards" },
+          config: { which: "cyberman" },
           position: { x: 6, y: 7, z: 0 },
+        },        
+        {
+          type: "deadly-block",
+          config: { style: 'toaster' },
+          position: { x: 4, y: 10, z: 0 },
+        },
+        {
+          type: "deadly-block",
+          config: { style: 'spikes' },
+          position: { x: 2, y: 10, z: 0 },
         },
         {
           type: "baddie",
-          config: { which: "cyberman", startDirection: "away" },
-          position: { x: 6, y: 9, z: 0 },
+          config: { which: 'cyberman', startDirection: 'towards', charging: true },
+          position: { x: 4, y: 10, z: 1 },
         },
         {
           type: "baddie",
@@ -342,6 +358,26 @@ export const testCampaign = () =>
           position: { x: 10, y: 4, z: 0 },
         },
         {
+          type: "baddie",
+          config: { which: "monkey" },
+          position: { x: 9, y: 2, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "elephant" },
+          position: { x: 9, y: 10, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "flying-ball" },
+          position: { x: 0, y: 10, z: 0 },
+        },        
+        {
+          type: "baddie",
+          config: { which: "computer-bot" },
+          position: { x: 6, y: 0, z: 0 },
+        },        
+        {
           type: "charles",
           config: {},
           position: { x: 10, y: 6, z: 0 },
@@ -350,6 +386,16 @@ export const testCampaign = () =>
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 0 },
+        },
+        {
+          type: "book",
+          config: { slider: true },
+          position: { x: 4, y: 2, z: 0 },
+        },
+        {
+          type: "book",
+          config: {},
+          position: { x: 4, y: 2, z: 1 },
         },
         {
           type: "block",
@@ -362,14 +408,39 @@ export const testCampaign = () =>
           position: { x: 7, y: 7, z: 0 },
         },
         {
+          type: "block",
+          config: { style: "tower" },
+          position: { x: 7, y: 7, z: 1 },
+        },
+        {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 9, y: 7, z: 0 },
         },
         {
+          type: "conveyor",
+          config: { direction: 'away' },
+          position: { x: 10, y: 7, z: 2 },
+        },
+        {
+          type: "conveyor",
+          config: { direction: 'left' },
+          position: { x: 10, y: 4, z: 2 },
+        },
+        {
           type: "movable-block",
           config: { style: "sandwich" },
-          position: { x: 9, y: 9, z: 0 },
+          position: { x: 10, y: 9, z: 0 },
+        },
+        {
+          type: "movable-block",
+          config: { style: "puck" },
+          position: { x: 1, y: 0, z: 0 },
+        },
+        {
+          type: "deadly-block",
+          config: { style: "puck" },
+          position: { x: 7, y: 0, z: 0 },
         },
         {
           type: "pickup",
