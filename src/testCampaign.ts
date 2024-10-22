@@ -1,4 +1,3 @@
-import { Item } from "./Item.ts";
 import {
   AnyRoom,
   Campaign,
@@ -281,8 +280,41 @@ export const testCampaign = () =>
       items: [
         {
           type: "baddie",
-          config: { which: "dalek" },
+          config: { which: "dalek", startDirection: "away" },
           position: { x: 1, y: 1, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "american-football-head", startDirection: "away" },
+          position: { x: 1, y: 3, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "american-football-head", startDirection: "right" },
+          position: { x: 1, y: 5, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "american-football-head", startDirection: "left" },
+          position: { x: 3, y: 5, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: {
+            which: "american-football-head",
+            startDirection: "towards",
+          },
+          position: { x: 3, y: 7, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "cyberman", startDirection: "towards" },
+          position: { x: 6, y: 7, z: 0 },
+        },
+        {
+          type: "baddie",
+          config: { which: "cyberman", startDirection: "away" },
+          position: { x: 6, y: 9, z: 0 },
         },
         {
           type: "block",

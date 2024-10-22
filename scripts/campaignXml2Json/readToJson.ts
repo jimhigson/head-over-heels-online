@@ -1,5 +1,6 @@
 import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
+import { Xml2JsonItem } from "./Xml2JsonItem";
 
 const readXmlToJson = async (fileName: string) => {
   const xmlText = await readFile(`gamedata-map-xml/${fileName}.xml`, {
@@ -34,60 +35,12 @@ const readXmlToJson = async (fileName: string) => {
 // compass directions as found in room xml - some unusual notation in there, eg "westsouth" as well as "southwest"
 type CompassDirectionsNS = "north" | "south";
 type CompassDirectionsEW = "east" | "west";
-type CompassDirectionsNESW = CompassDirectionsNS | CompassDirectionsEW;
+export type CompassDirectionsNESW = CompassDirectionsNS | CompassDirectionsEW;
 export type CompassDirections =
   | `${CompassDirectionsNS}${CompassDirectionsEW}`
   | `${CompassDirectionsEW}${CompassDirectionsNS}`
   | CompassDirectionsEW
   | CompassDirectionsNS;
-
-export type Xml2JsonItem = {
-  x: string;
-  y: string;
-  z: string;
-} & (
-  | {
-      kind: `${string}-door-${string}`;
-      class: "door";
-      where: CompassDirections;
-    }
-  | {
-      kind: "teleport" | "brick1" | "brick2" | "vulcano" /* sic */ | "toaster";
-      class: "griditem";
-    }
-  | {
-      kind:
-        | "bars-ns"
-        | "bars-ew"
-        | "extra-life"
-        | "shield"
-        | "donuts"
-        | "handbag"
-        | "reincarnation-fish"
-        | "mortal-fish"
-        | "trampoline"
-        | "horn"
-        | "cylinder" // the tower - how is this "free"?
-        | "siren" // daleks!
-        | "remote-control" //joystick
-        | "stool" // anvil
-        | "another-portable-brick"
-        | "drum"
-        | "charles-robot";
-      class: "freeitem";
-    }
-  | {
-      kind: "conveyor";
-      orientation: CompassDirectionsNESW;
-      class: "griditem";
-    }
-  | {
-      kind: "elevator";
-      top: string;
-      bottom: string;
-      class: "freeitem";
-    }
-);
 
 export type XmlScenery =
   | "moon"
@@ -97,17 +50,19 @@ export type XmlScenery =
   | "safari";
 
 export type Xml2JsonWall = {
-  position: number;
+  position: string;
   along: "x" | "y";
   picture: string;
 };
+
+export type XmlFloorKind = "plain" | "absent" | "mortal";
 
 export type Xml2JsonRoom = {
   xTiles: string;
   yTiles: string;
   scenery?: XmlScenery;
   color: string;
-  floorKind: "plain";
+  floorKind: XmlFloorKind;
   walls: Array<Xml2JsonWall>;
   items: Array<Xml2JsonItem>;
 };

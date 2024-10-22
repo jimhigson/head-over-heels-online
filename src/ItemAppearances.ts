@@ -15,45 +15,40 @@ export type ItemAppearance<T extends ItemType> = {
 };
 
 const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
-  shield: "items.bunny",
-  jumps: "items.bunny",
-  fast: "items.bunny",
-  "extra-life": "items.bunny",
-  bag: "items.bag",
-  donuts: "items.donuts",
-  hooter: "items.hooter",
+  shield: "bunny",
+  jumps: "bunny",
+  fast: "bunny",
+  "extra-life": "bunny",
+  bag: "bag",
+  donuts: "donuts",
+  hooter: "hooter",
 };
-
-// TODO: this probably isn't the long-term solution vs just putting them in the middle of the space
-// when items aren't positioned by blocks any more
-const centreSmallBlock = { x: 12, y: 26 };
 
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
   barrier: {
     anchor: { x: 0.5, y: 1 },
-    texture: (d) => `items.barrier.${d.axis}`,
+    texture: (d) => `barrier.${d.axis}`,
   },
   "deadly-block": {
     anchor: { x: 0.5, y: 1 },
-    texture: (d) => `items.${d.style}`,
+    texture: (d) => `${d.style}`,
   },
   block: {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `items.block.${style}`,
+    texture: ({ style }) => `block.${style}`,
   },
   conveyor: {
     anchor: { x: 0.5, y: 1 },
     texture: ({ direction }) =>
       direction === "left" || direction === "right"
-        ? "items.conveyor.x"
-        : "items.conveyor.y",
+        ? "conveyor.x"
+        : "conveyor.y",
   },
   fish: {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ alive }) =>
-      alive ? pixiSpriteSheet.animations.fish : "items.fish1",
+    texture: ({ alive }) => (alive ? pixiSpriteSheet.animations.fish : "fish1"),
     animationSpeed: 0.1,
   },
   lift: {
@@ -63,11 +58,11 @@ export const itemAppearances: {
   },
   spring: {
     anchor: { x: 0.5, y: 1 },
-    texture: "items.spring.released",
+    texture: "spring.released",
   },
   teleporter: {
     anchor: { x: 0.5, y: 1 },
-    texture: "items.teleporter",
+    texture: "teleporter",
   },
   pickup: {
     anchor: { x: 0.5, y: 1 },
@@ -75,12 +70,21 @@ export const itemAppearances: {
   },
   player: {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ which }) => `items.${which}.toward1`,
+    texture: ({ which }) => `${which}.toward1`,
   },
   baddie: {
-    pivot: centreSmallBlock,
+    anchor: { x: 0.5, y: 1 },
     // TODO: render other baddies
-    texture: pixiSpriteSheet.animations.dalek,
+    texture({ which, startDirection }) {
+      switch (which) {
+        case "helicopter-bug":
+        case "dalek":
+          return pixiSpriteSheet.animations[which];
+        default:
+          // TODO: make stack
+          return `${which}.${startDirection}`;
+      }
+    },
     animationSpeed: 0.2,
   },
   joystick: {
@@ -89,19 +93,35 @@ export const itemAppearances: {
     //pivot: { x: smallItemTextureSize.w/2, y: smallItemTextureSize.h +2 },
     anchor: { x: 0.5, y: 1 },
     // TODO: render other baddies
-    texture: "items.joystick",
+    texture: "joystick",
   },
   "movable-block": {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `items.${style}`,
+    texture: ({ style }) => `${style}`,
+  },
+  book: {
+    anchor: { x: 0.5, y: 1 },
+    texture: ({ slider }) => `book.${slider ? "y" : "x"}`,
   },
   "portable-block": {
     anchor: { x: 0.5, y: 1 },
-    texture: ({ style }) => `items.${style}`,
+    texture: ({ style }) => `${style}`,
   },
-  "charles": {
+  charles: {
     anchor: { x: 0.5, y: 1 },
-    texture: 'charles.right',
+    // TODO: make stack
+    texture: "charles.right",
   },
-
+  switch: {
+    anchor: { x: 0.5, y: 1 },
+    texture: "switch.off",
+  },
+  "hush-puppy": {
+    anchor: { x: 0.5, y: 1 },
+    texture: "hush-puppy",
+  },
+  ball: {
+    anchor: { x: 0.5, y: 1 },
+    texture: "ball",
+  },
 };

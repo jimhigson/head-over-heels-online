@@ -12,12 +12,11 @@ const reifyTexture = <T extends ItemType>(
 ): TextureId | Texture[] => {
   const appearance = itemAppearances[item.type];
 
-  if( appearance === undefined ) {
+  if (appearance === undefined) {
     throw new Error(`item type "${item.type}" has no appearance`);
   }
 
-  const appearanceTexture = appearance
-    .texture as ItemAppearance<T>["texture"];
+  const appearanceTexture = appearance.texture as ItemAppearance<T>["texture"];
   return typeof appearanceTexture === "function"
     ? appearanceTexture(item.config)
     : appearanceTexture;

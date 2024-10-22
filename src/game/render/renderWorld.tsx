@@ -1,5 +1,5 @@
 import { Application, Container, PointData } from "pixi.js";
-import { AnyRoom, PlanetName, RoomJson, RoomId, Xy } from "../../modelTypes";
+import { AnyRoom, PlanetName, RoomJson, RoomId } from "../../modelTypes";
 import { zxSpectrumResolution } from "../../originalGame";
 import { hintColours, Shades } from "../../hintColours";
 import {

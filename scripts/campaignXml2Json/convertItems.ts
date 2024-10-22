@@ -8,6 +8,7 @@ import {
 } from "./convertCampaign";
 import { convertRoomId } from "./convertRoomId";
 import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
+import chalk from "chalk";
 
 export const convertItems = (
   roomName: string,
@@ -17,6 +18,14 @@ export const convertItems = (
   return xml2JsonRoom.items
     .map((item): UnknownItem | undefined => {
       const position = convertXYZ(item, xml2JsonRoom, doorMap);
+
+      if (
+        item.kind.includes("shaft") ||
+        item.kind.includes("capital") ||
+        item.kind.includes("door")
+      ) {
+        return undefined;
+      }
 
       switch (item.kind) {
         case "teleport": {
@@ -37,7 +46,7 @@ export const convertItems = (
         }
 
         case "bars-ns":
-        case "bars-ew": {
+        case "bars-ew":
           return {
             type: "barrier",
             config: {
@@ -45,7 +54,6 @@ export const convertItems = (
             },
             position,
           };
-        }
 
         case "cylinder":
         case "brick1":
@@ -69,11 +77,12 @@ export const convertItems = (
         }
 
         case "toaster":
+        case "spikes":
         case "vulcano": {
           return {
             type: "deadly-block",
             config: {
-              style: item.kind === "vulcano" ? "volcano" : "toaster",
+              style: item.kind === "vulcano" ? "volcano" : item.kind,
             },
             position,
           };
@@ -90,19 +99,27 @@ export const convertItems = (
         }
 
         case "extra-life":
+        case "high-jumps":
         case "donuts":
         case "horn":
         case "shield":
         case "handbag": {
-          const conversions = {
+          const conversions: Record<
+            typeof item.kind,
+            ItemConfig["pickup"]["gives"]
+          > = {
             horn: "hooter",
             handbag: "bag",
+            "high-jumps": "jumps",
+            "extra-life": "extra-life",
+            shield: "shield",
+            donuts: "donuts",
           };
 
           return {
             type: "pickup",
             config: {
-              gives: conversions[item.kind] || item.kind,
+              gives: conversions[item.kind],
             },
             position,
           };
@@ -135,14 +152,6 @@ export const convertItems = (
           };
         }
 
-        case "siren": {
-          return {
-            type: "baddie",
-            config: { which: "dalek" },
-            position,
-          };
-        }
-
         case "remote-control": {
           return {
             type: "joystick",
@@ -151,13 +160,31 @@ export const convertItems = (
           };
         }
 
+        case "cap":
+        case "sandwich":
         case "stool": {
+          const conversions: Record<
+            typeof item.kind,
+            ItemConfig["movable-block"]["style"]
+          > = {
+            cap: "puck",
+            stool: "anvil",
+            sandwich: "sandwich",
+          };
+
           return {
             type: "movable-block",
-            config: { style: "anvil" },
+            config: { style: conversions[item.kind] },
             position,
           };
         }
+
+        case "book":
+          return {
+            type: "book",
+            config: { slider: item.class === "freeitem" },
+            position,
+          };
 
         case "drum":
         case "another-portable-brick": {
@@ -176,7 +203,67 @@ export const convertItems = (
           };
         }
 
+        case "switch": {
+          return {
+            type: "switch",
+            config: {},
+            position,
+          };
+        }
+
+        case "siren":
+        case "monkey":
+        case "elephant":
+        case "helicopter-bug":
+        case "imperial-guard":
+        case "imperial-guard-head":
+        case "diver": {
+          const baddieConversions: Record<
+            typeof item.kind,
+            ItemConfig["baddie"]["which"]
+          > = {
+            "helicopter-bug": "helicopter-bug",
+            "imperial-guard": "cyberman",
+            "imperial-guard-head": "cyberman",
+            siren: "dalek",
+            diver: "american-football-head",
+            monkey: "monkey",
+            elephant: "elephant",
+          };
+
+          const defaultStartDirection = "left";
+          return {
+            type: "baddie",
+            config: {
+              which: baddieConversions[item.kind],
+              startDirection:
+                item.kind === "diver" || item.kind === "imperial-guard-head"
+                  ? convertDirection(item.orientation)
+                  : defaultStartDirection,
+              charging: item.kind === "imperial-guard-head",
+            },
+            position,
+          };
+        }
+
+        case "puppy":
+          return {
+            type: "hush-puppy",
+            config: {},
+            position,
+          };
+
+        case "ball":
+          return {
+            type: "ball",
+            config: {},
+            position,
+          };
+
         default:
+          console.warn(
+            `not converting ${chalk.yellow(item.kind)} in room ${chalk.green(roomName)}`,
+          );
           //item.kind satisfies never;
           return undefined;
       }

@@ -5,6 +5,7 @@ import {
   Xml2JsonRoom,
   roomNameFromXmlFilename,
   XmlScenery,
+  XmlFloorKind,
 } from "./readToJson";
 import { readdir, writeFile } from "node:fs/promises";
 import {
@@ -102,14 +103,54 @@ const convertPlanetName = (
 };
 
 const convertRoomDimensions = (
-  { xTiles, yTiles }: Xml2JsonRoom,
+  { xTiles, yTiles, floorKind, walls }: Xml2JsonRoom,
   doorMap: LooseDoorMap,
 ): Xy => {
-  const y =
-    parseInt(yTiles) - (doorMap.towards ? 1 : 0) - (doorMap.away ? 1 : 0);
-  const x = parseInt(xTiles) - (doorMap.left ? 1 : 0) - (doorMap.right ? 1 : 0);
+  // note; xTiles, yTiles are unreliable for rooms with no floors (it is usually set incorrectly)
+  // so in this case we fall back to looking at the walls. the xml is far from perfect
+  if (floorKind === "absent") {
+    //eg: blacktooth3., blacktooth30
 
-  return { x, y };
+    const xMin = walls
+      .filter((w) => w.along === "x")
+      .reduce<number>(
+        (ac, { position }) => Math.min(ac, parseInt(position)),
+        1,
+      );
+    const yMin = walls
+      .filter((w) => w.along === "y")
+      .reduce<number>(
+        (ac, { position }) => Math.min(ac, parseInt(position)),
+        1,
+      );
+    const xMax = walls
+      .filter((w) => w.along === "x")
+      .reduce<number>(
+        (ac, { position }) => Math.max(ac, parseInt(position)),
+        2,
+      );
+    const yMax = walls
+      .filter((w) => w.along === "y")
+      .reduce<number>(
+        (ac, { position }) => Math.max(ac, parseInt(position)),
+        2,
+      );
+
+    return { x: xMax - xMin + 1, y: yMax - yMin + 1 };
+  } else {
+    const y =
+      parseInt(yTiles) -
+      // the xml gives the room an extra tiles for the doors to fit on:
+      (doorMap.towards ? 1 : 0) -
+      (doorMap.away ? 1 : 0);
+    const x =
+      parseInt(xTiles) -
+      // the xml gives the room an extra tiles for the doors to fit on:
+      (doorMap.left ? 1 : 0) -
+      (doorMap.right ? 1 : 0);
+
+    return { x, y };
+  }
 };
 
 const convertWalls = (
@@ -145,7 +186,7 @@ const convertWalls = (
  * a door map that can be used to just know if there is a door on a side, not necessarily
  * to have the door object
  */
-export type LooseDoorMap = Partial<Record<Direction, Door<Direction> | true>>;
+export type LooseDoorMap = Partial<Record<Direction, Door<string> | true>>;
 
 const convertX = (
   xmlX: number | string,
@@ -214,7 +255,7 @@ const autoZ = (
 const convertDoors = (
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
-): DoorMap => {
+): DoorMap<string> => {
   const roomOnMap = map[roomName];
 
   const doorXmlJsonItems = xml2JsonRoom.items
@@ -248,14 +289,14 @@ const convertDoors = (
         convertY(parseInt(y), xml2JsonRoom, looseDoorMap) - 1
       : convertX(parseInt(x), xml2JsonRoom, looseDoorMap) - 1;
 
-    const door: Door = {
+    const door: Door<string> = {
       ordinal,
       z: autoZ({ x: parseInt(x), y: parseInt(y) }, xml2JsonRoom),
       toRoom: toRoomId,
     };
-    return [convertDirection(where), door] as [Direction, Door];
+    return [convertDirection(where), door] as [Direction, Door<string>];
   });
-  return Object.fromEntries(doorEntries) as DoorMap;
+  return Object.fromEntries(doorEntries) as DoorMap<string>;
 };
 
 /** strip off the ".reduced" from the end of, eg "yellow.reduced */
@@ -280,7 +321,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
   // the xml calls bookworld "byblos" 🤷‍♂️
   const planet = convertPlanetName(jsonScenery);
 
-  const floorMap: Record<string, Floor> = {
+  const floorMap: Record<XmlFloorKind, Floor> = {
     plain: planet,
     absent: "none",
     mortal: "deadly",

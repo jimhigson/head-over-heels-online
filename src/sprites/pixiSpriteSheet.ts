@@ -5,7 +5,14 @@ import {
   type Texture,
 } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
-import { PlanetName, WallTextureId, SpriteSize, planets } from "../modelTypes";
+import {
+  PlanetName,
+  WallTextureId,
+  SpriteSize,
+  planets,
+  Direction,
+  Xy,
+} from "../modelTypes";
 
 export const blockSizePx = { w: 16, d: 16, h: 12 };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
@@ -28,55 +35,94 @@ type BackgroundFrame<TPlanet extends PlanetName> =
   | WallTextureId<TPlanet>
   | `${TPlanet}.floor`;
 
-function* backgroundFramesGenerator<TPlanet extends PlanetName>(
-  planet: TPlanet,
-  startX: number,
-  startY: number,
-): Generator<[BackgroundFrame<TPlanet>, SpritesheetFrameData]> {
-  const walls = planets[planet].walls;
-
-  const { w, h } = wallTileSize;
-  const yStep = w >> 1;
-  const n = walls.length;
-
-  let i = 0;
-  for (; i < walls.length; i++) {
-    yield [
-      `${planet}.wall.${walls[i]}.left`,
-      { frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize } },
-    ];
-    yield [
-      `${planet}.wall.${walls[i]}.away`,
-      {
-        frame: {
-          x: startX + w * ((n << 1) - i - 1),
-          y: startY - yStep * i,
-          ...wallTileSize,
-        },
-      },
-    ];
-  }
-
-  const lastI = i - 1;
-  yield [
-    `${planet}.floor`,
-    {
-      frame: {
-        x: startX + lastI * w,
-        y: startY - lastI * yStep + h + 1,
-        ...floorTileSize,
-      },
-    },
-  ];
-}
 const backgroundFrames = <TPlanet extends PlanetName>(
   planet: TPlanet,
   startX: number,
   startY: number,
 ): Record<BackgroundFrame<TPlanet>, SpritesheetFrameData> => {
+  function* backgroundFramesGenerator<TPlanet extends PlanetName>(
+    planet: TPlanet,
+    startX: number,
+    startY: number,
+  ): Generator<[BackgroundFrame<TPlanet>, SpritesheetFrameData]> {
+    const walls = planets[planet].walls;
+
+    const { w, h } = wallTileSize;
+    const yStep = w >> 1;
+    const n = walls.length;
+
+    let i = 0;
+    for (; i < walls.length; i++) {
+      yield [
+        `${planet}.wall.${walls[i]}.left`,
+        {
+          frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize },
+        },
+      ];
+      yield [
+        `${planet}.wall.${walls[i]}.away`,
+        {
+          frame: {
+            x: startX + w * ((n << 1) - i - 1),
+            y: startY - yStep * i,
+            ...wallTileSize,
+          },
+        },
+      ];
+    }
+
+    const lastI = i - 1;
+    yield [
+      `${planet}.floor`,
+      {
+        frame: {
+          x: startX + lastI * w,
+          y: startY - lastI * yStep + h + 1,
+          ...floorTileSize,
+        },
+      },
+    ];
+  }
+
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
   ) as Record<BackgroundFrame<TPlanet>, SpritesheetFrameData>;
+};
+
+type DirectionalTexture<TName extends string> = `${TName}.${Direction}`;
+const fourDirections = <TName extends string>(
+  name: TName,
+  { x: startX, y: startY }: Xy,
+  textureSize: SpriteSize,
+): Record<`${TName}.${Direction}`, SpritesheetFrameData> => {
+  function* generator(): Generator<
+    [`${TName}.${Direction}`, SpritesheetFrameData]
+  > {
+    yield [`${name}.left`, { frame: { x: startX, y: startY, ...textureSize } }];
+    yield [
+      `${name}.away`,
+      { frame: { x: startX + textureSize.w + 2, y: startY, ...textureSize } },
+    ];
+    yield [
+      `${name}.towards`,
+      { frame: { x: startX, y: startY + textureSize.h + 2, ...textureSize } },
+    ];
+    yield [
+      `${name}.right`,
+      {
+        frame: {
+          x: startX + textureSize.w + 2,
+          y: startY + textureSize.h + 2,
+          ...textureSize,
+        },
+      },
+    ];
+  }
+
+  return Object.fromEntries(generator()) as Record<
+    DirectionalTexture<TName>,
+    SpritesheetFrameData
+  >;
 };
 
 const spritesTexture = await Assets.load<Texture>(spritesheetUrl);
@@ -152,125 +198,159 @@ const spritesheetData = {
     "moonbase.door.back.x": {
       frame: { x: 512, y: 153, ...doorTextureSize },
     },
-    "items.teleporter": {
+    teleporter: {
       frame: { x: 4, y: 450, ...largeItemTextureSize },
     },
-    "items.barrier.x": {
+    "barrier.x": {
       frame: { x: 313, y: 389, w: 24, h: 24 },
     },
-    "items.barrier.y": {
+    "barrier.y": {
       frame: { x: 313, y: 414, w: 24, h: 24 },
     },
-    "items.block.organic": {
+    "block.organic": {
       frame: { x: 172, y: 388, ...largeItemTextureSize },
     },
-    "items.block.artificial": {
+    "block.artificial": {
       frame: { x: 138, y: 388, ...largeItemTextureSize },
     },
-    "items.block.tower": {
+    "block.tower": {
       frame: { x: 286, y: 414, ...smallItemTextureSize },
     },
-    "items.volcano": {
+    volcano: {
       frame: { x: 344, y: 414, ...largeItemTextureSize },
     },
-    "items.toaster": {
+    toaster: {
       frame: { x: 111, y: 423, ...largeItemTextureSize },
     },
-    "items.conveyor.x": {
+    spikes: {
+      frame: { x: 379, y: 414, ...largeItemTextureSize },
+    },
+    "conveyor.x": {
       frame: { x: 259, y: 440, ...largeItemTextureSize },
     },
-    "items.conveyor.y": {
+    "conveyor.y": {
       frame: { x: 292, y: 440, ...largeItemTextureSize },
     },
-    "items.bunny": {
+    bunny: {
       frame: { x: 340, y: 358, ...smallItemTextureSize },
     },
-    "items.donuts": {
+    donuts: {
       frame: { x: 313, y: 358, ...smallItemTextureSize },
     },
-    "items.hooter": {
+    hooter: {
       frame: { x: 286, y: 358, ...smallItemTextureSize },
     },
-    "items.bag": {
+    bag: {
       frame: { x: 259, y: 358, ...smallItemTextureSize },
     },
-    "items.fish1": {
+    fish1: {
       frame: { x: 259, y: 388, ...smallItemTextureSize },
     },
-    "items.fish2": {
+    fish2: {
       frame: { x: 284, y: 388, ...smallItemTextureSize },
     },
-    "items.spring.compressed": {
+    "spring.compressed": {
       frame: { x: 4, y: 421, ...smallItemTextureSize },
     },
-    "items.spring.released": {
+    "spring.released": {
       frame: { x: 29, y: 421, ...smallItemTextureSize },
     },
-    "items.head.toward1": {
+    "head.toward1": {
       frame: { x: 29, y: 266, ...smallItemTextureSize },
     },
-    "items.heels.toward1": {
+    "heels.toward1": {
       frame: { x: 184, y: 266, ...smallItemTextureSize },
     },
-    "items.lift.4": {
+    "lift.4": {
       frame: { x: 259, y: 474, ...smallItemTextureSize },
     },
-    "items.lift.3": {
+    "lift.3": {
       frame: { x: 284, y: 474, ...smallItemTextureSize },
     },
-    "items.lift.2": {
+    "lift.2": {
       frame: { x: 309, y: 474, ...smallItemTextureSize },
     },
-    "items.lift.1": {
+    "lift.1": {
       frame: { x: 334, y: 474, ...smallItemTextureSize },
     },
-    "items.baddies.dalek.1": {
+    "baddies.dalek.1": {
       frame: { x: 4, y: 4, ...smallItemTextureSize },
     },
-    "items.baddies.dalek.2": {
+    "baddies.dalek.2": {
       frame: { x: 29, y: 4, ...smallItemTextureSize },
     },
-    "items.joystick": {
+    joystick: {
       frame: { x: 259, y: 414, ...smallItemTextureSize },
     },
-    "items.anvil": {
+    anvil: {
       frame: { x: 144, y: 423, ...largeItemTextureSize },
     },
-    "items.sandwich": {
+    "book.x": {
+      frame: { x: 184, y: 450, ...largeItemTextureSize },
+    },
+    "book.y": {
+      frame: { x: 222, y: 450, ...largeItemTextureSize },
+    },
+    sandwich: {
       frame: { x: 4, y: 356, ...largeItemTextureSize },
     },
-    "items.sticks": {
+    sticks: {
       frame: { x: 4, y: 391, ...smallItemTextureSize },
     },
-    "items.cube": {
+    cube: {
       frame: { x: 31, y: 391, ...smallItemTextureSize },
     },
-    "items.drum": {
+    drum: {
       frame: { x: 58, y: 391, ...smallItemTextureSize },
     },
-    "items.switch.off": {
+    "switch.off": {
       frame: { x: 111, y: 454, ...smallItemTextureSize },
     },
-    "items.switch.on": {
+    "switch.on": {
       frame: { x: 136, y: 454, ...smallItemTextureSize },
     },
-    "charles.left": {
-      frame: { x: 118, y: 34, ...smallItemTextureSize },
+    ...fourDirections(
+      "american-football-head",
+      { x: 4, y: 34 },
+      { w: 24, h: 32 },
+    ),
+    ...fourDirections("charles", { x: 118, y: 34 }, smallItemTextureSize),
+    ...fourDirections("cyberman", { x: 61, y: 34 }, smallItemTextureSize),
+    ...fourDirections("monkey", { x: 118, y: 90 }, smallItemTextureSize),
+    ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
+    ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
+    "helicopter-bug.1": {
+      frame: { x: 4, y: 167, ...smallItemTextureSize },
     },
-    "charles.away": {
-      frame: { x: 144, y: 34, ...smallItemTextureSize },
+    "helicopter-bug.2": {
+      frame: { x: 29, y: 167, ...smallItemTextureSize },
     },
-    "charles.towards": {
-      frame: { x: 118, y: 60, ...smallItemTextureSize },
+    "helicopter-bug.3": {
+      frame: { x: 54, y: 167, ...smallItemTextureSize },
     },
-    "charles.right": {
-      frame: { x: 144, y: 60, ...smallItemTextureSize },
-    }
+    "helicopter-bug.4": {
+      frame: { x: 79, y: 167, ...smallItemTextureSize },
+    },
+    "hush-puppy": {
+      frame: { x: 163, y: 300, ...largeItemTextureSize },
+    },
+    ball: {
+      frame: { x: 84, y: 4, ...smallItemTextureSize },
+    },
+    puck: {
+      frame: { x: 111, y: 392, ...smallItemTextureSize },
+    },
   },
   animations: {
-    fish: ["items.fish1", "items.fish2"],
-    lift: ["items.lift.1", "items.lift.2", "items.lift.3", "items.lift.4"],
-    dalek: ["items.baddies.dalek.1", "items.baddies.dalek.2"],
+    fish: ["fish1", "fish2"],
+    lift: ["lift.1", "lift.2", "lift.3", "lift.4"],
+    dalek: ["baddies.dalek.1", "baddies.dalek.2"],
+    "helicopter-bug": [
+      "helicopter-bug.1",
+      "helicopter-bug.2",
+      "helicopter-bug.3",
+      "helicopter-bug.4",
+    ],
   },
   meta: { scale: 1 },
 };

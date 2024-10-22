@@ -30,8 +30,11 @@ _ use spritesheets for graphics - https://pixijs.download/release/docs/assets.Sp
 
 [ ] add level selector dropdown
 [ ] parseInt from xml earlier and remove many parseInt calls!  
-[ ] prettier
-[ ] render supports under doors with z!=0
+[x] prettier
+[x] render supports under doors with z!=0
+
+[ ] investigate rooms:
+    moonbase12 - puppies seem to go nowhere!
 
 Game engine
 [ ] init mutable game state based off of room on entering a room

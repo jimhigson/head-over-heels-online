@@ -528,6 +528,15 @@
         "position": { "x": 4, "y": 3, "z": 2 }
       },
       {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 7, "y": 2, "z": 0 }
+      },
+      {
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 4, "y": 2, "z": 0 }
@@ -803,6 +812,15 @@
         "type": "pickup",
         "config": { "gives": "shield" },
         "position": { "x": 3, "y": 9, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 0, "z": 0 }
       }
     ],
     "color": "yellow"
@@ -830,6 +848,25 @@
       "left": ["plain", "shield", "none", "none", "shield", "plain"]
     },
     "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 3, "z": 0 }
+      },
       {
         "type": "portable-block",
         "config": { "style": "cube" },
@@ -1169,13 +1206,13 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth44market",
-    "size": { "x": 7, "y": 7 },
+    "size": { "x": 6, "y": 6 },
     "doors": {
       "towards": { "ordinal": 2, "z": 1, "toRoom": "blacktooth21fish" }
     },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -1478,10 +1515,10 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth25",
-    "size": { "x": 7, "y": 6 },
+    "size": { "x": 6, "y": 6 },
     "doors": { "away": { "ordinal": 2, "z": 2, "toRoom": "blacktooth27fish" } },
     "walls": {
-      "away": ["bars", "bars", "none", "none", "bars", "bars", "none"],
+      "away": ["bars", "bars", "none", "none", "bars", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -1734,6 +1771,15 @@
         "type": "lift",
         "config": { "top": 9, "bottom": 0 },
         "position": { "x": 0, "y": 7, "z": 7 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 6, "z": 0 }
       }
     ],
     "color": "white"
@@ -1743,20 +1789,10 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth4",
-    "size": { "x": 9, "y": 6 },
+    "size": { "x": 8, "y": 6 },
     "doors": { "away": { "ordinal": 3, "z": 2, "toRoom": "blacktooth2" } },
     "walls": {
-      "away": [
-        "bars",
-        "bars",
-        "bars",
-        "none",
-        "none",
-        "bars",
-        "bars",
-        "bars",
-        "none"
-      ],
+      "away": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -1778,21 +1814,11 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth29",
-    "size": { "x": 7, "y": 9 },
+    "size": { "x": 6, "y": 8 },
     "doors": { "right": { "ordinal": 3, "z": 1, "toRoom": "blacktooth31" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      "left": [
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "none"
-      ]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -2034,9 +2060,27 @@
         "position": { "x": 7, "y": 7, "z": 0 }
       },
       {
+        "type": "pickup",
+        "config": { "gives": "jumps" },
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 7, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 3, "z": 0 }
       }
     ],
     "color": "cyan"
@@ -2046,20 +2090,10 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth33",
-    "size": { "x": 9, "y": 8 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "away": { "ordinal": 3, "z": 2, "toRoom": "blacktooth35" } },
     "walls": {
-      "away": [
-        "bars",
-        "bars",
-        "bars",
-        "none",
-        "none",
-        "bars",
-        "bars",
-        "bars",
-        "none"
-      ],
+      "away": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
@@ -2194,7 +2228,41 @@
         "plain"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "switch",
+        "config": {},
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 0, "y": 1, "z": 0 } }
+    ],
     "color": "green"
   },
   "blacktooth38": {
@@ -2202,11 +2270,11 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth39",
-    "size": { "x": 7, "y": 7 },
+    "size": { "x": 6, "y": 6 },
     "doors": { "towards": { "ordinal": 2, "z": 1, "toRoom": "blacktooth37" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -2249,7 +2317,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 3, "z": 0 }
       },
       {
@@ -2513,6 +2585,15 @@
       "left": ["none", "none"]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 1, "z": 0 }
+      },
       { "type": "spring", "config": {}, "position": { "x": 1, "y": 1, "z": 0 } }
     ],
     "color": "yellow"
@@ -2522,11 +2603,11 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth46market",
-    "size": { "x": 7, "y": 7 },
+    "size": { "x": 6, "y": 6 },
     "doors": { "right": { "ordinal": 2, "z": 1, "toRoom": "blacktooth42" } },
     "walls": {
-      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -2984,7 +3065,35 @@
         "passage"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 7, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 7, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 0, "z": 0 }
+      }
+    ],
     "color": "cyan"
   },
   "blacktooth51": {
@@ -3143,7 +3252,37 @@
         "fruits"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 2, "y": 6, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 5, "y": 4, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 5, "y": 3, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 2, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "blacktooth54": {
@@ -3151,23 +3290,13 @@
     "floor": "none",
     "planet": "jail",
     "roomBelow": "blacktooth55",
-    "size": { "x": 9, "y": 7 },
+    "size": { "x": 8, "y": 6 },
     "doors": {
       "towards": { "ordinal": 3, "z": 1, "toRoom": "blacktooth53market" }
     },
     "walls": {
-      "away": [
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "none"
-      ],
-      "left": ["bars", "bars", "bars", "bars", "bars", "bars", "none"]
+      "away": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
     },
     "items": [
       {
@@ -3241,6 +3370,11 @@
         "position": { "x": 3, "y": 1, "z": 3 }
       },
       {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 3, "y": 0, "z": 0 }
@@ -3254,6 +3388,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 3, "y": 0, "z": 3 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -3391,6 +3530,26 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 11, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 4, "y": 9, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 9, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 9, "z": 1 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 4, "y": 8, "z": 0 }
       },
       {
         "type": "block",
@@ -3576,9 +3735,64 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 2, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 4 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 5 }
+      },
+      {
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 1, "y": 1, "z": 6 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 1, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 1, "z": 4 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 1, "z": 5 }
       },
       {
         "type": "deadly-block",
@@ -3698,8 +3912,17 @@
         "position": { "x": 7, "y": 7, "z": 1 }
       },
       {
+        "type": "switch",
+        "config": {},
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 0, "z": 1 }
       }
     ],
@@ -3902,13 +4125,47 @@
     },
     "items": [
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 7, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
         "type": "portable-block",
         "config": { "style": "drum" },
         "position": { "x": 3, "y": 7, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 7, "z": 1 }
       }
     ],
@@ -4123,6 +4380,21 @@
         "position": { "x": 6, "y": 1, "z": 3 }
       },
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 1, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 1, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 7, "y": 0, "z": 3 }
@@ -4131,6 +4403,35 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 6, "y": 0, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 0, "z": 0 }
+      },
+      {
+        "type": "pickup",
+        "config": { "gives": "jumps" },
+        "position": { "x": 5, "y": 1, "z": 3 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 1, "z": 0 }
       }
     ],
     "color": "cyan"
@@ -4654,7 +4955,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 3, "z": 0 }
       }
     ],
@@ -4701,12 +5006,20 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 5, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 7, "y": 4, "z": 0 }
       }
     ],
@@ -4806,6 +5119,11 @@
         "position": { "x": 7, "y": 3, "z": 0 }
       },
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 3, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 3, "z": 3 }
@@ -4819,6 +5137,26 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 2, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 1, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 1, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 1, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 1, "z": 2 }
       }
     ],
     "color": "white"
@@ -4881,6 +5219,15 @@
         "type": "pickup",
         "config": { "gives": "donuts" },
         "position": { "x": 5, "y": 3, "z": 5 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "monkey",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 3, "z": 0 }
       },
       {
         "type": "portable-block",
@@ -4990,12 +5337,20 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 4, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 1, "y": 3, "z": 0 }
       }
     ],
@@ -5097,6 +5452,15 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 2, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 2, "z": 0 }
       }
     ],
     "color": "white"
@@ -5347,7 +5711,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 4, "z": 0 }
       },
       {
@@ -5373,7 +5741,7 @@
     "floor": "none",
     "planet": "blacktooth",
     "roomBelow": "blacktooth78",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -5384,8 +5752,7 @@
         "shield",
         "plain",
         "armour",
-        "plain",
-        "none"
+        "plain"
       ],
       "left": [
         "plain",
@@ -5395,8 +5762,7 @@
         "shield",
         "plain",
         "armour",
-        "plain",
-        "none"
+        "plain"
       ]
     },
     "items": [
@@ -5530,6 +5896,15 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 1, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 4, "z": 0 }
       }
     ],
     "color": "white"
@@ -5618,7 +5993,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 6, "y": 7, "z": 1 }
       },
       {
@@ -5731,6 +6110,24 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 2, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 5, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 2, "z": 0 }
       }
     ],
     "color": "white"
@@ -5853,6 +6250,31 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 7, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 0, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 0, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 0, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -6005,6 +6427,15 @@
         "position": { "x": 0, "y": 7, "z": 0 }
       },
       {
+        "type": "baddie",
+        "config": {
+          "which": "monkey",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 3, "y": 4, "z": 2 }
@@ -6128,7 +6559,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 3, "z": 0 }
       }
     ],
@@ -6164,7 +6599,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 3, "z": 1 }
       },
       {
@@ -6373,6 +6812,21 @@
         "type": "teleporter",
         "config": { "toRoom": "moonbase25tobookworld" },
         "position": { "x": 6, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 3 }
       }
     ],
     "color": "white"
@@ -6399,7 +6853,17 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "monkey",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld11": {
@@ -6424,7 +6888,23 @@
       ],
       "left": ["none", "none"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 1, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 1, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld12fish": {
@@ -6450,6 +6930,31 @@
       ]
     },
     "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 4 }
+      },
       {
         "type": "portable-block",
         "config": { "style": "cube" },
@@ -6582,7 +7087,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 4, "z": 0 }
       },
       {
@@ -6602,7 +7111,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 3, "z": 0 }
       },
       {
@@ -6654,7 +7167,33 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 4, "y": 0, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld16": {
@@ -6705,12 +7244,20 @@
     "items": [
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 3, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 2, "z": 0 }
       },
       { "type": "spring", "config": {}, "position": { "x": 2, "y": 2, "z": 0 } }
@@ -6739,7 +7286,48 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 2, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld19": {
@@ -6794,6 +7382,15 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 1, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 6, "z": 0 }
       }
     ],
     "color": "white"
@@ -6987,7 +7584,23 @@
       "away": ["book", "book", "none", "none", "book", "book"],
       "left": ["book", "book", "none", "none", "book", "book"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld21": {
@@ -7021,7 +7634,33 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 6, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 7, "y": 5, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 5, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 6, "y": 2, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld22": {
@@ -7048,9 +7687,44 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 1, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 1, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 0, "z": 3 }
+      },
+      {
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 0, "z": 2 }
       },
       {
         "type": "pickup",
@@ -7116,6 +7790,16 @@
         "position": { "x": 4, "y": 2, "z": 0 }
       },
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 2, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 2, "z": 0 }
+      },
+      {
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 7, "y": 0, "z": 1 }
@@ -7124,6 +7808,11 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 1 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 7, "y": 2, "z": 0 }
       }
     ],
     "color": "white"
@@ -7177,8 +7866,32 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 0, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 0, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 0, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 0, "z": 4 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 7, "z": 0 }
       },
       {
@@ -7211,7 +7924,23 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 0, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 0, "z": 3 }
+      }
+    ],
     "color": "white"
   },
   "bookworld28": {
@@ -7485,7 +8214,7 @@
     "floor": "none",
     "planet": "bookworld",
     "roomBelow": "bookworld28",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "right": { "ordinal": 3, "z": 3, "toRoom": "bookworld30" } },
     "walls": {
       "away": [
@@ -7496,8 +8225,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ],
       "left": [
         "book",
@@ -7507,8 +8235,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ]
     },
     "items": [
@@ -7682,7 +8409,26 @@
       ],
       "left": ["book", "book", "none", "none", "book", "book"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "monkey",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 5, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "monkey",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld30": {
@@ -7710,12 +8456,20 @@
     "items": [
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 2, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 1, "z": 0 }
       }
     ],
@@ -7843,6 +8597,15 @@
         "position": { "x": 3, "y": 0, "z": 0 }
       },
       {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 11, "y": 0, "z": 0 }
+      },
+      {
         "type": "pickup",
         "config": { "gives": "shield" },
         "position": { "x": 9, "y": 2, "z": 0 }
@@ -7855,7 +8618,7 @@
     "floor": "none",
     "planet": "bookworld",
     "roomBelow": "bookworld33",
-    "size": { "x": 8, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "left": { "ordinal": 3, "z": 1, "toRoom": "bookworld31" } },
     "walls": {
       "away": [
@@ -7876,8 +8639,7 @@
         "none",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ]
     },
     "items": [],
@@ -7915,7 +8677,23 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 7, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 7, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld34": {
@@ -7948,7 +8726,143 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 13, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 10, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 10, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 10, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 10, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 10, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 10, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 9, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 9, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 8, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 8, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 7, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 6, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 6, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 5, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 5, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 5, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 5, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 5, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 4, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 0, "y": 13, "z": -1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 0, "y": 10, "z": -1 }
+      },
+      {
+        "type": "pickup",
+        "config": { "gives": "jumps" },
+        "position": { "x": 1, "y": 9, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 0, "y": 5, "z": -1 }
+      }
+    ],
     "color": "white"
   },
   "bookworld35": {
@@ -7983,6 +8897,26 @@
       ]
     },
     "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 5, "y": 7, "z": 4 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 7, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 2, "y": 7, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 7, "z": 3 }
+      },
       {
         "type": "block",
         "config": { "style": "organic" },
@@ -8065,8 +8999,27 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 7, "y": 2, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 7, "y": 2, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 7, "y": 2, "z": 2 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 1, "y": 0, "z": 0 }
       }
     ],
@@ -8123,7 +9076,7 @@
     "floor": "none",
     "planet": "bookworld",
     "roomBelow": "bookworld39",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "towards": { "ordinal": 3, "z": 5, "toRoom": "bookworld37" } },
     "walls": {
       "away": [
@@ -8134,8 +9087,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ],
       "left": [
         "book",
@@ -8145,8 +9097,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ]
     },
     "items": [],
@@ -8158,7 +9109,7 @@
     "planet": "bookworld",
     "roomBelow": "bookworld40",
     "roomAbove": "bookworld38",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -8169,8 +9120,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ],
       "left": [
         "book",
@@ -8180,8 +9130,7 @@
         "book",
         "person",
         "book",
-        "book",
-        "none"
+        "book"
       ]
     },
     "items": [
@@ -8266,7 +9215,18 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      }
+    ],
     "color": "white"
   },
   "bookworld40": {
@@ -8328,8 +9288,37 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 4, "z": 1 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 4, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 4, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 4, "z": 4 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 3, "y": 4, "z": 5 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 4, "z": 0 }
       },
       {
@@ -8338,8 +9327,17 @@
         "position": { "x": 3, "y": 4, "z": 0 }
       },
       {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 4, "z": 0 }
       }
     ],
@@ -8367,7 +9365,26 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 1, "y": 3, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld6": {
@@ -8394,6 +9411,16 @@
     },
     "items": [
       {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 7, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 1, "y": 3, "z": 0 }
+      },
+      {
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 3, "y": 0, "z": 0 }
@@ -8407,6 +9434,11 @@
         "type": "movable-block",
         "config": { "style": "anvil" },
         "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 1, "y": 3, "z": 1 }
       }
     ],
     "color": "white"
@@ -8433,7 +9465,23 @@
         "book"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "bookworld8": {
@@ -8468,6 +9516,26 @@
       ]
     },
     "items": [
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 3, "z": 3 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 2, "z": 0 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 2, "z": 2 }
+      },
+      {
+        "type": "book",
+        "config": { "slider": false },
+        "position": { "x": 0, "y": 2, "z": 3 }
+      },
       {
         "type": "portable-block",
         "config": { "style": "cube" },
@@ -8504,7 +9572,13 @@
       ],
       "left": ["book", "none", "none", "book"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "book",
+        "config": { "slider": true },
+        "position": { "x": 3, "y": 2, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "egyptus1": {
@@ -8592,6 +9666,26 @@
       ]
     },
     "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 7, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 7, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 7, "z": 0 }
+      },
       {
         "type": "block",
         "config": { "style": "organic" },
@@ -8748,6 +9842,11 @@
         "position": { "x": 7, "y": 1, "z": 3 }
       },
       {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 6, "y": 4, "z": 4 }
+      },
+      {
         "type": "joystick",
         "config": {},
         "position": { "x": 3, "y": 4, "z": 1 }
@@ -8874,7 +9973,7 @@
     "planet": "egyptus",
     "roomBelow": "egyptus13",
     "roomAbove": "egyptus19",
-    "size": { "x": 9, "y": 8 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "away": { "ordinal": 3, "z": 3, "toRoom": "egyptus18" } },
     "walls": {
       "away": [
@@ -8885,8 +9984,7 @@
         "none",
         "hieroglyphics",
         "sarcophagus",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ],
       "left": [
         "hieroglyphics",
@@ -9005,6 +10103,11 @@
         "position": { "x": 1, "y": 5, "z": 5 }
       },
       {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 5, "z": 2 }
@@ -9023,7 +10126,7 @@
     "floor": "none",
     "planet": "egyptus",
     "roomBelow": "egyptus15",
-    "size": { "x": 7, "y": 6 },
+    "size": { "x": 6, "y": 6 },
     "doors": { "away": { "ordinal": 2, "z": 1, "toRoom": "egyptus17" } },
     "walls": {
       "away": [
@@ -9032,8 +10135,7 @@
         "none",
         "none",
         "hieroglyphics",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ],
       "left": [
         "hieroglyphics",
@@ -9183,6 +10285,11 @@
         "position": { "x": 11, "y": 2, "z": 0 }
       },
       {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 4, "y": 1, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 6, "y": 0, "z": 0 }
@@ -9256,7 +10363,7 @@
     "planet": "egyptus",
     "roomBelow": "egyptus14",
     "roomAbove": "egyptus20",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -9267,8 +10374,7 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ],
       "left": [
         "hieroglyphics",
@@ -9278,8 +10384,7 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -9374,6 +10479,21 @@
         "position": { "x": 6, "y": 4, "z": 3 }
       },
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 4, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 4, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 4, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 0, "y": 4, "z": 0 }
@@ -9395,7 +10515,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 4, "z": 0 }
       },
       {
@@ -9405,7 +10529,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 3, "z": 0 }
       }
     ],
@@ -9416,7 +10544,7 @@
     "floor": "none",
     "planet": "egyptus",
     "roomBelow": "egyptus19",
-    "size": { "x": 8, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "left": { "ordinal": 3, "z": 2, "toRoom": "egyptus21" } },
     "walls": {
       "away": [
@@ -9437,8 +10565,7 @@
         "none",
         "hieroglyphics",
         "sarcophagus",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -9576,6 +10703,15 @@
         "position": { "x": 2, "y": 3, "z": 2 }
       },
       {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 2, "z": 0 }
+      },
+      {
         "type": "barrier",
         "config": { "axis": "y" },
         "position": { "x": 2, "y": 2, "z": 0 }
@@ -9592,7 +10728,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 0, "z": 0 }
       }
     ],
@@ -9695,6 +10835,11 @@
       },
       {
         "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 7, "y": 4, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 2, "y": 4, "z": 0 }
       },
@@ -9732,6 +10877,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 3, "z": 5 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 7, "y": 2, "z": 0 }
       },
       {
         "type": "deadly-block",
@@ -10015,7 +11165,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 7, "y": 5, "z": 1 }
       },
       {
@@ -10185,7 +11339,7 @@
     "floor": "none",
     "planet": "egyptus",
     "roomBelow": "egyptus30",
-    "size": { "x": 6, "y": 9 },
+    "size": { "x": 6, "y": 8 },
     "doors": { "left": { "ordinal": 3, "z": 2, "toRoom": "egyptus28" } },
     "walls": {
       "away": [
@@ -10204,8 +11358,7 @@
         "none",
         "hieroglyphics",
         "sarcophagus",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -10260,7 +11413,7 @@
     "planet": "egyptus",
     "roomBelow": "egyptus31",
     "roomAbove": "egyptus29",
-    "size": { "x": 7, "y": 9 },
+    "size": { "x": 6, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -10269,8 +11422,7 @@
         "hieroglyphics",
         "hieroglyphics",
         "sarcophagus",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ],
       "left": [
         "hieroglyphics",
@@ -10280,8 +11432,7 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -10334,7 +11485,7 @@
     "floor": "none",
     "planet": "egyptus",
     "roomBelow": "egyptus33",
-    "size": { "x": 8, "y": 3 },
+    "size": { "x": 8, "y": 2 },
     "doors": { "left": { "ordinal": 0, "z": 5, "toRoom": "egyptus31" } },
     "walls": {
       "away": [
@@ -10347,7 +11498,7 @@
         "hieroglyphics",
         "hieroglyphics"
       ],
-      "left": ["none", "none", "none"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -10463,9 +11614,14 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 5, "y": 4, "z": 0 }
-      }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 0, "y": 2, "z": 1 } }
     ],
     "color": "white"
   },
@@ -10559,10 +11715,10 @@
     "planet": "egyptus",
     "roomBelow": "egyptus35",
     "roomAbove": "egyptus37",
-    "size": { "x": 3, "y": 9 },
+    "size": { "x": 2, "y": 8 },
     "doors": {},
     "walls": {
-      "away": ["hieroglyphics", "hieroglyphics", "none"],
+      "away": ["hieroglyphics", "hieroglyphics"],
       "left": [
         "hieroglyphics",
         "hieroglyphics",
@@ -10571,8 +11727,7 @@
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -10629,7 +11784,7 @@
     "floor": "none",
     "planet": "egyptus",
     "roomBelow": "egyptus36",
-    "size": { "x": 2, "y": 9 },
+    "size": { "x": 2, "y": 8 },
     "doors": { "left": { "ordinal": 3, "z": 2, "toRoom": "egyptus38" } },
     "walls": {
       "away": ["hieroglyphics", "hieroglyphics"],
@@ -10641,8 +11796,7 @@
         "none",
         "hieroglyphics",
         "sarcophagus",
-        "hieroglyphics",
-        "none"
+        "hieroglyphics"
       ]
     },
     "items": [
@@ -10731,6 +11885,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10746,6 +11901,7 @@
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10761,6 +11917,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 1, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 1, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10775,7 +11932,8 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 1, "z": 2 }
-      }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 1, "z": 3 } }
     ],
     "color": "white"
   },
@@ -10860,7 +12018,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 7, "z": 0 }
       },
       {
@@ -10870,7 +12032,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 3, "y": 0, "z": 0 }
       }
     ],
@@ -10943,6 +12109,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10958,6 +12125,7 @@
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10973,6 +12141,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 1, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 1, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -10987,7 +12156,8 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 1, "z": 2 }
-      }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 1, "z": 3 } }
     ],
     "color": "cyan"
   },
@@ -11109,6 +12279,21 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 4, "y": 3, "z": 2 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 4, "y": 3, "z": 3 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 2, "y": 2, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 2, "y": 2, "z": 1 }
       }
     ],
     "color": "white"
@@ -11241,6 +12426,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -11256,14 +12442,23 @@
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 6, "z": 3 } },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 5, "z": 0 }
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 2, "z": 0 }
       },
       {
@@ -11281,6 +12476,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 1, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 1, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -11295,7 +12491,8 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 1, "z": 2 }
-      }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 1, "z": 3 } }
     ],
     "color": "yellow"
   },
@@ -11593,6 +12790,114 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -11731,6 +13036,21 @@
         "position": { "x": 0, "y": 2, "z": 3 }
       },
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 0, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 5, "y": 0, "z": 3 }
@@ -11806,6 +13126,42 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 5, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 2, "z": 1 }
       }
     ],
     "color": "white"
@@ -11852,6 +13208,42 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 5, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 5, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 2, "z": 1 }
       }
     ],
     "color": "white"
@@ -11878,7 +13270,38 @@
       ],
       "left": ["none", "none"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 1, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 1, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "moonbase16": {
@@ -12101,6 +13524,33 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 3, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 4, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 3, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12129,6 +13579,21 @@
     },
     "items": [
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 5, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 5, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 5, "z": 0 }
+      },
+      {
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 7, "y": 4, "z": 0 }
@@ -12150,8 +13615,48 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 5, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 1, "z": 1 }
       }
     ],
     "color": "white"
@@ -12189,7 +13694,58 @@
         "window1"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 6, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 5, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 6, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 3, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 1, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 3, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 2, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "moonbase21tosafari": {
@@ -12261,6 +13817,60 @@
         "type": "teleporter",
         "config": { "toRoom": "safari1" },
         "position": { "x": 2, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 4, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 3, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
       }
     ],
     "color": "white"
@@ -12334,6 +13944,60 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 4, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 3, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12371,7 +14035,58 @@
         "window1"
       ]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 6, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 5, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 6, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 3, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 1, "y": 4, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 5, "y": 3, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "puck" },
+        "position": { "x": 4, "y": 2, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "moonbase24toegyptus": {
@@ -12482,6 +14197,114 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12594,6 +14417,114 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12640,6 +14571,33 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 2, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 4, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 3, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12683,7 +14641,32 @@
       "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
       "left": ["window3", "window2", "none", "none", "window2", "window1"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 3, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 3, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 5, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "moonbase29": {
@@ -12794,6 +14777,114 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -12831,9 +14922,24 @@
     },
     "items": [
       {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 7, "y": 7, "z": 0 }
+      },
+      {
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 2, "y": 4, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 2, "y": 4, "z": 1 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 1, "y": 4, "z": 1 }
       },
       {
         "type": "block",
@@ -12854,6 +14960,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 1, "y": 1, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 1, "z": 0 }
       },
       {
         "type": "block",
@@ -12879,6 +14990,11 @@
         "type": "spring",
         "config": {},
         "position": { "x": 4, "y": 7, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 0, "y": 7, "z": 0 }
       },
       {
         "type": "joystick",
@@ -13061,6 +15177,114 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -13224,6 +15448,213 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 11, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 1, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 5, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 11, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 13, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 11, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 13, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 11, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 13, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 14, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 9, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 12, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 10, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 12, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 10, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 12, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 10, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 11, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 5, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 3, "z": 1 }
       }
     ],
     "color": "white"
@@ -13270,6 +15701,42 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 7, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 1, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -13344,6 +15811,78 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 1, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 1, "z": 1 }
       }
     ],
     "color": "white"
@@ -13420,6 +15959,78 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 4, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 3, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 2, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "right",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 1, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 1, "z": 1 }
       }
     ],
     "color": "white"
@@ -13766,6 +16377,60 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 2, "y": 0, "z": 3 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 7, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "towards",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 7, "z": 1 }
       }
     ],
     "color": "white"
@@ -13868,6 +16533,60 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 7, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 6, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 5, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 2, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "away",
+          "charging": true
+        },
+        "position": { "x": 0, "y": 0, "z": 1 }
       }
     ],
     "color": "white"
@@ -13954,10 +16673,10 @@
     "floor": "none",
     "planet": "penitentiary",
     "roomBelow": "penitentiary9",
-    "size": { "x": 3, "y": 8 },
+    "size": { "x": 2, "y": 8 },
     "doors": { "away": { "ordinal": 0, "z": 2, "toRoom": "penitentiary11" } },
     "walls": {
-      "away": ["none", "none", "none"],
+      "away": ["none", "none"],
       "left": [
         "loop",
         "loop",
@@ -14074,6 +16793,16 @@
         "position": { "x": 0, "y": 2, "z": 3 }
       },
       {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 1, "z": 3 }
+      },
+      {
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 7, "y": 0, "z": 0 }
@@ -14087,6 +16816,16 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 7, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 0, "z": 0 }
       },
       {
         "type": "pickup",
@@ -14187,7 +16926,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary13",
     "roomAbove": "penitentiary15",
-    "size": { "x": 9, "y": 7 },
+    "size": { "x": 8, "y": 6 },
     "doors": {},
     "walls": {
       "away": [
@@ -14198,10 +16937,9 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
-      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"]
+      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
     },
     "items": [
       {
@@ -14303,7 +17041,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary14",
     "roomAbove": "penitentiary16",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -14314,8 +17052,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -14325,8 +17062,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -14539,7 +17275,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary15",
     "roomAbove": "penitentiary17",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -14550,8 +17286,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -14561,8 +17296,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -14634,7 +17368,7 @@
     "floor": "none",
     "planet": "penitentiary",
     "roomBelow": "penitentiary16",
-    "size": { "x": 9, "y": 8 },
+    "size": { "x": 8, "y": 8 },
     "doors": {
       "away": { "ordinal": 3, "z": 2, "toRoom": "penitentiary18fish" }
     },
@@ -14647,8 +17381,7 @@
         "none",
         "loop",
         "skeleton",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -14894,7 +17627,11 @@
     "items": [
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 4, "z": 0 }
       },
       {
@@ -14904,7 +17641,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 1, "y": 3, "z": 0 }
       }
     ],
@@ -14947,6 +17688,21 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 4, "y": 7, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 7, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 7, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 7, "z": 0 }
       },
       {
         "type": "block",
@@ -14995,7 +17751,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 6, "y": 3, "z": 2 }
       }
     ],
@@ -15030,7 +17790,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 3, "z": 1 }
       },
       {
@@ -15067,7 +17831,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary20",
     "roomAbove": "penitentiary22",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {
       "towards": { "ordinal": 3, "z": 1, "toRoom": "penitentiary19" }
     },
@@ -15080,8 +17844,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -15091,8 +17854,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -15300,7 +18062,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary21",
     "roomAbove": "penitentiary23",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -15311,8 +18073,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -15322,8 +18083,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -15521,7 +18281,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary22",
     "roomAbove": "penitentiary24",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": {},
     "walls": {
       "away": [
@@ -15532,8 +18292,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -15543,8 +18302,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -15716,7 +18474,7 @@
     "floor": "none",
     "planet": "penitentiary",
     "roomBelow": "penitentiary23",
-    "size": { "x": 9, "y": 8 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "away": { "ordinal": 3, "z": 1, "toRoom": "penitentiary25" } },
     "walls": {
       "away": [
@@ -15727,8 +18485,7 @@
         "none",
         "loop",
         "skeleton",
-        "loop",
-        "none"
+        "loop"
       ],
       "left": [
         "loop",
@@ -15831,6 +18588,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 4, "y": 0, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 4, "y": 1, "z": 0 }
       }
     ],
     "color": "white"
@@ -15882,6 +18644,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 0, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 6, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -15933,6 +18700,21 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 3, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 4, "y": 0, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 3, "y": 0, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 0, "z": 0 }
       }
     ],
     "color": "white"
@@ -15942,7 +18724,7 @@
     "floor": "none",
     "planet": "penitentiary",
     "roomBelow": "penitentiary31",
-    "size": { "x": 8, "y": 3 },
+    "size": { "x": 8, "y": 2 },
     "doors": { "left": { "ordinal": 0, "z": 3, "toRoom": "penitentiary28" } },
     "walls": {
       "away": [
@@ -15955,7 +18737,7 @@
         "loop",
         "loop"
       ],
-      "left": ["none", "none", "none"]
+      "left": ["none", "none"]
     },
     "items": [
       {
@@ -16087,7 +18869,18 @@
         "type": "deadly-block",
         "config": { "style": "toaster" },
         "position": { "x": 7, "y": 1, "z": 1 }
-      }
+      },
+      {
+        "type": "switch",
+        "config": {},
+        "position": { "x": 7, "y": 7, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 0, "y": 1, "z": 0 }
+      },
+      { "type": "switch", "config": {}, "position": { "x": 0, "y": 0, "z": 0 } }
     ],
     "color": "white"
   },
@@ -16155,7 +18948,7 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary32",
     "roomAbove": "penitentiary30",
-    "size": { "x": 9, "y": 3 },
+    "size": { "x": 8, "y": 2 },
     "doors": {},
     "walls": {
       "away": [
@@ -16166,10 +18959,9 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ],
-      "left": ["loop", "loop", "none"]
+      "left": ["loop", "loop"]
     },
     "items": [
       {
@@ -16320,7 +19112,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 1, "z": 0 }
       }
     ],
@@ -16393,6 +19189,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -16408,6 +19205,7 @@
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 6, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 6, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -16423,6 +19221,7 @@
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 1, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 6, "y": 1, "z": 3 } },
       {
         "type": "block",
         "config": { "style": "tower" },
@@ -16437,7 +19236,8 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 1, "y": 1, "z": 2 }
-      }
+      },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 1, "z": 3 } }
     ],
     "color": "white"
   },
@@ -16519,6 +19319,11 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 0, "y": 0, "z": 5 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 7, "y": 3, "z": 5 }
       }
     ],
     "color": "white"
@@ -16544,6 +19349,16 @@
         "type": "block",
         "config": { "style": "artificial" },
         "position": { "x": 4, "y": 5, "z": 1 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 5, "y": 3, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 5, "y": 2, "z": 0 }
       },
       {
         "type": "block",
@@ -16574,11 +19389,11 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary4",
     "roomAbove": "penitentiary6",
-    "size": { "x": 7, "y": 7 },
+    "size": { "x": 6, "y": 6 },
     "doors": {},
     "walls": {
-      "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
-      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"]
+      "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+      "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
     },
     "items": [
       {
@@ -16619,11 +19434,11 @@
     "floor": "none",
     "planet": "penitentiary",
     "roomBelow": "penitentiary5",
-    "size": { "x": 6, "y": 7 },
+    "size": { "x": 6, "y": 6 },
     "doors": { "left": { "ordinal": 2, "z": 3, "toRoom": "penitentiary7" } },
     "walls": {
       "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
-      "left": ["loop", "loop", "none", "none", "loop", "loop", "none"]
+      "left": ["loop", "loop", "none", "none", "loop", "loop"]
     },
     "items": [
       {
@@ -16780,10 +19595,10 @@
     "planet": "penitentiary",
     "roomBelow": "penitentiary8",
     "roomAbove": "penitentiary10",
-    "size": { "x": 3, "y": 9 },
+    "size": { "x": 2, "y": 8 },
     "doors": {},
     "walls": {
-      "away": ["loop", "loop", "none"],
+      "away": ["loop", "loop"],
       "left": [
         "loop",
         "loop",
@@ -16792,8 +19607,7 @@
         "loop",
         "skeleton",
         "loop",
-        "loop",
-        "none"
+        "loop"
       ]
     },
     "items": [
@@ -16980,7 +19794,17 @@
       "away": ["shield", "wall", "window", "window", "wall", "shield"],
       "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "elephant",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 0, "z": 0 }
+      }
+    ],
     "color": "white"
   },
   "safari12": {
@@ -17021,7 +19845,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 5, "y": 5, "z": 0 }
       },
       {
@@ -17122,7 +19950,7 @@
     "floor": "none",
     "planet": "safari",
     "roomBelow": "safari12",
-    "size": { "x": 9, "y": 6 },
+    "size": { "x": 8, "y": 6 },
     "doors": {
       "away": { "ordinal": 3, "z": 2, "toRoom": "safari15" },
       "right": { "ordinal": 2, "z": 2, "toRoom": "safari14" }
@@ -17136,8 +19964,7 @@
         "none",
         "wall",
         "window",
-        "wall",
-        "none"
+        "wall"
       ],
       "left": ["shield", "wall", "window", "window", "wall", "shield"]
     },
@@ -17228,6 +20055,11 @@
         "position": { "x": 4, "y": 6, "z": 0 }
       },
       {
+        "type": "pickup",
+        "config": { "gives": "jumps" },
+        "position": { "x": 4, "y": 7, "z": 0 }
+      },
+      {
         "type": "portable-block",
         "config": { "style": "drum" },
         "position": { "x": 4, "y": 7, "z": 2 }
@@ -17268,6 +20100,41 @@
     "items": [
       {
         "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 3, "y": 14, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 13, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 2, "y": 12, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 1, "y": 11, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 3, "y": 10, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 2, "y": 9, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 0, "y": 9, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 3, "y": 6, "z": 0 }
       },
@@ -17283,7 +20150,38 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 2, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 1, "y": 4, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 0, "y": 6, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 2, "y": 12, "z": 1 }
       }
     ],
@@ -17371,6 +20269,15 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 1, "y": 1, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "towards",
+          "charging": false
+        },
+        "position": { "x": 2, "y": 6, "z": 0 }
       }
     ],
     "color": "cyan"
@@ -17457,6 +20364,21 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 3, "y": 3, "z": 3 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 2, "y": 3, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 1, "y": 3, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 0, "y": 3, "z": 0 }
       },
       {
         "type": "block",
@@ -17780,7 +20702,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 12, "y": 0, "z": 0 }
       }
     ],
@@ -17887,6 +20813,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 0, "y": 0, "z": 1 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 7, "y": 1, "z": 0 }
       }
     ],
     "color": "white"
@@ -17973,7 +20904,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 4, "y": 4, "z": 0 }
       }
     ],
@@ -18034,7 +20969,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 0, "y": 4, "z": 0 }
       }
     ],
@@ -18180,6 +21119,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 4, "y": 0, "z": 1 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 0, "y": 2, "z": 0 }
       }
     ],
     "color": "yellow"
@@ -18495,6 +21439,7 @@
         "config": { "axis": "y" },
         "position": { "x": 4, "y": 0, "z": 2 }
       },
+      { "type": "ball", "config": {}, "position": { "x": 1, "y": 10, "z": 0 } },
       {
         "type": "pickup",
         "config": { "gives": "extra-life" },
@@ -18526,6 +21471,33 @@
       "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
+      {
+        "type": "baddie",
+        "config": {
+          "which": "elephant",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 3, "y": 3, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "helicopter-bug",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 2, "z": 0 }
+      },
       { "type": "spring", "config": {}, "position": { "x": 3, "y": 2, "z": 0 } }
     ],
     "color": "yellow"
@@ -18621,6 +21593,15 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 3, "y": 0, "z": 0 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "cyberman",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 7, "y": 7, "z": 0 }
       }
     ],
     "color": "white"
@@ -18961,6 +21942,15 @@
         "position": { "x": 7, "y": 3, "z": 2 }
       },
       {
+        "type": "baddie",
+        "config": {
+          "which": "elephant",
+          "startDirection": "left",
+          "charging": false
+        },
+        "position": { "x": 4, "y": 4, "z": 0 }
+      },
+      {
         "type": "movable-block",
         "config": { "style": "anvil" },
         "position": { "x": 1, "y": 1, "z": 0 }
@@ -19106,7 +22096,7 @@
     "floor": "none",
     "planet": "safari",
     "roomBelow": "safari34",
-    "size": { "x": 9, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "right": { "ordinal": 3, "z": 1, "toRoom": "safari36" } },
     "walls": {
       "away": [
@@ -19117,8 +22107,7 @@
         "shield",
         "wall",
         "window",
-        "wall",
-        "none"
+        "wall"
       ],
       "left": [
         "wall",
@@ -19128,8 +22117,7 @@
         "shield",
         "wall",
         "window",
-        "wall",
-        "none"
+        "wall"
       ]
     },
     "items": [
@@ -19182,6 +22170,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 0, "y": 3, "z": 0 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 7, "y": 5, "z": 1 }
       }
     ],
     "color": "yellow"
@@ -19191,7 +22184,7 @@
     "floor": "none",
     "planet": "safari",
     "roomBelow": "safari33",
-    "size": { "x": 8, "y": 9 },
+    "size": { "x": 8, "y": 8 },
     "doors": { "left": { "ordinal": 3, "z": 2, "toRoom": "safari35" } },
     "walls": {
       "away": [
@@ -19212,8 +22205,7 @@
         "none",
         "wall",
         "window",
-        "wall",
-        "none"
+        "wall"
       ]
     },
     "items": [
@@ -19256,6 +22248,11 @@
         "type": "block",
         "config": { "style": "organic" },
         "position": { "x": 4, "y": 3, "z": 0 }
+      },
+      {
+        "type": "deadly-block",
+        "config": { "style": "spikes" },
+        "position": { "x": 4, "y": 3, "z": 1 }
       }
     ],
     "color": "cyan"
@@ -19433,6 +22430,15 @@
         "type": "block",
         "config": { "style": "tower" },
         "position": { "x": 6, "y": 3, "z": 2 }
+      },
+      {
+        "type": "baddie",
+        "config": {
+          "which": "american-football-head",
+          "startDirection": "right",
+          "charging": false
+        },
+        "position": { "x": 7, "y": 2, "z": 1 }
       }
     ],
     "color": "white"
@@ -19507,7 +22513,11 @@
       },
       {
         "type": "baddie",
-        "config": { "which": "dalek" },
+        "config": {
+          "which": "dalek",
+          "startDirection": "left",
+          "charging": false
+        },
         "position": { "x": 7, "y": 4, "z": 1 }
       }
     ],
@@ -19535,7 +22545,38 @@
       ],
       "left": ["wall", "none", "none", "wall"]
     },
-    "items": [],
+    "items": [
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 2, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 2, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 2, "z": 0 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 7, "y": 1, "z": 2 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 6, "y": 1, "z": 1 }
+      },
+      {
+        "type": "hush-puppy",
+        "config": {},
+        "position": { "x": 5, "y": 1, "z": 0 }
+      }
+    ],
     "color": "yellow"
   },
   "safari6triple": {
@@ -19805,7 +22846,7 @@
     "floor": "none",
     "planet": "safari",
     "roomBelow": "safari10",
-    "size": { "x": 8, "y": 7 },
+    "size": { "x": 8, "y": 6 },
     "doors": {
       "left": { "ordinal": 2, "z": 5, "toRoom": "safari14" },
       "right": { "ordinal": 2, "z": 4, "toRoom": "safari8" }
@@ -19821,7 +22862,7 @@
         "window",
         "wall"
       ],
-      "left": ["wall", "shield", "none", "none", "shield", "wall", "none"]
+      "left": ["wall", "shield", "none", "none", "shield", "wall"]
     },
     "items": [
       {
@@ -19873,6 +22914,11 @@
         "type": "deadly-block",
         "config": { "style": "volcano" },
         "position": { "x": 0, "y": 1, "z": 2 }
+      },
+      {
+        "type": "movable-block",
+        "config": { "style": "sandwich" },
+        "position": { "x": 0, "y": 1, "z": 3 }
       }
     ],
     "color": "green"

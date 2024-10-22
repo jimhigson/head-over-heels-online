@@ -1,19 +1,112 @@
 [
-  { "op": "replace", "path": "/blacktooth3/walls/away/8", "value": "bars" },
+  { "op": "test", "path": "/moonbase23/color", "value": "white" },
+  { "op": "replace", "path": "/moonbase23/color", "value": "magenta" },
+  { "op": "test", "path": "/moonbase20/color", "value": "white" },
+  { "op": "replace", "path": "/moonbase20/color", "value": "cyan" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/39",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 0, "z": 2 }
+    }
+  },
+  { "op": "remove", "path": "/blacktooth23heels/items/39" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/38",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 0, "z": 1 }
+    }
+  },
+  { "op": "remove", "path": "/blacktooth23heels/items/38" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/37",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 0, "z": 0 }
+    }
+  },
   { "op": "remove", "path": "/blacktooth23heels/items/37" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/36",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 1, "z": 2 }
+    }
+  },
   { "op": "remove", "path": "/blacktooth23heels/items/36" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/35",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 1, "z": 1 }
+    }
+  },
   { "op": "remove", "path": "/blacktooth23heels/items/35" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/34",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 1, "z": 0 }
+    }
+  },
   { "op": "remove", "path": "/blacktooth23heels/items/34" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/33",
+    "value": {
+      "type": "barrier",
+      "config": { "axis": "y" },
+      "position": { "x": 4, "y": 2, "z": 2 }
+    }
+  },
   { "op": "remove", "path": "/blacktooth23heels/items/33" },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/32/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/32/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/32/position/y",
+    "value": 2
+  },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/32/position/y",
     "value": 3.5
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/32/position/x",
+    "value": 4
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/32/position/x",
     "value": 3.5
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/32/config/axis",
+    "value": "y"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/32/config/axis" },
   {
@@ -22,9 +115,29 @@
     "value": "heels"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/32/type",
+    "value": "barrier"
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/32/type",
     "value": "player"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/31/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/31/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/31/position/y",
+    "value": 2
   },
   {
     "op": "replace",
@@ -32,9 +145,39 @@
     "value": 0
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/30/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/30/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/30/position/y",
+    "value": 3
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/30/position/y",
     "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/29/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/29/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/29/position/y",
+    "value": 3
   },
   {
     "op": "replace",
@@ -42,9 +185,39 @@
     "value": 0
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/28/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/28/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/28/position/y",
+    "value": 3
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/28/position/y",
     "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/27/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/27/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/27/position/y",
+    "value": 4
   },
   {
     "op": "replace",
@@ -52,9 +225,39 @@
     "value": 1
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/26/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/26/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/26/position/y",
+    "value": 4
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/26/position/y",
     "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/25/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/25/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/25/position/y",
+    "value": 4
   },
   {
     "op": "replace",
@@ -62,14 +265,59 @@
     "value": 2
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/24/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/24/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/24/position/y",
+    "value": 5
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/24/position/y",
     "value": 2
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/23/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/23/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/23/position/y",
+    "value": 5
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/23/position/y",
-    "value": 2
+    "value": 3
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/22/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/22/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/22/position/y",
+    "value": 5
   },
   {
     "op": "replace",
@@ -77,14 +325,59 @@
     "value": 3
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/21/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/21/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/21/position/y",
+    "value": 6
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/21/position/y",
     "value": 3
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/20/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/20/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/20/position/y",
+    "value": 6
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/20/position/y",
-    "value": 3
+    "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/19/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/19/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/19/position/y",
+    "value": 6
   },
   {
     "op": "replace",
@@ -92,14 +385,59 @@
     "value": 4
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/18/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/18/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/18/position/y",
+    "value": 7
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/18/position/y",
     "value": 4
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/17/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/17/position/z",
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/17/position/y",
+    "value": 7
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/17/position/y",
-    "value": 4
+    "value": 5
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/16/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/16/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/16/position/y",
+    "value": 7
   },
   {
     "op": "replace",
@@ -107,14 +445,101 @@
     "value": 5
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/15/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/15/position/z",
+    "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/15/position/y",
+    "value": 3
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/15/position/y",
     "value": 5
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/15/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/15/position/x",
+    "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/15/config/style",
+    "value": "anvil"
+  },
+  { "op": "remove", "path": "/blacktooth23heels/items/15/config/style" },
+  {
+    "op": "add",
+    "path": "/blacktooth23heels/items/15/config/axis",
+    "value": "y"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/15/type",
+    "value": "movable-block"
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/15/type",
+    "value": "barrier"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/14/position/y",
+    "value": 4
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/14/position/y",
-    "value": 5
+    "value": 2
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/14/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/14/position/x",
+    "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/14/config/style",
+    "value": "anvil"
+  },
+  { "op": "remove", "path": "/blacktooth23heels/items/14/config/style" },
+  {
+    "op": "add",
+    "path": "/blacktooth23heels/items/14/config/axis",
+    "value": "y"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/14/type",
+    "value": "movable-block"
+  },
+  {
+    "op": "replace",
+    "path": "/blacktooth23heels/items/14/type",
+    "value": "barrier"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/13/position/z",
+    "value": 0
   },
   {
     "op": "replace",
@@ -122,14 +547,29 @@
     "value": 2
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/13/position/y",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/13/position/y",
     "value": 6
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/13/position/x",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/13/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/13/config/toRoom",
+    "value": "blacktooth24"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/13/config/toRoom" },
   {
@@ -138,13 +578,28 @@
     "value": "y"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/13/type",
+    "value": "teleporter"
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/13/type",
     "value": "barrier"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/12/position/z",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/12/position/z",
+    "value": 1
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/12/position/y",
     "value": 1
   },
   {
@@ -153,9 +608,19 @@
     "value": 6
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/12/position/x",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/12/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/12/config/direction",
+    "value": "away"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/12/config/direction" },
   {
@@ -164,9 +629,19 @@
     "value": "y"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/12/type",
+    "value": "conveyor"
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/12/type",
     "value": "barrier"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/11/position/y",
+    "value": 2
   },
   {
     "op": "replace",
@@ -174,9 +649,19 @@
     "value": 6
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/11/position/x",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/11/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/11/config/direction",
+    "value": "away"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/11/config/direction" },
   {
@@ -185,9 +670,19 @@
     "value": "y"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/11/type",
+    "value": "conveyor"
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/11/type",
     "value": "barrier"
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/10/position/z",
+    "value": 0
   },
   {
     "op": "replace",
@@ -195,14 +690,29 @@
     "value": 2
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/10/position/y",
+    "value": 3
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/10/position/y",
     "value": 7
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/10/position/x",
+    "value": 0
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/10/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/10/config/direction",
+    "value": "away"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/10/config/direction" },
   {
@@ -211,24 +721,37 @@
     "value": "y"
   },
   {
+    "op": "test",
+    "path": "/blacktooth23heels/items/10/type",
+    "value": "conveyor"
+  },
+  {
     "op": "replace",
     "path": "/blacktooth23heels/items/10/type",
     "value": "barrier"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/9/position/z", "value": 0 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/9/position/z",
     "value": 1
   },
+  { "op": "test", "path": "/blacktooth23heels/items/9/position/y", "value": 3 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/9/position/y",
     "value": 7
   },
+  { "op": "test", "path": "/blacktooth23heels/items/9/position/x", "value": 1 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/9/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/9/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/9/config/style" },
   {
@@ -236,20 +759,28 @@
     "path": "/blacktooth23heels/items/9/config/axis",
     "value": "y"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/9/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/9/type",
     "value": "barrier"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/8/position/y", "value": 3 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/8/position/y",
     "value": 7
   },
+  { "op": "test", "path": "/blacktooth23heels/items/8/position/x", "value": 2 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/8/position/x",
     "value": 4
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/8/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/8/config/style" },
   {
@@ -257,20 +788,28 @@
     "path": "/blacktooth23heels/items/8/config/axis",
     "value": "y"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/8/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/8/type",
     "value": "barrier"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/7/position/y", "value": 3 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/7/position/y",
     "value": 0
   },
+  { "op": "test", "path": "/blacktooth23heels/items/7/position/x", "value": 3 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/7/position/x",
     "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/7/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/7/config/style" },
   {
@@ -278,25 +817,34 @@
     "path": "/blacktooth23heels/items/7/config/toRoom",
     "value": "blacktooth24"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/7/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/7/type",
     "value": "teleporter"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/6/position/y", "value": 4 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/6/position/y",
     "value": 1
   },
+  { "op": "test", "path": "/blacktooth23heels/items/5/position/y", "value": 4 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/5/position/y",
     "value": 2
   },
+  { "op": "test", "path": "/blacktooth23heels/items/5/position/x", "value": 1 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/5/position/x",
     "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/5/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/5/config/style" },
   {
@@ -304,20 +852,28 @@
     "path": "/blacktooth23heels/items/5/config/direction",
     "value": "away"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/5/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/5/type",
     "value": "conveyor"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/4/position/y", "value": 4 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/4/position/y",
     "value": 3
   },
+  { "op": "test", "path": "/blacktooth23heels/items/4/position/x", "value": 2 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/4/position/x",
     "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/4/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/4/config/style" },
   {
@@ -325,15 +881,22 @@
     "path": "/blacktooth23heels/items/4/config/direction",
     "value": "away"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/4/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/4/type",
     "value": "conveyor"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/3/position/x", "value": 3 },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/3/position/x",
     "value": 0
+  },
+  {
+    "op": "test",
+    "path": "/blacktooth23heels/items/3/config/style",
+    "value": "artificial"
   },
   { "op": "remove", "path": "/blacktooth23heels/items/3/config/style" },
   {
@@ -341,6 +904,7 @@
     "path": "/blacktooth23heels/items/3/config/direction",
     "value": "away"
   },
+  { "op": "test", "path": "/blacktooth23heels/items/3/type", "value": "block" },
   {
     "op": "replace",
     "path": "/blacktooth23heels/items/3/type",

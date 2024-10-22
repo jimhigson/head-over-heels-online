@@ -807,6 +807,15 @@ export const campaign = {
         position: { x: 4, y: 3, z: 2 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 7, y: 2, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 2, z: 0 },
@@ -1083,6 +1092,15 @@ export const campaign = {
         config: { gives: "shield" },
         position: { x: 3, y: 9, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 3, y: 0, z: 0 },
+      },
     ],
     color: "yellow",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1109,6 +1127,25 @@ export const campaign = {
       left: ["plain", "shield", "none", "none", "shield", "plain"],
     },
     items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 4, y: 3, z: 0 },
+      },
       {
         type: "portable-block",
         config: { style: "cube" },
@@ -1447,11 +1484,11 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth44market",
-    size: { x: 7, y: 7 },
+    size: { x: 6, y: 6 },
     doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth21fish" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -1549,19 +1586,29 @@ export const campaign = {
         position: { x: 4, y: 6, z: 2 },
       },
       {
-        type: "movable-block",
-        config: { style: "anvil" },
-        position: { x: 1, y: 5, z: 1 },
-      },
-      {
-        type: "movable-block",
-        config: { style: "anvil" },
-        position: { x: 1, y: 5, z: 1 },
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 2, z: 1 },
       },
       {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 5, z: 0 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 5, z: 1 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 5, z: 2 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "barrier",
@@ -1576,7 +1623,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 4, z: 0 },
+        position: { x: 4, y: 3, z: 0 },
       },
       {
         type: "barrier",
@@ -1591,12 +1638,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 3, z: 0 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 2, z: 1 },
+        position: { x: 4, y: 2, z: 0 },
       },
       {
         type: "barrier",
@@ -1606,7 +1648,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 2, z: 0 },
+        position: { x: 4, y: 1, z: 0 },
       },
       {
         type: "barrier",
@@ -1621,7 +1663,7 @@ export const campaign = {
       {
         type: "barrier",
         config: { axis: "y" },
-        position: { x: 4, y: 1, z: 0 },
+        position: { x: 4, y: 0, z: 0 },
       },
       {
         type: "barrier",
@@ -1632,26 +1674,11 @@ export const campaign = {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 4, y: 0, z: 2 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 0, z: 0 },
       },
       {
         type: "player",
         config: { which: "heels" },
-        position: { x: 3.5, y: 3.5, z: 1 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 0, z: 1 },
-      },
-      {
-        type: "barrier",
-        config: { axis: "y" },
-        position: { x: 4, y: 0, z: 2 },
+        position: { x: 3.5, y: 3.5, z: 0 },
       },
     ],
     color: "cyan",
@@ -1729,10 +1756,10 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth25",
-    size: { x: 7, y: 6 },
+    size: { x: 6, y: 6 },
     doors: { away: { ordinal: 2, z: 2, toRoom: "blacktooth27fish" } },
     walls: {
-      away: ["bars", "bars", "none", "none", "bars", "bars", "none"],
+      away: ["bars", "bars", "none", "none", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -1972,6 +1999,11 @@ export const campaign = {
         config: { top: 9, bottom: 0 },
         position: { x: 0, y: 7, z: 7 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: false },
+        position: { x: 0, y: 6, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1980,20 +2012,10 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth4",
-    size: { x: 9, y: 6 },
+    size: { x: 8, y: 6 },
     doors: { away: { ordinal: 3, z: 2, toRoom: "blacktooth2" } },
     walls: {
-      away: [
-        "bars",
-        "bars",
-        "bars",
-        "none",
-        "none",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-      ],
+      away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -2015,21 +2037,11 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth29",
-    size: { x: 7, y: 9 },
+    size: { x: 6, y: 8 },
     doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth31" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      left: [
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "none",
-      ],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -2271,9 +2283,19 @@ export const campaign = {
         position: { x: 7, y: 7, z: 0 },
       },
       {
+        type: "pickup",
+        config: { gives: "jumps" },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 7, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: false },
+        position: { x: 0, y: 3, z: 0 },
       },
     ],
     color: "cyan",
@@ -2283,20 +2305,10 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth33",
-    size: { x: 9, y: 8 },
+    size: { x: 8, y: 8 },
     doors: { away: { ordinal: 3, z: 2, toRoom: "blacktooth35" } },
     walls: {
-      away: [
-        "bars",
-        "bars",
-        "bars",
-        "none",
-        "none",
-        "bars",
-        "bars",
-        "bars",
-        "none",
-      ],
+      away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
@@ -2427,7 +2439,37 @@ export const campaign = {
         "plain",
       ],
     },
-    items: [],
+    items: [
+      { type: "switch", config: {}, position: { x: 0, y: 7, z: 0 } },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      { type: "ball", config: {}, position: { x: 0, y: 1, z: 0 } },
+    ],
     color: "green",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth38: {
@@ -2435,11 +2477,11 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth39",
-    size: { x: 7, y: 7 },
+    size: { x: 6, y: 6 },
     doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth37" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -2482,7 +2524,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -2745,7 +2787,18 @@ export const campaign = {
       ],
       left: ["none", "none"],
     },
-    items: [{ type: "spring", config: {}, position: { x: 1, y: 1, z: 0 } }],
+    items: [
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 3, y: 1, z: 0 },
+      },
+      { type: "spring", config: {}, position: { x: 1, y: 1, z: 0 } },
+    ],
     color: "yellow",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
   blacktooth43: {
@@ -2753,11 +2806,11 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth46market",
-    size: { x: 7, y: 7 },
+    size: { x: 6, y: 6 },
     doors: { right: { ordinal: 2, z: 1, toRoom: "blacktooth42" } },
     walls: {
-      away: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -3170,7 +3223,31 @@ export const campaign = {
         "passage",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: false },
+        position: { x: 4, y: 7, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 7, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ],
     color: "cyan",
   } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth51: {
@@ -3313,7 +3390,37 @@ export const campaign = {
         "fruits",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 2, y: 6, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 5, y: 4, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 2, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 2, y: 4, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"market", OriginalCampaignRoomId>,
   blacktooth54: {
@@ -3321,21 +3428,11 @@ export const campaign = {
     floor: "none",
     planet: "jail",
     roomBelow: "blacktooth55",
-    size: { x: 9, y: 7 },
+    size: { x: 8, y: 6 },
     doors: { towards: { ordinal: 3, z: 1, toRoom: "blacktooth53market" } },
     walls: {
-      away: [
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "bars",
-        "none",
-      ],
-      left: ["bars", "bars", "bars", "bars", "bars", "bars", "none"],
+      away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      left: ["bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
       {
@@ -3409,6 +3506,11 @@ export const campaign = {
         position: { x: 3, y: 1, z: 3 },
       },
       {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 3, y: 0, z: 0 },
@@ -3422,6 +3524,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 3, y: 0, z: 3 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -3559,6 +3666,26 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 11, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 4, y: 9, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 9, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 9, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 4, y: 8, z: 0 },
       },
       {
         type: "block",
@@ -3744,9 +3871,64 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 2, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 4 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 5 },
+      },
+      {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 1, y: 1, z: 6 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 1, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 1, z: 4 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 1, z: 5 },
       },
       {
         type: "deadly-block",
@@ -3865,9 +4047,10 @@ export const campaign = {
         config: { gives: "donuts" },
         position: { x: 7, y: 7, z: 1 },
       },
+      { type: "switch", config: {}, position: { x: 6, y: 0, z: 1 } },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 0, z: 1 },
       },
     ],
@@ -4069,6 +4252,12 @@ export const campaign = {
       left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     },
     items: [
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 7, z: 0 } },
       {
         type: "portable-block",
         config: { style: "drum" },
@@ -4076,7 +4265,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 7, z: 1 },
       },
     ],
@@ -4278,6 +4467,9 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 6, y: 1, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 1, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 1, z: 0 } },
       {
         type: "block",
         config: { style: "artificial" },
@@ -4287,6 +4479,23 @@ export const campaign = {
         type: "block",
         config: { style: "artificial" },
         position: { x: 6, y: 0, z: 3 },
+      },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 0 } },
+      {
+        type: "pickup",
+        config: { gives: "jumps" },
+        position: { x: 5, y: 1, z: 3 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 4, y: 1, z: 0 },
       },
     ],
     color: "cyan",
@@ -4810,7 +5019,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 3, z: 0 },
       },
     ],
@@ -4857,12 +5066,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 7, y: 4, z: 0 },
       },
     ],
@@ -4961,6 +5170,7 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 7, y: 3, z: 0 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 3, z: 0 } },
       {
         type: "block",
         config: { style: "organic" },
@@ -4976,6 +5186,10 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 2, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 1, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 1, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 1, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 1, z: 2 } },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5037,6 +5251,11 @@ export const campaign = {
         type: "pickup",
         config: { gives: "donuts" },
         position: { x: 5, y: 3, z: 5 },
+      },
+      {
+        type: "baddie",
+        config: { which: "monkey", startDirection: "left", charging: false },
+        position: { x: 3, y: 3, z: 0 },
       },
       {
         type: "portable-block",
@@ -5146,12 +5365,12 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 1, y: 3, z: 0 },
       },
     ],
@@ -5253,6 +5472,15 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 2, y: 2, z: 0 },
       },
     ],
     color: "white",
@@ -5503,7 +5731,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -5529,7 +5757,7 @@ export const campaign = {
     floor: "none",
     planet: "blacktooth",
     roomBelow: "blacktooth78",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -5541,7 +5769,6 @@ export const campaign = {
         "plain",
         "armour",
         "plain",
-        "none",
       ],
       left: [
         "plain",
@@ -5552,7 +5779,6 @@ export const campaign = {
         "plain",
         "armour",
         "plain",
-        "none",
       ],
     },
     items: [
@@ -5683,6 +5909,15 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 1, y: 2, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 2, y: 4, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5770,7 +6005,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 6, y: 7, z: 1 },
       },
       { type: "charles", config: {}, position: { x: 0, y: 7, z: 3 } },
@@ -5863,6 +6098,24 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 2, y: 2, z: 0 },
       },
     ],
     color: "white",
@@ -5986,6 +6239,11 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 7, y: 1, z: 2 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6137,6 +6395,11 @@ export const campaign = {
         position: { x: 0, y: 7, z: 0 },
       },
       {
+        type: "baddie",
+        config: { which: "monkey", startDirection: "left", charging: false },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
         type: "block",
         config: { style: "tower" },
         position: { x: 3, y: 4, z: 2 },
@@ -6260,7 +6523,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
     ],
@@ -6292,7 +6555,7 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 3, y: 3, z: 0 } },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 3, z: 1 },
       },
       {
@@ -6498,6 +6761,21 @@ export const campaign = {
         config: { toRoom: "moonbase25tobookworld" },
         position: { x: 6, y: 3, z: 0 },
       },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 3 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -6523,7 +6801,13 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "monkey", startDirection: "left", charging: false },
+        position: { x: 2, y: 4, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld11: {
@@ -6548,7 +6832,11 @@ export const campaign = {
       ],
       left: ["none", "none"],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld12fish: {
@@ -6574,6 +6862,31 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 4 },
+      },
       {
         type: "portable-block",
         config: { style: "cube" },
@@ -6702,7 +7015,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -6722,7 +7035,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -6774,7 +7087,33 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 4, y: 0, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld16: {
@@ -6825,12 +7164,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 3, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } },
@@ -6859,7 +7198,48 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 2, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld19: {
@@ -6914,6 +7294,15 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 1, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 0, y: 6, z: 0 },
       },
     ],
     color: "white",
@@ -7107,7 +7496,11 @@ export const campaign = {
       away: ["book", "book", "none", "none", "book", "book"],
       left: ["book", "book", "none", "none", "book", "book"],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld21: {
@@ -7141,7 +7534,33 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 6, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 7, y: 5, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 5, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 6, y: 2, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld22: {
@@ -7168,9 +7587,44 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 1, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 1, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 0, z: 3 },
+      },
+      {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 0, z: 2 },
       },
       {
         type: "pickup",
@@ -7236,6 +7690,16 @@ export const campaign = {
         position: { x: 4, y: 2, z: 0 },
       },
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 2, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 7, y: 0, z: 1 },
@@ -7244,6 +7708,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 1 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 7, y: 2, z: 0 },
       },
     ],
     color: "white",
@@ -7297,8 +7766,28 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 0, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 0, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 0, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 0, z: 4 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 7, z: 0 },
       },
       {
@@ -7331,7 +7820,23 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 0, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 0, z: 3 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld28: {
@@ -7605,7 +8110,7 @@ export const campaign = {
     floor: "none",
     planet: "bookworld",
     roomBelow: "bookworld28",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { right: { ordinal: 3, z: 3, toRoom: "bookworld30" } },
     walls: {
       away: [
@@ -7617,7 +8122,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
       left: [
         "book",
@@ -7628,7 +8132,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
     },
     items: [
@@ -7802,7 +8305,18 @@ export const campaign = {
       ],
       left: ["book", "book", "none", "none", "book", "book"],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "monkey", startDirection: "left", charging: false },
+        position: { x: 3, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "monkey", startDirection: "left", charging: false },
+        position: { x: 4, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld30: {
@@ -7830,12 +8344,12 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 2, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 1, z: 0 },
       },
     ],
@@ -7963,6 +8477,15 @@ export const campaign = {
         position: { x: 3, y: 0, z: 0 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 11, y: 0, z: 0 },
+      },
+      {
         type: "pickup",
         config: { gives: "shield" },
         position: { x: 9, y: 2, z: 0 },
@@ -7975,7 +8498,7 @@ export const campaign = {
     floor: "none",
     planet: "bookworld",
     roomBelow: "bookworld33",
-    size: { x: 8, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { left: { ordinal: 3, z: 1, toRoom: "bookworld31" } },
     walls: {
       away: [
@@ -7997,7 +8520,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
     },
     items: [],
@@ -8035,7 +8557,11 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld34: {
@@ -8068,7 +8594,143 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 13, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 10, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 10, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 10, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 10, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 10, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 10, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 9, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 9, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 8, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 8, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 7, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 6, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 6, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 5, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 5, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 5, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 5, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 5, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 4, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: true },
+        position: { x: 0, y: 13, z: -1 },
+      },
+      {
+        type: "book",
+        config: { slider: true },
+        position: { x: 0, y: 10, z: -1 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "jumps" },
+        position: { x: 1, y: 9, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: true },
+        position: { x: 0, y: 5, z: -1 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld35: {
@@ -8103,6 +8765,26 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 5, y: 7, z: 4 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 7, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 2, y: 7, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 7, z: 3 },
+      },
       {
         type: "block",
         config: { style: "organic" },
@@ -8161,8 +8843,23 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 7, y: 2, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 7, y: 2, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 7, y: 2, z: 2 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 1, y: 0, z: 0 },
       },
     ],
@@ -8219,7 +8916,7 @@ export const campaign = {
     floor: "none",
     planet: "bookworld",
     roomBelow: "bookworld39",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { towards: { ordinal: 3, z: 5, toRoom: "bookworld37" } },
     walls: {
       away: [
@@ -8231,7 +8928,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
       left: [
         "book",
@@ -8242,7 +8938,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
     },
     items: [],
@@ -8254,7 +8949,7 @@ export const campaign = {
     planet: "bookworld",
     roomBelow: "bookworld40",
     roomAbove: "bookworld38",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -8266,7 +8961,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
       left: [
         "book",
@@ -8277,7 +8971,6 @@ export const campaign = {
         "person",
         "book",
         "book",
-        "none",
       ],
     },
     items: [
@@ -8362,7 +9055,18 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 7, z: 1 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld40: {
@@ -8424,8 +9128,33 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 4, z: 1 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 4, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 4, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 4, z: 4 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 3, y: 4, z: 5 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
       {
@@ -8434,8 +9163,13 @@ export const campaign = {
         position: { x: 3, y: 4, z: 0 },
       },
       {
+        type: "book",
+        config: { slider: true },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -8463,7 +9197,26 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 1, y: 3, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld6: {
@@ -8490,6 +9243,16 @@ export const campaign = {
     },
     items: [
       {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 7, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 1, y: 3, z: 0 },
+      },
+      {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 3, y: 0, z: 0 },
@@ -8503,6 +9266,11 @@ export const campaign = {
         type: "movable-block",
         config: { style: "anvil" },
         position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: true },
+        position: { x: 1, y: 3, z: 1 },
       },
     ],
     color: "white",
@@ -8529,7 +9297,11 @@ export const campaign = {
         "book",
       ],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   bookworld8: {
@@ -8564,6 +9336,26 @@ export const campaign = {
       ],
     },
     items: [
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 3, z: 3 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 2, z: 2 },
+      },
+      {
+        type: "book",
+        config: { slider: false },
+        position: { x: 0, y: 2, z: 3 },
+      },
       {
         type: "portable-block",
         config: { style: "cube" },
@@ -8600,7 +9392,13 @@ export const campaign = {
       ],
       left: ["book", "none", "none", "book"],
     },
-    items: [],
+    items: [
+      {
+        type: "book",
+        config: { slider: true },
+        position: { x: 3, y: 2, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
   egyptus1: {
@@ -8688,6 +9486,10 @@ export const campaign = {
       ],
     },
     items: [
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 7, z: 3 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
       {
         type: "block",
         config: { style: "organic" },
@@ -8843,6 +9645,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 7, y: 1, z: 3 },
       },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 6, y: 4, z: 4 },
+      },
       { type: "joystick", config: {}, position: { x: 3, y: 4, z: 1 } },
       { type: "joystick", config: {}, position: { x: 4, y: 3, z: 1 } },
       { type: "joystick", config: {}, position: { x: 2, y: 3, z: 1 } },
@@ -8946,7 +9753,7 @@ export const campaign = {
     planet: "egyptus",
     roomBelow: "egyptus13",
     roomAbove: "egyptus19",
-    size: { x: 9, y: 8 },
+    size: { x: 8, y: 8 },
     doors: { away: { ordinal: 3, z: 3, toRoom: "egyptus18" } },
     walls: {
       away: [
@@ -8958,7 +9765,6 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "none",
       ],
       left: [
         "hieroglyphics",
@@ -9077,6 +9883,11 @@ export const campaign = {
         position: { x: 1, y: 5, z: 5 },
       },
       {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 5, z: 2 },
@@ -9095,7 +9906,7 @@ export const campaign = {
     floor: "none",
     planet: "egyptus",
     roomBelow: "egyptus15",
-    size: { x: 7, y: 6 },
+    size: { x: 6, y: 6 },
     doors: { away: { ordinal: 2, z: 1, toRoom: "egyptus17" } },
     walls: {
       away: [
@@ -9105,7 +9916,6 @@ export const campaign = {
         "none",
         "hieroglyphics",
         "hieroglyphics",
-        "none",
       ],
       left: [
         "hieroglyphics",
@@ -9255,6 +10065,11 @@ export const campaign = {
         position: { x: 11, y: 2, z: 0 },
       },
       {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 4, y: 1, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 6, y: 0, z: 0 },
@@ -9328,7 +10143,7 @@ export const campaign = {
     planet: "egyptus",
     roomBelow: "egyptus14",
     roomAbove: "egyptus20",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -9340,7 +10155,6 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "none",
       ],
       left: [
         "hieroglyphics",
@@ -9351,7 +10165,6 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -9445,6 +10258,9 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 6, y: 4, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 4, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 4, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 4, z: 0 } },
       {
         type: "block",
         config: { style: "artificial" },
@@ -9467,13 +10283,13 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 6, y: 3, z: 4 } },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 3, z: 0 },
       },
     ],
@@ -9484,7 +10300,7 @@ export const campaign = {
     floor: "none",
     planet: "egyptus",
     roomBelow: "egyptus19",
-    size: { x: 8, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus21" } },
     walls: {
       away: [
@@ -9506,7 +10322,6 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -9644,6 +10459,15 @@ export const campaign = {
         position: { x: 2, y: 3, z: 2 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 4, y: 2, z: 0 },
+      },
+      {
         type: "barrier",
         config: { axis: "y" },
         position: { x: 2, y: 2, z: 0 },
@@ -9660,7 +10484,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 0, z: 0 },
       },
     ],
@@ -9763,6 +10587,11 @@ export const campaign = {
       },
       {
         type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 7, y: 4, z: 0 },
+      },
+      {
+        type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 2, y: 4, z: 0 },
       },
@@ -9800,6 +10629,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 3, z: 5 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 7, y: 2, z: 0 },
       },
       {
         type: "deadly-block",
@@ -10083,7 +10917,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 7, y: 5, z: 1 },
       },
       {
@@ -10253,7 +11087,7 @@ export const campaign = {
     floor: "none",
     planet: "egyptus",
     roomBelow: "egyptus30",
-    size: { x: 6, y: 9 },
+    size: { x: 6, y: 8 },
     doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus28" } },
     walls: {
       away: [
@@ -10273,7 +11107,6 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -10326,7 +11159,7 @@ export const campaign = {
     planet: "egyptus",
     roomBelow: "egyptus31",
     roomAbove: "egyptus29",
-    size: { x: 7, y: 9 },
+    size: { x: 6, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -10336,7 +11169,6 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "none",
       ],
       left: [
         "hieroglyphics",
@@ -10347,7 +11179,6 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -10400,7 +11231,7 @@ export const campaign = {
     floor: "none",
     planet: "egyptus",
     roomBelow: "egyptus33",
-    size: { x: 8, y: 3 },
+    size: { x: 8, y: 2 },
     doors: { left: { ordinal: 0, z: 5, toRoom: "egyptus31" } },
     walls: {
       away: [
@@ -10413,7 +11244,7 @@ export const campaign = {
         "hieroglyphics",
         "hieroglyphics",
       ],
-      left: ["none", "none", "none"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -10525,9 +11356,10 @@ export const campaign = {
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 5, y: 4, z: 0 },
       },
+      { type: "ball", config: {}, position: { x: 0, y: 2, z: 1 } },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10617,10 +11449,10 @@ export const campaign = {
     planet: "egyptus",
     roomBelow: "egyptus35",
     roomAbove: "egyptus37",
-    size: { x: 3, y: 9 },
+    size: { x: 2, y: 8 },
     doors: {},
     walls: {
-      away: ["hieroglyphics", "hieroglyphics", "none"],
+      away: ["hieroglyphics", "hieroglyphics"],
       left: [
         "hieroglyphics",
         "hieroglyphics",
@@ -10630,7 +11462,6 @@ export const campaign = {
         "sarcophagus",
         "hieroglyphics",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -10687,7 +11518,7 @@ export const campaign = {
     floor: "none",
     planet: "egyptus",
     roomBelow: "egyptus36",
-    size: { x: 2, y: 9 },
+    size: { x: 2, y: 8 },
     doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus38" } },
     walls: {
       away: ["hieroglyphics", "hieroglyphics"],
@@ -10700,7 +11531,6 @@ export const campaign = {
         "hieroglyphics",
         "sarcophagus",
         "hieroglyphics",
-        "none",
       ],
     },
     items: [
@@ -10789,6 +11619,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -10804,6 +11635,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -10819,6 +11651,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -10834,6 +11667,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
     ],
     color: "white",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10918,7 +11752,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 7, z: 0 },
       },
       {
@@ -10928,7 +11762,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 3, y: 0, z: 0 },
       },
     ],
@@ -11001,6 +11835,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -11016,6 +11851,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -11031,6 +11867,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -11046,6 +11883,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
     ],
     color: "cyan",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11167,6 +12005,21 @@ export const campaign = {
         type: "block",
         config: { style: "tower" },
         position: { x: 4, y: 3, z: 2 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 4, y: 3, z: 3 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 2, y: 2, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 2, y: 2, z: 1 },
       },
     ],
     color: "white",
@@ -11299,6 +12152,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -11314,14 +12168,15 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 5, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 2, z: 0 },
       },
       {
@@ -11339,6 +12194,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -11354,6 +12210,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
     ],
     color: "yellow",
   } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11648,6 +12505,90 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -11784,6 +12725,9 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 2, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 0 } },
       {
         type: "block",
         config: { style: "organic" },
@@ -11861,6 +12805,26 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 2, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 5, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 2, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -11907,6 +12871,26 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 5, y: 2, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 5, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 2, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -11932,7 +12916,14 @@ export const campaign = {
       ],
       left: ["none", "none"],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 0 } },
+    ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase16: {
@@ -12156,6 +13147,21 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 3, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 4, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 3, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -12182,6 +13188,9 @@ export const campaign = {
       left: ["window1", "coil", "window3", "window2", "coil", "window1"],
     },
     items: [
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 5, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 5, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 5, z: 0 } },
       {
         type: "deadly-block",
         config: { style: "toaster" },
@@ -12204,8 +13213,28 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 1, z: 1 },
       },
     ],
     color: "white",
@@ -12243,8 +13272,59 @@ export const campaign = {
         "window1",
       ],
     },
-    items: [],
-    color: "white",
+    items: [
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 6, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 5, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 6, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 3, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 1, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 2, z: 0 },
+      },
+    ],
+    color: "cyan",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase21tosafari: {
     id: "moonbase21tosafari",
@@ -12315,6 +13395,60 @@ export const campaign = {
         type: "teleporter",
         config: { toRoom: "safari1" },
         position: { x: 2, y: 3, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 4, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 3, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
       },
     ],
     color: "white",
@@ -12389,6 +13523,36 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 4, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 3, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -12425,8 +13589,59 @@ export const campaign = {
         "window1",
       ],
     },
-    items: [],
-    color: "white",
+    items: [
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 6, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 5, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 6, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 3, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 1, y: 4, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "puck" },
+        position: { x: 4, y: 2, z: 0 },
+      },
+    ],
+    color: "magenta",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase24toegyptus: {
     id: "moonbase24toegyptus",
@@ -12536,6 +13751,90 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
       },
     ],
     color: "white",
@@ -12649,6 +13948,90 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -12695,6 +14078,21 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 2, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 4, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 3, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -12737,7 +14135,16 @@ export const campaign = {
       away: ["window1", "coil", "window3", "window2", "coil", "window1"],
       left: ["window3", "window2", "none", "none", "window2", "window1"],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 3, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 3, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 3, z: 0 } },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: false },
+        position: { x: 0, y: 5, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
   moonbase29: {
@@ -12849,6 +14256,90 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -12885,9 +14376,24 @@ export const campaign = {
     },
     items: [
       {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 7, y: 7, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 2, y: 4, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 2, y: 4, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 1, y: 4, z: 1 },
       },
       {
         type: "block",
@@ -12910,6 +14416,11 @@ export const campaign = {
         position: { x: 1, y: 1, z: 0 },
       },
       {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      {
         type: "block",
         config: { style: "organic" },
         position: { x: 4, y: 0, z: 0 },
@@ -12926,6 +14437,11 @@ export const campaign = {
       },
       { type: "charles", config: {}, position: { x: 7, y: 7, z: 1 } },
       { type: "spring", config: {}, position: { x: 4, y: 7, z: 0 } },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 0, y: 7, z: 0 },
+      },
       { type: "joystick", config: {}, position: { x: 2, y: 2, z: 1 } },
       { type: "joystick", config: {}, position: { x: 3, y: 1, z: 1 } },
       { type: "joystick", config: {}, position: { x: 1, y: 1, z: 1 } },
@@ -13092,6 +14608,90 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13255,6 +14855,121 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 11, y: 1, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 1, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 5, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 11, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 13, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 11, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 13, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 11, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 13, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 14, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 9, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 12, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 10, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 12, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 10, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 12, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 10, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 11, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 5, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 6, y: 3, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13300,6 +15015,26 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 7, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 1, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 7, y: 0, z: 1 },
       },
     ],
     color: "white",
@@ -13375,6 +15110,46 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 1, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 1, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 1, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13448,6 +15223,46 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "toaster" },
         position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 4, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 3, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 2, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "right", charging: true },
+        position: { x: 5, y: 1, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: true },
+        position: { x: 0, y: 1, z: 1 },
       },
     ],
     color: "white",
@@ -13795,6 +15610,60 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 2, y: 0, z: 3 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 7, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 6, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 5, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 2, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 1, y: 7, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "cyberman",
+          startDirection: "towards",
+          charging: true,
+        },
+        position: { x: 0, y: 7, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13897,6 +15766,36 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 0, y: 0, z: 0 },
       },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 7, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 6, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 5, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 1, y: 0, z: 1 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "away", charging: true },
+        position: { x: 0, y: 0, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13982,10 +15881,10 @@ export const campaign = {
     floor: "none",
     planet: "penitentiary",
     roomBelow: "penitentiary9",
-    size: { x: 3, y: 8 },
+    size: { x: 2, y: 8 },
     doors: { away: { ordinal: 0, z: 2, toRoom: "penitentiary11" } },
     walls: {
-      away: ["none", "none", "none"],
+      away: ["none", "none"],
       left: [
         "loop",
         "loop",
@@ -14101,6 +16000,8 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 2, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 1, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 1, z: 3 } },
       {
         type: "block",
         config: { style: "artificial" },
@@ -14116,6 +16017,8 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 7, y: 0, z: 2 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
       {
         type: "pickup",
         config: { gives: "donuts" },
@@ -14215,7 +16118,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary13",
     roomAbove: "penitentiary15",
-    size: { x: 9, y: 7 },
+    size: { x: 8, y: 6 },
     doors: {},
     walls: {
       away: [
@@ -14227,9 +16130,8 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
-      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
+      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
     },
     items: [
       {
@@ -14331,7 +16233,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary14",
     roomAbove: "penitentiary16",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -14343,7 +16245,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -14354,7 +16255,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -14567,7 +16467,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary15",
     roomAbove: "penitentiary17",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -14579,7 +16479,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -14590,7 +16489,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -14662,7 +16560,7 @@ export const campaign = {
     floor: "none",
     planet: "penitentiary",
     roomBelow: "penitentiary16",
-    size: { x: 9, y: 8 },
+    size: { x: 8, y: 8 },
     doors: { away: { ordinal: 3, z: 2, toRoom: "penitentiary18fish" } },
     walls: {
       away: [
@@ -14674,7 +16572,6 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -14920,7 +16817,7 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 4, z: 0 },
       },
       {
@@ -14930,7 +16827,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 1, y: 3, z: 0 },
       },
     ],
@@ -14974,6 +16871,9 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 4, y: 7, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
       {
         type: "block",
         config: { style: "artificial" },
@@ -15021,7 +16921,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 6, y: 3, z: 2 },
       },
     ],
@@ -15056,7 +16956,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 3, z: 1 },
       },
       {
@@ -15089,7 +16989,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary20",
     roomAbove: "penitentiary22",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { towards: { ordinal: 3, z: 1, toRoom: "penitentiary19" } },
     walls: {
       away: [
@@ -15101,7 +17001,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -15112,7 +17011,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -15320,7 +17218,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary21",
     roomAbove: "penitentiary23",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -15332,7 +17230,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -15343,7 +17240,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -15541,7 +17437,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary22",
     roomAbove: "penitentiary24",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: {},
     walls: {
       away: [
@@ -15553,7 +17449,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -15564,7 +17459,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -15736,7 +17630,7 @@ export const campaign = {
     floor: "none",
     planet: "penitentiary",
     roomBelow: "penitentiary23",
-    size: { x: 9, y: 8 },
+    size: { x: 8, y: 8 },
     doors: { away: { ordinal: 3, z: 1, toRoom: "penitentiary25" } },
     walls: {
       away: [
@@ -15748,7 +17642,6 @@ export const campaign = {
         "loop",
         "skeleton",
         "loop",
-        "none",
       ],
       left: [
         "loop",
@@ -15852,6 +17745,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 4, y: 0, z: 0 },
       },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 4, y: 1, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -15902,6 +17800,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 6, y: 0, z: 0 },
       },
     ],
     color: "white",
@@ -15954,6 +17857,9 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 3, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 4, y: 0, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 0 } },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -15962,7 +17868,7 @@ export const campaign = {
     floor: "none",
     planet: "penitentiary",
     roomBelow: "penitentiary31",
-    size: { x: 8, y: 3 },
+    size: { x: 8, y: 2 },
     doors: { left: { ordinal: 0, z: 3, toRoom: "penitentiary28" } },
     walls: {
       away: [
@@ -15975,7 +17881,7 @@ export const campaign = {
         "loop",
         "loop",
       ],
-      left: ["none", "none", "none"],
+      left: ["none", "none"],
     },
     items: [
       {
@@ -16108,6 +18014,13 @@ export const campaign = {
         config: { style: "toaster" },
         position: { x: 7, y: 1, z: 1 },
       },
+      { type: "switch", config: {}, position: { x: 7, y: 7, z: 0 } },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      { type: "switch", config: {}, position: { x: 0, y: 0, z: 0 } },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16175,7 +18088,7 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary32",
     roomAbove: "penitentiary30",
-    size: { x: 9, y: 3 },
+    size: { x: 8, y: 2 },
     doors: {},
     walls: {
       away: [
@@ -16187,9 +18100,8 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
-      left: ["loop", "loop", "none"],
+      left: ["loop", "loop"],
     },
     items: [
       {
@@ -16338,7 +18250,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 1, z: 0 },
       },
     ],
@@ -16411,6 +18323,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -16426,6 +18339,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 6, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -16441,6 +18355,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
       {
         type: "block",
         config: { style: "tower" },
@@ -16456,6 +18371,7 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 1, y: 1, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16538,6 +18454,11 @@ export const campaign = {
         config: { style: "artificial" },
         position: { x: 0, y: 0, z: 5 },
       },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 7, y: 3, z: 5 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16562,6 +18483,16 @@ export const campaign = {
         type: "block",
         config: { style: "artificial" },
         position: { x: 4, y: 5, z: 1 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 5, y: 2, z: 0 },
       },
       {
         type: "block",
@@ -16592,11 +18523,11 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary4",
     roomAbove: "penitentiary6",
-    size: { x: 7, y: 7 },
+    size: { x: 6, y: 6 },
     doors: {},
     walls: {
-      away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
-      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop", "none"],
+      away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+      left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
     },
     items: [
       {
@@ -16637,11 +18568,11 @@ export const campaign = {
     floor: "none",
     planet: "penitentiary",
     roomBelow: "penitentiary5",
-    size: { x: 6, y: 7 },
+    size: { x: 6, y: 6 },
     doors: { left: { ordinal: 2, z: 3, toRoom: "penitentiary7" } },
     walls: {
       away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
-      left: ["loop", "loop", "none", "none", "loop", "loop", "none"],
+      left: ["loop", "loop", "none", "none", "loop", "loop"],
     },
     items: [
       {
@@ -16798,10 +18729,10 @@ export const campaign = {
     planet: "penitentiary",
     roomBelow: "penitentiary8",
     roomAbove: "penitentiary10",
-    size: { x: 3, y: 9 },
+    size: { x: 2, y: 8 },
     doors: {},
     walls: {
-      away: ["loop", "loop", "none"],
+      away: ["loop", "loop"],
       left: [
         "loop",
         "loop",
@@ -16811,7 +18742,6 @@ export const campaign = {
         "skeleton",
         "loop",
         "loop",
-        "none",
       ],
     },
     items: [
@@ -16994,7 +18924,13 @@ export const campaign = {
       away: ["shield", "wall", "window", "window", "wall", "shield"],
       left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
-    items: [],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "elephant", startDirection: "left", charging: false },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ],
     color: "white",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari12: {
@@ -17035,7 +18971,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 5, y: 5, z: 0 },
       },
       {
@@ -17136,7 +19072,7 @@ export const campaign = {
     floor: "none",
     planet: "safari",
     roomBelow: "safari12",
-    size: { x: 9, y: 6 },
+    size: { x: 8, y: 6 },
     doors: {
       away: { ordinal: 3, z: 2, toRoom: "safari15" },
       right: { ordinal: 2, z: 2, toRoom: "safari14" },
@@ -17151,7 +19087,6 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "none",
       ],
       left: ["shield", "wall", "window", "window", "wall", "shield"],
     },
@@ -17242,6 +19177,11 @@ export const campaign = {
         position: { x: 4, y: 6, z: 0 },
       },
       {
+        type: "pickup",
+        config: { gives: "jumps" },
+        position: { x: 4, y: 7, z: 0 },
+      },
+      {
         type: "portable-block",
         config: { style: "drum" },
         position: { x: 4, y: 7, z: 2 },
@@ -17282,6 +19222,41 @@ export const campaign = {
     items: [
       {
         type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 3, y: 14, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 13, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 2, y: 12, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 1, y: 11, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 3, y: 10, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 2, y: 9, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 0, y: 9, z: 0 },
+      },
+      {
+        type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 3, y: 6, z: 0 },
       },
@@ -17297,7 +19272,34 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 2, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 1, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 0, y: 6, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 2, y: 12, z: 1 },
       },
     ],
@@ -17386,6 +19388,15 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 1, y: 1, z: 0 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "towards",
+          charging: false,
+        },
+        position: { x: 2, y: 6, z: 0 },
+      },
     ],
     color: "cyan",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -17472,6 +19483,9 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 3, y: 3, z: 3 },
       },
+      { type: "hush-puppy", config: {}, position: { x: 2, y: 3, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 1, y: 3, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 0, y: 3, z: 0 } },
       {
         type: "block",
         config: { style: "organic" },
@@ -17786,7 +19800,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 12, y: 0, z: 0 },
       },
     ],
@@ -17894,6 +19908,11 @@ export const campaign = {
         config: { style: "volcano" },
         position: { x: 0, y: 0, z: 1 },
       },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 7, y: 1, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -17979,7 +19998,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 4, y: 4, z: 0 },
       },
     ],
@@ -18040,7 +20059,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 0, y: 4, z: 0 },
       },
     ],
@@ -18186,6 +20205,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 4, y: 0, z: 1 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 0, y: 2, z: 0 },
       },
     ],
     color: "yellow",
@@ -18501,6 +20525,7 @@ export const campaign = {
         config: { axis: "y" },
         position: { x: 4, y: 0, z: 2 },
       },
+      { type: "ball", config: {}, position: { x: 1, y: 10, z: 0 } },
       {
         type: "pickup",
         config: { gives: "extra-life" },
@@ -18531,7 +20556,32 @@ export const campaign = {
       ],
       left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
-    items: [{ type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } }],
+    items: [
+      {
+        type: "baddie",
+        config: { which: "elephant", startDirection: "left", charging: false },
+        position: { x: 4, y: 3, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "helicopter-bug",
+          startDirection: "left",
+          charging: false,
+        },
+        position: { x: 4, y: 2, z: 0 },
+      },
+      { type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } },
+    ],
     color: "yellow",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari28: {
@@ -18625,6 +20675,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 3, y: 0, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", startDirection: "left", charging: false },
+        position: { x: 7, y: 7, z: 0 },
       },
     ],
     color: "white",
@@ -18945,6 +21000,11 @@ export const campaign = {
         position: { x: 7, y: 3, z: 2 },
       },
       {
+        type: "baddie",
+        config: { which: "elephant", startDirection: "left", charging: false },
+        position: { x: 4, y: 4, z: 0 },
+      },
+      {
         type: "movable-block",
         config: { style: "anvil" },
         position: { x: 1, y: 1, z: 0 },
@@ -19090,7 +21150,7 @@ export const campaign = {
     floor: "none",
     planet: "safari",
     roomBelow: "safari34",
-    size: { x: 9, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { right: { ordinal: 3, z: 1, toRoom: "safari36" } },
     walls: {
       away: [
@@ -19102,7 +21162,6 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "none",
       ],
       left: [
         "wall",
@@ -19113,7 +21172,6 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "none",
       ],
     },
     items: [
@@ -19167,6 +21225,11 @@ export const campaign = {
         config: { style: "organic" },
         position: { x: 0, y: 3, z: 0 },
       },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 7, y: 5, z: 1 },
+      },
     ],
     color: "yellow",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -19175,7 +21238,7 @@ export const campaign = {
     floor: "none",
     planet: "safari",
     roomBelow: "safari33",
-    size: { x: 8, y: 9 },
+    size: { x: 8, y: 8 },
     doors: { left: { ordinal: 3, z: 2, toRoom: "safari35" } },
     walls: {
       away: [
@@ -19197,7 +21260,6 @@ export const campaign = {
         "wall",
         "window",
         "wall",
-        "none",
       ],
     },
     items: [
@@ -19240,6 +21302,11 @@ export const campaign = {
         type: "block",
         config: { style: "organic" },
         position: { x: 4, y: 3, z: 0 },
+      },
+      {
+        type: "deadly-block",
+        config: { style: "spikes" },
+        position: { x: 4, y: 3, z: 1 },
       },
     ],
     color: "cyan",
@@ -19418,6 +21485,15 @@ export const campaign = {
         config: { style: "tower" },
         position: { x: 6, y: 3, z: 2 },
       },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          charging: false,
+        },
+        position: { x: 7, y: 2, z: 1 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -19491,7 +21567,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { which: "dalek", startDirection: "left", charging: false },
         position: { x: 7, y: 4, z: 1 },
       },
     ],
@@ -19519,7 +21595,14 @@ export const campaign = {
       ],
       left: ["wall", "none", "none", "wall"],
     },
-    items: [],
+    items: [
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 2, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 2, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 2, z: 0 } },
+      { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
+      { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
+      { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
+    ],
     color: "yellow",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   safari6triple: {
@@ -19789,7 +21872,7 @@ export const campaign = {
     floor: "none",
     planet: "safari",
     roomBelow: "safari10",
-    size: { x: 8, y: 7 },
+    size: { x: 8, y: 6 },
     doors: {
       left: { ordinal: 2, z: 5, toRoom: "safari14" },
       right: { ordinal: 2, z: 4, toRoom: "safari8" },
@@ -19805,7 +21888,7 @@ export const campaign = {
         "window",
         "wall",
       ],
-      left: ["wall", "shield", "none", "none", "shield", "wall", "none"],
+      left: ["wall", "shield", "none", "none", "shield", "wall"],
     },
     items: [
       {
@@ -19857,6 +21940,11 @@ export const campaign = {
         type: "deadly-block",
         config: { style: "volcano" },
         position: { x: 0, y: 1, z: 2 },
+      },
+      {
+        type: "movable-block",
+        config: { style: "sandwich" },
+        position: { x: 0, y: 1, z: 3 },
       },
     ],
     color: "green",

@@ -1,4 +1,4 @@
-import { EmptyObject, Simplify } from "type-fest";
+import { EmptyObject } from "type-fest";
 import { Direction, Xyz } from "./modelTypes";
 
 export type ItemType =
@@ -18,7 +18,11 @@ export type ItemType =
   | "baddie"
   | "lift"
   | "joystick"
-  | "charles";
+  | "charles"
+  | "switch"
+  | "hush-puppy"
+  | "ball"
+  | "book";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfig = {
@@ -33,7 +37,7 @@ export type ItemConfig = {
     style: "organic" | "artificial" | "tower";
   };
   "deadly-block": {
-    style: "volcano" | "toaster";
+    style: "volcano" | "toaster" | "spikes";
   };
   conveyor: {
     direction: Direction;
@@ -60,16 +64,33 @@ export type ItemConfig = {
     bottom: number;
   };
   baddie: {
-    which: "dalek";
+    which:
+      | "dalek"
+      | "helicopter-bug"
+      | "cyberman"
+      | "american-football-head"
+      | "monkey"
+      | "elephant"
+      | "computer-bot";
+    startDirection: Direction;
+    charging: boolean;
   };
   joystick: EmptyObject;
   "portable-block": {
     style: "drum" | "sticks" | "cube";
   };
   "movable-block": {
-    style: "anvil" | "sandwich";
+    style: "anvil" | "sandwich" | "puck";
+  };
+  book: {
+    // books are like movable-blocks, but have orientation and are only sometimes movable.
+    // almost all are x-aligned
+    slider?: boolean;
   };
   charles: EmptyObject;
+  switch: EmptyObject;
+  "hush-puppy": EmptyObject;
+  ball: EmptyObject;
 };
 
 export type Item<T extends ItemType> = {

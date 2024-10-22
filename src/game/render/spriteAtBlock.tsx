@@ -22,7 +22,13 @@ type SpriteAppearance = Omit<ItemAppearance<ItemType>, "texture"> & {
 
 export const spriteAtBlock = (
   { x, y, z = 0 }: { x: number; y: number; z?: number },
-  { texture: textureId, anchor, flipX, pivot, animationSpeed }: SpriteAppearance,
+  {
+    texture: textureId,
+    anchor,
+    flipX,
+    pivot,
+    animationSpeed,
+  }: SpriteAppearance,
   { giveZIndex }: RenderItemOptions = { giveZIndex: false },
 ): Sprite => {
   const isAnimated = Array.isArray(textureId);
