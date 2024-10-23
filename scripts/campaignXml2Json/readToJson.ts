@@ -1,3 +1,7 @@
+// this file is way looser than most because the xml parser ("xml-js") we're using doesn't have great typing.
+// TODO: use a different xml parser!
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
 import { Xml2JsonItem } from "./Xml2JsonItem";
@@ -22,7 +26,7 @@ const readXmlToJson = async (fileName: string) => {
       if (parentObject._parent._attributes !== undefined) {
         Object.entries(parentObject._parent._attributes).forEach(([k, v]) => {
           parentObject._parent[k] = v;
-          delete parentObject._parent._attributes[k];
+          delete (parentObject._parent._attributes as any)[k];
         });
       }
 
@@ -109,7 +113,7 @@ export const readMapToJson = async (): Promise<MapJson> => {
   const rooms = roomJson.map.room;
 
   const roomsByName = Object.fromEntries(
-    rooms.map((r) => {
+    rooms.map((r: any) => {
       const xmlFileName = r.file || r._attributes.file;
 
       delete r.file;

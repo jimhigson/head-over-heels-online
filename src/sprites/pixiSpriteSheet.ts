@@ -391,7 +391,7 @@ const spritesheetData = {
       "helicopter-bug.3",
       "helicopter-bug.4",
     ],
-    "bubbles": ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/]
+    bubbles: ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/],
   },
   meta: { scale: 1 },
 };

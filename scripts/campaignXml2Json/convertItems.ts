@@ -1,5 +1,4 @@
-import { join } from "node:path";
-import { ItemConfig, ItemType, UnknownItem } from "../../src/Item";
+import { ItemConfig, UnknownItem } from "../../src/Item";
 import {
   LooseDoorMap,
   map,
@@ -23,7 +22,7 @@ const baddieConversions = {
   turtle: "turtle",
   "throne-guard": "flying-ball",
   "bighead-robot": "computer-bot",
-} as const satisfies Record<string, ItemConfig["baddie"]["which"]>;
+} as const satisfies Record<string, ItemConfig<string>["baddie"]["which"]>;
 
 export const convertItems = (
   roomName: string,
@@ -56,6 +55,7 @@ export const convertItems = (
           return {
             type: "teleporter",
             config: {
+              // this is the one item where the generics for RoomId would be useful
               toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
             },
             position,
@@ -77,7 +77,7 @@ export const convertItems = (
         case "brick2": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig["block"]["style"]
+            ItemConfig<string>["block"]["style"]
           > = {
             brick1: "artificial",
             brick2: "organic",
@@ -99,7 +99,7 @@ export const convertItems = (
         case "vulcano": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig["deadly-block"]["style"]
+            ItemConfig<string>["deadly-block"]["style"]
           > = {
             vulcano: "volcano",
             spikes: "spikes",
@@ -135,7 +135,7 @@ export const convertItems = (
         case "handbag": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig["pickup"]["gives"]
+            ItemConfig<string>["pickup"]["gives"]
           > = {
             horn: "hooter",
             handbag: "bag",
@@ -195,7 +195,7 @@ export const convertItems = (
         case "stool": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig["movable-block"]["style"]
+            ItemConfig<string>["movable-block"]["style"]
           > = {
             cap: "puck",
             stool: "anvil",
@@ -221,7 +221,7 @@ export const convertItems = (
         case "another-portable-brick": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig["portable-block"]["style"]
+            ItemConfig<string>["portable-block"]["style"]
           > = {
             drum: "drum",
             "another-portable-brick": "cube",
