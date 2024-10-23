@@ -25,9 +25,9 @@ export type ItemType =
   | "book";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
-export type ItemConfig = {
+export type ItemConfig<RoomId extends string> = {
   teleporter: {
-    toRoom: string;
+    toRoom: RoomId;
   };
   barrier: {
     // the axis the barrier runs along
@@ -107,13 +107,15 @@ export type ItemConfig = {
   ball: EmptyObject;
 };
 
-export type Item<T extends ItemType> = {
+export type Item<T extends ItemType, RoomId extends string = string> = {
   type: T;
-  config: ItemConfig[T];
+  config: ItemConfig<RoomId>[T];
   position: Xyz;
 };
 
-export type UnknownItem = { [I in ItemType]: Item<I> }[ItemType];
+export type UnknownItem<RoomId extends string = string> = {
+  [I in ItemType]: Item<I, RoomId>;
+}[ItemType];
 
 export type ItemInPlay = {
   // needs everything from item, plus some item state

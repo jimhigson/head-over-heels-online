@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { hintColours } from "../../hintColours";
-import { AnyRoom, RoomId } from "../../modelTypes";
+import { PlanetName, RoomJson } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import {
@@ -12,9 +12,9 @@ import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { renderExtent } from "./renderExtent";
 
-export function* renderFloor(
-  room: AnyRoom,
-  options: RenderOptions,
+export function* renderFloor<RoomId extends string>(
+  room: RoomJson<PlanetName, RoomId>,
+  options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   const hasDoorTowards = !!room.doors.towards;
   const hasDoorRight = !!room.doors.right;
@@ -91,7 +91,7 @@ export function* renderFloor(
   );
   if (room.roomBelow) {
     makeClickPortal(
-      room.roomBelow as RoomId,
+      room.roomBelow,
       options,
       ...[...towardsEdge.children, ...rightEdge.children],
     );

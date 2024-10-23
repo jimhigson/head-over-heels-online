@@ -1,12 +1,5 @@
 import { Application, Container, PointData } from "pixi.js";
-import {
-  AnyRoom,
-  PlanetName,
-  RoomJson,
-  UnknownCampaign,
-  CampaignRoomId,
-  CampaignRoom,
-} from "../modelTypes";
+import { AnyRoom, PlanetName, RoomJson, Campaign } from "../modelTypes";
 import { zxSpectrumResolution } from "../originalGame";
 import { hintColours, Shades } from "../hintColours";
 import { blockSizePx } from "../sprites/pixiSpriteSheet";
@@ -18,7 +11,6 @@ import { renderFloor } from "./render/renderFloor";
 import { projectToScreen } from "./render/projectToScreen";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
-import { ValueOf } from "type-fest";
 
 export const xyzBlockPosition = (
   xBlock: number,
@@ -40,9 +32,9 @@ function iterateToContainer(gen: Generator<Container>, into?: Container) {
   return c;
 }
 
-function* renderBackground(
-  room: AnyRoom,
-  options: RenderOptions,
+function* renderBackground<RoomId extends string>(
+  room: RoomJson<PlanetName, RoomId>,
+  options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   yield* renderFloor(room, options);
   yield* renderWalls(room, options);
@@ -65,9 +57,9 @@ export const paletteSwapFilters = (shades: Shades) => [
   }),
 ];
 
-const renderRoom = <P extends PlanetName>(
-  room: RoomJson<P, string>,
-  options: RenderOptions,
+const renderRoom = <P extends PlanetName, RoomId extends string>(
+  room: RoomJson<P, RoomId>,
+  options: RenderOptions<RoomId>,
 ) => {
   // NB: floor could be a tiling sprite and a graphics map:
   //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
@@ -84,8 +76,8 @@ const renderRoom = <P extends PlanetName>(
   return roomContainer;
 };
 
-export type RenderOptions<C extends UnknownCampaign> = {
-  onPortalClick: (roomId: CampaignRoomId<C>) => void;
+export type RenderOptions<RoomId extends string> = {
+  onPortalClick: (roomId: RoomId) => void;
 };
 
 const centreRoomInRendering = (room: AnyRoom, container: Container): void => {
@@ -98,26 +90,26 @@ const centreRoomInRendering = (room: AnyRoom, container: Container): void => {
   container.y = -renderingMedianY;
 };
 
-type ApiEvents<C extends UnknownCampaign> = {
-  roomChange: CampaignRoom<C>;
+type ApiEvents<RoomId extends string> = {
+  roomChange: RoomJson<PlanetName, RoomId>;
 };
 
-export type GameApi<C extends UnknownCampaign> = {
-  currentRoom: CampaignRoom<C>;
-  events: Emitter<ApiEvents<C>>;
-  goToRoom: (newRoom: CampaignRoom<C>) => void;
+export type GameApi<RoomId extends string> = {
+  campaign: Campaign<RoomId>;
+  currentRoom: RoomJson<PlanetName, RoomId>;
+  events: Emitter<ApiEvents<RoomId>>;
+  goToRoom: (newRoom: RoomJson<PlanetName, RoomId>) => void;
   renderIn: (app: Application) => void;
   stop: () => void;
 };
 
-export const gameMain = <C extends UnknownCampaign>(
-  campaign: C,
-): GameApi<C> => {
-
-  let currentRoom = campaign.rooms[campaign.startRoom] as CampaignRoom<C>;
+export const gameMain = <RoomId extends string>(
+  campaign: Campaign<RoomId>,
+): GameApi<RoomId> => {
+  let currentRoom = campaign.rooms[campaign.startRoom];
   let app: Application | undefined;
 
-  const events = mitt<ApiEvents<C>>();
+  const events = mitt<ApiEvents<RoomId>>();
 
   const worldContainer = new Container();
 
@@ -125,13 +117,13 @@ export const gameMain = <C extends UnknownCampaign>(
   worldContainer.x = zxSpectrumResolution.width / 2;
   worldContainer.y = zxSpectrumResolution.height * 0.7;
 
-  const renderOptions: RenderOptions<C> = {
+  const renderOptions: RenderOptions<RoomId> = {
     onPortalClick(roomId) {
       loadRoom(campaign.rooms[roomId]);
     },
   };
 
-  const loadRoom = (room: CampaignRoom<C>) => {
+  const loadRoom = (room: RoomJson<PlanetName, RoomId>) => {
     currentRoom = room;
 
     worldContainer.removeChildren();
@@ -148,6 +140,7 @@ export const gameMain = <C extends UnknownCampaign>(
   loadRoom(currentRoom);
 
   return {
+    campaign,
     get currentRoom() {
       return currentRoom;
     },
@@ -156,7 +149,7 @@ export const gameMain = <C extends UnknownCampaign>(
       app = a;
       app.stage.addChild(worldContainer);
     },
-    goToRoom(room: CampaignRoom<C>) {
+    goToRoom(room: RoomJson<PlanetName, RoomId>) {
       loadRoom(room);
     },
     stop: () => app?.stage?.removeChild(worldContainer),

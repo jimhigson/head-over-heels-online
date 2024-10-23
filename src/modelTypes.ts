@@ -1,9 +1,7 @@
 import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
-import { TestCampaignRoomId } from "./testCampaign";
 import { ItemType, UnknownItem } from "./Item";
-import { Simplify, ValueOf } from "type-fest";
-import { OriginalCampaignRoomId } from "./_generated/originalCampaign/campaign";
+import { Simplify } from "type-fest";
 
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
@@ -85,18 +83,14 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
   // for now, can only have one room per direction - this seems to work with the original game
   // levels but could be expanded to support multiple
   doors: DoorMap<RoomId>;
-  items: UnknownItem[];
-};
-
-export type RoomState = {
-  items: UnknownItem[];
+  items: UnknownItem<RoomId>[];
 };
 
 export type EitherCharacterState = {
   lives: number;
   shield: number;
   // if both chars are in same room, will be ===
-  roomState: RoomState;
+  roomState: unknown; //RoomState;
 };
 
 export type GameState = {
@@ -125,8 +119,10 @@ export type Campaign<RoomId extends string> = {
 
 export type UnknownCampaign = Campaign<string>;
 
-export type CampaignRoomId<C extends UnknownCampaign> = string & keyof (C["rooms"]);
-export type CampaignRoom<C extends UnknownCampaign> = ValueOf<C["rooms"]>;
+export type CampaignRoomId<C extends UnknownCampaign> = string &
+  keyof C["rooms"];
+export type CampaignRoom<C extends UnknownCampaign> =
+  C extends Campaign<infer RoomId> ? RoomJson<PlanetName, RoomId> : never;
 
 export type AnyRoom = RoomJson<PlanetName, string>;
 
