@@ -35,7 +35,7 @@ const generateWalls = <P extends PlanetName>(
 const colourRooms = () => {
   type Entry<P extends PlanetName> = [
     `${P}-${ZxSpectrumRoomColour}`,
-    RoomJson<P, `${PlanetName}-${ZxSpectrumRoomColour}`>,
+    RoomJson<P, `${PlanetName}-${ZxSpectrumRoomColour}` | "doorsRoom">,
   ];
 
   function* room(): Generator<Entry<PlanetName>> {

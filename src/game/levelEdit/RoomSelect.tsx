@@ -15,22 +15,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CampaignRoom, CampaignRoomId, UnknownCampaign } from "@/modelTypes";
+import { GameApi } from "../gameMain";
+import { useCurrentRoom } from "./useCurrentRoom";
 
-export type RoomSelectProps<C extends UnknownCampaign> = {
-  campaign: C;
-  room: CampaignRoom<C> | undefined;
-  onRoomSelect: (room: CampaignRoom<C>) => void;
+export type RoomSelectProps<RoomId extends string> = {
+  gameApi?: GameApi<RoomId>;
 };
 
-export function RoomSelect<C extends UnknownCampaign>({
-  onRoomSelect: onRoomChange,
-  room,
-  campaign,
-}: RoomSelectProps<C>) {
+export function RoomSelect<RoomId extends string>({
+  gameApi,
+}: RoomSelectProps<RoomId>) {
   const [open, setOpen] = React.useState(false);
 
-  const roomIds = Object.keys(campaign.rooms) as Array<CampaignRoomId<C>>;
+  const currentRoom = useCurrentRoom(gameApi);
+
+  if (gameApi === undefined) {
+    return null;
+  }
+
+  const roomIds = Object.keys(gameApi.campaign.rooms) as RoomId[];
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -40,7 +44,7 @@ export function RoomSelect<C extends UnknownCampaign>({
           aria-expanded={open}
           className="w-[300px] justify-between"
         >
-          {room?.id}
+          {currentRoom?.id}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -55,8 +59,8 @@ export function RoomSelect<C extends UnknownCampaign>({
                   key={r}
                   value={r}
                   onSelect={(currentValue) => {
-                    onRoomChange(
-                      campaign.rooms[currentValue as CampaignRoomId<C>],
+                    gameApi.goToRoom(
+                      gameApi.campaign.rooms[currentValue as RoomId],
                     );
                     setOpen(false);
                   }}
@@ -64,7 +68,9 @@ export function RoomSelect<C extends UnknownCampaign>({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      room?.id === r ? "opacity-100" : "opacity-0",
+                      gameApi.currentRoom?.id === r
+                        ? "opacity-100"
+                        : "opacity-0",
                     )}
                   />
                   {r}

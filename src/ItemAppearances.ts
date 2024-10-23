@@ -5,18 +5,25 @@ import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
-  data: ItemConfig[T],
+  // appearances don't care about the romId generic so give it string
+  data: ItemConfig<string>[T],
 ) => Container;
 
-const bubbles = {frames: pixiSpriteSheet.animations.bubbles, animationSpeed: 0.1};
-const stackedSprites = (head: CreateSpriteOptions, body: CreateSpriteOptions = "headless-base"): Container => {
+const bubbles = {
+  frames: pixiSpriteSheet.animations.bubbles,
+  animationSpeed: 0.1,
+};
+const stackedSprites = (
+  head: CreateSpriteOptions,
+  body: CreateSpriteOptions = "headless-base",
+): Container => {
   const container = new Container();
-  container.addChild( createSprite(body) );
+  container.addChild(createSprite(body));
   const headSprite = createSprite(head);
   headSprite.y = -12;
-  container.addChild( headSprite );
+  container.addChild(headSprite);
   return container;
-}
+};
 
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
@@ -60,7 +67,10 @@ export const itemAppearances: {
   teleporter: () => createSprite("teleporter"),
 
   pickup({ gives }) {
-    const pickupIcons: Record<ItemConfig["pickup"]["gives"], TextureId> = {
+    const pickupIcons: Record<
+      ItemConfig<string>["pickup"]["gives"],
+      TextureId
+    > = {
       shield: "bunny",
       jumps: "bunny",
       fast: "bunny",
@@ -87,30 +97,33 @@ export const itemAppearances: {
       case "headless-base":
         // no anim, not directional
         return createSprite({ texture: "headless-base" });
-      case 'american-football-head':
-        return createSprite({texture: `american-football-head.${options.startDirection}`})
+      case "american-football-head":
+        return createSprite({
+          texture: `american-football-head.${options.startDirection}`,
+        });
       case "turtle":
         // animated, directional:
         return createSprite({
-          frames: pixiSpriteSheet.animations[`turtle.${options.startDirection}`],
+          frames:
+            pixiSpriteSheet.animations[`turtle.${options.startDirection}`],
           animationSpeed: 0.1,
         });
-      case 'cyberman': 
-        if( options.charging ) {
+      case "cyberman":
+        if (options.charging) {
           return createSprite(`cyberman.${options.startDirection}`);
         } else {
-          return stackedSprites(`cyberman.towards`, bubbles)
+          return stackedSprites(`cyberman.towards`, bubbles);
         }
-      case 'bubble-robot':
-        return stackedSprites(bubbles)
+      case "bubble-robot":
+        return stackedSprites(bubbles);
       case "flying-ball":
         //stacked on bubbles:
-        return stackedSprites(`ball`, bubbles)
+        return stackedSprites(`ball`, bubbles);
       case "computer-bot":
       case "elephant":
       case "monkey":
         // stacked on standard base:
-        return stackedSprites(`${options.which}.towards`)      
+        return stackedSprites(`${options.which}.towards`);
     }
   },
 
@@ -122,7 +135,7 @@ export const itemAppearances: {
 
   "portable-block": ({ style }) => createSprite(style),
 
-  charles: () => stackedSprites('charles.towards'),
+  charles: () => stackedSprites("charles.towards"),
 
   switch: () => createSprite("switch.off"),
   "hush-puppy": () => createSprite("hush-puppy"),

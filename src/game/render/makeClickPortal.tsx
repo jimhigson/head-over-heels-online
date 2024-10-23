@@ -1,10 +1,9 @@
 import { Container } from "pixi.js";
-import { RoomId } from "../../modelTypes";
-import { RenderWorldOptions } from "../renderWorld";
+import { RenderOptions } from "../gameMain";
 
-export const makeClickPortal = (
+export const makeClickPortal = <RoomId extends string>(
   toRoom: RoomId,
-  { onPortalClick }: RenderWorldOptions,
+  { onPortalClick }: RenderOptions<RoomId>,
   ...sprite: Container[]
 ) => {
   sprite.forEach((sprite) =>
@@ -14,9 +13,9 @@ export const makeClickPortal = (
   );
 };
 
-export function* makeClickPortals(
+export function* makeClickPortals<RoomId extends string>(
   toRoom: RoomId,
-  options: RenderWorldOptions,
+  options: RenderOptions<RoomId>,
   sprites: Generator<Container>,
 ): Generator<Container> {
   for (const s of sprites) {

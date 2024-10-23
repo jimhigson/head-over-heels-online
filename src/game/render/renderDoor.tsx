@@ -1,5 +1,12 @@
 import { Container } from "pixi.js";
-import { AnyRoom, Door, Direction, Xy } from "../../modelTypes";
+import {
+  AnyRoom,
+  Door,
+  Direction,
+  Xy,
+  RoomJson,
+  PlanetName,
+} from "../../modelTypes";
 import { doorTexturePivot } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { RenderOptions } from "../gameMain";
@@ -105,21 +112,21 @@ export function* renderDoor(
 /**
  * renders the doors on the right and towards edges - ie, those not embedded in wall sprites
  */
-export function* renderFrontDoors(
-  room: AnyRoom,
-  options: RenderOptions,
+export function* renderFrontDoors<RoomId extends string>(
+  room: RoomJson<PlanetName, RoomId>,
+  options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   // TODO: backs and fronts need to be rendered with content in-between
   if (room.doors.right) {
     yield* makeClickPortals(
-      room.doors.right.toRoom as RoomId,
+      room.doors.right.toRoom,
       options,
       renderDoor(room, room.doors.right, "right"),
     );
   }
   if (room.doors.towards) {
     yield* makeClickPortals(
-      room.doors.towards.toRoom as RoomId,
+      room.doors.towards.toRoom,
       options,
       renderDoor(room, room.doors.towards, "towards"),
     );

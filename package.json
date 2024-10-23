@@ -6,15 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "watch:type": "tsc --watch --noEmit",
-    "check:type": "tsc --noEmit",
+    "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
+    "check:type": "tsc --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",
     "fix:lint": "eslint --fix .",
     "preview": "vite preview",
     "check:format": "prettier . --check",
     "fix:format": "prettier . --write",
     "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
-    "makeCampaignDiff": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write"
+    "makeCampaignDiff": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write",
+
+    "predeploy": "pnpm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
@@ -45,6 +48,7 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "fast-json-patch": "^3.1.1",
+    "gh-pages": "^6.2.0",
     "globals": "^15.9.0",
     "mitt": "^3.0.1",
     "pixi-filters": "^6.0.5",
