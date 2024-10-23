@@ -11,22 +11,19 @@ import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 
 const baddieConversions = {
-            "helicopter-bug": "helicopter-bug",
-            "imperial-guard": "cyberman",
-            "imperial-guard-head": "cyberman",
-            siren: "dalek",
-            bomb: "headless-base",
-            diver: "american-football-head",
-            "bubble-robot": "bubble-robot",
-            monkey: "monkey",
-            elephant: "elephant",
-            turtle: "turtle",
-            "throne-guard": "flying-ball",
-            "bighead-robot": "computer-bot"
-          } as const satisfies Record<
-          string,
-          ItemConfig["baddie"]["which"]
-        >;
+  "helicopter-bug": "helicopter-bug",
+  "imperial-guard": "cyberman",
+  "imperial-guard-head": "cyberman",
+  siren: "dalek",
+  bomb: "headless-base",
+  diver: "american-football-head",
+  "bubble-robot": "bubble-robot",
+  monkey: "monkey",
+  elephant: "elephant",
+  turtle: "turtle",
+  "throne-guard": "flying-ball",
+  "bighead-robot": "computer-bot",
+} as const satisfies Record<string, ItemConfig["baddie"]["which"]>;
 
 export const convertItems = (
   roomName: string,
@@ -220,15 +217,15 @@ export const convertItems = (
           };
 
         case "drum":
-        case "portable-brick": 
+        case "portable-brick":
         case "another-portable-brick": {
-            const conversions: Record<
+          const conversions: Record<
             typeof item.kind,
             ItemConfig["portable-block"]["style"]
           > = {
             drum: "drum",
-            "portable-brick": "cube",
-            "another-portable-brick": "sticks",
+            "another-portable-brick": "cube",
+            "portable-brick": "sticks",
           };
 
           return {
@@ -256,24 +253,24 @@ export const convertItems = (
 
         case "imperial-guard":
           return {
-            type: 'baddie',
+            type: "baddie",
             config: {
-              which: 'cyberman',
-              charging: false
+              which: "cyberman",
+              charging: false,
             },
-            position
+            position,
           };
 
         case "imperial-guard-head":
           return {
             type: "baddie",
             config: {
-              which: 'cyberman',
+              which: "cyberman",
               startDirection: convertDirection(item.orientation),
-              charging: true
+              charging: true,
             },
             position,
-          };          
+          };
 
         case "siren":
         case "monkey":
@@ -284,20 +281,20 @@ export const convertItems = (
         case "bubble-robot":
         case "bighead-robot":
           return {
-            type:'baddie',
+            type: "baddie",
             config: {
               which: baddieConversions[item.kind],
             },
-            position
-          }
+            position,
+          };
 
         case "turtle":
-        case "diver": {        
+        case "diver": {
           return {
             type: "baddie",
             config: {
               which: baddieConversions[item.kind],
-              startDirection: convertDirection(item.orientation)
+              startDirection: convertDirection(item.orientation),
             },
             position,
           };

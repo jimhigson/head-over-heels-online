@@ -15,6 +15,7 @@
         "moonbase",
         "pixi",
         "Renderable",
+        "shortcutted",
         "Spritesheet",
         "teleporter"
     ],

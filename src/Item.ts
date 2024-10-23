@@ -63,31 +63,32 @@ export type ItemConfig = {
     top: number;
     bottom: number;
   };
-  baddie: {
-    which:
-      | "dalek"
-      | "helicopter-bug"
-      | "headless-base"
-      | "monkey"
-      | "elephant"
-      | "flying-ball"
-      | "bubble-robot"
-      | "computer-bot";
-  } | {
-    // with a starting direction
-    which:
-      | "american-football-head"
-      | "turtle"
-    startDirection: Direction;
-  } | 
-  {
-    which: "cyberman";
-    startDirection: Direction;
-    charging: true;
-  } | {
-    which: "cyberman";
-    charging: false;
-  };
+  baddie:
+    | {
+        which:
+          | "dalek"
+          | "helicopter-bug"
+          | "headless-base"
+          | "monkey"
+          | "elephant"
+          | "flying-ball"
+          | "bubble-robot"
+          | "computer-bot";
+      }
+    | {
+        // with a starting direction
+        which: "american-football-head" | "turtle";
+        startDirection: Direction;
+      }
+    | {
+        which: "cyberman";
+        startDirection: Direction;
+        charging: true;
+      }
+    | {
+        which: "cyberman";
+        charging: false;
+      };
   joystick: EmptyObject;
   "portable-block": {
     style: "drum" | "sticks" | "cube";

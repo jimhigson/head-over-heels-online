@@ -5,7 +5,7 @@ import { ZxSpectrumRoomColour } from "./originalGame";
 // use to convert: https://convertacolor.com/
 export type Shades = { basic: Color; dimmed: Color };
 const white = {
-  basic: new Color("rgb(200, 200, 200)"),
+  basic: new Color("rgb(210, 210, 210)"),
   dimmed: new Color("rgb(120, 120, 120)"),
 };
 const yellow = {
@@ -13,8 +13,8 @@ const yellow = {
   dimmed: new Color("rgb(119, 118, 79)"),
 };
 const magenta = {
-  basic: new Color("hsl(290,40.3%,60%)"),
-  dimmed: new Color("hsl(290,19.8%,40%)"),
+  basic: new Color("hsl(290,25%,60%)"),
+  dimmed: new Color("hsl(290,25%,40%)"),
 };
 const cyan = {
   basic: new Color("hsl(183, 28%, 50%)"),

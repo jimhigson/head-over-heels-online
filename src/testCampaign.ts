@@ -314,7 +314,7 @@ export const testCampaign = () =>
         },
         {
           type: "baddie",
-          config: { which: "cyberman" },
+          config: { which: "cyberman", charging: false },
           position: { x: 6, y: 7, z: 0 },
         },        
         {

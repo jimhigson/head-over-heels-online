@@ -1,8 +1,9 @@
 import { Container } from "pixi.js";
-import { AnyRoom, Door, Direction, Xy, RoomId } from "../../modelTypes";
+import { AnyRoom, Door, Direction, Xy } from "../../modelTypes";
 import { doorTexturePivot } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
-import { doorTexture, RenderWorldOptions } from "./renderWorld";
+import { RenderOptions } from "../gameMain";
+import { doorTexture } from "./doorTexture";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 
@@ -106,7 +107,7 @@ export function* renderDoor(
  */
 export function* renderFrontDoors(
   room: AnyRoom,
-  options: RenderWorldOptions,
+  options: RenderOptions,
 ): Generator<Container, undefined, undefined> {
   // TODO: backs and fronts need to be rendered with content in-between
   if (room.doors.right) {

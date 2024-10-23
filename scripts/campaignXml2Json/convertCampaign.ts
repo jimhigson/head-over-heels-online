@@ -7,7 +7,7 @@ import {
   XmlScenery,
   XmlFloorKind,
 } from "./readToJson";
-import { readdir, writeFile } from "node:fs/promises";
+import { readdir } from "node:fs/promises";
 import {
   AnyRoom,
   AnyWall,
@@ -339,7 +339,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
     doors: doorMap,
-    walls: {
+˘    walls: {
       away: convertWalls(roomJson, "away", doorMap),
       left: convertWalls(roomJson, "left", doorMap),
     },

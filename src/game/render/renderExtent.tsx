@@ -1,6 +1,6 @@
 import { AnyRoom } from "../../modelTypes";
 import { wallTileSize } from "../../sprites/pixiSpriteSheet";
-import { xyzBlockPosition } from "./renderWorld";
+import { xyzBlockPosition } from "../gameMain";
 
 export const renderExtent = (room: AnyRoom) => {
   const blockXMin = room.doors.right ? -0.5 : 0;

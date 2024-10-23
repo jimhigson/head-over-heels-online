@@ -2,14 +2,14 @@ import { Container } from "pixi.js";
 import { AnyRoom, RoomId, wallTextureId } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
-import { RenderWorldOptions } from "./renderWorld";
+import { RenderOptions } from "../gameMain";
 import { renderDoor } from "./renderDoor";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 
 export function* renderWalls(
   room: AnyRoom,
-  options: RenderWorldOptions,
+  options: RenderOptions,
 ): Generator<Container, undefined, undefined> {
   // sprites for wall on x-axis (left wall):
   const leftDoor = room.doors.left;

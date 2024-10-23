@@ -4,17 +4,17 @@ import { AnyRoom, RoomId } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import {
-  RenderWorldOptions,
+  RenderOptions,
   xyzBlockPosition,
   paletteSwapFilters,
-} from "./renderWorld";
+} from "../gameMain";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { renderExtent } from "./renderExtent";
 
 export function* renderFloor(
   room: AnyRoom,
-  options: RenderWorldOptions,
+  options: RenderOptions,
 ): Generator<Container, undefined, undefined> {
   const hasDoorTowards = !!room.doors.towards;
   const hasDoorRight = !!room.doors.right;

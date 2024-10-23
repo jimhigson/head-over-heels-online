@@ -17,9 +17,18 @@
     "makeCampaignDiff": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-popover": "^1.1.2",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "cmdk": "1.0.0",
+    "lucide-react": "^0.453.0",
     "pixi.js": "^8.4.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
@@ -37,6 +46,7 @@
     "eslint-plugin-react-refresh": "^0.4.12",
     "fast-json-patch": "^3.1.1",
     "globals": "^15.9.0",
+    "mitt": "^3.0.1",
     "pixi-filters": "^6.0.5",
     "postcss": "^8.4.47",
     "prettier": "3.3.3",

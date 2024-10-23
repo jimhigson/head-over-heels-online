@@ -32,7 +32,9 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
         
     export const campaign = { ${Object.values(patchedJson)
       .map(roomTsObjectEntry)
-      .join(",\n")} } as const satisfies Campaign<OriginalCampaignRoomId>;\n`,
+      .join(
+        ",\n",
+      )} } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;\n`,
   );
 
   await Promise.all([writeTsPromise, writeConvertedJsonPromise]);

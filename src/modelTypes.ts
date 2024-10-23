@@ -2,7 +2,7 @@ import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { TestCampaignRoomId } from "./testCampaign";
 import { ItemType, UnknownItem } from "./Item";
-import { Simplify } from "type-fest";
+import { Simplify, ValueOf } from "type-fest";
 import { OriginalCampaignRoomId } from "./_generated/originalCampaign/campaign";
 
 export const directions = ["away", "towards", "left", "right"] as const;
@@ -50,14 +50,14 @@ export type Wall<P extends PlanetName> =
 
 export type AnyWall = Wall<PlanetName>;
 
-export type Door<RoomIds extends string> = {
+export type Door<RoomId extends string> = {
   ordinal: number;
   z: number;
-  toRoom: RoomIds;
+  toRoom: RoomId;
 };
 
-export type DoorMap<RoomIds extends string> = Partial<
-  Record<Direction, Door<RoomIds>>
+export type DoorMap<RoomId extends string> = Partial<
+  Record<Direction, Door<RoomId>>
 >;
 
 /* which graphics to use for all the walls in a room? */
@@ -66,8 +66,8 @@ export type RoomWalls<P extends PlanetName> = {
   away: Wall<P>[];
 };
 
-export type RoomJson<P extends PlanetName, RoomIds extends string> = {
-  id: RoomIds;
+export type RoomJson<P extends PlanetName, RoomId extends string> = {
+  id: RoomId;
   size: {
     /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
     x: number;
@@ -76,15 +76,15 @@ export type RoomJson<P extends PlanetName, RoomIds extends string> = {
   };
   planet: P;
   floor: Floor;
-  roomAbove?: RoomIds;
-  roomBelow?: RoomIds;
+  roomAbove?: RoomId;
+  roomBelow?: RoomId;
   walls: RoomWalls<P>;
   // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
   // colours in each room
   color: ZxSpectrumRoomColour;
   // for now, can only have one room per direction - this seems to work with the original game
   // levels but could be expanded to support multiple
-  doors: DoorMap<RoomIds>;
+  doors: DoorMap<RoomId>;
   items: UnknownItem[];
 };
 
@@ -123,6 +123,11 @@ export type Campaign<RoomIds extends string> = Record<
   RoomJson<PlanetName, RoomIds>
 >;
 
+export type UnknownCampaign = Campaign<string>;
+
+export type CampaignRoomId<C extends UnknownCampaign> = keyof C & string;
+export type CampaignRoom<C extends UnknownCampaign> = ValueOf<C>;
+
 export type AnyRoom = RoomJson<PlanetName, string>;
 
 export type SpriteFrame = SpritesheetFrameData["frame"];
@@ -139,5 +144,3 @@ export const wallTextureId = <P extends PlanetName, W extends Wall<P>>(
   wallName: Wall<P>,
   side: "left" | "away",
 ) => `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;
-
-export type RoomId = OriginalCampaignRoomId | TestCampaignRoomId;

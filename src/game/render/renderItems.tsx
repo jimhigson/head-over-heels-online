@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { AnyRoom, RoomId } from "../../modelTypes";
-import { RenderWorldOptions } from "./renderWorld";
+import { RenderOptions } from "../gameMain";
 import { makeClickPortal } from "./makeClickPortal";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { itemAppearances } from "../../ItemAppearances";
@@ -18,7 +18,7 @@ const renderItem = <T extends ItemType>(item: Item<T>) => {
 
 export function* renderItems(
   room: AnyRoom,
-  options: RenderWorldOptions,
+  options: RenderOptions,
 ): Generator<Container, undefined, undefined> {
   for (const item of room.items) {
     const sprite = renderItem(item);

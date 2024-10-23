@@ -1,3 +1,4 @@
+import { Item, UnknownItem } from "@/Item.ts";
 import type { Campaign, RoomJson } from "../../modelTypes.ts";
 
 export type OriginalCampaignRoomId =
@@ -1167,7 +1168,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 3, z: 2 },
       },
     ],
@@ -1736,7 +1737,11 @@ export const campaign = {
         config: { toRoom: "blacktooth23heels" },
         position: { x: 0, y: 0, z: 0 },
       },
-      { type: "spring", config: {}, position: { x: 4, y: 4, z: 0 } },
+      {
+        type: "spring",
+        config: {},
+        position: { x: 4, y: 4, z: 0 },
+      },
     ],
     color: "white",
   } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1984,7 +1989,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 7, z: 0 },
       },
       { type: "charles", config: {}, position: { x: 3, y: 4, z: 0 } },
@@ -2020,7 +2025,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman" },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 6, z: 0 },
       },
     ],
@@ -2313,7 +2318,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman" },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 3, z: 0 },
       },
     ],
@@ -2521,12 +2526,12 @@ export const campaign = {
     items: [
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 4, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 4, z: 0 },
       },
       {
@@ -2536,12 +2541,12 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 1, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 1, z: 0 },
       },
       {
@@ -2956,7 +2961,7 @@ export const campaign = {
     items: [
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 0, z: 0 },
       },
     ],
@@ -3229,7 +3234,7 @@ export const campaign = {
     items: [
       {
         type: "baddie",
-        config: { which: "cyberman" },
+        config: { which: "cyberman", charging: false },
         position: { x: 4, y: 7, z: 0 },
       },
       {
@@ -4438,12 +4443,12 @@ export const campaign = {
       { type: "spring", config: {}, position: { x: 0, y: 6, z: 0 } },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 2, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 1, z: 0 },
       },
     ],
@@ -5022,7 +5027,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 5, z: 0 },
       },
       {
@@ -5252,7 +5257,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 5, z: 0 },
       },
       {
@@ -5267,12 +5272,12 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 2, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 5, y: 0, z: 0 },
       },
     ],
@@ -5549,7 +5554,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -5644,7 +5649,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 0, z: 6 },
       },
     ],
@@ -6318,7 +6323,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 7, z: 0 },
       },
     ],
@@ -6388,7 +6393,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 0, y: 7, z: 0 },
       },
       {
@@ -6403,7 +6408,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 4, z: 5 },
       },
     ],
@@ -6892,7 +6897,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 5, y: 7, z: 0 },
       },
       { type: "fish", config: { alive: true }, position: { x: 0, y: 7, z: 5 } },
@@ -7632,7 +7637,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 5, z: 0 },
       },
       {
@@ -8864,17 +8869,17 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 1, y: 5, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 4, y: 3, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 3, y: 1, z: 0 },
       },
       {
@@ -9174,7 +9179,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 7, z: 0 },
       },
       {
@@ -9199,7 +9204,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 0, z: 0 },
       },
     ],
@@ -9380,12 +9385,12 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 3, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 3, z: 0 },
       },
     ],
@@ -10128,7 +10133,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 1, y: 0, z: 1 },
       },
       {
@@ -11790,7 +11795,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 3, z: 3 },
       },
       {
@@ -12322,7 +12327,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 7, z: 0 },
       },
       { type: "fish", config: { alive: true }, position: { x: 3, y: 3, z: 5 } },
@@ -14189,7 +14194,7 @@ export const campaign = {
       { type: "hush-puppy", config: {}, position: { x: 3, y: 3, z: 0 } },
       {
         type: "baddie",
-        config: { which: "cyberman" },
+        config: { which: "cyberman", charging: false },
         position: { x: 0, y: 5, z: 0 },
       },
     ],
@@ -16305,12 +16310,12 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 7, y: 5, z: 1 },
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 6, y: 5, z: 1 },
       },
       {
@@ -16549,12 +16554,12 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 1, z: 2 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 1, z: 3 },
       },
     ],
@@ -16633,17 +16638,17 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 7, y: 7, z: 1 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 7, y: 6, z: 1 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 7, y: 5, z: 1 },
       },
       {
@@ -16890,7 +16895,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 11, y: 1, z: 0 },
       },
       {
@@ -17050,17 +17055,17 @@ export const campaign = {
     items: [
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 4, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 3, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 2, y: 3, z: 0 },
       },
       {
@@ -17070,23 +17075,23 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 3, y: 2, z: 0 },
       },
       { type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 2, y: 2, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 4, y: 1, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "sticks" },
+        config: { style: "cube" },
         position: { x: 1, y: 1, z: 0 },
       },
     ],
@@ -18205,17 +18210,17 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 7, y: 3, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 3, z: 0 },
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 7, y: 0, z: 0 },
       },
     ],
@@ -18315,7 +18320,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 1, y: 1, z: 1 },
       },
       {
@@ -18635,7 +18640,7 @@ export const campaign = {
       },
       {
         type: "portable-block",
-        config: { style: "cube" },
+        config: { style: "sticks" },
         position: { x: 0, y: 7, z: 3 },
       },
       {
@@ -20878,7 +20883,7 @@ export const campaign = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman" },
+        config: { which: "cyberman", charging: false },
         position: { x: 7, y: 7, z: 0 },
       },
     ],
@@ -22145,4 +22150,4 @@ export const campaign = {
     ],
     color: "green",
   } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
-} as const satisfies Campaign<OriginalCampaignRoomId>;
+} as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;

@@ -1,66 +1,56 @@
-import { useEffect, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Application } from "pixi.js";
 import { resize } from "./resize";
-import { RoomId } from "../modelTypes";
-import { campaign as originalCampaign } from "../_generated/originalCampaign/campaign";
-import { testCampaign } from "../testCampaign";
-import { renderWorld } from "./render/renderWorld";
-
-const allCampaigns = {
-  ...originalCampaign,
-  ...testCampaign(),
-};
+import { UnknownCampaign } from "../modelTypes";
+import { gameMain } from "./gameMain";
+import { type GameApi } from "./gameMain";
+import { EmptyObject } from "type-fest";
 
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
-export const Game = () => {
-  const [app, setApp] = useState<Application>();
-  const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-  const [roomId, setRoomId] = useState<RoomId>("blacktooth17triple");
+export const Game = <C extends UnknownCampaign>(campaign: C) =>
+  forwardRef<GameApi<C>, EmptyObject>((_props: EmptyObject, gameApiRef) => {
+    const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
+    const gameApi = useRef(gameMain(campaign));
+    useImperativeHandle(gameApiRef, () => gameApi.current);
 
-  useEffect(() => {
-    if (gameArea === null) return;
+    useEffect(() => {
+      if (gameArea === null) return;
 
-    let app: Application | undefined;
+      let app: Application | undefined;
 
-    const go = async () => {
-      app = new Application();
-      await app.init({ background: "#000000", resizeTo: window });
-      // todo: load assets in parallel with init
-      gameArea.appendChild(app.canvas);
-      setApp(app);
-      resize(app);
-    };
+      const go = async () => {
+        app = new Application();
+        await app.init({ background: "#000000", resizeTo: window });
+        // todo: load assets in parallel with init
+        gameArea.appendChild(app.canvas);
+        gameApi.current.renderIn(app);
+        resize(app);
+      };
 
-    go();
+      go();
 
-    return () => {
-      if (app === undefined) return;
+      return () => {
+        if (app === undefined) return;
 
-      gameArea.removeChild(app.canvas);
-      app.destroy();
-    };
-  }, [gameArea]);
+        gameArea.removeChild(app.canvas);
+        app.destroy();
+      };
+    }, [gameArea]);
 
-  useEffect(() => {
-    if (app === undefined || app.stage === null) {
-      return;
-    }
+    useEffect(() => {
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        gameApi.current.stop();
+      };
+    }, []);
 
-    return renderWorld(app, allCampaigns[roomId], {
-      onPortalClick(roomId: RoomId) {
-        console.log("Game: going to toom", roomId);
-        setRoomId(roomId);
-      },
-    });
-  }, [app, roomId]);
-
-  return (
-    <div
-      className="h-screen w-screen bg-slate-700"
-      id="game"
-      ref={setGameArea}
-    />
-  );
-};
+    return <div className="h-screen w-screen bg-slate-700" ref={setGameArea} />;
+  });
