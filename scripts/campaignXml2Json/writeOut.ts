@@ -30,11 +30,12 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
       .map((rid) => `"${rid}"`)
       .join("|")};\n
         
-    export const campaign = { ${Object.values(patchedJson)
-      .map(roomTsObjectEntry)
-      .join(
-        ",\n",
-      )} } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;\n`,
+    export const campaign = { 
+      "startRoom": "blacktooth1head", 
+      "rooms": { 
+        ${Object.values(patchedJson).map(roomTsObjectEntry).join(",\n")}
+       }
+    } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
   );
 
   await Promise.all([writeTsPromise, writeConvertedJsonPromise]);

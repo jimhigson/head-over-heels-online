@@ -339,7 +339,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
     doors: doorMap,
-˘    walls: {
+    walls: {
       away: convertWalls(roomJson, "away", doorMap),
       left: convertWalls(roomJson, "left", doorMap),
     },

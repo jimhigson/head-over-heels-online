@@ -118,15 +118,15 @@ export type GameState = {
   >;
 };
 
-export type Campaign<RoomIds extends string> = Record<
-  RoomIds,
-  RoomJson<PlanetName, RoomIds>
->;
+export type Campaign<RoomId extends string> = {
+  startRoom: RoomId;
+  rooms: Record<RoomId, RoomJson<PlanetName, RoomId>>;
+};
 
 export type UnknownCampaign = Campaign<string>;
 
-export type CampaignRoomId<C extends UnknownCampaign> = keyof C & string;
-export type CampaignRoom<C extends UnknownCampaign> = ValueOf<C>;
+export type CampaignRoomId<C extends UnknownCampaign> = string & keyof (C["rooms"]);
+export type CampaignRoom<C extends UnknownCampaign> = ValueOf<C["rooms"]>;
 
 export type AnyRoom = RoomJson<PlanetName, string>;
 

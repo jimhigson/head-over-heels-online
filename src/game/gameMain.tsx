@@ -105,7 +105,7 @@ type ApiEvents<C extends UnknownCampaign> = {
 export type GameApi<C extends UnknownCampaign> = {
   currentRoom: CampaignRoom<C>;
   events: Emitter<ApiEvents<C>>;
-  goToRoom: (newRoom: CampaignRoomId<C>) => void;
+  goToRoom: (newRoom: CampaignRoom<C>) => void;
   renderIn: (app: Application) => void;
   stop: () => void;
 };
@@ -113,9 +113,8 @@ export type GameApi<C extends UnknownCampaign> = {
 export const gameMain = <C extends UnknownCampaign>(
   campaign: C,
 ): GameApi<C> => {
-  type RoomId = CampaignRoomId<C>;
 
-  let currentRoom = Object.values(campaign)[0] as ValueOf<C>;
+  let currentRoom = campaign.rooms[campaign.startRoom] as CampaignRoom<C>;
   let app: Application | undefined;
 
   const events = mitt<ApiEvents<C>>();
@@ -128,12 +127,11 @@ export const gameMain = <C extends UnknownCampaign>(
 
   const renderOptions: RenderOptions<C> = {
     onPortalClick(roomId) {
-      currentRoom = campaign[roomId];
-      loadRoom(campaign[roomId]);
+      loadRoom(campaign.rooms[roomId]);
     },
   };
 
-  const loadRoom = (room: ValueOf<C>) => {
+  const loadRoom = (room: CampaignRoom<C>) => {
     currentRoom = room;
 
     worldContainer.removeChildren();
@@ -158,8 +156,8 @@ export const gameMain = <C extends UnknownCampaign>(
       app = a;
       app.stage.addChild(worldContainer);
     },
-    goToRoom(room: RoomId) {
-      loadRoom(campaign[room]);
+    goToRoom(room: CampaignRoom<C>) {
+      loadRoom(room);
     },
     stop: () => app?.stage?.removeChild(worldContainer),
   };

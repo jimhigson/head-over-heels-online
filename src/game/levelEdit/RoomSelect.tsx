@@ -23,7 +23,7 @@ import { CampaignRoom, CampaignRoomId, UnknownCampaign } from "@/modelTypes";
 export type RoomSelectProps<C extends UnknownCampaign> = {
   campaign: C;
   room: CampaignRoom<C> | undefined;
-  onRoomSelect: (room: CampaignRoomId<C>) => void;
+  onRoomSelect: (room: CampaignRoom<C>) => void;
 };
 
 export function RoomSelect<C extends UnknownCampaign>({
@@ -33,7 +33,7 @@ export function RoomSelect<C extends UnknownCampaign>({
 }: RoomSelectProps<C>) {
   const [open, setOpen] = React.useState(false);
 
-  const roomIds = Object.keys(campaign) as Array<CampaignRoomId<C>>;
+  const roomIds = Object.keys(campaign.rooms) as Array<CampaignRoomId<C>>;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -58,7 +58,7 @@ export function RoomSelect<C extends UnknownCampaign>({
                   key={r}
                   value={r}
                   onSelect={(currentValue) => {
-                    onRoomChange(currentValue as CampaignRoomId<C>);
+                    onRoomChange(campaign.rooms[currentValue as CampaignRoomId<C>]);
                     setOpen(false);
                   }}
                 >

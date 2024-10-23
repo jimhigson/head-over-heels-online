@@ -97,7 +97,11 @@ const colourRooms = () => {
 };
 
 export const testCampaign = () =>
-  ({
+  (
+    
+    {
+      startRoom: 'doorsRoom',
+      rooms: {
     doorsRoom: {
       size: { x: 4, y: 5 },
       walls: generateWalls({ x: 4, y: 5 }, "blacktooth"),
@@ -527,5 +531,5 @@ export const testCampaign = () =>
       color: "magenta",
     },
     ...colourRooms(),
-  }) satisfies Campaign<string>;
+  }}) satisfies Campaign<string>;
 export type TestCampaignRoomId = keyof ReturnType<typeof testCampaign>;
