@@ -24,6 +24,7 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
   const writeTsPromise = writeFile(
     tsFilename,
     `
+    /* eslint-disable */
     import type {Campaign, RoomJson} from "../../modelTypes.ts";\n
     
     export type OriginalCampaignRoomId = ${Object.keys(rooms)
@@ -31,7 +32,7 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
       .join("|")};\n
         
     export const campaign = { 
-      "startRoom": "blacktooth1head", 
+      "startRoom": "blacktooth17triple", 
       "rooms": { 
         ${Object.values(patchedJson).map(roomTsObjectEntry).join(",\n")}
        }

@@ -2,11 +2,14 @@ import { Container } from "pixi.js";
 import { ItemType, ItemConfig } from "./Item";
 import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
+import { AnyRoom, PlanetName } from "./modelTypes";
+import { wallTextureId } from "./game/render/wallTextureId";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
-  data: ItemConfig<string>[T],
+  data: ItemConfig<PlanetName, string>[T],
+  room: AnyRoom,
 ) => Container;
 
 const bubbles = {
@@ -28,6 +31,16 @@ const stackedSprites = (
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
+  wall({ side, style }, room) {
+    if (side === "right" || side === "towards") {
+      return new Container();
+    }
+    return createSprite({
+      texture: wallTextureId(room.planet, style, side),
+      anchor: side === "away" ? { x: 1, y: 1 } : { x: 0, y: 1 },
+    });
+  },
+
   barrier: ({ axis }) =>
     createSprite({
       texture: `barrier.${axis}`,
@@ -68,7 +81,7 @@ export const itemAppearances: {
 
   pickup({ gives }) {
     const pickupIcons: Record<
-      ItemConfig<string>["pickup"]["gives"],
+      ItemConfig<PlanetName, string>["pickup"]["gives"],
       TextureId
     > = {
       shield: "bunny",

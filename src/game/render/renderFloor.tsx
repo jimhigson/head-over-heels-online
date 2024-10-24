@@ -26,17 +26,30 @@ export function* renderFloor<RoomId extends string>(
 
   const floorContainer = new Container();
 
+  const floorSkipMap = Object.fromEntries(
+    room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
+  );
+
   if (floorType !== "none") {
     const floorTileTexture: TextureId =
       floorType === "deadly" ? "generic.floor.deadly" : `${floorType}.floor`;
 
     const tilesContainer = new Container();
 
+    console.log(room.id, floorSkipMap);
+
     // each sprite covers enough graphics for 2 blocks. we only need to
     // render a sprite for the 'white' squares on the chessboard (render or
     // not according to a checkerboard pattern)
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
+        if (floorSkipMap[`${ix},${iy}`]) {
+          console.log("skipping", ix, iy);
+          continue;
+        } else {
+          console.log("not skipping", ix, iy);
+        }
+
         tilesContainer.addChild(
           moveSpriteToBlock(
             { x: ix, y: iy },

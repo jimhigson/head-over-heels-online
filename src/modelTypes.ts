@@ -22,6 +22,7 @@ export type XyMaybeZ = {
   y: number;
   z?: number;
 };
+export type Axis = "x" | "y";
 
 export const planets = {
   jail: { walls: ["bars"] },
@@ -74,6 +75,7 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
   };
   planet: P;
   floor: Floor;
+  floorSkip: Xy[];
   roomAbove?: RoomId;
   roomBelow?: RoomId;
   walls: RoomWalls<P>;
@@ -85,6 +87,8 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
   doors: DoorMap<RoomId>;
   items: UnknownItem<RoomId>[];
 };
+
+export type RoomState = Omit<RoomJson<PlanetName, string>, "floorSkip">;
 
 export type EitherCharacterState = {
   lives: number;
@@ -129,14 +133,3 @@ export type AnyRoom = RoomJson<PlanetName, string>;
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;
 export type SpriteSize = Pick<SpriteFrame, "w" | "h">;
-
-export type WallTextureId<
-  P extends PlanetName,
-  W extends Wall<P> = Wall<P>,
-> = `${P}.wall.${W}.${"left" | "away"}`;
-
-export const wallTextureId = <P extends PlanetName, W extends Wall<P>>(
-  planet: P,
-  wallName: Wall<P>,
-  side: "left" | "away",
-) => `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;

@@ -5,14 +5,8 @@ import {
   type Texture,
 } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
-import {
-  PlanetName,
-  WallTextureId,
-  SpriteSize,
-  planets,
-  Direction,
-  Xy,
-} from "../modelTypes";
+import { PlanetName, SpriteSize, planets, Direction, Xy } from "../modelTypes";
+import { WallTextureId } from "@/game/render/wallTextureId";
 
 export const blockSizePx = { w: 16, d: 16, h: 12 };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;

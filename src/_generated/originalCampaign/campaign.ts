@@ -1,3 +1,4 @@
+/* eslint-disable */
 import type { Campaign, RoomJson } from "../../modelTypes.ts";
 
 export type OriginalCampaignRoomId =
@@ -278,11 +279,12 @@ export type OriginalCampaignRoomId =
   | "safari9";
 
 export const campaign = {
-  startRoom: "blacktooth1head",
+  startRoom: "blacktooth17triple",
   rooms: {
     blacktooth10: {
       id: "blacktooth10",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 12, y: 6 },
       doors: {
@@ -373,6 +375,7 @@ export const campaign = {
     blacktooth11: {
       id: "blacktooth11",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
       doors: {
@@ -632,6 +635,7 @@ export const campaign = {
     blacktooth12: {
       id: "blacktooth12",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
       doors: {
@@ -688,6 +692,7 @@ export const campaign = {
     blacktooth13: {
       id: "blacktooth13",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: {
@@ -746,6 +751,7 @@ export const campaign = {
     blacktooth14: {
       id: "blacktooth14",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: { right: { ordinal: 2, z: 0, toRoom: "blacktooth13" } },
@@ -874,6 +880,7 @@ export const campaign = {
     blacktooth15: {
       id: "blacktooth15",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -899,6 +906,7 @@ export const campaign = {
     blacktooth16: {
       id: "blacktooth16",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -959,6 +967,39 @@ export const campaign = {
     blacktooth17triple: {
       id: "blacktooth17triple",
       floor: "blacktooth",
+      floorSkip: [
+        { x: 12, y: 12 },
+        { x: 12, y: 11 },
+        { x: 12, y: 10 },
+        { x: 12, y: 9 },
+        { x: 12, y: 8 },
+        { x: 12, y: 7 },
+        { x: 11, y: 12 },
+        { x: 11, y: 11 },
+        { x: 11, y: 10 },
+        { x: 11, y: 9 },
+        { x: 11, y: 8 },
+        { x: 10, y: 12 },
+        { x: 10, y: 11 },
+        { x: 10, y: 10 },
+        { x: 10, y: 9 },
+        { x: 10, y: 8 },
+        { x: 9, y: 12 },
+        { x: 9, y: 11 },
+        { x: 9, y: 10 },
+        { x: 9, y: 9 },
+        { x: 9, y: 8 },
+        { x: 8, y: 12 },
+        { x: 8, y: 11 },
+        { x: 8, y: 10 },
+        { x: 8, y: 9 },
+        { x: 8, y: 8 },
+        { x: 7, y: 12 },
+        { x: 7, y: 11 },
+        { x: 7, y: 10 },
+        { x: 7, y: 9 },
+        { x: 7, y: 8 },
+      ],
       planet: "blacktooth",
       size: { x: 12, y: 12 },
       doors: {
@@ -997,6 +1038,16 @@ export const campaign = {
       },
       items: [
         {
+          type: "wall",
+          config: { side: "left", style: "plain" },
+          position: { x: 6, y: 11, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 6, y: 10, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 10, z: 0 },
@@ -1027,6 +1078,11 @@ export const campaign = {
           position: { x: 1, y: 8, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 6, y: 7, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 7, z: 0 },
@@ -1035,6 +1091,41 @@ export const campaign = {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "plain" },
+          position: { x: 11, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "armour" },
+          position: { x: 10, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 9, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 8, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "armour" },
+          position: { x: 7, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "plain" },
+          position: { x: 6, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "plain" },
+          position: { x: 6, y: 6, z: 0 },
         },
         {
           type: "deadly-block",
@@ -1132,6 +1223,7 @@ export const campaign = {
     blacktooth18: {
       id: "blacktooth18",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: {
@@ -1181,6 +1273,7 @@ export const campaign = {
     blacktooth19: {
       id: "blacktooth19",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -1291,6 +1384,7 @@ export const campaign = {
     blacktooth1head: {
       id: "blacktooth1head",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 8 },
       doors: { right: { ordinal: 3, z: 0, toRoom: "blacktooth23heels" } },
@@ -1340,6 +1434,7 @@ export const campaign = {
     blacktooth2: {
       id: "blacktooth2",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
       doors: { towards: { ordinal: 2, z: 0, toRoom: "blacktooth3" } },
@@ -1368,6 +1463,7 @@ export const campaign = {
     blacktooth20: {
       id: "blacktooth20",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: {
@@ -1385,6 +1481,7 @@ export const campaign = {
     blacktooth21fish: {
       id: "blacktooth21fish",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -1510,6 +1607,7 @@ export const campaign = {
     blacktooth22: {
       id: "blacktooth22",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth44market",
       size: { x: 6, y: 6 },
@@ -1535,6 +1633,7 @@ export const campaign = {
     blacktooth23heels: {
       id: "blacktooth23heels",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 0, toRoom: "blacktooth1head" } },
@@ -1714,6 +1813,7 @@ export const campaign = {
     blacktooth24: {
       id: "blacktooth24",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 3, toRoom: "blacktooth25" } },
@@ -1752,6 +1852,7 @@ export const campaign = {
     blacktooth25: {
       id: "blacktooth25",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth26",
       size: { x: 6, y: 6 },
@@ -1782,6 +1883,7 @@ export const campaign = {
     blacktooth26: {
       id: "blacktooth26",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth25",
       size: { x: 6, y: 6 },
@@ -1837,6 +1939,7 @@ export const campaign = {
     blacktooth27fish: {
       id: "blacktooth27fish",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       doors: {
@@ -1879,6 +1982,7 @@ export const campaign = {
     blacktooth28: {
       id: "blacktooth28",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 2, toRoom: "blacktooth27fish" } },
@@ -2008,6 +2112,7 @@ export const campaign = {
     blacktooth29: {
       id: "blacktooth29",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth30",
       size: { x: 6, y: 8 },
@@ -2042,6 +2147,7 @@ export const campaign = {
     blacktooth3: {
       id: "blacktooth3",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth4",
       size: { x: 8, y: 6 },
@@ -2067,6 +2173,7 @@ export const campaign = {
     blacktooth30: {
       id: "blacktooth30",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth29",
       size: { x: 6, y: 8 },
@@ -2122,6 +2229,7 @@ export const campaign = {
     blacktooth31: {
       id: "blacktooth31",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 12 },
       doors: {
@@ -2257,6 +2365,7 @@ export const campaign = {
     blacktooth32: {
       id: "blacktooth32",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -2282,6 +2391,7 @@ export const campaign = {
     blacktooth33: {
       id: "blacktooth33",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth34",
       size: { x: 8, y: 8 },
@@ -2335,6 +2445,7 @@ export const campaign = {
     blacktooth34: {
       id: "blacktooth34",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth33",
       size: { x: 8, y: 8 },
@@ -2365,6 +2476,7 @@ export const campaign = {
     blacktooth35: {
       id: "blacktooth35",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 16 },
       doors: {
@@ -2436,6 +2548,7 @@ export const campaign = {
     blacktooth36: {
       id: "blacktooth36",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: {
@@ -2452,6 +2565,7 @@ export const campaign = {
     blacktooth37: {
       id: "blacktooth37",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       doors: {
@@ -2495,6 +2609,7 @@ export const campaign = {
     blacktooth38: {
       id: "blacktooth38",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth39",
       size: { x: 6, y: 6 },
@@ -2520,6 +2635,7 @@ export const campaign = {
     blacktooth39: {
       id: "blacktooth39",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth38",
       size: { x: 6, y: 6 },
@@ -2568,6 +2684,7 @@ export const campaign = {
     blacktooth4: {
       id: "blacktooth4",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth3",
       size: { x: 8, y: 6 },
@@ -2597,6 +2714,7 @@ export const campaign = {
     blacktooth40fish: {
       id: "blacktooth40fish",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 16 },
       doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth39" } },
@@ -2763,6 +2881,7 @@ export const campaign = {
     blacktooth41: {
       id: "blacktooth41",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
       doors: {
@@ -2788,6 +2907,7 @@ export const campaign = {
     blacktooth42: {
       id: "blacktooth42",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
       doors: {
@@ -2823,6 +2943,7 @@ export const campaign = {
     blacktooth43: {
       id: "blacktooth43",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth46market",
       size: { x: 6, y: 6 },
@@ -2848,6 +2969,7 @@ export const campaign = {
     blacktooth44market: {
       id: "blacktooth44market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       roomAbove: "blacktooth22",
       size: { x: 6, y: 6 },
@@ -2876,6 +2998,7 @@ export const campaign = {
     blacktooth45market: {
       id: "blacktooth45market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
       doors: {
@@ -2951,6 +3074,7 @@ export const campaign = {
     blacktooth46market: {
       id: "blacktooth46market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       roomAbove: "blacktooth43",
       size: { x: 6, y: 6 },
@@ -2988,6 +3112,7 @@ export const campaign = {
     blacktooth47market: {
       id: "blacktooth47market",
       floor: "deadly",
+      floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
       doors: {
@@ -3102,6 +3227,7 @@ export const campaign = {
     blacktooth48market: {
       id: "blacktooth48market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 2, y: 8 },
       doors: {
@@ -3127,6 +3253,7 @@ export const campaign = {
     blacktooth49market: {
       id: "blacktooth49market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 8, y: 2 },
       doors: {
@@ -3183,6 +3310,7 @@ export const campaign = {
     blacktooth5: {
       id: "blacktooth5",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -3220,6 +3348,7 @@ export const campaign = {
     blacktooth50market: {
       id: "blacktooth50market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
       doors: {
@@ -3271,6 +3400,7 @@ export const campaign = {
     blacktooth51: {
       id: "blacktooth51",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 8 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth50market" } },
@@ -3305,6 +3435,7 @@ export const campaign = {
     blacktooth52market: {
       id: "blacktooth52market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 6, y: 6 },
       doors: {
@@ -3396,6 +3527,7 @@ export const campaign = {
     blacktooth53market: {
       id: "blacktooth53market",
       floor: "market",
+      floorSkip: [],
       planet: "market",
       size: { x: 6, y: 8 },
       doors: {
@@ -3454,6 +3586,7 @@ export const campaign = {
     blacktooth54: {
       id: "blacktooth54",
       floor: "none",
+      floorSkip: [],
       planet: "jail",
       roomBelow: "blacktooth55",
       size: { x: 8, y: 6 },
@@ -3479,6 +3612,7 @@ export const campaign = {
     blacktooth55: {
       id: "blacktooth55",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       roomAbove: "blacktooth54",
       size: { x: 8, y: 6 },
@@ -3502,6 +3636,7 @@ export const campaign = {
     blacktooth56: {
       id: "blacktooth56",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 2 },
       doors: {
@@ -3564,6 +3699,7 @@ export const campaign = {
     blacktooth57: {
       id: "blacktooth57",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -3619,6 +3755,65 @@ export const campaign = {
     blacktooth58triple: {
       id: "blacktooth58triple",
       floor: "deadly",
+      floorSkip: [
+        { x: 13, y: 13 },
+        { x: 13, y: 12 },
+        { x: 13, y: 11 },
+        { x: 13, y: 10 },
+        { x: 13, y: 9 },
+        { x: 13, y: 8 },
+        { x: 13, y: 7 },
+        { x: 13, y: 6 },
+        { x: 12, y: 13 },
+        { x: 12, y: 12 },
+        { x: 12, y: 11 },
+        { x: 12, y: 10 },
+        { x: 12, y: 9 },
+        { x: 12, y: 8 },
+        { x: 12, y: 7 },
+        { x: 12, y: 6 },
+        { x: 11, y: 13 },
+        { x: 11, y: 12 },
+        { x: 11, y: 11 },
+        { x: 11, y: 10 },
+        { x: 11, y: 9 },
+        { x: 11, y: 8 },
+        { x: 11, y: 7 },
+        { x: 11, y: 6 },
+        { x: 10, y: 13 },
+        { x: 10, y: 12 },
+        { x: 10, y: 11 },
+        { x: 10, y: 10 },
+        { x: 10, y: 9 },
+        { x: 10, y: 8 },
+        { x: 10, y: 7 },
+        { x: 10, y: 6 },
+        { x: 9, y: 13 },
+        { x: 9, y: 12 },
+        { x: 9, y: 11 },
+        { x: 9, y: 10 },
+        { x: 9, y: 9 },
+        { x: 9, y: 8 },
+        { x: 9, y: 7 },
+        { x: 9, y: 6 },
+        { x: 8, y: 13 },
+        { x: 8, y: 12 },
+        { x: 8, y: 11 },
+        { x: 8, y: 10 },
+        { x: 8, y: 9 },
+        { x: 8, y: 8 },
+        { x: 8, y: 7 },
+        { x: 8, y: 6 },
+        { x: 7, y: 13 },
+        { x: 7, y: 12 },
+        { x: 7, y: 11 },
+        { x: 7, y: 10 },
+        { x: 7, y: 9 },
+        { x: 7, y: 8 },
+        { x: 7, y: 7 },
+        { x: 7, y: 6 },
+        { x: 6, y: 13 },
+      ],
       planet: "jail",
       size: { x: 14, y: 14 },
       doors: {
@@ -3661,6 +3856,11 @@ export const campaign = {
       },
       items: [
         {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 13, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 13, z: 0 },
@@ -3691,9 +3891,29 @@ export const campaign = {
           position: { x: 0, y: 13, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 12, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 11, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 11, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 10, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 9, z: 0 },
         },
         {
           type: "deadly-block",
@@ -3711,9 +3931,19 @@ export const campaign = {
           position: { x: 0, y: 9, z: 1 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 8, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 4, y: 8, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 7, z: 0 },
         },
         {
           type: "block",
@@ -3744,6 +3974,51 @@ export const campaign = {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 13, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 12, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 11, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 10, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 9, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 8, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 7, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "bars" },
+          position: { x: 6, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "bars" },
+          position: { x: 6, y: 6, z: 0 },
         },
         {
           type: "conveyor",
@@ -3901,6 +4176,7 @@ export const campaign = {
     blacktooth59: {
       id: "blacktooth59",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
       doors: {
@@ -4019,6 +4295,7 @@ export const campaign = {
     blacktooth6: {
       id: "blacktooth6",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth5" } },
@@ -4102,6 +4379,7 @@ export const campaign = {
     blacktooth60: {
       id: "blacktooth60",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { towards: { ordinal: 3, z: 0, toRoom: "blacktooth59" } },
@@ -4284,6 +4562,7 @@ export const campaign = {
     blacktooth61: {
       id: "blacktooth61",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 4, y: 8 },
       doors: {
@@ -4317,6 +4596,7 @@ export const campaign = {
     blacktooth62fish: {
       id: "blacktooth62fish",
       floor: "deadly",
+      floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 16 },
       doors: {
@@ -4489,6 +4769,7 @@ export const campaign = {
     blacktooth63: {
       id: "blacktooth63",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 2 },
       doors: {
@@ -4542,6 +4823,7 @@ export const campaign = {
     blacktooth64: {
       id: "blacktooth64",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth65" } },
@@ -4576,6 +4858,7 @@ export const campaign = {
     blacktooth65: {
       id: "blacktooth65",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -4607,6 +4890,7 @@ export const campaign = {
     blacktooth66: {
       id: "blacktooth66",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
       doors: {
@@ -4633,6 +4917,7 @@ export const campaign = {
     blacktooth67: {
       id: "blacktooth67",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -4740,6 +5025,7 @@ export const campaign = {
     blacktooth68: {
       id: "blacktooth68",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -4850,6 +5136,7 @@ export const campaign = {
     blacktooth69: {
       id: "blacktooth69",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: { left: { ordinal: 2, z: 0, toRoom: "blacktooth67" } },
@@ -4884,6 +5171,7 @@ export const campaign = {
     blacktooth7: {
       id: "blacktooth7",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -4910,6 +5198,7 @@ export const campaign = {
     blacktooth70: {
       id: "blacktooth70",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
       doors: {
@@ -4996,6 +5285,7 @@ export const campaign = {
     blacktooth71: {
       id: "blacktooth71",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: {
@@ -5073,6 +5363,7 @@ export const campaign = {
     blacktooth72: {
       id: "blacktooth72",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: {
@@ -5125,6 +5416,7 @@ export const campaign = {
     blacktooth73: {
       id: "blacktooth73",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: {
@@ -5241,6 +5533,7 @@ export const campaign = {
     blacktooth74: {
       id: "blacktooth74",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
       doors: {
@@ -5318,6 +5611,7 @@ export const campaign = {
     blacktooth75: {
       id: "blacktooth75",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
       doors: {
@@ -5424,6 +5718,7 @@ export const campaign = {
     blacktooth76: {
       id: "blacktooth76",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -5534,6 +5829,7 @@ export const campaign = {
     blacktooth77: {
       id: "blacktooth77",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 4 },
       doors: {
@@ -5690,6 +5986,7 @@ export const campaign = {
     blacktooth78: {
       id: "blacktooth78",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       roomAbove: "blacktooth79fish",
       size: { x: 8, y: 8 },
@@ -5801,6 +6098,7 @@ export const campaign = {
     blacktooth79fish: {
       id: "blacktooth79fish",
       floor: "none",
+      floorSkip: [],
       planet: "blacktooth",
       roomBelow: "blacktooth78",
       size: { x: 8, y: 8 },
@@ -5889,6 +6187,7 @@ export const campaign = {
     blacktooth80: {
       id: "blacktooth80",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       doors: {
@@ -5973,6 +6272,7 @@ export const campaign = {
     blacktooth81: {
       id: "blacktooth81",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -6068,6 +6368,7 @@ export const campaign = {
     blacktooth82: {
       id: "blacktooth82",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
       doors: {
@@ -6170,6 +6471,7 @@ export const campaign = {
     blacktooth83tofreedom: {
       id: "blacktooth83tofreedom",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth82" } },
@@ -6297,6 +6599,7 @@ export const campaign = {
     blacktooth84: {
       id: "blacktooth84",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -6377,6 +6680,7 @@ export const campaign = {
     blacktooth85: {
       id: "blacktooth85",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: {
@@ -6462,6 +6766,7 @@ export const campaign = {
     blacktooth86: {
       id: "blacktooth86",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       doors: {
@@ -6493,6 +6798,7 @@ export const campaign = {
     blacktooth87crown: {
       id: "blacktooth87crown",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { away: { ordinal: 3, z: 1, toRoom: "blacktooth86" } },
@@ -6585,6 +6891,7 @@ export const campaign = {
     blacktooth8fish: {
       id: "blacktooth8fish",
       floor: "blacktooth",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       doors: {
@@ -6637,6 +6944,7 @@ export const campaign = {
     blacktooth9: {
       id: "blacktooth9",
       floor: "deadly",
+      floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 2, toRoom: "blacktooth8fish" } },
@@ -6769,6 +7077,7 @@ export const campaign = {
     bookworld1: {
       id: "bookworld1",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -6839,6 +7148,7 @@ export const campaign = {
     bookworld10: {
       id: "bookworld10",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
       doors: {
@@ -6870,6 +7180,7 @@ export const campaign = {
     bookworld11: {
       id: "bookworld11",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
       doors: {
@@ -6899,6 +7210,7 @@ export const campaign = {
     bookworld12fish: {
       id: "bookworld12fish",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
       doors: {
@@ -6965,6 +7277,7 @@ export const campaign = {
     bookworld13: {
       id: "bookworld13",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
       doors: {
@@ -6990,6 +7303,7 @@ export const campaign = {
     bookworld14: {
       id: "bookworld14",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -7120,6 +7434,7 @@ export const campaign = {
     bookworld15: {
       id: "bookworld15",
       floor: "deadly",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -7180,6 +7495,7 @@ export const campaign = {
     bookworld16: {
       id: "bookworld16",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
       doors: {
@@ -7206,6 +7522,7 @@ export const campaign = {
     bookworld17: {
       id: "bookworld17",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
       doors: { left: { ordinal: 2, z: 4, toRoom: "bookworld16" } },
@@ -7240,6 +7557,7 @@ export const campaign = {
     bookworld18: {
       id: "bookworld18",
       floor: "deadly",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
       doors: {
@@ -7306,6 +7624,7 @@ export const campaign = {
     bookworld19: {
       id: "bookworld19",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
       doors: {
@@ -7370,6 +7689,7 @@ export const campaign = {
     bookworld2: {
       id: "bookworld2",
       floor: "deadly",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 12, y: 6 },
       doors: {
@@ -7545,6 +7865,7 @@ export const campaign = {
     bookworld20: {
       id: "bookworld20",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 6 },
       doors: {
@@ -7566,6 +7887,7 @@ export const campaign = {
     bookworld21: {
       id: "bookworld21",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -7631,6 +7953,7 @@ export const campaign = {
     bookworld22: {
       id: "bookworld22",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
       doors: {
@@ -7707,6 +8030,7 @@ export const campaign = {
     bookworld23: {
       id: "bookworld23",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 6 },
       doors: {
@@ -7724,6 +8048,7 @@ export const campaign = {
     bookworld24: {
       id: "bookworld24",
       floor: "deadly",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
       doors: {
@@ -7790,6 +8115,7 @@ export const campaign = {
     bookworld25: {
       id: "bookworld25",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
       doors: {
@@ -7815,6 +8141,7 @@ export const campaign = {
     bookworld26: {
       id: "bookworld26",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
       doors: {
@@ -7871,6 +8198,7 @@ export const campaign = {
     bookworld27: {
       id: "bookworld27",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
       doors: {
@@ -7912,6 +8240,7 @@ export const campaign = {
     bookworld28: {
       id: "bookworld28",
       floor: "deadly",
+      floorSkip: [],
       planet: "bookworld",
       roomAbove: "bookworld29",
       size: { x: 8, y: 16 },
@@ -8178,6 +8507,7 @@ export const campaign = {
     bookworld29: {
       id: "bookworld29",
       floor: "none",
+      floorSkip: [],
       planet: "bookworld",
       roomBelow: "bookworld28",
       size: { x: 8, y: 8 },
@@ -8356,6 +8686,7 @@ export const campaign = {
     bookworld3: {
       id: "bookworld3",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
       doors: {
@@ -8392,6 +8723,7 @@ export const campaign = {
     bookworld30: {
       id: "bookworld30",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 4 },
       doors: {
@@ -8428,6 +8760,7 @@ export const campaign = {
     bookworld31: {
       id: "bookworld31",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 16, y: 6 },
       doors: {
@@ -8562,6 +8895,7 @@ export const campaign = {
     bookworld32: {
       id: "bookworld32",
       floor: "none",
+      floorSkip: [],
       planet: "bookworld",
       roomBelow: "bookworld33",
       size: { x: 8, y: 8 },
@@ -8594,6 +8928,7 @@ export const campaign = {
     bookworld33: {
       id: "bookworld33",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       roomAbove: "bookworld32",
       size: { x: 8, y: 8 },
@@ -8633,6 +8968,7 @@ export const campaign = {
     bookworld34: {
       id: "bookworld34",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 16 },
       doors: {
@@ -8802,6 +9138,7 @@ export const campaign = {
     bookworld35: {
       id: "bookworld35",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -8888,6 +9225,7 @@ export const campaign = {
     bookworld36: {
       id: "bookworld36",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
       doors: {
@@ -8949,6 +9287,7 @@ export const campaign = {
     bookworld37: {
       id: "bookworld37",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
       doors: {
@@ -8995,6 +9334,7 @@ export const campaign = {
     bookworld38: {
       id: "bookworld38",
       floor: "none",
+      floorSkip: [],
       planet: "bookworld",
       roomBelow: "bookworld39",
       size: { x: 8, y: 8 },
@@ -9027,6 +9367,7 @@ export const campaign = {
     bookworld39: {
       id: "bookworld39",
       floor: "none",
+      floorSkip: [],
       planet: "bookworld",
       roomBelow: "bookworld40",
       roomAbove: "bookworld38",
@@ -9116,6 +9457,7 @@ export const campaign = {
     bookworld4: {
       id: "bookworld4",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
       doors: {
@@ -9153,6 +9495,7 @@ export const campaign = {
     bookworld40: {
       id: "bookworld40",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       roomAbove: "bookworld39",
       size: { x: 8, y: 8 },
@@ -9191,6 +9534,7 @@ export const campaign = {
     bookworld41crown: {
       id: "bookworld41crown",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
       doors: { towards: { ordinal: 2, z: 0, toRoom: "bookworld40" } },
@@ -9269,6 +9613,7 @@ export const campaign = {
     bookworld5: {
       id: "bookworld5",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
       doors: {
@@ -9305,6 +9650,7 @@ export const campaign = {
     bookworld6: {
       id: "bookworld6",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
       doors: {
@@ -9361,6 +9707,7 @@ export const campaign = {
     bookworld7: {
       id: "bookworld7",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
       doors: {
@@ -9390,6 +9737,7 @@ export const campaign = {
     bookworld8: {
       id: "bookworld8",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
       doors: {
@@ -9455,6 +9803,7 @@ export const campaign = {
     bookworld9: {
       id: "bookworld9",
       floor: "bookworld",
+      floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 4 },
       doors: {
@@ -9487,6 +9836,7 @@ export const campaign = {
     egyptus1: {
       id: "egyptus1",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 0, toRoom: "egyptus2" } },
@@ -9539,6 +9889,7 @@ export const campaign = {
     egyptus10: {
       id: "egyptus10",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -9604,6 +9955,7 @@ export const campaign = {
     egyptus11: {
       id: "egyptus11",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
       doors: {
@@ -9629,6 +9981,7 @@ export const campaign = {
     egyptus12: {
       id: "egyptus12",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -9749,6 +10102,7 @@ export const campaign = {
     egyptus13: {
       id: "egyptus13",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       roomAbove: "egyptus14",
       size: { x: 8, y: 8 },
@@ -9833,6 +10187,7 @@ export const campaign = {
     egyptus14: {
       id: "egyptus14",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus13",
       roomAbove: "egyptus19",
@@ -9912,6 +10267,7 @@ export const campaign = {
     egyptus15: {
       id: "egyptus15",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       roomAbove: "egyptus16",
       size: { x: 6, y: 6 },
@@ -9987,6 +10343,7 @@ export const campaign = {
     egyptus16: {
       id: "egyptus16",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus15",
       size: { x: 6, y: 6 },
@@ -10046,6 +10403,7 @@ export const campaign = {
     egyptus17: {
       id: "egyptus17",
       floor: "deadly",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 12, y: 6 },
       doors: {
@@ -10203,6 +10561,7 @@ export const campaign = {
     egyptus18: {
       id: "egyptus18",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
       doors: {
@@ -10233,6 +10592,7 @@ export const campaign = {
     egyptus19: {
       id: "egyptus19",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus14",
       roomAbove: "egyptus20",
@@ -10312,6 +10672,7 @@ export const campaign = {
     egyptus2: {
       id: "egyptus2",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -10391,6 +10752,7 @@ export const campaign = {
     egyptus20: {
       id: "egyptus20",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus19",
       size: { x: 8, y: 8 },
@@ -10454,6 +10816,7 @@ export const campaign = {
     egyptus21: {
       id: "egyptus21",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
       doors: {
@@ -10479,6 +10842,7 @@ export const campaign = {
     egyptus22: {
       id: "egyptus22",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
       doors: {
@@ -10582,6 +10946,7 @@ export const campaign = {
     egyptus23: {
       id: "egyptus23",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
       doors: {
@@ -10790,6 +11155,7 @@ export const campaign = {
     egyptus24: {
       id: "egyptus24",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
       doors: {
@@ -10861,6 +11227,7 @@ export const campaign = {
     egyptus25: {
       id: "egyptus25",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 4 },
       doors: {
@@ -10887,6 +11254,7 @@ export const campaign = {
     egyptus26: {
       id: "egyptus26",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
       doors: {
@@ -11020,6 +11388,7 @@ export const campaign = {
     egyptus27: {
       id: "egyptus27",
       floor: "deadly",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -11135,6 +11504,7 @@ export const campaign = {
     egyptus28: {
       id: "egyptus28",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
       doors: {
@@ -11174,6 +11544,7 @@ export const campaign = {
     egyptus29: {
       id: "egyptus29",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus30",
       size: { x: 6, y: 8 },
@@ -11220,6 +11591,7 @@ export const campaign = {
     egyptus3: {
       id: "egyptus3",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
       doors: {
@@ -11245,6 +11617,7 @@ export const campaign = {
     egyptus30: {
       id: "egyptus30",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus31",
       roomAbove: "egyptus29",
@@ -11282,6 +11655,7 @@ export const campaign = {
     egyptus31: {
       id: "egyptus31",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       roomAbove: "egyptus30",
       size: { x: 6, y: 8 },
@@ -11323,6 +11697,7 @@ export const campaign = {
     egyptus32: {
       id: "egyptus32",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus33",
       size: { x: 8, y: 2 },
@@ -11357,6 +11732,7 @@ export const campaign = {
     egyptus33: {
       id: "egyptus33",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       roomAbove: "egyptus32",
       size: { x: 8, y: 2 },
@@ -11380,6 +11756,7 @@ export const campaign = {
     egyptus34fish: {
       id: "egyptus34fish",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 8 },
       doors: {
@@ -11464,6 +11841,7 @@ export const campaign = {
     egyptus35: {
       id: "egyptus35",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       roomAbove: "egyptus36",
       size: { x: 2, y: 8 },
@@ -11544,6 +11922,7 @@ export const campaign = {
     egyptus36: {
       id: "egyptus36",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus35",
       roomAbove: "egyptus37",
@@ -11614,6 +11993,7 @@ export const campaign = {
     egyptus37: {
       id: "egyptus37",
       floor: "none",
+      floorSkip: [],
       planet: "egyptus",
       roomBelow: "egyptus36",
       size: { x: 2, y: 8 },
@@ -11653,6 +12033,7 @@ export const campaign = {
     egyptus38: {
       id: "egyptus38",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -11772,6 +12153,7 @@ export const campaign = {
     egyptus39crown: {
       id: "egyptus39crown",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: { right: { ordinal: 3, z: 0, toRoom: "egyptus38" } },
@@ -11869,6 +12251,7 @@ export const campaign = {
     egyptus4: {
       id: "egyptus4",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -11988,6 +12371,7 @@ export const campaign = {
     egyptus5: {
       id: "egyptus5",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
       doors: {
@@ -12060,6 +12444,7 @@ export const campaign = {
     egyptus6: {
       id: "egyptus6",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -12125,6 +12510,7 @@ export const campaign = {
     egyptus7: {
       id: "egyptus7",
       floor: "deadly",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -12205,6 +12591,7 @@ export const campaign = {
     egyptus8: {
       id: "egyptus8",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
       doors: {
@@ -12315,6 +12702,7 @@ export const campaign = {
     egyptus9fish: {
       id: "egyptus9fish",
       floor: "egyptus",
+      floorSkip: [],
       planet: "egyptus",
       size: { x: 4, y: 8 },
       doors: {
@@ -12401,6 +12789,7 @@ export const campaign = {
     finalroom: {
       id: "finalroom",
       floor: "jail",
+      floorSkip: [],
       planet: "jail",
       size: { x: 12, y: 8 },
       doors: {},
@@ -12503,6 +12892,7 @@ export const campaign = {
     moonbase1: {
       id: "moonbase1",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -12702,6 +13092,7 @@ export const campaign = {
     moonbase10: {
       id: "moonbase10",
       floor: "deadly",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -12762,6 +13153,7 @@ export const campaign = {
     moonbase11: {
       id: "moonbase11",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 2, y: 8 },
       doors: {
@@ -12788,6 +13180,7 @@ export const campaign = {
     moonbase12: {
       id: "moonbase12",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -12871,6 +13264,7 @@ export const campaign = {
     moonbase13: {
       id: "moonbase13",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 4, y: 8 },
       doors: {
@@ -12938,6 +13332,7 @@ export const campaign = {
     moonbase14: {
       id: "moonbase14",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
       doors: {
@@ -13025,6 +13420,7 @@ export const campaign = {
     moonbase15: {
       id: "moonbase15",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
       doors: {
@@ -13057,6 +13453,7 @@ export const campaign = {
     moonbase16: {
       id: "moonbase16",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 12, y: 6 },
       doors: {
@@ -13177,6 +13574,7 @@ export const campaign = {
     moonbase17: {
       id: "moonbase17",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase16" } },
@@ -13211,6 +13609,7 @@ export const campaign = {
     moonbase18: {
       id: "moonbase18",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase12" } },
@@ -13245,6 +13644,7 @@ export const campaign = {
     moonbase19: {
       id: "moonbase19",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
       doors: {
@@ -13301,6 +13701,7 @@ export const campaign = {
     moonbase2: {
       id: "moonbase2",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 6 },
       doors: {
@@ -13391,6 +13792,7 @@ export const campaign = {
     moonbase20: {
       id: "moonbase20",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -13478,6 +13880,7 @@ export const campaign = {
     moonbase21tosafari: {
       id: "moonbase21tosafari",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
       doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase20" } },
@@ -13605,6 +14008,7 @@ export const campaign = {
     moonbase22topenitentiary: {
       id: "moonbase22topenitentiary",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase20" } },
@@ -13708,6 +14112,7 @@ export const campaign = {
     moonbase23: {
       id: "moonbase23",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -13795,6 +14200,7 @@ export const campaign = {
     moonbase24toegyptus: {
       id: "moonbase24toegyptus",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: { towards: { ordinal: 3, z: 0, toRoom: "moonbase23" } },
@@ -13991,6 +14397,7 @@ export const campaign = {
     moonbase25tobookworld: {
       id: "moonbase25tobookworld",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: { away: { ordinal: 3, z: 0, toRoom: "moonbase23" } },
@@ -14187,6 +14594,7 @@ export const campaign = {
     moonbase26: {
       id: "moonbase26",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
       doors: {
@@ -14248,6 +14656,7 @@ export const campaign = {
     moonbase27: {
       id: "moonbase27",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 2, y: 8 },
       doors: {
@@ -14274,6 +14683,7 @@ export const campaign = {
     moonbase28: {
       id: "moonbase28",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: {
@@ -14299,6 +14709,7 @@ export const campaign = {
     moonbase29: {
       id: "moonbase29",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: { right: { ordinal: 3, z: 0, toRoom: "moonbase28" } },
@@ -14495,6 +14906,7 @@ export const campaign = {
     moonbase3: {
       id: "moonbase3",
       floor: "deadly",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -14601,6 +15013,7 @@ export const campaign = {
     moonbase30: {
       id: "moonbase30",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: {
@@ -14617,6 +15030,7 @@ export const campaign = {
     moonbase31: {
       id: "moonbase31",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { right: { ordinal: 2, z: 0, toRoom: "moonbase30" } },
@@ -14651,6 +15065,7 @@ export const campaign = {
     moonbase32: {
       id: "moonbase32",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: { away: { ordinal: 3, z: 0, toRoom: "moonbase33triple" } },
@@ -14847,6 +15262,62 @@ export const campaign = {
     moonbase33triple: {
       id: "moonbase33triple",
       floor: "moonbase",
+      floorSkip: [
+        { x: 5, y: 3 },
+        { x: 5, y: 2 },
+        { x: 5, y: 1 },
+        { x: 5, y: 0 },
+        { x: 5, y: -1 },
+        { x: 5, y: -2 },
+        { x: 5, y: -3 },
+        { x: 5, y: -4 },
+        { x: 5, y: -5 },
+        { x: 4, y: 3 },
+        { x: 4, y: 2 },
+        { x: 4, y: 1 },
+        { x: 4, y: 0 },
+        { x: 4, y: -1 },
+        { x: 4, y: -2 },
+        { x: 4, y: -3 },
+        { x: 4, y: -4 },
+        { x: 4, y: -5 },
+        { x: 3, y: 3 },
+        { x: 3, y: 2 },
+        { x: 3, y: 1 },
+        { x: 3, y: 0 },
+        { x: 3, y: -1 },
+        { x: 3, y: -2 },
+        { x: 3, y: -3 },
+        { x: 3, y: -4 },
+        { x: 3, y: -5 },
+        { x: 2, y: 3 },
+        { x: 2, y: 2 },
+        { x: 2, y: 1 },
+        { x: 2, y: 0 },
+        { x: 2, y: -1 },
+        { x: 2, y: -2 },
+        { x: 2, y: -3 },
+        { x: 2, y: -4 },
+        { x: 2, y: -5 },
+        { x: 1, y: 3 },
+        { x: 1, y: 2 },
+        { x: 1, y: 1 },
+        { x: 1, y: 0 },
+        { x: 1, y: -1 },
+        { x: 1, y: -2 },
+        { x: 1, y: -3 },
+        { x: 1, y: -4 },
+        { x: 1, y: -5 },
+        { x: 0, y: 3 },
+        { x: 0, y: 2 },
+        { x: 0, y: 1 },
+        { x: 0, y: 0 },
+        { x: 0, y: -1 },
+        { x: 0, y: -2 },
+        { x: 0, y: -3 },
+        { x: 0, y: -4 },
+        { x: 0, y: -5 },
+      ],
       planet: "moonbase",
       size: { x: 12, y: 16 },
       doors: {
@@ -14960,6 +15431,46 @@ export const campaign = {
           position: { x: 11, y: 9, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 5, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 4, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 3, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 2, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 1, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "coil" },
+          position: { x: 0, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 6, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 5, z: 0 },
@@ -14968,6 +15479,11 @@ export const campaign = {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 5, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 5, z: 0 },
         },
         {
           type: "deadly-block",
@@ -14980,6 +15496,11 @@ export const campaign = {
           position: { x: 6, y: 4, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 4, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 3, z: 0 },
@@ -14988,6 +15509,11 @@ export const campaign = {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 3, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 3, z: 0 },
         },
         {
           type: "deadly-block",
@@ -15000,9 +15526,24 @@ export const campaign = {
           position: { x: 6, y: 2, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 2, z: 0 },
+        },
+        {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 1, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 1, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "coil" },
+          position: { x: 5, y: 0, z: 0 },
         },
         {
           type: "baddie",
@@ -15169,6 +15710,7 @@ export const campaign = {
     moonbase34: {
       id: "moonbase34",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 4 },
       doors: {
@@ -15251,6 +15793,7 @@ export const campaign = {
     moonbase35: {
       id: "moonbase35",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase34" } },
@@ -15381,6 +15924,7 @@ export const campaign = {
     moonbase36: {
       id: "moonbase36",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase33triple" } },
@@ -15511,6 +16055,7 @@ export const campaign = {
     moonbase4: {
       id: "moonbase4",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -15661,6 +16206,7 @@ export const campaign = {
     moonbase5: {
       id: "moonbase5",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 4, y: 8 },
       doors: {
@@ -15702,6 +16248,7 @@ export const campaign = {
     moonbase6: {
       id: "moonbase6",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -15807,6 +16354,7 @@ export const campaign = {
     moonbase7: {
       id: "moonbase7",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: {
@@ -15947,6 +16495,7 @@ export const campaign = {
     moonbase8: {
       id: "moonbase8",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
       doors: { left: { ordinal: 3, z: 0, toRoom: "moonbase7" } },
@@ -16079,6 +16628,7 @@ export const campaign = {
     moonbase9: {
       id: "moonbase9",
       floor: "moonbase",
+      floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
       doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase10" } },
@@ -16113,6 +16663,7 @@ export const campaign = {
     penitentiary1: {
       id: "penitentiary1",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 6, y: 8 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "penitentiary2" } },
@@ -16156,6 +16707,7 @@ export const campaign = {
     penitentiary10: {
       id: "penitentiary10",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary9",
       size: { x: 2, y: 8 },
@@ -16195,6 +16747,7 @@ export const campaign = {
     penitentiary11: {
       id: "penitentiary11",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 6, y: 6 },
       doors: {
@@ -16232,6 +16785,7 @@ export const campaign = {
     penitentiary12: {
       id: "penitentiary12",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -16307,6 +16861,7 @@ export const campaign = {
     penitentiary13: {
       id: "penitentiary13",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       roomAbove: "penitentiary14",
       size: { x: 8, y: 4 },
@@ -16392,6 +16947,7 @@ export const campaign = {
     penitentiary14: {
       id: "penitentiary14",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary13",
       roomAbove: "penitentiary15",
@@ -16517,6 +17073,7 @@ export const campaign = {
     penitentiary15: {
       id: "penitentiary15",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary14",
       roomAbove: "penitentiary16",
@@ -16756,6 +17313,7 @@ export const campaign = {
     penitentiary16: {
       id: "penitentiary16",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary15",
       roomAbove: "penitentiary17",
@@ -16850,6 +17408,7 @@ export const campaign = {
     penitentiary17: {
       id: "penitentiary17",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary16",
       size: { x: 8, y: 8 },
@@ -16963,6 +17522,7 @@ export const campaign = {
     penitentiary18fish: {
       id: "penitentiary18fish",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 16, y: 6 },
       doors: {
@@ -17097,6 +17657,7 @@ export const campaign = {
     penitentiary19: {
       id: "penitentiary19",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 4, y: 8 },
       doors: {
@@ -17138,6 +17699,7 @@ export const campaign = {
     penitentiary2: {
       id: "penitentiary2",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -17232,6 +17794,7 @@ export const campaign = {
     penitentiary20: {
       id: "penitentiary20",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       roomAbove: "penitentiary21",
       size: { x: 6, y: 6 },
@@ -17288,6 +17851,7 @@ export const campaign = {
     penitentiary21: {
       id: "penitentiary21",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary20",
       roomAbove: "penitentiary22",
@@ -17522,6 +18086,7 @@ export const campaign = {
     penitentiary22: {
       id: "penitentiary22",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary21",
       roomAbove: "penitentiary23",
@@ -17741,6 +18306,7 @@ export const campaign = {
     penitentiary23: {
       id: "penitentiary23",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary22",
       roomAbove: "penitentiary24",
@@ -17935,6 +18501,7 @@ export const campaign = {
     penitentiary24: {
       id: "penitentiary24",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary23",
       size: { x: 8, y: 8 },
@@ -17973,6 +18540,7 @@ export const campaign = {
     penitentiary25: {
       id: "penitentiary25",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 2, y: 8 },
       doors: {
@@ -17998,6 +18566,7 @@ export const campaign = {
     penitentiary26: {
       id: "penitentiary26",
       floor: "deadly",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -18063,6 +18632,7 @@ export const campaign = {
     penitentiary27: {
       id: "penitentiary27",
       floor: "deadly",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 2 },
       doors: {
@@ -18119,6 +18689,7 @@ export const campaign = {
     penitentiary28: {
       id: "penitentiary28",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -18173,6 +18744,7 @@ export const campaign = {
     penitentiary29: {
       id: "penitentiary29",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary31",
       size: { x: 8, y: 2 },
@@ -18267,6 +18839,7 @@ export const campaign = {
     penitentiary3: {
       id: "penitentiary3",
       floor: "deadly",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -18344,6 +18917,7 @@ export const campaign = {
     penitentiary30: {
       id: "penitentiary30",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 4 },
       doors: { away: { ordinal: 3, z: 0, toRoom: "penitentiary28" } },
@@ -18417,6 +18991,7 @@ export const campaign = {
     penitentiary31: {
       id: "penitentiary31",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary32",
       roomAbove: "penitentiary30",
@@ -18527,6 +19102,7 @@ export const campaign = {
     penitentiary32: {
       id: "penitentiary32",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       roomAbove: "penitentiary31",
       size: { x: 8, y: 2 },
@@ -18626,6 +19202,7 @@ export const campaign = {
     penitentiary33: {
       id: "penitentiary33",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: {
@@ -18745,6 +19322,7 @@ export const campaign = {
     penitentiary34crown: {
       id: "penitentiary34crown",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
       doors: { away: { ordinal: 3, z: 1, toRoom: "penitentiary33" } },
@@ -18842,6 +19420,7 @@ export const campaign = {
     penitentiary4: {
       id: "penitentiary4",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       roomAbove: "penitentiary5",
       size: { x: 6, y: 6 },
@@ -18897,6 +19476,7 @@ export const campaign = {
     penitentiary5: {
       id: "penitentiary5",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary4",
       roomAbove: "penitentiary6",
@@ -18943,6 +19523,7 @@ export const campaign = {
     penitentiary6: {
       id: "penitentiary6",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary5",
       size: { x: 6, y: 6 },
@@ -18998,6 +19579,7 @@ export const campaign = {
     penitentiary7: {
       id: "penitentiary7",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 6 },
       doors: {
@@ -19049,6 +19631,7 @@ export const campaign = {
     penitentiary8: {
       id: "penitentiary8",
       floor: "penitentiary",
+      floorSkip: [],
       planet: "penitentiary",
       roomAbove: "penitentiary9",
       size: { x: 2, y: 8 },
@@ -19113,6 +19696,7 @@ export const campaign = {
     penitentiary9: {
       id: "penitentiary9",
       floor: "none",
+      floorSkip: [],
       planet: "penitentiary",
       roomBelow: "penitentiary8",
       roomAbove: "penitentiary10",
@@ -19143,6 +19727,7 @@ export const campaign = {
     safari1: {
       id: "safari1",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 8 },
       doors: { away: { ordinal: 2, z: 0, toRoom: "safari2" } },
@@ -19186,6 +19771,7 @@ export const campaign = {
     safari10: {
       id: "safari10",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       roomAbove: "safari9",
       size: { x: 8, y: 6 },
@@ -19301,6 +19887,7 @@ export const campaign = {
     safari11: {
       id: "safari11",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
       doors: {
@@ -19323,6 +19910,7 @@ export const campaign = {
     safari12: {
       id: "safari12",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       roomAbove: "safari13",
       size: { x: 8, y: 6 },
@@ -19462,6 +20050,7 @@ export const campaign = {
     safari13: {
       id: "safari13",
       floor: "none",
+      floorSkip: [],
       planet: "safari",
       roomBelow: "safari12",
       size: { x: 8, y: 6 },
@@ -19519,6 +20108,7 @@ export const campaign = {
     safari14: {
       id: "safari14",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -19594,6 +20184,7 @@ export const campaign = {
     safari15: {
       id: "safari15",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 16 },
       doors: {
@@ -19698,6 +20289,7 @@ export const campaign = {
     safari16: {
       id: "safari16",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
       doors: {
@@ -19792,6 +20384,7 @@ export const campaign = {
     safari17fish: {
       id: "safari17fish",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -19916,6 +20509,7 @@ export const campaign = {
     safari18: {
       id: "safari18",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 16 },
       doors: {
@@ -20025,6 +20619,57 @@ export const campaign = {
     safari19triple: {
       id: "safari19triple",
       floor: "safari",
+      floorSkip: [
+        { x: 16, y: 16 },
+        { x: 16, y: 15 },
+        { x: 16, y: 14 },
+        { x: 16, y: 13 },
+        { x: 16, y: 12 },
+        { x: 16, y: 11 },
+        { x: 16, y: 10 },
+        { x: 15, y: 16 },
+        { x: 15, y: 15 },
+        { x: 15, y: 14 },
+        { x: 15, y: 13 },
+        { x: 15, y: 12 },
+        { x: 15, y: 11 },
+        { x: 14, y: 16 },
+        { x: 14, y: 15 },
+        { x: 14, y: 14 },
+        { x: 14, y: 13 },
+        { x: 14, y: 12 },
+        { x: 14, y: 11 },
+        { x: 13, y: 16 },
+        { x: 13, y: 15 },
+        { x: 13, y: 14 },
+        { x: 13, y: 13 },
+        { x: 13, y: 12 },
+        { x: 13, y: 11 },
+        { x: 12, y: 16 },
+        { x: 12, y: 15 },
+        { x: 12, y: 14 },
+        { x: 12, y: 13 },
+        { x: 12, y: 12 },
+        { x: 12, y: 11 },
+        { x: 11, y: 16 },
+        { x: 11, y: 15 },
+        { x: 11, y: 14 },
+        { x: 11, y: 13 },
+        { x: 11, y: 12 },
+        { x: 11, y: 11 },
+        { x: 10, y: 16 },
+        { x: 10, y: 15 },
+        { x: 10, y: 14 },
+        { x: 10, y: 13 },
+        { x: 10, y: 12 },
+        { x: 10, y: 11 },
+        { x: 9, y: 16 },
+        { x: 9, y: 15 },
+        { x: 9, y: 14 },
+        { x: 9, y: 13 },
+        { x: 9, y: 12 },
+        { x: 9, y: 11 },
+      ],
       planet: "safari",
       size: { x: 16, y: 10 },
       doors: {
@@ -20066,9 +20711,24 @@ export const campaign = {
       },
       items: [
         {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 8, y: 9, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "wall" },
+          position: { x: 8, y: 8, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 8, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "window" },
+          position: { x: 8, y: 7, z: 0 },
         },
         {
           type: "block",
@@ -20076,9 +20736,64 @@ export const campaign = {
           position: { x: 6, y: 7, z: 0 },
         },
         {
+          type: "wall",
+          config: { side: "left", style: "window" },
+          position: { x: 8, y: 6, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "wall" },
+          position: { x: 8, y: 5, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 15, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "window" },
+          position: { x: 14, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 13, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 12, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 11, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 10, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "window" },
+          position: { x: 9, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 8, y: 4, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 8, y: 4, z: 0 },
         },
         {
           type: "portable-block",
@@ -20202,6 +20917,7 @@ export const campaign = {
     safari2: {
       id: "safari2",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -20312,6 +21028,7 @@ export const campaign = {
     safari20: {
       id: "safari20",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
       doors: {
@@ -20338,6 +21055,7 @@ export const campaign = {
     safari21: {
       id: "safari21",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: { right: { ordinal: 3, z: 0, toRoom: "safari20" } },
@@ -20415,6 +21133,7 @@ export const campaign = {
     safari22: {
       id: "safari22",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 8 },
       doors: {
@@ -20476,6 +21195,7 @@ export const campaign = {
     safari23: {
       id: "safari23",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
       doors: {
@@ -20554,6 +21274,7 @@ export const campaign = {
     safari24: {
       id: "safari24",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 6 },
       doors: {
@@ -20625,6 +21346,7 @@ export const campaign = {
     safari25: {
       id: "safari25",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -20675,6 +21397,7 @@ export const campaign = {
     safari26: {
       id: "safari26",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 12 },
       doors: {
@@ -20945,6 +21668,7 @@ export const campaign = {
     safari27: {
       id: "safari27",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 6 },
       doors: {
@@ -20987,6 +21711,7 @@ export const campaign = {
     safari28: {
       id: "safari28",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -21032,6 +21757,7 @@ export const campaign = {
     safari29: {
       id: "safari29",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -21087,6 +21813,7 @@ export const campaign = {
     safari3: {
       id: "safari3",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
       doors: {
@@ -21138,6 +21865,7 @@ export const campaign = {
     safari30: {
       id: "safari30",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 8 },
       doors: {
@@ -21163,6 +21891,7 @@ export const campaign = {
     safari31: {
       id: "safari31",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -21328,6 +22057,7 @@ export const campaign = {
     safari32: {
       id: "safari32",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 2 },
       doors: {
@@ -21353,6 +22083,7 @@ export const campaign = {
     safari33: {
       id: "safari33",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       roomAbove: "safari36",
       size: { x: 8, y: 8 },
@@ -21415,6 +22146,7 @@ export const campaign = {
     safari34: {
       id: "safari34",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       roomAbove: "safari35",
       size: { x: 8, y: 8 },
@@ -21548,6 +22280,7 @@ export const campaign = {
     safari35: {
       id: "safari35",
       floor: "none",
+      floorSkip: [],
       planet: "safari",
       roomBelow: "safari34",
       size: { x: 8, y: 8 },
@@ -21636,6 +22369,7 @@ export const campaign = {
     safari36: {
       id: "safari36",
       floor: "none",
+      floorSkip: [],
       planet: "safari",
       roomBelow: "safari33",
       size: { x: 8, y: 8 },
@@ -21714,6 +22448,7 @@ export const campaign = {
     safari37crown: {
       id: "safari37crown",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: { towards: { ordinal: 3, z: 0, toRoom: "safari33" } },
@@ -21896,6 +22631,7 @@ export const campaign = {
     safari4: {
       id: "safari4",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
       doors: {
@@ -21972,6 +22708,7 @@ export const campaign = {
     safari5: {
       id: "safari5",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 4 },
       doors: {
@@ -22004,6 +22741,47 @@ export const campaign = {
     safari6triple: {
       id: "safari6triple",
       floor: "deadly",
+      floorSkip: [
+        { x: 12, y: 12 },
+        { x: 12, y: 11 },
+        { x: 12, y: 10 },
+        { x: 12, y: 9 },
+        { x: 12, y: 8 },
+        { x: 12, y: 7 },
+        { x: 12, y: 6 },
+        { x: 11, y: 12 },
+        { x: 11, y: 11 },
+        { x: 11, y: 10 },
+        { x: 11, y: 9 },
+        { x: 11, y: 8 },
+        { x: 11, y: 7 },
+        { x: 10, y: 12 },
+        { x: 10, y: 11 },
+        { x: 10, y: 10 },
+        { x: 10, y: 9 },
+        { x: 10, y: 8 },
+        { x: 10, y: 7 },
+        { x: 9, y: 12 },
+        { x: 9, y: 11 },
+        { x: 9, y: 10 },
+        { x: 9, y: 9 },
+        { x: 9, y: 8 },
+        { x: 9, y: 7 },
+        { x: 8, y: 12 },
+        { x: 8, y: 11 },
+        { x: 8, y: 10 },
+        { x: 8, y: 9 },
+        { x: 8, y: 8 },
+        { x: 8, y: 7 },
+        { x: 7, y: 12 },
+        { x: 7, y: 11 },
+        { x: 7, y: 10 },
+        { x: 7, y: 9 },
+        { x: 7, y: 8 },
+        { x: 7, y: 7 },
+        { x: 6, y: 12 },
+        { x: -1, y: 12 },
+      ],
       planet: "safari",
       size: { x: 12, y: 12 },
       doors: {
@@ -22043,9 +22821,19 @@ export const campaign = {
       },
       items: [
         {
+          type: "wall",
+          config: { side: "left", style: "wall" },
+          position: { x: 6, y: 11, z: 0 },
+        },
+        {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 11, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 6, y: 10, z: 0 },
         },
         {
           type: "block",
@@ -22066,6 +22854,36 @@ export const campaign = {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "shield" },
+          position: { x: 6, y: 7, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 11, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 10, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "shield" },
+          position: { x: 7, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "away", style: "wall" },
+          position: { x: 6, y: 6, z: 0 },
+        },
+        {
+          type: "wall",
+          config: { side: "left", style: "wall" },
+          position: { x: 6, y: 6, z: 0 },
         },
         {
           type: "block",
@@ -22178,6 +22996,7 @@ export const campaign = {
     safari7: {
       id: "safari7",
       floor: "deadly",
+      floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
       doors: {
@@ -22241,6 +23060,7 @@ export const campaign = {
     safari8: {
       id: "safari8",
       floor: "safari",
+      floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 2 },
       doors: {
@@ -22266,6 +23086,7 @@ export const campaign = {
     safari9: {
       id: "safari9",
       floor: "none",
+      floorSkip: [],
       planet: "safari",
       roomBelow: "safari10",
       size: { x: 8, y: 6 },

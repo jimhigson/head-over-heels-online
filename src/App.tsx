@@ -16,7 +16,7 @@ export const App = <RoomId extends string>({
 
   return (
     <>
-      <div className="absolute top-2 right-2 flex flex-col">
+      <div className="absolute bottom-2 right-2 flex flex-col">
         <RoomSelect gameApi={gameApi ?? undefined} />
         <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
           Room JSON to console

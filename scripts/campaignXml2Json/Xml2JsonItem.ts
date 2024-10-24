@@ -10,6 +10,8 @@ export type Xml2JsonItem = {
       class: "door";
       where: CompassDirections;
     }
+  //| Xml2JsonWallItem having this in the union this messes up discriminated unions since
+  // there's nothing good to discriminate on
   | {
       kind:
         | "teleport"

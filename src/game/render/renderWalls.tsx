@@ -1,11 +1,12 @@
 import { Container } from "pixi.js";
-import { PlanetName, RoomJson, wallTextureId } from "../../modelTypes";
+import { PlanetName, RoomJson } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortals } from "./makeClickPortal";
 import { RenderOptions } from "../gameMain";
 import { renderDoor } from "./renderDoor";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
+import { wallTextureId } from "./wallTextureId";
 
 export function* renderWalls<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,

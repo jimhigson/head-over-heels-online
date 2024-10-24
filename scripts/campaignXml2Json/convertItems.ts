@@ -1,11 +1,14 @@
 import { ItemConfig, UnknownItem } from "../../src/Item";
-import {
-  LooseDoorMap,
-  map,
-  convertXYZ,
-  convertDirection,
-} from "./convertCampaign";
+import { PlanetName } from "../../src/modelTypes";
+import { LooseDoorMap, map, convertXYZ } from "./convertCampaign";
+import { convertDirection } from "./convertDirection";
+import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
+import {
+  convertWallName,
+  isWallName,
+  parseXmlWallName,
+} from "./convertWallName";
 import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 
@@ -22,7 +25,10 @@ const baddieConversions = {
   turtle: "turtle",
   "throne-guard": "flying-ball",
   "bighead-robot": "computer-bot",
-} as const satisfies Record<string, ItemConfig<string>["baddie"]["which"]>;
+} as const satisfies Record<
+  string,
+  ItemConfig<PlanetName, string>["baddie"]["which"]
+>;
 
 export const convertItems = (
   roomName: string,
@@ -39,6 +45,23 @@ export const convertItems = (
         item.kind.includes("door")
       ) {
         return undefined;
+      }
+
+      // walls don't use 'kind' like other items - the kind is the name of the
+      // picture on the wall tile:
+      if (isWallName(item.kind)) {
+        const planetName = convertPlanetName(xml2JsonRoom.scenery);
+        // Xml2JsonWallItem has to be kept out of the wall union since it can have any string value
+        // and stops us from discriminating unions properly
+
+        return {
+          type: "wall",
+          config: {
+            side: parseXmlWallName(item.kind).axis === "x" ? "away" : "left",
+            style: convertWallName(planetName, item.kind),
+          },
+          position,
+        };
       }
 
       switch (item.kind) {
@@ -77,7 +100,7 @@ export const convertItems = (
         case "brick2": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<string>["block"]["style"]
+            ItemConfig<PlanetName, string>["block"]["style"]
           > = {
             brick1: "artificial",
             brick2: "organic",
@@ -99,7 +122,7 @@ export const convertItems = (
         case "vulcano": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<string>["deadly-block"]["style"]
+            ItemConfig<PlanetName, string>["deadly-block"]["style"]
           > = {
             vulcano: "volcano",
             spikes: "spikes",
@@ -135,7 +158,7 @@ export const convertItems = (
         case "handbag": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["pickup"]["gives"]
+            ItemConfig<PlanetName, string>["pickup"]["gives"]
           > = {
             horn: "hooter",
             handbag: "bag",
@@ -195,7 +218,7 @@ export const convertItems = (
         case "stool": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["movable-block"]["style"]
+            ItemConfig<PlanetName, string>["movable-block"]["style"]
           > = {
             cap: "puck",
             stool: "anvil",
@@ -221,7 +244,7 @@ export const convertItems = (
         case "another-portable-brick": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["portable-block"]["style"]
+            ItemConfig<PlanetName, string>["portable-block"]["style"]
           > = {
             drum: "drum",
             "another-portable-brick": "cube",

@@ -7,7 +7,7 @@ export const makeClickPortal = <RoomId extends string>(
   ...sprite: Container[]
 ) => {
   sprite.forEach((sprite) =>
-    sprite.on("click", () => {
+    sprite.on("pointertap", () => {
       onPortalClick(toRoom);
     }),
   );
