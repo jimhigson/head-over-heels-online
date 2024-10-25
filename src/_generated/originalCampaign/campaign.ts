@@ -1671,7 +1671,7 @@ export const campaign = {
         },
         "door@3,8,1:1G5tJ8": {
           config: { axis: "x", toRoom: "blacktooth22" },
-          position: { x: 3, y: 8, z: 1 },
+          position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
         "fish@7,4,3:ZyDpHa": {
