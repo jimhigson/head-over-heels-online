@@ -1,6 +1,7 @@
 import { UnknownItem } from "@/Item";
 import { LoadedRoom, RoomJson } from "@/modelTypes";
 import { PlanetName } from "@/sprites/planets";
+import { blockXyzToFineXyz } from "../render/projectToScreen";
 
 function* expandWalls<R extends string>(
   room: RoomJson<PlanetName, R>,
@@ -14,20 +15,6 @@ function* expandWalls<R extends string>(
   }
 
   for (let xi = room.size.x - 1; xi >= 0; xi--) {
-    if (
-      // this is a slow search but it is ok to do at room load time
-      // (not render time)
-      Object.values(room.items).find(
-        (i) =>
-          i.type === "door" &&
-          room.size.y === i.position.y &&
-          i.position.x === xi - 1,
-      )
-    ) {
-      xi--; // skip the next one too
-      continue;
-    }
-
     yield {
       type: "wall",
       config: { side: "away", style: room.walls.away[xi] },
@@ -36,7 +23,7 @@ function* expandWalls<R extends string>(
   }
 }
 
-function* expandDoors<R extends string>(
+function* expandItems<R extends string>(
   items: UnknownItem<R>[],
 ): Generator<UnknownItem<R>> {
   for (const item of items.values()) {
@@ -88,14 +75,28 @@ function* expandDoors<R extends string>(
   }
 }
 
+// moves everything from its 'block' position to its pixel xyz position
+function* positionItems<R extends string>(
+  items: Iterable<UnknownItem<R>>,
+): Generator<UnknownItem<R>> {
+  for (const i of items) {
+    yield {
+      ...i,
+      position: blockXyzToFineXyz(i.position),
+    };
+  }
+}
+
 export const loadRoom = <P extends PlanetName, R extends string>(
   roomJson: RoomJson<P, R>,
 ): LoadedRoom<P, R> => {
   return {
     ...roomJson,
     items: [
-      ...expandDoors(Object.values(roomJson.items)),
-      ...expandWalls(roomJson),
+      ...positionItems([
+        ...expandItems(Object.values(roomJson.items)),
+        ...expandWalls(roomJson),
+      ]),
     ],
   };
 };

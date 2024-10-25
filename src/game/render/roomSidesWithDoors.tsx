@@ -16,13 +16,13 @@ export const roomSidesWithDoors = (room: AnyLoadedRoom): SidesWithDoors => {
     position: { x, y },
   } of doorIter) {
     if (axis === "x") {
-      if (y === -0.5) {
+      if (y < 0) {
         result.towards = true;
       } else if (y === room.size.y) {
         result.away = true;
       }
     } else {
-      if (x === -0.5) {
+      if (x < 0) {
         result.right = true;
       } else if (x === room.size.x) {
         result.left = true;

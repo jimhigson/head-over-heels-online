@@ -14,15 +14,20 @@ export const projectToScreen = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>): Xyz => {
   };
 };
 
-/* position on 2d screen for a given xyz in game-space block position */
-export const projectBlockToScreen = ({
+/** get the in-game x,y,z for any given block x,y,z */
+export const blockXyzToFineXyz = ({
   x = 0,
   y = 0,
   z = 0,
 }: Partial<Xyz>): Xyz => {
-  return projectToScreen({
+  return {
     x: x * blockSizePx.w,
     y: y * blockSizePx.d,
     z: z * blockSizePx.h,
-  });
+  };
+};
+
+/* position on 2d screen for a given xyz in game-space block position */
+export const projectBlockToScreen = (blockXyz: Partial<Xyz>): Xyz => {
+  return projectToScreen(blockXyzToFineXyz(blockXyz));
 };

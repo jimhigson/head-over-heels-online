@@ -5,7 +5,7 @@ import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import { RenderOptions, paletteSwapFilters } from "../gameMain";
 import { createSprite } from "./createSprite";
-import { moveSpriteToBlock } from "./moveSpriteToBlock";
+import { moveSpriteToBlockXyz } from "./positionSprite";
 import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockToScreen } from "./projectToScreen";
@@ -19,8 +19,6 @@ export function* renderFloor<RoomId extends string>(
 ): Generator<Container, undefined, undefined> {
   const { towards: hasDoorTowards, right: hasDoorRight } =
     roomSidesWithDoors(room);
-
-  console.log("renderFloor -sides with doors", roomSidesWithDoors(room));
 
   const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
     renderExtent(room);
@@ -49,7 +47,7 @@ export function* renderFloor<RoomId extends string>(
         }
 
         tilesContainer.addChild(
-          moveSpriteToBlock(
+          moveSpriteToBlockXyz(
             { x: ix, y: iy },
             createSprite({
               anchor: { x: 0.5, y: 1 },
@@ -78,7 +76,7 @@ export function* renderFloor<RoomId extends string>(
   const rightEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
     rightEdge.addChild(
-      moveSpriteToBlock(
+      moveSpriteToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
           pivot: { x: 7, y: 1 },
@@ -91,7 +89,7 @@ export function* renderFloor<RoomId extends string>(
   const towardsEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
     towardsEdge.addChild(
-      moveSpriteToBlock(
+      moveSpriteToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
         createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),

@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { AnyLoadedRoom, LoadedRoom } from "../../modelTypes";
 import { RenderOptions } from "../gameMain";
 import { makeClickPortal } from "./makeClickPortal";
-import { moveSpriteToBlock } from "./moveSpriteToBlock";
+import { moveSpriteToXyz } from "./positionSprite";
 import { itemAppearances } from "../../ItemAppearances";
 import { JsonItem, ItemType } from "../../Item";
 import { PlanetName } from "@/sprites/planets";
@@ -27,7 +27,7 @@ export function* renderItems<RoomId extends string>(
   for (const item of room.items) {
     const sprite = renderItem(item, room);
 
-    moveSpriteToBlock(item.position, sprite, { giveZIndex: true });
+    moveSpriteToXyz(item.position, sprite, { giveZIndex: true });
 
     if (
       item.type === "teleporter" ||
