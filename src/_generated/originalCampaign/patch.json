@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/movable-block@1,3,1"
+  },
+  {
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/movable-block@1,4,1"
+  },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@1,3,0" },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@2,3,0" },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@3,3,0" },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@1,4,0" },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@2,4,0" },
+  { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@3,4,0" },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/heels",
+    "value": {
+      "type": "player",
+      "config": { "which": "heels" },
+      "position": { "x": 3.5, "y": 3.5, "z": 0 }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth1head/items/head",
+    "value": {
+      "type": "player",
+      "config": { "which": "head" },
+      "position": { "x": 2.5, "y": 3.5, "z": 0 }
+    }
+  }
+]

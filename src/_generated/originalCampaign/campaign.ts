@@ -1498,6 +1498,11 @@ export const campaign = {
           config: { axis: "y", toRoom: "blacktooth23heels" },
           position: { x: 0, y: 3, z: 0 },
         },
+        "head": {
+          type: "player",
+          config: { which: 'head' },
+          position: { x: 2.5, y: 3.5, z: 0 },
+        },
       },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -1736,6 +1741,11 @@ export const campaign = {
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       },
       items: {
+        "heels": {
+          type: "player",
+          config: { which: 'heels' },
+          position: { x: 3.5, y: 3.5, z: 0 },
+        },
         "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
@@ -1751,40 +1761,10 @@ export const campaign = {
           config: { direction: "away" },
           position: { x: 0, y: 5, z: 0 },
         },
-        "block@3,4,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 3, y: 4, z: 0 },
-        },
-        "block@2,4,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 2, y: 4, z: 0 },
-        },
-        "block@1,4,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 1, y: 4, z: 0 },
-        },
         "conveyor@0,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 4, z: 0 },
-        },
-        "block@3,3,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 3, y: 3, z: 0 },
-        },
-        "block@2,3,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 2, y: 3, z: 0 },
-        },
-        "block@1,3,0": {
-          type: "block",
-          config: { style: "artificial" },
-          position: { x: 1, y: 3, z: 0 },
         },
         "conveyor@0,3,0": {
           type: "conveyor",
@@ -1805,16 +1785,6 @@ export const campaign = {
           type: "teleporter",
           config: { toRoom: "blacktooth24" },
           position: { x: 0, y: 0, z: 0 },
-        },
-        "movable-block@1,4,1": {
-          type: "movable-block",
-          config: { style: "anvil" },
-          position: { x: 1, y: 4, z: 1 },
-        },
-        "movable-block@1,3,1": {
-          type: "movable-block",
-          config: { style: "anvil" },
-          position: { x: 1, y: 3, z: 1 },
         },
         "barrier@4,7,0": {
           type: "barrier",
