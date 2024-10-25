@@ -2,7 +2,7 @@ import { PlanetName } from "../../src/modelTypes";
 import { XmlScenery } from "./readToJson";
 
 export const convertPlanetName = (
-  xmlSceneryName: XmlScenery | undefined
+  xmlSceneryName: XmlScenery | undefined,
 ): PlanetName => {
   switch (xmlSceneryName) {
     case undefined:

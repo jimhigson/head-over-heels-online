@@ -21,6 +21,9 @@ export const App = <RoomId extends string>({
         <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
           Room JSON to console
         </Button>
+        <Button onClick={() => gameApi && console.log(gameApi.roomState)}>
+          Room state to console
+        </Button>
       </div>
       <CampaignGame ref={(api) => setGameApi(api)} />
     </>

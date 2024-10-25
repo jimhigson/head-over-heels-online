@@ -4,10 +4,9 @@ import {
   Xml2JsonRoom,
   roomNameFromXmlFilename,
   XmlFloorKind,
-  Xml2JsonNoFloor,
 } from "./readToJson";
 import { readdir } from "node:fs/promises";
-import { AnyRoom, Direction, Door, Floor, Xy } from "../../src/modelTypes";
+import { AnyRoom, Direction, Floor } from "../../src/modelTypes";
 import { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { convertItems } from "./convertItems";
 import { convertRoomId } from "./convertRoomId";
@@ -15,7 +14,7 @@ import { writeOut } from "./writeOut";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWalls } from "./convertWalls";
-import { convertDoors } from "./convertDoors";
+import { SidesWithDoors, xmlRoomSidesWithDoors } from "./convertDoors";
 
 export const map = await readMapToJson();
 
@@ -27,7 +26,7 @@ const allRoomNames = (await readdir("gamedata-map-xml"))
  * a door map that can be used to just know if there is a door on a side, not necessarily
  * to have the door object
  */
-export type LooseDoorMap = Partial<Record<Direction, Door<string> | true>>;
+export type LooseDoorMap = Partial<Record<Direction, true>>;
 
 export const convertX = (
   xmlX: number | string,
@@ -98,11 +97,14 @@ const basicColor = (color: string) => {
   return /([^.]*)(?:\.reduced)?/.exec(color)![1] as ZxSpectrumRoomColour;
 };
 
-const convertFloorSkip = (roomXmlJson: Xml2JsonRoom, doorMap: LooseDoorMap) => {
+const convertFloorSkip = (
+  roomXmlJson: Xml2JsonRoom,
+  sidesWithDoors: SidesWithDoors,
+) => {
   return (
     roomXmlJson.nofloor?.map((nf) => ({
-      x: convertX(nf._attributes.x, roomXmlJson, doorMap),
-      y: convertX(nf._attributes.y, roomXmlJson, doorMap),
+      x: convertX(nf._attributes.x, roomXmlJson, sidesWithDoors),
+      y: convertX(nf._attributes.y, roomXmlJson, sidesWithDoors),
     })) ?? []
   );
 };
@@ -111,15 +113,15 @@ const convertRoomJson = async (xmlRoomName: string) => {
   const roomXmlJson = await readRoomToJson(xmlRoomName);
   const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomXmlJson;
 
+  const roomSidesWithDoors = xmlRoomSidesWithDoors(roomXmlJson);
+
   const roomOnMap = map[xmlRoomName];
   if (roomOnMap === undefined) {
     throw new Error(`${xmlRoomName} not on the map`);
   }
 
-  const doorMap = convertDoors(xmlRoomName, roomXmlJson);
-
   // the xml adds extra tiles for doors - compensate for this by deleting them:
-  const roomDimensions = convertRoomDimensions(roomXmlJson, doorMap);
+  const roomDimensions = convertRoomDimensions(roomXmlJson, roomSidesWithDoors);
 
   // the xml calls bookworld "byblos" 🤷‍♂️
   const planet = convertPlanetName(jsonScenery);
@@ -133,7 +135,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
   const room: AnyRoom = {
     id: convertRoomId(xmlRoomName),
     floor: floorMap[jsonFloorKind],
-    floorSkip: convertFloorSkip(roomXmlJson, doorMap),
+    floorSkip: convertFloorSkip(roomXmlJson, roomSidesWithDoors),
     planet,
     roomBelow:
       roomOnMap["below"] &&
@@ -142,12 +144,12 @@ const convertRoomJson = async (xmlRoomName: string) => {
       roomOnMap["above"] &&
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
-    doors: doorMap,
+    //doors: doorMap,
     walls: {
-      away: convertWalls(roomXmlJson, "away", doorMap),
-      left: convertWalls(roomXmlJson, "left", doorMap),
+      away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
+      left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),
     },
-    items: convertItems(xmlRoomName, roomXmlJson, doorMap),
+    items: convertItems(map, xmlRoomName, roomXmlJson, roomSidesWithDoors),
     color: basicColor(color),
   };
 

@@ -1,19 +1,20 @@
 import { Container } from "pixi.js";
-import { AnyRoom, PlanetName, RoomJson } from "../../modelTypes";
+import { AnyRoom, RoomJson } from "../../modelTypes";
 import { RenderOptions } from "../gameMain";
 import { makeClickPortal } from "./makeClickPortal";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { itemAppearances } from "../../ItemAppearances";
-import { Item, ItemType } from "../../Item";
+import { JsonItem, ItemType } from "../../Item";
+import { PlanetName } from "@/sprites/planets";
 
-const renderItem = <T extends ItemType>(item: Item<T>, room: AnyRoom) => {
+const renderItem = <T extends ItemType>(item: JsonItem<T>, room: AnyRoom) => {
   const itemAppearance = itemAppearances[item.type];
 
   if (itemAppearance === undefined) {
     throw new Error(`item type "${item.type}" has no appearance`);
   }
 
-  return itemAppearance(item.config, room);
+  return itemAppearance(item.config, room, item.position);
 };
 
 export function* renderItems<RoomId extends string>(
@@ -25,9 +26,13 @@ export function* renderItems<RoomId extends string>(
 
     moveSpriteToBlock(item.position, sprite, { giveZIndex: true });
 
-    if (item.type === "teleporter") {
+    if (
+      item.type === "teleporter" ||
+      item.type === "doorFar" ||
+      item.type === "doorNear"
+    ) {
       makeClickPortal(
-        (item as Item<"teleporter", PlanetName, RoomId>).config.toRoom,
+        (item as JsonItem<"teleporter", PlanetName, RoomId>).config.toRoom,
         options,
         sprite,
       );

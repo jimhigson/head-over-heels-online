@@ -1,15 +1,24 @@
 import { Container } from "pixi.js";
-import { ItemType, ItemConfig } from "./Item";
-import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
+import { ItemType, ItemConfig, LoadedDoorConfig } from "./Item";
+import {
+  blockSizePx,
+  doorTexturePivot,
+  pixiSpriteSheet,
+  TextureId,
+} from "./sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
-import { AnyRoom, PlanetName } from "./modelTypes";
+import { AnyRoom, Axis, crossAxis, Xyz } from "./modelTypes";
 import { wallTextureId } from "./game/render/wallTextureId";
+import { doorTexture } from "./game/render/doorTexture";
+import { projectBlockToScreen } from "./game/render/projectToScreen";
+import { PlanetName } from "./sprites/planets";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
   data: ItemConfig<PlanetName, string>[T],
   room: AnyRoom,
+  position: Xyz,
 ) => Container;
 
 const bubbles = {
@@ -28,9 +37,98 @@ const stackedSprites = (
   return container;
 };
 
+function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
+  // drag legs etc
+  const pivotX = axis === "y" ? 0 : 16;
+
+  yield createSprite({
+    pivot: { x: pivotX, y: 9 },
+    texture: "generic.door.legs.base",
+    y: blockSizePx.h * z,
+  });
+
+  for (let zi = z - 1; zi > 0; zi--) {
+    yield createSprite({
+      pivot: { x: pivotX, y: 9 },
+      texture: "generic.door.legs.pillar",
+      y: blockSizePx.h * zi,
+    });
+  }
+
+  yield createSprite({
+    pivot: { x: pivotX, y: 15 },
+    texture: `generic.door.legs.threshold.${axis}`,
+  });
+}
+
+function* renderDoorPart(
+  { axis, inHiddenWall }: LoadedDoorConfig<string>,
+  room: AnyRoom,
+  { z }: Xyz,
+  nearness: "near" | "far",
+): Generator<Container> {
+  if (inHiddenWall) {
+    if (z !== 0) {
+      //draw the 'floating' threshold:
+      const pivotX = axis === "x" ? 18 : 8;
+
+      yield createSprite({
+        pivot: { x: pivotX, y: 12 },
+        texture: `generic.door.threshold.${axis}`,
+      });
+    }
+  } else {
+    // in a drawn wall:
+    if (z !== 0) {
+      // drag legs etc
+      yield* renderDoorLeg(axis, z);
+    } else {
+      const offset = projectBlockToScreen({ [crossAxis(axis)]: 0.5 });
+
+      if (nearness === "far") {
+        yield createSprite({
+          anchor: { x: 0, y: 1 },
+          flipX: axis === "x",
+          texture: "generic.wall.overdraw",
+          ...offset,
+        });
+      }
+    }
+  }
+
+  // draw the actual door
+  yield createSprite({
+    texture: doorTexture(room, axis, nearness),
+    pivot: doorTexturePivot[axis],
+  });
+}
+
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
+  door() {
+    throw new Error("doors should be rendered as doorNear and doorFar");
+  },
+  doorNear(config, room, position) {
+    const container = new Container();
+
+    for (const s of renderDoorPart(config, room, position, "near")) {
+      container.addChild(s);
+    }
+
+    return container;
+  },
+
+  doorFar(config, room, position) {
+    const container = new Container();
+
+    for (const s of renderDoorPart(config, room, position, "far")) {
+      container.addChild(s);
+    }
+
+    return container;
+  },
+
   wall({ side, style }, room) {
     if (side === "right" || side === "towards") {
       return new Container();

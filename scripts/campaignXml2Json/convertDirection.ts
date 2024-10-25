@@ -1,9 +1,8 @@
 import { Direction } from "../../src/modelTypes";
 import { CompassDirections } from "./readToJson";
 
-
 export const convertDirection = (
-  compassDirection: CompassDirections
+  compassDirection: CompassDirections,
 ): Direction => {
   // directions other than NESW are guesses and might be wrong - need to look into
   // why we have these.
@@ -28,7 +27,7 @@ export const convertDirection = (
     default:
       compassDirection satisfies never;
       throw new Error(
-        `Error converting direction: do not understand "${compassDirection}"`
+        `Error converting direction: do not understand "${compassDirection}"`,
       );
   }
 };

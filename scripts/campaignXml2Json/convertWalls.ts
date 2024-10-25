@@ -1,16 +1,17 @@
 import { AnyWall } from "../../src/modelTypes";
-import { LooseDoorMap, convertX, convertY } from "./convertCampaign";
+import { convertX, convertY } from "./convertCampaign";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
 import { Xml2JsonRoom } from "./readToJson";
+import { type SidesWithDoors } from "./convertDoors";
 
 export const convertWalls = (
   roomJson: Xml2JsonRoom,
   direction: "left" | "away",
-  doorMap: LooseDoorMap
+  sidesWithDoors: SidesWithDoors,
 ): AnyWall[] => {
-  const dims = convertRoomDimensions(roomJson, doorMap);
+  const dims = convertRoomDimensions(roomJson, sidesWithDoors);
   const wallLength = direction === "away" ? dims.x : dims.y;
 
   const xmlJsonAxis = direction === "left" ? "y" : "x";
@@ -23,9 +24,10 @@ export const convertWalls = (
   roomJson.walls
     .filter((wall) => wall.along === xmlJsonAxis)
     .forEach(({ position, picture }) => {
-      const ordinal = xmlJsonAxis === "x"
-        ? convertX(position, roomJson, doorMap)
-        : convertY(position, roomJson, doorMap);
+      const ordinal =
+        xmlJsonAxis === "x"
+          ? convertX(position, roomJson, sidesWithDoors)
+          : convertY(position, roomJson, sidesWithDoors);
 
       return (result[ordinal] = convertWallName(planet, picture));
     });

@@ -3,6 +3,8 @@ import fastJsonPatch, { Operation } from "fast-json-patch";
 import { AnyRoom } from "../../src/modelTypes";
 import { writeFile } from "node:fs/promises";
 
+const startRoom = "blacktooth1head";
+
 const roomTsObjectEntry = (room: AnyRoom): string =>
   `"${room.id}": ${JSON.stringify(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
 
@@ -32,7 +34,7 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
       .join("|")};\n
         
     export const campaign = { 
-      "startRoom": "blacktooth17triple", 
+      "startRoom": "${startRoom}", 
       "rooms": { 
         ${Object.values(patchedJson).map(roomTsObjectEntry).join(",\n")}
        }

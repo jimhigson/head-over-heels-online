@@ -1,23 +1,26 @@
 import { Container, Graphics } from "pixi.js";
 import { hintColours } from "../../hintColours";
-import { PlanetName, RoomJson } from "../../modelTypes";
+import { Direction, RoomJson } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
-import {
-  RenderOptions,
-  xyzBlockPosition,
-  paletteSwapFilters,
-} from "../gameMain";
+import { RenderOptions, paletteSwapFilters } from "../gameMain";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
 import { renderExtent } from "./renderExtent";
+import { roomSidesWithDoors } from "./roomSidesWithDoors";
+import { projectBlockToScreen } from "./projectToScreen";
+import { PlanetName } from "@/sprites/planets";
+
+export type SidesWithDoors = Partial<Record<Direction, true>>;
 
 export function* renderFloor<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
-  const hasDoorTowards = !!room.doors.towards;
-  const hasDoorRight = !!room.doors.right;
+  const { towards: hasDoorTowards, right: hasDoorRight } =
+    roomSidesWithDoors(room);
+
+  console.log("renderFloor -sides with doors", roomSidesWithDoors(room));
 
   const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
     renderExtent(room);
@@ -36,18 +39,13 @@ export function* renderFloor<RoomId extends string>(
 
     const tilesContainer = new Container();
 
-    console.log(room.id, floorSkipMap);
-
     // each sprite covers enough graphics for 2 blocks. we only need to
     // render a sprite for the 'white' squares on the chessboard (render or
     // not according to a checkerboard pattern)
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
         if (floorSkipMap[`${ix},${iy}`]) {
-          console.log("skipping", ix, iy);
           continue;
-        } else {
-          console.log("not skipping", ix, iy);
         }
 
         tilesContainer.addChild(
@@ -110,8 +108,8 @@ export function* renderFloor<RoomId extends string>(
     );
   }
 
-  const edgeRightPoint = xyzBlockPosition(0, room.size.y);
-  const edgeLeftPoint = xyzBlockPosition(room.size.x, 0);
+  const edgeRightPoint = projectBlockToScreen({ x: 0, y: room.size.y });
+  const edgeLeftPoint = projectBlockToScreen({ x: room.size.x, y: 0 });
 
   // rendering strategy differs slightly from original here - we don't render floors added in for near-side
   // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off

@@ -6,11 +6,12 @@ export const makeClickPortal = <RoomId extends string>(
   { onPortalClick }: RenderOptions<RoomId>,
   ...sprite: Container[]
 ) => {
-  sprite.forEach((sprite) =>
+  sprite.forEach((sprite) => {
+    sprite.eventMode = "static";
     sprite.on("pointertap", () => {
       onPortalClick(toRoom);
-    }),
-  );
+    });
+  });
 };
 
 export function* makeClickPortals<RoomId extends string>(

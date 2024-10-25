@@ -59,9 +59,7 @@ export function RoomSelect<RoomId extends string>({
                   key={r}
                   value={r}
                   onSelect={(currentValue) => {
-                    gameApi.goToRoom(
-                      gameApi.campaign.rooms[currentValue as RoomId],
-                    );
+                    gameApi.goToRoom(currentValue as RoomId);
                     setOpen(false);
                   }}
                 >

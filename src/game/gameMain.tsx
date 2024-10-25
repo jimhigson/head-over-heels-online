@@ -1,28 +1,14 @@
-import { Application, Container, PointData } from "pixi.js";
-import { AnyRoom, PlanetName, RoomJson, Campaign } from "../modelTypes";
+import { Application, Container } from "pixi.js";
+import { AnyRoom, RoomJson, Campaign } from "../modelTypes";
 import { zxSpectrumResolution } from "../originalGame";
 import { hintColours, Shades } from "../hintColours";
-import { blockSizePx } from "../sprites/pixiSpriteSheet";
 import { ColorReplaceFilter } from "pixi-filters";
 import { renderItems } from "./render/renderItems";
-import { renderWalls } from "./render/renderWalls";
-import { renderFrontDoors } from "./render/renderDoor";
 import { renderFloor } from "./render/renderFloor";
-import { projectToScreen } from "./render/projectToScreen";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
-
-export const xyzBlockPosition = (
-  xBlock: number,
-  yBlock: number,
-  zBlock: number = 0,
-): PointData => {
-  const x = xBlock * blockSizePx.w;
-  const y = yBlock * blockSizePx.d;
-  const z = zBlock * blockSizePx.h;
-
-  return projectToScreen(x, y, z);
-};
+import { loadRoom } from "./loadRoom/loadRoom";
+import { PlanetName } from "@/sprites/planets";
 
 function iterateToContainer(gen: Generator<Container>, into?: Container) {
   const c = into || new Container();
@@ -32,15 +18,15 @@ function iterateToContainer(gen: Generator<Container>, into?: Container) {
   return c;
 }
 
-function* renderBackground<RoomId extends string>(
+function* renderRoomGenerator<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   yield* renderFloor(room, options);
-  yield* renderWalls(room, options);
+  //yield* renderWalls(room, options);
 
   yield iterateToContainer(renderItems(room, options));
-  yield* renderFrontDoors(room, options);
+  //yield* renderFrontDoors(room, options);
 }
 
 export const paletteSwapFilters = (shades: Shades) => [
@@ -67,7 +53,7 @@ const renderRoom = <P extends PlanetName, RoomId extends string>(
 
   const roomContainer = new Container();
 
-  for (const container of renderBackground(room, options)) {
+  for (const container of renderRoomGenerator(room, options)) {
     roomContainer.addChild(container);
   }
 
@@ -97,16 +83,19 @@ type ApiEvents<RoomId extends string> = {
 export type GameApi<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   currentRoom: RoomJson<PlanetName, RoomId>;
+  roomState: RoomJson<PlanetName, RoomId>;
   events: Emitter<ApiEvents<RoomId>>;
-  goToRoom: (newRoom: RoomJson<PlanetName, RoomId>) => void;
+  goToRoom: (newRoom: RoomId) => void;
   renderIn: (app: Application) => void;
   stop: () => void;
 };
 
 export const gameMain = <RoomId extends string>(
   campaign: Campaign<RoomId>,
+  startingRoom?: NoInfer<RoomId>,
 ): GameApi<RoomId> => {
-  let currentRoom = campaign.rooms[campaign.startRoom];
+  let currentRoom = campaign.rooms[startingRoom || campaign.startRoom];
+  let loadedRoom: RoomJson<PlanetName, RoomId>;
   let app: Application | undefined;
 
   const events = mitt<ApiEvents<RoomId>>();
@@ -119,16 +108,23 @@ export const gameMain = <RoomId extends string>(
 
   const renderOptions: RenderOptions<RoomId> = {
     onPortalClick(roomId) {
-      loadRoom(campaign.rooms[roomId]);
+      switchToRoom(roomId);
     },
   };
 
-  const loadRoom = (room: RoomJson<PlanetName, RoomId>) => {
+  const switchToRoom = (roomId: RoomId) => {
+    const room = campaign.rooms[roomId];
+
+    if (room === undefined) {
+      throw new Error(`no room found with id ${roomId}`);
+    }
+
     currentRoom = room;
+    loadedRoom = loadRoom(room);
 
     worldContainer.removeChildren();
 
-    const roomContainer = renderRoom(currentRoom, renderOptions);
+    const roomContainer = renderRoom(loadedRoom, renderOptions);
 
     centreRoomInRendering(currentRoom, roomContainer);
 
@@ -137,20 +133,23 @@ export const gameMain = <RoomId extends string>(
     events.emit("roomChange", room);
   };
 
-  loadRoom(currentRoom);
+  switchToRoom(startingRoom || campaign.startRoom);
 
   return {
     campaign,
     get currentRoom() {
       return currentRoom;
     },
+    get roomState() {
+      return loadedRoom;
+    },
     events,
     renderIn(a) {
       app = a;
       app.stage.addChild(worldContainer);
     },
-    goToRoom(room: RoomJson<PlanetName, RoomId>) {
-      loadRoom(room);
+    goToRoom(roomId: RoomId) {
+      switchToRoom(roomId);
     },
     stop: () => app?.stage?.removeChild(worldContainer),
   };

@@ -1,6 +1,7 @@
 import { ItemConfig, UnknownItem } from "../../src/Item";
-import { PlanetName } from "../../src/modelTypes";
-import { LooseDoorMap, map, convertXYZ } from "./convertCampaign";
+import { addXy, crossAxis } from "../../src/modelTypes";
+import { PlanetName } from "../../src/sprites/planets";
+import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
@@ -9,7 +10,7 @@ import {
   isWallName,
   parseXmlWallName,
 } from "./convertWallName";
-import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
+import { MapJson, Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 
 const baddieConversions = {
@@ -31,6 +32,7 @@ const baddieConversions = {
 >;
 
 export const convertItems = (
+  map: MapJson,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
@@ -39,11 +41,8 @@ export const convertItems = (
     .map((item): UnknownItem | undefined => {
       const position = convertXYZ(item, xml2JsonRoom, doorMap);
 
-      if (
-        item.kind.includes("shaft") ||
-        item.kind.includes("capital") ||
-        item.kind.includes("door")
-      ) {
+      if (item.kind.includes("shaft") || item.kind.includes("capital")) {
+        // weird door parts - we don't care
         return undefined;
       }
 
@@ -61,6 +60,58 @@ export const convertItems = (
             style: convertWallName(planetName, item.kind),
           },
           position,
+        };
+      }
+
+      if (item.class === "door") {
+        const roomOnMap = map[roomName];
+        const toRoom = convertRoomId(
+          roomNameFromXmlFilename(roomOnMap[item.where]!),
+        );
+
+        // this is unreliable - east and west can be used interchangeably in the xml(!).
+        // ie, foo-door-west will sometimes be used to go wast (!) - presumably because they look
+        // similar
+        //const isFront =
+        //  item.kind.endsWith("-west") || item.kind.endsWith("-south");
+
+        // this isn't really reliable either since the "where" is just a label
+        // but might be the best we have (for now) - it is sometimes wrong in the "triple" rooms
+        // so these probably need manual patching
+        const isFront =
+          convertDirection(item.where) === "towards" ||
+          convertDirection(item.where) === "right";
+
+        const axis =
+          item.kind.endsWith("-east") || item.kind.endsWith("-west")
+            ? "x"
+            : "y";
+        const cAxis = crossAxis(axis);
+
+        const z =
+          position.z === -1
+            ? autoZ({ x: parseInt(item.x), y: parseInt(item.y) }, xml2JsonRoom)
+            : position.z;
+
+        const vectorToMoveFrontSideInwards = isFront ? { [cAxis]: 1 } : {};
+
+        // axes have flipped, so start the door on its opposite side:
+        const vectorToMoveStartingOnLowSide = { [axis]: -1 };
+
+        return {
+          type: "door",
+          config: {
+            axis,
+            toRoom,
+          },
+          position: {
+            ...addXy(
+              position,
+              vectorToMoveStartingOnLowSide,
+              vectorToMoveFrontSideInwards,
+            ),
+            z,
+          },
         };
       }
 

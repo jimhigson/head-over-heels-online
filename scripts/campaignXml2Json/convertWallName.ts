@@ -3,7 +3,7 @@ import { wallNumbers } from "./wallNumbers";
 
 // .png must be optional - it is given in <wall> elements in the xml
 // but not when walls are given as pictures
-// TODO: also support "invisible-wall-x" and "invisible-wall-y" 
+// TODO: also support "invisible-wall-x" and "invisible-wall-y"
 // TODO: - see room moonbase33triple
 const pictureNameRegex =
   /(?<planet>\w+)-wall-(?<axis>x|y)(?:-(?<number>\d+))?(.png)?$/;

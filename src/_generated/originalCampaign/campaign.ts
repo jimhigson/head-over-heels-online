@@ -279,7 +279,7 @@ export type OriginalCampaignRoomId =
   | "safari9";
 
 export const campaign = {
-  startRoom: "blacktooth17triple",
+  startRoom: "blacktooth1head",
   rooms: {
     blacktooth10: {
       id: "blacktooth10",
@@ -287,10 +287,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 12, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "blacktooth11" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth7" },
-      },
       walls: {
         away: [
           "plain",
@@ -369,6 +365,16 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth11" },
+          position: { x: 12, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth7" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -378,12 +384,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth32" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth12" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth10" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth31" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
@@ -629,6 +629,26 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth32" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth12" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth10" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth31" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -638,10 +658,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 5, toRoom: "blacktooth13" },
-        right: { ordinal: 0, z: 5, toRoom: "blacktooth11" },
-      },
       walls: {
         away: [
           "plain",
@@ -686,6 +702,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth13" },
+          position: { x: 8, y: 0, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth11" },
+          position: { x: 0, y: 0, z: 5 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -695,11 +721,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth15" },
-        left: { ordinal: 2, z: 0, toRoom: "blacktooth14" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth12" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
@@ -745,6 +766,21 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth15" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth14" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth12" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -754,7 +790,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "blacktooth13" } },
       walls: {
         away: [
           "plain",
@@ -874,6 +909,11 @@ export const campaign = {
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth13" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -883,10 +923,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "blacktooth16" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth13" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -900,7 +936,18 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth16" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth13" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth16: {
@@ -909,10 +956,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth17triple" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth15" },
-      },
       walls: {
         away: [
           "plain",
@@ -961,6 +1004,16 @@ export const campaign = {
           config: { which: "bubble-robot" },
           position: { x: 7, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth17triple" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth15" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1002,10 +1055,6 @@ export const campaign = {
       ],
       planet: "blacktooth",
       size: { x: 12, y: 12 },
-      doors: {
-        left: { ordinal: 11, z: 0, toRoom: "blacktooth19" },
-        right: { ordinal: -2, z: 0, toRoom: "blacktooth16" },
-      },
       walls: {
         away: [
           "plain",
@@ -1217,6 +1266,21 @@ export const campaign = {
           config: { which: "helicopter-bug" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth18" },
+          position: { x: 6, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth19" },
+          position: { x: 12, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth16" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1226,10 +1290,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 4, toRoom: "blacktooth20" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth17triple" },
-      },
       walls: {
         away: [
           "plain",
@@ -1267,6 +1327,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth20" },
+          position: { x: 8, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth17triple" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1276,10 +1346,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "blacktooth20" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth17triple" },
-      },
       walls: {
         away: [
           "plain",
@@ -1378,6 +1444,16 @@ export const campaign = {
           config: { top: 7, bottom: 0 },
           position: { x: 1, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth20" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth17triple" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1387,7 +1463,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "blacktooth23heels" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
@@ -1428,6 +1503,11 @@ export const campaign = {
           config: { which: "head" },
           position: { x: 2.5, y: 3.5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth23heels" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -1437,7 +1517,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "blacktooth3" } },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: [
@@ -1457,6 +1536,11 @@ export const campaign = {
           config: { toRoom: "blacktooth1head" },
           position: { x: 5, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth3" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1466,16 +1550,27 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth21fish" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth18" },
-        towards: { ordinal: 2, z: 0, toRoom: "blacktooth19" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth21fish" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth18" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth19" },
+          position: { x: 2, y: 0, z: 0 },
+        },
+      ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth21fish: {
@@ -1484,10 +1579,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 1, toRoom: "blacktooth22" },
-        towards: { ordinal: 3, z: 1, toRoom: "blacktooth20" },
-      },
       walls: {
         away: [
           "plain",
@@ -1601,6 +1692,16 @@ export const campaign = {
           config: { alive: true },
           position: { x: 7, y: 4, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth22" },
+          position: { x: 3, y: 8, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth20" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1611,7 +1712,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth44market",
       size: { x: 6, y: 6 },
-      doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth21fish" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -1627,6 +1727,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth21fish" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -1636,7 +1741,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 0, toRoom: "blacktooth1head" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
@@ -1807,6 +1911,11 @@ export const campaign = {
           config: { which: "heels" },
           position: { x: 3.5, y: 3.5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth1head" },
+          position: { x: 8, y: 3, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -1816,7 +1925,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 3, toRoom: "blacktooth25" } },
       walls: {
         away: [
           "plain",
@@ -1846,6 +1954,11 @@ export const campaign = {
           position: { x: 0, y: 0, z: 0 },
         },
         { type: "spring", config: {}, position: { x: 4, y: 4, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth25" },
+          position: { x: 8, y: 3, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1856,7 +1969,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth26",
       size: { x: 6, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "blacktooth24" } },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
@@ -1877,6 +1989,11 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 5, y: 0, z: 7 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth24" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1887,7 +2004,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth25",
       size: { x: 6, y: 6 },
-      doors: { away: { ordinal: 2, z: 2, toRoom: "blacktooth27fish" } },
       walls: {
         away: ["bars", "bars", "none", "none", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -1933,6 +2049,11 @@ export const campaign = {
           config: { top: 7, bottom: 0 },
           position: { x: 5, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth27fish" },
+          position: { x: 2, y: 6, z: 2 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -1942,11 +2063,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 3, toRoom: "blacktooth29" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth28" },
-        towards: { ordinal: 1, z: 0, toRoom: "blacktooth26" },
-      },
       walls: {
         away: ["shield", "none", "none", "shield"],
         left: [
@@ -1976,6 +2092,21 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth29" },
+          position: { x: 1, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth28" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth26" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -1985,7 +2116,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "blacktooth27fish" } },
       walls: {
         away: [
           "plain",
@@ -2106,6 +2236,11 @@ export const campaign = {
         },
         { type: "charles", config: {}, position: { x: 3, y: 4, z: 0 } },
         { type: "joystick", config: {}, position: { x: 6, y: 1, z: 1 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth27fish" },
+          position: { x: 8, y: 3, z: 2 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2116,7 +2251,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth30",
       size: { x: 6, y: 8 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "blacktooth27fish" } },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: [
@@ -2141,6 +2275,11 @@ export const campaign = {
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 6, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth27fish" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2151,7 +2290,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth4",
       size: { x: 8, y: 6 },
-      doors: { away: { ordinal: 3, z: 2, toRoom: "blacktooth2" } },
       walls: {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -2167,6 +2305,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth2" },
+          position: { x: 3, y: 6, z: 2 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -2177,7 +2320,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth29",
       size: { x: 6, y: 8 },
-      doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth31" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
@@ -2223,6 +2365,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth31" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -2232,10 +2379,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 12 },
-      doors: {
-        away: { ordinal: 2, z: 3, toRoom: "blacktooth11" },
-        left: { ordinal: 2, z: 3, toRoom: "blacktooth30" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: [
@@ -2359,6 +2502,16 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 2, y: 8, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth11" },
+          position: { x: 2, y: 12, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth30" },
+          position: { x: 6, y: 2, z: 3 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2368,10 +2521,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "blacktooth33" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth11" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -2385,7 +2534,18 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth33" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth11" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth33: {
@@ -2395,7 +2555,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth34",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "blacktooth32" } },
       walls: {
         away: [
           "plain",
@@ -2439,6 +2598,11 @@ export const campaign = {
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth32" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2449,7 +2613,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth33",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 2, toRoom: "blacktooth35" } },
       walls: {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
@@ -2470,6 +2633,11 @@ export const campaign = {
           config: { top: 6, bottom: 0 },
           position: { x: 7, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth35" },
+          position: { x: 3, y: 8, z: 2 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -2479,10 +2647,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 16 },
-      doors: {
-        left: { ordinal: 11, z: 2, toRoom: "blacktooth36" },
-        towards: { ordinal: 1, z: 1, toRoom: "blacktooth34" },
-      },
       walls: {
         away: ["plain", "shield", "shield", "plain"],
         left: [
@@ -2542,6 +2706,16 @@ export const campaign = {
         },
         { type: "spring", config: {}, position: { x: 1, y: 4, z: 0 } },
         { type: "spring", config: {}, position: { x: 1, y: 2, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth36" },
+          position: { x: 4, y: 11, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth34" },
+          position: { x: 1, y: 0, z: 1 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2551,15 +2725,22 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth37" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth35" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth37" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth35" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+      ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth37: {
@@ -2568,10 +2749,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "blacktooth38" },
-        towards: { ordinal: 1, z: 0, toRoom: "blacktooth36" },
-      },
       walls: {
         away: ["shield", "none", "none", "shield"],
         left: [
@@ -2603,6 +2780,16 @@ export const campaign = {
           position: { x: 3, y: 3, z: 0 },
         },
         { type: "ball", config: {}, position: { x: 0, y: 1, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth38" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth36" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2613,7 +2800,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth39",
       size: { x: 6, y: 6 },
-      doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth37" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -2629,6 +2815,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth37" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -2639,10 +2830,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth38",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 5, toRoom: "blacktooth40fish" },
-        left: { ordinal: 2, z: 5, toRoom: "blacktooth41" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
@@ -2678,6 +2865,16 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth40fish" },
+          position: { x: 2, y: 6, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth41" },
+          position: { x: 6, y: 2, z: 5 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2688,7 +2885,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth3",
       size: { x: 8, y: 6 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "blacktooth5" } },
       walls: {
         away: [
           "plain",
@@ -2708,6 +2904,11 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth5" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2717,7 +2918,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 16 },
-      doors: { towards: { ordinal: 2, z: 1, toRoom: "blacktooth39" } },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: [
@@ -2875,6 +3075,11 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 3, y: 15, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth39" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2884,10 +3089,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "blacktooth42" },
-        right: { ordinal: 0, z: 0, toRoom: "blacktooth39" },
-      },
       walls: {
         away: [
           "plain",
@@ -2901,7 +3102,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth42" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth39" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth42: {
@@ -2910,10 +3122,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "blacktooth43" },
-        right: { ordinal: 0, z: 0, toRoom: "blacktooth41" },
-      },
       walls: {
         away: [
           "plain",
@@ -2937,6 +3145,16 @@ export const campaign = {
           position: { x: 3, y: 1, z: 0 },
         },
         { type: "spring", config: {}, position: { x: 1, y: 1, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth43" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth41" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -2947,7 +3165,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth46market",
       size: { x: 6, y: 6 },
-      doors: { right: { ordinal: 2, z: 1, toRoom: "blacktooth42" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -2963,6 +3180,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth42" },
+          position: { x: 0, y: 2, z: 1 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -2973,7 +3195,6 @@ export const campaign = {
       planet: "market",
       roomAbove: "blacktooth22",
       size: { x: 6, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "blacktooth45market" } },
       walls: {
         away: [
           "passage",
@@ -2992,7 +3213,13 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth45market" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth45market: {
@@ -3001,10 +3228,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth46market" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth44market" },
-      },
       walls: {
         away: [
           "passage",
@@ -3068,6 +3291,16 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth46market" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth44market" },
+          position: { x: 8, y: 3, z: 0 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3078,10 +3311,6 @@ export const campaign = {
       planet: "market",
       roomAbove: "blacktooth43",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 3, toRoom: "blacktooth47market" },
-        towards: { ordinal: 2, z: 0, toRoom: "blacktooth45market" },
-      },
       walls: {
         away: [
           "more-fruits",
@@ -3106,6 +3335,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth47market" },
+          position: { x: 2, y: 6, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth45market" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3115,10 +3354,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 2, toRoom: "blacktooth48market" },
-        towards: { ordinal: 3, z: 1, toRoom: "blacktooth46market" },
-      },
       walls: {
         away: [
           "passage",
@@ -3221,6 +3456,16 @@ export const campaign = {
         { type: "joystick", config: {}, position: { x: 2, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 0, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 1, y: 0, z: 1 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth48market" },
+          position: { x: 3, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth46market" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3230,10 +3475,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 2, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth49market" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth47market" },
-      },
       walls: {
         away: ["more-fruits", "fruits"],
         left: [
@@ -3247,7 +3488,18 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth49market" },
+          position: { x: 2, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth47market" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "magenta",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth49market: {
@@ -3256,10 +3508,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "blacktooth50market" },
-        right: { ordinal: 0, z: 0, toRoom: "blacktooth48market" },
-      },
       walls: {
         away: [
           "more-fruits",
@@ -3304,6 +3552,16 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth50market" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth48market" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3313,11 +3571,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "blacktooth4" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth6" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth7" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -3342,6 +3595,21 @@ export const campaign = {
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth4" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth6" },
+          position: { x: 2, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth7" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -3351,11 +3619,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth52market" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth49market" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth51" },
-      },
       walls: {
         away: [
           "more-fruits",
@@ -3394,6 +3657,21 @@ export const campaign = {
           config: { which: "helicopter-bug" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth52market" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth49market" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth51" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3403,7 +3681,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 8 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth50market" } },
       walls: {
         away: ["bars", "bars", "none", "none", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
@@ -3429,6 +3706,11 @@ export const campaign = {
           config: { toRoom: "moonbase1" },
           position: { x: 2, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth50market" },
+          position: { x: 2, y: 8, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -3438,10 +3720,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth53market" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth50market" },
-      },
       walls: {
         away: [
           "more-fruits",
@@ -3521,6 +3799,16 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth53market" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth50market" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3530,10 +3818,6 @@ export const campaign = {
       floorSkip: [],
       planet: "market",
       size: { x: 6, y: 8 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth54" },
-        towards: { ordinal: 2, z: 0, toRoom: "blacktooth52market" },
-      },
       walls: {
         away: [
           "more-fruits",
@@ -3580,6 +3864,16 @@ export const campaign = {
           config: { which: "helicopter-bug" },
           position: { x: 2, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth54" },
+          position: { x: 2, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth52market" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
@@ -3590,7 +3884,6 @@ export const campaign = {
       planet: "jail",
       roomBelow: "blacktooth55",
       size: { x: 8, y: 6 },
-      doors: { towards: { ordinal: 3, z: 1, toRoom: "blacktooth53market" } },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -3606,6 +3899,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth53market" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -3616,10 +3914,6 @@ export const campaign = {
       planet: "jail",
       roomAbove: "blacktooth54",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth61" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth56" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -3630,6 +3924,16 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth61" },
+          position: { x: 3, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth56" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -3639,10 +3943,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "blacktooth55" },
-        right: { ordinal: 0, z: 4, toRoom: "blacktooth57" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["none", "none"],
@@ -3693,6 +3993,16 @@ export const campaign = {
           config: { style: "spikes" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth55" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth57" },
+          position: { x: 0, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -3702,10 +4012,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth58triple" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth56" },
-      },
       walls: {
         away: [
           "plain",
@@ -3748,6 +4054,16 @@ export const campaign = {
           type: "teleporter",
           config: { toRoom: "moonbase9" },
           position: { x: 3, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth58triple" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth56" },
+          position: { x: 8, y: 3, z: 0 },
         },
       ],
       color: "green",
@@ -3816,10 +4132,6 @@ export const campaign = {
       ],
       planet: "jail",
       size: { x: 14, y: 14 },
-      doors: {
-        away: { ordinal: 2, z: 2, toRoom: "blacktooth59" },
-        towards: { ordinal: 2, z: 1, toRoom: "blacktooth57" },
-      },
       walls: {
         away: [
           "bars",
@@ -4170,6 +4482,16 @@ export const campaign = {
           config: { gives: "fast" },
           position: { x: 13, y: 5, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth59" },
+          position: { x: 2, y: 14, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth57" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4179,11 +4501,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth60" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth63" },
-        towards: { ordinal: 3, z: 4, toRoom: "blacktooth58triple" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
@@ -4289,6 +4606,21 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth60" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth63" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth58triple" },
+          position: { x: 3, y: 0, z: 4 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4298,7 +4630,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth5" } },
       walls: {
         away: [
           "plain",
@@ -4373,6 +4704,11 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 3, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth5" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -4382,7 +4718,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "blacktooth59" } },
       walls: {
         away: [
           "plain",
@@ -4556,6 +4891,11 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 0, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth59" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -4565,10 +4905,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 5, toRoom: "blacktooth62fish" },
-        towards: { ordinal: 1, z: 0, toRoom: "blacktooth55" },
-      },
       walls: {
         away: ["bars", "none", "none", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
@@ -4590,6 +4926,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 3, y: 7, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth62fish" },
+          position: { x: 1, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth55" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4599,10 +4945,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 6, y: 16 },
-      doors: {
-        right: { ordinal: 11, z: 1, toRoom: "blacktooth63" },
-        towards: { ordinal: 2, z: 1, toRoom: "blacktooth61" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: [
@@ -4763,6 +5105,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 0, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth63" },
+          position: { x: 0, y: 11, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth61" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4772,10 +5124,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 5, toRoom: "blacktooth62fish" },
-        right: { ordinal: 0, z: 0, toRoom: "blacktooth59" },
-      },
       walls: {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["none", "none"],
@@ -4817,6 +5165,16 @@ export const campaign = {
           config: { which: "helicopter-bug" },
           position: { x: 4, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth62fish" },
+          position: { x: 8, y: 0, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth59" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
@@ -4826,7 +5184,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "blacktooth65" } },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
@@ -4852,6 +5209,11 @@ export const campaign = {
           config: { toRoom: "moonbase31" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth65" },
+          position: { x: 2, y: 6, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -4861,10 +5223,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "blacktooth66" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth64" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -4884,6 +5242,16 @@ export const campaign = {
           config: { which: "turtle", startDirection: "right" },
           position: { x: 1, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth66" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth64" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -4893,11 +5261,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "blacktooth68" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth67" },
-        towards: { ordinal: 2, z: 0, toRoom: "blacktooth65" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: [
@@ -4911,7 +5274,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth68" },
+          position: { x: 2, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth67" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth65" },
+          position: { x: 2, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth67: {
@@ -4920,11 +5299,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 4, toRoom: "blacktooth70" },
-        left: { ordinal: 3, z: 4, toRoom: "blacktooth66" },
-        right: { ordinal: 3, z: 5, toRoom: "blacktooth69" },
-      },
       walls: {
         away: [
           "plain",
@@ -5019,6 +5393,21 @@ export const campaign = {
           position: { x: 0, y: 0, z: 4 },
         },
         { type: "spring", config: {}, position: { x: 0, y: 0, z: 5 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth70" },
+          position: { x: 3, y: 8, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth66" },
+          position: { x: 8, y: 3, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth69" },
+          position: { x: 0, y: 3, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5028,10 +5417,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 5, toRoom: "blacktooth76" },
-        towards: { ordinal: 3, z: 5, toRoom: "blacktooth66" },
-      },
       walls: {
         away: [
           "plain",
@@ -5130,6 +5515,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth76" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth66" },
+          position: { x: 3, y: 0, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5139,7 +5534,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: { left: { ordinal: 2, z: 0, toRoom: "blacktooth67" } },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
@@ -5165,6 +5559,11 @@ export const campaign = {
           config: { toRoom: "moonbase36" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth67" },
+          position: { x: 6, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5174,11 +5573,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "blacktooth5" },
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth10" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth8fish" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -5192,7 +5586,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth5" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth10" },
+          position: { x: 2, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth8fish" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth70: {
@@ -5201,10 +5611,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 3, toRoom: "blacktooth71" },
-        towards: { ordinal: 0, z: 0, toRoom: "blacktooth67" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -5279,6 +5685,16 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 4 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth71" },
+          position: { x: 0, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth67" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5288,11 +5704,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth72" },
-        right: { ordinal: 2, z: 4, toRoom: "blacktooth77" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth70" },
-      },
       walls: {
         away: [
           "plain",
@@ -5357,6 +5768,21 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth72" },
+          position: { x: 3, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth77" },
+          position: { x: 0, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth70" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5366,11 +5792,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 4, toRoom: "blacktooth73" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth78" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth71" },
-      },
       walls: {
         away: [
           "plain",
@@ -5410,6 +5831,21 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 7, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth73" },
+          position: { x: 8, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth78" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth71" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5419,10 +5855,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 2, toRoom: "blacktooth74" },
-        right: { ordinal: 2, z: 4, toRoom: "blacktooth72" },
-      },
       walls: {
         away: [
           "plain",
@@ -5527,6 +5959,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 2, y: 1, z: 0 } },
         { type: "hush-puppy", config: {}, position: { x: 1, y: 1, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 0, y: 1, z: 2 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth74" },
+          position: { x: 8, y: 2, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth72" },
+          position: { x: 0, y: 2, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5536,10 +5978,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 5, toRoom: "blacktooth73" },
-        towards: { ordinal: 2, z: 1, toRoom: "blacktooth75" },
-      },
       walls: {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
@@ -5605,6 +6043,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 5, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth73" },
+          position: { x: 0, y: 2, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth75" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5614,10 +6062,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 6, y: 8 },
-      doors: {
-        away: { ordinal: 2, z: 2, toRoom: "blacktooth74" },
-        towards: { ordinal: 2, z: 1, toRoom: "blacktooth76" },
-      },
       walls: {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: [
@@ -5712,6 +6156,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth74" },
+          position: { x: 2, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth76" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5721,10 +6175,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "blacktooth75" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth68" },
-      },
       walls: {
         away: [
           "plain",
@@ -5823,6 +6273,16 @@ export const campaign = {
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth75" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth68" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5832,10 +6292,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 4 },
-      doors: {
-        left: { ordinal: 1, z: 0, toRoom: "blacktooth71" },
-        right: { ordinal: 1, z: 0, toRoom: "blacktooth84" },
-      },
       walls: {
         away: [
           "plain",
@@ -5980,6 +6436,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 4, y: 0, z: 6 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth71" },
+          position: { x: 8, y: 1, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth84" },
+          position: { x: 0, y: 1, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -5990,10 +6456,6 @@ export const campaign = {
       planet: "blacktooth",
       roomAbove: "blacktooth79fish",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "blacktooth80" },
-        left: { ordinal: 3, z: 5, toRoom: "blacktooth72" },
-      },
       walls: {
         away: [
           "plain",
@@ -6092,6 +6554,16 @@ export const campaign = {
           config: { style: "anvil" },
           position: { x: 0, y: 1, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth80" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth72" },
+          position: { x: 8, y: 3, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6102,7 +6574,6 @@ export const campaign = {
       planet: "blacktooth",
       roomBelow: "blacktooth78",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "plain",
@@ -6190,10 +6661,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "blacktooth81" },
-        towards: { ordinal: 1, z: 0, toRoom: "blacktooth78" },
-      },
       walls: {
         away: ["shield", "none", "none", "shield"],
         left: [
@@ -6266,6 +6733,16 @@ export const campaign = {
           },
           position: { x: 2, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth81" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth78" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6275,10 +6752,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 5, toRoom: "blacktooth82" },
-        towards: { ordinal: 3, z: 0, toRoom: "blacktooth80" },
-      },
       walls: {
         away: [
           "plain",
@@ -6362,6 +6835,16 @@ export const campaign = {
         { type: "joystick", config: {}, position: { x: 1, y: 5, z: 0 } },
         { type: "joystick", config: {}, position: { x: 4, y: 2, z: 0 } },
         { type: "joystick", config: {}, position: { x: 1, y: 2, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth82" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth80" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6371,10 +6854,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "blacktooth83tofreedom" },
-        right: { ordinal: 2, z: 0, toRoom: "blacktooth81" },
-      },
       walls: {
         away: [
           "plain",
@@ -6465,6 +6944,16 @@ export const campaign = {
           },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth83tofreedom" },
+          position: { x: 8, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth81" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6474,7 +6963,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 1, toRoom: "blacktooth82" } },
       walls: {
         away: [
           "plain",
@@ -6593,6 +7081,11 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 0 } },
         { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 0 } },
         { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth82" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6602,10 +7095,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 2, toRoom: "blacktooth77" },
-        right: { ordinal: 3, z: 4, toRoom: "blacktooth85" },
-      },
       walls: {
         away: [
           "plain",
@@ -6674,6 +7163,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 4, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth77" },
+          position: { x: 8, y: 3, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth85" },
+          position: { x: 0, y: 3, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6683,10 +7182,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "blacktooth84" },
-        towards: { ordinal: 3, z: 5, toRoom: "blacktooth86" },
-      },
       walls: {
         away: [
           "plain",
@@ -6760,6 +7255,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 3, y: 4, z: 5 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth84" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth86" },
+          position: { x: 3, y: 0, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6769,10 +7274,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "blacktooth85" },
-        towards: { ordinal: 1, z: 0, toRoom: "blacktooth87crown" },
-      },
       walls: {
         away: ["shield", "none", "none", "shield"],
         left: [
@@ -6792,6 +7293,16 @@ export const campaign = {
           config: { which: "flying-ball" },
           position: { x: 1, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth85" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth87crown" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6801,7 +7312,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 1, toRoom: "blacktooth86" } },
       walls: {
         away: [
           "plain",
@@ -6885,6 +7395,11 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth86" },
+          position: { x: 3, y: 8, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6894,10 +7409,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 2, toRoom: "blacktooth7" },
-        right: { ordinal: 3, z: 0, toRoom: "blacktooth9" },
-      },
       walls: {
         away: ["shield", "none", "none", "shield"],
         left: [
@@ -6938,6 +7449,16 @@ export const campaign = {
           config: { alive: true },
           position: { x: 3, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "blacktooth7" },
+          position: { x: 1, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth9" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -6947,7 +7468,6 @@ export const campaign = {
       floorSkip: [],
       planet: "blacktooth",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "blacktooth8fish" } },
       walls: {
         away: [
           "plain",
@@ -7071,6 +7591,11 @@ export const campaign = {
           config: { gives: "hooter" },
           position: { x: 0, y: 4, z: 7 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "blacktooth8fish" },
+          position: { x: 8, y: 3, z: 2 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
@@ -7080,10 +7605,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 4, toRoom: "bookworld2" },
-        towards: { ordinal: 3, z: 0, toRoom: "bookworld7" },
-      },
       walls: {
         away: [
           "book",
@@ -7142,6 +7663,16 @@ export const campaign = {
           config: { slider: false },
           position: { x: 0, y: 3, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld2" },
+          position: { x: 0, y: 3, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld7" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7151,10 +7682,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 1, toRoom: "bookworld9" },
-        right: { ordinal: 3, z: 1, toRoom: "bookworld11" },
-      },
       walls: {
         away: ["book", "person", "book", "book", "person", "book"],
         left: [
@@ -7174,6 +7701,16 @@ export const campaign = {
           config: { which: "monkey" },
           position: { x: 2, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld9" },
+          position: { x: 6, y: 3, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld11" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7183,10 +7720,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 4, toRoom: "bookworld10" },
-        right: { ordinal: 0, z: 0, toRoom: "bookworld6" },
-      },
       walls: {
         away: [
           "book",
@@ -7204,6 +7737,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld10" },
+          position: { x: 8, y: 0, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld6" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7213,10 +7756,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 0, toRoom: "bookworld13" },
-        towards: { ordinal: 2, z: 0, toRoom: "bookworld4" },
-      },
       walls: {
         away: ["book", "person", "book", "book", "person", "book"],
         left: [
@@ -7271,6 +7810,16 @@ export const campaign = {
           config: { style: "anvil" },
           position: { x: 3, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld13" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld4" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7280,10 +7829,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "bookworld12fish" },
-        right: { ordinal: 0, z: 0, toRoom: "bookworld14" },
-      },
       walls: {
         away: [
           "book",
@@ -7297,7 +7842,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld12fish" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld14" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld14: {
@@ -7306,10 +7862,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "bookworld13" },
-        towards: { ordinal: 3, z: 0, toRoom: "bookworld15" },
-      },
       walls: {
         away: [
           "book",
@@ -7428,6 +7980,16 @@ export const campaign = {
           config: { axis: "x" },
           position: { x: 7, y: 2, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld13" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld15" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7437,10 +7999,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 3, toRoom: "bookworld14" },
-        towards: { ordinal: 3, z: 1, toRoom: "bookworld16" },
-      },
       walls: {
         away: [
           "book",
@@ -7489,6 +8047,16 @@ export const campaign = {
           config: { slider: false },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld14" },
+          position: { x: 3, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld16" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7498,11 +8066,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "bookworld15" },
-        right: { ordinal: 3, z: 0, toRoom: "bookworld17" },
-        towards: { ordinal: 1, z: 0, toRoom: "bookworld18" },
-      },
       walls: {
         away: ["book", "none", "none", "book"],
         left: [
@@ -7516,7 +8079,23 @@ export const campaign = {
           "book",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld15" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld17" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld18" },
+          position: { x: 1, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld17: {
@@ -7525,7 +8104,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
-      doors: { left: { ordinal: 2, z: 4, toRoom: "bookworld16" } },
       walls: {
         away: [
           "book",
@@ -7551,6 +8129,11 @@ export const campaign = {
           position: { x: 3, y: 2, z: 0 },
         },
         { type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld16" },
+          position: { x: 8, y: 2, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7560,10 +8143,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
-      doors: {
-        away: { ordinal: 2, z: 2, toRoom: "bookworld16" },
-        towards: { ordinal: 2, z: 2, toRoom: "bookworld19" },
-      },
       walls: {
         away: ["book", "book", "none", "none", "book", "book"],
         left: [
@@ -7618,6 +8197,16 @@ export const campaign = {
           config: { slider: false },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld16" },
+          position: { x: 2, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld19" },
+          position: { x: 2, y: 0, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7627,10 +8216,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "bookworld18" },
-        towards: { ordinal: 0, z: 0, toRoom: "bookworld20" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -7683,6 +8268,16 @@ export const campaign = {
           },
           position: { x: 0, y: 6, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld18" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld20" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7692,10 +8287,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 12, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 3, toRoom: "bookworld1" },
-        right: { ordinal: 2, z: 3, toRoom: "bookworld3" },
-      },
       walls: {
         away: [
           "book",
@@ -7859,6 +8450,16 @@ export const campaign = {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld1" },
+          position: { x: 12, y: 2, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld3" },
+          position: { x: 0, y: 2, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7868,11 +8469,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "bookworld19" },
-        left: { ordinal: 2, z: 0, toRoom: "bookworld26" },
-        towards: { ordinal: 2, z: 4, toRoom: "bookworld34" },
-      },
       walls: {
         away: ["book", "book", "none", "none", "book", "book"],
         left: ["book", "book", "none", "none", "book", "book"],
@@ -7881,6 +8477,21 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld19" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld26" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld34" },
+          position: { x: 2, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7890,10 +8501,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "bookworld9" },
-        towards: { ordinal: 3, z: 0, toRoom: "bookworld22" },
-      },
       walls: {
         away: [
           "book",
@@ -7947,6 +8554,16 @@ export const campaign = {
           config: { which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld9" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld22" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -7956,10 +8573,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "bookworld21" },
-        right: { ordinal: 3, z: 0, toRoom: "bookworld23" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -8024,6 +8637,16 @@ export const campaign = {
           config: { gives: "shield" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld21" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld23" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8033,16 +8656,27 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 5, toRoom: "bookworld22" },
-        right: { ordinal: 2, z: 0, toRoom: "bookworld24" },
-        towards: { ordinal: 2, z: 0, toRoom: "bookworld27" },
-      },
       walls: {
         away: ["book", "person", "book", "book", "person", "book"],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld22" },
+          position: { x: 6, y: 2, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld24" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld27" },
+          position: { x: 2, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld24: {
@@ -8051,10 +8685,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 2, toRoom: "bookworld23" },
-        right: { ordinal: 2, z: 2, toRoom: "bookworld25" },
-      },
       walls: {
         away: [
           "book",
@@ -8109,6 +8739,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 7, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld23" },
+          position: { x: 8, y: 2, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld25" },
+          position: { x: 0, y: 2, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8118,10 +8758,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "bookworld24" },
-        right: { ordinal: 0, z: 0, toRoom: "bookworld26" },
-      },
       walls: {
         away: [
           "book",
@@ -8135,7 +8771,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld24" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld26" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld26: {
@@ -8144,10 +8791,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "bookworld25" },
-        right: { ordinal: 3, z: 0, toRoom: "bookworld20" },
-      },
       walls: {
         away: ["book", "book", "book", "book"],
         left: [
@@ -8192,6 +8835,16 @@ export const campaign = {
           config: { gives: "donuts" },
           position: { x: 3, y: 0, z: 5 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld25" },
+          position: { x: 4, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld20" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8201,10 +8854,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "bookworld23" },
-        towards: { ordinal: 0, z: 4, toRoom: "bookworld28" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -8234,6 +8883,16 @@ export const campaign = {
           config: { slider: false },
           position: { x: 0, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld23" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld28" },
+          position: { x: 0, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8244,7 +8903,6 @@ export const campaign = {
       planet: "bookworld",
       roomAbove: "bookworld29",
       size: { x: 8, y: 16 },
-      doors: { away: { ordinal: 3, z: 3, toRoom: "bookworld27" } },
       walls: {
         away: [
           "book",
@@ -8501,6 +9159,11 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld27" },
+          position: { x: 3, y: 16, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8511,7 +9174,6 @@ export const campaign = {
       planet: "bookworld",
       roomBelow: "bookworld28",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 3, toRoom: "bookworld30" } },
       walls: {
         away: [
           "book",
@@ -8680,6 +9342,11 @@ export const campaign = {
           config: { top: 6, bottom: 0 },
           position: { x: 3, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld30" },
+          position: { x: 0, y: 3, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8689,10 +9356,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "bookworld2" },
-        right: { ordinal: 2, z: 2, toRoom: "bookworld4" },
-      },
       walls: {
         away: [
           "book",
@@ -8717,6 +9380,16 @@ export const campaign = {
           config: { which: "monkey" },
           position: { x: 4, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld2" },
+          position: { x: 8, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld4" },
+          position: { x: 0, y: 2, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8726,10 +9399,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 4 },
-      doors: {
-        left: { ordinal: 1, z: 2, toRoom: "bookworld29" },
-        right: { ordinal: 1, z: 2, toRoom: "bookworld31" },
-      },
       walls: {
         away: [
           "book",
@@ -8754,6 +9423,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 4, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld29" },
+          position: { x: 8, y: 1, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld31" },
+          position: { x: 0, y: 1, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8763,10 +9442,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 16, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "bookworld30" },
-        right: { ordinal: 2, z: 0, toRoom: "bookworld32" },
-      },
       walls: {
         away: [
           "book",
@@ -8889,6 +9564,16 @@ export const campaign = {
           config: { gives: "shield" },
           position: { x: 9, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld30" },
+          position: { x: 16, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld32" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8899,7 +9584,6 @@ export const campaign = {
       planet: "bookworld",
       roomBelow: "bookworld33",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 1, toRoom: "bookworld31" } },
       walls: {
         away: [
           "book",
@@ -8922,7 +9606,13 @@ export const campaign = {
           "book",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld31" },
+          position: { x: 8, y: 3, z: 1 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld33: {
@@ -8932,10 +9622,6 @@ export const campaign = {
       planet: "bookworld",
       roomAbove: "bookworld32",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 4, toRoom: "bookworld34" },
-        right: { ordinal: 3, z: 0, toRoom: "bookworld35" },
-      },
       walls: {
         away: [
           "book",
@@ -8962,6 +9648,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld34" },
+          position: { x: 3, y: 8, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld35" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -8971,10 +9667,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 16 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "bookworld20" },
-        towards: { ordinal: 0, z: 0, toRoom: "bookworld33" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -9132,6 +9824,16 @@ export const campaign = {
           config: { slider: true },
           position: { x: 0, y: 5, z: -1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld20" },
+          position: { x: 0, y: 16, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld33" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9141,10 +9843,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "bookworld33" },
-        right: { ordinal: 3, z: 5, toRoom: "bookworld36" },
-      },
       walls: {
         away: [
           "book",
@@ -9219,6 +9917,16 @@ export const campaign = {
         { type: "joystick", config: {}, position: { x: 7, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 5, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 6, y: 0, z: 1 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld33" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld36" },
+          position: { x: 0, y: 3, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9228,10 +9936,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "bookworld37" },
-        left: { ordinal: 2, z: 5, toRoom: "bookworld35" },
-      },
       walls: {
         away: [
           "book",
@@ -9281,6 +9985,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld37" },
+          position: { x: 3, y: 6, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld35" },
+          position: { x: 8, y: 2, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9290,10 +10004,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "bookworld38" },
-        towards: { ordinal: 0, z: 0, toRoom: "bookworld36" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -9328,6 +10038,16 @@ export const campaign = {
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld38" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld36" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9338,7 +10058,6 @@ export const campaign = {
       planet: "bookworld",
       roomBelow: "bookworld39",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 5, toRoom: "bookworld37" } },
       walls: {
         away: [
           "book",
@@ -9361,7 +10080,13 @@ export const campaign = {
           "book",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld37" },
+          position: { x: 3, y: 0, z: 5 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld39: {
@@ -9372,7 +10097,6 @@ export const campaign = {
       roomBelow: "bookworld40",
       roomAbove: "bookworld38",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "book",
@@ -9460,11 +10184,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 4, toRoom: "bookworld12fish" },
-        left: { ordinal: 3, z: 4, toRoom: "bookworld3" },
-        towards: { ordinal: 0, z: 0, toRoom: "bookworld5" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -9489,6 +10208,21 @@ export const campaign = {
           config: { slider: false },
           position: { x: 0, y: 7, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld12fish" },
+          position: { x: 0, y: 8, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld3" },
+          position: { x: 2, y: 3, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld5" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9499,7 +10233,6 @@ export const campaign = {
       planet: "bookworld",
       roomAbove: "bookworld39",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 0, toRoom: "bookworld41crown" } },
       walls: {
         away: [
           "book",
@@ -9528,6 +10261,11 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld41crown" },
+          position: { x: 3, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9537,7 +10275,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 6, y: 8 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "bookworld40" } },
       walls: {
         away: ["book", "person", "book", "book", "person", "book"],
         left: [
@@ -9607,6 +10344,11 @@ export const campaign = {
           config: { style: "sticks" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld40" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9616,10 +10358,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "bookworld4" },
-        towards: { ordinal: 1, z: 0, toRoom: "bookworld6" },
-      },
       walls: {
         away: ["book", "none", "none", "book"],
         left: [
@@ -9644,6 +10382,16 @@ export const campaign = {
           config: { which: "helicopter-bug" },
           position: { x: 1, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld4" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld6" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9653,10 +10401,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 3, toRoom: "bookworld5" },
-        left: { ordinal: 3, z: 3, toRoom: "bookworld11" },
-      },
       walls: {
         away: ["book", "none", "none", "book"],
         left: [
@@ -9701,6 +10445,16 @@ export const campaign = {
           config: { slider: true },
           position: { x: 1, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld5" },
+          position: { x: 1, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld11" },
+          position: { x: 4, y: 3, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9710,10 +10464,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "bookworld1" },
-        towards: { ordinal: 1, z: 4, toRoom: "bookworld8" },
-      },
       walls: {
         away: ["book", "none", "none", "book"],
         left: [
@@ -9731,6 +10481,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld1" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld8" },
+          position: { x: 1, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9740,10 +10500,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "bookworld7" },
-        right: { ordinal: 3, z: 4, toRoom: "bookworld9" },
-      },
       walls: {
         away: [
           "book",
@@ -9797,6 +10553,16 @@ export const campaign = {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld7" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld9" },
+          position: { x: 0, y: 3, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9806,11 +10572,6 @@ export const campaign = {
       floorSkip: [],
       planet: "bookworld",
       size: { x: 8, y: 4 },
-      doors: {
-        left: { ordinal: 1, z: 0, toRoom: "bookworld8" },
-        right: { ordinal: 1, z: 0, toRoom: "bookworld10" },
-        towards: { ordinal: 3, z: 0, toRoom: "bookworld21" },
-      },
       walls: {
         away: [
           "book",
@@ -9830,6 +10591,21 @@ export const campaign = {
           config: { slider: true },
           position: { x: 3, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld8" },
+          position: { x: 8, y: 1, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "bookworld10" },
+          position: { x: 0, y: 1, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "bookworld21" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
@@ -9839,7 +10615,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 0, toRoom: "egyptus2" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -9883,6 +10658,11 @@ export const campaign = {
           config: { toRoom: "moonbase24toegyptus" },
           position: { x: 3, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus2" },
+          position: { x: 8, y: 3, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -9892,11 +10672,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "egyptus15" },
-        left: { ordinal: 3, z: 5, toRoom: "egyptus11" },
-        towards: { ordinal: 3, z: 0, toRoom: "egyptus9fish" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -9949,6 +10724,21 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus15" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus11" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus9fish" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -9958,10 +10748,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "egyptus12" },
-        right: { ordinal: 0, z: 0, toRoom: "egyptus10" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -9975,7 +10761,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus12" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus10" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus12: {
@@ -9984,10 +10781,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "egyptus13" },
-        right: { ordinal: 3, z: 0, toRoom: "egyptus11" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10096,6 +10889,16 @@ export const campaign = {
           config: { top: 8, bottom: 0 },
           position: { x: 7, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus13" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus11" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10106,7 +10909,6 @@ export const campaign = {
       planet: "egyptus",
       roomAbove: "egyptus14",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "egyptus12" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -10181,6 +10983,11 @@ export const campaign = {
           config: { top: 9, bottom: 2 },
           position: { x: 0, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus12" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10192,7 +10999,6 @@ export const campaign = {
       roomBelow: "egyptus13",
       roomAbove: "egyptus19",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 3, toRoom: "egyptus18" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -10261,6 +11067,11 @@ export const campaign = {
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus18" },
+          position: { x: 3, y: 8, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10271,7 +11082,6 @@ export const campaign = {
       planet: "egyptus",
       roomAbove: "egyptus16",
       size: { x: 6, y: 6 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "egyptus10" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -10337,6 +11147,11 @@ export const campaign = {
           position: { x: 0, y: 5, z: 6 },
         },
         { type: "spring", config: {}, position: { x: 0, y: 5, z: 7 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus10" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10347,7 +11162,6 @@ export const campaign = {
       planet: "egyptus",
       roomBelow: "egyptus15",
       size: { x: 6, y: 6 },
-      doors: { away: { ordinal: 2, z: 1, toRoom: "egyptus17" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -10397,6 +11211,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus17" },
+          position: { x: 2, y: 6, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10406,10 +11225,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 12, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 2, toRoom: "egyptus18" },
-        towards: { ordinal: 2, z: 1, toRoom: "egyptus16" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10555,6 +11370,16 @@ export const campaign = {
           config: { which: "turtle", startDirection: "away" },
           position: { x: 5, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus18" },
+          position: { x: 12, y: 2, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus16" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10564,10 +11389,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 4, toRoom: "egyptus17" },
-        towards: { ordinal: 2, z: 0, toRoom: "egyptus14" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10586,7 +11407,18 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus17" },
+          position: { x: 0, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus14" },
+          position: { x: 2, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus19: {
@@ -10597,7 +11429,6 @@ export const campaign = {
       roomBelow: "egyptus14",
       roomAbove: "egyptus20",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "hieroglyphics",
@@ -10675,10 +11506,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 5, toRoom: "egyptus3" },
-        right: { ordinal: 3, z: 1, toRoom: "egyptus1" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10746,6 +11573,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus3" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus1" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10756,7 +11593,6 @@ export const campaign = {
       planet: "egyptus",
       roomBelow: "egyptus19",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus21" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -10810,6 +11646,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus21" },
+          position: { x: 8, y: 3, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10819,10 +11660,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "egyptus22" },
-        right: { ordinal: 0, z: 0, toRoom: "egyptus20" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10836,7 +11673,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus22" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus20" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus22: {
@@ -10845,10 +11693,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "egyptus23" },
-        right: { ordinal: 2, z: 0, toRoom: "egyptus21" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -10940,6 +11784,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 4, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus23" },
+          position: { x: 3, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus21" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -10949,10 +11803,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "egyptus24" },
-        towards: { ordinal: 3, z: 0, toRoom: "egyptus22" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11149,6 +11999,16 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 0, y: 3, z: 6 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus24" },
+          position: { x: 3, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus22" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11158,10 +12018,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 0, toRoom: "egyptus25" },
-        towards: { ordinal: 2, z: 0, toRoom: "egyptus23" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11221,6 +12077,16 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus25" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus23" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11230,11 +12096,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 4 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "egyptus26" },
-        left: { ordinal: 1, z: 0, toRoom: "egyptus24" },
-        right: { ordinal: 1, z: 0, toRoom: "egyptus27" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11248,7 +12109,23 @@ export const campaign = {
         ],
         left: ["hieroglyphics", "none", "none", "hieroglyphics"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus26" },
+          position: { x: 3, y: 4, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus24" },
+          position: { x: 8, y: 1, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus27" },
+          position: { x: 0, y: 1, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus26: {
@@ -11257,10 +12134,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 0, toRoom: "egyptus28" },
-        towards: { ordinal: 3, z: 0, toRoom: "egyptus25" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11382,6 +12255,16 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 7, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus28" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus25" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11391,10 +12274,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 2, toRoom: "egyptus28" },
-        left: { ordinal: 3, z: 2, toRoom: "egyptus25" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11498,6 +12377,16 @@ export const campaign = {
           config: { gives: "shield" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus28" },
+          position: { x: 3, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus25" },
+          position: { x: 8, y: 3, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11507,11 +12396,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "egyptus26" },
-        right: { ordinal: 2, z: 0, toRoom: "egyptus29" },
-        towards: { ordinal: 3, z: 0, toRoom: "egyptus27" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11538,6 +12422,21 @@ export const campaign = {
           config: { alive: false },
           position: { x: 4, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus26" },
+          position: { x: 8, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus29" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus27" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11548,7 +12447,6 @@ export const campaign = {
       planet: "egyptus",
       roomBelow: "egyptus30",
       size: { x: 6, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus28" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -11585,6 +12483,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus28" },
+          position: { x: 6, y: 3, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11594,10 +12497,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 4, toRoom: "egyptus4" },
-        right: { ordinal: 0, z: 0, toRoom: "egyptus2" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11611,7 +12510,19 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [{ type: "spring", config: {}, position: { x: 4, y: 1, z: 0 } }],
+      items: [
+        { type: "spring", config: {}, position: { x: 4, y: 1, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus4" },
+          position: { x: 8, y: 0, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus2" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "magenta",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus30: {
@@ -11622,7 +12533,6 @@ export const campaign = {
       roomBelow: "egyptus31",
       roomAbove: "egyptus29",
       size: { x: 6, y: 8 },
-      doors: {},
       walls: {
         away: [
           "hieroglyphics",
@@ -11659,7 +12569,6 @@ export const campaign = {
       planet: "egyptus",
       roomAbove: "egyptus30",
       size: { x: 6, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "egyptus32" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -11691,6 +12600,11 @@ export const campaign = {
           config: { which: "bubble-robot" },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus32" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11701,7 +12615,6 @@ export const campaign = {
       planet: "egyptus",
       roomBelow: "egyptus33",
       size: { x: 8, y: 2 },
-      doors: { left: { ordinal: 0, z: 5, toRoom: "egyptus31" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -11726,6 +12639,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus31" },
+          position: { x: 8, y: 0, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11736,7 +12654,6 @@ export const campaign = {
       planet: "egyptus",
       roomAbove: "egyptus32",
       size: { x: 8, y: 2 },
-      doors: { away: { ordinal: 3, z: 0, toRoom: "egyptus34fish" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -11750,7 +12667,13 @@ export const campaign = {
         ],
         left: ["hieroglyphics", "hieroglyphics"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus34fish" },
+          position: { x: 3, y: 2, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus34fish: {
@@ -11759,10 +12682,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 8 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "egyptus35" },
-        towards: { ordinal: 2, z: 0, toRoom: "egyptus33" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -11835,6 +12754,16 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
         },
         { type: "ball", config: {}, position: { x: 0, y: 2, z: 1 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus35" },
+          position: { x: 2, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus33" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11845,7 +12774,6 @@ export const campaign = {
       planet: "egyptus",
       roomAbove: "egyptus36",
       size: { x: 2, y: 8 },
-      doors: { towards: { ordinal: 0, z: 0, toRoom: "egyptus34fish" } },
       walls: {
         away: ["hieroglyphics", "hieroglyphics"],
         left: [
@@ -11916,6 +12844,11 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 0, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus34fish" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -11927,7 +12860,6 @@ export const campaign = {
       roomBelow: "egyptus35",
       roomAbove: "egyptus37",
       size: { x: 2, y: 8 },
-      doors: {},
       walls: {
         away: ["hieroglyphics", "hieroglyphics"],
         left: [
@@ -11997,7 +12929,6 @@ export const campaign = {
       planet: "egyptus",
       roomBelow: "egyptus36",
       size: { x: 2, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "egyptus38" } },
       walls: {
         away: ["hieroglyphics", "hieroglyphics"],
         left: [
@@ -12027,6 +12958,11 @@ export const campaign = {
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus38" },
+          position: { x: 2, y: 3, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12036,10 +12972,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "egyptus39crown" },
-        right: { ordinal: 3, z: 0, toRoom: "egyptus37" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12147,6 +13079,16 @@ export const campaign = {
           position: { x: 1, y: 1, z: 2 },
         },
         { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus39crown" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus37" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12156,7 +13098,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "egyptus38" } },
       walls: {
         away: [
           "hieroglyphics",
@@ -12245,6 +13186,11 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus38" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12254,10 +13200,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "egyptus5" },
-        right: { ordinal: 3, z: 0, toRoom: "egyptus3" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12365,6 +13307,16 @@ export const campaign = {
           position: { x: 1, y: 1, z: 2 },
         },
         { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus5" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus3" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12374,11 +13326,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "egyptus7" },
-        left: { ordinal: 2, z: 0, toRoom: "egyptus6" },
-        towards: { ordinal: 2, z: 0, toRoom: "egyptus4" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12438,6 +13385,21 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus7" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus6" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus4" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12447,10 +13409,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "egyptus8" },
-        right: { ordinal: 3, z: 0, toRoom: "egyptus5" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12504,6 +13462,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 2, y: 2, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus8" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus5" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12513,10 +13481,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 5, toRoom: "egyptus8" },
-        towards: { ordinal: 3, z: 4, toRoom: "egyptus5" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12585,6 +13549,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus8" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus5" },
+          position: { x: 3, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12594,11 +13568,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "egyptus9fish" },
-        right: { ordinal: 3, z: 0, toRoom: "egyptus7" },
-        towards: { ordinal: 3, z: 0, toRoom: "egyptus6" },
-      },
       walls: {
         away: [
           "hieroglyphics",
@@ -12696,6 +13665,21 @@ export const campaign = {
           position: { x: 1, y: 1, z: 2 },
         },
         { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus9fish" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "egyptus7" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus6" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12705,10 +13689,6 @@ export const campaign = {
       floorSkip: [],
       planet: "egyptus",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "egyptus10" },
-        towards: { ordinal: 1, z: 0, toRoom: "egyptus8" },
-      },
       walls: {
         away: ["hieroglyphics", "none", "none", "hieroglyphics"],
         left: [
@@ -12783,6 +13763,16 @@ export const campaign = {
           config: { alive: true },
           position: { x: 3, y: 3, z: 5 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus10" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "egyptus8" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
@@ -12792,7 +13782,6 @@ export const campaign = {
       floorSkip: [],
       planet: "jail",
       size: { x: 12, y: 8 },
-      doors: {},
       walls: {
         away: [
           "bars",
@@ -12895,10 +13884,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "moonbase2" },
-        right: { ordinal: 3, z: 0, toRoom: "moonbase4" },
-      },
       walls: {
         away: [
           "window2",
@@ -13086,6 +14071,16 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase2" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase4" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13095,10 +14090,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "moonbase11" },
-        right: { ordinal: 3, z: 5, toRoom: "moonbase9" },
-      },
       walls: {
         away: [
           "window2",
@@ -13147,6 +14138,16 @@ export const campaign = {
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase11" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase9" },
+          position: { x: 0, y: 3, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13156,11 +14157,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "moonbase12" },
-        left: { ordinal: 3, z: 0, toRoom: "moonbase19" },
-        towards: { ordinal: 0, z: 0, toRoom: "moonbase10" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -13174,7 +14170,23 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase12" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase19" },
+          position: { x: 2, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase10" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase12: {
@@ -13183,10 +14195,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 4, toRoom: "moonbase18" },
-        towards: { ordinal: 3, z: 0, toRoom: "moonbase11" },
-      },
       walls: {
         away: [
           "window2",
@@ -13258,6 +14266,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase18" },
+          position: { x: 0, y: 3, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase11" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13267,11 +14285,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "moonbase14" },
-        left: { ordinal: 3, z: 0, toRoom: "moonbase16" },
-        towards: { ordinal: 1, z: 0, toRoom: "moonbase3" },
-      },
       walls: {
         away: ["window3", "none", "none", "window1"],
         left: [
@@ -13326,6 +14339,21 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 2, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase14" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase16" },
+          position: { x: 4, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase3" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13335,10 +14363,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 0, toRoom: "moonbase15" },
-        towards: { ordinal: 2, z: 0, toRoom: "moonbase13" },
-      },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: [
@@ -13414,6 +14438,16 @@ export const campaign = {
           },
           position: { x: 5, y: 2, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase15" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase13" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13423,10 +14457,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 4, toRoom: "moonbase14" },
-        right: { ordinal: 0, z: 0, toRoom: "moonbase7" },
-      },
       walls: {
         away: [
           "window2",
@@ -13447,6 +14477,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase14" },
+          position: { x: 8, y: 0, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase7" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13456,10 +14496,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 12, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 1, toRoom: "moonbase13" },
-        towards: { ordinal: 8, z: 0, toRoom: "moonbase17" },
-      },
       walls: {
         away: [
           "window1",
@@ -13568,6 +14604,16 @@ export const campaign = {
           config: { which: "computer-bot" },
           position: { x: 11, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase13" },
+          position: { x: 0, y: 2, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase17" },
+          position: { x: 8, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13577,7 +14623,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase16" } },
       walls: {
         away: ["window3", "window2", "none", "none", "window2", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
@@ -13603,6 +14648,11 @@ export const campaign = {
           config: { toRoom: "moonbase18" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase16" },
+          position: { x: 2, y: 6, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13612,7 +14662,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase12" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
@@ -13638,6 +14687,11 @@ export const campaign = {
           config: { toRoom: "moonbase17" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase12" },
+          position: { x: 6, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13647,10 +14701,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "moonbase20" },
-        right: { ordinal: 0, z: 0, toRoom: "moonbase11" },
-      },
       walls: {
         away: [
           "window2",
@@ -13695,6 +14745,16 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 3, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase20" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase11" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13704,10 +14764,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 4, toRoom: "moonbase3" },
-        right: { ordinal: 2, z: 0, toRoom: "moonbase1" },
-      },
       walls: {
         away: [
           "window2",
@@ -13786,6 +14842,16 @@ export const campaign = {
           },
           position: { x: 7, y: 1, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase3" },
+          position: { x: 3, y: 6, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase1" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13795,12 +14861,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "moonbase21tosafari" },
-        left: { ordinal: 3, z: 0, toRoom: "moonbase23" },
-        right: { ordinal: 3, z: 0, toRoom: "moonbase19" },
-        towards: { ordinal: 3, z: 0, toRoom: "moonbase22topenitentiary" },
-      },
       walls: {
         away: [
           "window2",
@@ -13874,6 +14934,26 @@ export const campaign = {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase21tosafari" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase23" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase19" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase22topenitentiary" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -13883,7 +14963,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase20" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: [
@@ -14002,6 +15081,11 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase20" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14011,7 +15095,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 8 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "moonbase20" } },
       walls: {
         away: ["window3", "window2", "none", "none", "window2", "window1"],
         left: [
@@ -14106,6 +15189,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase20" },
+          position: { x: 2, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14115,12 +15203,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "moonbase24toegyptus" },
-        left: { ordinal: 3, z: 0, toRoom: "moonbase26" },
-        right: { ordinal: 3, z: 0, toRoom: "moonbase20" },
-        towards: { ordinal: 3, z: 0, toRoom: "moonbase25tobookworld" },
-      },
       walls: {
         away: [
           "window2",
@@ -14194,6 +15276,26 @@ export const campaign = {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase24toegyptus" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase26" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase20" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase25tobookworld" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14203,7 +15305,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "moonbase23" } },
       walls: {
         away: [
           "window2",
@@ -14391,6 +15492,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase23" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14400,7 +15506,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 0, toRoom: "moonbase23" } },
       walls: {
         away: [
           "window2",
@@ -14588,6 +15693,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase23" },
+          position: { x: 3, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14597,10 +15707,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "moonbase27" },
-        right: { ordinal: 0, z: 0, toRoom: "moonbase23" },
-      },
       walls: {
         away: [
           "window2",
@@ -14650,6 +15756,16 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 3, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase27" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase23" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14659,11 +15775,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "moonbase28" },
-        right: { ordinal: 3, z: 0, toRoom: "moonbase26" },
-        towards: { ordinal: 0, z: 0, toRoom: "moonbase30" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -14677,7 +15788,23 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase28" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase26" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase30" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase28: {
@@ -14686,10 +15813,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 4, toRoom: "moonbase29" },
-        towards: { ordinal: 2, z: 0, toRoom: "moonbase27" },
-      },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
@@ -14703,6 +15826,16 @@ export const campaign = {
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase29" },
+          position: { x: 6, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase27" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14712,7 +15845,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "moonbase28" } },
       walls: {
         away: [
           "window2",
@@ -14900,6 +16032,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase28" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -14909,10 +16046,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 2, toRoom: "moonbase13" },
-        towards: { ordinal: 3, z: 1, toRoom: "moonbase2" },
-      },
       walls: {
         away: [
           "window2",
@@ -15007,6 +16140,16 @@ export const campaign = {
         { type: "joystick", config: {}, position: { x: 3, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 1, y: 1, z: 1 } },
         { type: "joystick", config: {}, position: { x: 2, y: 0, z: 1 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase13" },
+          position: { x: 3, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase2" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -15016,15 +16159,22 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "moonbase27" },
-        left: { ordinal: 2, z: 0, toRoom: "moonbase31" },
-      },
       walls: {
         away: ["window3", "window2", "none", "none", "window2", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase27" },
+          position: { x: 2, y: 6, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase31" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase31: {
@@ -15033,7 +16183,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "moonbase30" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
@@ -15059,6 +16208,11 @@ export const campaign = {
           config: { toRoom: "blacktooth64" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase30" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -15068,7 +16222,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 0, toRoom: "moonbase33triple" } },
       walls: {
         away: [
           "window2",
@@ -15256,6 +16409,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase33triple" },
+          position: { x: 3, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -15320,11 +16478,6 @@ export const campaign = {
       ],
       planet: "moonbase",
       size: { x: 12, y: 16 },
-      doors: {
-        away: { ordinal: 2, z: 0, toRoom: "moonbase36" },
-        left: { ordinal: 11, z: 0, toRoom: "moonbase34" },
-        towards: { ordinal: 8, z: 0, toRoom: "moonbase32" },
-      },
       walls: {
         away: [
           "window3",
@@ -15704,6 +16857,21 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase36" },
+          position: { x: 2, y: 16, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase34" },
+          position: { x: 12, y: 11, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase32" },
+          position: { x: 8, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -15713,10 +16881,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 4 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "moonbase35" },
-        right: { ordinal: 1, z: 0, toRoom: "moonbase33triple" },
-      },
       walls: {
         away: [
           "window2",
@@ -15787,6 +16951,16 @@ export const campaign = {
           },
           position: { x: 7, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase35" },
+          position: { x: 3, y: 4, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase33triple" },
+          position: { x: 0, y: 1, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -15796,7 +16970,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase34" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
@@ -15917,6 +17090,11 @@ export const campaign = {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 1, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase34" },
+          position: { x: 2, y: 0, z: 0 },
         },
       ],
       color: "white",
@@ -15927,7 +17105,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { towards: { ordinal: 2, z: 0, toRoom: "moonbase33triple" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
@@ -16049,6 +17226,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 1, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase33triple" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16058,10 +17240,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "moonbase5" },
-        left: { ordinal: 3, z: 5, toRoom: "moonbase1" },
-      },
       walls: {
         away: [
           "window2",
@@ -16200,6 +17378,16 @@ export const campaign = {
           config: { which: "computer-bot" },
           position: { x: 5, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase5" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase1" },
+          position: { x: 8, y: 3, z: 5 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16209,10 +17397,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "moonbase6" },
-        towards: { ordinal: 1, z: 0, toRoom: "moonbase4" },
-      },
       walls: {
         away: ["window3", "none", "none", "window1"],
         left: [
@@ -16242,6 +17426,16 @@ export const campaign = {
           config: { which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase6" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase4" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16251,10 +17445,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "moonbase7" },
-        towards: { ordinal: 3, z: 0, toRoom: "moonbase5" },
-      },
       walls: {
         away: [
           "window2",
@@ -16348,6 +17538,16 @@ export const campaign = {
           config: { which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase7" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase5" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16357,11 +17557,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "moonbase15" },
-        right: { ordinal: 3, z: 0, toRoom: "moonbase8" },
-        towards: { ordinal: 3, z: 4, toRoom: "moonbase6" },
-      },
       walls: {
         away: [
           "window2",
@@ -16489,6 +17684,21 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase15" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase8" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "moonbase6" },
+          position: { x: 3, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16498,7 +17708,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 0, toRoom: "moonbase7" } },
       walls: {
         away: [
           "window2",
@@ -16622,6 +17831,11 @@ export const campaign = {
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase7" },
+          position: { x: 8, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16631,7 +17845,6 @@ export const campaign = {
       floorSkip: [],
       planet: "moonbase",
       size: { x: 6, y: 6 },
-      doors: { left: { ordinal: 2, z: 0, toRoom: "moonbase10" } },
       walls: {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
@@ -16657,6 +17870,11 @@ export const campaign = {
           config: { toRoom: "blacktooth57" },
           position: { x: 2, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "moonbase10" },
+          position: { x: 6, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
@@ -16666,7 +17884,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 6, y: 8 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "penitentiary2" } },
       walls: {
         away: ["loop", "loop", "none", "none", "loop", "loop"],
         left: [
@@ -16701,6 +17918,11 @@ export const campaign = {
           config: { toRoom: "moonbase22topenitentiary" },
           position: { x: 2, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary2" },
+          position: { x: 2, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16711,7 +17933,6 @@ export const campaign = {
       planet: "penitentiary",
       roomBelow: "penitentiary9",
       size: { x: 2, y: 8 },
-      doors: { away: { ordinal: 0, z: 2, toRoom: "penitentiary11" } },
       walls: {
         away: ["none", "none"],
         left: [
@@ -16741,6 +17962,11 @@ export const campaign = {
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary11" },
+          position: { x: 0, y: 8, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16750,10 +17976,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 6, y: 6 },
-      doors: {
-        right: { ordinal: 2, z: 0, toRoom: "penitentiary12" },
-        towards: { ordinal: 2, z: 0, toRoom: "penitentiary10" },
-      },
       walls: {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -16779,6 +18001,16 @@ export const campaign = {
           config: { alive: false },
           position: { x: 5, y: 5, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary12" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary10" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16788,11 +18020,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "penitentiary19" },
-        left: { ordinal: 3, z: 0, toRoom: "penitentiary11" },
-        right: { ordinal: 3, z: 4, toRoom: "penitentiary18fish" },
-      },
       walls: {
         away: [
           "loop",
@@ -16855,6 +18082,21 @@ export const campaign = {
           config: { gives: "donuts" },
           position: { x: 7, y: 0, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary19" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary11" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary18fish" },
+          position: { x: 0, y: 3, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16865,7 +18107,6 @@ export const campaign = {
       planet: "penitentiary",
       roomAbove: "penitentiary14",
       size: { x: 8, y: 4 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "penitentiary2" } },
       walls: {
         away: [
           "loop",
@@ -16941,6 +18182,11 @@ export const campaign = {
           position: { x: 1, y: 0, z: 1 },
         },
         { type: "spring", config: {}, position: { x: 2, y: 3, z: 7 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary2" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -16952,7 +18198,6 @@ export const campaign = {
       roomBelow: "penitentiary13",
       roomAbove: "penitentiary15",
       size: { x: 8, y: 6 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -17078,7 +18323,6 @@ export const campaign = {
       roomBelow: "penitentiary14",
       roomAbove: "penitentiary16",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -17318,7 +18562,6 @@ export const campaign = {
       roomBelow: "penitentiary15",
       roomAbove: "penitentiary17",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -17412,7 +18655,6 @@ export const campaign = {
       planet: "penitentiary",
       roomBelow: "penitentiary16",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 2, toRoom: "penitentiary18fish" } },
       walls: {
         away: [
           "loop",
@@ -17516,6 +18758,11 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary18fish" },
+          position: { x: 3, y: 8, z: 2 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -17525,10 +18772,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 16, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 2, toRoom: "penitentiary12" },
-        towards: { ordinal: 3, z: 0, toRoom: "penitentiary17" },
-      },
       walls: {
         away: [
           "loop",
@@ -17651,6 +18894,16 @@ export const campaign = {
           config: { alive: true },
           position: { x: 12, y: 4, z: 4 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary12" },
+          position: { x: 16, y: 2, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary17" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -17660,10 +18913,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 3, toRoom: "penitentiary21" },
-        towards: { ordinal: 1, z: 0, toRoom: "penitentiary12" },
-      },
       walls: {
         away: ["loop", "none", "none", "loop"],
         left: [
@@ -17693,6 +18942,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary21" },
+          position: { x: 1, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary12" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -17702,11 +18961,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "penitentiary13" },
-        left: { ordinal: 3, z: 5, toRoom: "penitentiary3" },
-        towards: { ordinal: 3, z: 0, toRoom: "penitentiary1" },
-      },
       walls: {
         away: [
           "loop",
@@ -17788,6 +19042,21 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 6, y: 3, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary13" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary3" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary1" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -17798,7 +19067,6 @@ export const campaign = {
       planet: "penitentiary",
       roomAbove: "penitentiary21",
       size: { x: 6, y: 6 },
-      doors: {},
       walls: {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -17856,7 +19124,6 @@ export const campaign = {
       roomBelow: "penitentiary20",
       roomAbove: "penitentiary22",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 1, toRoom: "penitentiary19" } },
       walls: {
         away: [
           "loop",
@@ -18080,6 +19347,11 @@ export const campaign = {
           config: { which: "turtle", startDirection: "right" },
           position: { x: 6, y: 7, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary19" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18091,7 +19363,6 @@ export const campaign = {
       roomBelow: "penitentiary21",
       roomAbove: "penitentiary23",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -18311,7 +19582,6 @@ export const campaign = {
       roomBelow: "penitentiary22",
       roomAbove: "penitentiary24",
       size: { x: 8, y: 8 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -18505,7 +19775,6 @@ export const campaign = {
       planet: "penitentiary",
       roomBelow: "penitentiary23",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 1, toRoom: "penitentiary25" } },
       walls: {
         away: [
           "loop",
@@ -18534,6 +19803,11 @@ export const campaign = {
           config: { top: 6, bottom: 0 },
           position: { x: 4, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary25" },
+          position: { x: 3, y: 8, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18543,10 +19817,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "penitentiary26" },
-        towards: { ordinal: 0, z: 0, toRoom: "penitentiary24" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -18560,7 +19830,18 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary26" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary24" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary26: {
@@ -18569,10 +19850,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 1, toRoom: "penitentiary27" },
-        towards: { ordinal: 3, z: 1, toRoom: "penitentiary25" },
-      },
       walls: {
         away: [
           "loop",
@@ -18626,6 +19903,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 4, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary27" },
+          position: { x: 0, y: 3, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary25" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18635,10 +19922,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 2, toRoom: "penitentiary26" },
-        right: { ordinal: 0, z: 1, toRoom: "penitentiary28" },
-      },
       walls: {
         away: [
           "loop",
@@ -18683,6 +19966,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 6, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary26" },
+          position: { x: 8, y: 0, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary28" },
+          position: { x: 0, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18692,11 +19985,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "penitentiary27" },
-        right: { ordinal: 3, z: 4, toRoom: "penitentiary29" },
-        towards: { ordinal: 3, z: 4, toRoom: "penitentiary30" },
-      },
       walls: {
         away: [
           "loop",
@@ -18738,6 +20026,21 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 4, y: 0, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary27" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary29" },
+          position: { x: 0, y: 3, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary30" },
+          position: { x: 3, y: 0, z: 4 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18748,7 +20051,6 @@ export const campaign = {
       planet: "penitentiary",
       roomBelow: "penitentiary31",
       size: { x: 8, y: 2 },
-      doors: { left: { ordinal: 0, z: 3, toRoom: "penitentiary28" } },
       walls: {
         away: [
           "loop",
@@ -18833,6 +20135,11 @@ export const campaign = {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary28" },
+          position: { x: 8, y: 0, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18842,10 +20149,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 2, toRoom: "penitentiary4" },
-        right: { ordinal: 3, z: 1, toRoom: "penitentiary2" },
-      },
       walls: {
         away: [
           "loop",
@@ -18911,6 +20214,16 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
         },
         { type: "switch", config: {}, position: { x: 0, y: 0, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary4" },
+          position: { x: 8, y: 3, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary2" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18920,7 +20233,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 4 },
-      doors: { away: { ordinal: 3, z: 0, toRoom: "penitentiary28" } },
       walls: {
         away: [
           "loop",
@@ -18985,6 +20297,11 @@ export const campaign = {
           config: { style: "sticks" },
           position: { x: 7, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary28" },
+          position: { x: 3, y: 4, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -18996,7 +20313,6 @@ export const campaign = {
       roomBelow: "penitentiary32",
       roomAbove: "penitentiary30",
       size: { x: 8, y: 2 },
-      doors: {},
       walls: {
         away: [
           "loop",
@@ -19106,7 +20422,6 @@ export const campaign = {
       planet: "penitentiary",
       roomAbove: "penitentiary31",
       size: { x: 8, y: 2 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "penitentiary33" } },
       walls: {
         away: [
           "loop",
@@ -19196,6 +20511,11 @@ export const campaign = {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 5 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary33" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19205,10 +20525,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "penitentiary32" },
-        towards: { ordinal: 3, z: 0, toRoom: "penitentiary34crown" },
-      },
       walls: {
         away: [
           "loop",
@@ -19316,6 +20632,16 @@ export const campaign = {
           position: { x: 1, y: 1, z: 2 },
         },
         { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary32" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary34crown" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19325,7 +20651,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 8 },
-      doors: { away: { ordinal: 3, z: 1, toRoom: "penitentiary33" } },
       walls: {
         away: [
           "loop",
@@ -19414,6 +20739,11 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 7, y: 3, z: 5 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary33" },
+          position: { x: 3, y: 8, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19424,7 +20754,6 @@ export const campaign = {
       planet: "penitentiary",
       roomAbove: "penitentiary5",
       size: { x: 6, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "penitentiary3" } },
       walls: {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -19470,6 +20799,11 @@ export const campaign = {
           config: { style: "artificial" },
           position: { x: 5, y: 0, z: 7 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary3" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19481,7 +20815,6 @@ export const campaign = {
       roomBelow: "penitentiary4",
       roomAbove: "penitentiary6",
       size: { x: 6, y: 6 },
-      doors: {},
       walls: {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -19527,7 +20860,6 @@ export const campaign = {
       planet: "penitentiary",
       roomBelow: "penitentiary5",
       size: { x: 6, y: 6 },
-      doors: { left: { ordinal: 2, z: 3, toRoom: "penitentiary7" } },
       walls: {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "loop", "none", "none", "loop", "loop"],
@@ -19573,6 +20905,11 @@ export const campaign = {
           config: { style: "anvil" },
           position: { x: 3, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary7" },
+          position: { x: 6, y: 2, z: 3 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19582,10 +20919,6 @@ export const campaign = {
       floorSkip: [],
       planet: "penitentiary",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "penitentiary8" },
-        right: { ordinal: 2, z: 0, toRoom: "penitentiary6" },
-      },
       walls: {
         away: [
           "loop",
@@ -19625,6 +20958,16 @@ export const campaign = {
           config: { which: "bubble-robot" },
           position: { x: 3, y: 5, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary8" },
+          position: { x: 3, y: 6, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "penitentiary6" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19635,7 +20978,6 @@ export const campaign = {
       planet: "penitentiary",
       roomAbove: "penitentiary9",
       size: { x: 2, y: 8 },
-      doors: { towards: { ordinal: 0, z: 0, toRoom: "penitentiary7" } },
       walls: {
         away: ["loop", "loop"],
         left: [
@@ -19690,6 +21032,11 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 3 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "penitentiary7" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
@@ -19701,7 +21048,6 @@ export const campaign = {
       roomBelow: "penitentiary8",
       roomAbove: "penitentiary10",
       size: { x: 2, y: 8 },
-      doors: {},
       walls: {
         away: ["loop", "loop"],
         left: [
@@ -19730,7 +21076,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 8 },
-      doors: { away: { ordinal: 2, z: 0, toRoom: "safari2" } },
       walls: {
         away: ["wall", "shield", "none", "none", "shield", "wall"],
         left: [
@@ -19765,6 +21110,11 @@ export const campaign = {
           config: { toRoom: "moonbase21tosafari" },
           position: { x: 2, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari2" },
+          position: { x: 2, y: 8, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -19775,7 +21125,6 @@ export const campaign = {
       planet: "safari",
       roomAbove: "safari9",
       size: { x: 8, y: 6 },
-      doors: { left: { ordinal: 2, z: 0, toRoom: "safari11" } },
       walls: {
         away: [
           "wall",
@@ -19881,6 +21230,11 @@ export const campaign = {
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari11" },
+          position: { x: 8, y: 2, z: 0 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -19890,10 +21244,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "safari12" },
-        right: { ordinal: 2, z: 0, toRoom: "safari10" },
-      },
       walls: {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
@@ -19903,6 +21253,16 @@ export const campaign = {
           type: "baddie",
           config: { which: "elephant" },
           position: { x: 0, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari12" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari10" },
+          position: { x: 0, y: 2, z: 0 },
         },
       ],
       color: "white",
@@ -19914,7 +21274,6 @@ export const campaign = {
       planet: "safari",
       roomAbove: "safari13",
       size: { x: 8, y: 6 },
-      doors: { right: { ordinal: 2, z: 0, toRoom: "safari11" } },
       walls: {
         away: [
           "wall",
@@ -20044,6 +21403,11 @@ export const campaign = {
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari11" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20054,10 +21418,6 @@ export const campaign = {
       planet: "safari",
       roomBelow: "safari12",
       size: { x: 8, y: 6 },
-      doors: {
-        away: { ordinal: 3, z: 2, toRoom: "safari15" },
-        right: { ordinal: 2, z: 2, toRoom: "safari14" },
-      },
       walls: {
         away: [
           "wall",
@@ -20102,6 +21462,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari15" },
+          position: { x: 3, y: 6, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari14" },
+          position: { x: 0, y: 2, z: 2 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20111,10 +21481,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "safari13" },
-        right: { ordinal: 3, z: 0, toRoom: "safari9" },
-      },
       walls: {
         away: [
           "wall",
@@ -20178,6 +21544,16 @@ export const campaign = {
           config: { style: "puck" },
           position: { x: 3, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari13" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari9" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20187,10 +21563,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 16 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "safari16" },
-        towards: { ordinal: 1, z: 0, toRoom: "safari13" },
-      },
       walls: {
         away: ["wall", "none", "none", "wall"],
         left: [
@@ -20283,6 +21655,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 2, y: 12, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari16" },
+          position: { x: 1, y: 16, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari13" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20292,10 +21674,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "safari17fish" },
-        towards: { ordinal: 1, z: 0, toRoom: "safari15" },
-      },
       walls: {
         away: ["wall", "none", "none", "wall"],
         left: [
@@ -20378,6 +21756,16 @@ export const campaign = {
           },
           position: { x: 2, y: 6, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari17fish" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari15" },
+          position: { x: 1, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20387,11 +21775,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "safari30" },
-        left: { ordinal: 3, z: 0, toRoom: "safari31" },
-        towards: { ordinal: 3, z: 4, toRoom: "safari16" },
-      },
       walls: {
         away: [
           "wall",
@@ -20503,6 +21886,21 @@ export const campaign = {
           config: { alive: true },
           position: { x: 4, y: 7, z: 4 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari30" },
+          position: { x: 3, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari31" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari16" },
+          position: { x: 3, y: 0, z: 4 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20512,10 +21910,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 16 },
-      doors: {
-        away: { ordinal: 0, z: 2, toRoom: "safari19triple" },
-        towards: { ordinal: 0, z: 3, toRoom: "safari4" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -20613,6 +22007,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 2 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari19triple" },
+          position: { x: 0, y: 16, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari4" },
+          position: { x: 0, y: 0, z: 3 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20672,11 +22076,6 @@ export const campaign = {
       ],
       planet: "safari",
       size: { x: 16, y: 10 },
-      doors: {
-        away: { ordinal: 3, z: 0, toRoom: "safari25" },
-        left: { ordinal: 15, z: 0, toRoom: "safari20" },
-        towards: { ordinal: 3, z: 0, toRoom: "safari18" },
-      },
       walls: {
         away: [
           "wall",
@@ -20911,6 +22310,21 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 12, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari25" },
+          position: { x: 3, y: 10, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari20" },
+          position: { x: 16, y: 1, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari18" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -20920,10 +22334,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 3, toRoom: "safari3" },
-        towards: { ordinal: 3, z: 1, toRoom: "safari1" },
-      },
       walls: {
         away: [
           "wall",
@@ -21022,6 +22432,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 7, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari3" },
+          position: { x: 3, y: 8, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari1" },
+          position: { x: 3, y: 0, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21031,11 +22451,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 0, toRoom: "safari22" },
-        left: { ordinal: 3, z: 0, toRoom: "safari21" },
-        right: { ordinal: 3, z: 0, toRoom: "safari19triple" },
-      },
       walls: {
         away: ["wall", "none", "none", "wall"],
         left: [
@@ -21049,7 +22464,23 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari22" },
+          position: { x: 1, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari21" },
+          position: { x: 4, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari19triple" },
+          position: { x: 0, y: 3, z: 0 },
+        },
+      ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari21: {
@@ -21058,7 +22489,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "safari20" } },
       walls: {
         away: [
           "wall",
@@ -21127,6 +22557,11 @@ export const campaign = {
           config: { which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari20" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21136,10 +22571,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 8 },
-      doors: {
-        away: { ordinal: 0, z: 0, toRoom: "safari23" },
-        towards: { ordinal: 0, z: 0, toRoom: "safari20" },
-      },
       walls: {
         away: ["none", "none"],
         left: [
@@ -21189,6 +22620,16 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 0, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari23" },
+          position: { x: 0, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari20" },
+          position: { x: 0, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21198,11 +22639,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 0, toRoom: "safari26" },
-        right: { ordinal: 2, z: 0, toRoom: "safari24" },
-        towards: { ordinal: 2, z: 0, toRoom: "safari22" },
-      },
       walls: {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
@@ -21268,6 +22704,21 @@ export const campaign = {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari26" },
+          position: { x: 6, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari24" },
+          position: { x: 0, y: 2, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari22" },
+          position: { x: 2, y: 0, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21277,10 +22728,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 3, toRoom: "safari23" },
-        right: { ordinal: 2, z: 1, toRoom: "safari25" },
-      },
       walls: {
         away: [
           "wall",
@@ -21340,6 +22787,16 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 0, y: 2, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari23" },
+          position: { x: 8, y: 2, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari25" },
+          position: { x: 0, y: 2, z: 1 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21349,10 +22806,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 3, toRoom: "safari24" },
-        towards: { ordinal: 3, z: 3, toRoom: "safari19triple" },
-      },
       walls: {
         away: [
           "wall",
@@ -21391,6 +22844,16 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari24" },
+          position: { x: 8, y: 3, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari19triple" },
+          position: { x: 3, y: 0, z: 3 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21400,10 +22863,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 12 },
-      doors: {
-        left: { ordinal: 8, z: 0, toRoom: "safari27" },
-        right: { ordinal: 2, z: 0, toRoom: "safari23" },
-      },
       walls: {
         away: [
           "wall",
@@ -21662,6 +23121,16 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 7, y: 0, z: 4 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari27" },
+          position: { x: 8, y: 8, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari23" },
+          position: { x: 0, y: 2, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21671,10 +23140,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 4, toRoom: "safari28" },
-        right: { ordinal: 2, z: 4, toRoom: "safari26" },
-      },
       walls: {
         away: [
           "wall",
@@ -21705,6 +23170,16 @@ export const campaign = {
           position: { x: 4, y: 2, z: 0 },
         },
         { type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari28" },
+          position: { x: 8, y: 2, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari26" },
+          position: { x: 0, y: 2, z: 4 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21714,10 +23189,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "safari29" },
-        right: { ordinal: 3, z: 0, toRoom: "safari27" },
-      },
       walls: {
         away: [
           "wall",
@@ -21751,6 +23222,16 @@ export const campaign = {
           config: { alive: false },
           position: { x: 4, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari29" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari27" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21760,10 +23241,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 0, toRoom: "safari30" },
-        right: { ordinal: 3, z: 0, toRoom: "safari28" },
-      },
       walls: {
         away: [
           "wall",
@@ -21807,6 +23284,16 @@ export const campaign = {
           config: { which: "cyberman", charging: false },
           position: { x: 7, y: 7, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari30" },
+          position: { x: 8, y: 3, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari28" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21816,10 +23303,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 4, y: 8 },
-      doors: {
-        away: { ordinal: 1, z: 5, toRoom: "safari4" },
-        towards: { ordinal: 1, z: 5, toRoom: "safari2" },
-      },
       walls: {
         away: ["wall", "none", "none", "wall"],
         left: [
@@ -21859,6 +23342,16 @@ export const campaign = {
           config: { top: 8, bottom: 0 },
           position: { x: 1, y: 4, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari4" },
+          position: { x: 1, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari2" },
+          position: { x: 1, y: 0, z: 5 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -21868,10 +23361,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 2, y: 8 },
-      doors: {
-        right: { ordinal: 3, z: 5, toRoom: "safari29" },
-        towards: { ordinal: 0, z: 0, toRoom: "safari17fish" },
-      },
       walls: {
         away: ["wall", "wall"],
         left: [
@@ -21885,7 +23374,18 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari29" },
+          position: { x: 0, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari17fish" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari31: {
@@ -21894,10 +23394,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        left: { ordinal: 3, z: 5, toRoom: "safari32" },
-        right: { ordinal: 3, z: 1, toRoom: "safari17fish" },
-      },
       walls: {
         away: [
           "wall",
@@ -22051,6 +23547,16 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 4, y: 0, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari32" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari17fish" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22060,10 +23566,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 0, toRoom: "safari33" },
-        right: { ordinal: 0, z: 0, toRoom: "safari31" },
-      },
       walls: {
         away: [
           "wall",
@@ -22077,7 +23579,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari33" },
+          position: { x: 8, y: 0, z: 0 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari31" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+      ],
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari33: {
@@ -22087,11 +23600,6 @@ export const campaign = {
       planet: "safari",
       roomAbove: "safari36",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "safari37crown" },
-        left: { ordinal: 3, z: 5, toRoom: "safari34" },
-        right: { ordinal: 3, z: 0, toRoom: "safari32" },
-      },
       walls: {
         away: [
           "wall",
@@ -22140,6 +23648,21 @@ export const campaign = {
           config: { style: "anvil" },
           position: { x: 1, y: 1, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari37crown" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari34" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari32" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22150,7 +23673,6 @@ export const campaign = {
       planet: "safari",
       roomAbove: "safari35",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 0, toRoom: "safari33" } },
       walls: {
         away: [
           "wall",
@@ -22274,6 +23796,11 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 1, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari33" },
+          position: { x: 0, y: 3, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22284,7 +23811,6 @@ export const campaign = {
       planet: "safari",
       roomBelow: "safari34",
       size: { x: 8, y: 8 },
-      doors: { right: { ordinal: 3, z: 1, toRoom: "safari36" } },
       walls: {
         away: [
           "wall",
@@ -22363,6 +23889,11 @@ export const campaign = {
           config: { style: "sandwich" },
           position: { x: 7, y: 5, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari36" },
+          position: { x: 0, y: 3, z: 1 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22373,7 +23904,6 @@ export const campaign = {
       planet: "safari",
       roomBelow: "safari33",
       size: { x: 8, y: 8 },
-      doors: { left: { ordinal: 3, z: 2, toRoom: "safari35" } },
       walls: {
         away: [
           "wall",
@@ -22442,6 +23972,11 @@ export const campaign = {
           config: { style: "spikes" },
           position: { x: 4, y: 3, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari35" },
+          position: { x: 8, y: 3, z: 2 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22451,7 +23986,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: { towards: { ordinal: 3, z: 0, toRoom: "safari33" } },
       walls: {
         away: [
           "wall",
@@ -22625,6 +24159,11 @@ export const campaign = {
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 7, y: 2, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari33" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22634,11 +24173,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 8 },
-      doors: {
-        away: { ordinal: 3, z: 5, toRoom: "safari18" },
-        left: { ordinal: 3, z: 5, toRoom: "safari5" },
-        towards: { ordinal: 3, z: 0, toRoom: "safari3" },
-      },
       walls: {
         away: [
           "wall",
@@ -22702,6 +24236,21 @@ export const campaign = {
           config: { which: "dalek" },
           position: { x: 7, y: 4, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari18" },
+          position: { x: 3, y: 8, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari5" },
+          position: { x: 8, y: 3, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari3" },
+          position: { x: 3, y: 0, z: 0 },
+        },
       ],
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22711,10 +24260,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 4 },
-      doors: {
-        left: { ordinal: 1, z: 4, toRoom: "safari6triple" },
-        right: { ordinal: 1, z: 0, toRoom: "safari4" },
-      },
       walls: {
         away: [
           "wall",
@@ -22735,6 +24280,16 @@ export const campaign = {
         { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
         { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
         { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari6triple" },
+          position: { x: 8, y: 1, z: 4 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari4" },
+          position: { x: 0, y: 1, z: 0 },
+        },
       ],
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22783,12 +24338,7 @@ export const campaign = {
         { x: -1, y: 12 },
       ],
       planet: "safari",
-      size: { x: 12, y: 12 },
-      doors: {
-        away: { ordinal: 8, z: 2, toRoom: "safari7" },
-        left: { ordinal: 5, z: 2, toRoom: "safari7" },
-        right: { ordinal: -2, z: 1, toRoom: "safari5" },
-      },
+      size: { x: 13, y: 13 },
       walls: {
         away: [
           "shield",
@@ -22803,6 +24353,7 @@ export const campaign = {
           "none",
           "none",
           "none",
+          "none",
         ],
         left: [
           "shield",
@@ -22811,6 +24362,7 @@ export const campaign = {
           "window",
           "wall",
           "shield",
+          "none",
           "none",
           "none",
           "none",
@@ -22990,6 +24542,21 @@ export const campaign = {
           config: { gives: "shield" },
           position: { x: 0, y: 11, z: 1 },
         },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari7" },
+          position: { x: 8, y: 6, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari7" },
+          position: { x: 6, y: 8, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari5" },
+          position: { x: 0, y: 2, z: 1 },
+        },
       ],
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -22999,11 +24566,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 6, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 2, toRoom: "safari8" },
-        right: { ordinal: 2, z: 1, toRoom: "safari6triple" },
-        towards: { ordinal: 2, z: 1, toRoom: "safari6triple" },
-      },
       walls: {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
@@ -23054,6 +24616,21 @@ export const campaign = {
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari8" },
+          position: { x: 6, y: 2, z: 2 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari6triple" },
+          position: { x: 0, y: 2, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "x", toRoom: "safari6triple" },
+          position: { x: 2, y: 0, z: 1 },
+        },
       ],
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
@@ -23063,10 +24640,6 @@ export const campaign = {
       floorSkip: [],
       planet: "safari",
       size: { x: 8, y: 2 },
-      doors: {
-        left: { ordinal: 0, z: 1, toRoom: "safari9" },
-        right: { ordinal: 0, z: 1, toRoom: "safari7" },
-      },
       walls: {
         away: [
           "wall",
@@ -23080,7 +24653,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [],
+      items: [
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari9" },
+          position: { x: 8, y: 0, z: 1 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari7" },
+          position: { x: 0, y: 0, z: 1 },
+        },
+      ],
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari9: {
@@ -23090,10 +24674,6 @@ export const campaign = {
       planet: "safari",
       roomBelow: "safari10",
       size: { x: 8, y: 6 },
-      doors: {
-        left: { ordinal: 2, z: 5, toRoom: "safari14" },
-        right: { ordinal: 2, z: 4, toRoom: "safari8" },
-      },
       walls: {
         away: [
           "wall",
@@ -23162,6 +24742,16 @@ export const campaign = {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 0, y: 1, z: 3 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari14" },
+          position: { x: 8, y: 2, z: 5 },
+        },
+        {
+          type: "door",
+          config: { axis: "y", toRoom: "safari8" },
+          position: { x: 0, y: 2, z: 4 },
         },
       ],
       color: "green",

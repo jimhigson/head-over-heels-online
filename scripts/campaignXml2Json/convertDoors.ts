@@ -1,52 +1,27 @@
-import { DoorMap, Direction, Door } from "../../src/modelTypes";
-import { map, LooseDoorMap, convertY, convertX, autoZ } from "./convertCampaign";
-import { convertDirection } from "./convertDirection";
-import { convertRoomId } from "./convertRoomId";
-import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
+import { Direction } from "../../src/modelTypes";
+import { Xml2JsonRoom } from "./readToJson";
 
-export const convertDoors = (
-  roomName: string,
-  xml2JsonRoom: Xml2JsonRoom
-): DoorMap<string> => {
-  const roomOnMap = map[roomName];
+export type SidesWithDoors = Partial<Record<Direction, true>>;
+export const xmlRoomSidesWithDoors = (room: Xml2JsonRoom): SidesWithDoors => {
+  const result: SidesWithDoors = {};
 
-  const doorXmlJsonItems = xml2JsonRoom.items
-    .filter((i) => i.class === "door")
-    // filter out doors to nowhere (huh?)
-    .filter(({ where }) => {
-      const goesSomewhere = roomOnMap[where] !== undefined;
+  const doorIter = room.items.values().filter((i) => i.class === "door");
 
-      if (!goesSomewhere) {
-        console.warn(
-          `room ${roomName} has a ${where} door that goes nowhere on the map`
-        );
+  for (const { x, y, kind } of doorIter) {
+    if (kind.endsWith("-east") || kind.endsWith("-west")) {
+      if (parseInt(y) === 0) {
+        result.away = true;
+      } else if (parseInt(y) === parseInt(room.yTiles) - 1) {
+        result.towards = true;
       }
-      return goesSomewhere;
-    });
+    } else {
+      if (parseInt(x) === 0) {
+        result.left = true;
+      } else if (parseInt(x) === parseInt(room.xTiles) - 1) {
+        result.right = true;
+      }
+    }
+  }
 
-  // to convert door locations, we need to know where doors are first (yay) since doors
-  // warp the space in the xml file's version of the game world. Make a map of just which
-  // sides have doors:
-  const looseDoorMapEntries = doorXmlJsonItems.map(({ where }) => {
-    return [convertDirection(where), true] as [Direction, true];
-  });
-  const looseDoorMap = Object.fromEntries(looseDoorMapEntries) as LooseDoorMap;
-
-  const doorEntries = doorXmlJsonItems.map(({ where, x, y }) => {
-    const toRoomId = convertRoomId(roomNameFromXmlFilename(roomOnMap[where]!));
-
-    const useYOrdinal = where === "south" || where === "north";
-    const ordinal = useYOrdinal
-      ? // -1 because doors take up two slots, and are indexed by the lower number. So, we need to adjust this!
-      convertY(parseInt(y), xml2JsonRoom, looseDoorMap) - 1
-      : convertX(parseInt(x), xml2JsonRoom, looseDoorMap) - 1;
-
-    const door: Door<string> = {
-      ordinal,
-      z: autoZ({ x: parseInt(x), y: parseInt(y) }, xml2JsonRoom),
-      toRoom: toRoomId,
-    };
-    return [convertDirection(where), door] as [Direction, Door<string>];
-  });
-  return Object.fromEntries(doorEntries) as DoorMap<string>;
+  return result;
 };

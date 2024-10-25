@@ -6,7 +6,7 @@ export type Xml2JsonItem = {
   z: string;
 } & (
   | {
-      kind: `${string}-door-${string}`;
+      kind: `${string}-door-${CompassDirectionsNESW}`;
       class: "door";
       where: CompassDirections;
     }
