@@ -93,6 +93,9 @@ importers:
       globals:
         specifier: ^15.9.0
         version: 15.10.0
+      json-canonicalize:
+        specifier: ^1.0.6
+        version: 1.0.6
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -108,6 +111,9 @@ importers:
       rollup-plugin-visualizer:
         specifier: ^5.12.0
         version: 5.12.0(rollup@4.24.0)
+      shorthash2:
+        specifier: ^1.0.5
+        version: 1.0.5
       tailwindcss:
         specifier: ^3.4.13
         version: 3.4.13(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@22.7.5)(typescript@5.6.2))
@@ -1942,6 +1948,9 @@ packages:
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
 
+  json-canonicalize@1.0.6:
+    resolution: {integrity: sha512-kP2iYpOS5SZHYhIaR1t9oG80d4uTY3jPoaBj+nimy3njtJk8+sRsVatN8pyJRDRtk9Su3+6XqA2U8k0dByJBUQ==}
+
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
 
@@ -2383,6 +2392,9 @@ packages:
   shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
+
+  shorthash2@1.0.5:
+    resolution: {integrity: sha512-OgKQtF1rIj79taV/coJyp0E6zfo6MmGNAsIepwjoWV2IYlpvWzhU2kFe9o8wSzJRysEhvmLlDHVOXe8/pWqK1Q==}
 
   side-channel@1.0.6:
     resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
@@ -4454,6 +4466,8 @@ snapshots:
 
   json-buffer@3.0.1: {}
 
+  json-canonicalize@1.0.6: {}
+
   json-schema-traverse@0.4.1: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
@@ -4902,6 +4916,8 @@ snapshots:
       shebang-regex: 3.0.0
 
   shebang-regex@3.0.0: {}
+
+  shorthash2@1.0.5: {}
 
   side-channel@1.0.6:
     dependencies:

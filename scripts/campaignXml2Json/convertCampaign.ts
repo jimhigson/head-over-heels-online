@@ -9,7 +9,6 @@ import { readdir } from "node:fs/promises";
 import { AnyRoomJson, Direction, Floor } from "../../src/modelTypes";
 import { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { convertItems } from "./convertItems";
-import { keyItems } from "./keyItems";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
 import { convertPlanetName } from "./convertPlanetName";
