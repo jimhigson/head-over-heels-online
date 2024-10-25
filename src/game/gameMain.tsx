@@ -149,7 +149,7 @@ export const gameMain = <RoomId extends string>(
       app.stage.addChild(worldContainer);
     },
     goToRoom(roomId: RoomId) {
-      switchToRoom(roomId);
+      if (roomId !== currentRoom.id) switchToRoom(roomId);
     },
     stop: () => app?.stage?.removeChild(worldContainer),
   };

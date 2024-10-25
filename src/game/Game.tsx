@@ -43,7 +43,20 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
           gameApi.current.events.on("roomChange", ({ id }: AnyRoomJson) => {
             window.location.hash = id;
           });
+
+          const onHashChange = (e: HashChangeEvent) => {
+            gameApi.current.goToRoom(
+              new URL(e.newURL).hash.substring(1) as RoomId,
+            );
+          };
+
+          window.addEventListener("hashchange", onHashChange);
+
           resize(app);
+
+          return () => {
+            window.removeEventListener("hashchange", onHashChange);
+          };
         };
 
         go();
