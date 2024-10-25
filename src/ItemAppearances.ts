@@ -2,11 +2,17 @@ import { Container } from "pixi.js";
 import { ItemType, ItemConfig } from "./Item";
 import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
+import { AnyLoadedRoom, Xyz } from "./modelTypes";
+import { wallTextureId } from "./game/render/wallTextureId";
+import { PlanetName } from "./sprites/planets";
+import { renderDoorPart } from "./renderDoorPart";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
-  data: ItemConfig<string>[T],
+  data: ItemConfig<PlanetName, string>[T],
+  room: AnyLoadedRoom,
+  position: Xyz,
 ) => Container;
 
 const bubbles = {
@@ -28,6 +34,39 @@ const stackedSprites = (
 export const itemAppearances: {
   [T in ItemType]: ItemAppearance<T>;
 } = {
+  door() {
+    throw new Error("doors should be rendered as doorNear and doorFar");
+  },
+  doorNear(config, room, position) {
+    const container = new Container();
+
+    for (const s of renderDoorPart(config, room, position, "near")) {
+      container.addChild(s);
+    }
+
+    return container;
+  },
+
+  doorFar(config, room, position) {
+    const container = new Container();
+
+    for (const s of renderDoorPart(config, room, position, "far")) {
+      container.addChild(s);
+    }
+
+    return container;
+  },
+
+  wall({ side, style }, room) {
+    if (side === "right" || side === "towards") {
+      return new Container();
+    }
+    return createSprite({
+      texture: wallTextureId(room.planet, style, side),
+      anchor: side === "away" ? { x: 1, y: 1 } : { x: 0, y: 1 },
+    });
+  },
+
   barrier: ({ axis }) =>
     createSprite({
       texture: `barrier.${axis}`,
@@ -68,7 +107,7 @@ export const itemAppearances: {
 
   pickup({ gives }) {
     const pickupIcons: Record<
-      ItemConfig<string>["pickup"]["gives"],
+      ItemConfig<PlanetName, string>["pickup"]["gives"],
       TextureId
     > = {
       shield: "bunny",

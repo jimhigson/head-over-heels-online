@@ -7,7 +7,7 @@ import {
 } from "react";
 import { Application } from "pixi.js";
 import { resize } from "./resize";
-import { Campaign } from "../modelTypes";
+import { AnyRoomJson, Campaign } from "../modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
 import { EmptyObject } from "type-fest";
@@ -19,7 +19,14 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
   forwardRef<GameApi<RoomId>, EmptyObject>(
     (_props: EmptyObject, gameApiRef) => {
       const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-      const gameApi = useRef(gameMain(campaign));
+      const gameApi = useRef(
+        gameMain(
+          campaign,
+          window.location.hash
+            ? (window.location.hash.substring(1) as RoomId)
+            : undefined,
+        ),
+      );
       useImperativeHandle(gameApiRef, () => gameApi.current);
 
       useEffect(() => {
@@ -33,6 +40,9 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
           // todo: load assets in parallel with init
           gameArea.appendChild(app.canvas);
           gameApi.current.renderIn(app);
+          gameApi.current.events.on("roomChange", ({ id }: AnyRoomJson) => {
+            window.location.hash = id;
+          });
           resize(app);
         };
 

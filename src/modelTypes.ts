@@ -2,6 +2,7 @@ import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { ItemType, UnknownItem } from "./Item";
 import { Simplify } from "type-fest";
+import { PlanetName, Wall } from "./sprites/planets";
 
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
@@ -12,6 +13,18 @@ export type Xy = {
   x: number;
   y: number;
 };
+
+export const crossAxis = (axis: Axis): Axis => (axis === "x" ? "y" : "x");
+
+export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
+  xys.reduce<Xy>(
+    (ac, xyi) => ({
+      x: ac.x + (xyi.x ?? 0),
+      y: ac.y + (xyi.y ?? 0),
+    }),
+    xy,
+  );
+
 export type Xyz = {
   x: number;
   y: number;
@@ -22,41 +35,9 @@ export type XyMaybeZ = {
   y: number;
   z?: number;
 };
-
-export const planets = {
-  jail: { walls: ["bars"] },
-  blacktooth: { walls: ["armour", "shield", "plain"] },
-  bookworld: { walls: ["person", "book"] },
-  egyptus: { walls: ["sarcophagus", "hieroglyphics"] },
-  market: { walls: ["passage", "fruits", "more-fruits"] },
-  moonbase: { walls: ["window1", "window2", "window3", "coil"] },
-  penitentiary: { walls: ["loop", "skeleton"] },
-  safari: { walls: ["window", "shield", "wall"] },
-} as const satisfies Record<string, { walls: string[] }>;
-
-export type PlanetName = keyof typeof planets;
-export const planetNames = Object.keys(planets) as PlanetName[];
-
-export type AllPlanets = typeof planets;
-export type Wall<P extends PlanetName> =
-  | AllPlanets[P]["walls"][number]
-  /**
-   * none means render nothing in this space - if this is a mistake in the xml,
-   * overide it with jsonpatch
-   */
-  | "none";
+export type Axis = "x" | "y";
 
 export type AnyWall = Wall<PlanetName>;
-
-export type Door<RoomId extends string> = {
-  ordinal: number;
-  z: number;
-  toRoom: RoomId;
-};
-
-export type DoorMap<RoomId extends string> = Partial<
-  Record<Direction, Door<RoomId>>
->;
 
 /* which graphics to use for all the walls in a room? */
 export type RoomWalls<P extends PlanetName> = {
@@ -64,6 +45,9 @@ export type RoomWalls<P extends PlanetName> = {
   away: Wall<P>[];
 };
 
+/**
+ * serialisation format of a room to be stored in while not in play
+ */
 export type RoomJson<P extends PlanetName, RoomId extends string> = {
   id: RoomId;
   size: {
@@ -74,17 +58,33 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
   };
   planet: P;
   floor: Floor;
+  floorSkip: Xy[];
   roomAbove?: RoomId;
   roomBelow?: RoomId;
   walls: RoomWalls<P>;
   // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
   // colours in each room
   color: ZxSpectrumRoomColour;
-  // for now, can only have one room per direction - this seems to work with the original game
-  // levels but could be expanded to support multiple
-  doors: DoorMap<RoomId>;
-  items: UnknownItem<RoomId>[];
+
+  /**
+   * by keying each item with an id, it makes the diffing easier since the array is no longer
+   * position-dependent
+   */
+  items: Record<string, UnknownItem<RoomId>>;
 };
+export type AnyRoomJson = RoomJson<PlanetName, string>;
+
+/**
+ * Representation of a room in-play. This is in memory only for the current
+ * one or two rooms (that head and heels are in, but they could be in the same
+ * room)
+ */
+export type LoadedRoom<P extends PlanetName, RoomId extends string> = Simplify<
+  Omit<RoomJson<P, RoomId>, "items"> & { items: UnknownItem<RoomId>[] }
+>;
+export type AnyLoadedRoom = LoadedRoom<PlanetName, string>;
+
+export type RoomState = Omit<RoomJson<PlanetName, string>, "floorSkip">;
 
 export type EitherCharacterState = {
   lives: number;
@@ -124,19 +124,6 @@ export type CampaignRoomId<C extends UnknownCampaign> = string &
 export type CampaignRoom<C extends UnknownCampaign> =
   C extends Campaign<infer RoomId> ? RoomJson<PlanetName, RoomId> : never;
 
-export type AnyRoom = RoomJson<PlanetName, string>;
-
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;
 export type SpriteSize = Pick<SpriteFrame, "w" | "h">;
-
-export type WallTextureId<
-  P extends PlanetName,
-  W extends Wall<P> = Wall<P>,
-> = `${P}.wall.${W}.${"left" | "away"}`;
-
-export const wallTextureId = <P extends PlanetName, W extends Wall<P>>(
-  planet: P,
-  wallName: Wall<P>,
-  side: "left" | "away",
-) => `${planet}.wall.${wallName}.${side}` as WallTextureId<P, W>;

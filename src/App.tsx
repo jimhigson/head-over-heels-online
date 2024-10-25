@@ -16,10 +16,19 @@ export const App = <RoomId extends string>({
 
   return (
     <>
-      <div className="absolute top-2 right-2 flex flex-col">
+      <div className="absolute bottom-2 right-2 flex flex-col">
         <RoomSelect gameApi={gameApi ?? undefined} />
+        <Button onClick={() => gameApi?.goToRoom("blacktooth1head" as RoomId)}>
+          Start
+        </Button>
+        <Button onClick={() => gameApi?.goToRoom("doorsRoom" as RoomId)}>
+          Test room
+        </Button>
         <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
           Room JSON to console
+        </Button>
+        <Button onClick={() => gameApi && console.log(gameApi.roomState)}>
+          Room state to console
         </Button>
       </div>
       <CampaignGame ref={(api) => setGameApi(api)} />

@@ -61,6 +61,13 @@ export type Xml2JsonWall = {
 
 export type XmlFloorKind = "plain" | "absent" | "mortal";
 
+export type Xml2JsonNoFloor = Array<{
+  _attributes: {
+    x: string;
+    y: string;
+  };
+}>;
+
 export type Xml2JsonRoom = {
   xTiles: string;
   yTiles: string;
@@ -69,6 +76,7 @@ export type Xml2JsonRoom = {
   floorKind: XmlFloorKind;
   walls: Array<Xml2JsonWall>;
   items: Array<Xml2JsonItem>;
+  nofloor: Xml2JsonNoFloor | undefined;
 };
 
 export const readRoomToJson = async (

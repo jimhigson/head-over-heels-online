@@ -1,23 +1,24 @@
 import { Container, Graphics } from "pixi.js";
 import { hintColours } from "../../hintColours";
-import { PlanetName, RoomJson } from "../../modelTypes";
+import { Direction, LoadedRoom } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
-import {
-  RenderOptions,
-  xyzBlockPosition,
-  paletteSwapFilters,
-} from "../gameMain";
+import { RenderOptions, paletteSwapFilters } from "../gameMain";
 import { createSprite } from "./createSprite";
-import { moveSpriteToBlock } from "./moveSpriteToBlock";
+import { moveSpriteToBlockXyz } from "./positionSprite";
 import { renderExtent } from "./renderExtent";
+import { roomSidesWithDoors } from "./roomSidesWithDoors";
+import { projectBlockToScreen } from "./projectToScreen";
+import { PlanetName } from "@/sprites/planets";
+
+export type SidesWithDoors = Partial<Record<Direction, true>>;
 
 export function* renderFloor<RoomId extends string>(
-  room: RoomJson<PlanetName, RoomId>,
+  room: LoadedRoom<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
-  const hasDoorTowards = !!room.doors.towards;
-  const hasDoorRight = !!room.doors.right;
+  const { towards: hasDoorTowards, right: hasDoorRight } =
+    roomSidesWithDoors(room);
 
   const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
     renderExtent(room);
@@ -25,6 +26,10 @@ export function* renderFloor<RoomId extends string>(
   const { floor: floorType } = room;
 
   const floorContainer = new Container();
+
+  const floorSkipMap = Object.fromEntries(
+    room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
+  );
 
   if (floorType !== "none") {
     const floorTileTexture: TextureId =
@@ -37,8 +42,12 @@ export function* renderFloor<RoomId extends string>(
     // not according to a checkerboard pattern)
     for (let ix = -1; ix <= room.size.x; ix++) {
       for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
+        if (floorSkipMap[`${ix},${iy}`]) {
+          continue;
+        }
+
         tilesContainer.addChild(
-          moveSpriteToBlock(
+          moveSpriteToBlockXyz(
             { x: ix, y: iy },
             createSprite({
               anchor: { x: 0.5, y: 1 },
@@ -67,7 +76,7 @@ export function* renderFloor<RoomId extends string>(
   const rightEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
     rightEdge.addChild(
-      moveSpriteToBlock(
+      moveSpriteToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
           pivot: { x: 7, y: 1 },
@@ -80,7 +89,7 @@ export function* renderFloor<RoomId extends string>(
   const towardsEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
     towardsEdge.addChild(
-      moveSpriteToBlock(
+      moveSpriteToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
         createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),
@@ -97,8 +106,8 @@ export function* renderFloor<RoomId extends string>(
     );
   }
 
-  const edgeRightPoint = xyzBlockPosition(0, room.size.y);
-  const edgeLeftPoint = xyzBlockPosition(room.size.x, 0);
+  const edgeRightPoint = projectBlockToScreen({ x: 0, y: room.size.y });
+  const edgeLeftPoint = projectBlockToScreen({ x: room.size.x, y: 0 });
 
   // rendering strategy differs slightly from original here - we don't render floors added in for near-side
   // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off

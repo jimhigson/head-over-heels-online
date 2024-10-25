@@ -1,17 +1,20 @@
-import { AnyRoom } from "../../modelTypes";
+import { AnyLoadedRoom } from "../../modelTypes";
 import { wallTileSize } from "../../sprites/pixiSpriteSheet";
-import { xyzBlockPosition } from "../gameMain";
+import { projectBlockToScreen } from "./projectToScreen";
+import { roomSidesWithDoors } from "./roomSidesWithDoors";
 
-export const renderExtent = (room: AnyRoom) => {
-  const blockXMin = room.doors.right ? -0.5 : 0;
-  const blockXMax = room.size.x + (room.doors.left ? 0.5 : 0);
-  const blockYMin = room.doors.towards ? -0.5 : 0;
-  const blockYMax = room.size.y + (room.doors.towards ? 0.5 : 0);
+export const renderExtent = (loadedRoom: AnyLoadedRoom) => {
+  const sidesWithDoors = roomSidesWithDoors(loadedRoom);
 
-  const rightSide = xyzBlockPosition(blockXMin, blockYMax);
-  const leftSide = xyzBlockPosition(blockXMax, blockYMin);
-  const frontSide = xyzBlockPosition(blockXMin, blockYMin); // aka the origin, ground-level
-  const backSide = xyzBlockPosition(blockXMax, blockYMax); // aka opposite the origin, top of wall
+  const blockXMin = sidesWithDoors.right ? -0.5 : 0;
+  const blockXMax = loadedRoom.size.x + (sidesWithDoors.left ? 0.5 : 0);
+  const blockYMin = sidesWithDoors.towards ? -0.5 : 0;
+  const blockYMax = loadedRoom.size.y + (sidesWithDoors.away ? 0.5 : 0);
+
+  const rightSide = projectBlockToScreen({ x: blockXMin, y: blockYMax });
+  const leftSide = projectBlockToScreen({ x: blockXMax, y: blockYMin });
+  const frontSide = projectBlockToScreen({ x: blockXMin, y: blockYMin }); // aka the origin, ground-level
+  const backSide = projectBlockToScreen({ x: blockXMax, y: blockYMax }); // aka opposite the origin, top of wall
   const top = backSide.y + wallTileSize.h;
 
   return {

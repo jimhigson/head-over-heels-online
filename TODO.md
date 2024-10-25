@@ -28,12 +28,19 @@ _ use spritesheets for graphics - https://pixijs.download/release/docs/assets.Sp
 [x] room colour
 [x] wall graphics
 
-[ ] add level selector dropdown
+[x] add level selector dropdown
 [ ] parseInt from xml earlier and remove many parseInt calls!  
+    * nice, but processing is all offline, so it's just ugly, not harmful to play
+    * find/write a new xml parser is probably the way
 [x] prettier
 [x] render supports under doors with z!=0
 
-[ ] support stacked sprites
+[ ] load items into their pixel locations
+[ ] render based on pixel locations
+
+[ ] base z-index off the top of objects using their bounding boxes
+
+[x] support stacked sprites
 
 [ ] investigate rooms:
     moonbase12 - puppies seem to go nowhere!

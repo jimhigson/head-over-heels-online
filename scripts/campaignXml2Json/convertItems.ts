@@ -1,13 +1,19 @@
 import { ItemConfig, UnknownItem } from "../../src/Item";
-import {
-  LooseDoorMap,
-  map,
-  convertXYZ,
-  convertDirection,
-} from "./convertCampaign";
+import { addXy, crossAxis } from "../../src/modelTypes";
+import { PlanetName } from "../../src/sprites/planets";
+import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
+import { convertDirection } from "./convertDirection";
+import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
-import { Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
+import {
+  convertWallName,
+  isWallName,
+  parseXmlWallName,
+} from "./convertWallName";
+import { MapJson, Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
+import { Xml2JsonItem } from "./Xml2JsonItem";
+import { keyItems } from "../../src/utils/keyItems";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",
@@ -22,9 +28,29 @@ const baddieConversions = {
   turtle: "turtle",
   "throne-guard": "flying-ball",
   "bighead-robot": "computer-bot",
-} as const satisfies Record<string, ItemConfig<string>["baddie"]["which"]>;
+} as const satisfies Record<
+  string,
+  ItemConfig<PlanetName, string>["baddie"]["which"]
+>;
 
 export const convertItems = (
+  map: MapJson,
+  roomName: string,
+  xml2JsonRoom: Xml2JsonRoom,
+  doorMap: LooseDoorMap,
+): Record<string, UnknownItem> => {
+  const convertedItemsArray = convertItemsArray(
+    map,
+    roomName,
+    xml2JsonRoom,
+    doorMap,
+  );
+
+  return keyItems(convertedItemsArray);
+};
+
+const convertItemsArray = (
+  map: MapJson,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
@@ -33,12 +59,78 @@ export const convertItems = (
     .map((item): UnknownItem | undefined => {
       const position = convertXYZ(item, xml2JsonRoom, doorMap);
 
-      if (
-        item.kind.includes("shaft") ||
-        item.kind.includes("capital") ||
-        item.kind.includes("door")
-      ) {
+      if (item.kind.includes("shaft") || item.kind.includes("capital")) {
+        // weird door parts - we don't care
         return undefined;
+      }
+
+      // walls don't use 'kind' like other items - the kind is the name of the
+      // picture on the wall tile:
+      if (isWallName(item.kind)) {
+        const planetName = convertPlanetName(xml2JsonRoom.scenery);
+        // Xml2JsonWallItem has to be kept out of the wall union since it can have any string value
+        // and stops us from discriminating unions properly
+
+        return {
+          type: "wall",
+          config: {
+            side: parseXmlWallName(item.kind).axis === "x" ? "away" : "left",
+            style: convertWallName(planetName, item.kind),
+          },
+          position,
+        };
+      }
+
+      if (item.class === "door") {
+        const roomOnMap = map[roomName];
+        const toRoom = convertRoomId(
+          roomNameFromXmlFilename(roomOnMap[item.where]!),
+        );
+
+        // this is unreliable - east and west can be used interchangeably in the xml(!).
+        // ie, foo-door-west will sometimes be used to go wast (!) - presumably because they look
+        // similar
+        //const isFront =
+        //  item.kind.endsWith("-west") || item.kind.endsWith("-south");
+
+        // this isn't really reliable either since the "where" is just a label
+        // but might be the best we have (for now) - it is sometimes wrong in the "triple" rooms
+        // so these probably need manual patching
+        const isFront =
+          convertDirection(item.where) === "towards" ||
+          convertDirection(item.where) === "right";
+
+        const axis =
+          item.kind.endsWith("-east") || item.kind.endsWith("-west")
+            ? "x"
+            : "y";
+        const cAxis = crossAxis(axis);
+
+        const z =
+          position.z === -1
+            ? autoZ({ x: parseInt(item.x), y: parseInt(item.y) }, xml2JsonRoom)
+            : position.z;
+
+        const vectorToMoveFrontSideInwards = isFront ? { [cAxis]: 1 } : {};
+
+        // axes have flipped, so start the door on its opposite side:
+        const vectorToMoveStartingOnLowSide = { [axis]: -1 };
+
+        return {
+          type: "door",
+          config: {
+            axis,
+            toRoom,
+          },
+          position: {
+            ...addXy(
+              position,
+              vectorToMoveStartingOnLowSide,
+              vectorToMoveFrontSideInwards,
+            ),
+            z,
+          },
+        };
       }
 
       switch (item.kind) {
@@ -77,7 +169,7 @@ export const convertItems = (
         case "brick2": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<string>["block"]["style"]
+            ItemConfig<PlanetName, string>["block"]["style"]
           > = {
             brick1: "artificial",
             brick2: "organic",
@@ -99,7 +191,7 @@ export const convertItems = (
         case "vulcano": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<string>["deadly-block"]["style"]
+            ItemConfig<PlanetName, string>["deadly-block"]["style"]
           > = {
             vulcano: "volcano",
             spikes: "spikes",
@@ -135,7 +227,7 @@ export const convertItems = (
         case "handbag": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["pickup"]["gives"]
+            ItemConfig<PlanetName, string>["pickup"]["gives"]
           > = {
             horn: "hooter",
             handbag: "bag",
@@ -195,7 +287,7 @@ export const convertItems = (
         case "stool": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["movable-block"]["style"]
+            ItemConfig<PlanetName, string>["movable-block"]["style"]
           > = {
             cap: "puck",
             stool: "anvil",
@@ -221,7 +313,7 @@ export const convertItems = (
         case "another-portable-brick": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<string>["portable-block"]["style"]
+            ItemConfig<PlanetName, string>["portable-block"]["style"]
           > = {
             drum: "drum",
             "another-portable-brick": "cube",
@@ -316,7 +408,7 @@ export const convertItems = (
 
         default:
           console.warn(
-            `not converting ${chalk.yellow(item.kind)} in room ${chalk.green(roomName)}`,
+            `not converting ${chalk.yellow((item as unknown as Xml2JsonItem).kind)} in room ${chalk.green(roomName)}`,
           );
           //item.kind satisfies never;
           return undefined;

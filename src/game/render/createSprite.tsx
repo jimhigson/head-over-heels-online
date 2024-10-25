@@ -1,8 +1,5 @@
 import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
-import {
-  pixiSpriteSheet,
-  TextureId,
-} from "../../sprites/pixiSpriteSheet";
+import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
 
 export type MoveSpriteOptions = {
   /**
@@ -19,6 +16,8 @@ type AnimatedCreateSpriteOptions = {
   flipX?: boolean;
   animationSpeed: number;
   frames: Texture[];
+  x?: number;
+  y?: number;
 };
 
 export type CreateSpriteOptions =
@@ -29,6 +28,8 @@ export type CreateSpriteOptions =
       pivot?: PointData;
       flipX?: boolean;
       texture: TextureId;
+      x?: number;
+      y?: number;
     }
   | AnimatedCreateSpriteOptions;
 
@@ -45,7 +46,7 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     // shortcutted convenience for creating with the texture name and no other options
     return createSprite({ texture: options });
   } else {
-    const { anchor, flipX, pivot } = options;
+    const { anchor, flipX, pivot, x, y } = options;
 
     let sprite: Sprite;
 
@@ -64,8 +65,16 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
       if (pivot !== undefined) sprite.pivot = pivot;
     }
 
+    if (x !== undefined) {
+      sprite.x = x;
+    }
+
+    if (y !== undefined) {
+      sprite.y = y;
+    }
+
     sprite.eventMode = "static";
-        if (flipX === true) {
+    if (flipX === true) {
       sprite.scale.x = -1;
     }
 

@@ -5,14 +5,8 @@ import {
   type Texture,
 } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
-import {
-  PlanetName,
-  WallTextureId,
-  SpriteSize,
-  planets,
-  Direction,
-  Xy,
-} from "../modelTypes";
+import { SpriteSize, Direction, Xy } from "../modelTypes";
+import { PlanetName, planets, Wall } from "@/sprites/planets";
 
 export const blockSizePx = { w: 16, d: 16, h: 12 };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
@@ -31,7 +25,11 @@ export const doorTexturePivot = {
 };
 export const doorLegsPivotY = { x: 0, y: 36 };
 
-type BackgroundFrame<TPlanet extends PlanetName> =
+export type WallTextureId<PS extends PlanetName> = {
+  [P in PS]: `${P}.wall.${Wall<P>}.${"left" | "away"}`;
+}[PS];
+
+type BackgroundTextureId<TPlanet extends PlanetName> =
   | WallTextureId<TPlanet>
   | `${TPlanet}.floor`;
 
@@ -39,12 +37,12 @@ const backgroundFrames = <TPlanet extends PlanetName>(
   planet: TPlanet,
   startX: number,
   startY: number,
-): Record<BackgroundFrame<TPlanet>, SpritesheetFrameData> => {
+): Record<BackgroundTextureId<TPlanet>, SpritesheetFrameData> => {
   function* backgroundFramesGenerator<TPlanet extends PlanetName>(
     planet: TPlanet,
     startX: number,
     startY: number,
-  ): Generator<[BackgroundFrame<TPlanet>, SpritesheetFrameData]> {
+  ): Generator<[BackgroundTextureId<TPlanet>, SpritesheetFrameData]> {
     const walls = planets[planet].walls;
 
     const { w, h } = wallTileSize;
@@ -86,7 +84,7 @@ const backgroundFrames = <TPlanet extends PlanetName>(
 
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
-  ) as Record<BackgroundFrame<TPlanet>, SpritesheetFrameData>;
+  ) as Record<BackgroundTextureId<TPlanet>, SpritesheetFrameData>;
 };
 
 type DirectionalTexture<TName extends string> = `${TName}.${Direction}`;
@@ -179,6 +177,9 @@ const spritesheetData = {
     },
     "generic.wall.overdraw": {
       frame: { x: 210, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    },
+    "generic.wall.overdraw.debug": {
+      frame: { x: 210, y: 4, w: wallTileSize.w, h: floorTileSize.h * 2 },
     },
     "generic.floor.deadly": {
       frame: { x: 379, y: 444, ...floorTileSize },

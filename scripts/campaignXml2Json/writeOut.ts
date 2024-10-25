@@ -1,29 +1,33 @@
 import patch from "../../src/_generated/originalCampaign/patch.json";
 import fastJsonPatch, { Operation } from "fast-json-patch";
-import { AnyRoom } from "../../src/modelTypes";
+import { AnyRoomJson } from "../../src/modelTypes";
 import { writeFile } from "node:fs/promises";
+import { canonicalize } from "json-canonicalize";
 
-const roomTsObjectEntry = (room: AnyRoom): string =>
-  `"${room.id}": ${JSON.stringify(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
+const startRoom = "blacktooth1head";
 
-export const writeOut = async (rooms: Record<string, AnyRoom>) => {
+const roomTsObjectEntry = (room: AnyRoomJson): string =>
+  `"${room.id}": ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
+
+export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
   const tsFilename = `${targetDir}/campaign.ts`;
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
-    JSON.stringify(rooms),
+    JSON.stringify({ startRoom, rooms }),
   );
 
   const patchedJson = fastJsonPatch.applyPatch(
-    rooms,
+    { startRoom, rooms },
     patch as Operation[],
   ).newDocument;
 
   const writeTsPromise = writeFile(
     tsFilename,
     `
+    /* eslint-disable */
     import type {Campaign, RoomJson} from "../../modelTypes.ts";\n
     
     export type OriginalCampaignRoomId = ${Object.keys(rooms)
@@ -31,9 +35,9 @@ export const writeOut = async (rooms: Record<string, AnyRoom>) => {
       .join("|")};\n
         
     export const campaign = { 
-      "startRoom": "blacktooth1head", 
+      "startRoom": "${startRoom}", 
       "rooms": { 
-        ${Object.values(patchedJson).map(roomTsObjectEntry).join(",\n")}
+        ${Object.values(patchedJson.rooms).map(roomTsObjectEntry).join(",\n")}
        }
     } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
   );

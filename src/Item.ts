@@ -1,7 +1,11 @@
 import { EmptyObject } from "type-fest";
-import { Direction, Xyz } from "./modelTypes";
+import { Axis, Direction, Xyz } from "./modelTypes";
+import { PlanetName, Wall } from "./sprites/planets";
 
 export type ItemType =
+  | "door"
+  | "doorNear"
+  | "doorFar"
   | "teleporter"
   | "barrier"
   | "block"
@@ -22,16 +26,36 @@ export type ItemType =
   | "switch"
   | "hush-puppy"
   | "ball"
-  | "book";
+  | "book"
+  | "wall";
+
+export type RenderItemType = ItemType | "door-front" | "door-back";
+
+export type LoadedDoorConfig<RoomId extends string> = {
+  toRoom: RoomId;
+  axis: Axis;
+  /** does the door come into the hidden/invisible walls that are closest to us? */
+  inHiddenWall: boolean;
+};
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
-export type ItemConfig<RoomId extends string> = {
+export type ItemConfig<P extends PlanetName, RoomId extends string> = {
+  door: {
+    toRoom: RoomId;
+    axis: Axis;
+  };
+  doorNear: LoadedDoorConfig<RoomId>;
+  doorFar: LoadedDoorConfig<RoomId>;
+  wall: {
+    style: Wall<P>;
+    side: Direction;
+  };
   teleporter: {
     toRoom: RoomId;
   };
   barrier: {
     // the axis the barrier runs along
-    axis: "x" | "y";
+    axis: Axis;
   };
   block: {
     style: "organic" | "artificial" | "tower";
@@ -107,14 +131,18 @@ export type ItemConfig<RoomId extends string> = {
   ball: EmptyObject;
 };
 
-export type Item<T extends ItemType, RoomId extends string = string> = {
+export type JsonItem<
+  T extends ItemType,
+  P extends PlanetName = PlanetName,
+  RoomId extends string = string,
+> = {
   type: T;
-  config: ItemConfig<RoomId>[T];
+  config: ItemConfig<P, RoomId>[T];
   position: Xyz;
 };
 
 export type UnknownItem<RoomId extends string = string> = {
-  [I in ItemType]: Item<I, RoomId>;
+  [IT in ItemType]: JsonItem<IT, PlanetName, RoomId>;
 }[ItemType];
 
 export type ItemInPlay = {
