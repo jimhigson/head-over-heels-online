@@ -12,6 +12,8 @@ import {
 } from "./convertWallName";
 import { MapJson, Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
+import { Xml2JsonItem } from "./Xml2JsonItem";
+import { keyItems } from "../../src/utils/keyItems";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",
@@ -32,6 +34,22 @@ const baddieConversions = {
 >;
 
 export const convertItems = (
+  map: MapJson,
+  roomName: string,
+  xml2JsonRoom: Xml2JsonRoom,
+  doorMap: LooseDoorMap,
+): Record<string, UnknownItem> => {
+  const convertedItemsArray = convertItemsArray(
+    map,
+    roomName,
+    xml2JsonRoom,
+    doorMap,
+  );
+
+  return keyItems(convertedItemsArray);
+};
+
+const convertItemsArray = (
   map: MapJson,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
@@ -390,7 +408,7 @@ export const convertItems = (
 
         default:
           console.warn(
-            `not converting ${chalk.yellow(item.kind)} in room ${chalk.green(roomName)}`,
+            `not converting ${chalk.yellow((item as unknown as Xml2JsonItem).kind)} in room ${chalk.green(roomName)}`,
           );
           //item.kind satisfies never;
           return undefined;

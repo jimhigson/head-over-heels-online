@@ -304,78 +304,78 @@ export const campaign = {
         ],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@8,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@8,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@8,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@8,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@8,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@8,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@12,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth11" },
           position: { x: 12, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth7" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth11: {
@@ -388,268 +388,268 @@ export const campaign = {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@5,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "block@4,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "block@3,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 2 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@2,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "block@5,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "block@5,6,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 6, z: 1 },
         },
-        {
+        "block@4,6,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 2 },
         },
-        {
+        "block@3,6,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 6, z: 2 },
         },
-        {
+        "block@2,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "block@2,6,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 6, z: 1 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@5,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 1 },
         },
-        {
+        "block@4,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 2 },
         },
-        {
+        "block@3,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 2 },
         },
-        {
+        "block@2,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@2,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 1 },
         },
-        {
+        "block@5,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "block@5,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 4, z: 1 },
         },
-        {
+        "block@4,4,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "block@3,4,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 2 },
         },
-        {
+        "block@2,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "block@2,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 1 },
         },
-        {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@5,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "block@4,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "block@3,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 2 },
         },
-        {
+        "block@2,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "block@2,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "block@5,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@5,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 1 },
         },
-        {
+        "block@4,2,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "block@3,2,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 2 },
         },
-        {
+        "block@2,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "block@2,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 1 },
         },
-        {
+        "block@5,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "block@5,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 1 },
         },
-        {
+        "block@4,1,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "block@3,1,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 2 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@2,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 1 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@5,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "block@4,0,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "block@3,0,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 2 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@2,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth32" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth12" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth10" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth31" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth12: {
@@ -671,48 +671,48 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "block@7,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 3 },
         },
-        {
+        "block@4,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 3 },
         },
-        {
+        "block@0,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 3 },
         },
-        {
+        "block@7,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@0,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
-        {
+        "door@8,0,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth13" },
           position: { x: 8, y: 0, z: 5 },
         },
-        {
+        "door@0,0,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth11" },
           position: { x: 0, y: 0, z: 5 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth13: {
@@ -725,63 +725,63 @@ export const campaign = {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth15" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth14" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth12" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth14: {
@@ -803,118 +803,118 @@ export const campaign = {
         ],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "barrier@4,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "barrier@4,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 2 },
         },
-        {
+        "pickup@7,4,0": {
           type: "pickup",
           config: { gives: "fast" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "barrier@4,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "baddie@7,2,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 1 },
         },
-        {
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "pickup@7,1,0": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "barrier@4,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth13" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth15: {
@@ -936,18 +936,18 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth16" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth13" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth16: {
@@ -978,43 +978,43 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@7,7,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "baddie@0,7,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "deadly-block@4,4,0": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "baddie@7,0,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth17triple" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth15" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth17triple: {
@@ -1085,203 +1085,198 @@ export const campaign = {
           "none",
         ],
       },
-      items: [
-        {
+      items: {
+        "wall@6,11,0": {
           type: "wall",
           config: { side: "left", style: "plain" },
           position: { x: 6, y: 11, z: 0 },
         },
-        {
+        "wall@6,10,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 6, y: 10, z: 0 },
         },
-        {
+        "deadly-block@3,10,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 10, z: 0 },
         },
-        {
+        "deadly-block@2,10,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 10, z: 0 },
         },
-        {
+        "deadly-block@4,9,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 9, z: 0 },
         },
-        {
+        "deadly-block@1,9,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 9, z: 0 },
         },
-        {
+        "deadly-block@4,8,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 8, z: 0 },
         },
-        {
+        "deadly-block@1,8,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "wall@6,7,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@3,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "wall@11,6,0": {
           type: "wall",
           config: { side: "away", style: "plain" },
           position: { x: 11, y: 6, z: 0 },
         },
-        {
+        "wall@10,6,0": {
           type: "wall",
           config: { side: "away", style: "armour" },
           position: { x: 10, y: 6, z: 0 },
         },
-        {
+        "wall@9,6,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 9, y: 6, z: 0 },
         },
-        {
+        "wall@8,6,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 8, y: 6, z: 0 },
         },
-        {
+        "wall@7,6,0": {
           type: "wall",
           config: { side: "away", style: "armour" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
-          type: "wall",
-          config: { side: "away", style: "plain" },
-          position: { x: 6, y: 6, z: 0 },
-        },
-        {
+        "wall@6,6,0": {
           type: "wall",
           config: { side: "left", style: "plain" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "deadly-block@9,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 9, y: 4, z: 0 },
         },
-        {
+        "deadly-block@8,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@10,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 10, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@10,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 10, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@9,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 9, y: 1, z: 0 },
         },
-        {
+        "deadly-block@8,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 8, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "pickup@3,9,0": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 3, y: 9, z: 0 },
         },
-        {
+        "baddie@3,0,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@6,8,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth18" },
           position: { x: 6, y: 8, z: 0 },
         },
-        {
+        "door@12,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth19" },
           position: { x: 12, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth16" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth18: {
@@ -1303,18 +1298,18 @@ export const campaign = {
         ],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "book@3,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "book@3,3,1": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 3, z: 1 },
         },
-        {
+        "baddie@4,3,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -1322,22 +1317,22 @@ export const campaign = {
           },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "portable-block@3,3,2": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 2 },
         },
-        {
+        "door@8,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth20" },
           position: { x: 8, y: 2, z: 4 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth17triple" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth19: {
@@ -1368,93 +1363,93 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "conveyor@6,2,3": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 6, y: 2, z: 3 },
         },
-        {
+        "block@5,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 3 },
         },
-        {
+        "block@4,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 3 },
         },
-        {
+        "block@3,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 3 },
         },
-        {
+        "block@2,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 3 },
         },
-        {
+        "block@6,2,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "block@6,2,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 2, z: 1 },
         },
-        {
+        "block@6,2,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 2, z: 2 },
         },
-        {
+        "movable-block@5,2,4": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 5, y: 2, z: 4 },
         },
-        {
+        "movable-block@4,2,4": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 4, y: 2, z: 4 },
         },
-        {
+        "movable-block@3,2,4": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 3, y: 2, z: 4 },
         },
-        {
+        "block@2,2,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "block@2,2,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 2, y: 2, z: 1 },
         },
-        {
+        "block@2,2,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 2, y: 2, z: 2 },
         },
-        {
+        "lift@1,2,0": {
           type: "lift",
           config: { top: 7, bottom: 0 },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth20" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth17triple" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth1head: {
@@ -1467,48 +1462,43 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@5,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "barrier@5,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "barrier@5,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 2 },
         },
-        {
+        "barrier@5,0,4": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 4 },
         },
-        {
+        "barrier@5,0,6": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 6 },
         },
-        {
+        "pickup@5,0,7": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
         },
-        {
-          type: "player",
-          config: { which: "head" },
-          position: { x: 2.5, y: 3.5, z: 0 },
-        },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth23heels" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth2: {
@@ -1530,18 +1520,18 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@5,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth1head" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth3" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth20: {
@@ -1554,23 +1544,23 @@ export const campaign = {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth21fish" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth18" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth19" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth21fish: {
@@ -1601,108 +1591,108 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@6,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,4,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "block@7,4,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 7, y: 4, z: 2 },
         },
-        {
+        "fish@7,4,3": {
           type: "fish",
           config: { alive: true },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "door@3,8,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth22" },
           position: { x: 3, y: 8, z: 1 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth20" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth22: {
@@ -1716,23 +1706,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth21fish" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth23heels: {
@@ -1745,178 +1735,213 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "conveyor@0,6,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "conveyor@0,5,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@3,4,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 3, y: 4, z: 0 },
+        },
+        "block@2,4,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 2, y: 4, z: 0 },
+        },
+        "block@1,4,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 1, y: 4, z: 0 },
+        },
+        "conveyor@0,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@3,3,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 3, y: 3, z: 0 },
+        },
+        "block@2,3,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 2, y: 3, z: 0 },
+        },
+        "block@1,3,0": {
+          type: "block",
+          config: { style: "artificial" },
+          position: { x: 1, y: 3, z: 0 },
+        },
+        "conveyor@0,3,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "conveyor@0,2,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "conveyor@0,1,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "teleporter@0,0,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth24" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "movable-block@1,4,1": {
+          type: "movable-block",
+          config: { style: "anvil" },
+          position: { x: 1, y: 4, z: 1 },
+        },
+        "movable-block@1,3,1": {
+          type: "movable-block",
+          config: { style: "anvil" },
+          position: { x: 1, y: 3, z: 1 },
+        },
+        "barrier@4,7,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "barrier@4,7,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "barrier@4,7,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "barrier@4,6,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "barrier@4,6,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 1 },
         },
-        {
+        "barrier@4,6,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 2 },
         },
-        {
-          type: "barrier",
-          config: { axis: "y" },
-          position: { x: 4, y: 2, z: 1 },
-        },
-        {
+        "barrier@4,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "barrier@4,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 2 },
         },
-        {
+        "barrier@4,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "barrier@4,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
+          type: "barrier",
+          config: { axis: "y" },
+          position: { x: 4, y: 2, z: 1 },
+        },
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "barrier@4,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: { x: 3.5, y: 3.5, z: 0 },
-        },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth24: {
@@ -1947,19 +1972,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@0,0,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth23heels" },
           position: { x: 0, y: 0, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 4, y: 4, z: 0 } },
-        {
+        "spring@4,4,0": {
+          type: "spring",
+          config: {},
+          position: { x: 4, y: 4, z: 0 },
+        },
+        "door@8,3,3": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth25" },
           position: { x: 8, y: 3, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth25: {
@@ -1973,28 +2002,28 @@ export const campaign = {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "conveyor@1,5,1": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 1, y: 5, z: 1 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "lift@5,0,7": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 5, y: 0, z: 7 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth24" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth26: {
@@ -2008,53 +2037,53 @@ export const campaign = {
         away: ["bars", "bars", "none", "none", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "conveyor@5,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "conveyor@4,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "conveyor@3,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "conveyor@2,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "conveyor@5,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "conveyor@5,3,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "conveyor@5,2,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "lift@5,0,0": {
           type: "lift",
           config: { top: 7, bottom: 0 },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "door@2,6,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth27fish" },
           position: { x: 2, y: 6, z: 2 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth27fish: {
@@ -2076,38 +2105,38 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "movable-block@2,3,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "fish@2,3,1": {
           type: "fish",
           config: { alive: true },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "portable-block@0,0,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@1,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth29" },
           position: { x: 1, y: 8, z: 3 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth28" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth26" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth28: {
@@ -2138,110 +2167,118 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "conveyor@2,7,2": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 2, y: 7, z: 2 },
         },
-        {
+        "conveyor@1,7,2": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 1, y: 7, z: 2 },
         },
-        {
+        "conveyor@0,7,2": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@6,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "block@5,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@6,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@5,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "pickup@2,7,7": {
           type: "pickup",
           config: { gives: "bag" },
           position: { x: 2, y: 7, z: 7 },
         },
-        {
+        "portable-block@1,7,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 7, z: 0 },
         },
-        { type: "charles", config: {}, position: { x: 3, y: 4, z: 0 } },
-        { type: "joystick", config: {}, position: { x: 6, y: 1, z: 1 } },
-        {
+        "charles@3,4,0": {
+          type: "charles",
+          config: {},
+          position: { x: 3, y: 4, z: 0 },
+        },
+        "joystick@6,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 6, y: 1, z: 1 },
+        },
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth27fish" },
           position: { x: 8, y: 3, z: 2 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth29: {
@@ -2264,23 +2301,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@0,7,7": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 7, z: 7 },
         },
-        {
+        "baddie@0,6,0": {
           type: "baddie",
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth27fish" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth3: {
@@ -2294,23 +2331,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "door@3,6,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth2" },
           position: { x: 3, y: 6, z: 2 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth30: {
@@ -2324,53 +2361,53 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth31" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth31: {
@@ -2396,123 +2433,123 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,11,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 11, z: 0 },
         },
-        {
+        "deadly-block@1,11,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 11, z: 0 },
         },
-        {
+        "deadly-block@5,10,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 10, z: 0 },
         },
-        {
+        "deadly-block@0,10,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 10, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "deadly-block@4,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "deadly-block@1,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@5,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@5,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 1 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "portable-block@3,9,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 3, y: 9, z: 0 },
         },
-        {
+        "portable-block@2,8,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 2, y: 8, z: 0 },
         },
-        {
+        "door@2,12,3": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth11" },
           position: { x: 2, y: 12, z: 3 },
         },
-        {
+        "door@6,2,3": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth30" },
           position: { x: 6, y: 2, z: 3 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth32: {
@@ -2534,18 +2571,18 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth33" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth11" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth33: {
@@ -2577,33 +2614,33 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@7,7,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "pickup@0,7,0": {
           type: "pickup",
           config: { gives: "jumps" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "baddie@7,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "baddie@0,3,0": {
           type: "baddie",
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth32" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth34: {
@@ -2617,28 +2654,28 @@ export const campaign = {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "lift@7,7,0": {
           type: "lift",
           config: { top: 6, bottom: 0 },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "door@3,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth35" },
           position: { x: 3, y: 8, z: 2 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth35: {
@@ -2668,55 +2705,63 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@3,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 12, z: 0 },
         },
-        {
+        "block@1,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 12, z: 0 },
         },
-        {
+        "block@1,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 10, z: 0 },
         },
-        {
+        "block@1,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 1, y: 4, z: 0 } },
-        { type: "spring", config: {}, position: { x: 1, y: 2, z: 0 } },
-        {
+        "spring@1,4,0": {
+          type: "spring",
+          config: {},
+          position: { x: 1, y: 4, z: 0 },
+        },
+        "spring@1,2,0": {
+          type: "spring",
+          config: {},
+          position: { x: 1, y: 2, z: 0 },
+        },
+        "door@4,11,2": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth36" },
           position: { x: 4, y: 11, z: 2 },
         },
-        {
+        "door@1,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth34" },
           position: { x: 1, y: 0, z: 1 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth36: {
@@ -2729,18 +2774,18 @@ export const campaign = {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth37" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth35" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth37: {
@@ -2762,35 +2807,43 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        { type: "switch", config: {}, position: { x: 0, y: 7, z: 0 } },
-        {
+      items: {
+        "switch@0,7,0": {
+          type: "switch",
+          config: {},
+          position: { x: 0, y: 7, z: 0 },
+        },
+        "baddie@0,5,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 3, y: 3, z: 0 },
         },
-        { type: "ball", config: {}, position: { x: 0, y: 1, z: 0 } },
-        {
+        "ball@0,1,0": {
+          type: "ball",
+          config: {},
+          position: { x: 0, y: 1, z: 0 },
+        },
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth38" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth36" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth38: {
@@ -2804,23 +2857,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth37" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth39: {
@@ -2834,48 +2887,48 @@ export const campaign = {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "portable-block@4,4,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "portable-block@1,4,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "portable-block@4,1,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "portable-block@1,1,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "lift@2,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@2,6,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth40fish" },
           position: { x: 2, y: 6, z: 5 },
         },
-        {
+        "door@6,2,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth41" },
           position: { x: 6, y: 2, z: 5 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth4: {
@@ -2898,18 +2951,18 @@ export const campaign = {
         ],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "lift@3,5,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth5" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth40fish: {
@@ -2939,148 +2992,148 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 15, z: 0 },
         },
-        {
+        "block@4,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 15, z: 0 },
         },
-        {
+        "block@3,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 15, z: 0 },
         },
-        {
+        "conveyor@3,14,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 3, y: 14, z: 0 },
         },
-        {
+        "conveyor@2,14,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 2, y: 14, z: 0 },
         },
-        {
+        "conveyor@1,14,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 1, y: 14, z: 0 },
         },
-        {
+        "conveyor@0,14,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 0, y: 14, z: 0 },
         },
-        {
+        "conveyor@0,12,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 0, y: 12, z: 0 },
         },
-        {
+        "conveyor@4,10,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 4, y: 10, z: 0 },
         },
-        {
+        "conveyor@2,10,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 2, y: 10, z: 0 },
         },
-        {
+        "conveyor@0,10,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 10, z: 0 },
         },
-        {
+        "conveyor@4,9,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 9, z: 0 },
         },
-        {
+        "conveyor@4,8,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 8, z: 0 },
         },
-        {
+        "conveyor@4,7,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "conveyor@4,6,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "conveyor@4,5,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "conveyor@4,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "conveyor@2,4,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "conveyor@0,4,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "conveyor@0,3,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "conveyor@2,1,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "conveyor@0,1,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "fish@5,15,1": {
           type: "fish",
           config: { alive: true },
           position: { x: 5, y: 15, z: 1 },
         },
-        {
+        "pickup@4,15,1": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 4, y: 15, z: 1 },
         },
-        {
+        "pickup@3,15,1": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 3, y: 15, z: 1 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth39" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth41: {
@@ -3102,18 +3155,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth42" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth39" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth42: {
@@ -3135,8 +3188,8 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "baddie@3,1,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -3144,18 +3197,22 @@ export const campaign = {
           },
           position: { x: 3, y: 1, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 1, y: 1, z: 0 } },
-        {
+        "spring@1,1,0": {
+          type: "spring",
+          config: {},
+          position: { x: 1, y: 1, z: 0 },
+        },
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth43" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth41" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth43: {
@@ -3169,23 +3226,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@0,2,1": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth42" },
           position: { x: 0, y: 2, z: 1 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth44market: {
@@ -3213,13 +3270,13 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth45market" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth45market: {
@@ -3250,58 +3307,58 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@7,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "pickup@0,0,0": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth46market" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth44market" },
           position: { x: 8, y: 3, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth46market: {
@@ -3329,23 +3386,23 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "portable-block@0,0,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@2,6,3": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth47market" },
           position: { x: 2, y: 6, z: 3 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth45market" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth47market: {
@@ -3376,97 +3433,133 @@ export const campaign = {
           "fruits",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@6,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@5,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "block@6,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "block@1,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        { type: "joystick", config: {}, position: { x: 6, y: 7, z: 1 } },
-        { type: "charles", config: {}, position: { x: 0, y: 7, z: 0 } },
-        { type: "joystick", config: {}, position: { x: 7, y: 6, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 5, y: 6, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 6, y: 5, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 2, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 2, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 0, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 0, z: 1 } },
-        {
+        "joystick@6,7,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 6, y: 7, z: 1 },
+        },
+        "charles@0,7,0": {
+          type: "charles",
+          config: {},
+          position: { x: 0, y: 7, z: 0 },
+        },
+        "joystick@7,6,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 7, y: 6, z: 1 },
+        },
+        "joystick@5,6,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 5, y: 6, z: 1 },
+        },
+        "joystick@6,5,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 6, y: 5, z: 1 },
+        },
+        "joystick@1,2,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 2, z: 1 },
+        },
+        "joystick@2,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 2, y: 1, z: 1 },
+        },
+        "joystick@0,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 0, y: 1, z: 1 },
+        },
+        "joystick@1,0,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 0, z: 1 },
+        },
+        "door@3,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth48market" },
           position: { x: 3, y: 8, z: 2 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth46market" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth48market: {
@@ -3488,18 +3581,18 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@2,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth49market" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth47market" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth49market: {
@@ -3521,48 +3614,48 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "deadly-block@3,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 1 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth50market" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth48market" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth5: {
@@ -3584,33 +3677,33 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth4" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@2,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth6" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth7" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth50market: {
@@ -3641,38 +3734,38 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@4,7,0": {
           type: "baddie",
           config: { which: "cyberman", charging: false },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "baddie@7,0,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "baddie@0,0,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth52market" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth49market" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth51" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth51: {
@@ -3685,33 +3778,33 @@ export const campaign = {
         away: ["bars", "bars", "none", "none", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase1" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@2,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase1" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase1" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase1" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth50market" },
           position: { x: 2, y: 8, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth52market: {
@@ -3738,78 +3831,78 @@ export const campaign = {
           "passage",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth53market" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth50market" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth53market: {
@@ -3838,43 +3931,43 @@ export const campaign = {
           "fruits",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,6,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth54" },
           position: { x: 2, y: 8, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth52market" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth54: {
@@ -3888,23 +3981,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth53market" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth55: {
@@ -3918,23 +4011,23 @@ export const campaign = {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "lift@3,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@3,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth61" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth56" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth56: {
@@ -3947,63 +4040,63 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "block@3,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "block@3,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 1 },
         },
-        {
+        "block@3,1,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 2 },
         },
-        {
+        "block@3,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 3 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@3,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth55" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth57" },
           position: { x: 0, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth57: {
@@ -4034,38 +4127,38 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase9" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase9" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase9" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase9" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth58triple" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth56" },
           position: { x: 8, y: 3, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth58triple: {
@@ -4166,333 +4259,328 @@ export const campaign = {
           "none",
         ],
       },
-      items: [
-        {
+      items: {
+        "wall@6,13,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 13, z: 0 },
         },
-        {
+        "block@5,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 13, z: 0 },
         },
-        {
+        "block@4,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 13, z: 0 },
         },
-        {
+        "block@3,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 13, z: 0 },
         },
-        {
+        "block@2,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 13, z: 0 },
         },
-        {
+        "block@1,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 13, z: 0 },
         },
-        {
+        "block@0,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 13, z: 0 },
         },
-        {
+        "wall@6,12,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 12, z: 0 },
         },
-        {
+        "wall@6,11,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 11, z: 0 },
         },
-        {
+        "block@0,11,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 11, z: 0 },
         },
-        {
+        "wall@6,10,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 10, z: 0 },
         },
-        {
+        "wall@6,9,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 9, z: 0 },
         },
-        {
+        "deadly-block@4,9,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 4, y: 9, z: 0 },
         },
-        {
+        "deadly-block@0,9,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 0 },
         },
-        {
+        "deadly-block@0,9,1": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 1 },
         },
-        {
+        "wall@6,8,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 8, z: 0 },
         },
-        {
+        "deadly-block@4,8,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 4, y: 8, z: 0 },
         },
-        {
+        "wall@6,7,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "wall@13,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 13, y: 6, z: 0 },
         },
-        {
+        "wall@12,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 12, y: 6, z: 0 },
         },
-        {
+        "wall@11,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 11, y: 6, z: 0 },
         },
-        {
+        "wall@10,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 10, y: 6, z: 0 },
         },
-        {
+        "wall@9,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 9, y: 6, z: 0 },
         },
-        {
+        "wall@8,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 8, y: 6, z: 0 },
         },
-        {
+        "wall@7,6,0": {
           type: "wall",
           config: { side: "away", style: "bars" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
-          type: "wall",
-          config: { side: "away", style: "bars" },
-          position: { x: 6, y: 6, z: 0 },
-        },
-        {
+        "wall@6,6,0": {
           type: "wall",
           config: { side: "left", style: "bars" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "conveyor@5,6,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "block@13,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 13, y: 5, z: 0 },
         },
-        {
+        "block@12,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 12, y: 5, z: 0 },
         },
-        {
+        "block@11,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 5, z: 0 },
         },
-        {
+        "block@10,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 5, z: 0 },
         },
-        {
+        "block@9,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 9, y: 5, z: 0 },
         },
-        {
+        "block@8,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "conveyor@6,5,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "conveyor@5,5,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@13,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 13, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@13,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 13, y: 0, z: 0 },
         },
-        {
+        "block@12,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 12, y: 0, z: 0 },
         },
-        {
+        "block@11,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 0, z: 0 },
         },
-        {
+        "block@10,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 0, z: 0 },
         },
-        {
+        "block@9,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 9, y: 0, z: 0 },
         },
-        {
+        "block@8,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "baddie@4,9,1": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 4, y: 9, z: 1 },
         },
-        {
+        "baddie@7,3,1": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "pickup@13,5,1": {
           type: "pickup",
           config: { gives: "fast" },
           position: { x: 13, y: 5, z: 1 },
         },
-        {
+        "door@2,14,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth59" },
           position: { x: 2, y: 14, z: 2 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth57" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth59: {
@@ -4505,123 +4593,123 @@ export const campaign = {
         away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
         left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "book@0,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "book@0,2,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "book@1,1,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "book@1,1,1": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "book@1,1,2": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 2 },
         },
-        {
+        "book@1,1,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 3 },
         },
-        {
+        "book@1,1,4": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 4 },
         },
-        {
+        "book@1,1,5": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 5 },
         },
-        {
+        "deadly-block@1,1,6": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 6 },
         },
-        {
+        "book@0,1,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 1, z: 2 },
         },
-        {
+        "book@0,1,4": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 1, z: 4 },
         },
-        {
+        "book@0,1,5": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 1, z: 5 },
         },
-        {
+        "deadly-block@0,1,6": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 6 },
         },
-        {
+        "block@6,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 3 },
         },
-        {
+        "block@5,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "block@2,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 3 },
         },
-        {
+        "block@1,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 3 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth60" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth63" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@3,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth58triple" },
           position: { x: 3, y: 0, z: 4 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth6: {
@@ -4652,64 +4740,68 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "pickup@7,7,1": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 7, y: 7, z: 1 },
         },
-        { type: "switch", config: {}, position: { x: 6, y: 0, z: 1 } },
-        {
+        "switch@6,0,1": {
+          type: "switch",
+          config: {},
+          position: { x: 6, y: 0, z: 1 },
+        },
+        "baddie@3,0,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth5" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth60: {
@@ -4740,163 +4832,163 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@7,7,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "teleporter@6,7,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "teleporter@1,7,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "teleporter@0,7,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@7,6,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "teleporter@6,6,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "teleporter@1,6,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "teleporter@0,6,0": {
           type: "teleporter",
           config: { toRoom: "moonbase8" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "barrier@3,7,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "barrier@3,7,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "barrier@3,7,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 7, z: 2 },
         },
-        {
+        "barrier@3,6,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "barrier@3,6,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 6, z: 1 },
         },
-        {
+        "barrier@3,6,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 6, z: 2 },
         },
-        {
+        "barrier@3,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "barrier@3,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 5, z: 1 },
         },
-        {
+        "barrier@3,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 5, z: 2 },
         },
-        {
+        "barrier@3,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "barrier@3,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 4, z: 1 },
         },
-        {
+        "barrier@3,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 4, z: 2 },
         },
-        {
+        "barrier@2,3,0": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "barrier@2,3,1": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "barrier@2,3,2": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 2, y: 3, z: 2 },
         },
-        {
+        "barrier@1,3,0": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "barrier@1,3,1": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 1, y: 3, z: 1 },
         },
-        {
+        "barrier@1,3,2": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 1, y: 3, z: 2 },
         },
-        {
+        "barrier@0,3,0": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "barrier@0,3,1": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "barrier@0,3,2": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 0, y: 3, z: 2 },
         },
-        {
+        "pickup@0,4,0": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth59" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth61: {
@@ -4909,34 +5001,58 @@ export const campaign = {
         away: ["bars", "none", "none", "bars"],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 7, z: 0 } },
-        {
+      items: {
+        "hush-puppy@2,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 0 },
+        },
+        "hush-puppy@2,7,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 1 },
+        },
+        "hush-puppy@2,7,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 2 },
+        },
+        "hush-puppy@1,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 7, z: 0 },
+        },
+        "hush-puppy@1,7,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 7, z: 1 },
+        },
+        "hush-puppy@0,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 7, z: 0 },
+        },
+        "portable-block@3,7,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "baddie@3,7,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "door@1,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth62fish" },
           position: { x: 1, y: 8, z: 5 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth55" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth62fish: {
@@ -4966,156 +5082,168 @@ export const campaign = {
           "bars",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 15, z: 0 },
         },
-        {
+        "block@0,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 15, z: 0 },
         },
-        {
+        "block@0,14,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 14, z: 0 },
         },
-        {
+        "block@0,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 13, z: 0 },
         },
-        {
+        "block@1,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 12, z: 0 },
         },
-        {
+        "block@0,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 12, z: 0 },
         },
-        {
+        "block@0,11,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 11, z: 0 },
         },
-        {
+        "block@5,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 10, z: 0 },
         },
-        {
+        "block@0,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 10, z: 0 },
         },
-        {
+        "block@5,9,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 9, z: 0 },
         },
-        {
+        "block@0,9,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 9, z: 0 },
         },
-        {
+        "conveyor@5,8,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 8, z: 0 },
         },
-        {
+        "block@0,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "conveyor@5,7,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "conveyor@5,6,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "conveyor@5,5,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "conveyor@5,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "fish@5,15,1": {
           type: "fish",
           config: { alive: true },
           position: { x: 5, y: 15, z: 1 },
         },
-        { type: "spring", config: {}, position: { x: 4, y: 15, z: 0 } },
-        { type: "spring", config: {}, position: { x: 5, y: 12, z: 0 } },
-        { type: "spring", config: {}, position: { x: 0, y: 6, z: 0 } },
-        {
+        "spring@4,15,0": {
+          type: "spring",
+          config: {},
+          position: { x: 4, y: 15, z: 0 },
+        },
+        "spring@5,12,0": {
+          type: "spring",
+          config: {},
+          position: { x: 5, y: 12, z: 0 },
+        },
+        "spring@0,6,0": {
+          type: "spring",
+          config: {},
+          position: { x: 0, y: 6, z: 0 },
+        },
+        "portable-block@0,2,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "portable-block@0,1,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "door@0,11,1": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth63" },
           position: { x: 0, y: 11, z: 1 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth61" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth63: {
@@ -5128,54 +5256,78 @@ export const campaign = {
         away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "block@7,1,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 1, z: 3 },
         },
-        {
+        "block@6,1,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 1, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 1, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 1, z: 0 } },
-        {
+        "hush-puppy@5,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 1, z: 2 },
+        },
+        "hush-puppy@4,1,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 1, z: 1 },
+        },
+        "hush-puppy@3,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 1, z: 0 },
+        },
+        "block@7,0,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 0, z: 3 },
         },
-        {
+        "block@6,0,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 0, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 0 } },
-        {
+        "hush-puppy@5,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 0, z: 2 },
+        },
+        "hush-puppy@4,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 0, z: 1 },
+        },
+        "hush-puppy@3,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 0, z: 0 },
+        },
+        "pickup@5,1,3": {
           type: "pickup",
           config: { gives: "jumps" },
           position: { x: 5, y: 1, z: 3 },
         },
-        {
+        "baddie@4,1,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "door@8,0,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth62fish" },
           position: { x: 8, y: 0, z: 5 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth59" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth64: {
@@ -5188,33 +5340,33 @@ export const campaign = {
         away: ["plain", "shield", "none", "none", "shield", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase31" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase31" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase31" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase31" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth65" },
           position: { x: 2, y: 6, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth65: {
@@ -5236,23 +5388,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@1,4,0": {
           type: "baddie",
           config: { which: "turtle", startDirection: "right" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth66" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth64" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth66: {
@@ -5274,23 +5426,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth68" },
           position: { x: 2, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth67" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth65" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth67: {
@@ -5321,94 +5473,98 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "block@0,6,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 4 },
         },
-        {
+        "block@0,5,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 4 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "block@7,4,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 2 },
         },
-        {
+        "block@0,4,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 4 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "block@6,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "block@0,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "block@0,2,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 4 },
         },
-        {
+        "block@0,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 4 },
         },
-        {
+        "block@0,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 4 },
         },
-        { type: "spring", config: {}, position: { x: 0, y: 0, z: 5 } },
-        {
+        "spring@0,0,5": {
+          type: "spring",
+          config: {},
+          position: { x: 0, y: 0, z: 5 },
+        },
+        "door@3,8,4": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth70" },
           position: { x: 3, y: 8, z: 4 },
         },
-        {
+        "door@8,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth66" },
           position: { x: 8, y: 3, z: 4 },
         },
-        {
+        "door@0,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth69" },
           position: { x: 0, y: 3, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth68: {
@@ -5439,93 +5595,93 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@7,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "block@7,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 2 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@2,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "block@2,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 2 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 1 },
         },
-        {
+        "block@0,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 2 },
         },
-        {
+        "block@7,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "block@0,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "block@0,0,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth76" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth66" },
           position: { x: 3, y: 0, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth69: {
@@ -5538,33 +5694,33 @@ export const campaign = {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase36" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase36" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase36" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase36" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth67" },
           position: { x: 6, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth7: {
@@ -5586,23 +5742,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth5" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@2,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth10" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth8fish" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth70: {
@@ -5624,78 +5780,78 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "block@0,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "block@0,6,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 1 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@1,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 1 },
         },
-        {
+        "deadly-block@1,5,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 2 },
         },
-        {
+        "deadly-block@1,5,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 3 },
         },
-        {
+        "deadly-block@1,5,4": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 4 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 1 },
         },
-        {
+        "deadly-block@0,5,4": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 4 },
         },
-        {
+        "door@0,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth71" },
           position: { x: 0, y: 8, z: 3 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth67" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth71: {
@@ -5717,73 +5873,73 @@ export const campaign = {
         ],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "block@0,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 3 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "portable-block@0,5,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "baddie@2,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@3,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth72" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "door@0,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth77" },
           position: { x: 0, y: 2, z: 4 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth70" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth72: {
@@ -5805,48 +5961,48 @@ export const campaign = {
         ],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "baddie@0,5,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "baddie@7,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "door@8,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth73" },
           position: { x: 8, y: 2, z: 4 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth78" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth71" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth73: {
@@ -5868,108 +6024,128 @@ export const campaign = {
         ],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,5,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 3 },
         },
-        {
+        "block@6,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 2 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 2 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@3,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 1 },
         },
-        {
+        "block@3,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 2 },
         },
-        {
+        "block@3,5,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 4 },
         },
-        {
+        "block@2,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 3, z: 0 } },
-        {
+        "hush-puppy@4,3,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 3, z: 0 },
+        },
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@0,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 1, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 1, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 1, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 1, z: 2 } },
-        {
+        "hush-puppy@4,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 1, z: 0 },
+        },
+        "hush-puppy@2,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 1, z: 0 },
+        },
+        "hush-puppy@1,1,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 1, z: 1 },
+        },
+        "hush-puppy@0,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 1, z: 2 },
+        },
+        "door@8,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth74" },
           position: { x: 8, y: 2, z: 2 },
         },
-        {
+        "door@0,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth72" },
           position: { x: 0, y: 2, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth74: {
@@ -5982,78 +6158,78 @@ export const campaign = {
         away: ["plain", "armour", "shield", "shield", "armour", "plain"],
         left: ["plain", "armour", "shield", "shield", "armour", "plain"],
       },
-      items: [
-        {
+      items: {
+        "block@5,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 4 },
         },
-        {
+        "block@4,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 4 },
         },
-        {
+        "block@3,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 4 },
         },
-        {
+        "block@2,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 4 },
         },
-        {
+        "block@1,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 3, z: 4 },
         },
-        {
+        "block@0,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "block@0,2,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 4 },
         },
-        {
+        "portable-block@4,5,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "pickup@5,3,5": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 5, y: 3, z: 5 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "monkey" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "portable-block@0,2,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "portable-block@5,0,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "door@0,2,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth73" },
           position: { x: 0, y: 2, z: 5 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth75" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth75: {
@@ -6075,98 +6251,98 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "deadly-block@0,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@1,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "baddie@1,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "door@2,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth74" },
           position: { x: 2, y: 8, z: 2 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth76" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth76: {
@@ -6197,93 +6373,93 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,7,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "deadly-block@5,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "deadly-block@2,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "deadly-block@2,6,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 1 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "deadly-block@6,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "deadly-block@6,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 1 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "baddie@2,7,0": {
           type: "baddie",
           config: { which: "turtle", startDirection: "right" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "baddie@2,2,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth75" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth68" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth77: {
@@ -6305,148 +6481,148 @@ export const campaign = {
         ],
         left: ["shield", "none", "none", "shield"],
       },
-      items: [
-        {
+      items: {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "barrier@4,3,3": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "barrier@4,3,4": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 4 },
         },
-        {
+        "barrier@4,3,5": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 5 },
         },
-        {
+        "portable-block@3,3,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 1 },
         },
-        {
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "barrier@4,2,3": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 3 },
         },
-        {
+        "barrier@4,2,4": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 4 },
         },
-        {
+        "barrier@4,2,5": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 5 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "barrier@4,1,3": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 3 },
         },
-        {
+        "barrier@4,1,5": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 5 },
         },
-        {
+        "movable-block@3,1,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "barrier@4,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "barrier@4,0,3": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "barrier@4,0,4": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 4 },
         },
-        {
+        "barrier@4,0,5": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 5 },
         },
-        {
+        "portable-block@4,0,6": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 0, z: 6 },
         },
-        {
+        "door@8,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth71" },
           position: { x: 8, y: 1, z: 0 },
         },
-        {
+        "door@0,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth84" },
           position: { x: 0, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth78: {
@@ -6478,93 +6654,93 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 3 },
         },
-        {
+        "block@3,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 1 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "lift@1,1,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "movable-block@1,1,1": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "movable-block@0,1,1": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 0, y: 1, z: 1 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth80" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth72" },
           position: { x: 8, y: 3, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth79fish: {
@@ -6596,63 +6772,63 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@1,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "block@1,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "block@1,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "fish@7,0,1": {
           type: "fish",
           config: { alive: true },
           position: { x: 7, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth80: {
@@ -6674,58 +6850,58 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "baddie@2,4,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -6733,17 +6909,17 @@ export const campaign = {
           },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth81" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth78" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth81: {
@@ -6774,78 +6950,98 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@0,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "movable-block@6,7,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 6, y: 7, z: 1 },
         },
-        { type: "charles", config: {}, position: { x: 0, y: 7, z: 3 } },
-        { type: "joystick", config: {}, position: { x: 4, y: 5, z: 0 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 5, z: 0 } },
-        { type: "joystick", config: {}, position: { x: 4, y: 2, z: 0 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 2, z: 0 } },
-        {
+        "charles@0,7,3": {
+          type: "charles",
+          config: {},
+          position: { x: 0, y: 7, z: 3 },
+        },
+        "joystick@4,5,0": {
+          type: "joystick",
+          config: {},
+          position: { x: 4, y: 5, z: 0 },
+        },
+        "joystick@1,5,0": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 5, z: 0 },
+        },
+        "joystick@4,2,0": {
+          type: "joystick",
+          config: {},
+          position: { x: 4, y: 2, z: 0 },
+        },
+        "joystick@1,2,0": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 2, z: 0 },
+        },
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth82" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth80" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth82: {
@@ -6867,68 +7063,68 @@ export const campaign = {
         ],
         left: ["plain", "shield", "none", "none", "shield", "plain"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,4,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 1 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "baddie@5,3,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -6936,7 +7132,7 @@ export const campaign = {
           },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "baddie@2,2,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -6944,17 +7140,17 @@ export const campaign = {
           },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@8,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth83tofreedom" },
           position: { x: 8, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth81" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth83tofreedom: {
@@ -6985,108 +7181,128 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@5,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "block@5,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 2 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@0,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@5,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "block@5,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 2 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "teleporter@7,2,1": {
           type: "teleporter",
           config: { toRoom: "finalroom" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "block@6,2,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 2, z: 2 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 1, z: 2 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
-        {
+        "hush-puppy@7,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 0, z: 0 },
+        },
+        "hush-puppy@7,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 0, z: 1 },
+        },
+        "hush-puppy@6,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 0, z: 0 },
+        },
+        "hush-puppy@3,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 0, z: 0 },
+        },
+        "hush-puppy@0,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 0, z: 0 },
+        },
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth82" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth84: {
@@ -7117,63 +7333,63 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@0,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 3 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@4,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "portable-block@4,7,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth77" },
           position: { x: 8, y: 3, z: 2 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth85" },
           position: { x: 0, y: 3, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth85: {
@@ -7204,68 +7420,68 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@3,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 1 },
         },
-        {
+        "block@3,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 3 },
         },
-        {
+        "block@3,4,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 4 },
         },
-        {
+        "block@4,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 4 },
         },
-        {
+        "block@3,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 4 },
         },
-        {
+        "portable-block@0,7,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: { which: "monkey" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@3,4,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 3, y: 4, z: 2 },
         },
-        {
+        "portable-block@3,4,5": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 4, z: 5 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth84" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@3,0,5": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth86" },
           position: { x: 3, y: 0, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth86: {
@@ -7287,23 +7503,23 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@1,3,0": {
           type: "baddie",
           config: { which: "flying-ball" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth85" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth87crown" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth87crown: {
@@ -7334,73 +7550,73 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,4,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "deadly-block@6,4,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 1 },
         },
-        {
+        "deadly-block@7,3,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "deadly-block@7,3,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "deadly-block@6,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "deadly-block@6,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 1 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "deadly-block@6,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "door@3,8,1": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth86" },
           position: { x: 3, y: 8, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth8fish: {
@@ -7422,44 +7638,48 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        { type: "spring", config: {}, position: { x: 3, y: 3, z: 0 } },
-        {
+      items: {
+        "spring@3,3,0": {
+          type: "spring",
+          config: {},
+          position: { x: 3, y: 3, z: 0 },
+        },
+        "baddie@3,3,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 3, z: 1 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@3,0,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "block@3,0,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 3, y: 0, z: 2 },
         },
-        {
+        "fish@3,0,3": {
           type: "fish",
           config: { alive: true },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "door@1,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "blacktooth7" },
           position: { x: 1, y: 8, z: 2 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth9" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth9: {
@@ -7490,113 +7710,113 @@ export const campaign = {
           "plain",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@7,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "block@7,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 2 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@3,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "block@3,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 2 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@3,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 1 },
         },
-        {
+        "block@3,4,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 2 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 1 },
         },
-        {
+        "block@0,4,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 2 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "pickup@0,4,7": {
           type: "pickup",
           config: { gives: "hooter" },
           position: { x: 0, y: 4, z: 7 },
         },
-        {
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "blacktooth8fish" },
           position: { x: 8, y: 3, z: 2 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     bookworld1: {
@@ -7627,53 +7847,53 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@7,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase25tobookworld" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "teleporter@6,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase25tobookworld" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "teleporter@7,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase25tobookworld" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "teleporter@6,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase25tobookworld" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "book@0,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "book@0,3,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "book@0,3,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld2" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld7" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld10: {
@@ -7695,23 +7915,23 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "monkey" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "door@6,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld9" },
           position: { x: 6, y: 3, z: 1 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld11" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld11: {
@@ -7733,21 +7953,33 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
-        {
+      items: {
+        "hush-puppy@7,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 1, z: 2 },
+        },
+        "hush-puppy@6,1,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 1, z: 1 },
+        },
+        "hush-puppy@5,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 1, z: 0 },
+        },
+        "door@8,0,4": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld10" },
           position: { x: 8, y: 0, z: 4 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld6" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld12fish: {
@@ -7769,58 +8001,58 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@0,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "book@0,7,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "book@0,7,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "book@0,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "book@0,7,4": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "portable-block@5,7,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "fish@0,7,5": {
           type: "fish",
           config: { alive: true },
           position: { x: 0, y: 7, z: 5 },
         },
-        {
+        "movable-block@3,4,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld13" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld4" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld13: {
@@ -7842,18 +8074,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld12fish" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld14" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld14: {
@@ -7884,113 +8116,113 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@6,6,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "barrier@6,6,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "barrier@6,6,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 6, z: 2 },
         },
-        {
+        "barrier@6,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "barrier@6,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 5, z: 1 },
         },
-        {
+        "barrier@6,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 5, z: 2 },
         },
-        {
+        "barrier@6,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "barrier@6,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 4, z: 1 },
         },
-        {
+        "barrier@6,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 4, z: 2 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@6,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "barrier@6,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 3, z: 1 },
         },
-        {
+        "barrier@6,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 6, y: 3, z: 2 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "barrier@7,2,0": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "barrier@7,2,1": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "barrier@7,2,2": {
           type: "barrier",
           config: { axis: "x" },
           position: { x: 7, y: 2, z: 2 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld13" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld15" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld15: {
@@ -8021,43 +8253,43 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@3,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "book@0,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "book@0,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "book@4,0,0": {
           type: "book",
           config: { slider: false },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "book@0,0,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@3,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld14" },
           position: { x: 3, y: 8, z: 3 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld16" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld16: {
@@ -8079,23 +8311,23 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld15" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld17" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld18" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld17: {
@@ -8117,24 +8349,28 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "baddie@0,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "baddie@3,2,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 2, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 2, y: 2, z: 0 } },
-        {
+        "spring@2,2,0": {
+          type: "spring",
+          config: {},
+          position: { x: 2, y: 2, z: 0 },
+        },
+        "door@8,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld16" },
           position: { x: 8, y: 2, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld18: {
@@ -8156,58 +8392,58 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@3,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "book@0,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "book@0,7,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "book@0,5,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "book@0,5,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 1 },
         },
-        {
+        "book@0,5,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 2 },
         },
-        {
+        "book@0,5,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 3 },
         },
-        {
+        "book@2,0,0": {
           type: "book",
           config: { slider: false },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@2,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld16" },
           position: { x: 2, y: 8, z: 2 },
         },
-        {
+        "door@2,0,2": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld19" },
           position: { x: 2, y: 0, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld19: {
@@ -8229,38 +8465,38 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "deadly-block@1,4,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 1 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 1 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "baddie@0,6,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -8268,17 +8504,17 @@ export const campaign = {
           },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld18" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld20" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld2: {
@@ -8304,163 +8540,163 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "conveyor@11,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 11, y: 5, z: 0 },
         },
-        {
+        "deadly-block@11,5,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 5, z: 2 },
         },
-        {
+        "conveyor@10,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 10, y: 5, z: 0 },
         },
-        {
+        "conveyor@9,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 9, y: 5, z: 0 },
         },
-        {
+        "conveyor@8,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "conveyor@7,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,5,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 5, z: 2 },
         },
-        {
+        "conveyor@6,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 5, z: 2 },
         },
-        {
+        "conveyor@5,5,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 2 },
         },
-        {
+        "conveyor@4,5,0": {
           type: "conveyor",
           config: { direction: "towards" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "conveyor@11,4,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 11, y: 4, z: 0 },
         },
-        {
+        "deadly-block@11,4,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 4, z: 2 },
         },
-        {
+        "conveyor@4,4,0": {
           type: "conveyor",
           config: { direction: "towards" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "conveyor@11,3,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 11, y: 3, z: 0 },
         },
-        {
+        "conveyor@4,3,0": {
           type: "conveyor",
           config: { direction: "towards" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "conveyor@11,2,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 11, y: 2, z: 0 },
         },
-        {
+        "conveyor@4,2,0": {
           type: "conveyor",
           config: { direction: "towards" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "conveyor@0,2,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "conveyor@4,1,0": {
           type: "conveyor",
           config: { direction: "towards" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "conveyor@0,1,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "conveyor@4,0,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "conveyor@3,0,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "conveyor@2,0,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "conveyor@1,0,0": {
           type: "conveyor",
           config: { direction: "right" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "conveyor@0,0,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "door@12,2,3": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld1" },
           position: { x: 12, y: 2, z: 3 },
         },
-        {
+        "door@0,2,3": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld3" },
           position: { x: 0, y: 2, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld20: {
@@ -8473,26 +8709,38 @@ export const campaign = {
         away: ["book", "book", "none", "none", "book", "book"],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 0 } },
-        {
+      items: {
+        "hush-puppy@3,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 0, z: 2 },
+        },
+        "hush-puppy@2,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 0, z: 1 },
+        },
+        "hush-puppy@1,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 0, z: 0 },
+        },
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld19" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld26" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "door@2,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld34" },
           position: { x: 2, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld21: {
@@ -8523,48 +8771,48 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@1,6,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "book@7,5,0": {
           type: "book",
           config: { slider: false },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "book@1,5,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "book@3,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "book@6,2,0": {
           type: "book",
           config: { slider: false },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "baddie@0,4,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld9" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld22" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld22: {
@@ -8586,68 +8834,68 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@1,1,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "book@1,1,1": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "book@1,1,2": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 1, z: 2 },
         },
-        {
+        "book@0,1,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "book@0,1,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 1, z: 1 },
         },
-        {
+        "book@1,0,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 0, z: 3 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "book@0,0,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "portable-block@0,5,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "pickup@1,0,0": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld21" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld23" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld23: {
@@ -8660,23 +8908,23 @@ export const campaign = {
         away: ["book", "person", "book", "book", "person", "book"],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "door@6,2,5": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld22" },
           position: { x: 6, y: 2, z: 5 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld24" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld27" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld24: {
@@ -8698,58 +8946,58 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 1 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "book@3,2,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "book@0,2,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,0,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "deadly-block@0,0,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "movable-block@7,2,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "door@8,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld23" },
           position: { x: 8, y: 2, z: 2 },
         },
-        {
+        "door@0,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld25" },
           position: { x: 0, y: 2, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld25: {
@@ -8771,18 +9019,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld24" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld26" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld26: {
@@ -8804,48 +9052,48 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@3,0,0": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "book@3,0,1": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "book@3,0,2": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 0, z: 2 },
         },
-        {
+        "book@3,0,4": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 0, z: 4 },
         },
-        {
+        "baddie@3,7,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "pickup@3,0,5": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 3, y: 0, z: 5 },
         },
-        {
+        "door@4,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld25" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld20" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld27: {
@@ -8867,33 +9115,33 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@0,0,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "book@0,0,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "book@0,0,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 0, z: 3 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld23" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld28" },
           position: { x: 0, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld28: {
@@ -8933,238 +9181,238 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 15, z: 0 },
         },
-        {
+        "block@4,14,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 14, z: 0 },
         },
-        {
+        "block@4,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 13, z: 0 },
         },
-        {
+        "block@4,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 12, z: 0 },
         },
-        {
+        "block@4,11,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 11, z: 0 },
         },
-        {
+        "block@4,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 10, z: 0 },
         },
-        {
+        "block@4,9,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 9, z: 0 },
         },
-        {
+        "block@4,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 8, z: 0 },
         },
-        {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 1 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,3,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "deadly-block@2,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,3,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,2,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 2, z: 1 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "lift@3,3,1": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 3, z: 1 },
         },
-        {
+        "door@3,16,3": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld27" },
           position: { x: 3, y: 16, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld29: {
@@ -9196,158 +9444,158 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "lift@3,3,0": {
           type: "lift",
           config: { top: 6, bottom: 0 },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "door@0,3,3": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld30" },
           position: { x: 0, y: 3, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld3: {
@@ -9369,28 +9617,28 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "baddie@3,5,0": {
           type: "baddie",
           config: { which: "monkey" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "baddie@4,0,0": {
           type: "baddie",
           config: { which: "monkey" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "door@8,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld2" },
           position: { x: 8, y: 2, z: 0 },
         },
-        {
+        "door@0,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld4" },
           position: { x: 0, y: 2, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld30: {
@@ -9412,28 +9660,28 @@ export const campaign = {
         ],
         left: ["book", "none", "none", "book"],
       },
-      items: [
-        {
+      items: {
+        "baddie@3,2,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "baddie@4,1,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "door@8,1,2": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld29" },
           position: { x: 8, y: 1, z: 2 },
         },
-        {
+        "door@0,1,2": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld31" },
           position: { x: 0, y: 1, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld31: {
@@ -9463,118 +9711,118 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@12,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@12,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@12,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@12,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@12,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 1, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@12,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 12, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "baddie@11,0,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 11, y: 0, z: 0 },
         },
-        {
+        "pickup@9,2,0": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 9, y: 2, z: 0 },
         },
-        {
+        "door@16,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld30" },
           position: { x: 16, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld32" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld32: {
@@ -9606,13 +9854,13 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@8,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld31" },
           position: { x: 8, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld33: {
@@ -9644,21 +9892,33 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
-        {
+      items: {
+        "hush-puppy@3,7,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 7, z: 2 },
+        },
+        "hush-puppy@2,7,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 1 },
+        },
+        "hush-puppy@1,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 7, z: 0 },
+        },
+        "door@3,8,4": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld34" },
           position: { x: 3, y: 8, z: 4 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld35" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld34: {
@@ -9688,153 +9948,153 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@0,13,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 13, z: 0 },
         },
-        {
+        "book@1,10,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 10, z: 0 },
         },
-        {
+        "book@1,10,1": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 10, z: 1 },
         },
-        {
+        "book@1,10,2": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 10, z: 2 },
         },
-        {
+        "book@1,10,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 10, z: 3 },
         },
-        {
+        "book@0,10,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 10, z: 0 },
         },
-        {
+        "book@0,10,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 10, z: 2 },
         },
-        {
+        "book@1,9,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 9, z: 3 },
         },
-        {
+        "book@0,9,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 9, z: 3 },
         },
-        {
+        "book@1,8,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 8, z: 3 },
         },
-        {
+        "book@0,8,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 8, z: 3 },
         },
-        {
+        "book@1,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 7, z: 3 },
         },
-        {
+        "book@0,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "book@1,6,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 6, z: 3 },
         },
-        {
+        "book@0,6,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 6, z: 3 },
         },
-        {
+        "book@1,5,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "book@1,5,1": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 5, z: 1 },
         },
-        {
+        "book@1,5,2": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 5, z: 2 },
         },
-        {
+        "book@1,5,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 5, z: 3 },
         },
-        {
+        "book@0,5,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "book@0,5,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 1 },
         },
-        {
+        "book@0,5,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 5, z: 3 },
         },
-        {
+        "book@0,4,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "book@0,13,-1": {
           type: "book",
           config: { slider: true },
           position: { x: 0, y: 13, z: -1 },
         },
-        {
+        "book@0,10,-1": {
           type: "book",
           config: { slider: true },
           position: { x: 0, y: 10, z: -1 },
         },
-        {
+        "pickup@1,9,0": {
           type: "pickup",
           config: { gives: "jumps" },
           position: { x: 1, y: 9, z: 0 },
         },
-        {
+        "book@0,5,-1": {
           type: "book",
           config: { slider: true },
           position: { x: 0, y: 5, z: -1 },
         },
-        {
+        "door@0,16,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld20" },
           position: { x: 0, y: 16, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld33" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld35: {
@@ -9865,69 +10125,93 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@5,7,4": {
           type: "book",
           config: { slider: false },
           position: { x: 5, y: 7, z: 4 },
         },
-        {
+        "book@3,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "book@2,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 2, y: 7, z: 3 },
         },
-        {
+        "book@1,7,3": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 7, z: 3 },
         },
-        {
+        "block@6,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@6,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@5,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        { type: "charles", config: {}, position: { x: 5, y: 7, z: 5 } },
-        { type: "spring", config: {}, position: { x: 1, y: 7, z: 4 } },
-        { type: "joystick", config: {}, position: { x: 6, y: 2, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 7, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 5, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 6, y: 0, z: 1 } },
-        {
+        "charles@5,7,5": {
+          type: "charles",
+          config: {},
+          position: { x: 5, y: 7, z: 5 },
+        },
+        "spring@1,7,4": {
+          type: "spring",
+          config: {},
+          position: { x: 1, y: 7, z: 4 },
+        },
+        "joystick@6,2,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 6, y: 2, z: 1 },
+        },
+        "joystick@7,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 7, y: 1, z: 1 },
+        },
+        "joystick@5,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 5, y: 1, z: 1 },
+        },
+        "joystick@6,0,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 6, y: 0, z: 1 },
+        },
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld33" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld36" },
           position: { x: 0, y: 3, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld36: {
@@ -9949,53 +10233,53 @@ export const campaign = {
         ],
         left: ["book", "book", "none", "none", "book", "book"],
       },
-      items: [
-        {
+      items: {
+        "book@7,2,0": {
           type: "book",
           config: { slider: false },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "book@7,2,1": {
           type: "book",
           config: { slider: false },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "book@7,2,2": {
           type: "book",
           config: { slider: false },
           position: { x: 7, y: 2, z: 2 },
         },
-        {
+        "portable-block@1,5,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "portable-block@4,3,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "portable-block@3,1,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "baddie@1,0,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@3,6,5": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld37" },
           position: { x: 3, y: 6, z: 5 },
         },
-        {
+        "door@8,2,5": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld35" },
           position: { x: 8, y: 2, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld37: {
@@ -10017,38 +10301,38 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@1,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld38" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld36" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld38: {
@@ -10080,13 +10364,13 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@3,0,5": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld37" },
           position: { x: 3, y: 0, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld39: {
@@ -10119,63 +10403,63 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@7,4,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "teleporter@7,3,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "conveyor@7,1,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "conveyor@7,0,0": {
           type: "conveyor",
           config: { direction: "away" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "conveyor@6,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "conveyor@5,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "conveyor@4,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "conveyor@3,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "conveyor@2,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "conveyor@1,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "conveyor@0,0,0": {
           type: "conveyor",
           config: { direction: "left" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld4: {
@@ -10197,33 +10481,33 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@0,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "book@0,7,1": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "door@0,8,4": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld12fish" },
           position: { x: 0, y: 8, z: 4 },
         },
-        {
+        "door@2,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld3" },
           position: { x: 2, y: 3, z: 4 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld5" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld40: {
@@ -10255,18 +10539,18 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@0,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld41crown" },
           position: { x: 3, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld41crown: {
@@ -10288,68 +10572,68 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@3,4,1": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 4, z: 1 },
         },
-        {
+        "book@3,4,2": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 4, z: 2 },
         },
-        {
+        "book@3,4,3": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 4, z: 3 },
         },
-        {
+        "book@3,4,4": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 4, z: 4 },
         },
-        {
+        "book@3,4,5": {
           type: "book",
           config: { slider: false },
           position: { x: 3, y: 4, z: 5 },
         },
-        {
+        "portable-block@0,7,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@3,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "book@2,4,0": {
           type: "book",
           config: { slider: true },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "baddie@0,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "portable-block@0,0,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld40" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld5: {
@@ -10371,28 +10655,28 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "baddie@1,3,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld4" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld6" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld6: {
@@ -10414,48 +10698,48 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@1,7,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "book@1,3,0": {
           type: "book",
           config: { slider: false },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "movable-block@2,5,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "movable-block@2,4,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "book@1,3,1": {
           type: "book",
           config: { slider: true },
           position: { x: 1, y: 3, z: 1 },
         },
-        {
+        "door@1,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld5" },
           position: { x: 1, y: 8, z: 3 },
         },
-        {
+        "door@4,3,3": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld11" },
           position: { x: 4, y: 3, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld7: {
@@ -10477,21 +10761,33 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
-        {
+      items: {
+        "hush-puppy@2,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 0, z: 2 },
+        },
+        "hush-puppy@1,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 0, z: 1 },
+        },
+        "hush-puppy@0,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 0, z: 0 },
+        },
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld1" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld8" },
           position: { x: 1, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld8: {
@@ -10522,48 +10818,48 @@ export const campaign = {
           "book",
         ],
       },
-      items: [
-        {
+      items: {
+        "book@0,3,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "book@0,2,0": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "book@0,2,2": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 2, z: 2 },
         },
-        {
+        "book@0,2,3": {
           type: "book",
           config: { slider: false },
           position: { x: 0, y: 2, z: 3 },
         },
-        {
+        "portable-block@4,3,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "portable-block@3,3,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld7" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld9" },
           position: { x: 0, y: 3, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld9: {
@@ -10585,28 +10881,28 @@ export const campaign = {
         ],
         left: ["book", "none", "none", "book"],
       },
-      items: [
-        {
+      items: {
+        "book@3,2,0": {
           type: "book",
           config: { slider: true },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "door@8,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld8" },
           position: { x: 8, y: 1, z: 0 },
         },
-        {
+        "door@0,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "bookworld10" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "bookworld21" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     egyptus1: {
@@ -10637,33 +10933,33 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase24toegyptus" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase24toegyptus" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase24toegyptus" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase24toegyptus" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus2" },
           position: { x: 8, y: 3, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus10: {
@@ -10694,52 +10990,68 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 7, z: 3 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
-        {
+      items: {
+        "hush-puppy@4,7,3": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 7, z: 3 },
+        },
+        "hush-puppy@3,7,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 7, z: 2 },
+        },
+        "hush-puppy@2,7,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 1 },
+        },
+        "hush-puppy@1,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 7, z: 0 },
+        },
+        "block@7,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@7,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "block@7,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 3 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus15" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus11" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus9fish" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus11: {
@@ -10761,18 +11073,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus12" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus10" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus12: {
@@ -10803,103 +11115,123 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,6,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 6, z: 3 },
         },
-        {
+        "deadly-block@7,5,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 3 },
         },
-        {
+        "deadly-block@7,4,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "deadly-block@6,4,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 3 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@7,3,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@3,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@2,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,2,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 3 },
         },
-        {
+        "block@3,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "deadly-block@7,1,3": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 3 },
         },
-        {
+        "movable-block@6,4,4": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 6, y: 4, z: 4 },
         },
-        { type: "joystick", config: {}, position: { x: 3, y: 4, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 4, y: 3, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 2, y: 3, z: 1 } },
-        { type: "charles", config: {}, position: { x: 7, y: 2, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 3, y: 2, z: 1 } },
-        {
+        "joystick@3,4,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 3, y: 4, z: 1 },
+        },
+        "joystick@4,3,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 4, y: 3, z: 1 },
+        },
+        "joystick@2,3,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 2, y: 3, z: 1 },
+        },
+        "charles@7,2,1": {
+          type: "charles",
+          config: {},
+          position: { x: 7, y: 2, z: 1 },
+        },
+        "joystick@3,2,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 3, y: 2, z: 1 },
+        },
+        "lift@7,0,0": {
           type: "lift",
           config: { top: 8, bottom: 0 },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus13" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus11" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus13: {
@@ -10931,64 +11263,68 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 4 },
         },
-        {
+        "block@7,0,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 6 },
         },
-        {
+        "block@6,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 4 },
         },
-        {
+        "block@5,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 4 },
         },
-        {
+        "block@4,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 4 },
         },
-        {
+        "teleporter@4,0,5": {
           type: "teleporter",
           config: { toRoom: "egyptus9fish" },
           position: { x: 4, y: 0, z: 5 },
         },
-        {
+        "block@3,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 4 },
         },
-        {
+        "block@2,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 4 },
         },
-        { type: "spring", config: {}, position: { x: 7, y: 0, z: 7 } },
-        {
+        "spring@7,0,7": {
+          type: "spring",
+          config: {},
+          position: { x: 7, y: 0, z: 7 },
+        },
+        "movable-block@1,0,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "lift@0,0,2": {
           type: "lift",
           config: { top: 9, bottom: 2 },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus12" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus14: {
@@ -11021,58 +11357,58 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "block@3,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "block@2,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "block@7,1,7": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 7 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@7,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 4 },
         },
-        {
+        "block@7,0,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 6 },
         },
-        {
+        "lift@0,7,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "door@3,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus18" },
           position: { x: 3, y: 8, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus15: {
@@ -11100,59 +11436,63 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@3,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 1 },
         },
-        {
+        "block@3,5,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 4 },
         },
-        {
+        "block@2,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 3 },
         },
-        {
+        "block@1,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 1 },
         },
-        {
+        "block@1,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 5 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 2 },
         },
-        {
+        "block@0,5,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 6 },
         },
-        { type: "spring", config: {}, position: { x: 0, y: 5, z: 7 } },
-        {
+        "spring@0,5,7": {
+          type: "spring",
+          config: {},
+          position: { x: 0, y: 5, z: 7 },
+        },
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus10" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus16: {
@@ -11180,43 +11520,43 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@2,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "door@2,6,1": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus17" },
           position: { x: 2, y: 6, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus17: {
@@ -11249,138 +11589,138 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@11,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 5, z: 0 },
         },
-        {
+        "block@10,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 5, z: 0 },
         },
-        {
+        "block@9,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 9, y: 5, z: 0 },
         },
-        {
+        "block@8,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@6,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@2,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@11,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 3, z: 0 },
         },
-        {
+        "block@11,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 2, z: 0 },
         },
-        {
+        "deadly-block@4,1,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "portable-block@1,0,1": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@5,1,0": {
           type: "baddie",
           config: { which: "turtle", startDirection: "away" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "door@12,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus18" },
           position: { x: 12, y: 2, z: 2 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus16" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus18: {
@@ -11407,18 +11747,18 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus17" },
           position: { x: 0, y: 2, z: 4 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus14" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus19: {
@@ -11451,53 +11791,53 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "block@2,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,0,7": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 7 },
         },
-        {
+        "lift@5,7,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "barrier@7,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "barrier@7,3,4": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 7, y: 3, z: 4 },
         },
-        {
+        "barrier@7,3,6": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 7, y: 3, z: 6 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus2: {
@@ -11528,62 +11868,78 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,4,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@6,4,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 4, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 4, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 4, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 4, z: 0 } },
-        {
+        "hush-puppy@5,4,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 4, z: 2 },
+        },
+        "hush-puppy@4,4,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 4, z: 1 },
+        },
+        "hush-puppy@3,4,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 4, z: 0 },
+        },
+        "block@0,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "block@6,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 3, z: 3 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 4, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 6, y: 3, z: 4 } },
-        {
+        "spring@6,3,4": {
+          type: "spring",
+          config: {},
+          position: { x: 6, y: 3, z: 4 },
+        },
+        "baddie@2,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus3" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus1" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus20: {
@@ -11615,43 +11971,43 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus21" },
           position: { x: 8, y: 3, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus21: {
@@ -11673,18 +12029,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus22" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus20" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus22: {
@@ -11713,88 +12069,88 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "barrier@2,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "barrier@2,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 5, z: 1 },
         },
-        {
+        "barrier@2,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 5, z: 2 },
         },
-        {
+        "barrier@2,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "barrier@2,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 4, z: 1 },
         },
-        {
+        "barrier@2,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 4, z: 2 },
         },
-        {
+        "barrier@2,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "barrier@2,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "barrier@2,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 3, z: 2 },
         },
-        {
+        "baddie@4,2,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@2,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "barrier@2,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 2, z: 1 },
         },
-        {
+        "barrier@2,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 2, y: 2, z: 2 },
         },
-        {
+        "baddie@4,0,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "door@3,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus23" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus21" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus23: {
@@ -11823,193 +12179,193 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,5,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 1 },
         },
-        {
+        "block@7,5,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 2 },
         },
-        {
+        "block@7,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 3 },
         },
-        {
+        "block@5,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 5 },
         },
-        {
+        "block@4,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 5 },
         },
-        {
+        "block@3,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 5 },
         },
-        {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@2,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 5 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@1,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 5 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,5,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 5 },
         },
-        {
+        "deadly-block@7,4,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@1,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,4,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 5 },
         },
-        {
+        "deadly-block@2,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,3,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 5 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@2,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 1 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@1,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "pickup@0,3,6": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 0, y: 3, z: 6 },
         },
-        {
+        "door@3,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus24" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus22" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus24: {
@@ -12036,58 +12392,58 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus25" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus23" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus25: {
@@ -12109,23 +12465,23 @@ export const campaign = {
         ],
         left: ["hieroglyphics", "none", "none", "hieroglyphics"],
       },
-      items: [
-        {
+      items: {
+        "door@3,4,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus26" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "door@8,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus24" },
           position: { x: 8, y: 1, z: 0 },
         },
-        {
+        "door@0,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus27" },
           position: { x: 0, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus26: {
@@ -12154,118 +12510,118 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@6,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@6,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@6,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "deadly-block@6,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "baddie@7,5,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 7, y: 5, z: 1 },
         },
-        {
+        "pickup@7,3,1": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus28" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus25" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus27: {
@@ -12296,98 +12652,98 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "pickup@2,2,0": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@3,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus28" },
           position: { x: 3, y: 8, z: 2 },
         },
-        {
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus25" },
           position: { x: 8, y: 3, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus28: {
@@ -12416,28 +12772,28 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "fish@4,3,0": {
           type: "fish",
           config: { alive: false },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "door@8,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus26" },
           position: { x: 8, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus29" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus27" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus29: {
@@ -12467,28 +12823,28 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "door@6,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus28" },
           position: { x: 6, y: 3, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus3: {
@@ -12510,19 +12866,23 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        { type: "spring", config: {}, position: { x: 4, y: 1, z: 0 } },
-        {
+      items: {
+        "spring@4,1,0": {
+          type: "spring",
+          config: {},
+          position: { x: 4, y: 1, z: 0 },
+        },
+        "door@8,0,4": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus4" },
           position: { x: 8, y: 0, z: 4 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus2" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus30: {
@@ -12553,13 +12913,13 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@5,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 5, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus31: {
@@ -12589,23 +12949,23 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@5,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "baddie@2,0,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus32" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus32: {
@@ -12628,23 +12988,23 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "block@7,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 3 },
         },
-        {
+        "block@7,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 3 },
         },
-        {
+        "door@8,0,5": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus31" },
           position: { x: 8, y: 0, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus33: {
@@ -12667,13 +13027,13 @@ export const campaign = {
         ],
         left: ["hieroglyphics", "hieroglyphics"],
       },
-      items: [
-        {
+      items: {
+        "door@3,2,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus34fish" },
           position: { x: 3, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus34fish: {
@@ -12702,69 +13062,73 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,7,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@0,7,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "block@0,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "block@0,7,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "fish@0,7,5": {
           type: "fish",
           config: { alive: true },
           position: { x: 0, y: 7, z: 5 },
         },
-        {
+        "baddie@5,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 5, y: 4, z: 0 },
         },
-        { type: "ball", config: {}, position: { x: 0, y: 2, z: 1 } },
-        {
+        "ball@0,2,1": {
+          type: "ball",
+          config: {},
+          position: { x: 0, y: 2, z: 1 },
+        },
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus35" },
           position: { x: 2, y: 8, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus33" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus35: {
@@ -12787,69 +13151,73 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,3": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 3 },
         },
-        {
+        "deadly-block@0,7,2": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "deadly-block@1,6,4": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 6, z: 4 },
         },
-        {
+        "block@1,5,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 5, z: 2 },
         },
-        {
+        "deadly-block@1,5,5": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 5, z: 5 },
         },
-        {
+        "block@1,4,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 4, z: 3 },
         },
-        {
+        "block@1,3,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 3, z: 4 },
         },
-        {
+        "block@1,2,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 2, z: 4 },
         },
-        { type: "spring", config: {}, position: { x: 1, y: 2, z: 5 } },
-        {
+        "spring@1,2,5": {
+          type: "spring",
+          config: {},
+          position: { x: 1, y: 2, z: 5 },
+        },
+        "portable-block@0,2,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus34fish" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus36: {
@@ -12873,53 +13241,53 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@1,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "block@1,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "block@1,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "lift@0,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus37: {
@@ -12942,28 +13310,28 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "block@1,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@2,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus38" },
           position: { x: 2, y: 3, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus38: {
@@ -12994,102 +13362,118 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "egyptus4" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "egyptus4" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "egyptus4" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "egyptus4" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@6,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@6,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "block@6,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
-        {
+        "ball@6,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 6, z: 3 },
+        },
+        "block@1,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "block@1,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
-        {
+        "ball@1,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 6, z: 3 },
+        },
+        "block@6,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@6,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 1 },
         },
-        {
+        "block@6,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
-        {
+        "ball@6,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 1, z: 3 },
+        },
+        "block@1,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@1,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "block@1,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
-        {
+        "ball@1,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 1, z: 3 },
+        },
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus39crown" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus37" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus39crown: {
@@ -13120,78 +13504,78 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@4,3,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "block@4,3,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "block@4,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "block@4,3,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 4 },
         },
-        {
+        "block@4,3,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 5 },
         },
-        {
+        "block@4,3,6": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 6 },
         },
-        {
+        "block@3,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@3,3,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 1 },
         },
-        {
+        "block@3,3,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 2 },
         },
-        {
+        "baddie@3,7,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "portable-block@3,3,3": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 3 },
         },
-        {
+        "baddie@3,0,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus38" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus4: {
@@ -13222,102 +13606,118 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@3,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@6,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@6,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "block@6,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
-        {
+        "ball@6,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 6, z: 3 },
+        },
+        "block@1,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "block@1,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
-        {
+        "ball@1,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 6, z: 3 },
+        },
+        "block@6,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@6,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 1 },
         },
-        {
+        "block@6,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
-        {
+        "ball@6,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 1, z: 3 },
+        },
+        "block@1,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@1,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "block@1,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
-        {
+        "ball@1,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 1, z: 3 },
+        },
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus5" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus3" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus5: {
@@ -13344,63 +13744,63 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus7" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus6" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus4" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus6: {
@@ -13431,48 +13831,48 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,3,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@4,3,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "block@4,3,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "movable-block@4,3,3": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "movable-block@2,2,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "movable-block@2,2,1": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 2, y: 2, z: 1 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus8" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus5" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus7: {
@@ -13503,63 +13903,63 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 3 },
         },
-        {
+        "block@2,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 3 },
         },
-        {
+        "block@0,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "block@0,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 3 },
         },
-        {
+        "block@7,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@7,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "block@0,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus8" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus5" },
           position: { x: 3, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus8: {
@@ -13590,97 +13990,113 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@6,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@6,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "block@6,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
-        {
+        "ball@6,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 6, z: 3 },
+        },
+        "block@1,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "block@1,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
-        {
+        "ball@1,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 6, z: 3 },
+        },
+        "baddie@4,5,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "baddie@4,2,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "block@6,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@6,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 1 },
         },
-        {
+        "block@6,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
-        {
+        "ball@6,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 1, z: 3 },
+        },
+        "block@1,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@1,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "block@1,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
-        {
+        "ball@1,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 1, z: 3 },
+        },
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus9fish" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "egyptus7" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus6" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus9fish: {
@@ -13702,78 +14118,78 @@ export const campaign = {
           "hieroglyphics",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@3,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 4 },
         },
-        {
+        "block@3,6,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 6, z: 4 },
         },
-        {
+        "block@3,5,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 4 },
         },
-        {
+        "block@3,4,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 4 },
         },
-        {
+        "block@3,3,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 4 },
         },
-        {
+        "block@3,2,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 4 },
         },
-        {
+        "block@3,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 4 },
         },
-        {
+        "block@3,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 4 },
         },
-        {
+        "block@2,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 4 },
         },
-        {
+        "teleporter@2,0,5": {
           type: "teleporter",
           config: { toRoom: "egyptus13" },
           position: { x: 2, y: 0, z: 5 },
         },
-        {
+        "portable-block@0,7,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "fish@3,3,5": {
           type: "fish",
           config: { alive: true },
           position: { x: 3, y: 3, z: 5 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus10" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "egyptus8" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     finalroom: {
@@ -13799,83 +14215,83 @@ export const campaign = {
         ],
         left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "block@1,2,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 2, z: 1 },
         },
-        {
+        "movable-block@0,2,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@0,2,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     moonbase1: {
@@ -13906,88 +14322,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -13996,7 +14412,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14005,7 +14421,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14014,7 +14430,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14023,7 +14439,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14032,7 +14448,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14041,47 +14457,47 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase2" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase4" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase10: {
@@ -14112,43 +14528,43 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 7, z: 3 },
         },
-        {
+        "block@0,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "block@0,7,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 5 },
         },
-        {
+        "deadly-block@0,7,6": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 6 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase11" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@0,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase9" },
           position: { x: 0, y: 3, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase11: {
@@ -14170,23 +14586,23 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase12" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@2,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase19" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase10" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase12: {
@@ -14217,66 +14633,78 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 3 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "block@0,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 0 } },
-        {
+        "hush-puppy@7,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 0, z: 2 },
+        },
+        "hush-puppy@6,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 0, z: 1 },
+        },
+        "hush-puppy@5,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 0, z: 0 },
+        },
+        "block@5,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "block@2,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 3 },
         },
-        {
+        "block@1,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 3 },
         },
-        {
+        "block@0,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 3 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase18" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase11" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase13: {
@@ -14298,63 +14726,63 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "baddie@0,5,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 5, z: 1 },
         },
-        {
+        "baddie@0,4,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 4, z: 1 },
         },
-        {
+        "baddie@0,3,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "baddie@0,2,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase14" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@4,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase16" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase3" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase14: {
@@ -14376,33 +14804,33 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "baddie@2,7,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "baddie@5,5,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14411,7 +14839,7 @@ export const campaign = {
           },
           position: { x: 5, y: 5, z: 1 },
         },
-        {
+        "baddie@5,4,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14420,7 +14848,7 @@ export const campaign = {
           },
           position: { x: 5, y: 4, z: 1 },
         },
-        {
+        "baddie@5,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14429,7 +14857,7 @@ export const campaign = {
           },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "baddie@5,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14438,17 +14866,17 @@ export const campaign = {
           },
           position: { x: 5, y: 2, z: 1 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase15" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase13" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase15: {
@@ -14470,24 +14898,48 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 0, z: 0 } },
-        {
+      items: {
+        "hush-puppy@7,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 1, z: 2 },
+        },
+        "hush-puppy@6,1,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 1, z: 1 },
+        },
+        "hush-puppy@5,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 1, z: 0 },
+        },
+        "hush-puppy@7,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 0, z: 2 },
+        },
+        "hush-puppy@6,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 0, z: 1 },
+        },
+        "hush-puppy@5,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 0, z: 0 },
+        },
+        "door@8,0,4": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase14" },
           position: { x: 8, y: 0, z: 4 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase7" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase16: {
@@ -14513,108 +14965,108 @@ export const campaign = {
         ],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "deadly-block@2,5,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 1 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 1 },
         },
-        {
+        "deadly-block@2,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,3,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "deadly-block@2,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@2,2,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 1 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "portable-block@4,0,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "portable-block@3,0,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "portable-block@0,0,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "portable-block@0,1,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "pickup@11,5,0": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 11, y: 5, z: 0 },
         },
-        {
+        "baddie@11,0,0": {
           type: "baddie",
           config: { which: "computer-bot" },
           position: { x: 11, y: 0, z: 0 },
         },
-        {
+        "door@0,2,1": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase13" },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase17" },
           position: { x: 8, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase17: {
@@ -14627,33 +15079,33 @@ export const campaign = {
         away: ["window3", "window2", "none", "none", "window2", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase18" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase18" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase18" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase18" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase16" },
           position: { x: 2, y: 6, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase18: {
@@ -14666,33 +15118,33 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase17" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase17" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase17" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "moonbase17" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase12" },
           position: { x: 6, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase19: {
@@ -14714,48 +15166,48 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@4,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "baddie@3,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase20" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase11" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase2: {
@@ -14777,36 +15229,48 @@ export const campaign = {
         ],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 5, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 5, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 5, z: 0 } },
-        {
+      items: {
+        "hush-puppy@4,5,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 5, z: 2 },
+        },
+        "hush-puppy@3,5,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 5, z: 1 },
+        },
+        "hush-puppy@2,5,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 5, z: 0 },
+        },
+        "deadly-block@7,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "baddie@0,5,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "baddie@7,4,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14815,7 +15279,7 @@ export const campaign = {
           },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "baddie@7,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14824,7 +15288,7 @@ export const campaign = {
           },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "baddie@7,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14833,7 +15297,7 @@ export const campaign = {
           },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "baddie@7,1,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -14842,17 +15306,17 @@ export const campaign = {
           },
           position: { x: 7, y: 1, z: 1 },
         },
-        {
+        "door@3,6,4": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase3" },
           position: { x: 3, y: 6, z: 4 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase1" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase20: {
@@ -14883,79 +15347,79 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "movable-block@4,6,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "movable-block@5,5,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "movable-block@6,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "movable-block@5,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "movable-block@4,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "movable-block@3,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "movable-block@2,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "movable-block@1,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "movable-block@5,3,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "movable-block@4,2,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase21tosafari" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase23" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase19" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase22topenitentiary" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
-      color: "cyan",
+      },
+      color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase21tosafari: {
       id: "moonbase21tosafari",
@@ -14976,58 +15440,58 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@4,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "deadly-block@3,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@2,4,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15036,7 +15500,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@4,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15045,7 +15509,7 @@ export const campaign = {
           },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "baddie@3,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15054,7 +15518,7 @@ export const campaign = {
           },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15063,7 +15527,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15072,7 +15536,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15081,12 +15545,12 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase20" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase22topenitentiary: {
@@ -15108,93 +15572,93 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary1" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@2,4,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary1" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary1" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary1" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@4,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "baddie@3,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase20" },
           position: { x: 2, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase23: {
@@ -15225,79 +15689,79 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "movable-block@4,6,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "movable-block@5,5,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "movable-block@6,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "movable-block@5,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "movable-block@4,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "movable-block@3,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "movable-block@2,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "movable-block@1,4,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "movable-block@5,3,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "movable-block@4,2,0": {
           type: "movable-block",
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase24toegyptus" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase26" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase20" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase25tobookworld" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
-      color: "magenta",
+      },
+      color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase24toegyptus: {
       id: "moonbase24toegyptus",
@@ -15327,88 +15791,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "egyptus1" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "egyptus1" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "egyptus1" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "egyptus1" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15417,7 +15881,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15426,7 +15890,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15435,7 +15899,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15444,7 +15908,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15453,7 +15917,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15462,42 +15926,42 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase23" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase25tobookworld: {
@@ -15528,88 +15992,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@7,4,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "teleporter@6,4,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "teleporter@7,3,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "teleporter@6,3,0": {
           type: "teleporter",
           config: { toRoom: "bookworld1" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15618,7 +16082,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15627,7 +16091,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15636,7 +16100,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15645,7 +16109,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15654,7 +16118,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15663,42 +16127,42 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase23" },
           position: { x: 3, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase26: {
@@ -15720,53 +16184,53 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@4,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "baddie@3,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase27" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase23" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase27: {
@@ -15788,23 +16252,23 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase28" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase26" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase30" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase28: {
@@ -15817,26 +16281,38 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 3, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 3, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 3, z: 0 } },
-        {
+      items: {
+        "hush-puppy@5,3,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 3, z: 2 },
+        },
+        "hush-puppy@4,3,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 3, z: 1 },
+        },
+        "hush-puppy@3,3,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 3, z: 0 },
+        },
+        "baddie@0,5,0": {
           type: "baddie",
           config: { which: "cyberman", charging: false },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "door@6,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase29" },
           position: { x: 6, y: 2, z: 4 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase27" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase29: {
@@ -15867,88 +16343,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase32" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase32" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase32" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase32" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15957,7 +16433,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15966,7 +16442,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15975,7 +16451,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15984,7 +16460,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -15993,7 +16469,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16002,42 +16478,42 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase28" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase3: {
@@ -16068,89 +16544,113 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@2,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,1": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 2, y: 4, z: 1 },
         },
-        {
+        "deadly-block@1,4,1": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 1, y: 4, z: 1 },
         },
-        {
+        "block@2,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "block@3,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        { type: "charles", config: {}, position: { x: 7, y: 7, z: 1 } },
-        { type: "spring", config: {}, position: { x: 4, y: 7, z: 0 } },
-        {
+        "charles@7,7,1": {
+          type: "charles",
+          config: {},
+          position: { x: 7, y: 7, z: 1 },
+        },
+        "spring@4,7,0": {
+          type: "spring",
+          config: {},
+          position: { x: 4, y: 7, z: 0 },
+        },
+        "movable-block@0,7,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 0, y: 7, z: 0 },
         },
-        { type: "joystick", config: {}, position: { x: 2, y: 2, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 3, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 1, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 2, y: 0, z: 1 } },
-        {
+        "joystick@2,2,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 2, y: 2, z: 1 },
+        },
+        "joystick@3,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 3, y: 1, z: 1 },
+        },
+        "joystick@1,1,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 1, z: 1 },
+        },
+        "joystick@2,0,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 2, y: 0, z: 1 },
+        },
+        "door@3,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase13" },
           position: { x: 3, y: 8, z: 2 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase2" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase30: {
@@ -16163,18 +16663,18 @@ export const campaign = {
         away: ["window3", "window2", "none", "none", "window2", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
       },
-      items: [
-        {
+      items: {
+        "door@2,6,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase27" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase31" },
           position: { x: 6, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase31: {
@@ -16187,33 +16687,33 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth64" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth64" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth64" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth64" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase30" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase32: {
@@ -16244,88 +16744,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@4,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase29" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase29" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@4,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase29" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase29" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16334,7 +16834,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16343,7 +16843,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16352,7 +16852,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16361,7 +16861,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16370,7 +16870,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16379,42 +16879,42 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase33triple" },
           position: { x: 3, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase33triple: {
@@ -16512,203 +17012,198 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@11,14,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 14, z: 0 },
         },
-        {
+        "deadly-block@6,13,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 13, z: 0 },
         },
-        {
+        "deadly-block@5,13,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 13, z: 0 },
         },
-        {
+        "deadly-block@0,13,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 13, z: 0 },
         },
-        {
+        "deadly-block@6,12,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 12, z: 0 },
         },
-        {
+        "deadly-block@5,12,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 12, z: 0 },
         },
-        {
+        "deadly-block@0,12,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 12, z: 0 },
         },
-        {
+        "deadly-block@6,11,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 11, z: 0 },
         },
-        {
+        "deadly-block@5,11,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 11, z: 0 },
         },
-        {
+        "deadly-block@0,11,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 11, z: 0 },
         },
-        {
+        "deadly-block@6,10,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 10, z: 0 },
         },
-        {
+        "deadly-block@5,10,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 10, z: 0 },
         },
-        {
+        "deadly-block@0,10,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 10, z: 0 },
         },
-        {
+        "deadly-block@11,9,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 9, z: 0 },
         },
-        {
-          type: "wall",
-          config: { side: "away", style: "coil" },
-          position: { x: 5, y: 7, z: 0 },
-        },
-        {
+        "wall@5,7,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "wall@4,7,0": {
           type: "wall",
           config: { side: "away", style: "coil" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "wall@3,7,0": {
           type: "wall",
           config: { side: "away", style: "coil" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "wall@2,7,0": {
           type: "wall",
           config: { side: "away", style: "coil" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "wall@1,7,0": {
           type: "wall",
           config: { side: "away", style: "coil" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "wall@0,7,0": {
           type: "wall",
           config: { side: "away", style: "coil" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "wall@5,6,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "deadly-block@11,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "wall@5,5,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@11,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 4, z: 0 },
         },
-        {
+        "deadly-block@6,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "wall@5,4,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@11,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 3, z: 0 },
         },
-        {
+        "deadly-block@6,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "wall@5,3,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@11,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 2, z: 0 },
         },
-        {
+        "deadly-block@6,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "wall@5,2,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "deadly-block@11,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 11, y: 1, z: 0 },
         },
-        {
+        "wall@5,1,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "wall@5,0,0": {
           type: "wall",
           config: { side: "left", style: "coil" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "baddie@6,2,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 2, z: 1 },
         },
-        {
+        "baddie@6,4,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 4, z: 1 },
         },
-        {
+        "baddie@11,1,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16717,7 +17212,7 @@ export const campaign = {
           },
           position: { x: 11, y: 1, z: 1 },
         },
-        {
+        "baddie@11,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16726,7 +17221,7 @@ export const campaign = {
           },
           position: { x: 11, y: 3, z: 1 },
         },
-        {
+        "baddie@11,5,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16735,17 +17230,17 @@ export const campaign = {
           },
           position: { x: 11, y: 5, z: 1 },
         },
-        {
+        "baddie@0,11,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 11, z: 1 },
         },
-        {
+        "baddie@0,13,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 13, z: 1 },
         },
-        {
+        "baddie@5,11,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16754,7 +17249,7 @@ export const campaign = {
           },
           position: { x: 5, y: 11, z: 1 },
         },
-        {
+        "baddie@5,13,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16763,17 +17258,17 @@ export const campaign = {
           },
           position: { x: 5, y: 13, z: 1 },
         },
-        {
+        "baddie@6,11,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 11, z: 1 },
         },
-        {
+        "baddie@6,13,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 13, z: 1 },
         },
-        {
+        "baddie@11,14,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16782,7 +17277,7 @@ export const campaign = {
           },
           position: { x: 11, y: 14, z: 1 },
         },
-        {
+        "baddie@11,9,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16791,17 +17286,17 @@ export const campaign = {
           },
           position: { x: 11, y: 9, z: 1 },
         },
-        {
+        "baddie@6,12,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 12, z: 1 },
         },
-        {
+        "baddie@6,10,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 10, z: 1 },
         },
-        {
+        "baddie@5,12,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16810,7 +17305,7 @@ export const campaign = {
           },
           position: { x: 5, y: 12, z: 1 },
         },
-        {
+        "baddie@5,10,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16819,17 +17314,17 @@ export const campaign = {
           },
           position: { x: 5, y: 10, z: 1 },
         },
-        {
+        "baddie@0,12,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 12, z: 1 },
         },
-        {
+        "baddie@0,10,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 10, z: 1 },
         },
-        {
+        "baddie@11,4,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16838,7 +17333,7 @@ export const campaign = {
           },
           position: { x: 11, y: 4, z: 1 },
         },
-        {
+        "baddie@11,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16847,32 +17342,32 @@ export const campaign = {
           },
           position: { x: 11, y: 2, z: 1 },
         },
-        {
+        "baddie@6,5,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 5, z: 1 },
         },
-        {
+        "baddie@6,3,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 6, y: 3, z: 1 },
         },
-        {
+        "door@2,16,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase36" },
           position: { x: 2, y: 16, z: 0 },
         },
-        {
+        "door@12,11,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase34" },
           position: { x: 12, y: 11, z: 0 },
         },
-        {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase32" },
           position: { x: 8, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase34: {
@@ -16894,28 +17389,28 @@ export const campaign = {
         ],
         left: ["window3", "window2", "window1", "coil"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "baddie@7,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16924,7 +17419,7 @@ export const campaign = {
           },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "baddie@7,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16933,7 +17428,7 @@ export const campaign = {
           },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "baddie@7,1,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16942,7 +17437,7 @@ export const campaign = {
           },
           position: { x: 7, y: 1, z: 1 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -16951,17 +17446,17 @@ export const campaign = {
           },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "door@3,4,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase35" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "door@0,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase33triple" },
           position: { x: 0, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase35: {
@@ -16974,68 +17469,68 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth51" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "baddie@5,4,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17044,12 +17539,12 @@ export const campaign = {
           },
           position: { x: 5, y: 4, z: 1 },
         },
-        {
+        "baddie@0,4,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 4, z: 1 },
         },
-        {
+        "baddie@5,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17058,12 +17553,12 @@ export const campaign = {
           },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "baddie@0,3,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "baddie@5,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17072,12 +17567,12 @@ export const campaign = {
           },
           position: { x: 5, y: 2, z: 1 },
         },
-        {
+        "baddie@0,2,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "baddie@5,1,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17086,17 +17581,17 @@ export const campaign = {
           },
           position: { x: 5, y: 1, z: 1 },
         },
-        {
+        "baddie@0,1,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 1, z: 1 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase34" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase36: {
@@ -17109,68 +17604,68 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window1", "coil", "window3", "window2", "coil", "window1"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth69" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth69" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth69" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth69" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@0,2,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "deadly-block@5,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "deadly-block@0,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "baddie@5,4,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17179,12 +17674,12 @@ export const campaign = {
           },
           position: { x: 5, y: 4, z: 1 },
         },
-        {
+        "baddie@0,4,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 4, z: 1 },
         },
-        {
+        "baddie@5,3,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17193,12 +17688,12 @@ export const campaign = {
           },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "baddie@0,3,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "baddie@5,2,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17207,12 +17702,12 @@ export const campaign = {
           },
           position: { x: 5, y: 2, z: 1 },
         },
-        {
+        "baddie@0,2,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "baddie@5,1,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17221,17 +17716,17 @@ export const campaign = {
           },
           position: { x: 5, y: 1, z: 1 },
         },
-        {
+        "baddie@0,1,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "left", charging: true },
           position: { x: 0, y: 1, z: 1 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase33triple" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase4: {
@@ -17262,133 +17757,133 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@3,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "block@2,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 2, y: 7, z: 3 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,7,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "block@1,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 7, z: 3 },
         },
-        {
+        "deadly-block@6,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "deadly-block@1,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "block@7,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "block@7,2,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 2, z: 2 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "block@7,1,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 1, z: 1 },
         },
-        {
+        "deadly-block@6,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "deadly-block@1,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "baddie@2,5,0": {
           type: "baddie",
           config: { which: "computer-bot" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "baddie@5,2,0": {
           type: "baddie",
           config: { which: "computer-bot" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase5" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase1" },
           position: { x: 8, y: 3, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase5: {
@@ -17410,33 +17905,33 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@3,6,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "baddie@0,4,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "baddie@3,2,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase6" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase4" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase6: {
@@ -17467,88 +17962,88 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "deadly-block@4,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@7,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@5,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "baddie@7,5,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "pickup@0,5,0": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "baddie@0,4,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase7" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase5" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase7: {
@@ -17579,58 +18074,58 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@7,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@2,0,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "block@2,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 3 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17639,7 +18134,7 @@ export const campaign = {
           },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17648,7 +18143,7 @@ export const campaign = {
           },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "baddie@5,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17657,7 +18152,7 @@ export const campaign = {
           },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "baddie@2,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17666,7 +18161,7 @@ export const campaign = {
           },
           position: { x: 2, y: 7, z: 1 },
         },
-        {
+        "baddie@1,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17675,7 +18170,7 @@ export const campaign = {
           },
           position: { x: 1, y: 7, z: 1 },
         },
-        {
+        "baddie@0,7,1": {
           type: "baddie",
           config: {
             which: "cyberman",
@@ -17684,22 +18179,22 @@ export const campaign = {
           },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase15" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase8" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "moonbase6" },
           position: { x: 3, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase8: {
@@ -17730,113 +18225,113 @@ export const campaign = {
           "window1",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@7,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "teleporter@6,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "teleporter@1,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "teleporter@0,7,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "teleporter@7,6,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "teleporter@6,6,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "teleporter@1,6,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "teleporter@0,6,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth60" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "baddie@6,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "baddie@5,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "baddie@2,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "baddie@1,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 1, y: 0, z: 1 },
         },
-        {
+        "baddie@0,0,1": {
           type: "baddie",
           config: { which: "cyberman", startDirection: "away", charging: true },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase7" },
           position: { x: 8, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase9: {
@@ -17849,33 +18344,33 @@ export const campaign = {
         away: ["window1", "coil", "window3", "window2", "coil", "window1"],
         left: ["window3", "window2", "none", "none", "window2", "window1"],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth57" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth57" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "teleporter@3,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth57" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "teleporter@2,2,0": {
           type: "teleporter",
           config: { toRoom: "blacktooth57" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "moonbase10" },
           position: { x: 6, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     penitentiary1: {
@@ -17897,33 +18392,33 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase22topenitentiary" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@2,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase22topenitentiary" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase22topenitentiary" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase22topenitentiary" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary2" },
           position: { x: 2, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary10: {
@@ -17946,28 +18441,28 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "door@0,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary11" },
           position: { x: 0, y: 8, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary11: {
@@ -17980,38 +18475,38 @@ export const campaign = {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@5,5,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@5,5,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 1 },
         },
-        {
+        "block@5,5,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
         },
-        {
+        "fish@5,5,3": {
           type: "fish",
           config: { alive: false },
           position: { x: 5, y: 5, z: 3 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary12" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary10" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary12: {
@@ -18042,62 +18537,78 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 3 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "block@0,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 1, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 1, z: 3 } },
-        {
+        "hush-puppy@1,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 1, z: 2 },
+        },
+        "hush-puppy@0,1,3": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 1, z: 3 },
+        },
+        "block@7,0,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@7,0,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "block@7,0,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 0, z: 2 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 0, z: 0 } },
-        {
+        "hush-puppy@1,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 0, z: 1 },
+        },
+        "hush-puppy@0,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 0, z: 0 },
+        },
+        "pickup@7,0,3": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 7, y: 0, z: 3 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary19" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary11" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary18fish" },
           position: { x: 0, y: 3, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary13: {
@@ -18120,74 +18631,78 @@ export const campaign = {
         ],
         left: ["loop", "loop", "loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@7,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@5,3,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 3, z: 1 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@4,3,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "block@3,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 3, z: 3 },
         },
-        {
+        "block@2,3,6": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 2, y: 3, z: 6 },
         },
-        {
+        "block@1,3,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 3, z: 4 },
         },
-        {
+        "block@0,3,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 5 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@2,0,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@1,0,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 0, z: 1 },
         },
-        { type: "spring", config: {}, position: { x: 2, y: 3, z: 7 } },
-        {
+        "spring@2,3,7": {
+          type: "spring",
+          config: {},
+          position: { x: 2, y: 3, z: 7 },
+        },
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary2" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary14: {
@@ -18211,108 +18726,108 @@ export const campaign = {
         ],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@6,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@2,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@2,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "portable-block@7,5,1": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 7, y: 5, z: 1 },
         },
-        {
+        "portable-block@6,5,1": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 6, y: 5, z: 1 },
         },
-        {
+        "lift@0,1,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary15: {
@@ -18345,213 +18860,213 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@7,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 3 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,6,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 4 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,5,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 4 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,4,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 4 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,3,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 5 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,2,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 5 },
         },
-        {
+        "block@1,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 1 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,1,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 6 },
         },
-        {
+        "block@1,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@7,0,7": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 7 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,1": {
           type: "baddie",
           config: { which: "turtle", startDirection: "right" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "portable-block@1,1,2": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 2 },
         },
-        {
+        "portable-block@1,1,3": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary16: {
@@ -18584,68 +19099,68 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "portable-block@7,7,1": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "portable-block@7,6,1": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 7, y: 6, z: 1 },
         },
-        {
+        "portable-block@7,5,1": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 7, y: 5, z: 1 },
         },
-        {
+        "lift@3,0,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary17: {
@@ -18677,93 +19192,93 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@4,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "block@3,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@4,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@3,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@4,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "block@3,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "block@4,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "block@3,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@3,8,2": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary18fish" },
           position: { x: 3, y: 8, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary18fish: {
@@ -18793,118 +19308,118 @@ export const campaign = {
         ],
         left: ["loop", "loop", "none", "none", "loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@15,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 15, y: 4, z: 3 },
         },
-        {
+        "teleporter@15,4,4": {
           type: "teleporter",
           config: { toRoom: "penitentiary34crown" },
           position: { x: 15, y: 4, z: 4 },
         },
-        {
+        "block@14,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 14, y: 4, z: 3 },
         },
-        {
+        "block@13,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 13, y: 4, z: 3 },
         },
-        {
+        "block@12,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 12, y: 4, z: 3 },
         },
-        {
+        "block@11,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 4, z: 3 },
         },
-        {
+        "block@10,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 4, z: 3 },
         },
-        {
+        "block@9,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 9, y: 4, z: 3 },
         },
-        {
+        "block@8,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 8, y: 4, z: 3 },
         },
-        {
+        "block@7,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@6,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 4, z: 3 },
         },
-        {
+        "block@5,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 4, z: 3 },
         },
-        {
+        "block@4,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 3 },
         },
-        {
+        "block@3,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 3 },
         },
-        {
+        "block@2,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 3 },
         },
-        {
+        "block@1,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 4, z: 3 },
         },
-        {
+        "block@0,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 3 },
         },
-        {
+        "teleporter@0,4,4": {
           type: "teleporter",
           config: { toRoom: "penitentiary30" },
           position: { x: 0, y: 4, z: 4 },
         },
-        {
+        "portable-block@11,1,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 11, y: 1, z: 0 },
         },
-        {
+        "fish@12,4,4": {
           type: "fish",
           config: { alive: true },
           position: { x: 12, y: 4, z: 4 },
         },
-        {
+        "door@16,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary12" },
           position: { x: 16, y: 2, z: 2 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary17" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary19: {
@@ -18926,33 +19441,33 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "baddie@2,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "portable-block@2,3,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "baddie@1,3,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "door@1,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary21" },
           position: { x: 1, y: 8, z: 3 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary12" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary2: {
@@ -18983,81 +19498,93 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 7, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 7, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 7, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 7, z: 0 } },
-        {
+        "hush-puppy@3,7,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 7, z: 2 },
+        },
+        "hush-puppy@2,7,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 7, z: 1 },
+        },
+        "hush-puppy@1,7,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 7, z: 0 },
+        },
+        "block@7,4,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 4, z: 3 },
         },
-        {
+        "block@1,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
         },
-        {
+        "block@6,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "block@6,3,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 3, z: 1 },
         },
-        {
+        "block@6,3,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 6, y: 3, z: 3 },
         },
-        {
+        "block@1,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "baddie@6,3,2": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 6, y: 3, z: 2 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary13" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary3" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary1" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary20: {
@@ -19071,49 +19598,53 @@ export const campaign = {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "portable-block@1,4,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "portable-block@3,3,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "portable-block@2,3,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "baddie@2,3,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 3, z: 1 },
         },
-        {
+        "portable-block@3,2,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 3, y: 2, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 3, y: 2, z: 1 } },
-        {
+        "spring@3,2,1": {
+          type: "spring",
+          config: {},
+          position: { x: 3, y: 2, z: 1 },
+        },
+        "portable-block@2,2,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "portable-block@4,1,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "portable-block@1,1,0": {
           type: "portable-block",
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary21: {
@@ -19146,213 +19677,213 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@3,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 2 },
         },
-        {
+        "block@3,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "block@3,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 4 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@2,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 4 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 4 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,7,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 6 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@7,2,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 2 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@7,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 3 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "portable-block@7,7,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "baddie@6,7,1": {
           type: "baddie",
           config: { which: "turtle", startDirection: "right" },
           position: { x: 6, y: 7, z: 1 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary19" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary22: {
@@ -19385,193 +19916,193 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@4,4,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 4, z: 4 },
         },
-        {
+        "block@3,4,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 3, y: 4, z: 4 },
         },
-        {
+        "block@2,4,5": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 5 },
         },
-        {
+        "block@1,4,6": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 4, z: 6 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@0,4,7": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 7 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@4,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@4,2,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@4,1,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "pickup@4,4,5": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 4, y: 4, z: 5 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary23: {
@@ -19604,168 +20135,168 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "block@5,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "block@4,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@0,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
+        "block@4,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@4,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "lift@4,3,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 4, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary24: {
@@ -19797,18 +20328,18 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@4,3,0": {
           type: "lift",
           config: { top: 6, bottom: 0 },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "door@3,8,1": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary25" },
           position: { x: 3, y: 8, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary25: {
@@ -19830,18 +20361,18 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary26" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary24" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary26: {
@@ -19872,48 +20403,48 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@0,7,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@7,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,3,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "movable-block@4,1,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary27" },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary25" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary27: {
@@ -19935,48 +20466,48 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 1 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "movable-block@6,0,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "door@8,0,2": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary26" },
           position: { x: 8, y: 0, z: 2 },
         },
-        {
+        "door@0,0,1": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary28" },
           position: { x: 0, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary28: {
@@ -20007,41 +20538,53 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@0,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 1 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 4, y: 0, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 3, y: 0, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 0, z: 0 } },
-        {
+        "hush-puppy@4,0,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 4, y: 0, z: 2 },
+        },
+        "hush-puppy@3,0,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 3, y: 0, z: 1 },
+        },
+        "hush-puppy@2,0,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 0, z: 0 },
+        },
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary27" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,4": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary29" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "door@3,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary30" },
           position: { x: 3, y: 0, z: 4 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary29: {
@@ -20064,83 +20607,83 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "block@7,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "block@6,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@5,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "block@4,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "block@3,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@6,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,1,1": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 1 },
         },
-        {
+        "deadly-block@2,0,1": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 1 },
         },
-        {
+        "door@8,0,3": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary28" },
           position: { x: 8, y: 0, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary3: {
@@ -20171,60 +20714,68 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@7,1,0": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "deadly-block@7,1,1": {
           type: "deadly-block",
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 1 },
         },
-        { type: "switch", config: {}, position: { x: 7, y: 7, z: 0 } },
-        {
+        "switch@7,7,0": {
+          type: "switch",
+          config: {},
+          position: { x: 7, y: 7, z: 0 },
+        },
+        "movable-block@0,1,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 0, y: 1, z: 0 },
         },
-        { type: "switch", config: {}, position: { x: 0, y: 0, z: 0 } },
-        {
+        "switch@0,0,0": {
+          type: "switch",
+          config: {},
+          position: { x: 0, y: 0, z: 0 },
+        },
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary4" },
           position: { x: 8, y: 3, z: 2 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary2" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary30: {
@@ -20246,63 +20797,63 @@ export const campaign = {
         ],
         left: ["loop", "loop", "loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@5,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 3 },
         },
-        {
+        "block@4,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "block@3,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 3 },
         },
-        {
+        "block@2,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 3 },
         },
-        {
+        "block@1,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 3, z: 3 },
         },
-        {
+        "block@0,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 3 },
         },
-        {
+        "teleporter@0,3,4": {
           type: "teleporter",
           config: { toRoom: "penitentiary18fish" },
           position: { x: 0, y: 3, z: 4 },
         },
-        {
+        "portable-block@7,3,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "portable-block@0,3,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "portable-block@7,0,0": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "door@3,4,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary28" },
           position: { x: 3, y: 4, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary31: {
@@ -20326,93 +20877,93 @@ export const campaign = {
         ],
         left: ["loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@5,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 0 },
         },
-        {
+        "block@4,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "block@3,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@1,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,1,1": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 1 },
         },
-        {
+        "deadly-block@5,1,2": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 2 },
         },
-        {
+        "portable-block@1,1,1": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "deadly-block@5,0,1": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 1 },
         },
-        {
+        "deadly-block@5,0,2": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 2 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary32: {
@@ -20435,88 +20986,88 @@ export const campaign = {
         ],
         left: ["loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@7,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 1, z: 4 },
         },
-        {
+        "block@6,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 1, z: 4 },
         },
-        {
+        "block@5,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 1, z: 4 },
         },
-        {
+        "block@4,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 4 },
         },
-        {
+        "block@3,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 4 },
         },
-        {
+        "block@2,1,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 4 },
         },
-        {
+        "block@7,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 4 },
         },
-        {
+        "block@6,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 0, z: 4 },
         },
-        {
+        "block@5,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 0, z: 4 },
         },
-        {
+        "block@4,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 4 },
         },
-        {
+        "block@3,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 4 },
         },
-        {
+        "block@2,0,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 4 },
         },
-        {
+        "deadly-block@2,1,5": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 5 },
         },
-        {
+        "baddie@0,1,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,0,5": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 5 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary33" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary33: {
@@ -20547,102 +21098,118 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@1,4,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary2" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "teleporter@0,4,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary2" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "teleporter@1,3,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary2" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "teleporter@0,3,0": {
           type: "teleporter",
           config: { toRoom: "penitentiary2" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@6,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@6,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "block@6,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 6, z: 3 } },
-        {
+        "ball@6,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 6, z: 3 },
+        },
+        "block@1,6,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,6,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 1 },
         },
-        {
+        "block@1,6,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 6, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 6, z: 3 } },
-        {
+        "ball@1,6,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 6, z: 3 },
+        },
+        "block@6,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "block@6,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 1 },
         },
-        {
+        "block@6,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 6, y: 1, z: 3 } },
-        {
+        "ball@6,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 6, y: 1, z: 3 },
+        },
+        "block@1,1,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "block@1,1,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 1 },
         },
-        {
+        "block@1,1,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 1, y: 1, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 1, z: 3 } },
-        {
+        "ball@1,1,3": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 1, z: 3 },
+        },
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary32" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary34crown" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary34crown: {
@@ -20673,78 +21240,78 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "teleporter@7,5,4": {
           type: "teleporter",
           config: { toRoom: "penitentiary18fish" },
           position: { x: 7, y: 5, z: 4 },
         },
-        {
+        "block@7,4,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 4, z: 4 },
         },
-        {
+        "block@7,3,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 7, y: 3, z: 4 },
         },
-        {
+        "block@0,1,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 1, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "block@0,0,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "block@0,0,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "block@0,0,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 3 },
         },
-        {
+        "block@0,0,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 4 },
         },
-        {
+        "block@0,0,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 0, z: 5 },
         },
-        {
+        "portable-block@0,7,3": {
           type: "portable-block",
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "movable-block@7,3,5": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 7, y: 3, z: 5 },
         },
-        {
+        "door@3,8,1": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary33" },
           position: { x: 3, y: 8, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary4: {
@@ -20758,53 +21325,53 @@ export const campaign = {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@5,5,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
         },
-        {
+        "block@4,5,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "deadly-block@5,3,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "deadly-block@5,2,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@5,2,6": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 2, z: 6 },
         },
-        {
+        "block@5,1,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 1, z: 2 },
         },
-        {
+        "block@5,0,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 0, z: 4 },
         },
-        {
+        "block@5,0,7": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 0, z: 7 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary3" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary5: {
@@ -20819,38 +21386,38 @@ export const campaign = {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@5,5,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
         },
-        {
+        "block@5,5,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 5, z: 4 },
         },
-        {
+        "block@2,5,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 2, y: 5, z: 5 },
         },
-        {
+        "block@0,5,7": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 5, z: 7 },
         },
-        {
+        "block@5,4,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "block@5,0,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 5, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary6: {
@@ -20864,53 +21431,53 @@ export const campaign = {
         away: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
         left: ["loop", "loop", "none", "none", "loop", "loop"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "movable-block@3,0,1": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 3, y: 0, z: 1 },
         },
-        {
+        "door@6,2,3": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary7" },
           position: { x: 6, y: 2, z: 3 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary7: {
@@ -20932,43 +21499,43 @@ export const campaign = {
         ],
         left: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
       },
-      items: [
-        {
+      items: {
+        "block@4,5,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@4,5,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "block@4,5,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 4, y: 5, z: 3 },
         },
-        {
+        "baddie@5,5,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "baddie@3,5,0": {
           type: "baddie",
           config: { which: "bubble-robot" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "door@3,6,5": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary8" },
           position: { x: 3, y: 6, z: 5 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "penitentiary6" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary8: {
@@ -20991,53 +21558,53 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "block@0,6,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 6, z: 4 },
         },
-        {
+        "block@0,5,6": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 5, z: 6 },
         },
-        {
+        "block@0,4,7": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 4, z: 7 },
         },
-        {
+        "block@1,2,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 1, y: 2, z: 2 },
         },
-        {
+        "portable-block@1,2,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "portable-block@1,2,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 1 },
         },
-        {
+        "portable-block@1,2,3": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 3 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "penitentiary7" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary9: {
@@ -21061,13 +21628,13 @@ export const campaign = {
           "loop",
         ],
       },
-      items: [
-        {
+      items: {
+        "lift@0,4,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 0, y: 4, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     safari1: {
@@ -21089,33 +21656,33 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase21tosafari" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "teleporter@2,4,0": {
           type: "teleporter",
           config: { toRoom: "moonbase21tosafari" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase21tosafari" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "teleporter@2,3,0": {
           type: "teleporter",
           config: { toRoom: "moonbase21tosafari" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "door@2,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari2" },
           position: { x: 2, y: 8, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari10: {
@@ -21138,104 +21705,108 @@ export const campaign = {
         ],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "barrier@4,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "barrier@4,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 2 },
         },
-        { type: "spring", config: {}, position: { x: 0, y: 5, z: 0 } },
-        {
+        "spring@0,5,0": {
+          type: "spring",
+          config: {},
+          position: { x: 0, y: 5, z: 0 },
+        },
+        "barrier@4,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "barrier@4,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 1 },
         },
-        {
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "barrier@4,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "door@8,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari11" },
           position: { x: 8, y: 2, z: 0 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari11: {
@@ -21248,23 +21819,23 @@ export const campaign = {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "baddie@0,0,0": {
           type: "baddie",
           config: { which: "elephant" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari12" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari10" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari12: {
@@ -21287,128 +21858,128 @@ export const campaign = {
         ],
         left: ["shield", "wall", "window", "window", "wall", "shield"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "lift@7,5,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "baddie@5,5,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "barrier@4,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 2 },
         },
-        {
+        "portable-block@3,5,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "barrier@4,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "barrier@4,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 1 },
         },
-        {
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari11" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari13: {
@@ -21431,48 +22002,48 @@ export const campaign = {
         ],
         left: ["shield", "wall", "window", "window", "wall", "shield"],
       },
-      items: [
-        {
+      items: {
+        "block@7,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@3,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "door@3,6,2": {
           type: "door",
           config: { axis: "x", toRoom: "safari15" },
           position: { x: 3, y: 6, z: 2 },
         },
-        {
+        "door@0,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "safari14" },
           position: { x: 0, y: 2, z: 2 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari14: {
@@ -21503,58 +22074,58 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@5,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 7, z: 1 },
         },
-        {
+        "block@4,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "block@3,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "block@4,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "deadly-block@5,7,0": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 5, y: 7, z: 0 },
         },
-        {
+        "pickup@4,7,0": {
           type: "pickup",
           config: { gives: "jumps" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "portable-block@4,7,2": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "deadly-block@3,7,0": {
           type: "deadly-block",
           config: { style: "puck" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari13" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari9" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari15: {
@@ -21584,88 +22155,88 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,14,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 3, y: 14, z: 0 },
         },
-        {
+        "deadly-block@0,13,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 13, z: 0 },
         },
-        {
+        "deadly-block@2,12,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 2, y: 12, z: 0 },
         },
-        {
+        "deadly-block@1,11,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 1, y: 11, z: 0 },
         },
-        {
+        "deadly-block@3,10,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 3, y: 10, z: 0 },
         },
-        {
+        "deadly-block@2,9,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 2, y: 9, z: 0 },
         },
-        {
+        "deadly-block@0,9,0": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 0 },
         },
-        {
+        "deadly-block@3,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "baddie@2,2,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "baddie@1,4,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "baddie@0,6,0": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "baddie@2,12,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 2, y: 12, z: 1 },
         },
-        {
+        "door@1,16,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari16" },
           position: { x: 1, y: 16, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari13" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari16: {
@@ -21687,68 +22258,68 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@3,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 6, z: 0 },
         },
-        {
+        "deadly-block@1,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@0,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "deadly-block@3,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@3,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@1,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "baddie@2,6,0": {
           type: "baddie",
           config: {
             which: "american-football-head",
@@ -21756,17 +22327,17 @@ export const campaign = {
           },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari17fish" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@1,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari15" },
           position: { x: 1, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari17fish: {
@@ -21797,111 +22368,123 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 3 },
         },
-        {
+        "block@3,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "block@4,6,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 3 },
         },
-        {
+        "block@3,6,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 6, z: 3 },
         },
-        {
+        "block@4,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 3 },
         },
-        {
+        "block@3,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 3 },
         },
-        {
+        "block@4,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 3 },
         },
-        {
+        "block@3,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 3 },
         },
-        {
+        "block@4,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "block@3,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 3 },
         },
-        { type: "hush-puppy", config: {}, position: { x: 2, y: 3, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 1, y: 3, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 0, y: 3, z: 0 } },
-        {
+        "hush-puppy@2,3,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 2, y: 3, z: 2 },
+        },
+        "hush-puppy@1,3,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 1, y: 3, z: 1 },
+        },
+        "hush-puppy@0,3,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 0, y: 3, z: 0 },
+        },
+        "block@4,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 3 },
         },
-        {
+        "block@3,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 3 },
         },
-        {
+        "block@4,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 3 },
         },
-        {
+        "block@3,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 1, z: 3 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "block@3,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 3 },
         },
-        {
+        "fish@4,7,4": {
           type: "fish",
           config: { alive: true },
           position: { x: 4, y: 7, z: 4 },
         },
-        {
+        "door@3,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari30" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari31" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@3,0,4": {
           type: "door",
           config: { axis: "x", toRoom: "safari16" },
           position: { x: 3, y: 0, z: 4 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari18: {
@@ -21931,93 +22514,93 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,15,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 15, z: 0 },
         },
-        {
+        "block@1,14,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 14, z: 0 },
         },
-        {
+        "block@1,13,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 13, z: 0 },
         },
-        {
+        "block@1,12,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 12, z: 0 },
         },
-        {
+        "block@1,11,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 11, z: 0 },
         },
-        {
+        "block@1,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 10, z: 0 },
         },
-        {
+        "block@1,9,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 9, z: 0 },
         },
-        {
+        "block@1,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@1,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 2 },
         },
-        {
+        "block@0,2,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 2 },
         },
-        {
+        "block@0,1,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 1, z: 2 },
         },
-        {
+        "block@0,0,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 2 },
         },
-        {
+        "door@0,16,2": {
           type: "door",
           config: { axis: "x", toRoom: "safari19triple" },
           position: { x: 0, y: 16, z: 2 },
         },
-        {
+        "door@0,0,3": {
           type: "door",
           config: { axis: "x", toRoom: "safari4" },
           position: { x: 0, y: 0, z: 3 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari19triple: {
@@ -22108,224 +22691,223 @@ export const campaign = {
           "none",
         ],
       },
-      items: [
-        {
+      items: {
+        "wall@8,9,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 8, y: 9, z: 0 },
         },
-        {
+        "wall@8,8,0": {
           type: "wall",
           config: { side: "left", style: "wall" },
           position: { x: 8, y: 8, z: 0 },
         },
-        {
+        "block@6,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 8, z: 0 },
         },
-        {
+        "wall@8,7,0": {
           type: "wall",
           config: { side: "left", style: "window" },
           position: { x: 8, y: 7, z: 0 },
         },
-        {
+        "block@6,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "wall@8,6,0": {
           type: "wall",
           config: { side: "left", style: "window" },
           position: { x: 8, y: 6, z: 0 },
         },
-        {
+        "block@6,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "wall@8,5,0": {
           type: "wall",
           config: { side: "left", style: "wall" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "wall@15,4,0": {
           type: "wall",
           config: { side: "away", style: "wall" },
           position: { x: 15, y: 4, z: 0 },
         },
-        {
+        "wall@14,4,0": {
           type: "wall",
           config: { side: "away", style: "window" },
           position: { x: 14, y: 4, z: 0 },
         },
-        {
+        "wall@13,4,0": {
           type: "wall",
           config: { side: "away", style: "wall" },
           position: { x: 13, y: 4, z: 0 },
         },
-        {
+        "wall@12,4,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 12, y: 4, z: 0 },
         },
-        {
+        "wall@11,4,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 11, y: 4, z: 0 },
         },
-        {
+        "wall@10,4,0": {
           type: "wall",
           config: { side: "away", style: "wall" },
           position: { x: 10, y: 4, z: 0 },
         },
-        {
+        "wall@9,4,0": {
           type: "wall",
           config: { side: "away", style: "window" },
           position: { x: 9, y: 4, z: 0 },
         },
-        {
-          type: "wall",
-          config: { side: "away", style: "wall" },
-          position: { x: 8, y: 4, z: 0 },
-        },
-        {
+        "wall@8,4,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 8, y: 4, z: 0 },
         },
-        {
+        "portable-block@12,0,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 12, y: 0, z: 1 },
         },
-        {
+        "barrier@13,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 0, z: 2 },
         },
-        {
+        "barrier@13,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 0, z: 0 },
         },
-        {
+        "barrier@13,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 1, z: 1 },
         },
-        {
+        "barrier@13,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 2, z: 2 },
         },
-        {
+        "block@0,9,5": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 5 },
         },
-        {
+        "block@0,9,3": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 3 },
         },
-        {
+        "block@0,9,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 1 },
         },
-        {
+        "barrier@13,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 2, z: 0 },
         },
-        {
+        "barrier@13,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 3, z: 1 },
         },
-        { type: "spring", config: {}, position: { x: 6, y: 7, z: 1 } },
-        {
+        "spring@6,7,1": {
+          type: "spring",
+          config: {},
+          position: { x: 6, y: 7, z: 1 },
+        },
+        "portable-block@6,8,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 6, y: 8, z: 1 },
         },
-        {
+        "block@0,9,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 0 },
         },
-        {
+        "block@0,9,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 2 },
         },
-        {
+        "block@0,9,4": {
           type: "block",
           config: { style: "tower" },
           position: { x: 0, y: 9, z: 4 },
         },
-        {
+        "pickup@0,9,6": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 0, y: 9, z: 6 },
         },
-        {
+        "portable-block@6,6,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 6, y: 6, z: 1 },
         },
-        {
+        "barrier@13,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 3, z: 0 },
         },
-        {
+        "barrier@13,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 3, z: 2 },
         },
-        {
+        "barrier@13,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 2, z: 1 },
         },
-        {
+        "barrier@13,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 1, z: 0 },
         },
-        {
+        "barrier@13,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 1, z: 2 },
         },
-        {
+        "barrier@13,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 13, y: 0, z: 1 },
         },
-        {
+        "baddie@12,0,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 12, y: 0, z: 0 },
         },
-        {
+        "door@3,10,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari25" },
           position: { x: 3, y: 10, z: 0 },
         },
-        {
+        "door@16,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari20" },
           position: { x: 16, y: 1, z: 0 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari18" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari2: {
@@ -22356,93 +22938,93 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "block@3,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "deadly-block@0,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@2,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "deadly-block@0,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 1 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@7,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 1 },
         },
-        {
+        "deadly-block@6,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 1 },
         },
-        {
+        "block@4,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 1 },
         },
-        {
+        "movable-block@7,1,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 7, y: 1, z: 0 },
         },
-        {
+        "door@3,8,3": {
           type: "door",
           config: { axis: "x", toRoom: "safari3" },
           position: { x: 3, y: 8, z: 3 },
         },
-        {
+        "door@3,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "safari1" },
           position: { x: 3, y: 0, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari20: {
@@ -22464,23 +23046,23 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@1,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari22" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "door@4,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari21" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari19triple" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari21: {
@@ -22511,58 +23093,58 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 1 },
         },
-        {
+        "block@4,7,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "block@1,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 3 },
         },
-        {
+        "block@0,7,4": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "pickup@0,7,5": {
           type: "pickup",
           config: { gives: "donuts" },
           position: { x: 0, y: 7, z: 5 },
         },
-        {
+        "baddie@2,5,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "baddie@5,4,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "baddie@3,2,0": {
           type: "baddie",
           config: { which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari20" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari22: {
@@ -22584,53 +23166,53 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@1,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "baddie@0,4,0": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "door@0,8,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari23" },
           position: { x: 0, y: 8, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari20" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari23: {
@@ -22643,83 +23225,83 @@ export const campaign = {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@2,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@1,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "deadly-block@1,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@2,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "door@6,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari26" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari24" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@2,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari22" },
           position: { x: 2, y: 0, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari24: {
@@ -22741,63 +23323,63 @@ export const campaign = {
         ],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,5,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "deadly-block@4,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,4,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "block@7,2,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "block@1,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "deadly-block@4,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "deadly-block@4,1,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "deadly-block@4,0,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "movable-block@0,2,0": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "door@8,2,3": {
           type: "door",
           config: { axis: "y", toRoom: "safari23" },
           position: { x: 8, y: 2, z: 3 },
         },
-        {
+        "door@0,2,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari25" },
           position: { x: 0, y: 2, z: 1 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari25: {
@@ -22828,33 +23410,33 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "door@8,3,3": {
           type: "door",
           config: { axis: "y", toRoom: "safari24" },
           position: { x: 8, y: 3, z: 3 },
         },
-        {
+        "door@3,0,3": {
           type: "door",
           config: { axis: "x", toRoom: "safari19triple" },
           position: { x: 3, y: 0, z: 3 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari26: {
@@ -22889,249 +23471,253 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,11,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 11, z: 0 },
         },
-        {
+        "deadly-block@2,10,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 10, z: 0 },
         },
-        {
+        "deadly-block@3,8,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "deadly-block@3,8,1": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 1 },
         },
-        {
+        "deadly-block@3,8,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 2 },
         },
-        {
+        "deadly-block@1,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@2,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "block@7,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 3 },
         },
-        {
+        "barrier@4,11,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 11, z: 0 },
         },
-        {
+        "barrier@4,11,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 11, z: 1 },
         },
-        {
+        "barrier@4,11,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 11, z: 2 },
         },
-        {
+        "barrier@4,10,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 10, z: 0 },
         },
-        {
+        "barrier@4,10,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 10, z: 1 },
         },
-        {
+        "barrier@4,10,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 10, z: 2 },
         },
-        {
+        "barrier@4,9,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 9, z: 0 },
         },
-        {
+        "barrier@4,9,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 9, z: 1 },
         },
-        {
+        "barrier@4,9,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 9, z: 2 },
         },
-        {
+        "barrier@4,8,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 8, z: 0 },
         },
-        {
+        "barrier@4,8,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 8, z: 1 },
         },
-        {
+        "barrier@4,8,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 8, z: 2 },
         },
-        {
+        "barrier@4,7,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "barrier@4,7,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 1 },
         },
-        {
+        "barrier@4,7,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 7, z: 2 },
         },
-        {
+        "barrier@4,6,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "barrier@4,6,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 1 },
         },
-        {
+        "barrier@4,6,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 6, z: 2 },
         },
-        {
+        "barrier@4,5,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "barrier@4,5,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 1 },
         },
-        {
+        "barrier@4,5,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 5, z: 2 },
         },
-        {
+        "barrier@4,4,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "barrier@4,4,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 1 },
         },
-        {
+        "barrier@4,4,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 4, z: 2 },
         },
-        {
+        "barrier@4,3,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "barrier@4,3,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "barrier@4,3,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 3, z: 2 },
         },
-        {
+        "barrier@4,2,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "barrier@4,2,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 1 },
         },
-        {
+        "barrier@4,2,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 2, z: 2 },
         },
-        {
+        "barrier@4,1,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "barrier@4,1,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 1 },
         },
-        {
+        "barrier@4,1,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "barrier@4,0,0": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "barrier@4,0,1": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "barrier@4,0,2": {
           type: "barrier",
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 2 },
         },
-        { type: "ball", config: {}, position: { x: 1, y: 10, z: 0 } },
-        {
+        "ball@1,10,0": {
+          type: "ball",
+          config: {},
+          position: { x: 1, y: 10, z: 0 },
+        },
+        "pickup@7,0,4": {
           type: "pickup",
           config: { gives: "extra-life" },
           position: { x: 7, y: 0, z: 4 },
         },
-        {
+        "door@8,8,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari27" },
           position: { x: 8, y: 8, z: 0 },
         },
-        {
+        "door@0,2,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari23" },
           position: { x: 0, y: 2, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari27: {
@@ -23153,34 +23739,38 @@ export const campaign = {
         ],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "baddie@4,3,0": {
           type: "baddie",
           config: { which: "elephant" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "baddie@3,3,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "baddie@4,2,0": {
           type: "baddie",
           config: { which: "helicopter-bug" },
           position: { x: 4, y: 2, z: 0 },
         },
-        { type: "spring", config: {}, position: { x: 3, y: 2, z: 0 } },
-        {
+        "spring@3,2,0": {
+          type: "spring",
+          config: {},
+          position: { x: 3, y: 2, z: 0 },
+        },
+        "door@8,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "safari28" },
           position: { x: 8, y: 2, z: 4 },
         },
-        {
+        "door@0,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "safari26" },
           position: { x: 0, y: 2, z: 4 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari28: {
@@ -23211,28 +23801,28 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "fish@4,3,1": {
           type: "fish",
           config: { alive: false },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari29" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari27" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari29: {
@@ -23263,38 +23853,38 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@2,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "deadly-block@3,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "baddie@7,7,0": {
           type: "baddie",
           config: { which: "cyberman", charging: false },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "door@8,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari30" },
           position: { x: 8, y: 3, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari28" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari3: {
@@ -23316,43 +23906,43 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@2,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 7, z: 0 },
         },
-        {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@1,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "lift@1,4,0": {
           type: "lift",
           config: { top: 8, bottom: 0 },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "door@1,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "safari4" },
           position: { x: 1, y: 8, z: 5 },
         },
-        {
+        "door@1,0,5": {
           type: "door",
           config: { axis: "x", toRoom: "safari2" },
           position: { x: 1, y: 0, z: 5 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari30: {
@@ -23374,18 +23964,18 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "door@0,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "safari29" },
           position: { x: 0, y: 3, z: 5 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari17fish" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari31: {
@@ -23416,148 +24006,168 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@1,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 7, z: 0 },
         },
-        {
+        "deadly-block@6,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@2,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 6, z: 0 },
         },
-        {
+        "block@1,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 6, z: 0 },
         },
-        {
+        "block@0,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 6, z: 0 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "block@1,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "block@0,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@7,4,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "deadly-block@6,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "deadly-block@6,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "deadly-block@6,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "deadly-block@6,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
         },
-        {
+        "deadly-block@7,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "deadly-block@6,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 0 },
         },
-        {
+        "deadly-block@5,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "deadly-block@3,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "deadly-block@2,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "deadly-block@1,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "deadly-block@0,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
         },
-        { type: "joystick", config: {}, position: { x: 1, y: 7, z: 1 } },
-        { type: "charles", config: {}, position: { x: 6, y: 6, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 2, y: 6, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 0, y: 6, z: 1 } },
-        { type: "joystick", config: {}, position: { x: 1, y: 5, z: 1 } },
-        {
+        "joystick@1,7,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 7, z: 1 },
+        },
+        "charles@6,6,1": {
+          type: "charles",
+          config: {},
+          position: { x: 6, y: 6, z: 1 },
+        },
+        "joystick@2,6,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 2, y: 6, z: 1 },
+        },
+        "joystick@0,6,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 0, y: 6, z: 1 },
+        },
+        "joystick@1,5,1": {
+          type: "joystick",
+          config: {},
+          position: { x: 1, y: 5, z: 1 },
+        },
+        "portable-block@4,0,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 4, y: 0, z: 1 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "safari32" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari17fish" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari32: {
@@ -23579,18 +24189,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari33" },
           position: { x: 8, y: 0, z: 0 },
         },
-        {
+        "door@0,0,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari31" },
           position: { x: 0, y: 0, z: 0 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari33: {
@@ -23622,48 +24232,48 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "baddie@4,4,0": {
           type: "baddie",
           config: { which: "elephant" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "movable-block@1,1,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 1, y: 1, z: 0 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "safari37crown" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "safari34" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari32" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari34: {
@@ -23695,113 +24305,113 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "deadly-block@4,7,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 7, z: 0 },
         },
-        {
+        "block@4,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 7, z: 3 },
         },
-        {
+        "deadly-block@4,6,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "block@4,6,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 3 },
         },
-        {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@4,5,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 3 },
         },
-        {
+        "deadly-block@4,4,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@4,4,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 3 },
         },
-        {
+        "teleporter@3,4,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "deadly-block@4,3,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@4,3,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 3 },
         },
-        {
+        "teleporter@3,3,0": {
           type: "teleporter",
           config: { toRoom: "safari1" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,2,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "block@4,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 3 },
         },
-        {
+        "deadly-block@4,1,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 0 },
         },
-        {
+        "block@4,1,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 1, z: 3 },
         },
-        {
+        "deadly-block@4,0,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
         },
-        {
+        "block@4,0,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 0, z: 3 },
         },
-        {
+        "lift@7,7,0": {
           type: "lift",
           config: { top: 9, bottom: 0 },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "portable-block@1,0,0": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 1, y: 0, z: 0 },
         },
-        {
+        "door@0,3,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari33" },
           position: { x: 0, y: 3, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari35: {
@@ -23833,68 +24443,68 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@7,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 7, z: 0 },
         },
-        {
+        "deadly-block@7,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
         },
-        {
+        "deadly-block@6,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "deadly-block@5,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "deadly-block@4,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "deadly-block@3,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "deadly-block@2,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
         },
-        {
+        "deadly-block@1,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
         },
-        {
+        "deadly-block@0,5,0": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "movable-block@7,5,1": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 7, y: 5, z: 1 },
         },
-        {
+        "door@0,3,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari36" },
           position: { x: 0, y: 3, z: 1 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari36: {
@@ -23926,58 +24536,58 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@4,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 6, z: 0 },
         },
-        {
+        "block@4,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 5, z: 0 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@4,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@6,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "deadly-block@4,3,1": {
           type: "deadly-block",
           config: { style: "spikes" },
           position: { x: 4, y: 3, z: 1 },
         },
-        {
+        "door@8,3,2": {
           type: "door",
           config: { axis: "y", toRoom: "safari35" },
           position: { x: 8, y: 3, z: 2 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari37crown: {
@@ -24008,163 +24618,163 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@0,7,0": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
         },
-        {
+        "block@0,7,1": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 1 },
         },
-        {
+        "block@0,7,2": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
         },
-        {
+        "block@0,7,3": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
         },
-        {
+        "block@0,7,4": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
         },
-        {
+        "block@0,7,5": {
           type: "block",
           config: { style: "artificial" },
           position: { x: 0, y: 7, z: 5 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@6,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 4, z: 0 },
         },
-        {
+        "block@5,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 4, z: 0 },
         },
-        {
+        "block@4,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 4, z: 0 },
         },
-        {
+        "block@3,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 4, z: 0 },
         },
-        {
+        "block@2,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 4, z: 0 },
         },
-        {
+        "block@1,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 4, z: 0 },
         },
-        {
+        "block@0,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@6,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "block@5,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@4,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 2, z: 0 },
         },
-        {
+        "block@3,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "block@2,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "block@1,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 2, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "movable-block@0,7,6": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 0, y: 7, z: 6 },
         },
-        {
+        "movable-block@3,5,0": {
           type: "movable-block",
           config: { style: "anvil" },
           position: { x: 3, y: 5, z: 0 },
         },
-        {
+        "portable-block@7,3,1": {
           type: "portable-block",
           config: { style: "drum" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "block@6,3,0": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 3, z: 0 },
         },
-        {
+        "block@6,3,1": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 3, z: 1 },
         },
-        {
+        "block@6,3,2": {
           type: "block",
           config: { style: "tower" },
           position: { x: 6, y: 3, z: 2 },
         },
-        {
+        "baddie@7,2,1": {
           type: "baddie",
           config: { which: "american-football-head", startDirection: "right" },
           position: { x: 7, y: 2, z: 1 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari33" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari4: {
@@ -24195,63 +24805,63 @@ export const campaign = {
           "wall",
         ],
       },
-      items: [
-        {
+      items: {
+        "block@3,7,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 0 },
         },
-        {
+        "block@3,7,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 1 },
         },
-        {
+        "block@3,7,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 7, z: 3 },
         },
-        {
+        "block@7,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 4, z: 0 },
         },
-        {
+        "block@7,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 0 },
         },
-        {
+        "block@7,3,1": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 1 },
         },
-        {
+        "block@7,3,2": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 3, z: 2 },
         },
-        {
+        "baddie@7,4,1": {
           type: "baddie",
           config: { which: "dalek" },
           position: { x: 7, y: 4, z: 1 },
         },
-        {
+        "door@3,8,5": {
           type: "door",
           config: { axis: "x", toRoom: "safari18" },
           position: { x: 3, y: 8, z: 5 },
         },
-        {
+        "door@8,3,5": {
           type: "door",
           config: { axis: "y", toRoom: "safari5" },
           position: { x: 8, y: 3, z: 5 },
         },
-        {
+        "door@3,0,0": {
           type: "door",
           config: { axis: "x", toRoom: "safari3" },
           position: { x: 3, y: 0, z: 0 },
         },
-      ],
+      },
       color: "cyan",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari5: {
@@ -24273,24 +24883,48 @@ export const campaign = {
         ],
         left: ["wall", "none", "none", "wall"],
       },
-      items: [
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 2, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 2, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 2, z: 0 } },
-        { type: "hush-puppy", config: {}, position: { x: 7, y: 1, z: 2 } },
-        { type: "hush-puppy", config: {}, position: { x: 6, y: 1, z: 1 } },
-        { type: "hush-puppy", config: {}, position: { x: 5, y: 1, z: 0 } },
-        {
+      items: {
+        "hush-puppy@7,2,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 2, z: 2 },
+        },
+        "hush-puppy@6,2,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 2, z: 1 },
+        },
+        "hush-puppy@5,2,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 2, z: 0 },
+        },
+        "hush-puppy@7,1,2": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 7, y: 1, z: 2 },
+        },
+        "hush-puppy@6,1,1": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 6, y: 1, z: 1 },
+        },
+        "hush-puppy@5,1,0": {
+          type: "hush-puppy",
+          config: {},
+          position: { x: 5, y: 1, z: 0 },
+        },
+        "door@8,1,4": {
           type: "door",
           config: { axis: "y", toRoom: "safari6triple" },
           position: { x: 8, y: 1, z: 4 },
         },
-        {
+        "door@0,1,0": {
           type: "door",
           config: { axis: "y", toRoom: "safari4" },
           position: { x: 0, y: 1, z: 0 },
         },
-      ],
+      },
       color: "yellow",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari6triple: {
@@ -24371,193 +25005,188 @@ export const campaign = {
           "none",
         ],
       },
-      items: [
-        {
+      items: {
+        "wall@6,11,0": {
           type: "wall",
           config: { side: "left", style: "wall" },
           position: { x: 6, y: 11, z: 0 },
         },
-        {
+        "block@0,11,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 11, z: 0 },
         },
-        {
+        "wall@6,10,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 6, y: 10, z: 0 },
         },
-        {
+        "block@1,10,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 10, z: 0 },
         },
-        {
+        "block@5,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 8, z: 0 },
         },
-        {
+        "block@3,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 8, z: 0 },
         },
-        {
+        "block@1,8,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 8, z: 0 },
         },
-        {
+        "wall@6,7,0": {
           type: "wall",
           config: { side: "left", style: "shield" },
           position: { x: 6, y: 7, z: 0 },
         },
-        {
+        "wall@11,6,0": {
           type: "wall",
           config: { side: "away", style: "wall" },
           position: { x: 11, y: 6, z: 0 },
         },
-        {
+        "wall@10,6,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 10, y: 6, z: 0 },
         },
-        {
+        "wall@7,6,0": {
           type: "wall",
           config: { side: "away", style: "shield" },
           position: { x: 7, y: 6, z: 0 },
         },
-        {
-          type: "wall",
-          config: { side: "away", style: "wall" },
-          position: { x: 6, y: 6, z: 0 },
-        },
-        {
+        "wall@6,6,0": {
           type: "wall",
           config: { side: "left", style: "wall" },
           position: { x: 6, y: 6, z: 0 },
         },
-        {
+        "block@5,6,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 6, z: 0 },
         },
-        {
+        "block@10,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 5, z: 0 },
         },
-        {
+        "block@8,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 8, y: 5, z: 0 },
         },
-        {
+        "block@6,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 5, z: 0 },
         },
-        {
+        "block@5,5,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
-        {
+        "block@10,4,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 4, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@11,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 2, z: 0 },
         },
-        {
+        "block@10,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 10, y: 2, z: 0 },
         },
-        {
+        "block@7,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 0 },
         },
-        {
+        "block@6,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 6, y: 2, z: 0 },
         },
-        {
+        "block@5,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 2, z: 0 },
         },
-        {
+        "block@3,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 2, z: 0 },
         },
-        {
+        "block@0,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 0 },
         },
-        {
+        "block@11,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 11, y: 0, z: 0 },
         },
-        {
+        "block@9,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 9, y: 0, z: 0 },
         },
-        {
+        "block@7,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 0, z: 0 },
         },
-        {
+        "block@3,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 0, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "block@0,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 0, z: 0 },
         },
-        {
+        "pickup@0,11,1": {
           type: "pickup",
           config: { gives: "shield" },
           position: { x: 0, y: 11, z: 1 },
         },
-        {
+        "door@8,6,2": {
           type: "door",
           config: { axis: "x", toRoom: "safari7" },
           position: { x: 8, y: 6, z: 2 },
         },
-        {
+        "door@6,8,2": {
           type: "door",
           config: { axis: "y", toRoom: "safari7" },
           position: { x: 6, y: 8, z: 2 },
         },
-        {
+        "door@0,2,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari5" },
           position: { x: 0, y: 2, z: 1 },
         },
-      ],
+      },
       color: "white",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari7: {
@@ -24570,68 +25199,68 @@ export const campaign = {
         away: ["shield", "wall", "window", "window", "wall", "shield"],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "block@5,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 5, y: 3, z: 0 },
         },
-        {
+        "block@4,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 4, y: 3, z: 0 },
         },
-        {
+        "block@3,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 3, y: 3, z: 0 },
         },
-        {
+        "block@2,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 3, z: 0 },
         },
-        {
+        "block@1,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 1, y: 3, z: 0 },
         },
-        {
+        "block@0,3,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 3, z: 0 },
         },
-        {
+        "block@2,2,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 2, z: 0 },
         },
-        {
+        "block@2,1,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 1, z: 0 },
         },
-        {
+        "block@2,0,0": {
           type: "block",
           config: { style: "organic" },
           position: { x: 2, y: 0, z: 0 },
         },
-        {
+        "door@6,2,2": {
           type: "door",
           config: { axis: "y", toRoom: "safari8" },
           position: { x: 6, y: 2, z: 2 },
         },
-        {
+        "door@0,2,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari6triple" },
           position: { x: 0, y: 2, z: 1 },
         },
-        {
+        "door@2,0,1": {
           type: "door",
           config: { axis: "x", toRoom: "safari6triple" },
           position: { x: 2, y: 0, z: 1 },
         },
-      ],
+      },
       color: "magenta",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari8: {
@@ -24653,18 +25282,18 @@ export const campaign = {
         ],
         left: ["none", "none"],
       },
-      items: [
-        {
+      items: {
+        "door@8,0,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari9" },
           position: { x: 8, y: 0, z: 1 },
         },
-        {
+        "door@0,0,1": {
           type: "door",
           config: { axis: "y", toRoom: "safari7" },
           position: { x: 0, y: 0, z: 1 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari9: {
@@ -24687,73 +25316,73 @@ export const campaign = {
         ],
         left: ["wall", "shield", "none", "none", "shield", "wall"],
       },
-      items: [
-        {
+      items: {
+        "block@7,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 7, y: 2, z: 3 },
         },
-        {
+        "block@0,2,3": {
           type: "block",
           config: { style: "organic" },
           position: { x: 0, y: 2, z: 3 },
         },
-        {
+        "deadly-block@7,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 2 },
         },
-        {
+        "deadly-block@6,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 2 },
         },
-        {
+        "deadly-block@5,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 2 },
         },
-        {
+        "deadly-block@4,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 2 },
         },
-        {
+        "deadly-block@3,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 2 },
         },
-        {
+        "deadly-block@2,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 2 },
         },
-        {
+        "deadly-block@1,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 2 },
         },
-        {
+        "deadly-block@0,1,2": {
           type: "deadly-block",
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 2 },
         },
-        {
+        "movable-block@0,1,3": {
           type: "movable-block",
           config: { style: "sandwich" },
           position: { x: 0, y: 1, z: 3 },
         },
-        {
+        "door@8,2,5": {
           type: "door",
           config: { axis: "y", toRoom: "safari14" },
           position: { x: 8, y: 2, z: 5 },
         },
-        {
+        "door@0,2,4": {
           type: "door",
           config: { axis: "y", toRoom: "safari8" },
           position: { x: 0, y: 2, z: 4 },
         },
-      ],
+      },
       color: "green",
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
   },

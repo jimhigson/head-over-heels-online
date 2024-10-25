@@ -1,6 +1,7 @@
 import { Campaign, Xy, type RoomJson, type RoomWalls } from "./modelTypes.ts";
 import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
 import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
+import { keyItems } from "./utils/keyItems.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,
@@ -53,7 +54,7 @@ const colourRooms = () => {
             floorSkip: [] as Xy[],
             floor: p,
             planet: p,
-            items: [
+            items: keyItems([
               {
                 type: "teleporter",
                 position: {
@@ -95,7 +96,7 @@ const colourRooms = () => {
                   toRoom: `${planetNames[(planetNames.length + ip + 1) % planetNames.length]}-${c}`,
                 },
               },
-            ],
+            ]),
             id: `${p}-${c}`,
           },
         ];
@@ -115,7 +116,7 @@ const rooms = {
     floor: "blacktooth",
     floorSkip: [] as Xy[],
     id: "doorsRoom",
-    items: [
+    items: keyItems([
       {
         type: "teleporter",
         config: { toRoom: "blacktooth-cyan" },
@@ -145,7 +146,7 @@ const rooms = {
         config: { toRoom: "zRoom", axis: "x" },
         position: { x: 7, y: 0, z: 3 },
       },
-    ],
+    ]),
     planet: "blacktooth",
     color: "cyan",
   } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
@@ -155,7 +156,7 @@ const rooms = {
     floor: "deadly",
     floorSkip: [] as Xy[],
     id: "zRoom",
-    items: [
+    items: keyItems([
       {
         type: "door",
         config: { toRoom: "doorsRoom", axis: "x" },
@@ -383,7 +384,7 @@ const rooms = {
         config: { toRoom: "doorsRoom" },
         position: { x: 2, y: 2, z: 0 },
       },
-    ],
+    ]),
     planet: "egyptus",
     color: "cyan",
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
@@ -393,13 +394,13 @@ const rooms = {
     floor: "deadly",
     floorSkip: [] as Xy[],
     id: "wide",
-    items: [
+    items: keyItems([
       {
         type: "door",
         config: { toRoom: "doorsRoom", axis: "x" },
         position: { x: 1, y: 0, z: 1 },
       },
-    ],
+    ]),
     planet: "market",
     color: "cyan",
   } satisfies RoomJson<"market", TestCampaignRoomId>,
@@ -410,13 +411,13 @@ const rooms = {
     floor: "deadly",
     floorSkip: [] as Xy[],
     id: "deep",
-    items: [
+    items: keyItems([
       {
         type: "door",
         config: { toRoom: "doorsRoom", axis: "x" },
         position: { x: 1, y: 0, z: 1 },
       },
-    ],
+    ]),
     planet: "moonbase",
     color: "cyan",
   } satisfies RoomJson<"moonbase", TestCampaignRoomId>,
@@ -426,7 +427,7 @@ const rooms = {
     floor: "bookworld",
     floorSkip: [] as Xy[],
     id: "big",
-    items: [
+    items: keyItems([
       {
         type: "door",
         config: { toRoom: "doorsRoom", axis: "x" },
@@ -683,7 +684,7 @@ const rooms = {
         config: { which: "heels" },
         position: { x: 5, y: 1, z: 0 },
       },
-    ],
+    ]),
     planet: "bookworld",
     color: "magenta",
   },

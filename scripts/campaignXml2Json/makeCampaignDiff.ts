@@ -9,6 +9,6 @@ const convertedJson = JSON.parse(
   ),
 );
 
-const patch = fastJsonPatch.compare(convertedJson, campaign, true);
+const patch = fastJsonPatch.compare(convertedJson, campaign);
 
 console.log(JSON.stringify(patch));

@@ -7,7 +7,7 @@ import {
   TextureId,
 } from "./sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
-import { AnyRoom, Axis, crossAxis, Xyz } from "./modelTypes";
+import { AnyLoadedRoom, Axis, crossAxis, Xyz } from "./modelTypes";
 import { wallTextureId } from "./game/render/wallTextureId";
 import { doorTexture } from "./game/render/doorTexture";
 import { projectBlockToScreen } from "./game/render/projectToScreen";
@@ -17,7 +17,7 @@ import { PlanetName } from "./sprites/planets";
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
   data: ItemConfig<PlanetName, string>[T],
-  room: AnyRoom,
+  room: AnyLoadedRoom,
   position: Xyz,
 ) => Container;
 
@@ -63,7 +63,7 @@ function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
 
 function* renderDoorPart(
   { axis, inHiddenWall }: LoadedDoorConfig<string>,
-  room: AnyRoom,
+  room: AnyLoadedRoom,
   { z }: Xyz,
   nearness: "near" | "far",
 ): Generator<Container> {

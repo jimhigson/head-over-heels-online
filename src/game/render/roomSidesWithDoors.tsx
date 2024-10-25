@@ -1,8 +1,8 @@
 import { JsonItem } from "@/Item";
-import { AnyRoom } from "@/modelTypes";
+import { AnyLoadedRoom } from "@/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
 
-export const roomSidesWithDoors = (room: AnyRoom): SidesWithDoors => {
+export const roomSidesWithDoors = (room: AnyLoadedRoom): SidesWithDoors => {
   const result: SidesWithDoors = {};
 
   const doorIter = room.items

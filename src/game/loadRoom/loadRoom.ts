@@ -1,5 +1,5 @@
 import { UnknownItem } from "@/Item";
-import { RoomJson } from "@/modelTypes";
+import { LoadedRoom, RoomJson } from "@/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 
 function* expandWalls<R extends string>(
@@ -17,7 +17,7 @@ function* expandWalls<R extends string>(
     if (
       // this is a slow search but it is ok to do at room load time
       // (not render time)
-      room.items.find(
+      Object.values(room.items).find(
         (i) =>
           i.type === "door" &&
           room.size.y === i.position.y &&
@@ -90,9 +90,12 @@ function* expandDoors<R extends string>(
 
 export const loadRoom = <P extends PlanetName, R extends string>(
   roomJson: RoomJson<P, R>,
-): RoomJson<P, R> => {
+): LoadedRoom<P, R> => {
   return {
     ...roomJson,
-    items: [...expandDoors(roomJson.items), ...expandWalls(roomJson)],
+    items: [
+      ...expandDoors(Object.values(roomJson.items)),
+      ...expandWalls(roomJson),
+    ],
   };
 };

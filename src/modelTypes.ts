@@ -45,6 +45,9 @@ export type RoomWalls<P extends PlanetName> = {
   away: Wall<P>[];
 };
 
+/**
+ * serialisation format of a room to be stored in while not in play
+ */
 export type RoomJson<P extends PlanetName, RoomId extends string> = {
   id: RoomId;
   size: {
@@ -63,8 +66,23 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
   // colours in each room
   color: ZxSpectrumRoomColour;
 
-  items: UnknownItem<RoomId>[];
+  /**
+   * by keying each item with an id, it makes the diffing easier since the array is no longer
+   * position-dependent
+   */
+  items: Record<string, UnknownItem<RoomId>>;
 };
+export type AnyRoomJson = RoomJson<PlanetName, string>;
+
+/**
+ * Representation of a room in-play. This is in memory only for the current
+ * one or two rooms (that head and heels are in, but they could be in the same
+ * room)
+ */
+export type LoadedRoom<P extends PlanetName, RoomId extends string> = Simplify<
+  Omit<RoomJson<P, RoomId>, "items"> & { items: UnknownItem<RoomId>[] }
+>;
+export type AnyLoadedRoom = LoadedRoom<PlanetName, string>;
 
 export type RoomState = Omit<RoomJson<PlanetName, string>, "floorSkip">;
 
@@ -105,8 +123,6 @@ export type CampaignRoomId<C extends UnknownCampaign> = string &
   keyof C["rooms"];
 export type CampaignRoom<C extends UnknownCampaign> =
   C extends Campaign<infer RoomId> ? RoomJson<PlanetName, RoomId> : never;
-
-export type AnyRoom = RoomJson<PlanetName, string>;
 
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;

@@ -1,21 +1,21 @@
 import patch from "../../src/_generated/originalCampaign/patch.json";
 import fastJsonPatch, { Operation } from "fast-json-patch";
-import { AnyRoom } from "../../src/modelTypes";
+import { AnyRoomJson } from "../../src/modelTypes";
 import { writeFile } from "node:fs/promises";
 
 const startRoom = "blacktooth1head";
 
-const roomTsObjectEntry = (room: AnyRoom): string =>
+const roomTsObjectEntry = (room: AnyRoomJson): string =>
   `"${room.id}": ${JSON.stringify(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
 
-export const writeOut = async (rooms: Record<string, AnyRoom>) => {
+export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
   const tsFilename = `${targetDir}/campaign.ts`;
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
-    JSON.stringify(rooms),
+    JSON.stringify({ startRoom, rooms }),
   );
 
   const patchedJson = fastJsonPatch.applyPatch(

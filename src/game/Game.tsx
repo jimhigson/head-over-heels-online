@@ -7,7 +7,7 @@ import {
 } from "react";
 import { Application } from "pixi.js";
 import { resize } from "./resize";
-import { AnyRoom, Campaign } from "../modelTypes";
+import { AnyRoomJson, Campaign } from "../modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
 import { EmptyObject } from "type-fest";
@@ -40,7 +40,7 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
           // todo: load assets in parallel with init
           gameArea.appendChild(app.canvas);
           gameApi.current.renderIn(app);
-          gameApi.current.events.on("roomChange", ({ id }: AnyRoom) => {
+          gameApi.current.events.on("roomChange", ({ id }: AnyRoomJson) => {
             window.location.hash = id;
           });
           resize(app);

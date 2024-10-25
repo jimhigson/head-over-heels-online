@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { AnyRoom, RoomJson } from "../../modelTypes";
+import { AnyLoadedRoom, LoadedRoom } from "../../modelTypes";
 import { RenderOptions } from "../gameMain";
 import { makeClickPortal } from "./makeClickPortal";
 import { moveSpriteToBlock } from "./moveSpriteToBlock";
@@ -7,7 +7,10 @@ import { itemAppearances } from "../../ItemAppearances";
 import { JsonItem, ItemType } from "../../Item";
 import { PlanetName } from "@/sprites/planets";
 
-const renderItem = <T extends ItemType>(item: JsonItem<T>, room: AnyRoom) => {
+const renderItem = <T extends ItemType>(
+  item: JsonItem<T>,
+  room: AnyLoadedRoom,
+) => {
   const itemAppearance = itemAppearances[item.type];
 
   if (itemAppearance === undefined) {
@@ -18,7 +21,7 @@ const renderItem = <T extends ItemType>(item: JsonItem<T>, room: AnyRoom) => {
 };
 
 export function* renderItems<RoomId extends string>(
-  room: RoomJson<PlanetName, RoomId>,
+  room: LoadedRoom<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   for (const item of room.items) {

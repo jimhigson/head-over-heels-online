@@ -6,9 +6,10 @@ import {
   XmlFloorKind,
 } from "./readToJson";
 import { readdir } from "node:fs/promises";
-import { AnyRoom, Direction, Floor } from "../../src/modelTypes";
+import { AnyRoomJson, Direction, Floor } from "../../src/modelTypes";
 import { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { convertItems } from "./convertItems";
+import { keyItems } from "./keyItems";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
 import { convertPlanetName } from "./convertPlanetName";
@@ -132,7 +133,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
     mortal: "deadly",
   };
 
-  const room: AnyRoom = {
+  const room: AnyRoomJson = {
     id: convertRoomId(xmlRoomName),
     floor: floorMap[jsonFloorKind],
     floorSkip: convertFloorSkip(roomXmlJson, roomSidesWithDoors),
@@ -156,7 +157,7 @@ const convertRoomJson = async (xmlRoomName: string) => {
   return room;
 };
 
-const rooms: Record<string, AnyRoom> = {};
+const rooms: Record<string, AnyRoomJson> = {};
 for (const roomName of allRoomNames) {
   try {
     const room = await convertRoomJson(roomName);
