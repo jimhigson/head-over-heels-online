@@ -1,4 +1,5 @@
-import { PlanetName, AnyWall, Axis } from "../../src/modelTypes";
+import { AnyWall, Axis } from "../../src/modelTypes";
+import { PlanetName } from "../../src/sprites/planets";
 import { wallNumbers } from "./wallNumbers";
 
 // .png must be optional - it is given in <wall> elements in the xml

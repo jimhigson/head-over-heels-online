@@ -1,4 +1,4 @@
-import { PlanetName } from "../../src/modelTypes";
+import { PlanetName } from "../../src/sprites/planets";
 import { XmlScenery } from "./readToJson";
 
 export const convertPlanetName = (
