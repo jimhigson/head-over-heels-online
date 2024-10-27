@@ -9,6 +9,7 @@ import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { PlanetName } from "@/sprites/planets";
+import { input } from "./input/input";
 
 function iterateToContainer(gen: Generator<Container>, into?: Container) {
   const c = into || new Container();
@@ -98,6 +99,9 @@ export const gameMain = <RoomId extends string>(
   let loadedRoom: LoadedRoom<PlanetName, RoomId>;
   let app: Application | undefined;
 
+  console.log("setting up game");
+  const inputStop = input();
+
   const events = mitt<ApiEvents<RoomId>>();
 
   const worldContainer = new Container();
@@ -151,6 +155,10 @@ export const gameMain = <RoomId extends string>(
     goToRoom(roomId: RoomId) {
       if (roomId !== currentRoom.id) switchToRoom(roomId);
     },
-    stop: () => app?.stage?.removeChild(worldContainer),
+    stop() {
+      console.log("tearing down game");
+      app?.stage?.removeChild(worldContainer);
+      inputStop();
+    },
   };
 };

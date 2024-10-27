@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
 import { zxSpectrumResolution } from "../originalGame";
-//simport { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
+//import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
 export const resize = async (app: Application) => {
   const scaleToFit = () => {
@@ -19,8 +19,8 @@ export const resize = async (app: Application) => {
     /*
     app.stage.filters = [
       new CRTFilter({
-        lineWidth: 1,
-        lineContrast: 0,
+        lineWidth: 0.25,
+        lineContrast: 0.2,
         curvature: 0,
         noise: 0,
         vignetting: 0.3,
@@ -34,6 +34,7 @@ export const resize = async (app: Application) => {
       }),
     ];
     */
+
     app.stage.scale = scaleFactor;
   };
 
