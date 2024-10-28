@@ -5,6 +5,7 @@ import { projectBlockToScreen } from "./game/render/projectToScreen";
 import { LoadedDoorConfig } from "./Item";
 import { Axis, AnyLoadedRoom, Xyz, crossAxis } from "./modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
+import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
 
 function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
   // drag legs etc
@@ -40,10 +41,15 @@ export function* renderDoorPart(
       //draw the 'floating' threshold:
       const pivotX = axis === "x" ? 18 : 8;
 
-      yield createSprite({
+      const sprite = createSprite({
         pivot: { x: pivotX, y: 12 },
         texture: `generic.door.threshold.${axis}`,
       });
+      sprite.filters = edgePaletteSwapFilters(
+        room,
+        axis === "x" ? "towards" : "right",
+      );
+      yield sprite;
     }
   } else {
     // in a drawn wall:

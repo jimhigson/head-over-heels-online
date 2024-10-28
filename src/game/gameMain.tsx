@@ -1,8 +1,7 @@
 import { Application, Container } from "pixi.js";
 import { RoomJson, Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
 import { zxSpectrumResolution } from "../originalGame";
-import { hintColours, Shades } from "../hintColours";
-import { ColorReplaceFilter } from "pixi-filters";
+import { hintColours } from "../hintColours";
 import { renderItems } from "./render/renderItems";
 import { renderFloor } from "./render/renderFloor";
 import { renderExtent } from "./render/renderExtent";
@@ -10,6 +9,7 @@ import mitt, { Emitter } from "mitt";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { PlanetName } from "@/sprites/planets";
 import { input } from "./input/input";
+import { mainPaletteSwapFilters } from "./render/paletteSwapFilters";
 
 function iterateToContainer(gen: Generator<Container>, into?: Container) {
   const c = into || new Container();
@@ -27,20 +27,6 @@ function* renderRoomGenerator<RoomId extends string>(
   yield iterateToContainer(renderItems(room, options));
 }
 
-export const paletteSwapFilters = (shades: Shades) => [
-  // MultiColorReplaceFilter from '@pixi/filter-multi-color-replace' is also an option but its api is not as friendly
-  new ColorReplaceFilter({
-    originalColor: 0x00ffff,
-    targetColor: shades.basic,
-    tolerance: 0.05,
-  }),
-  new ColorReplaceFilter({
-    originalColor: 0x008888,
-    targetColor: shades.dimmed,
-    tolerance: 0.05,
-  }),
-];
-
 const renderRoom = <P extends PlanetName, RoomId extends string>(
   room: LoadedRoom<P, RoomId>,
   options: RenderOptions<RoomId>,
@@ -55,7 +41,7 @@ const renderRoom = <P extends PlanetName, RoomId extends string>(
     roomContainer.addChild(container);
   }
 
-  roomContainer.filters = paletteSwapFilters(hintColours[room.color].main);
+  roomContainer.filters = mainPaletteSwapFilters(room);
 
   return roomContainer;
 };

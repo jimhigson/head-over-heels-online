@@ -3,7 +3,8 @@ import { hintColours } from "../../hintColours";
 import { Direction, LoadedRoom } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
-import { RenderOptions, paletteSwapFilters } from "../gameMain";
+import { RenderOptions } from "../gameMain";
+import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
 import { moveSpriteToBlockXyz } from "./positionSprite";
 import { renderExtent } from "./renderExtent";
@@ -73,9 +74,9 @@ export function* renderFloor<RoomId extends string>(
     floorContainer.addChild(tilesContainer);
   }
 
-  const rightEdge = new Container();
+  const towardsEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
-    rightEdge.addChild(
+    towardsEdge.addChild(
       moveSpriteToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
@@ -85,24 +86,22 @@ export function* renderFloor<RoomId extends string>(
       ),
     );
   }
-  rightEdge.filters = paletteSwapFilters(hintColours[room.color].edges.right);
-  const towardsEdge = new Container();
+  towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
+  const rightEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
-    towardsEdge.addChild(
+    rightEdge.addChild(
       moveSpriteToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
         createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),
     );
   }
-  towardsEdge.filters = paletteSwapFilters(
-    hintColours[room.color].edges.towards,
-  );
+  rightEdge.filters = edgePaletteSwapFilters(room, "right");
   if (room.roomBelow) {
     makeClickPortal(
       room.roomBelow,
       options,
-      ...[...towardsEdge.children, ...rightEdge.children],
+      ...[...rightEdge.children, ...towardsEdge.children],
     );
   }
 
@@ -126,8 +125,8 @@ export function* renderFloor<RoomId extends string>(
     .fill(0xffff00);
 
   floorContainer.addChild(floorMask);
-  floorContainer.addChild(rightEdge);
   floorContainer.addChild(towardsEdge);
+  floorContainer.addChild(rightEdge);
   floorContainer.mask = floorMask;
 
   yield floorContainer;
