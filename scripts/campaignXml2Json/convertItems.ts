@@ -220,6 +220,7 @@ const convertItemsArray = (
 
         case "extra-life":
         case "high-jumps":
+        case "crown":
         case "quick-steps":
         case "donuts":
         case "horn":
@@ -236,6 +237,7 @@ const convertItemsArray = (
             shield: "shield",
             donuts: "donuts",
             "quick-steps": "fast",
+            crown: "crown",
           };
 
           return {

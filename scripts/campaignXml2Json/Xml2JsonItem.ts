@@ -48,6 +48,7 @@ export type Xml2JsonItem = {
         | "monkey"
         | "mortal-fish"
         | "quick-steps"
+        | "crown"
         | "reincarnation-fish"
         | "remote-control" //joystick
         | "sandwich"

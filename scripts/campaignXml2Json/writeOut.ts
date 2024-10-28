@@ -4,8 +4,6 @@ import { AnyRoomJson } from "../../src/modelTypes";
 import { writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
 
-const startRoom = "blacktooth1head";
-
 const roomTsObjectEntry = (room: AnyRoomJson): string =>
   `"${room.id}": ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
 
@@ -16,11 +14,11 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
-    JSON.stringify({ startRoom, rooms }),
+    JSON.stringify({ rooms }),
   );
 
   const patchedJson = fastJsonPatch.applyPatch(
-    { startRoom, rooms },
+    { rooms },
     patch as Operation[],
   ).newDocument;
 
@@ -35,7 +33,6 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
       .join("|")};\n
         
     export const campaign = { 
-      "startRoom": "${startRoom}", 
       "rooms": { 
         ${Object.values(patchedJson.rooms).map(roomTsObjectEntry).join(",\n")}
        }

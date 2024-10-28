@@ -1,5 +1,5 @@
 import { EmptyObject } from "type-fest";
-import { Axis, Direction, Xyz } from "./modelTypes";
+import { Axis, Direction, PlayableCharacter, Xyz } from "./modelTypes";
 import { PlanetName, Wall } from "./sprites/planets";
 
 export type ItemType =
@@ -18,6 +18,7 @@ export type ItemType =
   | "pickup"
   | "fish"
   | "spring"
+  | "sceneryPlayer"
   | "player"
   | "baddie"
   | "lift"
@@ -74,6 +75,7 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
       | "shield"
       | "donuts"
       | "bag"
+      | "crown"
       | "hooter";
   };
   fish: {
@@ -81,7 +83,11 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
   };
   spring: EmptyObject;
   player: {
-    which: "head" | "heels";
+    which: PlayableCharacter;
+  };
+  /** non-playable but looks like the playable char - for the final room */
+  sceneryPlayer: {
+    which: PlayableCharacter;
   };
   lift: {
     top: number;

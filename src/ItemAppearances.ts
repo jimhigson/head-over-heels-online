@@ -117,12 +117,14 @@ export const itemAppearances: {
       bag: "bag",
       donuts: "donuts",
       hooter: "hooter",
+      crown: "crown",
     };
 
     return createSprite(pickupIcons[gives]);
   },
 
   player: ({ which }) => createSprite(`${which}.toward1`),
+  sceneryPlayer: ({ which }) => createSprite(`${which}.toward1`),
 
   baddie(options) {
     switch (options.which) {
