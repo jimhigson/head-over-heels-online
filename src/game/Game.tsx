@@ -1,6 +1,4 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Application } from "pixi.js";
-import { resize } from "./resize";
 import { Campaign } from "../modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
@@ -8,22 +6,34 @@ import { EmptyObject } from "type-fest";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
-): GameApi<RoomId> => {
-  const [gameApi] = useState(() => gameMain(campaign));
+): GameApi<RoomId> | undefined => {
+  const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
 
   useEffect(() => {
-    return () => {
-      gameApi.stop();
+    let created: GameApi<RoomId> | undefined;
+    const go = async () => {
+      created = await gameMain(campaign);
+      setGameApi(created);
     };
-  }, [gameApi]);
+
+    go();
+
+    return () => {
+      created?.stop();
+    };
+  }, [campaign]);
 
   return gameApi;
 };
 
 const useHashSyncedWithRoom = <RoomId extends string>(
-  gameApi: GameApi<RoomId>,
+  gameApi: GameApi<RoomId> | undefined,
 ): void => {
   useEffect(() => {
+    if (gameApi === undefined) {
+      return;
+    }
+
     if (window.location.hash)
       gameApi.viewRoom(window.location.hash.substring(1) as RoomId);
 
@@ -55,36 +65,16 @@ const useHashSyncedWithRoom = <RoomId extends string>(
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
 export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
-  forwardRef<GameApi<RoomId>, EmptyObject>(
+  forwardRef<GameApi<RoomId> | undefined, EmptyObject>(
     (_props: EmptyObject, gameApiRef) => {
       const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
       const gameApi = useGame(campaign);
       useHashSyncedWithRoom(gameApi);
-      useImperativeHandle(gameApiRef, () => gameApi);
+      useImperativeHandle(gameApiRef, () => gameApi || undefined);
 
       useEffect(() => {
-        if (gameDiv === null) return;
-
-        let app: Application | undefined;
-
-        const makeAppOnDiv = async () => {
-          app = new Application();
-          await app.init({ background: "#000000", resizeTo: window });
-          // todo: load assets in parallel with init
-          gameDiv.appendChild(app.canvas);
-          gameApi.renderIn(app);
-
-          resize(app);
-        };
-
-        makeAppOnDiv();
-
-        return () => {
-          if (app === undefined) return;
-
-          gameDiv.removeChild(app.canvas);
-          app.destroy();
-        };
+        if (gameDiv === null || gameApi === undefined) return;
+        gameApi.renderIn(gameDiv);
       }, [gameApi, gameDiv]);
 
       return (

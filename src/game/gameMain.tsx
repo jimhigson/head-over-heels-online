@@ -2,50 +2,14 @@ import { Application, Container } from "pixi.js";
 import { Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
 import { GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
-import { renderItems } from "./render/renderItems";
-import { renderFloor } from "./render/renderFloor";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
 import { loadRoom } from "./gameState/loadRoom";
 import { PlanetName } from "@/sprites/planets";
 import { listenForInput } from "./input/listenForInput";
-import { mainPaletteSwapFilters } from "./render/paletteSwapFilters";
 import { initGameState } from "./gameState/initGameState";
-
-function iterateToContainer(gen: Generator<Container>, into?: Container) {
-  const c = into || new Container();
-  for (const s of gen) {
-    c.addChild(s);
-  }
-  return c;
-}
-
-function* renderRoomGenerator<RoomId extends string>(
-  room: LoadedRoom<PlanetName, RoomId>,
-  options: RenderOptions<RoomId>,
-): Generator<Container, undefined, undefined> {
-  yield* renderFloor(room, options);
-  yield iterateToContainer(renderItems(room, options));
-}
-
-const renderRoom = <P extends PlanetName, RoomId extends string>(
-  room: LoadedRoom<P, RoomId>,
-  options: RenderOptions<RoomId>,
-) => {
-  // NB: floor could be a tiling sprite and a graphics map:
-  //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
-  //  * https://pixijs.com/8.x/examples/masks/graphics
-
-  const roomContainer = new Container();
-
-  for (const container of renderRoomGenerator(room, options)) {
-    roomContainer.addChild(container);
-  }
-
-  roomContainer.filters = mainPaletteSwapFilters(room);
-
-  return roomContainer;
-};
+import { upscale } from "./upscale";
+import { renderRoom } from "./renderRoom";
 
 export type RenderOptions<RoomId extends string> = {
   onPortalClick: (roomId: RoomId) => void;
@@ -75,7 +39,7 @@ export type GameApi<RoomId extends string> = {
   viewRoom: (newRoom: RoomId) => void;
   /** gets the game state for the room that is currently being viewed */
   viewingRoom: LoadedRoom<PlanetName, RoomId>;
-  renderIn: (app: Application) => void;
+  renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;
 };
@@ -83,15 +47,17 @@ export type GameApi<RoomId extends string> = {
 /**
  * we are now outside of React-land - pure pixi game engine!
  */
-export const gameMain = <RoomId extends string>(
+export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-): GameApi<RoomId> => {
+): Promise<GameApi<RoomId>> => {
   const gameState = initGameState(campaign);
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging
   let viewingRoom = gameState[gameState.currentCharacter].roomState;
 
-  let app: Application | undefined;
+  const app = new Application();
+  await app.init({ background: "#000000", resizeTo: window });
+  upscale(app);
 
   console.log("setting up game");
   const inputStop = listenForInput(gameState);
@@ -99,6 +65,7 @@ export const gameMain = <RoomId extends string>(
   const events = mitt<ApiEvents<RoomId>>();
 
   const worldContainer = new Container();
+  app.stage.addChild(worldContainer);
 
   // move origin to centre horizontally of screen:
   worldContainer.x = zxSpectrumResolution.width / 2;
@@ -129,9 +96,8 @@ export const gameMain = <RoomId extends string>(
   return {
     campaign,
     events,
-    renderIn(a) {
-      app = a;
-      app.stage.addChild(worldContainer);
+    renderIn(gameDiv) {
+      gameDiv.appendChild(app.canvas);
     },
     viewRoom(roomId: RoomId) {
       if (roomId !== viewingRoom.id) viewRoom(loadRoom(campaign.rooms[roomId]));
@@ -144,7 +110,9 @@ export const gameMain = <RoomId extends string>(
     },
     stop() {
       console.log("tearing down game");
-      app?.stage?.removeChild(worldContainer);
+      app.stage.removeChild(worldContainer);
+      app.canvas.parentNode?.removeChild(app.canvas);
+      app.destroy();
       inputStop();
     },
   };

@@ -2,7 +2,7 @@ import { Application } from "pixi.js";
 import { zxSpectrumResolution } from "../originalGame";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
-export const resize = async (app: Application) => {
+export const upscale = async (app: Application) => {
   const scaleToFit = () => {
     if (app.renderer.width === 0 || app.renderer.height === 0)
       // not ready yet - size not known
