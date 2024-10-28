@@ -1,5 +1,6 @@
 import { Application, Container } from "pixi.js";
-import { Campaign, LoadedRoom, AnyLoadedRoom, GameState } from "../modelTypes";
+import { Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
+import { GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderItems } from "./render/renderItems";
 import { renderFloor } from "./render/renderFloor";
@@ -93,7 +94,7 @@ export const gameMain = <RoomId extends string>(
   let app: Application | undefined;
 
   console.log("setting up game");
-  const inputStop = listenForInput(gameState.keyAssignment);
+  const inputStop = listenForInput(gameState);
 
   const events = mitt<ApiEvents<RoomId>>();
 

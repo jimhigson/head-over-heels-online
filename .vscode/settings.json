@@ -20,7 +20,9 @@
         "Renderable",
         "shortcutted",
         "Spritesheet",
+        "swop",
         "teleporter"
     ],
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.language": "en-GB,en-US"
 }

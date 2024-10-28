@@ -1,8 +1,17 @@
-import { Direction } from "@/modelTypes";
+import { directions } from "@/modelTypes";
 import { isKey, Key } from "./keys";
 import { entries } from "@/utils/entries";
+import { GameState } from "../gameState/GameState";
 
-export type Action = Direction | "jump" | "fire" | "carry" | "swop" | "pause";
+export const actions = [
+  ...directions,
+  "jump",
+  "fire",
+  "carry",
+  "swop",
+  "pause",
+] as const;
+export type Action = (typeof actions)[number];
 
 export type KeyAssignment = Record<Action, Key[]>;
 
@@ -45,7 +54,10 @@ function* keyToAction(
 const standardiseCase = (k: string): string =>
   k.length === 1 ? k.toUpperCase() : k;
 
-export const listenForInput = (keyAssignment: KeyAssignment) => {
+export const listenForInput = ({
+  keyAssignment,
+  inputState,
+}: GameState<string>) => {
   const keyDownHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
 
@@ -54,16 +66,23 @@ export const listenForInput = (keyAssignment: KeyAssignment) => {
       return;
     }
 
-    const actions = [...keyToAction(keyAssignment, stdKey)];
-    console.log("pressed: ", stdKey, actions);
+    for (const action of keyToAction(keyAssignment, stdKey)) {
+      inputState[action] = true;
+    }
+
+    console.log("pressed: ", stdKey, ...keyToAction(keyAssignment, stdKey));
   };
   const keyUpHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
     if (!isKey(stdKey)) {
       return;
     }
-    const actions = [...keyToAction(keyAssignment, stdKey)];
-    console.log("released: ", stdKey, actions);
+
+    for (const action of keyToAction(keyAssignment, stdKey)) {
+      inputState[action] = true;
+    }
+
+    console.log("released: ", stdKey, ...keyToAction(keyAssignment, stdKey));
   };
 
   window.addEventListener("keydown", keyDownHandler, false);

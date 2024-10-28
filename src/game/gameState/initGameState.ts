@@ -1,7 +1,9 @@
-import { Campaign, GameState, PlayableCharacter, RoomJson } from "@/modelTypes";
+import { Campaign, PlayableCharacter, RoomJson } from "@/modelTypes";
+import { GameState } from "@/game/gameState/GameState";
 import { PlanetName } from "@/sprites/planets";
-import { defaultKeyAssignments } from "../input/listenForInput";
+import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom";
+import { fromAllEntries } from "@/utils/entries";
 
 type StartingRooms<RoomId extends string> = Record<PlayableCharacter, RoomId>;
 
@@ -57,5 +59,6 @@ export const initGameState = <RoomId extends string>(
       shield: 0,
       roomState: loadRoom(campaign.rooms[starts.heels]),
     },
+    inputState: fromAllEntries(actions.map((action) => [action, false])),
   };
 };

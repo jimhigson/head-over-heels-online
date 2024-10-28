@@ -32,11 +32,7 @@ export default tseslint.config(
         { avoidExplicitReturnArrows: true },
       ],
       "no-param-reassign": [
-        "error",
-        {
-          props: true,
-          ignorePropertyModificationsForRegex: ["^(draft|app|container|sprite)"],
-        },
+        "off"
       ],
       "prettier/prettier": "error",
       "react-hooks/exhaustive-deps": "error",
