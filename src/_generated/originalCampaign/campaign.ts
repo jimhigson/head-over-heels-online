@@ -279,7 +279,6 @@ export type OriginalCampaignRoomId =
   | "safari9";
 
 export const campaign = {
-  startRoom: "blacktooth1head",
   rooms: {
     blacktooth10: {
       color: "yellow",
@@ -7573,6 +7572,11 @@ export const campaign = {
           position: { x: 3, y: 8, z: 1 },
           type: "door",
         },
+        "pickup@7,3,0:2fxkqv": {
+          config: { gives: "crown" },
+          position: { x: 7, y: 3, z: 0 },
+          type: "pickup",
+        },
       },
       planet: "blacktooth",
       size: { x: 8, y: 8 },
@@ -10589,6 +10593,11 @@ export const campaign = {
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
+        "pickup@3,4,6:2fxkqv": {
+          config: { gives: "crown" },
+          position: { x: 3, y: 4, z: 6 },
+          type: "pickup",
+        },
         "portable-block@0,0,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 0, z: 0 },
@@ -13526,6 +13535,11 @@ export const campaign = {
           config: { axis: "y", toRoom: "egyptus38" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
+        },
+        "pickup@4,3,7:2fxkqv": {
+          config: { gives: "crown" },
+          position: { x: 4, y: 3, z: 7 },
+          type: "pickup",
         },
         "portable-block@3,3,3:Z1UEQTQ": {
           config: { style: "cube" },
@@ -21263,6 +21277,11 @@ export const campaign = {
           position: { x: 7, y: 3, z: 5 },
           type: "movable-block",
         },
+        "pickup@0,0,6:2fxkqv": {
+          config: { gives: "crown" },
+          position: { x: 0, y: 0, z: 6 },
+          type: "pickup",
+        },
         "portable-block@0,7,3:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 3 },
@@ -24735,6 +24754,11 @@ export const campaign = {
           config: { style: "anvil" },
           position: { x: 3, y: 5, z: 0 },
           type: "movable-block",
+        },
+        "pickup@0,7,7:2fxkqv": {
+          config: { gives: "crown" },
+          position: { x: 0, y: 7, z: 7 },
+          type: "pickup",
         },
         "portable-block@7,3,1:Z1SKpmn": {
           config: { style: "drum" },

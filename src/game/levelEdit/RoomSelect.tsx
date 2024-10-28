@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { GameApi } from "../gameMain";
-import { useCurrentRoom } from "./useCurrentRoom";
+import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
@@ -27,7 +27,7 @@ export function RoomSelect<RoomId extends string>({
 }: RoomSelectProps<RoomId>) {
   const [open, setOpen] = React.useState(false);
 
-  const currentRoom = useCurrentRoom(gameApi);
+  const viewingRoomId = useCurrentlyViewedRoom(gameApi);
 
   if (gameApi === undefined) {
     return null;
@@ -44,7 +44,7 @@ export function RoomSelect<RoomId extends string>({
           aria-expanded={open}
           className="w-[300px] justify-between"
         >
-          {currentRoom?.id}
+          {viewingRoomId || "Select a room"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -59,16 +59,14 @@ export function RoomSelect<RoomId extends string>({
                   key={r}
                   value={r}
                   onSelect={(currentValue) => {
-                    gameApi.goToRoom(currentValue as RoomId);
+                    gameApi.viewRoom(currentValue as RoomId);
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      gameApi.currentRoom?.id === r
-                        ? "opacity-100"
-                        : "opacity-0",
+                      viewingRoomId === r ? "opacity-100" : "opacity-0",
                     )}
                   />
                   {r}

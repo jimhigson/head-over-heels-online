@@ -26,7 +26,7 @@ const green = {
 };
 
 export const hintColours = {
-  white: { main: white, edges: { towards: green, right: cyan } },
+  white: { main: white, edges: { towards: cyan, right: yellow } },
   yellow: { main: yellow, edges: { towards: green, right: white } },
   magenta: { main: magenta, edges: { towards: green, right: cyan } },
   cyan: { main: cyan, edges: { towards: magenta, right: white } },

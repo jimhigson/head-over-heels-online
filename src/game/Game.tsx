@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Application } from "pixi.js";
 import { resize } from "./resize";
-import { AnyRoomJson, Campaign } from "../modelTypes";
+import { Campaign } from "../modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
 import { EmptyObject } from "type-fest";
@@ -20,16 +20,25 @@ const useGame = <RoomId extends string>(
   return gameApi;
 };
 
-const useHashSyncedWithRoom = <R extends string>(gameApi: GameApi<R>): void => {
+const useHashSyncedWithRoom = <RoomId extends string>(
+  gameApi: GameApi<RoomId>,
+): void => {
   useEffect(() => {
     if (window.location.hash)
-      gameApi.goToRoom(window.location.hash.substring(1) as R);
+      gameApi.viewRoom(window.location.hash.substring(1) as RoomId);
 
     const onHashChange = (e: HashChangeEvent) => {
-      gameApi.goToRoom(new URL(e.newURL).hash.substring(1) as R);
+      const hashContent = new URL(e.newURL).hash.substring(1);
+
+      const newRoomId: RoomId =
+        hashContent === ""
+          ? gameApi.gameState[gameApi.gameState.currentCharacter].roomState.id
+          : (hashContent as RoomId);
+
+      gameApi.viewRoom(newRoomId);
     };
-    const onRoomChange = ({ id }: AnyRoomJson) => {
-      window.location.hash = id;
+    const onRoomChange = (roomId: RoomId) => {
+      window.location.hash = roomId;
     };
 
     window.addEventListener("hashchange", onHashChange);

@@ -87,6 +87,9 @@ function* positionItems<R extends string>(
   }
 }
 
+/**
+ * convert a room from it's storage (json) format to its in-play (loaded) format
+ */
 export const loadRoom = <P extends PlanetName, R extends string>(
   roomJson: RoomJson<P, R>,
 ): LoadedRoom<P, R> => {

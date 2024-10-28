@@ -3,9 +3,12 @@ import { SpritesheetFrameData } from "pixi.js";
 import { ItemType, UnknownItem } from "./Item";
 import { Simplify } from "type-fest";
 import { PlanetName, Wall } from "./sprites/planets";
+import { KeyAssignment } from "./game/input/listenForInput";
 
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
+
+export type PlayableCharacter = "head" | "heels";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 
@@ -80,22 +83,25 @@ export type AnyRoomJson = RoomJson<PlanetName, string>;
  * room)
  */
 export type LoadedRoom<P extends PlanetName, RoomId extends string> = Simplify<
-  Omit<RoomJson<P, RoomId>, "items"> & { items: UnknownItem<RoomId>[] }
+  Omit<RoomJson<P, RoomId>, "items"> & {
+    items: UnknownItem<RoomId>[];
+  }
 >;
 export type AnyLoadedRoom = LoadedRoom<PlanetName, string>;
 
-export type RoomState = Omit<RoomJson<PlanetName, string>, "floorSkip">;
-
-export type EitherCharacterState = {
+export type EitherCharacterState<RoomId extends string> = {
   lives: number;
   shield: number;
   // if both chars are in same room, will be ===
-  roomState: unknown; //RoomState;
+  roomState: LoadedRoom<PlanetName, RoomId>;
 };
 
-export type GameState = {
+export type GameState<RoomId extends string> = {
+  keyAssignment: KeyAssignment;
+  currentCharacter: PlayableCharacter;
+
   head: Simplify<
-    EitherCharacterState & {
+    EitherCharacterState<RoomId> & {
       hasHooter: boolean;
       /** how many big jumps we can do */
       jumps: number;
@@ -103,17 +109,16 @@ export type GameState = {
     }
   >;
   heels: Simplify<
-    EitherCharacterState & {
+    EitherCharacterState<RoomId> & {
       hasBag: boolean;
       /** how many steps we can go fast for */
       fast: number;
-      carrying: ItemType;
+      carrying: ItemType | null;
     }
   >;
 };
 
 export type Campaign<RoomId extends string> = {
-  startRoom: RoomId;
   rooms: Record<RoomId, RoomJson<PlanetName, RoomId>>;
 };
 

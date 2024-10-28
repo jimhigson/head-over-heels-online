@@ -2,6 +2,7 @@ import { UnknownItem } from "../../src/Item";
 import shortHash from "shorthash2";
 import { canonicalize } from "json-canonicalize";
 
+/** for a given item in the game, auto-produce a unique id for it */
 export const keyItems = <R extends string>(
   items: Array<UnknownItem<R>>,
 ): Record<string, UnknownItem<R>> => {

@@ -1,5 +1,4 @@
 {
-  "startRoom": "blacktooth1head",
   "rooms": {
     "blacktooth10": {
       "id": "blacktooth10",
@@ -7429,6 +7428,11 @@
           "config": { "style": "volcano" },
           "position": { "x": 6, "y": 1, "z": 0 }
         },
+        "pickup@7,3,0:2fxkqv": {
+          "type": "pickup",
+          "config": { "gives": "crown" },
+          "position": { "x": 7, "y": 3, "z": 0 }
+        },
         "baddie@3,3,0:Z1w4InY": {
           "type": "baddie",
           "config": { "which": "dalek" },
@@ -10439,6 +10443,11 @@
           "config": { "axis": "y" },
           "position": { "x": 3, "y": 4, "z": 0 }
         },
+        "pickup@3,4,6:2fxkqv": {
+          "type": "pickup",
+          "config": { "gives": "crown" },
+          "position": { "x": 3, "y": 4, "z": 6 }
+        },
         "book@2,4,0:1g3d60": {
           "type": "book",
           "config": { "slider": true },
@@ -13385,6 +13394,11 @@
           "type": "baddie",
           "config": { "which": "dalek" },
           "position": { "x": 3, "y": 7, "z": 0 }
+        },
+        "pickup@4,3,7:2fxkqv": {
+          "type": "pickup",
+          "config": { "gives": "crown" },
+          "position": { "x": 4, "y": 3, "z": 7 }
         },
         "portable-block@3,3,3:Z1UEQTQ": {
           "type": "portable-block",
@@ -21425,6 +21439,11 @@
           "config": { "style": "sandwich" },
           "position": { "x": 7, "y": 3, "z": 5 }
         },
+        "pickup@0,0,6:2fxkqv": {
+          "type": "pickup",
+          "config": { "gives": "crown" },
+          "position": { "x": 0, "y": 0, "z": 6 }
+        },
         "door@3,8,1:1G4tR2": {
           "type": "door",
           "config": { "axis": "x", "toRoom": "penitentiary33" },
@@ -24871,6 +24890,11 @@
           "type": "movable-block",
           "config": { "style": "anvil" },
           "position": { "x": 0, "y": 7, "z": 6 }
+        },
+        "pickup@0,7,7:2fxkqv": {
+          "type": "pickup",
+          "config": { "gives": "crown" },
+          "position": { "x": 0, "y": 7, "z": 7 }
         },
         "movable-block@3,5,0:Z15GVb5": {
           "type": "movable-block",

@@ -1,22 +1,20 @@
-import { RoomJson } from "@/modelTypes";
 import { useState, useEffect } from "react";
 import { GameApi } from "../gameMain";
-import { PlanetName } from "@/sprites/planets";
 
-export const useCurrentRoom = <RoomId extends string>(
+export const useCurrentlyViewedRoom = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
-) => {
-  const [currentRoom, setCurrentRoom] = useState<
-    RoomJson<PlanetName, RoomId> | undefined
-  >(gameApi?.currentRoom);
+): RoomId | undefined => {
+  const [currentRoom, setCurrentRoom] = useState<RoomId | undefined>(
+    gameApi?.viewingRoom.id,
+  );
 
   useEffect(() => {
     if (gameApi === undefined) return;
 
-    setCurrentRoom(gameApi.currentRoom);
+    setCurrentRoom(gameApi.viewingRoom.id);
 
-    const roomChangeHandler = (room: RoomJson<PlanetName, RoomId>) => {
-      setCurrentRoom(room);
+    const roomChangeHandler = (roomId: RoomId) => {
+      setCurrentRoom(roomId);
     };
 
     gameApi.events.on("roomChange", roomChangeHandler);

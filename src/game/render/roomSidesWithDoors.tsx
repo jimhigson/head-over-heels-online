@@ -1,6 +1,7 @@
 import { JsonItem } from "@/Item";
 import { AnyLoadedRoom } from "@/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 
 export const roomSidesWithDoors = (room: AnyLoadedRoom): SidesWithDoors => {
   const result: SidesWithDoors = {};
@@ -18,13 +19,13 @@ export const roomSidesWithDoors = (room: AnyLoadedRoom): SidesWithDoors => {
     if (axis === "x") {
       if (y < 0) {
         result.towards = true;
-      } else if (y === room.size.y) {
+      } else if (y === room.size.y * blockSizePx.d) {
         result.away = true;
       }
     } else {
       if (x < 0) {
         result.right = true;
-      } else if (x === room.size.x) {
+      } else if (x === room.size.x * blockSizePx.w) {
         result.left = true;
       }
     }

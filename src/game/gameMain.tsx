@@ -1,15 +1,15 @@
 import { Application, Container } from "pixi.js";
-import { RoomJson, Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
+import { Campaign, LoadedRoom, AnyLoadedRoom, GameState } from "../modelTypes";
 import { zxSpectrumResolution } from "../originalGame";
-import { hintColours } from "../hintColours";
 import { renderItems } from "./render/renderItems";
 import { renderFloor } from "./render/renderFloor";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
-import { loadRoom } from "./loadRoom/loadRoom";
+import { loadRoom } from "./gameState/loadRoom";
 import { PlanetName } from "@/sprites/planets";
-import { input } from "./input/input";
+import { listenForInput } from "./input/listenForInput";
 import { mainPaletteSwapFilters } from "./render/paletteSwapFilters";
+import { initGameState } from "./gameState/initGameState";
 
 function iterateToContainer(gen: Generator<Container>, into?: Container) {
   const c = into || new Container();
@@ -64,29 +64,36 @@ const centreRoomInRendering = (
 };
 
 type ApiEvents<RoomId extends string> = {
-  roomChange: RoomJson<PlanetName, RoomId>;
+  roomChange: RoomId;
 };
 
 export type GameApi<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  currentRoom: RoomJson<PlanetName, RoomId>;
-  roomState: LoadedRoom<PlanetName, RoomId>;
   events: Emitter<ApiEvents<RoomId>>;
-  goToRoom: (newRoom: RoomId) => void;
+  /** view a different room, without moving the playable character. Mostly for debugging etc */
+  viewRoom: (newRoom: RoomId) => void;
+  /** gets the game state for the room that is currently being viewed */
+  viewingRoom: LoadedRoom<PlanetName, RoomId>;
   renderIn: (app: Application) => void;
+  gameState: GameState<RoomId>;
   stop: () => void;
 };
 
+/**
+ * we are now outside of React-land - pure pixi game engine!
+ */
 export const gameMain = <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  startingRoom?: NoInfer<RoomId>,
 ): GameApi<RoomId> => {
-  let currentRoom = campaign.rooms[startingRoom || campaign.startRoom];
-  let loadedRoom: LoadedRoom<PlanetName, RoomId>;
+  const gameState = initGameState(campaign);
+  // the viewing room isn't necessarily the room of the curren playable character,
+  // but only because I allow click-through for debugging
+  let viewingRoom = gameState[gameState.currentCharacter].roomState;
+
   let app: Application | undefined;
 
   console.log("setting up game");
-  const inputStop = input();
+  const inputStop = listenForInput(gameState.keyAssignment);
 
   const events = mitt<ApiEvents<RoomId>>();
 
@@ -98,19 +105,12 @@ export const gameMain = <RoomId extends string>(
 
   const renderOptions: RenderOptions<RoomId> = {
     onPortalClick(roomId) {
-      switchToRoom(roomId);
+      viewRoom(loadRoom(campaign.rooms[roomId]));
     },
   };
 
-  const switchToRoom = (roomId: RoomId) => {
-    const room = campaign.rooms[roomId];
-
-    if (room === undefined) {
-      throw new Error(`no room found with id ${roomId}`);
-    }
-
-    currentRoom = room;
-    loadedRoom = loadRoom(room);
+  const viewRoom = (loadedRoom: LoadedRoom<PlanetName, RoomId>) => {
+    viewingRoom = loadedRoom;
 
     worldContainer.removeChildren();
 
@@ -120,26 +120,26 @@ export const gameMain = <RoomId extends string>(
 
     worldContainer.addChild(roomContainer);
 
-    events.emit("roomChange", room);
+    events.emit("roomChange", loadedRoom.id);
   };
 
-  switchToRoom(startingRoom || campaign.startRoom);
+  viewRoom(viewingRoom);
 
   return {
     campaign,
-    get currentRoom() {
-      return currentRoom;
-    },
-    get roomState() {
-      return loadedRoom;
-    },
     events,
     renderIn(a) {
       app = a;
       app.stage.addChild(worldContainer);
     },
-    goToRoom(roomId: RoomId) {
-      if (roomId !== currentRoom.id) switchToRoom(roomId);
+    viewRoom(roomId: RoomId) {
+      if (roomId !== viewingRoom.id) viewRoom(loadRoom(campaign.rooms[roomId]));
+    },
+    get viewingRoom() {
+      return viewingRoom;
+    },
+    get gameState() {
+      return gameState;
     },
     stop() {
       console.log("tearing down game");

@@ -163,7 +163,7 @@ const rooms = {
         position: { x: 1, y: 0, z: 1 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "head" },
         position: { x: 1.5, y: -0.9, z: 1 },
       },
@@ -173,7 +173,7 @@ const rooms = {
         position: { x: 3, y: 0, z: 1 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "heels" },
         position: { x: 3.5, y: -0.4, z: 1 },
       },
@@ -183,7 +183,7 @@ const rooms = {
         position: { x: 5, y: 0, z: 1 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "heels" },
         position: { x: 6, y: 0, z: 1 },
       },
@@ -193,7 +193,7 @@ const rooms = {
         position: { x: 8, y: 8, z: 1 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "head" },
         position: { x: 8.6, y: 7.5, z: 1 },
       },
@@ -675,12 +675,12 @@ const rooms = {
         position: { x: 8, y: 1, z: 0 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "head" },
         position: { x: 3, y: 1, z: 0 },
       },
       {
-        type: "player",
+        type: "sceneryPlayer",
         config: { which: "heels" },
         position: { x: 5, y: 1, z: 0 },
       },
@@ -692,6 +692,5 @@ const rooms = {
 } as Campaign<TestCampaignRoomId>["rooms"];
 
 export const testCampaign = {
-  startRoom: "doorsRoom",
   rooms,
 } as Campaign<TestCampaignRoomId>;

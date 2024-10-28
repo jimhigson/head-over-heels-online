@@ -1,5 +1,4 @@
 import { Container, Graphics } from "pixi.js";
-import { hintColours } from "../../hintColours";
 import { Direction, LoadedRoom } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";

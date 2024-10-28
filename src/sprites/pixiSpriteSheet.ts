@@ -272,6 +272,9 @@ const spritesheetData = {
     donuts: {
       frame: { x: 313, y: 358, ...smallItemTextureSize },
     },
+    crown: {
+      frame: { x: 367, y: 358, ...smallItemTextureSize },
+    },
     hooter: {
       frame: { x: 286, y: 358, ...smallItemTextureSize },
     },
