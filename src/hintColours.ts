@@ -9,7 +9,7 @@ const white = {
   dimmed: new Color("rgb(120, 120, 120)"),
 };
 const yellow = {
-  basic: new Color("hsl(50,53%,65%)"),
+  basic: new Color("hsl(50,58%,70%)"),
   dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
 const magenta = {

@@ -2,6 +2,7 @@ import { Campaign, Xy, type RoomJson, type RoomWalls } from "./modelTypes.ts";
 import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
 import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
+import { JsonItem, UnknownJsonItem } from "./Item.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,
@@ -38,6 +39,24 @@ const colourRooms = () => {
   type Entry<P extends PlanetName> = [
     ColorRoomIds,
     RoomJson<P, TestCampaignRoomId>,
+  ];
+
+  const sampleItems: UnknownJsonItem<TestCampaignRoomId>[] = [
+    {
+      type: "deadly-block",
+      config: { style: "volcano" },
+      position: { x: 6, y: 6, z: 0 },
+    },
+    {
+      type: "block",
+      config: { style: "organic" },
+      position: { x: 4, y: 6, z: 0 },
+    },
+    {
+      type: "baddie",
+      config: { which: "cyberman", charging: true, startDirection: "away" },
+      position: { x: 6, y: 0, z: 0 },
+    },
   ];
 
   function* room(): Generator<Entry<PlanetName>> {
@@ -96,6 +115,7 @@ const colourRooms = () => {
                   toRoom: `${planetNames[(planetNames.length + ip + 1) % planetNames.length]}-${c}`,
                 },
               },
+              ...sampleItems,
             ]),
             id: `${p}-${c}`,
           },

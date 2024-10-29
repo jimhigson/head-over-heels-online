@@ -95,11 +95,20 @@ export const itemAppearances: {
           },
     ),
 
-  lift: () =>
-    createSprite({
-      frames: pixiSpriteSheet.animations.lift,
-      animationSpeed: 0.2,
-    }),
+  lift() {
+    const container = new Container();
+
+    container.addChild(
+      createSprite({
+        frames: pixiSpriteSheet.animations.lift,
+        animationSpeed: 0.2,
+      }),
+    );
+
+    container.addChild(createSprite("lift.static"));
+
+    return container;
+  },
 
   spring: () => createSprite("spring.released"),
 

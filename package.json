@@ -16,7 +16,9 @@
     "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
     "makeWorldJsonPatch": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write",
     "predeploy": "pnpm run check:lint && pnpm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "sprites2png": "./scripts/sprites2png.sh",
+    "watch:sprites2png": "pnpm run sprites2png && chokidar gfx/sprites.iff -c \"pnpm run sprites2png\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
@@ -40,6 +42,7 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
     "chalk": "^5.3.0",
+    "chokidar-cli": "^3.0.0",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

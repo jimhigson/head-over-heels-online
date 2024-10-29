@@ -362,6 +362,8 @@ const spritesheetData = {
     ),
 
     ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize),
+    "lift.static": { frame: { x: 359, y: 474, ...smallItemTextureSize } },
+
     ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),
 
     "headless-base": {
