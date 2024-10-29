@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { Direction, LoadedRoom } from "../../modelTypes";
+import { Direction, RoomState } from "../../modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import { RenderOptions } from "../gameMain";
@@ -14,7 +14,7 @@ import { PlanetName } from "@/sprites/planets";
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 
 export function* renderFloor<RoomId extends string>(
-  room: LoadedRoom<PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   const { towards: hasDoorTowards, right: hasDoorRight } =

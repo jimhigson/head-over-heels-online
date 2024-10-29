@@ -3,7 +3,7 @@ import { createSprite } from "./game/render/createSprite";
 import { doorTexture } from "./game/render/doorTexture";
 import { projectBlockToScreen } from "./game/render/projectToScreen";
 import { LoadedDoorConfig } from "./Item";
-import { Axis, AnyLoadedRoom, Xyz, crossAxis } from "./modelTypes";
+import { Axis, AnyRoomState, Xyz, crossAxis } from "./modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
 
@@ -32,7 +32,7 @@ function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
 }
 export function* renderDoorPart(
   { axis, inHiddenWall }: LoadedDoorConfig<string>,
-  room: AnyLoadedRoom,
+  room: AnyRoomState,
   { z }: Xyz,
   nearness: "near" | "far",
 ): Generator<Container> {

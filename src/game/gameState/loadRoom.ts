@@ -1,16 +1,18 @@
-import { UnknownItem } from "@/Item";
-import { LoadedRoom, RoomJson } from "@/modelTypes";
+import { UnknownItemState, UnknownJsonItem } from "@/Item";
+import { RoomState, RoomJson } from "@/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../render/projectToScreen";
+import mitt from "mitt";
 
 function* expandWalls<R extends string>(
   room: RoomJson<PlanetName, R>,
-): Generator<UnknownItem<R>> {
+): Generator<UnknownItemState<R>> {
   for (let i = room.size.y - 1; i >= 0; i--) {
     yield {
       type: "wall",
       config: { side: "left", style: room.walls.left[i] },
       position: { x: room.size.x, y: i, z: 0 },
+      events: mitt(), // TODO: question if a wall really needs an event bus!
     };
   }
 
@@ -19,13 +21,14 @@ function* expandWalls<R extends string>(
       type: "wall",
       config: { side: "away", style: room.walls.away[xi] },
       position: { x: xi, y: room.size.y, z: 0 },
+      events: mitt(), // TODO: question if a wall really needs an event bus!
     };
   }
 }
 
-function* expandItems<R extends string>(
-  items: UnknownItem<R>[],
-): Generator<UnknownItem<R>> {
+function* loadItems<R extends string>(
+  items: UnknownJsonItem<R>[],
+): Generator<UnknownItemState<R>> {
   for (const item of items.values()) {
     if (item.type === "door") {
       const {
@@ -58,6 +61,7 @@ function* expandItems<R extends string>(
           [axis]: item.position[axis] + 1,
           ...crossAxisComponent,
         },
+        events: mitt(),
       };
       yield {
         ...item,
@@ -70,15 +74,16 @@ function* expandItems<R extends string>(
           ...item.position,
           ...crossAxisComponent,
         },
+        events: mitt(),
       };
-    } else yield item;
+    } else yield { ...item, events: mitt() };
   }
 }
 
 // moves everything from its 'block' position to its pixel xyz position
 function* positionItems<R extends string>(
-  items: Iterable<UnknownItem<R>>,
-): Generator<UnknownItem<R>> {
+  items: Iterable<UnknownItemState<R>>,
+): Generator<UnknownItemState<R>> {
   for (const i of items) {
     yield {
       ...i,
@@ -92,12 +97,12 @@ function* positionItems<R extends string>(
  */
 export const loadRoom = <P extends PlanetName, R extends string>(
   roomJson: RoomJson<P, R>,
-): LoadedRoom<P, R> => {
+): RoomState<P, R> => {
   return {
     ...roomJson,
     items: [
       ...positionItems([
-        ...expandItems(Object.values(roomJson.items)),
+        ...loadItems(Object.values(roomJson.items)),
         ...expandWalls(roomJson),
       ]),
     ],

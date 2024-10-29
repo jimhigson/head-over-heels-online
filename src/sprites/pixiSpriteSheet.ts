@@ -288,12 +288,78 @@ const spritesheetData = {
     "spring.released": {
       frame: { x: 29, y: 421, ...smallItemTextureSize },
     },
-    "head.toward1": {
-      frame: { x: 29, y: 266, ...smallItemTextureSize },
+
+    // Head
+    // ------------
+    ...animatedSeries(
+      "head.walking.toward",
+      3,
+      { x: 4, y: 266 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "head.walking.right",
+      3,
+      { x: 80, y: 266 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "head.walking.left",
+      3,
+      { x: 4, y: 240 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "head.walking.away",
+      3,
+      { x: 80, y: 240 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "head.idle.towards",
+      2,
+      { x: 4, y: 304 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "head.idle.right",
+      2,
+      { x: 55, y: 304 },
+      smallItemTextureSize,
+    ),
+    "head.falling.towards": {
+      frame: { x: 107, y: 304, ...smallItemTextureSize },
     },
-    "heels.toward1": {
-      frame: { x: 184, y: 266, ...smallItemTextureSize },
+    "head.falling.right": {
+      frame: { x: 132, y: 304, ...smallItemTextureSize },
     },
+
+    // Heels
+    // ------------
+    ...animatedSeries(
+      "heels.walking.toward",
+      3,
+      { x: 159, y: 266 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "heels.walking.right",
+      3,
+      { x: 235, y: 266 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "heels.walking.left",
+      3,
+      { x: 159, y: 240 },
+      smallItemTextureSize,
+    ),
+    ...animatedSeries(
+      "heels.walking.away",
+      3,
+      { x: 235, y: 240 },
+      smallItemTextureSize,
+    ),
 
     ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize),
     ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),

@@ -42,7 +42,9 @@ const useHashSyncedWithRoom = <RoomId extends string>(
 
       const newRoomId: RoomId =
         hashContent === ""
-          ? gameApi.gameState[gameApi.gameState.currentCharacter].roomState.id
+          ? gameApi.gameState.playableCharacters[
+              gameApi.gameState.currentCharacter
+            ].roomState.id
           : (hashContent as RoomId);
 
       gameApi.viewRoom(newRoomId);

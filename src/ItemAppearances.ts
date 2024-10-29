@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { ItemType, ItemConfig } from "./Item";
 import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
-import { AnyLoadedRoom, Xyz } from "./modelTypes";
+import { AnyRoomState, Xyz } from "./modelTypes";
 import { wallTextureId } from "./game/render/wallTextureId";
 import { PlanetName } from "./sprites/planets";
 import { renderDoorPart } from "./renderDoorPart";
@@ -10,8 +10,8 @@ import { renderDoorPart } from "./renderDoorPart";
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
-  data: ItemConfig<PlanetName, string>[T],
-  room: AnyLoadedRoom,
+  config: ItemConfig<PlanetName, string>[T],
+  room: AnyRoomState,
   position: Xyz,
 ) => Container;
 
@@ -123,8 +123,8 @@ export const itemAppearances: {
     return createSprite(pickupIcons[gives]);
   },
 
-  player: ({ which }) => createSprite(`${which}.toward1`),
-  sceneryPlayer: ({ which }) => createSprite(`${which}.toward1`),
+  player: ({ which }) => createSprite(`${which}.walking.toward.2`),
+  sceneryPlayer: ({ which }) => createSprite(`${which}.walking.toward.2`),
 
   baddie(options) {
     switch (options.which) {

@@ -1,4 +1,4 @@
-import { ItemConfig, UnknownItem } from "../../src/Item";
+import { ItemConfig, UnknownJsonItem } from "../../src/Item";
 import { addXy, crossAxis } from "../../src/modelTypes";
 import { PlanetName } from "../../src/sprites/planets";
 import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
@@ -38,7 +38,7 @@ export const convertItems = (
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): Record<string, UnknownItem> => {
+): Record<string, UnknownJsonItem> => {
   const convertedItemsArray = convertItemsArray(
     map,
     roomName,
@@ -54,9 +54,9 @@ const convertItemsArray = (
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): UnknownItem[] => {
+): UnknownJsonItem[] => {
   return xml2JsonRoom.items
-    .map((item): UnknownItem | undefined => {
+    .map((item): UnknownJsonItem | undefined => {
       const position = convertXYZ(item, xml2JsonRoom, doorMap);
 
       if (item.kind.includes("shaft") || item.kind.includes("capital")) {
@@ -416,5 +416,5 @@ const convertItemsArray = (
           return undefined;
       }
     })
-    .filter((x): x is UnknownItem => x !== undefined);
+    .filter((x): x is UnknownJsonItem => x !== undefined);
 };

@@ -1,4 +1,4 @@
-import { LoadedRoom } from "@/modelTypes";
+import { RoomState } from "@/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { Container } from "pixi.js";
 import { RenderOptions } from "./gameMain";
@@ -8,14 +8,14 @@ import { renderFloor } from "./render/renderFloor";
 import { renderItems } from "./render/renderItems";
 
 function* renderRoomGenerator<RoomId extends string>(
-  room: LoadedRoom<PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   yield* renderFloor(room, options);
   yield iterateToContainer(renderItems(room, options));
 }
 export const renderRoom = <P extends PlanetName, RoomId extends string>(
-  room: LoadedRoom<P, RoomId>,
+  room: RoomState<P, RoomId>,
   options: RenderOptions<RoomId>,
 ) => {
   // NB: floor could be a tiling sprite and a graphics map:

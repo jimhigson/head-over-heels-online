@@ -1,6 +1,7 @@
 import { EmptyObject } from "type-fest";
 import { Axis, Direction, PlayableCharacter, Xyz } from "./modelTypes";
 import { PlanetName, Wall } from "./sprites/planets";
+import { Emitter } from "mitt";
 
 export type ItemType =
   | "door"
@@ -147,11 +148,18 @@ export type JsonItem<
   position: Xyz;
 };
 
-export type UnknownItem<RoomId extends string = string> = {
+export type ItemState<
+  T extends ItemType,
+  P extends PlanetName = PlanetName,
+  RoomId extends string = string,
+> = JsonItem<T, P, RoomId> & {
+  events: Emitter<{ move: void }>;
+};
+
+export type UnknownJsonItem<RoomId extends string = string> = {
   [IT in ItemType]: JsonItem<IT, PlanetName, RoomId>;
 }[ItemType];
 
-export type ItemInPlay = {
-  // needs everything from item, plus some item state
-  position: Xyz;
-};
+export type UnknownItemState<RoomId extends string = string> = {
+  [IT in ItemType]: ItemState<IT, PlanetName, RoomId>;
+}[ItemType];

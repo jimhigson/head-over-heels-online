@@ -15,7 +15,7 @@
     "fix:format": "prettier . --write",
     "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
     "makeWorldJsonPatch": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write",
-    "predeploy": "pnpm run build",
+    "predeploy": "pnpm run check:lint && pnpm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

@@ -1,9 +1,9 @@
-import { AnyLoadedRoom } from "../../modelTypes";
+import { AnyRoomState } from "../../modelTypes";
 import { wallTileSize } from "../../sprites/pixiSpriteSheet";
 import { projectBlockToScreen } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 
-export const renderExtent = (loadedRoom: AnyLoadedRoom) => {
+export const renderExtent = (loadedRoom: AnyRoomState) => {
   const sidesWithDoors = roomSidesWithDoors(loadedRoom);
 
   const blockXMin = sidesWithDoors.right ? -0.5 : 0;

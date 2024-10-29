@@ -69,8 +69,6 @@ export const listenForInput = ({
     for (const action of keyToAction(keyAssignment, stdKey)) {
       inputState[action] = true;
     }
-
-    console.log("pressed: ", stdKey, ...keyToAction(keyAssignment, stdKey));
   };
   const keyUpHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
@@ -79,10 +77,8 @@ export const listenForInput = ({
     }
 
     for (const action of keyToAction(keyAssignment, stdKey)) {
-      inputState[action] = true;
+      inputState[action] = false;
     }
-
-    console.log("released: ", stdKey, ...keyToAction(keyAssignment, stdKey));
   };
 
   window.addEventListener("keydown", keyDownHandler, false);

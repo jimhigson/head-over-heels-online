@@ -1,9 +1,9 @@
 import { JsonItem } from "@/Item";
-import { AnyLoadedRoom } from "@/modelTypes";
+import { AnyRoomState } from "@/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 
-export const roomSidesWithDoors = (room: AnyLoadedRoom): SidesWithDoors => {
+export const roomSidesWithDoors = (room: AnyRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};
 
   const doorIter = room.items

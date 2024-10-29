@@ -1,6 +1,6 @@
 import { ZxSpectrumRoomColour } from "./originalGame";
 import { SpritesheetFrameData } from "pixi.js";
-import { UnknownItem } from "./Item";
+import { UnknownItemState, UnknownJsonItem } from "./Item";
 import { Simplify } from "type-fest";
 import { PlanetName, Wall } from "./sprites/planets";
 
@@ -72,7 +72,7 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
    */
-  items: Record<string, UnknownItem<RoomId>>;
+  items: Record<string, UnknownJsonItem<RoomId>>;
 };
 export type AnyRoomJson = RoomJson<PlanetName, string>;
 
@@ -81,12 +81,12 @@ export type AnyRoomJson = RoomJson<PlanetName, string>;
  * one or two rooms (that head and heels are in, but they could be in the same
  * room)
  */
-export type LoadedRoom<P extends PlanetName, RoomId extends string> = Simplify<
+export type RoomState<P extends PlanetName, RoomId extends string> = Simplify<
   Omit<RoomJson<P, RoomId>, "items"> & {
-    items: UnknownItem<RoomId>[];
+    items: Array<UnknownItemState<RoomId>>;
   }
 >;
-export type AnyLoadedRoom = LoadedRoom<PlanetName, string>;
+export type AnyRoomState = RoomState<PlanetName, string>;
 
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<PlanetName, RoomId>>;

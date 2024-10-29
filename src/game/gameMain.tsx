@@ -1,6 +1,6 @@
 import { Application, Container } from "pixi.js";
-import { Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
-import { GameState } from "@/game/gameState/GameState";
+import { Campaign, RoomState, AnyRoomState } from "../modelTypes";
+import { currentCharacter, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
@@ -10,13 +10,14 @@ import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
 import { renderRoom } from "./renderRoom";
+import { gameEngineTicks } from "./gameEngineTicks";
 
 export type RenderOptions<RoomId extends string> = {
   onPortalClick: (roomId: RoomId) => void;
 };
 
 const centreRoomInRendering = (
-  room: AnyLoadedRoom,
+  room: AnyRoomState,
   container: Container,
 ): void => {
   const { leftSide, rightSide, frontSide, top } = renderExtent(room);
@@ -38,7 +39,7 @@ export type GameApi<RoomId extends string> = {
   /** view a different room, without moving the playable character. Mostly for debugging etc */
   viewRoom: (newRoom: RoomId) => void;
   /** gets the game state for the room that is currently being viewed */
-  viewingRoom: LoadedRoom<PlanetName, RoomId>;
+  viewingRoom: RoomState<PlanetName, RoomId>;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;
@@ -53,13 +54,14 @@ export const gameMain = async <RoomId extends string>(
   const gameState = initGameState(campaign);
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging
-  let viewingRoom = gameState[gameState.currentCharacter].roomState;
+  let viewingRoom = currentCharacter(gameState).roomState;
 
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });
   upscale(app);
 
-  console.log("setting up game");
+  gameEngineTicks(app, gameState);
+
   const inputStop = listenForInput(gameState);
 
   const events = mitt<ApiEvents<RoomId>>();
@@ -77,7 +79,7 @@ export const gameMain = async <RoomId extends string>(
     },
   };
 
-  const viewRoom = (loadedRoom: LoadedRoom<PlanetName, RoomId>) => {
+  const viewRoom = (loadedRoom: RoomState<PlanetName, RoomId>) => {
     viewingRoom = loadedRoom;
 
     worldContainer.removeChildren();
