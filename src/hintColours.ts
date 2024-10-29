@@ -27,10 +27,15 @@ const green = {
 
 export const hintColours = {
   white: { main: white, edges: { towards: cyan, right: yellow } },
+  // white dimmed should be green/cyan
   yellow: { main: yellow, edges: { towards: green, right: white } },
+  // yellow dimmed should be cyan/cyan
   magenta: { main: magenta, edges: { towards: green, right: cyan } },
+  // magenta dimmed is the same
   cyan: { main: cyan, edges: { towards: magenta, right: white } },
+  // cyan dimmed is the same
   green: { main: green, edges: { towards: cyan, right: yellow } },
+  // green dimmed is the same
 } as const satisfies Record<
   ZxSpectrumRoomColour,
   { main: Shades; edges: { right: Shades; towards: Shades } }

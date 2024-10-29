@@ -102,6 +102,7 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
           | "headless-base"
           | "monkey"
           | "elephant"
+          | "elephant-head"
           | "flying-ball"
           | "bubble-robot"
           | "computer-bot";

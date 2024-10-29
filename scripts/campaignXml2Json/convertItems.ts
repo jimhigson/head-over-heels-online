@@ -25,6 +25,7 @@ const baddieConversions = {
   "bubble-robot": "bubble-robot",
   monkey: "monkey",
   elephant: "elephant",
+  "elephant-head": "elephant-head",
   turtle: "turtle",
   "throne-guard": "flying-ball",
   "bighead-robot": "computer-bot",
@@ -369,6 +370,7 @@ const convertItemsArray = (
         case "siren":
         case "monkey":
         case "elephant":
+        case "elephant-head":
         case "helicopter-bug":
         case "throne-guard":
         case "bomb":

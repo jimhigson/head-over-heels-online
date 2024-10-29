@@ -174,6 +174,11 @@ export const itemAppearances: {
       case "monkey":
         // stacked on standard base:
         return stackedSprites(`${options.which}.towards`);
+      case "elephant-head":
+        return createSprite("elephant.right");
+      default:
+        options satisfies never;
+        throw new Error(`unexpected baddie ${options}`);
     }
   },
 

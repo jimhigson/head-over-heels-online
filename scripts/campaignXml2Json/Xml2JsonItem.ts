@@ -39,6 +39,7 @@ export type Xml2JsonItem = {
         | "donuts"
         | "drum"
         | "elephant"
+        | "elephant-head"
         | "extra-life"
         | "handbag"
         | "helicopter-bug"
