@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
-import { XyMaybeZ, Xyz } from "../../modelTypes";
+import { XyMaybeZ, Xyz } from "@/utils/vectors";
 import { MoveSpriteOptions } from "./createSprite";
 import { projectBlockToScreen, projectToScreen } from "./projectToScreen";
 
-export const moveSpriteToBlockXyz = (
+export const moveContainerToBlockXyz = (
   blockXyz: XyMaybeZ,
   sprite: Container,
   { giveZIndex }: MoveSpriteOptions = { giveZIndex: false },
@@ -18,7 +18,7 @@ export const moveSpriteToBlockXyz = (
   return sprite;
 };
 
-export const moveSpriteToXyz = (
+export const moveContainerToXyz = (
   positionXyz: Xyz,
   sprite: Container,
   { giveZIndex }: MoveSpriteOptions = { giveZIndex: false },

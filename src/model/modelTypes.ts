@@ -1,43 +1,14 @@
-import { ZxSpectrumRoomColour } from "./originalGame";
+import { ZxSpectrumRoomColour } from "../originalGame";
 import { SpritesheetFrameData } from "pixi.js";
-import { UnknownItemState, UnknownJsonItem } from "./Item";
+import { UnknownJsonItem } from "./Item";
+import { UnknownItemInPlay } from "./ItemState";
 import { Simplify } from "type-fest";
-import { PlanetName, Wall } from "./sprites/planets";
-
-export const directions = ["away", "towards", "left", "right"] as const;
-export type Direction = (typeof directions)[number];
+import { PlanetName, Wall } from "../sprites/planets";
+import { Xy } from "../utils/vectors";
 
 export type PlayableCharacter = "head" | "heels";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
-
-export type Xy = {
-  x: number;
-  y: number;
-};
-
-export const crossAxis = (axis: Axis): Axis => (axis === "x" ? "y" : "x");
-
-export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
-  xys.reduce<Xy>(
-    (ac, xyi) => ({
-      x: ac.x + (xyi.x ?? 0),
-      y: ac.y + (xyi.y ?? 0),
-    }),
-    xy,
-  );
-
-export type Xyz = {
-  x: number;
-  y: number;
-  z: number;
-};
-export type XyMaybeZ = {
-  x: number;
-  y: number;
-  z?: number;
-};
-export type Axis = "x" | "y";
 
 export type AnyWall = Wall<PlanetName>;
 
@@ -83,7 +54,7 @@ export type AnyRoomJson = RoomJson<PlanetName, string>;
  */
 export type RoomState<P extends PlanetName, RoomId extends string> = Simplify<
   Omit<RoomJson<P, RoomId>, "items"> & {
-    items: Array<UnknownItemState<RoomId>>;
+    items: Array<UnknownItemInPlay<RoomId>>;
   }
 >;
 export type AnyRoomState = RoomState<PlanetName, string>;

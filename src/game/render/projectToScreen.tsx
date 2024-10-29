@@ -1,5 +1,5 @@
-import { Xyz } from "../../modelTypes";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { Xyz } from "@/utils/vectors";
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectToScreen = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>): Xyz => {

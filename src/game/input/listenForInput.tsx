@@ -1,4 +1,4 @@
-import { directions } from "@/modelTypes";
+import { directions } from "@/utils/vectors";
 import { isKey, Key } from "./keys";
 import { entries } from "@/utils/entries";
 import { GameState } from "../gameState/GameState";
@@ -16,10 +16,10 @@ export type Action = (typeof actions)[number];
 export type KeyAssignment = Record<Action, Key[]>;
 
 const originalKeyAssignment: KeyAssignment = {
-  right: ["ArrowRight", "P"],
-  towards: ["ArrowDown", "A"],
-  left: ["ArrowLeft", "O"],
-  away: ["ArrowUp"],
+  right: ["P"],
+  towards: ["A"],
+  left: ["O"],
+  away: ["Q"],
   jump: [" ", "M"],
   carry: ["C", "M"],
   fire: ["N"],

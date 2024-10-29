@@ -1,14 +1,15 @@
 import { Container } from "pixi.js";
-import { AnyRoomState, RoomState } from "../../modelTypes";
+import { AnyRoomState, RoomState } from "../../model/modelTypes";
 import { RenderOptions } from "../gameMain";
 import { makeClickPortal } from "./makeClickPortal";
-import { moveSpriteToXyz } from "./positionSprite";
-import { itemAppearances } from "../../ItemAppearances";
-import { JsonItem, ItemType } from "../../Item";
+import { moveContainerToXyz } from "./positionSprite";
+import { itemAppearances } from "./ItemAppearances";
+import { ItemType } from "../../model/Item";
 import { PlanetName } from "@/sprites/planets";
+import { ItemInPlay } from "@/model/ItemState";
 
 const renderItem = <T extends ItemType>(
-  item: JsonItem<T>,
+  item: ItemInPlay<T>,
   room: AnyRoomState,
 ) => {
   const itemAppearance = itemAppearances[item.type];
@@ -17,7 +18,25 @@ const renderItem = <T extends ItemType>(
     throw new Error(`item type "${item.type}" has no appearance`);
   }
 
-  return itemAppearance(item.config, room, item.position);
+  const container = new Container();
+
+  const renderInContainer = () => {
+    container.removeChildren();
+    const sprite = itemAppearance(item.config, room, item.position, item.state);
+    container.addChild(sprite);
+  };
+
+  const position = () => {
+    moveContainerToXyz(item.position, container, { giveZIndex: true });
+  };
+
+  renderInContainer();
+  position();
+
+  item.events.on("move", position);
+  item.events.on("stateChange", renderInContainer);
+
+  return container;
 };
 
 export function* renderItems<RoomId extends string>(
@@ -25,30 +44,19 @@ export function* renderItems<RoomId extends string>(
   options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   for (const item of room.items) {
-    const sprite = renderItem(item, room);
-
-    moveSpriteToXyz(item.position, sprite, { giveZIndex: true });
-
-    item.events.on("move", () => {
-      moveSpriteToXyz(item.position, sprite, { giveZIndex: true });
-    });
+    const rendering = renderItem(item, room);
 
     if (
       item.type === "teleporter" ||
       item.type === "doorFar" ||
       item.type === "doorNear"
     ) {
-      makeClickPortal(
-        (item as JsonItem<"teleporter", PlanetName, RoomId>).config.toRoom,
-        options,
-        sprite,
-      );
+      makeClickPortal(item.config.toRoom, options, rendering);
     }
-
     if (item.type === "lift" && room.roomAbove !== undefined) {
-      makeClickPortal(room.roomAbove, options, sprite);
+      makeClickPortal(room.roomAbove, options, rendering);
     }
 
-    yield sprite;
+    yield rendering;
   }
 }

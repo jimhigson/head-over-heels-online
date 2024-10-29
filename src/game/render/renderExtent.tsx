@@ -1,4 +1,4 @@
-import { AnyRoomState } from "../../modelTypes";
+import { AnyRoomState } from "../../model/modelTypes";
 import { wallTileSize } from "../../sprites/pixiSpriteSheet";
 import { projectBlockToScreen } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";

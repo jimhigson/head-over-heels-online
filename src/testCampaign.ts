@@ -1,8 +1,9 @@
-import { Campaign, Xy, type RoomJson, type RoomWalls } from "./modelTypes.ts";
+import { Campaign, type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
 import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
 import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
-import { JsonItem, UnknownJsonItem } from "./Item.ts";
+import { UnknownJsonItem } from "./model/Item.ts";
+import { Xy } from "./utils/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,

@@ -1,7 +1,7 @@
 import { EmptyObject } from "type-fest";
-import { Axis, Direction, PlayableCharacter, Xyz } from "./modelTypes";
-import { PlanetName, Wall } from "./sprites/planets";
-import { Emitter } from "mitt";
+import { PlayableCharacter } from "./modelTypes";
+import { PlanetName, Wall } from "../sprites/planets";
+import { Axis, Direction, Xyz } from "../utils/vectors";
 
 export type ItemType =
   | "door"
@@ -41,7 +41,7 @@ export type LoadedDoorConfig<RoomId extends string> = {
 };
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
-export type ItemConfig<P extends PlanetName, RoomId extends string> = {
+export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
     toRoom: RoomId;
     axis: Axis;
@@ -82,7 +82,6 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
   fish: {
     alive: boolean;
   };
-  spring: EmptyObject;
   player: {
     which: PlayableCharacter;
   };
@@ -121,7 +120,6 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
         which: "cyberman";
         charging: false;
       };
-  joystick: EmptyObject;
   "portable-block": {
     style: "drum" | "sticks" | "cube";
   };
@@ -133,11 +131,15 @@ export type ItemConfig<P extends PlanetName, RoomId extends string> = {
     // almost all are x-aligned
     slider?: boolean;
   };
-  charles: EmptyObject;
-  switch: EmptyObject;
-  "hush-puppy": EmptyObject;
-  ball: EmptyObject;
 };
+
+export type ItemConfig<
+  T extends ItemType,
+  P extends PlanetName,
+  RoomId extends string,
+> = T extends keyof ItemConfigMap<P, RoomId>
+  ? ItemConfigMap<P, RoomId>[T]
+  : EmptyObject;
 
 export type JsonItem<
   T extends ItemType,
@@ -145,22 +147,10 @@ export type JsonItem<
   RoomId extends string = string,
 > = {
   type: T;
-  config: ItemConfig<P, RoomId>[T];
+  config: ItemConfig<T, P, RoomId>;
   position: Xyz;
-};
-
-export type ItemState<
-  T extends ItemType,
-  P extends PlanetName = PlanetName,
-  RoomId extends string = string,
-> = JsonItem<T, P, RoomId> & {
-  events: Emitter<{ move: void }>;
 };
 
 export type UnknownJsonItem<RoomId extends string = string> = {
   [IT in ItemType]: JsonItem<IT, PlanetName, RoomId>;
-}[ItemType];
-
-export type UnknownItemState<RoomId extends string = string> = {
-  [IT in ItemType]: ItemState<IT, PlanetName, RoomId>;
 }[ItemType];

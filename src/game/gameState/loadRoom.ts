@@ -1,18 +1,20 @@
-import { UnknownItemState, UnknownJsonItem } from "@/Item";
-import { RoomState, RoomJson } from "@/modelTypes";
+import { UnknownJsonItem } from "@/model/Item";
+import { UnknownItemInPlay } from "@/model/ItemState";
+import { RoomState, RoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../render/projectToScreen";
 import mitt from "mitt";
 
 function* expandWalls<R extends string>(
   room: RoomJson<PlanetName, R>,
-): Generator<UnknownItemState<R>> {
+): Generator<UnknownItemInPlay<R>> {
   for (let i = room.size.y - 1; i >= 0; i--) {
     yield {
       type: "wall",
       config: { side: "left", style: room.walls.left[i] },
       position: { x: room.size.x, y: i, z: 0 },
       events: mitt(), // TODO: question if a wall really needs an event bus!
+      state: {},
     };
   }
 
@@ -22,15 +24,16 @@ function* expandWalls<R extends string>(
       config: { side: "away", style: room.walls.away[xi] },
       position: { x: xi, y: room.size.y, z: 0 },
       events: mitt(), // TODO: question if a wall really needs an event bus!
+      state: {},
     };
   }
 }
 
-function* loadItems<R extends string>(
-  items: UnknownJsonItem<R>[],
-): Generator<UnknownItemState<R>> {
-  for (const item of items.values()) {
-    if (item.type === "door") {
+function* loadItem<R extends string>(
+  item: UnknownJsonItem<R>,
+): Generator<UnknownItemInPlay<R>> {
+  switch (item.type) {
+    case "door": {
       const {
         config: { axis },
         position,
@@ -62,6 +65,7 @@ function* loadItems<R extends string>(
           ...crossAxisComponent,
         },
         events: mitt(),
+        state: {},
       };
       yield {
         ...item,
@@ -75,15 +79,35 @@ function* loadItems<R extends string>(
           ...crossAxisComponent,
         },
         events: mitt(),
+        state: {},
       };
-    } else yield { ...item, events: mitt() };
+      return;
+    }
+    case "player": {
+      yield {
+        ...item,
+        events: mitt(),
+        state: { facing: "towards", movement: "idle" },
+      };
+      return;
+    }
+    default:
+      yield { ...item, events: mitt(), state: {} };
+  }
+}
+
+function* loadItems<R extends string>(
+  items: UnknownJsonItem<R>[],
+): Generator<UnknownItemInPlay<R>> {
+  for (const item of items.values()) {
+    yield* loadItem(item);
   }
 }
 
 // moves everything from its 'block' position to its pixel xyz position
 function* positionItems<R extends string>(
-  items: Iterable<UnknownItemState<R>>,
-): Generator<UnknownItemState<R>> {
+  items: Iterable<UnknownItemInPlay<R>>,
+): Generator<UnknownItemInPlay<R>> {
   for (const i of items) {
     yield {
       ...i,

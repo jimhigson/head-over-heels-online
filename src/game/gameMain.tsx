@@ -1,5 +1,5 @@
 import { Application, Container } from "pixi.js";
-import { Campaign, RoomState, AnyRoomState } from "../modelTypes";
+import { Campaign, RoomState, AnyRoomState } from "../model/modelTypes";
 import { currentCharacter, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderExtent } from "./render/renderExtent";

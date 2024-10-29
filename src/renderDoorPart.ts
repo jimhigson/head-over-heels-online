@@ -2,10 +2,11 @@ import { Container } from "pixi.js";
 import { createSprite } from "./game/render/createSprite";
 import { doorTexture } from "./game/render/doorTexture";
 import { projectBlockToScreen } from "./game/render/projectToScreen";
-import { LoadedDoorConfig } from "./Item";
-import { Axis, AnyRoomState, Xyz, crossAxis } from "./modelTypes";
+import { LoadedDoorConfig } from "./model/Item";
+import { AnyRoomState } from "./model/modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
+import { Axis, crossAxis, Xyz } from "./utils/vectors";
 
 function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
   // drag legs etc

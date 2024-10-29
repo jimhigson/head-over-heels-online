@@ -22,7 +22,8 @@
         "shortcutted",
         "Spritesheet",
         "swop",
-        "teleporter"
+        "teleporter",
+        "xyzs"
     ],
     "typescript.tsdk": "node_modules/typescript/lib",
     "cSpell.language": "en-GB,en-US"

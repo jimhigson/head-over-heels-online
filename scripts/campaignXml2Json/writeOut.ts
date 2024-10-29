@@ -26,7 +26,7 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     tsFilename,
     `
     /* eslint-disable */
-    import type {Campaign, RoomJson} from "../../modelTypes.ts";\n
+    import type {Campaign, RoomJson} from "../../model/modelTypes.ts";\n
     
     export type OriginalCampaignRoomId = ${Object.keys(rooms)
       .map((rid) => `"${rid}"`)

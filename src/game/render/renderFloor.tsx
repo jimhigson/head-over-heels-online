@@ -1,15 +1,16 @@
 import { Container, Graphics } from "pixi.js";
-import { Direction, RoomState } from "../../modelTypes";
+import { RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
 import { RenderOptions } from "../gameMain";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
-import { moveSpriteToBlockXyz } from "./positionSprite";
+import { moveContainerToBlockXyz } from "./positionSprite";
 import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockToScreen } from "./projectToScreen";
 import { PlanetName } from "@/sprites/planets";
+import { Direction } from "@/utils/vectors";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 
@@ -47,7 +48,7 @@ export function* renderFloor<RoomId extends string>(
         }
 
         tilesContainer.addChild(
-          moveSpriteToBlockXyz(
+          moveContainerToBlockXyz(
             { x: ix, y: iy },
             createSprite({
               anchor: { x: 0.5, y: 1 },
@@ -76,7 +77,7 @@ export function* renderFloor<RoomId extends string>(
   const towardsEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
     towardsEdge.addChild(
-      moveSpriteToBlockXyz(
+      moveContainerToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
           pivot: { x: 7, y: 1 },
@@ -89,7 +90,7 @@ export function* renderFloor<RoomId extends string>(
   const rightEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
     rightEdge.addChild(
-      moveSpriteToBlockXyz(
+      moveContainerToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
         createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
       ),

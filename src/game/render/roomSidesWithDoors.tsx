@@ -1,5 +1,5 @@
-import { JsonItem } from "@/Item";
-import { AnyRoomState } from "@/modelTypes";
+import { JsonItem } from "@/model/Item";
+import { AnyRoomState } from "@/model/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 

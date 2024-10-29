@@ -1,10 +1,10 @@
-import { Campaign, PlayableCharacter, RoomJson } from "@/modelTypes";
+import { Campaign, PlayableCharacter, RoomJson } from "@/model/modelTypes";
 import { GameState } from "@/game/gameState/GameState";
 import { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom";
 import { fromAllEntries } from "@/utils/entries";
-import { ItemState } from "@/Item";
+import { ItemInPlay } from "@/model/ItemState";
 
 type StartingRooms<RoomId extends string> = Record<PlayableCharacter, RoomId>;
 
@@ -45,12 +45,12 @@ export const initGameState = <RoomId extends string>(
   const heelsRoom = loadRoom(campaign.rooms[starts.heels]);
 
   const headsItem = headsRoom.items.find(
-    (i): i is ItemState<"player"> =>
+    (i): i is ItemInPlay<"player"> =>
       i.type === "player" && i.config.which === "head",
   )!;
 
   const heelsItem = headsRoom.items.find(
-    (i): i is ItemState<"player"> =>
+    (i): i is ItemInPlay<"player"> =>
       i.type === "player" && i.config.which === "heels",
   )!;
   return {

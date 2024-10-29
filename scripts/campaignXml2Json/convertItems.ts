@@ -1,4 +1,4 @@
-import { ItemConfig, UnknownJsonItem } from "../../src/Item";
+import { ItemConfigMap, UnknownJsonItem } from "../../src/Item";
 import { addXy, crossAxis } from "../../src/modelTypes";
 import { PlanetName } from "../../src/sprites/planets";
 import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
@@ -31,7 +31,7 @@ const baddieConversions = {
   "bighead-robot": "computer-bot",
 } as const satisfies Record<
   string,
-  ItemConfig<PlanetName, string>["baddie"]["which"]
+  ItemConfigMap<PlanetName, string>["baddie"]["which"]
 >;
 
 export const convertItems = (
@@ -170,7 +170,7 @@ const convertItemsArray = (
         case "brick2": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<PlanetName, string>["block"]["style"]
+            ItemConfigMap<PlanetName, string>["block"]["style"]
           > = {
             brick1: "artificial",
             brick2: "organic",
@@ -192,7 +192,7 @@ const convertItemsArray = (
         case "vulcano": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfig<PlanetName, string>["deadly-block"]["style"]
+            ItemConfigMap<PlanetName, string>["deadly-block"]["style"]
           > = {
             vulcano: "volcano",
             spikes: "spikes",
@@ -229,7 +229,7 @@ const convertItemsArray = (
         case "handbag": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<PlanetName, string>["pickup"]["gives"]
+            ItemConfigMap<PlanetName, string>["pickup"]["gives"]
           > = {
             horn: "hooter",
             handbag: "bag",
@@ -290,7 +290,7 @@ const convertItemsArray = (
         case "stool": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<PlanetName, string>["movable-block"]["style"]
+            ItemConfigMap<PlanetName, string>["movable-block"]["style"]
           > = {
             cap: "puck",
             stool: "anvil",
@@ -316,7 +316,7 @@ const convertItemsArray = (
         case "another-portable-brick": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfig<PlanetName, string>["portable-block"]["style"]
+            ItemConfigMap<PlanetName, string>["portable-block"]["style"]
           > = {
             drum: "drum",
             "another-portable-brick": "cube",

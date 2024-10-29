@@ -1,27 +1,42 @@
 import { Application } from "pixi.js";
 import { currentCharacter, GameState } from "./gameState/GameState";
+import { addXyz, directions, directionVectors } from "@/utils/vectors";
 
 export const gameEngineTicks = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
 ) => {
   app.ticker.add((_time) => {
-    const {
-      inputState: { left, right, towards, away },
-    } = gameState;
+    const { inputState } = gameState;
 
     const currentCharacterItem = currentCharacter(gameState).item;
-    if (left) {
-      currentCharacterItem.position.x++;
-    } else if (right) {
-      currentCharacterItem.position.x--;
-    } else if (towards) {
-      currentCharacterItem.position.y--;
-    } else if (away) {
-      currentCharacterItem.position.y++;
+
+    let directionPressed = false;
+    dirs: for (const d of directions) {
+      if (inputState[d] === true) {
+        directionPressed = true;
+        if (
+          currentCharacterItem.state.facing !== d ||
+          currentCharacterItem.state.movement !== "moving"
+        ) {
+          currentCharacterItem.state.facing = d;
+          currentCharacterItem.state.movement = "moving";
+          currentCharacterItem.events.emit("stateChange");
+        }
+
+        currentCharacterItem.position = addXyz(
+          currentCharacterItem.position,
+          directionVectors[d],
+        );
+        currentCharacterItem.events.emit("move");
+        break dirs;
+      }
     }
-    if (left || right || away || towards) {
-      currentCharacterItem.events.emit("move");
+    if (!directionPressed) {
+      if (currentCharacterItem.state.movement !== "idle") {
+        currentCharacterItem.state.movement = "idle";
+        currentCharacterItem.events.emit("stateChange");
+      }
     }
   });
 };

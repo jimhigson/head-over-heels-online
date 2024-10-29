@@ -1,18 +1,21 @@
 import { Container } from "pixi.js";
-import { ItemType, ItemConfig } from "./Item";
-import { pixiSpriteSheet, TextureId } from "./sprites/pixiSpriteSheet";
-import { createSprite, CreateSpriteOptions } from "./game/render/createSprite";
-import { AnyRoomState, Xyz } from "./modelTypes";
-import { wallTextureId } from "./game/render/wallTextureId";
-import { PlanetName } from "./sprites/planets";
-import { renderDoorPart } from "./renderDoorPart";
+import { ItemType, ItemConfigMap, ItemConfig } from "../../model/Item";
+import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
+import { createSprite, CreateSpriteOptions } from "./createSprite";
+import { AnyRoomState } from "../../model/modelTypes";
+import { Xyz } from "@/utils/vectors";
+import { wallTextureId } from "./wallTextureId";
+import { PlanetName } from "../../sprites/planets";
+import { renderDoorPart } from "../../renderDoorPart";
+import { ItemState } from "@/model/ItemState";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
-  config: ItemConfig<PlanetName, string>[T],
+  config: ItemConfig<T, PlanetName, string>,
   room: AnyRoomState,
   position: Xyz,
+  state: ItemState<T>,
 ) => Container;
 
 const bubbles = {
@@ -72,7 +75,8 @@ export const itemAppearances: {
       texture: `barrier.${axis}`,
     }),
 
-  "deadly-block": ({ style }) => createSprite(style),
+  "deadly-block": ({ style }) =>
+    createSprite(style === "puck" ? "puck.deadly" : style),
 
   block: ({ style }) => createSprite(`block.${style}`),
 
@@ -116,7 +120,7 @@ export const itemAppearances: {
 
   pickup({ gives }) {
     const pickupIcons: Record<
-      ItemConfig<PlanetName, string>["pickup"]["gives"],
+      ItemConfigMap<PlanetName, string>["pickup"]["gives"],
       TextureId
     > = {
       shield: "bunny",
@@ -132,8 +136,24 @@ export const itemAppearances: {
     return createSprite(pickupIcons[gives]);
   },
 
-  player: ({ which }) => createSprite(`${which}.walking.toward.2`),
-  sceneryPlayer: ({ which }) => createSprite(`${which}.walking.toward.2`),
+  player({ which }, _room, _position, { facing, movement }) {
+    //if (which === "head") {
+    if (movement === "moving") {
+      return createSprite({
+        frames: pixiSpriteSheet.animations[`${which}.walking.${facing}`],
+        animationSpeed: 0.2,
+      });
+    } else {
+      if (which === "head" && (facing === "towards" || facing === "right")) {
+        return createSprite({
+          frames: pixiSpriteSheet.animations[`head.idle.${facing}`],
+          animationSpeed: 0.1,
+        });
+      }
+      return createSprite(`${which}.walking.${facing}.2`);
+    }
+  },
+  sceneryPlayer: ({ which }) => createSprite(`${which}.walking.towards.2`),
 
   baddie(options) {
     switch (options.which) {

@@ -1,4 +1,4 @@
-import { AnyRoomState } from "@/modelTypes";
+import { AnyRoomState } from "@/model/modelTypes";
 import { pixiSpriteSheet, type TextureId } from "@/sprites/pixiSpriteSheet";
 
 export const doorTexture = (

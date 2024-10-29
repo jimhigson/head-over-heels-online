@@ -1,4 +1,4 @@
-import { RoomState } from "@/modelTypes";
+import { RoomState } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { Container } from "pixi.js";
 import { RenderOptions } from "./gameMain";

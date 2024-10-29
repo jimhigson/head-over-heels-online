@@ -5,8 +5,9 @@ import {
   type Texture,
 } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
-import { SpriteSize, Direction, Xy } from "../modelTypes";
+import { SpriteSize } from "../model/modelTypes";
 import { PlanetName, planets, Wall } from "@/sprites/planets";
+import { Xy, Direction } from "@/utils/vectors";
 
 export const blockSizePx = { w: 16, d: 16, h: 12 };
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
@@ -292,7 +293,7 @@ const spritesheetData = {
     // Head
     // ------------
     ...animatedSeries(
-      "head.walking.toward",
+      "head.walking.towards",
       3,
       { x: 4, y: 266 },
       smallItemTextureSize,
@@ -324,7 +325,7 @@ const spritesheetData = {
     ...animatedSeries(
       "head.idle.right",
       2,
-      { x: 55, y: 304 },
+      { x: 4, y: 329 },
       smallItemTextureSize,
     ),
     "head.falling.towards": {
@@ -337,7 +338,7 @@ const spritesheetData = {
     // Heels
     // ------------
     ...animatedSeries(
-      "heels.walking.toward",
+      "heels.walking.towards",
       3,
       { x: 159, y: 266 },
       smallItemTextureSize,
@@ -446,6 +447,9 @@ const spritesheetData = {
       frame: { x: 84, y: 4, ...smallItemTextureSize },
     },
     puck: {
+      frame: { x: 111, y: 367, ...smallItemTextureSize },
+    },
+    "puck.deadly": {
       frame: { x: 111, y: 392, ...smallItemTextureSize },
     },
   },
@@ -464,6 +468,55 @@ const spritesheetData = {
       "helicopter-bug.4",
     ],
     bubbles: ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/],
+
+    "head.walking.left": [
+      "head.walking.left.1",
+      "head.walking.left.2",
+      "head.walking.left.3",
+    ],
+    "head.walking.right": [
+      "head.walking.right.1",
+      "head.walking.right.2",
+      "head.walking.right.3",
+    ],
+    "head.walking.towards": [
+      "head.walking.towards.1",
+      "head.walking.towards.2",
+      "head.walking.towards.3",
+    ],
+    "head.walking.away": [
+      "head.walking.away.1",
+      "head.walking.away.2",
+      "head.walking.away.3",
+    ],
+    "head.idle.right": [
+      ...new Array(20).fill("head.idle.right.1"),
+      "head.idle.right.2",
+    ],
+    "head.idle.towards": [
+      ...new Array(20).fill("head.idle.towards.1"),
+      "head.idle.towards.2",
+    ],
+    "heels.walking.left": [
+      "heels.walking.left.1",
+      "heels.walking.left.2",
+      "heels.walking.left.3",
+    ],
+    "heels.walking.right": [
+      "heels.walking.right.1",
+      "heels.walking.right.2",
+      "heels.walking.right.3",
+    ],
+    "heels.walking.towards": [
+      "heels.walking.towards.1",
+      "heels.walking.towards.2",
+      "heels.walking.towards.3",
+    ],
+    "heels.walking.away": [
+      "heels.walking.away.1",
+      "heels.walking.away.2",
+      "heels.walking.away.3",
+    ],
   },
   meta: { scale: 1 },
 };
