@@ -2,8 +2,10 @@ import { Application } from "pixi.js";
 import { currentCharacter, GameState } from "./gameState/GameState";
 import { addXyz, directions, directionVectors, Xyz } from "@/utils/vectors";
 import { keys } from "@/utils/entries";
-import { ItemInPlay, ItemState, UnknownItemInPlay } from "@/model/ItemState";
+import { ItemInPlay, ItemState, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { ItemType } from "@/model/Item";
+import { UnknownRoomState } from "@/model/modelTypes";
+import { collision1toMany } from "./collision/aabbCollision";
 
 const maybeUpdateItemState = <T extends ItemType>(
   item: ItemInPlay<T>,
@@ -30,8 +32,21 @@ const maybeUpdateItemState = <T extends ItemType>(
   }
 };
 
-const moveItem = (item: UnknownItemInPlay, xyzDelta: Xyz) => {
-  // TODO: allow to check for positions first
+/**
+ *
+ * @param item
+ * @param xyzDelta
+ * @param inRoom the room the item is moving in
+ */
+const moveItem = (
+  item: UnknownItemInPlay,
+  xyzDelta: Xyz,
+  room: UnknownRoomState,
+) => {
+  const collisions = collision1toMany(item, room.items);
+
+  console.log("collisions", collisions);
+
   item.position = addXyz(item.position, xyzDelta);
   item.events.emit("move");
 };
@@ -43,7 +58,8 @@ export const gameEngineTicks = <RoomId extends string>(
   app.ticker.add((_time) => {
     const { inputState } = gameState;
 
-    const currentCharacterItem = currentCharacter(gameState).item;
+    const character = currentCharacter(gameState);
+    const currentCharacterItem = character.item;
 
     const directionPressed = directions.find((d) => {
       return inputState[d] === true;
@@ -54,7 +70,11 @@ export const gameEngineTicks = <RoomId extends string>(
         facing: directionPressed,
         movement: "moving",
       });
-      moveItem(currentCharacterItem, directionVectors[directionPressed]);
+      moveItem(
+        currentCharacterItem,
+        directionVectors[directionPressed],
+        character.roomState,
+      );
     } else {
       maybeUpdateItemState(currentCharacterItem, { movement: "idle" });
     }

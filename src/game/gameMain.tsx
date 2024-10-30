@@ -1,5 +1,5 @@
 import { Application, Container } from "pixi.js";
-import { Campaign, RoomState, AnyRoomState } from "../model/modelTypes";
+import { Campaign, RoomState, UnknownRoomState } from "../model/modelTypes";
 import { currentCharacter, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderExtent } from "./render/renderExtent";
@@ -11,13 +11,10 @@ import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
 import { renderRoom } from "./renderRoom";
 import { gameEngineTicks } from "./gameEngineTicks";
-
-export type RenderOptions<RoomId extends string> = {
-  onPortalClick: (roomId: RoomId) => void;
-};
+import { RenderOptions } from "./RenderOptions";
 
 const centreRoomInRendering = (
-  room: AnyRoomState,
+  room: UnknownRoomState,
   container: Container,
 ): void => {
   const { leftSide, rightSide, frontSide, top } = renderExtent(room);
@@ -73,10 +70,12 @@ export const gameMain = async <RoomId extends string>(
   worldContainer.x = zxSpectrumResolution.width / 2;
   worldContainer.y = zxSpectrumResolution.height * 0.7;
 
+  // TODO: externalise as parm to gameMain
   const renderOptions: RenderOptions<RoomId> = {
     onPortalClick(roomId) {
       viewRoom(loadRoom(campaign.rooms[roomId]));
     },
+    showBoundingBoxes: true,
   };
 
   const viewRoom = (loadedRoom: RoomState<PlanetName, RoomId>) => {

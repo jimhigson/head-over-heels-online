@@ -1,9 +1,10 @@
 import { Container } from "pixi.js";
-import { RenderOptions } from "../gameMain";
+import { RenderOptions } from "../RenderOptions";
+import { SetRequired } from "type-fest";
 
 export const makeClickPortal = <RoomId extends string>(
   toRoom: RoomId,
-  { onPortalClick }: RenderOptions<RoomId>,
+  { onPortalClick }: SetRequired<RenderOptions<RoomId>, "onPortalClick">,
   ...sprite: Container[]
 ) => {
   sprite.forEach((sprite) => {
@@ -13,14 +14,3 @@ export const makeClickPortal = <RoomId extends string>(
     });
   });
 };
-
-export function* makeClickPortals<RoomId extends string>(
-  toRoom: RoomId,
-  options: RenderOptions<RoomId>,
-  sprites: Generator<Container>,
-): Generator<Container> {
-  for (const s of sprites) {
-    makeClickPortal(toRoom, options, s);
-    yield s;
-  }
-}

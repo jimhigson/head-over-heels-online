@@ -2,18 +2,18 @@ import { Container } from "pixi.js";
 import { ItemType, ItemConfigMap, ItemConfig } from "../../model/Item";
 import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./createSprite";
-import { AnyRoomState } from "../../model/modelTypes";
+import { UnknownRoomState } from "../../model/modelTypes";
 import { Xyz } from "@/utils/vectors";
 import { wallTextureId } from "./wallTextureId";
 import { PlanetName } from "../../sprites/planets";
 import { renderDoorPart } from "../../renderDoorPart";
-import { ItemState } from "@/model/ItemState";
+import { ItemState } from "@/model/ItemInPlay";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
   // appearances don't care about the romId generic so give it string
   config: ItemConfig<T, PlanetName, string>,
-  room: AnyRoomState,
+  room: UnknownRoomState,
   position: Xyz,
   state: ItemState<T>,
 ) => Container;

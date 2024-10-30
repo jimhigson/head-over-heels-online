@@ -1,7 +1,7 @@
 import { RoomState } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { Container } from "pixi.js";
-import { RenderOptions } from "./gameMain";
+import { RenderOptions } from "./RenderOptions";
 import { iterateToContainer } from "./iterateToContainer";
 import { mainPaletteSwapFilters } from "./render/paletteSwapFilters";
 import { renderFloor } from "./render/renderFloor";

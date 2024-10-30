@@ -1,5 +1,5 @@
 import { hintColours, Shades } from "@/hintColours";
-import { AnyRoomState } from "@/model/modelTypes";
+import { UnknownRoomState } from "@/model/modelTypes";
 import { ColorReplaceFilter } from "pixi-filters";
 
 const paletteSwapFilters = (shades: Shades) => [
@@ -17,9 +17,9 @@ const paletteSwapFilters = (shades: Shades) => [
 ];
 
 export const edgePaletteSwapFilters = (
-  room: AnyRoomState,
+  room: UnknownRoomState,
   side: "right" | "towards",
 ) => paletteSwapFilters(hintColours[room.color].edges[side]);
 
-export const mainPaletteSwapFilters = (room: AnyRoomState) =>
+export const mainPaletteSwapFilters = (room: UnknownRoomState) =>
   paletteSwapFilters(hintColours[room.color].main);

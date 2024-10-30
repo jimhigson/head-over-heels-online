@@ -1,7 +1,7 @@
 import { Simplify } from "type-fest";
 import { KeyAssignment } from "../input/listenForInput";
 import { ItemType } from "../../model/Item";
-import { ItemInPlay } from "@/model/ItemState";
+import { ItemInPlay } from "@/model/ItemInPlay";
 import { RoomState, PlayableCharacter } from "../../model/modelTypes";
 import { PlanetName } from "../../sprites/planets";
 import { InputState } from "../input/InputState";

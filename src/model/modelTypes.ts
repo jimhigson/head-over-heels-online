@@ -1,7 +1,7 @@
 import { ZxSpectrumRoomColour } from "../originalGame";
 import { SpritesheetFrameData } from "pixi.js";
 import { UnknownJsonItem } from "./Item";
-import { UnknownItemInPlay } from "./ItemState";
+import { UnknownItemInPlay } from "./ItemInPlay";
 import { Simplify } from "type-fest";
 import { PlanetName, Wall } from "../sprites/planets";
 import { Xy } from "../utils/vectors";
@@ -57,7 +57,7 @@ export type RoomState<P extends PlanetName, RoomId extends string> = Simplify<
     items: Array<UnknownItemInPlay<RoomId>>;
   }
 >;
-export type AnyRoomState = RoomState<PlanetName, string>;
+export type UnknownRoomState = RoomState<PlanetName, string>;
 
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<PlanetName, RoomId>>;

@@ -1,8 +1,8 @@
-import { AnyRoomState } from "@/model/modelTypes";
+import { UnknownRoomState } from "@/model/modelTypes";
 import { pixiSpriteSheet, type TextureId } from "@/sprites/pixiSpriteSheet";
 
 export const doorTexture = (
-  room: AnyRoomState,
+  room: UnknownRoomState,
   axis: "x" | "y",
   nearness: "near" | "far",
 ): TextureId => {

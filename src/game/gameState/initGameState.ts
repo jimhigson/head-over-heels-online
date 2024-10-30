@@ -4,7 +4,7 @@ import { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom";
 import { fromAllEntries } from "@/utils/entries";
-import { ItemInPlay } from "@/model/ItemState";
+import { ItemInPlay } from "@/model/ItemInPlay";
 
 type StartingRooms<RoomId extends string> = Record<PlayableCharacter, RoomId>;
 

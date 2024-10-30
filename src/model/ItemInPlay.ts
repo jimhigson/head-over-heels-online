@@ -1,5 +1,5 @@
 import { PlanetName } from "@/sprites/planets";
-import { Direction } from "@/utils/vectors";
+import { Aabb, Direction } from "@/utils/vectors";
 import { Emitter } from "mitt";
 import { ItemType, JsonItem } from "./Item";
 
@@ -24,8 +24,10 @@ export type ItemInPlay<
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
 > = JsonItem<T, P, RoomId> & {
-  events: Emitter<{ move: void; stateChange: void }>;
-  state: ItemState<T>;
+  readonly events: Emitter<{ move: void; stateChange: void }>;
+  readonly state: ItemState<T>;
+  /** the bounding box of this item for the sake of collision detection */
+  readonly aabb?: Aabb;
 };
 
 export type UnknownItemInPlay<RoomId extends string = string> = {

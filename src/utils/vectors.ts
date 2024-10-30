@@ -34,6 +34,8 @@ export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
     xyz,
   );
 
+export const originXyz: Xyz = { x: 0, y: 0, z: 0 };
+
 export type Xyz = {
   x: number;
   y: number;
@@ -45,3 +47,7 @@ export type XyMaybeZ = {
   z?: number;
 };
 export type Axis = "x" | "y";
+
+//export type Aabb = [Xyz, Xyz];
+/** how big is the collision box around an item? */
+export type Aabb = Xyz;

@@ -2,7 +2,7 @@ import { Container, Graphics } from "pixi.js";
 import { RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { makeClickPortal } from "./makeClickPortal";
-import { RenderOptions } from "../gameMain";
+import { hasPortalClick, RenderOptions } from "../RenderOptions";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
 import { moveContainerToBlockXyz } from "./positionSprite";
@@ -97,7 +97,7 @@ export function* renderFloor<RoomId extends string>(
     );
   }
   rightEdge.filters = edgePaletteSwapFilters(room, "right");
-  if (room.roomBelow) {
+  if (room.roomBelow && hasPortalClick(options)) {
     makeClickPortal(
       room.roomBelow,
       options,

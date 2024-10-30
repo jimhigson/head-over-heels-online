@@ -1,20 +1,23 @@
 import { UnknownJsonItem } from "@/model/Item";
-import { UnknownItemInPlay } from "@/model/ItemState";
+import { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { RoomState, RoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../render/projectToScreen";
 import mitt from "mitt";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { boundingBoxForItem } from "../collision/boundingBoxes";
 
-function* expandWalls<R extends string>(
+function* wallsAsItems<R extends string>(
   room: RoomJson<PlanetName, R>,
 ): Generator<UnknownItemInPlay<R>> {
   for (let i = room.size.y - 1; i >= 0; i--) {
     yield {
       type: "wall",
       config: { side: "left", style: room.walls.left[i] },
-      position: { x: room.size.x, y: i, z: 0 },
+      position: blockXyzToFineXyz({ x: room.size.x, y: i, z: 0 }),
       events: mitt(), // TODO: question if a wall really needs an event bus!
       state: {},
+      aabb: { x: 999, y: blockSizePx.d, z: 999 },
     };
   }
 
@@ -22,11 +25,14 @@ function* expandWalls<R extends string>(
     yield {
       type: "wall",
       config: { side: "away", style: room.walls.away[xi] },
-      position: { x: xi, y: room.size.y, z: 0 },
+      position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
       events: mitt(), // TODO: question if a wall really needs an event bus!
       state: {},
+      aabb: { x: blockSizePx.w, y: 999, z: 999 },
     };
   }
+
+  // TODO: invisible walls
 }
 
 function* loadItem<R extends string>(
@@ -59,13 +65,14 @@ function* loadItem<R extends string>(
           inHiddenWall,
         },
         type: "doorFar",
-        position: {
+        position: blockXyzToFineXyz({
           ...item.position,
           [axis]: item.position[axis] + 1,
           ...crossAxisComponent,
-        },
+        }),
         events: mitt(),
         state: {},
+        aabb: { x: 8, y: 8, z: 50 },
       };
       yield {
         ...item,
@@ -74,12 +81,13 @@ function* loadItem<R extends string>(
           inHiddenWall,
         },
         type: "doorNear",
-        position: {
+        position: blockXyzToFineXyz({
           ...item.position,
           ...crossAxisComponent,
-        },
+        }),
         events: mitt(),
         state: {},
+        aabb: { x: 8, y: 8, z: 50 },
       };
       return;
     }
@@ -88,11 +96,19 @@ function* loadItem<R extends string>(
         ...item,
         events: mitt(),
         state: { facing: "towards", movement: "idle" },
+        aabb: boundingBoxForItem(item),
+        position: blockXyzToFineXyz(item.position),
       };
       return;
     }
     default:
-      yield { ...item, events: mitt(), state: {} };
+      yield {
+        ...item,
+        events: mitt(),
+        state: {},
+        aabb: boundingBoxForItem(item),
+        position: blockXyzToFineXyz(item.position),
+      };
   }
 }
 
@@ -101,18 +117,6 @@ function* loadItems<R extends string>(
 ): Generator<UnknownItemInPlay<R>> {
   for (const item of items.values()) {
     yield* loadItem(item);
-  }
-}
-
-// moves everything from its 'block' position to its pixel xyz position
-function* positionItems<R extends string>(
-  items: Iterable<UnknownItemInPlay<R>>,
-): Generator<UnknownItemInPlay<R>> {
-  for (const i of items) {
-    yield {
-      ...i,
-      position: blockXyzToFineXyz(i.position),
-    };
   }
 }
 
@@ -125,10 +129,8 @@ export const loadRoom = <P extends PlanetName, R extends string>(
   return {
     ...roomJson,
     items: [
-      ...positionItems([
-        ...loadItems(Object.values(roomJson.items)),
-        ...expandWalls(roomJson),
-      ]),
+      ...loadItems(Object.values(roomJson.items)),
+      ...wallsAsItems(roomJson),
     ],
   };
 };

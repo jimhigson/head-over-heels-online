@@ -1,9 +1,9 @@
-import { AnyRoomState } from "../../model/modelTypes";
+import { UnknownRoomState } from "../../model/modelTypes";
 import { wallTileSize } from "@/sprites/textureSizes";
 import { projectBlockToScreen } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 
-export const renderExtent = (loadedRoom: AnyRoomState) => {
+export const renderExtent = (loadedRoom: UnknownRoomState) => {
   const sidesWithDoors = roomSidesWithDoors(loadedRoom);
 
   const blockXMin = sidesWithDoors.right ? -0.5 : 0;
