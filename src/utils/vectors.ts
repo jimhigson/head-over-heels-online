@@ -1,11 +1,11 @@
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
 
-export const directionVectors: Record<Direction, Xy> = {
-  away: { x: 0, y: 1 },
-  left: { x: 1, y: 0 },
-  right: { x: -1, y: 0 },
-  towards: { x: 0, y: -1 },
+export const directionVectors: Record<Direction, Xyz> = {
+  away: { x: 0, y: 1, z: 0 },
+  left: { x: 1, y: 0, z: 0 },
+  right: { x: -1, y: 0, z: 0 },
+  towards: { x: 0, y: -1, z: 0 },
 };
 
 export type Xy = {

@@ -1,5 +1,5 @@
 import { AnyRoomState } from "../../model/modelTypes";
-import { wallTileSize } from "../../sprites/pixiSpriteSheet";
+import { wallTileSize } from "@/sprites/textureSizes";
 import { projectBlockToScreen } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 

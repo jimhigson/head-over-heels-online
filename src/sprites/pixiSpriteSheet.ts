@@ -1,23 +1,26 @@
 import {
   Assets,
   Spritesheet,
+  SpritesheetData,
   SpritesheetFrameData,
   type Texture,
 } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
-import { SpriteSize } from "../model/modelTypes";
 import { PlanetName, planets, Wall } from "@/sprites/planets";
-import { Xy, Direction } from "@/utils/vectors";
+import {
+  seriesOfAnimationFrameTextures,
+  fourDirections,
+} from "./spriteGenerators";
+import {
+  wallTileSize,
+  floorTileSize,
+  doorTextureSize,
+  largeItemTextureSize,
+  smallItemTextureSize,
+} from "./textureSizes";
+import { playableSpritesheetData } from "./playableSpritesheetData";
 
 export const blockSizePx = { w: 16, d: 16, h: 12 };
-export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
-export const wallTileSize = { w: 16, h: 55 } as const satisfies SpriteSize;
-export const doorTextureSize = { w: 24, h: 56 };
-export const doorLegsTextureSize = { w: 16, h: 32 };
-
-export const largeItemTextureSize = { w: 32, h: 28 };
-export const smallItemTextureSize = { w: 24, h: 24 };
-
 // doors are position so the face we can see (maybe facing away from the room) is on the position
 // given. This means that doors facing towards the camera need to be given negative x or y (value of -0.5)
 export const doorTexturePivot = {
@@ -86,76 +89,6 @@ const backgroundFrames = <TPlanet extends PlanetName>(
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
   ) as Record<BackgroundTextureId<TPlanet>, SpritesheetFrameData>;
-};
-
-type DirectionalTexture<TName extends string> = `${TName}.${Direction}`;
-const fourDirections = <TName extends string>(
-  name: TName,
-
-  { x: startX, y: startY }: Xy,
-  textureSize: SpriteSize,
-): Record<`${TName}.${Direction}`, SpritesheetFrameData> => {
-  function* generator(): Generator<
-    [`${TName}.${Direction}`, SpritesheetFrameData]
-  > {
-    yield [`${name}.left`, { frame: { x: startX, y: startY, ...textureSize } }];
-    yield [
-      `${name}.away`,
-      { frame: { x: startX + textureSize.w + 2, y: startY, ...textureSize } },
-    ];
-    yield [
-      `${name}.towards`,
-      { frame: { x: startX, y: startY + textureSize.h + 2, ...textureSize } },
-    ];
-    yield [
-      `${name}.right`,
-      {
-        frame: {
-          x: startX + textureSize.w + 2,
-          y: startY + textureSize.h + 2,
-          ...textureSize,
-        },
-      },
-    ];
-  }
-
-  return Object.fromEntries(generator()) as Record<
-    DirectionalTexture<TName>,
-    SpritesheetFrameData
-  >;
-};
-
-//technically not all our animations have four frames but that's the maximum and it'll do ok
-// could be a bit smarter here really
-type AnimatedTextureName<TName extends string> =
-  `${TName}.${"1" | "2" | "3" | "4"}`;
-const animatedSeries = <TName extends string>(
-  name: TName,
-  n: number,
-  { x: startX, y: startY }: Xy,
-  textureSize: SpriteSize,
-): Record<AnimatedTextureName<TName>, SpritesheetFrameData> => {
-  function* generator(): Generator<
-    [AnimatedTextureName<TName>, SpritesheetFrameData]
-  > {
-    for (let i = 0; i < n; i++) {
-      yield [
-        `${name}.${i + 1}` as AnimatedTextureName<TName>,
-        {
-          frame: {
-            x: startX + i * (textureSize.w + 1),
-            y: startY,
-            ...textureSize,
-          },
-        },
-      ];
-    }
-  }
-
-  return Object.fromEntries(generator()) as Record<
-    AnimatedTextureName<TName>,
-    SpritesheetFrameData
-  >;
 };
 
 const spritesTexture = await Assets.load<Texture>(spritesheetUrl);
@@ -282,7 +215,12 @@ const spritesheetData = {
     bag: {
       frame: { x: 259, y: 358, ...smallItemTextureSize },
     },
-    ...animatedSeries("fish", 2, { x: 259, y: 388 }, smallItemTextureSize),
+    ...seriesOfAnimationFrameTextures(
+      "fish",
+      2,
+      { x: 259, y: 388 },
+      smallItemTextureSize,
+    ),
     "spring.compressed": {
       frame: { x: 4, y: 421, ...smallItemTextureSize },
     },
@@ -292,80 +230,21 @@ const spritesheetData = {
 
     // Head
     // ------------
-    ...animatedSeries(
-      "head.walking.towards",
-      3,
-      { x: 4, y: 266 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "head.walking.right",
-      3,
-      { x: 80, y: 266 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "head.walking.left",
-      3,
-      { x: 4, y: 240 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "head.walking.away",
-      3,
-      { x: 80, y: 240 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "head.idle.towards",
-      2,
-      { x: 4, y: 304 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "head.idle.right",
-      2,
-      { x: 4, y: 329 },
-      smallItemTextureSize,
-    ),
-    "head.falling.towards": {
-      frame: { x: 107, y: 304, ...smallItemTextureSize },
-    },
-    "head.falling.right": {
-      frame: { x: 132, y: 304, ...smallItemTextureSize },
-    },
 
-    // Heels
-    // ------------
-    ...animatedSeries(
-      "heels.walking.towards",
-      3,
-      { x: 159, y: 266 },
+    ...seriesOfAnimationFrameTextures(
+      "lift",
+      4,
+      { x: 259, y: 474 },
       smallItemTextureSize,
     ),
-    ...animatedSeries(
-      "heels.walking.right",
-      3,
-      { x: 235, y: 266 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "heels.walking.left",
-      3,
-      { x: 159, y: 240 },
-      smallItemTextureSize,
-    ),
-    ...animatedSeries(
-      "heels.walking.away",
-      3,
-      { x: 235, y: 240 },
-      smallItemTextureSize,
-    ),
-
-    ...animatedSeries("lift", 4, { x: 259, y: 474 }, smallItemTextureSize),
     "lift.static": { frame: { x: 359, y: 474, ...smallItemTextureSize } },
 
-    ...animatedSeries("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),
+    ...seriesOfAnimationFrameTextures(
+      "dalek",
+      2,
+      { x: 4, y: 4 },
+      smallItemTextureSize,
+    ),
 
     "headless-base": {
       frame: { x: 57, y: 4, ...smallItemTextureSize },
@@ -411,29 +290,39 @@ const spritesheetData = {
     ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
     ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
 
-    ...animatedSeries("bubbles", 3, { x: 4, y: 107 }, smallItemTextureSize),
+    ...seriesOfAnimationFrameTextures(
+      "bubbles",
+      3,
+      { x: 4, y: 107 },
+      smallItemTextureSize,
+    ),
 
-    ...animatedSeries("turtle.left", 2, { x: 4, y: 137 }, smallItemTextureSize),
-    ...animatedSeries(
+    ...seriesOfAnimationFrameTextures(
+      "turtle.left",
+      2,
+      { x: 4, y: 137 },
+      smallItemTextureSize,
+    ),
+    ...seriesOfAnimationFrameTextures(
       "turtle.away",
       2,
       { x: 55, y: 137 },
       smallItemTextureSize,
     ),
-    ...animatedSeries(
+    ...seriesOfAnimationFrameTextures(
       "turtle.towards",
       2,
       { x: 4, y: 163 },
       smallItemTextureSize,
     ),
-    ...animatedSeries(
+    ...seriesOfAnimationFrameTextures(
       "turtle.right",
       2,
       { x: 55, y: 163 },
       smallItemTextureSize,
     ),
 
-    ...animatedSeries(
+    ...seriesOfAnimationFrameTextures(
       "helicopter-bug",
       4,
       { x: 4, y: 194 },
@@ -452,6 +341,7 @@ const spritesheetData = {
     "puck.deadly": {
       frame: { x: 111, y: 392, ...smallItemTextureSize },
     },
+    ...playableSpritesheetData.frames,
   },
   animations: {
     fish: ["fish.1", "fish.2"],
@@ -468,58 +358,10 @@ const spritesheetData = {
       "helicopter-bug.4",
     ],
     bubbles: ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/],
-
-    "head.walking.left": [
-      "head.walking.left.1",
-      "head.walking.left.2",
-      "head.walking.left.3",
-    ],
-    "head.walking.right": [
-      "head.walking.right.1",
-      "head.walking.right.2",
-      "head.walking.right.3",
-    ],
-    "head.walking.towards": [
-      "head.walking.towards.1",
-      "head.walking.towards.2",
-      "head.walking.towards.3",
-    ],
-    "head.walking.away": [
-      "head.walking.away.1",
-      "head.walking.away.2",
-      "head.walking.away.3",
-    ],
-    "head.idle.right": [
-      ...new Array(20).fill("head.idle.right.1"),
-      "head.idle.right.2",
-    ],
-    "head.idle.towards": [
-      ...new Array(20).fill("head.idle.towards.1"),
-      "head.idle.towards.2",
-    ],
-    "heels.walking.left": [
-      "heels.walking.left.1",
-      "heels.walking.left.2",
-      "heels.walking.left.3",
-    ],
-    "heels.walking.right": [
-      "heels.walking.right.1",
-      "heels.walking.right.2",
-      "heels.walking.right.3",
-    ],
-    "heels.walking.towards": [
-      "heels.walking.towards.1",
-      "heels.walking.towards.2",
-      "heels.walking.towards.3",
-    ],
-    "heels.walking.away": [
-      "heels.walking.away.1",
-      "heels.walking.away.2",
-      "heels.walking.away.3",
-    ],
+    ...playableSpritesheetData.animations,
   },
   meta: { scale: 1 },
-};
+} as const satisfies SpritesheetData;
 
 export const pixiSpriteSheet = new Spritesheet(spritesTexture, spritesheetData);
 

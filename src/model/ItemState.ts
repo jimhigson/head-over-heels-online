@@ -1,7 +1,6 @@
 import { PlanetName } from "@/sprites/planets";
 import { Direction } from "@/utils/vectors";
 import { Emitter } from "mitt";
-import { EmptyObject } from "type-fest";
 import { ItemType, JsonItem } from "./Item";
 
 export type ItemStateMap = {
@@ -9,6 +8,11 @@ export type ItemStateMap = {
     facing: Direction;
     movement: "moving" | "idle";
   };
+};
+
+// type-fest's EmptyObject was creating issues
+type EmptyObject = {
+  [n in never]: unknown;
 };
 
 export type ItemState<T extends ItemType> = T extends keyof ItemStateMap
