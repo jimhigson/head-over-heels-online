@@ -45,7 +45,7 @@ const maybeRenderBB = <T extends ItemType, RoomId extends string>(
         projectToScreen({ x: item.aabb.x, y: item.aabb.y, z: item.aabb.z }),
         projectToScreen({ y: item.aabb.y, z: item.aabb.z }),
       ])
-      .stroke({ width: 0.5, color: "rgba(255,255,255,0.6)" });
+      .stroke({ width: 0.5, color: "rgba(255,255,255,0.5)" });
     //itemRendering.alpha = 0.8;
     containerWithBB.addChild(itemRendering);
     containerWithBB.addChild(bbGraphics);
