@@ -10,29 +10,71 @@ import { boundingBoxForItem } from "../collision/boundingBoxes";
 function* wallsAsItems<R extends string>(
   room: RoomJson<PlanetName, R>,
 ): Generator<UnknownItemInPlay<R>> {
-  for (let i = room.size.y - 1; i >= 0; i--) {
-    yield {
-      type: "wall",
-      config: { side: "left", style: room.walls.left[i] },
-      position: blockXyzToFineXyz({ x: room.size.x, y: i, z: 0 }),
-      events: mitt(), // TODO: question if a wall really needs an event bus!
-      state: {},
-      aabb: { x: 999, y: blockSizePx.d, z: 999 },
-    };
+  // left/right sides:
+  for (let yi = room.size.y - 1; yi >= 0; yi--) {
+    const style = room.walls.left[yi];
+    if (style !== "none")
+      yield {
+        type: "wall",
+        config: { side: "left", style },
+        position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
+        events: mitt(), // TODO: question if a wall really needs an event bus!
+        state: {},
+        aabb: { x: 999, y: blockSizePx.d, z: 999 },
+      };
+
+    const skipInvisibleWall =
+      Object.values(room.items).find(
+        (i) =>
+          i.type === "door" &&
+          i.config.axis === "y" &&
+          i.position.x === 0 &&
+          (i.position.y === yi || i.position.y + 1 === yi),
+      ) !== undefined;
+
+    if (!skipInvisibleWall)
+      yield {
+        type: "wall",
+        config: { side: "left", style: "none" },
+        position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
+        events: mitt(), // TODO: question if a wall really needs an event bus!
+        state: {},
+        aabb: { x: -999, y: blockSizePx.d, z: 999 },
+      };
   }
 
+  // towards/away sides:
   for (let xi = room.size.x - 1; xi >= 0; xi--) {
-    yield {
-      type: "wall",
-      config: { side: "away", style: room.walls.away[xi] },
-      position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
-      events: mitt(), // TODO: question if a wall really needs an event bus!
-      state: {},
-      aabb: { x: blockSizePx.w, y: 999, z: 999 },
-    };
-  }
+    const style = room.walls.away[xi];
+    if (style !== "none")
+      yield {
+        type: "wall",
+        config: { side: "away", style },
+        position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
+        events: mitt(), // TODO: question if a wall really needs an event bus!
+        state: {},
+        aabb: { x: blockSizePx.w, y: 999, z: 999 },
+      };
 
-  // TODO: invisible walls
+    const skipInvisibleWall =
+      Object.values(room.items).find(
+        (i) =>
+          i.type === "door" &&
+          i.config.axis === "x" &&
+          (i.position.x === xi || i.position.x + 1 === xi) &&
+          i.position.y === 0,
+      ) !== undefined;
+
+    if (!skipInvisibleWall)
+      yield {
+        type: "wall",
+        config: { side: "left", style: "none" },
+        position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
+        events: mitt(), // TODO: question if a wall really needs an event bus!
+        state: {},
+        aabb: { x: blockSizePx.w, y: -999, z: 999 },
+      };
+  }
 }
 
 function* loadItem<R extends string>(
@@ -67,12 +109,12 @@ function* loadItem<R extends string>(
         type: "doorFar",
         position: blockXyzToFineXyz({
           ...item.position,
-          [axis]: item.position[axis] + 1,
+          [axis]: item.position[axis] + 1.5,
           ...crossAxisComponent,
         }),
         events: mitt(),
         state: {},
-        aabb: { x: 8, y: 8, z: 50 },
+        aabb: { x: 8, y: 8, z: 48 },
       };
       yield {
         ...item,
@@ -87,7 +129,7 @@ function* loadItem<R extends string>(
         }),
         events: mitt(),
         state: {},
-        aabb: { x: 8, y: 8, z: 50 },
+        aabb: { x: 8, y: 8, z: 48 },
       };
       return;
     }

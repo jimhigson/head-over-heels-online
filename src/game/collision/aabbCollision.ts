@@ -1,26 +1,43 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const collision1to1 = (
-  { aabb: aabbA, position: { x: xA, y: yA, z: zA } }: UnknownItemInPlay,
-  { aabb: aabbB, position: { x: xB, y: yB, z: zB } }: UnknownItemInPlay,
+  { aabb: bbA, position: { x: xA, y: yA, z: zA } }: UnknownItemInPlay,
+  { aabb: bbB, position: { x: xB, y: yB, z: zB } }: UnknownItemInPlay,
 ) => {
-  if (aabbA === undefined || aabbB == undefined) {
+  if (bbA === undefined || bbB == undefined) {
     // if either item has no bounding box it is uncollisionable so no
     // collision is possible
     return false;
   }
+  const { x: bbxA, y: bbyA, z: bbzA } = bbA;
+  const { x: bbxB, y: bbyB, z: bbzB } = bbB;
 
-  const { x: bbxA, y: bbyA, z: bbzA } = aabbA;
-  const { x: bbxB, y: bbyB, z: bbzB } = aabbB;
+  // Calculate x-axis bounds for both items
+  const minXA = Math.min(xA, xA + bbxA);
+  const maxXA = Math.max(xA, xA + bbxA);
+  const minXB = Math.min(xB, xB + bbxB);
+  const maxXB = Math.max(xB, xB + bbxB);
 
-  // Check for overlap in the x-axis first
-  if (xA >= xB + bbxB || xA + bbxA <= xB) return false;
+  // Check for x-axis overlap
+  if (maxXA <= minXB || minXA >= maxXB) return false;
 
-  // Check for overlap in the y-axis if x-axis overlap exists
-  if (yA >= yB + bbyB || yA + bbyA <= yB) return false;
+  // Calculate y-axis bounds for both items
+  const minYA = Math.min(yA, yA + bbyA);
+  const maxYA = Math.max(yA, yA + bbyA);
+  const minYB = Math.min(yB, yB + bbyB);
+  const maxYB = Math.max(yB, yB + bbyB);
 
-  // Check for overlap in the z-axis if x and y overlaps exist
-  return !(zA >= zB + bbzB || zA + bbzA <= zB);
+  // Check for y-axis overlap
+  if (maxYA <= minYB || minYA >= maxYB) return false;
+
+  // Calculate z-axis bounds for both items
+  const minZA = Math.min(zA, zA + bbzA);
+  const maxZA = Math.max(zA, zA + bbzA);
+  const minZB = Math.min(zB, zB + bbzB);
+  const maxZB = Math.max(zB, zB + bbzB);
+
+  // Check for z-axis overlap
+  return maxZA > minZB && minZA < maxZB;
 };
 
 /** check for collisions between a single item and multiple others */

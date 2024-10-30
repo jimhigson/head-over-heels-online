@@ -3,25 +3,27 @@ import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
 import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import { UnknownJsonItem } from "./model/Item.ts";
-import { Xy } from "./utils/vectors.ts";
+import { Axis, Xy } from "./utils/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,
   planet: P,
+  skip?: Record<Axis, number[]>,
 ): RoomWalls<P> => {
   const walls = planets[planet].walls;
 
-  function* gen(): Generator<Wall<P>> {
+  function* gen(axis: Axis): Generator<Wall<P>> {
     const n = walls.length;
 
     for (let i = 0; ; i++) {
-      yield walls[i % n];
+      if (skip && skip[axis].includes(i)) yield "none";
+      else yield walls[i % n];
     }
   }
 
   return {
-    away: [...gen().take(roomSize.x)],
-    left: [...gen().take(roomSize.y)],
+    away: [...gen("x").take(roomSize.x)],
+    left: [...gen("y").take(roomSize.y)],
   };
 };
 
@@ -69,7 +71,7 @@ const colourRooms = () => {
           `${p}-${c}`,
           {
             size: { x: 8, y: 8 },
-            walls: generateWalls({ x: 8, y: 8 }, p),
+            walls: generateWalls({ x: 8, y: 8 }, p, { x: [4, 5], y: [4, 5] }),
             color: c,
             floorSkip: [] as Xy[],
             floor: p,

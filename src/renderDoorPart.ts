@@ -35,6 +35,7 @@ export function* renderDoorPart(
   { axis, inHiddenWall }: LoadedDoorConfig<string>,
   room: UnknownRoomState,
   { z }: Xyz,
+  /** is this the near post of the doorframe, or the far one? */
   nearness: "near" | "far",
 ): Generator<Container> {
   if (inHiddenWall) {
@@ -74,6 +75,6 @@ export function* renderDoorPart(
   // draw the actual door
   yield createSprite({
     texture: doorTexture(room, axis, nearness),
-    pivot: doorTexturePivot[axis],
+    pivot: doorTexturePivot[nearness][axis],
   });
 }
