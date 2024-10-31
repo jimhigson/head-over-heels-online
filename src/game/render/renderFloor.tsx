@@ -1,22 +1,23 @@
 import { Container, Graphics } from "pixi.js";
-import { RoomState } from "../../model/modelTypes";
+import { floorThickness, RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
-import { RenderOptions } from "../RenderOptions";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
-import { moveContainerToBlockXyz } from "./positionSprite";
+import { moveContainerToBlockXyz } from "./projectToScreen";
 import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
-import { projectBlockToScreen } from "./projectToScreen";
+import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { PlanetName } from "@/sprites/planets";
 import { Direction } from "@/utils/vectors";
+import { EmptyObject } from "type-fest";
+import { ItemAppearance } from "./ItemAppearances";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 
-export function* renderFloor<RoomId extends string>(
+export const renderFloor: ItemAppearance<"floor"> = <RoomId extends string>(
+  _config: EmptyObject,
   room: RoomState<PlanetName, RoomId>,
-  _options: RenderOptions<RoomId>,
-): Generator<Container, undefined, undefined> {
+): Container => {
   const { towards: hasDoorTowards, right: hasDoorRight } =
     roomSidesWithDoors(room);
 
@@ -25,7 +26,7 @@ export function* renderFloor<RoomId extends string>(
 
   const { floor: floorType } = room;
 
-  const floorContainer = new Container();
+  const mainContainer = new Container();
 
   const floorSkipMap = Object.fromEntries(
     room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
@@ -70,7 +71,7 @@ export function* renderFloor<RoomId extends string>(
     tilesContainer.addChild(tilesMask);
     tilesContainer.mask = tilesMask;
 
-    floorContainer.addChild(tilesContainer);
+    mainContainer.addChild(tilesContainer);
   }
 
   const towardsEdge = new Container();
@@ -97,8 +98,8 @@ export function* renderFloor<RoomId extends string>(
   }
   rightEdge.filters = edgePaletteSwapFilters(room, "right");
 
-  const edgeRightPoint = projectBlockToScreen({ x: 0, y: room.size.y });
-  const edgeLeftPoint = projectBlockToScreen({ x: room.size.x, y: 0 });
+  const edgeRightPoint = projectBlockXyzToScreenXy({ x: 0, y: room.size.y });
+  const edgeLeftPoint = projectBlockXyzToScreenXy({ x: room.size.x, y: 0 });
 
   // rendering strategy differs slightly from original here - we don't render floors added in for near-side
   // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
@@ -116,10 +117,15 @@ export function* renderFloor<RoomId extends string>(
     )
     .fill(0xffff00);
 
-  floorContainer.addChild(floorMask);
-  floorContainer.addChild(towardsEdge);
-  floorContainer.addChild(rightEdge);
-  floorContainer.mask = floorMask;
+  mainContainer.addChild(floorMask);
+  mainContainer.addChild(towardsEdge);
+  mainContainer.addChild(rightEdge);
+  mainContainer.mask = floorMask;
 
-  yield floorContainer;
-}
+  // raise the floor by its thickness - the z of the floor is negative so that it can have a positive
+  // bounding box to give it some volume for collision detection. But, the floor should be rendered on
+  // its top edge, not its .position value.
+  mainContainer.y = -floorThickness;
+
+  return mainContainer;
+};

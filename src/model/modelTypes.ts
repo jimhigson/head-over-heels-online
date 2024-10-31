@@ -5,12 +5,16 @@ import { UnknownItemInPlay } from "./ItemInPlay";
 import { Simplify } from "type-fest";
 import { PlanetName, Wall } from "../sprites/planets";
 import { Xy } from "../utils/vectors";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 
 export type PlayableCharacter = "head" | "heels";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 
 export type AnyWall = Wall<PlanetName>;
+
+export const floorThickness = blockSizePx.h;
+export const wallThickness = blockSizePx.w / 2;
 
 /* which graphics to use for all the walls in a room? */
 export type RoomWalls<P extends PlanetName> = {

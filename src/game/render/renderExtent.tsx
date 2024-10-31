@@ -1,6 +1,6 @@
 import { UnknownRoomState } from "../../model/modelTypes";
 import { wallTileSize } from "@/sprites/textureSizes";
-import { projectBlockToScreen } from "./projectToScreen";
+import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 
 export const renderExtent = (loadedRoom: UnknownRoomState) => {
@@ -11,10 +11,10 @@ export const renderExtent = (loadedRoom: UnknownRoomState) => {
   const blockYMin = sidesWithDoors.towards ? -0.5 : 0;
   const blockYMax = loadedRoom.size.y + (sidesWithDoors.away ? 0.5 : 0);
 
-  const rightSide = projectBlockToScreen({ x: blockXMin, y: blockYMax });
-  const leftSide = projectBlockToScreen({ x: blockXMax, y: blockYMin });
-  const frontSide = projectBlockToScreen({ x: blockXMin, y: blockYMin }); // aka the origin, ground-level
-  const backSide = projectBlockToScreen({ x: blockXMax, y: blockYMax }); // aka opposite the origin, top of wall
+  const rightSide = projectBlockXyzToScreenXy({ x: blockXMin, y: blockYMax });
+  const leftSide = projectBlockXyzToScreenXy({ x: blockXMax, y: blockYMin });
+  const frontSide = projectBlockXyzToScreenXy({ x: blockXMin, y: blockYMin }); // aka the origin, ground-level
+  const backSide = projectBlockXyzToScreenXy({ x: blockXMax, y: blockYMax }); // aka opposite the origin, top of wall
   const top = backSide.y + wallTileSize.h;
 
   return {

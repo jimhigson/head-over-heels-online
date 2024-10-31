@@ -36,6 +36,14 @@ export type ItemInPlay<
   readonly aabb: Aabb;
 };
 
+/** Union of all item types */
 export type UnknownItemInPlay<RoomId extends string = string> = {
   [IT in ItemType]: ItemInPlay<IT, PlanetName, RoomId>;
 }[ItemType];
+
+/** Non-union version of any item type */
+export type AnyItemInPlay<RoomId extends string = string> = ItemInPlay<
+  ItemType,
+  PlanetName,
+  RoomId
+>;

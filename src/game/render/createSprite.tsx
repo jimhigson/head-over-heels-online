@@ -1,14 +1,6 @@
 import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
 import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
 
-export type MoveSpriteOptions = {
-  /**
-   * if set, will give the sprite a z-index. this isn't needed for sprites that
-   * can render themselves in a known-good order - ie, back-to-front
-   */
-  giveZIndex?: boolean;
-};
-
 type AnimatedCreateSpriteOptions = {
   // animated
   anchor?: PointData;

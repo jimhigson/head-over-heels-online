@@ -1,12 +1,12 @@
 import { Container, Graphics } from "pixi.js";
 import { UnknownRoomState, RoomState } from "../../model/modelTypes";
 import { hasItemClick, RenderOptions } from "../RenderOptions";
-import { moveContainerToXyz } from "./positionSprite";
+import { moveSpriteToItemProjection } from "./projectToScreen";
 import { itemAppearances } from "./ItemAppearances";
 import { ItemType } from "../../model/Item";
 import { PlanetName } from "@/sprites/planets";
 import { ItemInPlay } from "@/model/ItemInPlay";
-import { projectToScreen } from "./projectToScreen";
+import { projectWorldXyzToScreenXy } from "./projectToScreen";
 
 const maybeRenderBB = <T extends ItemType, RoomId extends string>(
   item: ItemInPlay<T>,
@@ -18,31 +18,35 @@ const maybeRenderBB = <T extends ItemType, RoomId extends string>(
     const bbGraphics = new Graphics()
       // bottom:
       .poly([
-        projectToScreen({}),
-        projectToScreen({ x: item.aabb.x }),
-        projectToScreen({ x: item.aabb.x, y: item.aabb.y }),
-        projectToScreen({ y: item.aabb.y }),
+        projectWorldXyzToScreenXy({}),
+        projectWorldXyzToScreenXy({ x: item.aabb.x }),
+        projectWorldXyzToScreenXy({ x: item.aabb.x, y: item.aabb.y }),
+        projectWorldXyzToScreenXy({ y: item.aabb.y }),
       ])
       // right:
       .poly([
-        projectToScreen({}),
-        projectToScreen({ z: item.aabb.z }),
-        projectToScreen({ y: item.aabb.y, z: item.aabb.z }),
-        projectToScreen({ y: item.aabb.y }),
+        projectWorldXyzToScreenXy({}),
+        projectWorldXyzToScreenXy({ z: item.aabb.z }),
+        projectWorldXyzToScreenXy({ y: item.aabb.y, z: item.aabb.z }),
+        projectWorldXyzToScreenXy({ y: item.aabb.y }),
       ])
       // left:
       .poly([
-        projectToScreen({ x: item.aabb.x }),
-        projectToScreen({ x: item.aabb.x, z: item.aabb.z }),
-        projectToScreen(item.aabb),
-        projectToScreen({ x: item.aabb.x, y: item.aabb.y }),
+        projectWorldXyzToScreenXy({ x: item.aabb.x }),
+        projectWorldXyzToScreenXy({ x: item.aabb.x, z: item.aabb.z }),
+        projectWorldXyzToScreenXy(item.aabb),
+        projectWorldXyzToScreenXy({ x: item.aabb.x, y: item.aabb.y }),
       ])
       // top:
       .poly([
-        projectToScreen({ z: item.aabb.z }),
-        projectToScreen({ x: item.aabb.x, z: item.aabb.z }),
-        projectToScreen({ x: item.aabb.x, y: item.aabb.y, z: item.aabb.z }),
-        projectToScreen({ y: item.aabb.y, z: item.aabb.z }),
+        projectWorldXyzToScreenXy({ z: item.aabb.z }),
+        projectWorldXyzToScreenXy({ x: item.aabb.x, z: item.aabb.z }),
+        projectWorldXyzToScreenXy({
+          x: item.aabb.x,
+          y: item.aabb.y,
+          z: item.aabb.z,
+        }),
+        projectWorldXyzToScreenXy({ y: item.aabb.y, z: item.aabb.z }),
       ])
       .stroke({ width: 0.5, color: "rgba(255,255,255,0.5)" });
     //itemRendering.alpha = 0.8;
@@ -74,7 +78,7 @@ const renderItem = <T extends ItemType, RoomId extends string>(
   };
 
   const position = () => {
-    moveContainerToXyz(item.position, result, { giveZIndex: true });
+    moveSpriteToItemProjection(item, result);
   };
 
   renderInContainer();

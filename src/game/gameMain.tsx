@@ -12,6 +12,7 @@ import { upscale } from "./upscale";
 import { renderRoom } from "./renderRoom";
 import { gameEngineTicks } from "./mechanics/gameEngineTicks";
 import { RenderOptions } from "./RenderOptions";
+import { itemZIndex } from "./render/projectToScreen";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -83,7 +84,15 @@ export const gameMain = async <RoomId extends string>(
         const toRoom = item.config.toRoom;
         viewRoom(loadRoom(campaign.rooms[toRoom]));
       }
-      console.log(item);
+      if (item.type === "lift") {
+        const toRoom = viewingRoom.roomAbove;
+        if (toRoom) viewRoom(loadRoom(campaign.rooms[toRoom]));
+      }
+      if (item.type === "floor") {
+        const toRoom = viewingRoom.roomBelow;
+        if (toRoom) viewRoom(loadRoom(campaign.rooms[toRoom]));
+      }
+      console.log(item, "zIndex:", itemZIndex(item));
     },
     showBoundingBoxes: true,
   };

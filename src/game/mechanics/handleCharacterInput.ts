@@ -3,6 +3,7 @@ import {
   scaleXyz,
   directionVectors,
   originXyz,
+  xyzEqual,
 } from "@/utils/vectors";
 import { GameState, currentCharacter } from "../gameState/GameState";
 import { InputState } from "../input/InputState";
@@ -25,6 +26,7 @@ const playerJumpHeight = {
   heels: blockSizePx.h,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fallSpeedPixPerMs = blockSizePx.h / 1_000; // fall one block per second
 
 export function handleCharacterInput<RoomId extends string>(
@@ -68,7 +70,13 @@ export function handleCharacterInput<RoomId extends string>(
     ...(directionPressed !== undefined || jumpRemaining > 0
       ? directionVectors[characterItem.state.facing]
       : originXyz),
-    z: jumpRemaining > 0 ? 1 : isCharacterStandingOnSomething ? 0 : -1,
+    z:
+      jumpRemaining > 0
+        ? 1
+        : isCharacterStandingOnSomething
+          ? 0
+          : // not jumping and not standing on something - falling
+            -1,
   };
 
   const movementVector = scaleXyz(
@@ -83,7 +91,9 @@ export function handleCharacterInput<RoomId extends string>(
     );
   }
 
-  moveItem(characterItem, movementVector, character.roomState);
+  if (!xyzEqual(movementVector, originXyz)) {
+    moveItem(characterItem, movementVector, character.roomState);
+  }
 
   if (directionPressed === undefined && jumpRemaining === 0) {
     // no direction pressed and not jumping

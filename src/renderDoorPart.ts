@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { createSprite } from "./game/render/createSprite";
 import { doorTexture } from "./game/render/doorTexture";
-import { projectBlockToScreen } from "./game/render/projectToScreen";
+import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
 import { LoadedDoorConfig } from "./model/Item";
 import { UnknownRoomState } from "./model/modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
@@ -59,7 +59,7 @@ export function* renderDoorPart(
       // drag legs etc
       yield* renderDoorLeg(axis, z);
     } else {
-      const offset = projectBlockToScreen({ [crossAxisXy(axis)]: 0.5 });
+      const offset = projectBlockXyzToScreenXy({ [crossAxisXy(axis)]: 0.5 });
 
       if (nearness === "far") {
         yield createSprite({
