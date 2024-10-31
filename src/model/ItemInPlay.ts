@@ -7,6 +7,7 @@ export type ItemStateMap = {
   player: {
     facing: Direction;
     movement: "moving" | "idle";
+    standingOn?: UnknownItemInPlay;
   };
 };
 

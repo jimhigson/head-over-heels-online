@@ -224,4 +224,8 @@ export const itemAppearances: {
   switch: () => createSprite("switch.off"),
   "hush-puppy": () => createSprite("hush-puppy"),
   ball: () => createSprite("ball"),
+
+  // for now, the floor has special rendering different from the main engine.
+  // TODO: standardise
+  floor: () => new Container(),
 };

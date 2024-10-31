@@ -6,7 +6,7 @@ import { LoadedDoorConfig } from "./model/Item";
 import { UnknownRoomState } from "./model/modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
-import { AxisXy, crossAxis, Xyz } from "./utils/vectors";
+import { AxisXy, crossAxisXy, Xyz } from "./utils/vectors";
 
 function* renderDoorLeg(axis: AxisXy, z: number): Generator<Container> {
   // drag legs etc
@@ -59,7 +59,7 @@ export function* renderDoorPart(
       // drag legs etc
       yield* renderDoorLeg(axis, z);
     } else {
-      const offset = projectBlockToScreen({ [crossAxis(axis)]: 0.5 });
+      const offset = projectBlockToScreen({ [crossAxisXy(axis)]: 0.5 });
 
       if (nearness === "far") {
         yield createSprite({

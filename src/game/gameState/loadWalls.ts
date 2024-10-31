@@ -9,7 +9,11 @@ import { blockXyzToFineXyz } from "../render/projectToScreen";
  * convert a room's walls into normal items (that can be collided with as with any other item)
  */
 export function* loadWalls<R extends string>(
-  room: RoomJson<PlanetName, R>): Generator<UnknownItemInPlay<R>> {
+  room: RoomJson<PlanetName, R>,
+): Generator<UnknownItemInPlay<R>> {
+  // arbitrary block thickness for the sake of bounding boxes having volume
+  const wallThicknessBlocks = 0.5;
+
   // left/right sides:
   for (let yi = room.size.y - 1; yi >= 0; yi--) {
     const style = room.walls.left[yi];
@@ -21,26 +25,36 @@ export function* loadWalls<R extends string>(
         position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
         events: mitt(), // TODO: question if a wall really needs an event bus!
         state: {},
-        aabb: { x: 999, y: blockSizePx.d, z: 999 },
+        aabb: {
+          x: wallThicknessBlocks * blockSizePx.w,
+          y: blockSizePx.d,
+          z: 999,
+        },
       };
 
     // this lookup is slow, but is only done on room load:
-    const skipInvisibleWall = Object.values(room.items).find(
-      (i) => i.type === "door" &&
-        i.config.axis === "y" &&
-        i.position.x === 0 &&
-        (i.position.y === yi || i.position.y + 1 === yi)
-    ) !== undefined;
+    const skipInvisibleWall =
+      Object.values(room.items).find(
+        (i) =>
+          i.type === "door" &&
+          i.config.axis === "y" &&
+          i.position.x === 0 &&
+          (i.position.y === yi || i.position.y + 1 === yi),
+      ) !== undefined;
 
     if (!skipInvisibleWall)
       yield {
         type: "wall",
         id: `wall-right-${yi}`,
         config: { side: "left", style: "none" },
-        position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
+        position: blockXyzToFineXyz({ x: -wallThicknessBlocks, y: yi, z: 0 }),
         events: mitt(), // TODO: question if a wall really needs an event bus!
         state: {},
-        aabb: { x: -999, y: blockSizePx.d, z: 999 },
+        aabb: {
+          x: wallThicknessBlocks * blockSizePx.w,
+          y: blockSizePx.d,
+          z: 999,
+        },
       };
   }
 
@@ -55,25 +69,35 @@ export function* loadWalls<R extends string>(
         position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
         events: mitt(), // TODO: question if a wall really needs an event bus!
         state: {},
-        aabb: { x: blockSizePx.w, y: 999, z: 999 },
+        aabb: {
+          x: blockSizePx.w,
+          y: wallThicknessBlocks * blockSizePx.d,
+          z: 999,
+        },
       };
 
-    const skipInvisibleWall = Object.values(room.items).find(
-      (i) => i.type === "door" &&
-        i.config.axis === "x" &&
-        (i.position.x === xi || i.position.x + 1 === xi) &&
-        i.position.y === 0
-    ) !== undefined;
+    const skipInvisibleWall =
+      Object.values(room.items).find(
+        (i) =>
+          i.type === "door" &&
+          i.config.axis === "x" &&
+          (i.position.x === xi || i.position.x + 1 === xi) &&
+          i.position.y === 0,
+      ) !== undefined;
 
     if (!skipInvisibleWall)
       yield {
         type: "wall",
         id: `wall-towards-${xi}`,
         config: { side: "towards", style: "none" },
-        position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
+        position: blockXyzToFineXyz({ x: xi, y: -wallThicknessBlocks, z: 0 }),
         events: mitt(), // TODO: question if a wall really needs an event bus!
         state: {},
-        aabb: { x: blockSizePx.w, y: -999, z: 999 },
+        aabb: {
+          x: blockSizePx.w,
+          y: wallThicknessBlocks * blockSizePx.d,
+          z: 999,
+        },
       };
   }
 }

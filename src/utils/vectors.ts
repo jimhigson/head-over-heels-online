@@ -13,7 +13,7 @@ export type Xy = {
   y: number;
 };
 
-export const crossAxis = (axis: AxisXy): AxisXy => (axis === "x" ? "y" : "x");
+export const crossAxisXy = (axis: AxisXy): AxisXy => (axis === "x" ? "y" : "x");
 
 export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
   xys.reduce<Xy>(

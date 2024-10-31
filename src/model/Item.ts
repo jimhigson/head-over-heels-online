@@ -5,8 +5,9 @@ import { AxisXy, Direction, Xyz } from "../utils/vectors";
 
 export type ItemType =
   | "door"
-  | "doorNear"
-  | "doorFar"
+  | "floor" // only in-play, never in json
+  | "doorNear" // only in-play, never in json
+  | "doorFar" // only in-play, never in json
   | "teleporter"
   | "barrier"
   | "block"

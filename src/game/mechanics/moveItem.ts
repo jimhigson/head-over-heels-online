@@ -1,13 +1,6 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { UnknownRoomState } from "@/model/modelTypes";
-import {
-  AxisXy,
-  AxisXyz,
-  Xyz,
-  addXyz,
-  axesXyz,
-  xyzEqual,
-} from "@/utils/vectors";
+import { AxisXyz, Xyz, addXyz, axesXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 
 /**
@@ -63,22 +56,7 @@ export const moveItem = (
   );
 
   if (!xyzEqual(correctedPosition, item.position)) {
-    console.log(
-      "moving to",
-      correctedPosition,
-      "collisions",
-      collisionsAtTargetPosition,
-      "from",
-      item.position,
-    );
     item.position = correctedPosition;
     item.events.emit("move");
-  } else {
-    console.log(
-      "not moving",
-      "collisions:",
-      collisionsAtTargetPosition,
-      item.position,
-    );
   }
 };

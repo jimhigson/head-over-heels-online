@@ -2,44 +2,31 @@ import { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
 
+/**
+ * if items are *just* touching (bounding box max equal to other item's bb min)
+ * it is considered a collision
+ */
 export const collision1to1 = (
-  { aabb: bbA, position: { x: xA, y: yA, z: zA } }: Collideable,
-  { aabb: bbB, position: { x: xB, y: yB, z: zB } }: Collideable,
+  {
+    aabb: { x: bbxA, y: bbyA, z: bbzA },
+    position: { x: xA, y: yA, z: zA },
+  }: Collideable,
+  {
+    aabb: { x: bbxB, y: bbyB, z: bbzB },
+    position: { x: xB, y: yB, z: zB },
+  }: Collideable,
 ) => {
-  if (bbA === undefined || bbB == undefined) {
-    // if either item has no bounding box it is uncollisionable so no
-    // collision is possible
-    return false;
-  }
-  const { x: bbxA, y: bbyA, z: bbzA } = bbA;
-  const { x: bbxB, y: bbyB, z: bbzB } = bbB;
+  // Check for overlap on the x-axis
+  if (xA + bbxA <= xB || xA >= xB + bbxB) return false;
 
-  // Calculate x-axis bounds for both items
-  const minXA = Math.min(xA, xA + bbxA);
-  const maxXA = Math.max(xA, xA + bbxA);
-  const minXB = Math.min(xB, xB + bbxB);
-  const maxXB = Math.max(xB, xB + bbxB);
+  // Check for overlap on the y-axis
+  if (yA + bbyA <= yB || yA >= yB + bbyB) return false;
 
-  // Check for x-axis overlap
-  if (maxXA <= minXB || minXA >= maxXB) return false;
+  // Check for overlap on the z-axis
+  if (zA + bbzA <= zB || zA >= zB + bbzB) return false;
 
-  // Calculate y-axis bounds for both items
-  const minYA = Math.min(yA, yA + bbyA);
-  const maxYA = Math.max(yA, yA + bbyA);
-  const minYB = Math.min(yB, yB + bbyB);
-  const maxYB = Math.max(yB, yB + bbyB);
-
-  // Check for y-axis overlap
-  if (maxYA <= minYB || minYA >= maxYB) return false;
-
-  // Calculate z-axis bounds for both items
-  const minZA = Math.min(zA, zA + bbzA);
-  const maxZA = Math.max(zA, zA + bbzA);
-  const minZB = Math.min(zB, zB + bbzB);
-  const maxZB = Math.max(zB, zB + bbzB);
-
-  // Check for z-axis overlap
-  return maxZA > minZB && minZA < maxZB;
+  // If all axes overlap, return true for collision
+  return true;
 };
 
 /** check for collisions between a single item and multiple others */

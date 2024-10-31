@@ -6,7 +6,7 @@ import { blockXyzToFineXyz } from "../render/projectToScreen";
 import { addXy } from "@/utils/vectors";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 
-const loadItemPosition = (
+const positionAndAabb = (
   item: UnknownJsonItem,
 ): Pick<UnknownItemInPlay, "aabb" | "position"> => {
   const blockPosition = blockXyzToFineXyz(item.position);
@@ -89,7 +89,7 @@ export function* loadItem<RoomId extends string>(
         id: item.config.which,
         events: mitt(),
         state: { facing: "towards", movement: "idle" },
-        ...loadItemPosition(item),
+        ...positionAndAabb(item),
       };
       return;
     }
@@ -99,7 +99,7 @@ export function* loadItem<RoomId extends string>(
         id,
         events: mitt(),
         state: {},
-        ...loadItemPosition(item),
+        ...positionAndAabb(item),
       };
   }
 }

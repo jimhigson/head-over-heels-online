@@ -1,18 +1,19 @@
 import { Application } from "pixi.js";
-import { currentCharacter, GameState } from "../gameState/GameState";
-import { directions, directionVectors, scaleXyz } from "@/utils/vectors";
+import { GameState } from "../gameState/GameState";
 import { keys } from "@/utils/entries";
 import { ItemInPlay, ItemState } from "@/model/ItemInPlay";
 import { ItemType } from "@/model/Item";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
-import { moveItem } from "./moveItem";
+import { handleCharacterInput } from "./handleCharacterInput";
 
 // original game timed at 5s to move 8 blocks
-const headsSpeedPixPerMs = (blockSizePx.w * 8) / 5_000;
+export const playerSpeedPixPerMs = {
+  head: (blockSizePx.w * 8) / 5_000,
+  // twice as fast (just a guess - TODO: implement acceleration and measure)
+  heels: (blockSizePx.w * 8) / 2_500,
+};
 
-//const headsSpeedPixPerMs = 25 / 1_000;
-
-const maybeUpdateItemState = <T extends ItemType>(
+export const maybeUpdateItemState = <T extends ItemType>(
   item: ItemInPlay<T>,
   delta: Partial<ItemState<T>>,
 ) => {
@@ -41,32 +42,9 @@ export const gameEngineTicks = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
 ) => {
-  app.ticker.add((time) => {
+  app.ticker.add(({ deltaMS }) => {
     const { inputState } = gameState;
 
-    const character = currentCharacter(gameState);
-    const currentCharacterItem = character.item;
-
-    const directionPressed = directions.find((d) => {
-      return inputState[d] === true;
-    });
-
-    if (directionPressed !== undefined) {
-      maybeUpdateItemState(currentCharacterItem, {
-        facing: directionPressed,
-        movement: "moving",
-      });
-
-      const movementVector = scaleXyz(
-        directionVectors[directionPressed],
-        // TODO: - leave position in whole pixels, and record sub-steps
-        // to keep movement fluid
-        headsSpeedPixPerMs * time.deltaMS,
-      );
-
-      moveItem(currentCharacterItem, movementVector, character.roomState);
-    } else {
-      maybeUpdateItemState(currentCharacterItem, { movement: "idle" });
-    }
+    handleCharacterInput<RoomId>(gameState, inputState, deltaMS);
   });
 };
