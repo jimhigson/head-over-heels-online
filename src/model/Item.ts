@@ -1,7 +1,7 @@
 import { EmptyObject } from "type-fest";
 import { PlayableCharacter } from "./modelTypes";
 import { PlanetName, Wall } from "../sprites/planets";
-import { Axis, Direction, Xyz } from "../utils/vectors";
+import { AxisXy, Direction, Xyz } from "../utils/vectors";
 
 export type ItemType =
   | "door"
@@ -35,7 +35,7 @@ export type RenderItemType = ItemType | "door-front" | "door-back";
 
 export type LoadedDoorConfig<RoomId extends string> = {
   toRoom: RoomId;
-  axis: Axis;
+  axis: AxisXy;
   /** does the door come into the hidden/invisible walls that are closest to us? */
   inHiddenWall: boolean;
 };
@@ -44,7 +44,7 @@ export type LoadedDoorConfig<RoomId extends string> = {
 export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
     toRoom: RoomId;
-    axis: Axis;
+    axis: AxisXy;
   };
   doorNear: LoadedDoorConfig<RoomId>;
   doorFar: LoadedDoorConfig<RoomId>;
@@ -57,7 +57,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   barrier: {
     // the axis the barrier runs along
-    axis: Axis;
+    axis: AxisXy;
   };
   block: {
     style: "organic" | "artificial" | "tower";

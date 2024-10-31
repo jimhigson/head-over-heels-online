@@ -1,6 +1,10 @@
 import { Container } from "pixi.js";
 import { ItemType, ItemConfigMap, ItemConfig } from "../../model/Item";
-import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
+import {
+  barrierPivot,
+  pixiSpriteSheet,
+  TextureId,
+} from "../../sprites/pixiSpriteSheet";
 import { createSprite, CreateSpriteOptions } from "./createSprite";
 import { UnknownRoomState } from "../../model/modelTypes";
 import { Xyz } from "@/utils/vectors";
@@ -8,6 +12,10 @@ import { wallTextureId } from "./wallTextureId";
 import { PlanetName } from "../../sprites/planets";
 import { renderDoorPart } from "../../renderDoorPart";
 import { ItemState } from "@/model/ItemInPlay";
+import {
+  headBlinkAnimationSpeed,
+  headWalkAnimationSpeed,
+} from "./animationSpeeds";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
@@ -73,6 +81,7 @@ export const itemAppearances: {
   barrier: ({ axis }) =>
     createSprite({
       texture: `barrier.${axis}`,
+      pivot: barrierPivot[axis],
     }),
 
   "deadly-block": ({ style }) =>
@@ -141,13 +150,13 @@ export const itemAppearances: {
     if (movement === "moving") {
       return createSprite({
         frames: pixiSpriteSheet.animations[`${which}.walking.${facing}`],
-        animationSpeed: 0.2,
+        animationSpeed: headWalkAnimationSpeed,
       });
     } else {
       if (which === "head" && (facing === "towards" || facing === "right")) {
         return createSprite({
           frames: pixiSpriteSheet.animations[`head.idle.${facing}`],
-          animationSpeed: 0.1,
+          animationSpeed: headBlinkAnimationSpeed,
         });
       }
       return createSprite(`${which}.walking.${facing}.2`);

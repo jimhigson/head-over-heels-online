@@ -1,18 +1,11 @@
 import { Application } from "pixi.js";
-import { currentCharacter, GameState } from "./gameState/GameState";
-import {
-  addXyz,
-  directions,
-  directionVectors,
-  scaleXyz,
-  Xyz,
-} from "@/utils/vectors";
+import { currentCharacter, GameState } from "../gameState/GameState";
+import { directions, directionVectors, scaleXyz } from "@/utils/vectors";
 import { keys } from "@/utils/entries";
-import { ItemInPlay, ItemState, UnknownItemInPlay } from "@/model/ItemInPlay";
+import { ItemInPlay, ItemState } from "@/model/ItemInPlay";
 import { ItemType } from "@/model/Item";
-import { UnknownRoomState } from "@/model/modelTypes";
-import { collision1toMany } from "./collision/aabbCollision";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { moveItem } from "./moveItem";
 
 // original game timed at 5s to move 8 blocks
 const headsSpeedPixPerMs = (blockSizePx.w * 8) / 5_000;
@@ -42,25 +35,6 @@ const maybeUpdateItemState = <T extends ItemType>(
   if (changed) {
     item.events.emit("stateChange");
   }
-};
-
-/**
- *
- * @param item
- * @param xyzDelta
- * @param inRoom the room the item is moving in
- */
-const moveItem = (
-  item: UnknownItemInPlay,
-  xyzDelta: Xyz,
-  room: UnknownRoomState,
-) => {
-  const collisions = collision1toMany(item, room.items);
-
-  console.log("collisions", collisions);
-
-  item.position = addXyz(item.position, xyzDelta);
-  item.events.emit("move");
 };
 
 export const gameEngineTicks = <RoomId extends string>(

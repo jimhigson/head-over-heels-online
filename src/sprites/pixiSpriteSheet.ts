@@ -34,6 +34,7 @@ export const doorTexturePivot = {
   },
 };
 export const doorLegsPivotY = { x: 0, y: 36 };
+export const barrierPivot = { x: { x: 8, y: 24 }, y: { x: 6, y: 22 } };
 
 export type WallTextureId<PS extends PlanetName> = {
   [P in PS]: `${P}.wall.${Wall<P>}.${"left" | "away"}`;

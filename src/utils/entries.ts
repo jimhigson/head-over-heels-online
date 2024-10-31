@@ -4,7 +4,7 @@ export type ObjectKeys = <K extends keyof any>(
 ) => K[];
 
 export type ObjectEntries = <K extends keyof any, V>(
-  o: Partial<Record<K, V>>,
+  o: Record<K, V>,
 ) => [K, V][];
 
 export const entries = Object.entries as ObjectEntries;

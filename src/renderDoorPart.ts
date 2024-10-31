@@ -6,9 +6,9 @@ import { LoadedDoorConfig } from "./model/Item";
 import { UnknownRoomState } from "./model/modelTypes";
 import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
-import { Axis, crossAxis, Xyz } from "./utils/vectors";
+import { AxisXy, crossAxis, Xyz } from "./utils/vectors";
 
-function* renderDoorLeg(axis: Axis, z: number): Generator<Container> {
+function* renderDoorLeg(axis: AxisXy, z: number): Generator<Container> {
   // drag legs etc
   const pivotX = axis === "y" ? 0 : 16;
 

@@ -1,8 +1,10 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
 
+type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
+
 export const collision1to1 = (
-  { aabb: bbA, position: { x: xA, y: yA, z: zA } }: UnknownItemInPlay,
-  { aabb: bbB, position: { x: xB, y: yB, z: zB } }: UnknownItemInPlay,
+  { aabb: bbA, position: { x: xA, y: yA, z: zA } }: Collideable,
+  { aabb: bbB, position: { x: xB, y: yB, z: zB } }: Collideable,
 ) => {
   if (bbA === undefined || bbB == undefined) {
     // if either item has no bounding box it is uncollisionable so no
@@ -42,11 +44,12 @@ export const collision1to1 = (
 
 /** check for collisions between a single item and multiple others */
 export const collision1toMany = (
-  subject: UnknownItemInPlay,
+  subject: Collideable,
   items: UnknownItemInPlay[],
 ) => {
   return items.filter(
     (candidateItem) =>
-      subject !== candidateItem && collision1to1(subject, candidateItem),
+      // prevent self- collision
+      subject.id !== candidateItem.id && collision1to1(subject, candidateItem),
   );
 };

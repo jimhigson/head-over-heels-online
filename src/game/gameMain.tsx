@@ -10,7 +10,7 @@ import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
 import { renderRoom } from "./renderRoom";
-import { gameEngineTicks } from "./gameEngineTicks";
+import { gameEngineTicks } from "./mechanics/gameEngineTicks";
 import { RenderOptions } from "./RenderOptions";
 
 const centreRoomInRendering = (
@@ -48,6 +48,8 @@ export type GameApi<RoomId extends string> = {
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): Promise<GameApi<RoomId>> => {
+  // TODO: re-render on HMR: https://vite.dev/guide/api-hmr.html
+
   const gameState = initGameState(campaign);
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging

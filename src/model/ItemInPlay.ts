@@ -24,10 +24,14 @@ export type ItemInPlay<
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
 > = JsonItem<T, P, RoomId> & {
+  readonly id: string;
   readonly events: Emitter<{ move: void; stateChange: void }>;
   readonly state: ItemState<T>;
-  /** the bounding box of this item for the sake of collision detection */
-  readonly aabb?: Aabb;
+  /**
+   * the bounding box of this item for the sake of collision detection. This is not optinoal - ie, there
+   * are no non-collideable items
+   */
+  readonly aabb: Aabb;
 };
 
 export type UnknownItemInPlay<RoomId extends string = string> = {

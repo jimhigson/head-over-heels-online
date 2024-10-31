@@ -3,20 +3,20 @@ import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
 import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import { UnknownJsonItem } from "./model/Item.ts";
-import { Axis, Xy } from "./utils/vectors.ts";
+import { AxisXy, Xy } from "./utils/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,
   planet: P,
-  skip?: Record<Axis, number[]>,
+  skip?: Record<AxisXy, number[]>,
 ): RoomWalls<P> => {
   const walls = planets[planet].walls;
 
-  function* gen(axis: Axis): Generator<Wall<P>> {
+  function* gen(axis: AxisXy): Generator<Wall<P>> {
     const n = walls.length;
 
     for (let i = 0; ; i++) {
-      if (skip && skip[axis].includes(i)) yield "none";
+      if (skip?.[axis]?.includes(i)) yield "none";
       else yield walls[i % n];
     }
   }
@@ -175,7 +175,7 @@ const rooms = {
   } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
   zRoom: {
     size: { x: 13, y: 8 },
-    walls: generateWalls({ x: 13, y: 8 }, "egyptus"),
+    walls: generateWalls({ x: 13, y: 8 }, "egyptus", { x: [8, 9], y: [] }),
     floor: "deadly",
     floorSkip: [] as Xy[],
     id: "zRoom",

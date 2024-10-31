@@ -13,7 +13,7 @@ export type Xy = {
   y: number;
 };
 
-export const crossAxis = (axis: Axis): Axis => (axis === "x" ? "y" : "x");
+export const crossAxis = (axis: AxisXy): AxisXy => (axis === "x" ? "y" : "x");
 
 export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
   xys.reduce<Xy>(
@@ -24,6 +24,12 @@ export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
     xy,
   );
 
+export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
+  x: xy.x * scale,
+  y: xy.y * scale,
+  z: xy.z * scale,
+});
+
 export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
   xyzs.reduce<Xyz>(
     (ac, xyi) => ({
@@ -33,6 +39,13 @@ export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
     }),
     xyz,
   );
+
+export const xyzEqual = (
+  { x: ax, y: ay, z: az }: Xyz,
+  { x: bx, y: by, z: bz }: Xyz,
+) => {
+  return ax === bx && ay === by && az === bz;
+};
 
 export const originXyz: Xyz = { x: 0, y: 0, z: 0 };
 
@@ -46,7 +59,10 @@ export type XyMaybeZ = {
   y: number;
   z?: number;
 };
-export type Axis = "x" | "y";
+export type AxisXy = "x" | "y";
+
+export const axesXyz = ["x", "y", "z"] as const;
+export type AxisXyz = (typeof axesXyz)[number];
 
 //export type Aabb = [Xyz, Xyz];
 /** how big is the collision box around an item? */
