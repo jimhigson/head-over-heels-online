@@ -74,8 +74,16 @@ export const gameMain = async <RoomId extends string>(
 
   // TODO: externalise as parm to gameMain
   const renderOptions: RenderOptions<RoomId> = {
-    onPortalClick(roomId) {
-      viewRoom(loadRoom(campaign.rooms[roomId]));
+    onItemClick(item) {
+      if (
+        item.type === "doorFar" ||
+        item.type === "doorNear" ||
+        item.type === "teleporter"
+      ) {
+        const toRoom = item.config.toRoom;
+        viewRoom(loadRoom(campaign.rooms[toRoom]));
+      }
+      console.log(item);
     },
     showBoundingBoxes: true,
   };

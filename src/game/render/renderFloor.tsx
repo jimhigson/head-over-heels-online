@@ -1,8 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
-import { makeClickPortal } from "./makeClickPortal";
-import { hasPortalClick, RenderOptions } from "../RenderOptions";
+import { RenderOptions } from "../RenderOptions";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
 import { moveContainerToBlockXyz } from "./positionSprite";
@@ -16,7 +15,7 @@ export type SidesWithDoors = Partial<Record<Direction, true>>;
 
 export function* renderFloor<RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
-  options: RenderOptions<RoomId>,
+  _options: RenderOptions<RoomId>,
 ): Generator<Container, undefined, undefined> {
   const { towards: hasDoorTowards, right: hasDoorRight } =
     roomSidesWithDoors(room);
@@ -97,13 +96,6 @@ export function* renderFloor<RoomId extends string>(
     );
   }
   rightEdge.filters = edgePaletteSwapFilters(room, "right");
-  if (room.roomBelow && hasPortalClick(options)) {
-    makeClickPortal(
-      room.roomBelow,
-      options,
-      ...[...rightEdge.children, ...towardsEdge.children],
-    );
-  }
 
   const edgeRightPoint = projectBlockToScreen({ x: 0, y: room.size.y });
   const edgeLeftPoint = projectBlockToScreen({ x: room.size.x, y: 0 });

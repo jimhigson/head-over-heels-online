@@ -1,12 +1,13 @@
+import { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { SetRequired } from "type-fest";
 
-export const hasPortalClick = <RoomId extends string>(
+export const hasItemClick = <RoomId extends string>(
   options: RenderOptions<RoomId>,
-): options is SetRequired<RenderOptions<RoomId>, "onPortalClick"> => {
-  return options.onPortalClick !== undefined;
+): options is SetRequired<RenderOptions<RoomId>, "onItemClick"> => {
+  return options.onItemClick !== undefined;
 };
 
 export type RenderOptions<RoomId extends string> = {
-  onPortalClick?: (roomId: RoomId) => void;
+  onItemClick?: (item: UnknownItemInPlay<RoomId>) => void;
   showBoundingBoxes?: boolean;
 };

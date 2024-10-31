@@ -1,7 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { UnknownRoomState, RoomState } from "../../model/modelTypes";
-import { hasPortalClick, RenderOptions } from "../RenderOptions";
-import { makeClickPortal } from "./makeClickPortal";
+import { hasItemClick, RenderOptions } from "../RenderOptions";
 import { moveContainerToXyz } from "./positionSprite";
 import { itemAppearances } from "./ItemAppearances";
 import { ItemType } from "../../model/Item";
@@ -94,17 +93,11 @@ export function* renderItems<RoomId extends string>(
   for (const item of room.items) {
     const rendering = renderItem(item, room, options);
 
-    if (hasPortalClick(options)) {
-      if (
-        item.type === "teleporter" ||
-        item.type === "doorFar" ||
-        item.type === "doorNear"
-      ) {
-        makeClickPortal(item.config.toRoom, options, rendering);
-      }
-      if (item.type === "lift" && room.roomAbove !== undefined) {
-        makeClickPortal(room.roomAbove, options, rendering);
-      }
+    if (hasItemClick(options)) {
+      rendering.eventMode = "static";
+      rendering.on("pointertap", () => {
+        options.onItemClick(item);
+      });
     }
 
     yield rendering;
