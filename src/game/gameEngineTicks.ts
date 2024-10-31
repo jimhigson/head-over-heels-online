@@ -1,11 +1,23 @@
 import { Application } from "pixi.js";
 import { currentCharacter, GameState } from "./gameState/GameState";
-import { addXyz, directions, directionVectors, Xyz } from "@/utils/vectors";
+import {
+  addXyz,
+  directions,
+  directionVectors,
+  scaleXyz,
+  Xyz,
+} from "@/utils/vectors";
 import { keys } from "@/utils/entries";
 import { ItemInPlay, ItemState, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { ItemType } from "@/model/Item";
 import { UnknownRoomState } from "@/model/modelTypes";
 import { collision1toMany } from "./collision/aabbCollision";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+
+// original game timed at 5s to move 8 blocks
+const headsSpeedPixPerMs = (blockSizePx.w * 8) / 5_000;
+
+//const headsSpeedPixPerMs = 25 / 1_000;
 
 const maybeUpdateItemState = <T extends ItemType>(
   item: ItemInPlay<T>,
@@ -55,7 +67,7 @@ export const gameEngineTicks = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
 ) => {
-  app.ticker.add((_time) => {
+  app.ticker.add((time) => {
     const { inputState } = gameState;
 
     const character = currentCharacter(gameState);
@@ -70,11 +82,15 @@ export const gameEngineTicks = <RoomId extends string>(
         facing: directionPressed,
         movement: "moving",
       });
-      moveItem(
-        currentCharacterItem,
+
+      const movementVector = scaleXyz(
         directionVectors[directionPressed],
-        character.roomState,
+        // TODO: - leave position in whole pixels, and record sub-steps
+        // to keep movement fluid
+        headsSpeedPixPerMs * time.deltaMS,
       );
+
+      moveItem(currentCharacterItem, movementVector, character.roomState);
     } else {
       maybeUpdateItemState(currentCharacterItem, { movement: "idle" });
     }

@@ -109,11 +109,16 @@ export const playableSpritesheetData = {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
     "head.idle.right": [
-      ...new Array(20).fill("head.idle.right.1"),
+      // 50 frames of non-blinking confirmed against original to be about the same rate
+      ...new Array(50).fill("head.idle.right.1"),
+      "head.idle.right.2",
+      "head.idle.right.1",
       "head.idle.right.2",
     ],
     "head.idle.towards": [
-      ...new Array(20).fill("head.idle.towards.1"),
+      ...new Array(50).fill("head.idle.towards.1"),
+      "head.idle.towards.2",
+      "head.idle.towards.1",
       "head.idle.towards.2",
     ],
   },
