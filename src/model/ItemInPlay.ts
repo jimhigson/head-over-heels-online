@@ -8,6 +8,7 @@ export type ItemStateMap = {
     facing: Direction;
     movement: "moving" | "idle";
     standingOn?: UnknownItemInPlay;
+    jumpRemaining: number;
   };
 };
 

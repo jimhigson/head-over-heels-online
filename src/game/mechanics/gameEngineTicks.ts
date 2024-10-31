@@ -3,15 +3,7 @@ import { GameState } from "../gameState/GameState";
 import { keys } from "@/utils/entries";
 import { ItemInPlay, ItemState } from "@/model/ItemInPlay";
 import { ItemType } from "@/model/Item";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { handleCharacterInput } from "./handleCharacterInput";
-
-// original game timed at 5s to move 8 blocks
-export const playerSpeedPixPerMs = {
-  head: (blockSizePx.w * 8) / 5_000,
-  // twice as fast (just a guess - TODO: implement acceleration and measure)
-  heels: (blockSizePx.w * 8) / 2_500,
-};
 
 export const maybeUpdateItemState = <T extends ItemType>(
   item: ItemInPlay<T>,

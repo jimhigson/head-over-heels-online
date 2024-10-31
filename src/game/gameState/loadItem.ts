@@ -88,7 +88,7 @@ export function* loadItem<RoomId extends string>(
         ...item,
         id: item.config.which,
         events: mitt(),
-        state: { facing: "towards", movement: "idle" },
+        state: { facing: "towards", movement: "idle", jumpRemaining: 0 },
         ...positionAndAabb(item),
       };
       return;
