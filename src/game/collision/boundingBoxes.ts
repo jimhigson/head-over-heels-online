@@ -11,10 +11,10 @@ export const boundingBoxForItem = (item: UnknownJsonItem): Aabb => {
     case "spring":
     case "portable-block":
     case "lift":
+    case "player": // head's nose seems to be rendered outside of his bb in the original
     case "pickup":
       return smallItemAabb;
 
-    case "player":
     case "ball":
     case "switch":
       return mediumItemAabb;
