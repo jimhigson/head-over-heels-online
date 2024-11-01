@@ -1,7 +1,8 @@
 import { PlanetName } from "@/sprites/planets";
 import { Aabb, Direction } from "@/utils/vectors";
-import { Emitter } from "mitt";
 import { ItemType, JsonItem } from "./Item";
+import { Container } from "pixi.js";
+import { SetRequired } from "type-fest";
 
 export type ItemStateMap = {
   player: {
@@ -27,14 +28,42 @@ export type ItemInPlay<
   RoomId extends string = string,
 > = JsonItem<T, P, RoomId> & {
   readonly id: string;
-  readonly events: Emitter<{ move: void; stateChange: void }>;
+  //readonly events: Emitter<{ move: void; stateChange: void }>;
   readonly state: ItemState<T>;
   /**
    * the bounding box of this item for the sake of collision detection. This is not optinoal - ie, there
    * are no non-collideable items
    */
   readonly aabb: Aabb;
+  /** an optional second bb which is used only for determining render order - not for collisions */
+  readonly renderAabb?: Aabb;
+
+  renderPositionDirty: boolean;
+  renderingDirty: boolean;
+
+  /*render: () => void;
+  positionOnScreen: () => void;*/
+  positionContainer?: Container;
+  renderContainer?: Container;
+
+  renders: boolean;
+
+  /**
+   * will be populated on first render
+   */
+  //readonly inFrontOf: Array<ItemInPlay<ItemType, P, RoomId>>;
 };
+
+export function assertItemHasContainers<T extends ItemType>(
+  item: ItemInPlay<T>,
+): asserts item is SetRequired<
+  ItemInPlay<T>,
+  "positionContainer" | "renderContainer"
+> {
+  if (item.positionContainer === undefined) {
+    throw new Error("Item does not have a container");
+  }
+}
 
 /** Union of all item types */
 export type UnknownItemInPlay<RoomId extends string = string> = {

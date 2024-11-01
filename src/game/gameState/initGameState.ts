@@ -2,7 +2,7 @@ import { Campaign, PlayableCharacter, RoomJson } from "@/model/modelTypes";
 import { GameState } from "@/game/gameState/GameState";
 import { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
-import { loadRoom } from "./loadRoom";
+import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
 import { ItemInPlay } from "@/model/ItemInPlay";
 

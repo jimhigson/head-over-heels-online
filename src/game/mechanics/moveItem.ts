@@ -57,6 +57,6 @@ export const moveItem = (
 
   if (!xyzEqual(correctedPosition, item.position)) {
     item.position = correctedPosition;
-    item.events.emit("move");
+    item.renderPositionDirty = true;
   }
 };

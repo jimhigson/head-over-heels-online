@@ -35,6 +35,7 @@ export type TestCampaignRoomId =
   | "wide"
   | "deep"
   | "big"
+  | "tiny"
   | ColorRoomIds;
 
 // create matrix of rooms - one in each world/colour combination
@@ -218,7 +219,7 @@ const rooms = {
       {
         type: "sceneryPlayer",
         config: { which: "head" },
-        position: { x: 8.6, y: 7.5, z: 1 },
+        position: { x: 8.5, y: 7.5, z: 1 },
       },
 
       // this block should be behind...
@@ -444,6 +445,27 @@ const rooms = {
     planet: "moonbase",
     color: "cyan",
   } satisfies RoomJson<"moonbase", TestCampaignRoomId>,
+  tiny: {
+    size: { x: 1, y: 1 },
+    walls: generateWalls({ x: 1, y: 1 }, "egyptus"),
+    floor: "deadly",
+    floorSkip: [] as Xy[],
+    id: "tiny",
+    items: keyItems([
+      {
+        type: "barrier",
+        config: { axis: "y" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      /*{
+        config: { which: "head" },
+        position: { x: 0, y: 0, z: 5 },
+        type: "player",
+      }*/
+    ]),
+    planet: "egyptus",
+    color: "yellow",
+  } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
   big: {
     size: { x: 11, y: 11 },
     walls: generateWalls({ x: 11, y: 11 }, "bookworld"),

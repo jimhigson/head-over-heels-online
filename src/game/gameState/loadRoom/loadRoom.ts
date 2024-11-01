@@ -5,10 +5,8 @@ import { PlanetName } from "@/sprites/planets";
 import { entries } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItem } from "./loadItem";
-import { blockXyzToFineXyz } from "../render/projectToScreen";
-import mitt from "mitt";
-import { collision1toMany } from "../collision/aabbCollision";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { collision1toMany } from "../../collision/aabbCollision";
 import { addXyz } from "@/utils/vectors";
 
 function* loadItems<RoomId extends string>(
@@ -25,10 +23,13 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
     type: "floor",
     id: "floor",
     config: {},
-    position: blockXyzToFineXyz({ x: 0, y: 0, z: -1 }),
+    position: blockXyzToFineXyz({ x: 0, y: 0, z: 0 }),
     state: {},
-    events: mitt(),
-    aabb: { ...blockXyzToFineXyz(room.size), z: blockSizePx.h },
+    aabb: { ...blockXyzToFineXyz(room.size), z: 0 },
+    //renderAabb: { x: 0, y: 0, z: 0 }, not necessary since it does not render anyway
+    renderPositionDirty: false,
+    renderingDirty: false,
+    renders: false,
   };
 };
 

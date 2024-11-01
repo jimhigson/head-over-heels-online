@@ -7,7 +7,9 @@ export const hasItemClick = <RoomId extends string>(
   return options.onItemClick !== undefined;
 };
 
+export type ShowBoundingBoxes = false | "all" | "non-wall";
+
 export type RenderOptions<RoomId extends string> = {
   onItemClick?: (item: UnknownItemInPlay<RoomId>) => void;
-  showBoundingBoxes?: boolean;
+  showBoundingBoxes?: ShowBoundingBoxes;
 };

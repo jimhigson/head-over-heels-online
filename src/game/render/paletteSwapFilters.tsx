@@ -7,12 +7,12 @@ const paletteSwapFilters = (shades: Shades) => [
   new ColorReplaceFilter({
     originalColor: 0x00ffff,
     targetColor: shades.basic,
-    tolerance: 0.05,
+    tolerance: 0.1,
   }),
   new ColorReplaceFilter({
     originalColor: 0x008888,
     targetColor: shades.dimmed,
-    tolerance: 0.05,
+    tolerance: 0.1,
   }),
 ];
 

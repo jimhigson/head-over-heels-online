@@ -2,7 +2,6 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Campaign } from "../model/modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
-import { EmptyObject } from "type-fest";
 import { RenderOptions } from "./RenderOptions";
 
 const useGame = <RoomId extends string>(

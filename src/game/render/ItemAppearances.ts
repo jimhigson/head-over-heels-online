@@ -16,7 +16,6 @@ import {
   headBlinkAnimationSpeed,
   headWalkAnimationSpeed,
 } from "./animationSpeeds";
-import { renderFloor } from "./renderFloor";
 
 // how an item is rendered
 export type ItemAppearance<T extends ItemType> = (
@@ -228,5 +227,7 @@ export const itemAppearances: {
 
   // for now, the floor has special rendering different from the main engine.
   // TODO: standardise
-  floor: renderFloor,
+  floor() {
+    throw new Error("floor should not be rendered as an item");
+  },
 };

@@ -6,8 +6,7 @@ import { Campaign } from "./model/modelTypes.ts";
 import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
 import { Label } from "./components/ui/label.tsx";
-import { RenderOptions } from "./game/RenderOptions.tsx";
-import { itemZIndex } from "./game/render/projectToScreen.tsx";
+import { RenderOptions, ShowBoundingBoxes } from "./game/RenderOptions.tsx";
 
 export const App = <RoomId extends string>({
   campaign,
@@ -17,7 +16,7 @@ export const App = <RoomId extends string>({
   const [gameApi, setGameApi] = useState<GameApi<RoomId> | undefined>(
     undefined,
   );
-  const [showBBs, setShowBBs] = useState<boolean>(false);
+  const [showBBs, setShowBBs] = useState<ShowBoundingBoxes>(false);
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)
@@ -44,7 +43,7 @@ export const App = <RoomId extends string>({
           const toRoom = gameApi.viewingRoom.roomBelow;
           if (toRoom) gameApi.viewRoom(toRoom);
         }
-        console.log(item, "zIndex:", itemZIndex(item));
+        console.log(item);
       },
     };
   }, [showBBs, gameApi]);
@@ -59,10 +58,20 @@ export const App = <RoomId extends string>({
           <div className="flex flex-row items-center gap-x-2 justify-center mb-2 mt-2">
             <Switch
               id="airplane-mode"
-              checked={showBBs}
-              onCheckedChange={(checked) => setShowBBs(checked)}
+              checked={showBBs !== false}
+              onCheckedChange={(checked) =>
+                setShowBBs(checked ? "non-wall" : false)
+              }
             />
             <Label htmlFor="airplane-mode">Show BBs</Label>
+            <Switch
+              id="airplane-mode"
+              checked={showBBs === "all"}
+              onCheckedChange={(checked) =>
+                setShowBBs(checked ? "all" : "non-wall")
+              }
+            />
+            <Label htmlFor="airplane-mode">inc walls</Label>
           </div>
           <Button onClick={() => gameApi.viewRoom("blacktooth1head" as RoomId)}>
             Start

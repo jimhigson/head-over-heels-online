@@ -4,15 +4,14 @@ import { currentCharacter, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
-import { loadRoom } from "./gameState/loadRoom";
+import { loadRoom } from "./gameState/loadRoom/loadRoom";
 import { PlanetName } from "@/sprites/planets";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
-import { renderRoom } from "./renderRoom";
+import { renderRoom } from "./render/renderRoom";
 import { gameEngineTicks } from "./mechanics/gameEngineTicks";
 import { RenderOptions } from "./RenderOptions";
-import { itemZIndex } from "./render/projectToScreen";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -77,6 +76,13 @@ export const gameMain = async <RoomId extends string>(
 
   const viewRoom = (loadedRoom: RoomState<PlanetName, RoomId>) => {
     viewingRoom = loadedRoom;
+
+    for (const item of viewingRoom.items) {
+      if (item.renders) {
+        item.renderingDirty = true;
+        item.renderPositionDirty = true;
+      }
+    }
 
     worldContainer.removeChildren();
 

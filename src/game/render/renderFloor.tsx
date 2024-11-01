@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { floorThickness, RoomState } from "../../model/modelTypes";
+import { RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/pixiSpriteSheet";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
@@ -9,13 +9,10 @@ import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { PlanetName } from "@/sprites/planets";
 import { Direction } from "@/utils/vectors";
-import { EmptyObject } from "type-fest";
-import { ItemAppearance } from "./ItemAppearances";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 
-export const renderFloor: ItemAppearance<"floor"> = <RoomId extends string>(
-  _config: EmptyObject,
+export const renderFloor = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
 ): Container => {
   const { towards: hasDoorTowards, right: hasDoorRight } =
@@ -121,11 +118,6 @@ export const renderFloor: ItemAppearance<"floor"> = <RoomId extends string>(
   mainContainer.addChild(towardsEdge);
   mainContainer.addChild(rightEdge);
   mainContainer.mask = floorMask;
-
-  // raise the floor by its thickness - the z of the floor is negative so that it can have a positive
-  // bounding box to give it some volume for collision detection. But, the floor should be rendered on
-  // its top edge, not its .position value.
-  mainContainer.y = -floorThickness;
 
   return mainContainer;
 };

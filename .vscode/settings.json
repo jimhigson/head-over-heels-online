@@ -26,6 +26,7 @@
         "Spritesheet",
         "swop",
         "teleporter",
+        "toposort",
         "uncollisionable",
         "xyzs"
     ],
