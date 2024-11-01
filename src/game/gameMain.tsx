@@ -40,6 +40,7 @@ export type GameApi<RoomId extends string> = {
   viewingRoom: RoomState<PlanetName, RoomId>;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
+  set renderOptions(options: RenderOptions<RoomId>);
   stop: () => void;
 };
 
@@ -51,6 +52,7 @@ export const gameMain = async <RoomId extends string>(
 ): Promise<GameApi<RoomId>> => {
   // TODO: re-render on HMR: https://vite.dev/guide/api-hmr.html
 
+  let renderOptions: RenderOptions<RoomId> = {};
   const gameState = initGameState(campaign);
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging
@@ -72,30 +74,6 @@ export const gameMain = async <RoomId extends string>(
   // move origin to centre horizontally of screen:
   worldContainer.x = zxSpectrumResolution.width / 2;
   worldContainer.y = zxSpectrumResolution.height * 0.7;
-
-  // TODO: externalise as parm to gameMain
-  const renderOptions: RenderOptions<RoomId> = {
-    onItemClick(item) {
-      if (
-        item.type === "doorFar" ||
-        item.type === "doorNear" ||
-        item.type === "teleporter"
-      ) {
-        const toRoom = item.config.toRoom;
-        viewRoom(loadRoom(campaign.rooms[toRoom]));
-      }
-      if (item.type === "lift") {
-        const toRoom = viewingRoom.roomAbove;
-        if (toRoom) viewRoom(loadRoom(campaign.rooms[toRoom]));
-      }
-      if (item.type === "floor") {
-        const toRoom = viewingRoom.roomBelow;
-        if (toRoom) viewRoom(loadRoom(campaign.rooms[toRoom]));
-      }
-      console.log(item, "zIndex:", itemZIndex(item));
-    },
-    showBoundingBoxes: true,
-  };
 
   const viewRoom = (loadedRoom: RoomState<PlanetName, RoomId>) => {
     viewingRoom = loadedRoom;
@@ -127,6 +105,10 @@ export const gameMain = async <RoomId extends string>(
     },
     get gameState() {
       return gameState;
+    },
+    set renderOptions(options: RenderOptions<RoomId>) {
+      renderOptions = options;
+      viewRoom(viewingRoom);
     },
     stop() {
       console.log("tearing down game");

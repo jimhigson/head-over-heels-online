@@ -3,9 +3,11 @@ import { Campaign } from "../model/modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
 import { EmptyObject } from "type-fest";
+import { RenderOptions } from "./RenderOptions";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
+  renderOptions: RenderOptions<RoomId>,
 ): GameApi<RoomId> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
 
@@ -22,6 +24,12 @@ const useGame = <RoomId extends string>(
       created?.stop();
     };
   }, [campaign]);
+
+  useEffect(() => {
+    if (gameApi === undefined) return;
+
+    gameApi.renderOptions = renderOptions;
+  }, [gameApi, renderOptions]);
 
   return gameApi;
 };
@@ -67,20 +75,19 @@ const useHashSyncedWithRoom = <RoomId extends string>(
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
 export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
-  forwardRef<GameApi<RoomId> | undefined, EmptyObject>(
-    (_props: EmptyObject, gameApiRef) => {
-      const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
-      const gameApi = useGame(campaign);
-      useHashSyncedWithRoom(gameApi);
-      useImperativeHandle(gameApiRef, () => gameApi || undefined);
+  forwardRef<
+    GameApi<RoomId> | undefined,
+    { renderOptions: RenderOptions<RoomId> }
+  >(({ renderOptions }, gameApiRef) => {
+    const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
+    const gameApi = useGame(campaign, renderOptions);
+    useHashSyncedWithRoom(gameApi);
+    useImperativeHandle(gameApiRef, () => gameApi || undefined);
 
-      useEffect(() => {
-        if (gameDiv === null || gameApi === undefined) return;
-        gameApi.renderIn(gameDiv);
-      }, [gameApi, gameDiv]);
+    useEffect(() => {
+      if (gameDiv === null || gameApi === undefined) return;
+      gameApi.renderIn(gameDiv);
+    }, [gameApi, gameDiv]);
 
-      return (
-        <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
-      );
-    },
-  );
+    return <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />;
+  });
