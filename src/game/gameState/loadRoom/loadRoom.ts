@@ -1,5 +1,9 @@
 import { UnknownJsonItem } from "@/model/Item";
-import { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import {
+  defaultItemProperties,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { RoomState, RoomJson, AnyRoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { entries } from "@/utils/entries";
@@ -20,25 +24,22 @@ function* loadItems<RoomId extends string>(
 
 const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
   return {
-    type: "floor",
-    id: "floor",
-    config: {},
-    position: blockXyzToFineXyz({ x: 0, y: 0, z: 0 }),
-    state: {},
-    aabb: { ...blockXyzToFineXyz(room.size), z: 0 },
-    //renderAabb: { x: 0, y: 0, z: 0 }, not necessary since it does not render anyway
-    renderPositionDirty: false,
-    renderingDirty: false,
-    renders: false,
+    ...defaultItemProperties,
+    ...{
+      type: "floor",
+      id: "floor",
+      config: {},
+      position: blockXyzToFineXyz({ x: 0, y: 0, z: 0 }),
+      state: {},
+      aabb: { ...blockXyzToFineXyz(room.size), z: 0 },
+      renders: false,
+    },
   };
 };
 
 const standItems = (items: UnknownItemInPlay[]) => {
   for (const item of items) {
-    // for certain items, we need to know what they are standing on
-    // TODO: implement a "fallable" property of items to check here instead
-    // of checking if they are the player, since other items can also fall
-    if (item.type === "player") {
+    if (item.falls) {
       const positionJustBelowItem = addXyz(item.position, { z: -1 });
       const collisions = collision1toMany(
         {
@@ -60,6 +61,9 @@ const standItems = (items: UnknownItemInPlay[]) => {
         );
 
         if (collisionItemTop === maybeStandingItemBottom) {
+          // TODO: use the type system better here - all items with
+          // .falls should also have .state.standingOn and ts
+          // should be able to recognise this
           item.state.standingOn = collisionItem;
           console.log(item, "is standing on", collisionItem);
           break;

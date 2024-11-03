@@ -1,5 +1,5 @@
-import { UnknownJsonItem } from "@/model/Item";
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { ItemType, UnknownJsonItem } from "@/model/Item";
+import { defaultItemProperties, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { addXy } from "@/utils/vectors";
@@ -32,6 +32,13 @@ const positionAndAabb = (
   };
 };
 
+const fallingItemTypes = [
+  "pickup",
+  "portable-block",
+  "baddie",
+  "spring",
+] as ItemType[];
+
 export function* loadItem<RoomId extends string>(
   id: string,
   jsonItem: UnknownJsonItem<RoomId>,
@@ -58,68 +65,70 @@ export function* loadItem<RoomId extends string>(
 
       yield {
         ...jsonItem,
-        id: `${id}/far`,
-        config: {
-          ...jsonItem.config,
-          inHiddenWall,
+        ...defaultItemProperties,
+        ...{
+          id: `${id}/far`,
+          config: {
+            ...jsonItem.config,
+            inHiddenWall,
+          },
+          type: "doorFar",
+          position: blockXyzToFineXyz({
+            ...jsonItem.position,
+            [axis]: jsonItem.position[axis] + 1.5,
+            ...crossAxisComponent,
+          }),
+          state: {},
+          aabb: { x: 8, y: 8, z: 48 },
         },
-        type: "doorFar",
-        position: blockXyzToFineXyz({
-          ...jsonItem.position,
-          [axis]: jsonItem.position[axis] + 1.5,
-          ...crossAxisComponent,
-        }),
-        //events: mitt(),
-        renderingDirty: false,
-        renderPositionDirty: false,
-        state: {},
-        aabb: { x: 8, y: 8, z: 48 },
-        renders: true,
       };
       yield {
         ...jsonItem,
-        id: `${id}/near`,
-        config: {
-          ...jsonItem.config,
-          inHiddenWall,
+        ...defaultItemProperties,
+        ...{
+          id: `${id}/near`,
+          config: {
+            ...jsonItem.config,
+            inHiddenWall,
+          },
+          type: "doorNear",
+          position: blockXyzToFineXyz({
+            ...jsonItem.position,
+            ...crossAxisComponent,
+          }),
+          state: {},
+          aabb: { x: 8, y: 8, z: 48 },
         },
-        type: "doorNear",
-        position: blockXyzToFineXyz({
-          ...jsonItem.position,
-          ...crossAxisComponent,
-        }),
-        //events: mitt(),
-        renderingDirty: false,
-        renderPositionDirty: false,
-        state: {},
-        aabb: { x: 8, y: 8, z: 48 },
-        renders: true,
       };
       return;
     }
     case "player": {
       yield {
         ...jsonItem,
-        id: jsonItem.config.which,
-        //events: mitt(),
-        renderingDirty: false,
-        renderPositionDirty: false,
-        state: { facing: "towards", movement: "idle", jumpRemaining: 0 },
-        ...positionAndAabb(jsonItem),
-        renders: true,
+        ...defaultItemProperties,
+        ...{
+          id: jsonItem.config.which,
+          renderingDirty: false,
+          renderPositionDirty: false,
+          state: { facing: "towards", movement: "idle", jumpRemaining: 0 },
+          ...positionAndAabb(jsonItem),
+          falls: true,
+        },
       };
       return;
     }
     default:
       yield {
         ...jsonItem,
-        id,
-        //events: mitt(),
-        renderingDirty: false,
-        renderPositionDirty: false,
-        state: {},
-        ...positionAndAabb(jsonItem),
-        renders: true,
+        ...defaultItemProperties,
+        ...{
+          id,
+          renderingDirty: false,
+          renderPositionDirty: false,
+          state: {},
+          ...positionAndAabb(jsonItem),
+          falls: fallingItemTypes.includes(jsonItem.type),
+        },
       };
   }
 }

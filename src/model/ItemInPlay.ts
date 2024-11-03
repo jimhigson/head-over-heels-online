@@ -7,7 +7,7 @@ import { SetRequired } from "type-fest";
 export type ItemStateMap = {
   player: {
     facing: Direction;
-    movement: "moving" | "idle";
+    movement: "moving" | "idle" | "falling";
     standingOn?: UnknownItemInPlay;
     jumpRemaining: number;
   };
@@ -49,10 +49,21 @@ export type ItemInPlay<
   renders: boolean;
 
   /**
-   * will be populated on first render
+   * true if this object should fall whenever it is not supported. Otherwise,
+   * it can float unsupported in free-space
    */
-  //readonly inFrontOf: Array<ItemInPlay<ItemType, P, RoomId>>;
+  falls: boolean;
 };
+
+/**
+ * to spread over items on instantiation and cut down on typing
+ **/
+export const defaultItemProperties = {
+  renders: true,
+  renderPositionDirty: false,
+  renderingDirty: false,
+  falls: false,
+} as const satisfies Partial<UnknownItemInPlay>;
 
 export function assertItemHasContainers<T extends ItemType>(
   item: ItemInPlay<T>,

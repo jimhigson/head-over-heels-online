@@ -1,4 +1,5 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { AxisXyz } from "@/utils/vectors";
 
 type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
 
@@ -7,23 +8,19 @@ type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
  * it is considered a collision
  */
 export const collision1to1 = (
-  {
-    aabb: { x: bbxA, y: bbyA, z: bbzA },
-    position: { x: xA, y: yA, z: zA },
-  }: Collideable,
-  {
-    aabb: { x: bbxB, y: bbyB, z: bbzB },
-    position: { x: xB, y: yB, z: zB },
-  }: Collideable,
+  { aabb: bbA, position: posA }: Collideable,
+  { aabb: bbB, position: posB }: Collideable,
+  /** which axes to collide on - by default all */
+  axes: AxisXyz[] = ["x", "y", "z"],
 ) => {
-  // Check for overlap on the x-axis
-  if (xA + bbxA <= xB || xA >= xB + bbxB) return false;
-
-  // Check for overlap on the y-axis
-  if (yA + bbyA <= yB || yA >= yB + bbyB) return false;
-
-  // Check for overlap on the z-axis
-  if (zA + bbzA <= zB || zA >= zB + bbzB) return false;
+  for (const axis of axes) {
+    if (
+      posA[axis] + bbA[axis] <= posB[axis] ||
+      posA[axis] >= posB[axis] + bbB[axis]
+    ) {
+      return false;
+    }
+  }
 
   // If all axes overlap, return true for collision
   return true;
@@ -33,10 +30,12 @@ export const collision1to1 = (
 export const collision1toMany = (
   subject: Collideable,
   items: UnknownItemInPlay[],
+  axes: AxisXyz[] = ["x", "y", "z"],
 ) => {
   return items.filter(
     (candidateItem) =>
       // prevent self- collision
-      subject.id !== candidateItem.id && collision1to1(subject, candidateItem),
+      subject.id !== candidateItem.id &&
+      collision1to1(subject, candidateItem, axes),
   );
 };

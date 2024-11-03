@@ -3,24 +3,12 @@ import { UnknownRoomState } from "@/model/modelTypes";
 import { AxisXyz, Xyz, addXyz, axesXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 
-/**
- *
- * @param item
- * @param xyzDelta
- * @param inRoom the room the item is moving in
- */
-export const moveItem = (
+export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
   xyzDelta: Xyz,
-  room: UnknownRoomState,
+  targetPosition: Xyz,
+  collisionsAtTargetPosition: UnknownItemInPlay[],
 ) => {
-  const targetPosition = addXyz(item.position, xyzDelta);
-
-  const collisionsAtTargetPosition = collision1toMany(
-    { aabb: item.aabb, position: targetPosition, id: item.id },
-    room.items,
-  );
-
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
   const correctedPosition = collisionsAtTargetPosition.reduce<Xyz>(
@@ -55,8 +43,45 @@ export const moveItem = (
     targetPosition,
   );
 
+  return correctedPosition;
+};
+
+/**
+ *
+ * @param item
+ * @param xyzDelta
+ * @param inRoom the room the item is moving in
+ */
+export const moveItem = (
+  item: UnknownItemInPlay,
+  xyzDelta: Xyz,
+  room: UnknownRoomState,
+  /**
+   * for no collision detection, provide an empty array
+   * TODO: could this be derived from the xyzDelta !== 0 in the axis?
+   */
+  collisionAxes: AxisXyz[] = ["x", "y", "z"],
+) => {
+  const targetPosition = addXyz(item.position, xyzDelta);
+
+  const collisions = collision1toMany(
+    { aabb: item.aabb, position: targetPosition, id: item.id },
+    room.items,
+    collisionAxes,
+  );
+  // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
+  // or dying (if it is deadly), and maybe some others
+  const correctedPosition = protectAgainstIntersecting(
+    item,
+    xyzDelta,
+    targetPosition,
+    collisions,
+  );
+
   if (!xyzEqual(correctedPosition, item.position)) {
     item.position = correctedPosition;
     item.renderPositionDirty = true;
   }
+
+  return collisions;
 };

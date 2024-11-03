@@ -1,4 +1,4 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { defaultItemProperties, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { RoomJson } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { PlanetName } from "@/sprites/planets";
@@ -21,16 +21,16 @@ export function* loadWalls<R extends string>(
     const style = room.walls.left[yi];
     if (style !== "none") {
       yield {
-        type: "wall",
-        id: `wall-left-${yi}`,
-        config: { side: "left", style },
-        position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
-        state: {},
-        aabb: yAxisWallAabb,
-        renderAabb: yAxisWallRenderAabb,
-        renderPositionDirty: false,
-        renderingDirty: false,
-        renders: true,
+        ...defaultItemProperties,
+        ...{
+          type: "wall",
+          id: `wall-left-${yi}`,
+          config: { side: "left", style },
+          position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
+          state: {},
+          aabb: yAxisWallAabb,
+          renderAabb: yAxisWallRenderAabb,
+        },
       };
     }
 
@@ -46,20 +46,20 @@ export function* loadWalls<R extends string>(
 
     if (!skipInvisibleWall) {
       yield {
-        type: "wall",
-        id: `wall-right-${yi}`,
-        config: { side: "left", style: "none" },
-        position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
-        state: {},
-        aabb: {
-          x: 0,
-          y: blockSizePx.d,
-          z: 999,
+        ...defaultItemProperties,
+        ...{
+          type: "wall",
+          id: `wall-right-${yi}`,
+          config: { side: "left", style: "none" },
+          position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
+          state: {},
+          aabb: {
+            x: 0,
+            y: blockSizePx.d,
+            z: 999,
+          },
+          renders: false,
         },
-        // invisible walls are never rendered so give no renderAabb
-        renderPositionDirty: false,
-        renderingDirty: false,
-        renders: false,
       };
     }
   }
@@ -69,16 +69,16 @@ export function* loadWalls<R extends string>(
     const style = room.walls.away[xi];
     if (style !== "none") {
       yield {
-        type: "wall",
-        id: `wall-away-${xi}`,
-        config: { side: "away", style },
-        position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
-        state: {},
-        aabb: xAxisWallAabb,
-        renderAabb: xAxisWallRenderAabb,
-        renderPositionDirty: false,
-        renderingDirty: false,
-        renders: true,
+        ...defaultItemProperties,
+        ...{
+          type: "wall",
+          id: `wall-away-${xi}`,
+          config: { side: "away", style },
+          position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
+          state: {},
+          aabb: xAxisWallAabb,
+          renderAabb: xAxisWallRenderAabb,
+        },
       };
     }
 
@@ -93,20 +93,21 @@ export function* loadWalls<R extends string>(
 
     if (!skipInvisibleWall) {
       yield {
-        type: "wall",
-        id: `wall-towards-${xi}`,
-        config: { side: "towards", style: "none" },
-        position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
-        state: {},
-        aabb: {
-          x: blockSizePx.w,
-          y: 0,
-          z: 999,
+        ...defaultItemProperties,
+        ...{
+          type: "wall",
+          id: `wall-towards-${xi}`,
+          config: { side: "towards", style: "none" },
+          position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
+          state: {},
+          aabb: {
+            x: blockSizePx.w,
+            y: 0,
+            z: 999,
+          },
+          // invisible walls are never rendered so give no renderAabb
+          renders: false,
         },
-        // invisible walls are never rendered so give no renderAabb
-        renderPositionDirty: false,
-        renderingDirty: false,
-        renders: false,
       };
     }
   }

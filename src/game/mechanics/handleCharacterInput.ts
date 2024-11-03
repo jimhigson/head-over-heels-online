@@ -1,9 +1,10 @@
 import {
   directions,
   scaleXyz,
-  directionVectors,
+  unitVectors,
   originXyz,
   xyzEqual,
+  addXyz,
 } from "@/utils/vectors";
 import { GameState, currentCharacter } from "../gameState/GameState";
 import { InputState } from "../input/InputState";
@@ -25,9 +26,6 @@ const playerJumpHeight = {
   head: blockSizePx.h * 3 - 1,
   heels: blockSizePx.h,
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fallSpeedPixPerMs = blockSizePx.h / 1_000; // fall one block per second
 
 export function handleCharacterInput<RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -66,18 +64,14 @@ export function handleCharacterInput<RoomId extends string>(
   const jumpRemaining = characterItem.state.jumpRemaining;
 
   // unit vector in direction of movement
-  const directionVector = {
-    ...(directionPressed !== undefined || jumpRemaining > 0
-      ? directionVectors[characterItem.state.facing]
-      : originXyz),
-    z:
-      jumpRemaining > 0
-        ? 1
-        : isCharacterStandingOnSomething
-          ? 0
-          : // not jumping and not standing on something - falling
-            -1,
-  };
+  const directionVector = addXyz(
+    {
+      ...(directionPressed !== undefined || jumpRemaining > 0
+        ? unitVectors[characterItem.state.facing]
+        : originXyz),
+    },
+    jumpRemaining ? unitVectors.up : originXyz,
+  );
 
   const movementVector = scaleXyz(
     directionVector,

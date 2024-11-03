@@ -19,6 +19,8 @@ export const drawOrderComparator = (
     return 0;
   }
 
+  // TODO: change to use pixi bounding boxes (since we have them already from the 2d engine)
+  // - at this point renderAabb can be removed from the code
   const bbA = a.renderAabb || a.aabb;
   const bbB = b.renderAabb || b.aabb;
 

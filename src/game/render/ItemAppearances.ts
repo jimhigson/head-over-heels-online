@@ -152,6 +152,12 @@ export const itemAppearances: {
         frames: pixiSpriteSheet.animations[`${which}.walking.${facing}`],
         animationSpeed: headWalkAnimationSpeed,
       });
+    } else if (
+      movement === "falling" &&
+      which === "head" &&
+      (facing === "towards" || facing === "right")
+    ) {
+      return createSprite(`head.falling.${facing}`);
     } else {
       if (which === "head" && (facing === "towards" || facing === "right")) {
         return createSprite({

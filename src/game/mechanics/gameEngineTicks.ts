@@ -6,6 +6,7 @@ import { ItemType } from "@/model/Item";
 import { handleCharacterInput } from "./handleCharacterInput";
 import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
 import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
+import { falling } from "./falling";
 
 export const maybeUpdateItemState = <T extends ItemType>(
   item: ItemInPlay<T>,
@@ -47,6 +48,11 @@ export const gameEngineTicks = <RoomId extends string>(
     let sortDirty = false;
 
     for (const item of items) {
+      if (item.falls) {
+        // TODO: discriminate union on .falls
+        falling(item, room, deltaMS);
+      }
+
       if (item.renderPositionDirty) {
         moveSpriteToItemProjection(item);
         item.renderPositionDirty = false;

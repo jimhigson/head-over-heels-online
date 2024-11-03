@@ -69,10 +69,10 @@ const frames = {
     smallItemTextureSize,
   ),
   "head.falling.towards": {
-    frame: { x: 107, y: 304, ...smallItemTextureSize },
+    frame: { x: 54, y: 304, ...smallItemTextureSize },
   },
   "head.falling.right": {
-    frame: { x: 132, y: 304, ...smallItemTextureSize },
+    frame: { x: 79, y: 304, ...smallItemTextureSize },
   },
 
   // Heels
