@@ -1,4 +1,4 @@
-import { Direction } from "../../src/modelTypes";
+import { Direction } from "../../src/utils/vectors";
 import { Xml2JsonRoom } from "./readToJson";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;

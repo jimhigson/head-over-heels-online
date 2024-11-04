@@ -1,11 +1,10 @@
-{    
+{
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-
     // for shadcn: https://ui.shadcn.com/docs/installation/vite
     "baseUrl": ".",
     "paths": {

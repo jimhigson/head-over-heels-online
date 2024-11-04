@@ -7,7 +7,6 @@ import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
 import { Label } from "./components/ui/label.tsx";
 import { RenderOptions, ShowBoundingBoxes } from "./game/RenderOptions.tsx";
-import { isPlayableItem } from "./model/ItemInPlay.ts";
 
 export const App = <RoomId extends string>({
   campaign,
@@ -93,7 +92,11 @@ export const App = <RoomId extends string>({
           <Button
             onClick={() =>
               gameApi &&
-              console.log(gameApi.viewingRoom.items.filter(isPlayableItem))
+              console.log(
+                gameApi.viewingRoom.items.find(
+                  (i) => i.type === gameApi.gameState.currentCharacter,
+                ),
+              )
             }
           >
             Playable to console

@@ -48,7 +48,7 @@ export const initGameState = <RoomId extends string>(
     currentCharacter: "head",
     characterRooms: {
       head: headsRoom,
-      heels: heelsRoom
+      heels: heelsRoom,
     },
     inputState: fromAllEntries(actions.map((action) => [action, false])),
   };

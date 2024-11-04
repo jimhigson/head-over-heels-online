@@ -1,4 +1,4 @@
-{  
+{
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -21,9 +21,7 @@
     // for shadcn: https://ui.shadcn.com/docs/installation/vite
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

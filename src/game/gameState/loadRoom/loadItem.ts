@@ -170,6 +170,24 @@ export function* loadItem<RoomId extends string>(
       return;
     }
 
+    case "teleporter": {
+      yield {
+        ...jsonItem,
+        ...defaultItemProperties,
+        ...{
+          id,
+          renderingDirty: false,
+          renderPositionDirty: false,
+          state: {
+            flashing: false,
+          },
+          ...positionAndAabb(jsonItem),
+          falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
+        },
+      };
+      return;
+    }
+
     default:
       yield {
         ...jsonItem,

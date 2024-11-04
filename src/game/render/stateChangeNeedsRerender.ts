@@ -13,6 +13,12 @@ export const stateChangeNeedsRerender = (
         item.state.facing !== (previousState as typeof item.state).facing ||
         item.state.movement !== (previousState as typeof item.state).movement
       );
+
+    case "teleporter": {
+      return (
+        item.state.flashing !== (previousState as typeof item.state).flashing
+      );
+    }
   }
 
   // don't re-render on state changes:

@@ -6,11 +6,12 @@ import {
   headWalkAnimationSpeed,
 } from "./animationSpeeds";
 import { ItemInPlay } from "@/model/ItemInPlay";
+import { PlayableCharacter } from "@/model/modelTypes";
 
-export const playerAppearance: ItemAppearance<"head" | "heels"> = ({
+export const playerAppearance: ItemAppearance<PlayableCharacter> = ({
   type,
   state: { movement, facing },
-}: ItemInPlay<"head" | "heels">) => {
+}: ItemInPlay<PlayableCharacter>) => {
   if (movement === "moving") {
     return createSprite({
       frames: pixiSpriteSheet.animations[`${type}.walking.${facing}`],

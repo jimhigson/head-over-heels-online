@@ -7,7 +7,7 @@ import tseslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
 
 export default tseslint.config(
-  { ignores: ["dist", 'src/_generated'] },
+  { ignores: ["dist", "src/_generated"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -18,7 +18,7 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-      "prettier": prettier,
+      prettier: prettier,
       "unused-imports": unusedImports,
     },
     rules: {
@@ -33,9 +33,7 @@ export default tseslint.config(
         "always",
         { avoidExplicitReturnArrows: true },
       ],
-      "no-param-reassign": [
-        "off"
-      ],
+      "no-param-reassign": ["off"],
       // this will cause the editor to strip unused imports on save
       "unused-imports/no-unused-imports": "error",
       "prettier/prettier": "error",
@@ -43,10 +41,10 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
-          "argsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
-      ]
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 );

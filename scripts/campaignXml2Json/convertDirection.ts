@@ -1,4 +1,4 @@
-import { Direction } from "../../src/modelTypes";
+import { Direction } from "../../src/utils/vectors";
 import { CompassDirections } from "./readToJson";
 
 export const convertDirection = (

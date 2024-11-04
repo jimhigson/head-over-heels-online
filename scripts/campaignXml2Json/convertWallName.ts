@@ -1,4 +1,5 @@
-import { AnyWall, Axis } from "../../src/modelTypes";
+import { AnyWall } from "../../src/model/modelTypes";
+import { AxisXy } from "../../src/utils/vectors";
 import { PlanetName } from "../../src/sprites/planets";
 import { wallNumbers } from "./wallNumbers";
 
@@ -11,7 +12,7 @@ const pictureNameRegex =
 
 export const parseXmlWallName = (
   pictureName: string,
-): { axis: Axis; wallTypeIndex: number } => {
+): { axis: AxisXy; wallTypeIndex: number } => {
   const regexMatch = pictureNameRegex.exec(pictureName);
 
   if (regexMatch === null || regexMatch.groups === undefined) {
@@ -19,7 +20,7 @@ export const parseXmlWallName = (
   }
 
   return {
-    axis: regexMatch.groups["axis"] as Axis,
+    axis: regexMatch.groups["axis"] as AxisXy,
     // jail walls only have one tile so in the xml there's no number - use 1 to mean
     // the first (and only) wall variant:
     wallTypeIndex: regexMatch.groups["number"]

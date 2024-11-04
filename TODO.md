@@ -30,8 +30,8 @@ _ use spritesheets for graphics - https://pixijs.download/release/docs/assets.Sp
 
 [x] add level selector dropdown
 [ ] parseInt from xml earlier and remove many parseInt calls!  
-    * nice, but processing is all offline, so it's just ugly, not harmful to play
-    * find/write a new xml parser is probably the way
+ _ nice, but processing is all offline, so it's just ugly, not harmful to play
+_ find/write a new xml parser is probably the way
 [x] prettier
 [x] render supports under doors with z!=0
 
@@ -43,7 +43,7 @@ _ use spritesheets for graphics - https://pixijs.download/release/docs/assets.Sp
 [x] support stacked sprites
 
 [ ] investigate rooms:
-    moonbase12 - puppies seem to go nowhere!
+moonbase12 - puppies seem to go nowhere!
 
 Game engine
 [ ] init mutable game state based off of room on entering a room

@@ -3,6 +3,7 @@ import { InputState } from "../../input/InputState";
 import { playerSpeedPixPerMs } from "../mechanicsConstants";
 import { PlayableItem } from "@/model/ItemInPlay";
 import { MechanicResult } from "../MechanicResult";
+import { PlayableCharacter } from "@/model/modelTypes";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -11,7 +12,7 @@ export function walking(
   playableItem: PlayableItem,
   inputState: InputState,
   deltaMS: number,
-): MechanicResult<"head" | "heels"> {
+): MechanicResult<PlayableCharacter> {
   const {
     type,
     state: { jumpRemaining },

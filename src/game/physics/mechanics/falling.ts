@@ -11,7 +11,7 @@ import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 
 const fallSpeedPixPerMs = blockSizePx.h / 1_000; // fall one block per second
 
-export const falling = (
+export const fallingAndLanding = (
   item: ItemInPlay<FallingItemTypes>,
   room: UnknownRoomState,
   deltaMS: number,

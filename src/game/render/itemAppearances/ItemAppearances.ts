@@ -116,7 +116,13 @@ export const itemAppearances: {
 
   spring: () => createSprite("spring.released"),
 
-  teleporter: () => createSprite("teleporter"),
+  teleporter: (item) =>
+    item.state.flashing
+      ? createSprite({
+          frames: pixiSpriteSheet.animations["teleporter.flashing"],
+          animationSpeed: 0.1,
+        })
+      : createSprite("teleporter"),
 
   pickup({ config: { gives } }) {
     const pickupIcons: Record<

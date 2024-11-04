@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",
+    "check:all": "pnpm run check:lint && pnpm run check:type && pnpm run check:format",
     "fix:lint": "eslint --fix .",
     "preview": "vite preview",
     "check:format": "prettier . --check",
@@ -16,7 +17,7 @@
     "test": "vitest",
     "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
     "makeWorldJsonPatch": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write",
-    "predeploy": "pnpm run check:lint && pnpm run build",
+    "predeploy": "pnpm run check:lint && pnpm run check:type && pnpm run check:format && pnpm run build",
     "deploy": "gh-pages -d dist",
     "sprites2png": "./scripts/sprites2png.sh",
     "watch:sprites2png": "pnpm run sprites2png && chokidar gfx/sprites.iff -c \"pnpm run sprites2png\""

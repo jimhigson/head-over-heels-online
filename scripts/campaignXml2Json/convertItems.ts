@@ -1,5 +1,4 @@
-import { ItemConfigMap, UnknownJsonItem } from "../../src/Item";
-import { addXy, crossAxis } from "../../src/modelTypes";
+import { addXy, crossAxisXy } from "../../src/utils/vectors";
 import { PlanetName } from "../../src/sprites/planets";
 import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
@@ -14,6 +13,7 @@ import { MapJson, Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import { Xml2JsonItem } from "./Xml2JsonItem";
 import { keyItems } from "../../src/utils/keyItems";
+import { ItemConfigMap, UnknownJsonItem } from "../../src/model/Item";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",
@@ -105,7 +105,7 @@ const convertItemsArray = (
           item.kind.endsWith("-east") || item.kind.endsWith("-west")
             ? "x"
             : "y";
-        const cAxis = crossAxis(axis);
+        const cAxis = crossAxisXy(axis);
 
         const z =
           position.z === -1

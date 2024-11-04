@@ -177,6 +177,13 @@ const spritesheetData = {
     teleporter: {
       frame: { x: 4, y: 450, ...largeItemTextureSize },
     },
+    ...seriesOfAnimationFrameTextures(
+      "teleporter.flashing",
+      2,
+      { x: 37, y: 450 },
+      largeItemTextureSize,
+    ),
+
     "barrier.x": {
       frame: { x: 313, y: 389, w: 24, h: 24 },
     },
@@ -351,6 +358,7 @@ const spritesheetData = {
     ...playableSpritesheetData.frames,
   },
   animations: {
+    "teleporter.flashing": ["teleporter.flashing.1", "teleporter.flashing.2"],
     fish: ["fish.1", "fish.2"],
     lift: ["lift.1", "lift.2", "lift.3", "lift.4"],
     dalek: ["dalek.1", "dalek.2"],

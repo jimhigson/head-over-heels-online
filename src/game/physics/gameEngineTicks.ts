@@ -1,10 +1,12 @@
 import { Application } from "pixi.js";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { walking } from "./mechanics/walking";
+import { teleporter } from "./mechanics/teleporter";
 import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
 import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
-import { falling } from "./mechanics/falling";
+import { fallingAndLanding } from "./mechanics/falling";
 import {
+  isItemType,
   isPlayableItem,
   itemFalls,
   ItemInPlay,
@@ -45,7 +47,11 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
   if (itemFalls(item)) {
     applyResult(steppedOff(item) as MechanicResult<T>);
-    applyResult(falling(item, room, deltaMS) as MechanicResult<T>);
+    applyResult(fallingAndLanding(item, room, deltaMS) as MechanicResult<T>);
+  }
+
+  if (isItemType("teleporter", item)) {
+    applyResult(teleporter(item, inputState, room) as MechanicResult<T>);
   }
 
   if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {

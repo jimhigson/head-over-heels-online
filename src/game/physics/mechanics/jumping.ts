@@ -2,21 +2,25 @@ import { PlayableItem } from "@/model/ItemInPlay";
 import { playerJumpHeight, playerSpeedPixPerMs } from "../mechanicsConstants";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { InputState } from "../../input/InputState";
+import { PlayableCharacter } from "@/model/modelTypes";
 
 export const jumping = (
   characterItem: PlayableItem,
   { jump: jumpInput }: InputState,
   deltaMS: number,
-): MechanicResult<"head" | "heels"> => {
+): MechanicResult<PlayableCharacter> => {
   const {
     type,
     state: { jumpRemaining },
   } = characterItem;
 
-  const isCharacterStandingOnSomething =
-    characterItem.state.standingOn !== null;
+  const isCharacterStandingOnSomethingCanJumpOff =
+    characterItem.state.standingOn !== null &&
+    // can jump off anything except a teleporter (because the jump button is also used
+    // to teleport)
+    characterItem.state.standingOn.type !== "teleporter";
 
-  const isJumpStart = jumpInput && isCharacterStandingOnSomething;
+  const isJumpStart = jumpInput && isCharacterStandingOnSomethingCanJumpOff;
 
   if (!isJumpStart && jumpRemaining === 0) {
     // not jumping

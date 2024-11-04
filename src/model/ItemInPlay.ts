@@ -1,8 +1,9 @@
-import { PlanetName } from "@/sprites/planets";
-import { Aabb, Direction, Xyz } from "@/utils/vectors";
+import { PlanetName } from "../sprites/planets";
+import { Aabb, Direction, Xyz } from "../utils/vectors";
 import { ItemConfig, ItemType } from "./Item";
 import { Container } from "pixi.js";
 import { SetRequired } from "type-fest";
+import { PlayableCharacter } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<ItemType, "player" | "door">
@@ -44,6 +45,7 @@ export type ItemStateMap = {
     jumps: number;
     carrying: ItemType | null;
   };
+  teleporter: { flashing: boolean };
   "portable-block": FallingItemState;
   baddie: FallingItemState;
   spring: FallingItemState;
@@ -71,6 +73,7 @@ export type ItemInPlay<
   config: T extends ItemType ? ItemConfig<T, P, RoomId> : EmptyObject;
 
   position: Xyz;
+  //subPosition: Xyz;
 
   readonly id: string;
   state: ItemState<T>;
@@ -100,10 +103,17 @@ export type ItemInPlay<
   falls: boolean;
 };
 
-export type PlayableItem = ItemInPlay<"head" | "heels">;
+export type PlayableItem = ItemInPlay<PlayableCharacter>;
 
 export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
   return item.type === "head" || item.type === "heels";
+};
+
+export const isItemType = <T extends ItemInPlayType>(
+  type: T,
+  item: AnyItemInPlay,
+): item is ItemInPlay<T> => {
+  return item.type === type;
 };
 
 export const fallingItemTypes = [
