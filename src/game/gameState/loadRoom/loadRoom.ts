@@ -52,14 +52,9 @@ const initStandingOn = (items: UnknownItemInPlay[]) => {
       );
 
       for (const collisionItem of collisions) {
-        const collisionItemTop = Math.max(
-          collisionItem.position.z,
-          collisionItem.position.z + collisionItem.aabb.z,
-        );
-        const maybeStandingItemBottom = Math.min(
-          item.position.z,
-          item.position.z + item.aabb.z,
-        );
+        const collisionItemTop =
+          collisionItem.position.z + collisionItem.aabb.z;
+        const maybeStandingItemBottom = item.position.z;
 
         if (collisionItemTop === maybeStandingItemBottom) {
           item.state.standingOn = collisionItem;

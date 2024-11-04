@@ -7,6 +7,7 @@ import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
 import { Label } from "./components/ui/label.tsx";
 import { RenderOptions, ShowBoundingBoxes } from "./game/RenderOptions.tsx";
+import { isPlayableItem } from "./model/ItemInPlay.ts";
 
 export const App = <RoomId extends string>({
   campaign,
@@ -88,6 +89,14 @@ export const App = <RoomId extends string>({
           </Button>
           <Button onClick={() => gameApi && console.log(gameApi.viewingRoom)}>
             Room state to console
+          </Button>
+          <Button
+            onClick={() =>
+              gameApi &&
+              console.log(gameApi.viewingRoom.items.filter(isPlayableItem))
+            }
+          >
+            Playable to console
           </Button>
         </div>
       )}

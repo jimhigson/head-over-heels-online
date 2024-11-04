@@ -10,7 +10,7 @@ import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
 import { renderRoom } from "./render/renderRoom";
-import { gameEngineTicks } from "./mechanics/gameEngineTicks";
+import { gameEngineTicks } from "./physics/gameEngineTicks";
 import { RenderOptions } from "./RenderOptions";
 
 const centreRoomInRendering = (

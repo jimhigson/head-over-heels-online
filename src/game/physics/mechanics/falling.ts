@@ -1,19 +1,18 @@
 import {
   FallingItemTypes,
   isPlayableItem,
-  UnknownItemInPlay,
+  ItemInPlay,
 } from "@/model/ItemInPlay";
 import { UnknownRoomState } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
-import { collision1toMany } from "../collision/aabbCollision";
-import { MechanicResult, unitMechanicalResult } from "./MechanicResult";
+import { collision1toMany } from "../../collision/aabbCollision";
+import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 
 const fallSpeedPixPerMs = blockSizePx.h / 1_000; // fall one block per second
 
 export const falling = (
-  // we need item type
-  item: Extract<UnknownItemInPlay, { type: FallingItemTypes }>,
+  item: ItemInPlay<FallingItemTypes>,
   room: UnknownRoomState,
   deltaMS: number,
 ): MechanicResult<FallingItemTypes> => {

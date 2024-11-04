@@ -1,8 +1,8 @@
 import { directions, scaleXyz, unitVectors, originXyz } from "@/utils/vectors";
-import { InputState } from "../input/InputState";
-import { playerSpeedPixPerMs } from "./mechanicsConstants";
+import { InputState } from "../../input/InputState";
+import { playerSpeedPixPerMs } from "../mechanicsConstants";
 import { PlayableItem } from "@/model/ItemInPlay";
-import { MechanicResult } from "./MechanicResult";
+import { MechanicResult } from "../MechanicResult";
 
 /**
  * walking, but also gliding and changing direction mid-air

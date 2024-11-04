@@ -1,7 +1,7 @@
 import { PlayableItem } from "@/model/ItemInPlay";
-import { playerJumpHeight, playerSpeedPixPerMs } from "./mechanicsConstants";
-import { MechanicResult, unitMechanicalResult } from "./MechanicResult";
-import { InputState } from "../input/InputState";
+import { playerJumpHeight, playerSpeedPixPerMs } from "../mechanicsConstants";
+import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { InputState } from "../../input/InputState";
 
 export const jumping = (
   characterItem: PlayableItem,
