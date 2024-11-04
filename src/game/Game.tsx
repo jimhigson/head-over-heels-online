@@ -3,6 +3,7 @@ import { Campaign } from "../model/modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./gameMain";
 import { RenderOptions } from "./RenderOptions";
+import { currentRoom } from "./gameState/GameState";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
@@ -49,9 +50,7 @@ const useHashSyncedWithRoom = <RoomId extends string>(
 
       const newRoomId: RoomId =
         hashContent === ""
-          ? gameApi.gameState.playableCharacters[
-              gameApi.gameState.currentCharacter
-            ].roomState.id
+          ? currentRoom(gameApi.gameState).id
           : (hashContent as RoomId);
 
       gameApi.viewRoom(newRoomId);

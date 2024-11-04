@@ -1,16 +1,53 @@
 import { PlanetName } from "@/sprites/planets";
-import { Aabb, Direction } from "@/utils/vectors";
-import { ItemType, JsonItem } from "./Item";
+import { Aabb, Direction, Xyz } from "@/utils/vectors";
+import { ItemConfig, ItemType } from "./Item";
 import { Container } from "pixi.js";
 import { SetRequired } from "type-fest";
 
+export type ItemInPlayType =
+  | Exclude<ItemType, "player" | "door">
+  | "head"
+  | "heels"
+  | "doorNear"
+  | "doorFar"
+  | "floor";
+
+type FallingItemState = {
+  /* null meaning we know item is not standing on anything (ie, should fall) */
+  standingOn: UnknownItemInPlay | null;
+};
+
+export type CharacterState = FallingItemState & {
+  facing: Direction;
+  movement: "moving" | "idle" | "falling";
+  jumpRemaining: number;
+  lives: number;
+  shield: number;
+};
+
 export type ItemStateMap = {
-  player: {
-    facing: Direction;
-    movement: "moving" | "idle" | "falling";
-    standingOn?: UnknownItemInPlay;
-    jumpRemaining: number;
+  head: CharacterState & {
+    hasHooter: boolean;
+    /** how many big jumps we can do */
+    // TODO: these properties should be recognised
+    // by the type system as belonging only to head
+    // or heels
+    donuts: number;
+    fast: number;
   };
+  heels: CharacterState & {
+    hasBag: boolean;
+    /** how many big jumps we can do */
+    // TODO: these properties should be recognised
+    // by the type system as belonging only to head
+    // or heels
+    jumps: number;
+    carrying: ItemType | null;
+  };
+  "portable-block": FallingItemState;
+  baddie: FallingItemState;
+  spring: FallingItemState;
+  pickup: FallingItemState;
 };
 
 // type-fest's EmptyObject was creating issues
@@ -18,20 +55,28 @@ type EmptyObject = {
   [n in never]: unknown;
 };
 
-export type ItemState<T extends ItemType> = T extends keyof ItemStateMap
+export type ItemState<T extends ItemInPlayType> = T extends keyof ItemStateMap
   ? ItemStateMap[T]
   : EmptyObject;
 
 export type ItemInPlay<
-  T extends ItemType,
+  T extends ItemInPlayType,
+  //S extends ItemState<T> = ItemState<T>,
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
-> = JsonItem<T, P, RoomId> & {
+> = {
+  type: T;
+
+  // borrow the config from the json typings:
+  config: T extends ItemType ? ItemConfig<T, P, RoomId> : EmptyObject;
+
+  position: Xyz;
+
   readonly id: string;
-  //readonly events: Emitter<{ move: void; stateChange: void }>;
-  readonly state: ItemState<T>;
+  state: ItemState<T>;
+
   /**
-   * the bounding box of this item for the sake of collision detection. This is not optinoal - ie, there
+   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
    * are no non-collideable items
    */
   readonly aabb: Aabb;
@@ -55,6 +100,32 @@ export type ItemInPlay<
   falls: boolean;
 };
 
+export type PlayableItem = ItemInPlay<"head" | "heels">;
+
+export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
+  return item.type === "head" || item.type === "heels";
+};
+
+export const fallingItemTypes = [
+  "head",
+  "heels",
+  "pickup",
+  "portable-block",
+  "baddie",
+  "spring",
+] as const satisfies ItemInPlayType[];
+
+export type FallingItemTypes = (typeof fallingItemTypes)[number];
+
+export function itemFalls<
+  P extends PlanetName = PlanetName,
+  RoomId extends string = string,
+>(
+  item: ItemInPlay<ItemInPlayType, P, RoomId>,
+): item is ItemInPlay<FallingItemTypes, P, RoomId> {
+  return item.falls;
+}
+
 /**
  * to spread over items on instantiation and cut down on typing
  **/
@@ -65,7 +136,7 @@ export const defaultItemProperties = {
   falls: false,
 } as const satisfies Partial<UnknownItemInPlay>;
 
-export function assertItemHasContainers<T extends ItemType>(
+export function assertItemHasContainers<T extends ItemInPlayType>(
   item: ItemInPlay<T>,
 ): asserts item is SetRequired<
   ItemInPlay<T>,
@@ -76,14 +147,17 @@ export function assertItemHasContainers<T extends ItemType>(
   }
 }
 
-/** Union of all item types */
+/**
+ * Force ItemInPlay into a union so that discrimination over
+ * unions works
+ */
 export type UnknownItemInPlay<RoomId extends string = string> = {
-  [IT in ItemType]: ItemInPlay<IT, PlanetName, RoomId>;
-}[ItemType];
+  [IT in ItemInPlayType]: ItemInPlay<IT, PlanetName, RoomId>;
+}[ItemInPlayType];
 
 /** Non-union version of any item type */
 export type AnyItemInPlay<RoomId extends string = string> = ItemInPlay<
-  ItemType,
+  ItemInPlayType,
   PlanetName,
   RoomId
 >;

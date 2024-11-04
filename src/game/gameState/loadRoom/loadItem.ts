@@ -1,5 +1,9 @@
 import { ItemType, UnknownJsonItem } from "@/model/Item";
-import { defaultItemProperties, UnknownItemInPlay } from "@/model/ItemInPlay";
+import {
+  defaultItemProperties,
+  fallingItemTypes,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { addXy } from "@/utils/vectors";
@@ -31,13 +35,6 @@ const positionAndAabb = (
     renderAabb,
   };
 };
-
-const fallingItemTypes = [
-  "pickup",
-  "portable-block",
-  "baddie",
-  "spring",
-] as ItemType[];
 
 export function* loadItem<RoomId extends string>(
   id: string,
@@ -103,20 +100,76 @@ export function* loadItem<RoomId extends string>(
       return;
     }
     case "player": {
+      if (jsonItem.config.which === "head") {
+        yield {
+          type: "head",
+          config: {},
+          ...defaultItemProperties,
+          ...{
+            id: "head",
+            state: {
+              facing: "towards",
+              movement: "idle",
+              jumpRemaining: 0,
+              hasHooter: false,
+              fast: 0,
+              shield: 0,
+              standingOn: null,
+              lives: 8,
+              donuts: 0,
+            },
+            ...positionAndAabb(jsonItem),
+            falls: true,
+          },
+        };
+      } else {
+        yield {
+          type: "heels",
+          config: {},
+          ...defaultItemProperties,
+          ...{
+            id: "heels",
+            state: {
+              facing: "towards",
+              movement: "idle",
+              jumpRemaining: 0,
+              carrying: null,
+              hasBag: false,
+              jumps: 0,
+              shield: 0,
+              standingOn: null,
+              lives: 8,
+            },
+            ...positionAndAabb(jsonItem),
+            falls: true,
+          },
+        };
+      }
+      return;
+    }
+
+    case "pickup":
+    case "portable-block":
+    case "baddie":
+    case "spring": {
+      // falling items:
       yield {
         ...jsonItem,
         ...defaultItemProperties,
         ...{
-          id: jsonItem.config.which,
+          id,
           renderingDirty: false,
           renderPositionDirty: false,
-          state: { facing: "towards", movement: "idle", jumpRemaining: 0 },
+          state: {
+            standingOn: null,
+          },
           ...positionAndAabb(jsonItem),
-          falls: true,
+          falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
         },
       };
       return;
     }
+
     default:
       yield {
         ...jsonItem,
@@ -127,7 +180,7 @@ export function* loadItem<RoomId extends string>(
           renderPositionDirty: false,
           state: {},
           ...positionAndAabb(jsonItem),
-          falls: fallingItemTypes.includes(jsonItem.type),
+          falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
         },
       };
   }

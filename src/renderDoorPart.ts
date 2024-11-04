@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { createSprite } from "./game/render/createSprite";
-import { doorTexture } from "./game/render/doorTexture";
+import { doorTexture } from "./game/render/itemAppearances/doorAppearance";
 import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
 import { LoadedDoorConfig } from "./model/Item";
 import { UnknownRoomState } from "./model/modelTypes";

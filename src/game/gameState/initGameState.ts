@@ -4,7 +4,6 @@ import { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
-import { ItemInPlay } from "@/model/ItemInPlay";
 
 type StartingRooms<RoomId extends string> = Record<PlayableCharacter, RoomId>;
 
@@ -44,37 +43,12 @@ export const initGameState = <RoomId extends string>(
   const headsRoom = loadRoom(campaign.rooms[starts.head]);
   const heelsRoom = loadRoom(campaign.rooms[starts.heels]);
 
-  const headsItem = headsRoom.items.find(
-    (i): i is ItemInPlay<"player"> =>
-      i.type === "player" && i.config.which === "head",
-  )!;
-
-  const heelsItem = headsRoom.items.find(
-    (i): i is ItemInPlay<"player"> =>
-      i.type === "player" && i.config.which === "heels",
-  )!;
   return {
     keyAssignment: defaultKeyAssignments,
     currentCharacter: "head",
-    playableCharacters: {
-      head: {
-        hasHooter: false,
-        donuts: 0,
-        jumps: 0,
-        lives: 8,
-        shield: 0,
-        roomState: headsRoom,
-        item: headsItem,
-      },
-      heels: {
-        carrying: null,
-        fast: 0,
-        hasBag: false,
-        lives: 8,
-        shield: 0,
-        roomState: heelsRoom,
-        item: heelsItem,
-      },
+    characterRooms: {
+      head: headsRoom,
+      heels: heelsRoom
     },
     inputState: fromAllEntries(actions.map((action) => [action, false])),
   };

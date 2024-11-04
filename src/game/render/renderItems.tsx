@@ -1,14 +1,14 @@
 import { Container } from "pixi.js";
 import { RenderOptions } from "../RenderOptions";
-import { ItemType } from "../../model/Item";
 import {
   AnyItemInPlay,
   assertItemHasContainers,
   ItemInPlay,
+  ItemInPlayType,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import { maybeRenderBB } from "./maybeRenderBB";
-import { itemAppearances } from "./ItemAppearances";
+import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { PlanetName } from "@/sprites/planets";
@@ -41,7 +41,7 @@ export const assignContainerToItem = <RoomId extends string>(
 };
 
 /** render an item inside the container it was previously assigned */
-export const renderItem = <T extends ItemType>(
+export const renderItem = <T extends ItemInPlayType>(
   item: ItemInPlay<T>,
   room: UnknownRoomState,
 ) => {
@@ -54,7 +54,7 @@ export const renderItem = <T extends ItemType>(
   }
   item.renderContainer.removeChildren();
 
-  const sprite = itemAppearance(item.config, room, item.position, item.state);
+  const sprite = itemAppearance(item, room);
   item.renderContainer.addChild(sprite);
 };
 

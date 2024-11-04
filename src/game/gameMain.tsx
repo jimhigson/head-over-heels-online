@@ -1,6 +1,6 @@
 import { Application, Container } from "pixi.js";
 import { Campaign, RoomState, UnknownRoomState } from "../model/modelTypes";
-import { currentCharacter, GameState } from "@/game/gameState/GameState";
+import { currentRoom, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
 import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
@@ -55,7 +55,7 @@ export const gameMain = async <RoomId extends string>(
   const gameState = initGameState(campaign);
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging
-  let viewingRoom = currentCharacter(gameState).roomState;
+  let viewingRoom = currentRoom(gameState);
 
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });

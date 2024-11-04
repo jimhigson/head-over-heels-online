@@ -1,6 +1,7 @@
 import { UnknownJsonItem } from "@/model/Item";
 import {
   defaultItemProperties,
+  itemFalls,
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
@@ -37,9 +38,9 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
   };
 };
 
-const standItems = (items: UnknownItemInPlay[]) => {
+const initStandingOn = (items: UnknownItemInPlay[]) => {
   for (const item of items) {
-    if (item.falls) {
+    if (itemFalls(item)) {
       const positionJustBelowItem = addXyz(item.position, { z: -1 });
       const collisions = collision1toMany(
         {
@@ -61,9 +62,6 @@ const standItems = (items: UnknownItemInPlay[]) => {
         );
 
         if (collisionItemTop === maybeStandingItemBottom) {
-          // TODO: use the type system better here - all items with
-          // .falls should also have .state.standingOn and ts
-          // should be able to recognise this
           item.state.standingOn = collisionItem;
           console.log(item, "is standing on", collisionItem);
           break;
@@ -85,7 +83,7 @@ export const loadRoom = <P extends PlanetName, R extends string>(
     ...loadItems(roomJson.items),
   ];
 
-  standItems(loadedItems);
+  initStandingOn(loadedItems);
 
   return {
     ...roomJson,

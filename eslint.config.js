@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import prettier from "eslint-plugin-prettier";
 import tseslint from "typescript-eslint";
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default tseslint.config(
   { ignores: ["dist", 'src/_generated'] },
@@ -18,6 +19,7 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       "prettier": prettier,
+      "unused-imports": unusedImports,
     },
     rules: {
       "no-useless-rename": "error",
@@ -34,6 +36,8 @@ export default tseslint.config(
       "no-param-reassign": [
         "off"
       ],
+      // this will cause the editor to strip unused imports on save
+      "unused-imports/no-unused-imports": "error",
       "prettier/prettier": "error",
       "react-hooks/exhaustive-deps": "error",
       "@typescript-eslint/no-unused-vars": [

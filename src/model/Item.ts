@@ -5,9 +5,9 @@ import { AxisXy, Direction, Xyz } from "../utils/vectors";
 
 export type ItemType =
   | "door"
-  | "floor" // only in-play, never in json
-  | "doorNear" // only in-play, never in json
-  | "doorFar" // only in-play, never in json
+  | "floor" // only in-play, never in json - TODO: remove from json typings
+  | "doorNear" // only in-play, never in json - TODO: remove from json typings
+  | "doorFar" // only in-play, never in json - TODO: remove from json typings
   | "teleporter"
   | "barrier"
   | "block"

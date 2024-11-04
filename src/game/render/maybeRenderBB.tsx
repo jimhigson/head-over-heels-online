@@ -1,5 +1,4 @@
-import { ItemType } from "@/model/Item";
-import { ItemInPlay } from "@/model/ItemInPlay";
+import { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { ColorSource, Container, Graphics } from "pixi.js";
 import { RenderOptions } from "../RenderOptions";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
@@ -47,7 +46,7 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
   );
 };
 
-export const maybeRenderBB = <T extends ItemType, RoomId extends string>(
+export const maybeRenderBB = <T extends ItemInPlayType, RoomId extends string>(
   item: Pick<ItemInPlay<T>, "aabb" | "type" | "id" | "renderAabb">,
   itemRendering: Container,
   options: RenderOptions<RoomId>,

@@ -1,29 +1,23 @@
 import { Container } from "pixi.js";
-import { ItemType, ItemConfigMap, ItemConfig } from "../../model/Item";
+import { ItemConfigMap } from "../../../model/Item";
 import {
   barrierPivot,
   pixiSpriteSheet,
   TextureId,
-} from "../../sprites/pixiSpriteSheet";
-import { createSprite, CreateSpriteOptions } from "./createSprite";
-import { UnknownRoomState } from "../../model/modelTypes";
-import { Xyz } from "@/utils/vectors";
-import { wallTextureId } from "./wallTextureId";
-import { PlanetName } from "../../sprites/planets";
-import { renderDoorPart } from "../../renderDoorPart";
-import { ItemState } from "@/model/ItemInPlay";
-import {
-  headBlinkAnimationSpeed,
-  headWalkAnimationSpeed,
-} from "./animationSpeeds";
+} from "../../../sprites/pixiSpriteSheet";
+import { createSprite, CreateSpriteOptions } from "../createSprite";
+import { UnknownRoomState } from "../../../model/modelTypes";
+import { wallTextureId } from "../wallTextureId";
+import { PlanetName } from "../../../sprites/planets";
+import { renderDoorPart } from "../../../renderDoorPart";
+import { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import { playerAppearance } from "./playerAppearance";
 
 // how an item is rendered
-export type ItemAppearance<T extends ItemType> = (
+export type ItemAppearance<T extends ItemInPlayType> = (
   // appearances don't care about the romId generic so give it string
-  config: ItemConfig<T, PlanetName, string>,
+  item: ItemInPlay<T, PlanetName, string>,
   room: UnknownRoomState,
-  position: Xyz,
-  state: ItemState<T>,
 ) => Container;
 
 const bubbles = {
@@ -43,12 +37,9 @@ const stackedSprites = (
 };
 
 export const itemAppearances: {
-  [T in ItemType]: ItemAppearance<T>;
+  [T in ItemInPlayType]: ItemAppearance<T>;
 } = {
-  door() {
-    throw new Error("doors should be rendered as doorNear and doorFar");
-  },
-  doorNear(config, room, position) {
+  doorNear({ config, position }, room) {
     const container = new Container();
 
     for (const s of renderDoorPart(config, room, position, "near")) {
@@ -58,7 +49,7 @@ export const itemAppearances: {
     return container;
   },
 
-  doorFar(config, room, position) {
+  doorFar({ config, position }, room) {
     const container = new Container();
 
     for (const s of renderDoorPart(config, room, position, "far")) {
@@ -68,7 +59,7 @@ export const itemAppearances: {
     return container;
   },
 
-  wall({ side, style }, room) {
+  wall({ config: { side, style } }, room) {
     if (side === "right" || side === "towards") {
       return new Container();
     }
@@ -78,25 +69,25 @@ export const itemAppearances: {
     });
   },
 
-  barrier: ({ axis }) =>
+  barrier: ({ config: { axis } }) =>
     createSprite({
       texture: `barrier.${axis}`,
       pivot: barrierPivot[axis],
     }),
 
-  "deadly-block": ({ style }) =>
+  "deadly-block": ({ config: { style } }) =>
     createSprite(style === "puck" ? "puck.deadly" : style),
 
-  block: ({ style }) => createSprite(`block.${style}`),
+  block: ({ config: { style } }) => createSprite(`block.${style}`),
 
-  conveyor: ({ direction }) =>
+  conveyor: ({ config: { direction } }) =>
     createSprite(
       direction === "left" || direction === "right"
         ? "conveyor.x"
         : "conveyor.y",
     ),
 
-  fish: ({ alive }) =>
+  fish: ({ config: { alive } }) =>
     createSprite(
       alive
         ? {
@@ -127,7 +118,7 @@ export const itemAppearances: {
 
   teleporter: () => createSprite("teleporter"),
 
-  pickup({ gives }) {
+  pickup({ config: { gives } }) {
     const pickupIcons: Record<
       ItemConfigMap<PlanetName, string>["pickup"]["gives"],
       TextureId
@@ -145,38 +136,22 @@ export const itemAppearances: {
     return createSprite(pickupIcons[gives]);
   },
 
-  player({ which }, _room, _position, { facing, movement }) {
-    //if (which === "head") {
-    if (movement === "moving") {
-      return createSprite({
-        frames: pixiSpriteSheet.animations[`${which}.walking.${facing}`],
-        animationSpeed: headWalkAnimationSpeed,
-      });
-    } else if (
-      movement === "falling" &&
-      which === "head" &&
-      (facing === "towards" || facing === "right")
-    ) {
-      return createSprite(`head.falling.${facing}`);
-    } else {
-      if (which === "head" && (facing === "towards" || facing === "right")) {
-        return createSprite({
-          frames: pixiSpriteSheet.animations[`head.idle.${facing}`],
-          animationSpeed: headBlinkAnimationSpeed,
-        });
-      }
-      return createSprite(`${which}.walking.${facing}.2`);
-    }
+  head(playerItem, room) {
+    return playerAppearance(playerItem, room);
   },
-  sceneryPlayer: ({ which }) => createSprite(`${which}.walking.towards.2`),
+  heels(playerItem, room) {
+    return playerAppearance(playerItem, room);
+  },
+  sceneryPlayer: ({ config: { which } }) =>
+    createSprite(`${which}.walking.towards.2`),
 
-  baddie(options) {
-    switch (options.which) {
+  baddie({ config }) {
+    switch (config.which) {
       case "helicopter-bug":
       case "dalek":
         // animated, no directions
         return createSprite({
-          frames: pixiSpriteSheet.animations[options.which],
+          frames: pixiSpriteSheet.animations[config.which],
           animationSpeed: 0.2,
         });
       case "headless-base":
@@ -184,18 +159,17 @@ export const itemAppearances: {
         return createSprite({ texture: "headless-base" });
       case "american-football-head":
         return createSprite({
-          texture: `american-football-head.${options.startDirection}`,
+          texture: `american-football-head.${config.startDirection}`,
         });
       case "turtle":
         // animated, directional:
         return createSprite({
-          frames:
-            pixiSpriteSheet.animations[`turtle.${options.startDirection}`],
+          frames: pixiSpriteSheet.animations[`turtle.${config.startDirection}`],
           animationSpeed: 0.1,
         });
       case "cyberman":
-        if (options.charging) {
-          return createSprite(`cyberman.${options.startDirection}`);
+        if (config.charging) {
+          return createSprite(`cyberman.${config.startDirection}`);
         } else {
           return stackedSprites(`cyberman.towards`, bubbles);
         }
@@ -208,22 +182,22 @@ export const itemAppearances: {
       case "elephant":
       case "monkey":
         // stacked on standard base:
-        return stackedSprites(`${options.which}.towards`);
+        return stackedSprites(`${config.which}.towards`);
       case "elephant-head":
         return createSprite("elephant.right");
       default:
-        options satisfies never;
-        throw new Error(`unexpected baddie ${options}`);
+        config satisfies never;
+        throw new Error(`unexpected baddie ${config}`);
     }
   },
 
   joystick: () => createSprite("joystick"),
 
-  "movable-block": ({ style }) => createSprite(style),
+  "movable-block": ({ config: { style } }) => createSprite(style),
 
-  book: ({ slider }) => createSprite(`book.${slider ? "y" : "x"}`),
+  book: ({ config: { slider } }) => createSprite(`book.${slider ? "y" : "x"}`),
 
-  "portable-block": ({ style }) => createSprite(style),
+  "portable-block": ({ config: { style } }) => createSprite(style),
 
   charles: () => stackedSprites("charles.towards"),
 

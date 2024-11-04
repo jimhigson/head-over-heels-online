@@ -5,7 +5,7 @@ import { collision1toMany } from "../collision/aabbCollision";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
-  xyzDelta: Xyz,
+  xyzDelta: Partial<Xyz>,
   targetPosition: Xyz,
   collisionsAtTargetPosition: UnknownItemInPlay[],
 ) => {
@@ -21,6 +21,10 @@ export const protectAgainstIntersecting = (
       return axesXyz.reduce<Xyz>((ac: Xyz, axis: AxisXyz) => {
         if (xyzDelta[axis] !== 0) {
           const aC = posC[axis];
+          if (xyzDelta[axis] === undefined) {
+            return ac;
+          }
+
           if (xyzDelta[axis] > 0) {
             // moving positive (left/away/up)
             const minAC = Math.min(aC, aC + cbb[axis]);
@@ -54,7 +58,7 @@ export const protectAgainstIntersecting = (
  */
 export const moveItem = (
   item: UnknownItemInPlay,
-  xyzDelta: Xyz,
+  xyzDelta: Partial<Xyz>,
   room: UnknownRoomState,
   /**
    * for no collision detection, provide an empty array
