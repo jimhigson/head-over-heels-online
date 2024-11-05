@@ -1,6 +1,5 @@
 import { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { ColorSource, Container, Graphics } from "pixi.js";
-import { RenderOptions } from "../RenderOptions";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { Aabb } from "@/utils/vectors";
 
@@ -46,27 +45,33 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
   );
 };
 
-export const maybeRenderBB = <T extends ItemInPlayType, RoomId extends string>(
+const renderItemBBs = <T extends ItemInPlayType>(
   item: Pick<ItemInPlay<T>, "aabb" | "type" | "id" | "renderAabb">,
-  itemRendering: Container,
-  options: RenderOptions<RoomId>,
 ): Container => {
-  if (
-    options.showBoundingBoxes === "all" ||
-    (options.showBoundingBoxes === "non-wall" && item.type !== "wall")
-  ) {
-    const containerWithBB = new Container();
-    const color =
-      item.type === "wall" ? "rgba(255,0,0, 0.5)" : "rgba(255,255,255,0.5)";
+  const color =
+    item.type === "wall" ? "rgba(255,0,0, 0.5)" : "rgba(255,255,255,0.5)";
 
-    const posGraphics = new Graphics().circle(0, 0, 2).fill(color);
-    containerWithBB.addChild(itemRendering);
-    containerWithBB.addChild(posGraphics);
-    containerWithBB.addChild(renderBB(item.aabb, color));
-    if (item.renderAabb) {
-      containerWithBB.addChild(renderBB(item.renderAabb, "green"));
-    }
-    itemRendering.alpha = 0.66;
-    return containerWithBB;
-  } else return itemRendering;
+  const containerWithBB = new Container();
+
+  containerWithBB.addChild(new Graphics().circle(0, 0, 2).fill(color));
+  containerWithBB.addChild(renderBB(item.aabb, color));
+  if (item.renderAabb) {
+    containerWithBB.addChild(renderBB(item.renderAabb, "green"));
+  }
+  return containerWithBB;
+};
+
+export const itemRenderingInContainerAlongsideBBRendering = <
+  T extends ItemInPlayType,
+>(
+  item: ItemInPlay<T>,
+): Container => {
+  const wrappingContainer = new Container();
+  if (item.renderContainer !== undefined) {
+    // it is ok for a non-rendering item to have its BB illustrated,
+    // but in this case there's nothing to add to the wrapping container
+    wrappingContainer.addChild(item.renderContainer);
+  }
+  wrappingContainer.addChild(renderItemBBs(item));
+  return wrappingContainer;
 };

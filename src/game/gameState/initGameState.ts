@@ -1,11 +1,12 @@
-import { Campaign, PlayableCharacter, RoomJson } from "@/model/modelTypes";
+import { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
 import { GameState } from "@/game/gameState/GameState";
 import { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
+import { RenderOptions } from "../RenderOptions";
 
-type StartingRooms<RoomId extends string> = Record<PlayableCharacter, RoomId>;
+type StartingRooms<RoomId extends string> = Record<CharacterName, RoomId>;
 
 /** 
   For a given campaign, get the starting room for the two playable characters.
@@ -19,7 +20,7 @@ const startingRooms = <RoomId extends string>(
   for (const r of Object.values<RoomJson<PlanetName, RoomId>>(campaign.rooms)) {
     for (const i of Object.values(r.items)) {
       if (i.type === "player") {
-        const which = i.config.which;
+        const { which } = i.config;
         startingRooms[which] = r.id;
       }
     }
@@ -37,6 +38,8 @@ const startingRooms = <RoomId extends string>(
 
 export const initGameState = <RoomId extends string>(
   campaign: Campaign<RoomId>,
+  renderOptions: RenderOptions<RoomId>,
+  events: GameState<RoomId>["events"],
 ): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -45,11 +48,14 @@ export const initGameState = <RoomId extends string>(
 
   return {
     keyAssignment: defaultKeyAssignments,
-    currentCharacter: "head",
+    currentCharacterName: "head",
     characterRooms: {
       head: headsRoom,
       heels: heelsRoom,
     },
     inputState: fromAllEntries(actions.map((action) => [action, false])),
+    renderOptions,
+    campaign,
+    events,
   };
 };

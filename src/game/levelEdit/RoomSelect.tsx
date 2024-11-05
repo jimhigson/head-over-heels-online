@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { GameApi } from "../gameMain";
+import { GameApi } from "../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 
 export type RoomSelectProps<RoomId extends string> = {
@@ -59,7 +59,7 @@ export function RoomSelect<RoomId extends string>({
                   key={r}
                   value={r}
                   onSelect={(currentValue) => {
-                    gameApi.viewRoom(currentValue as RoomId);
+                    gameApi.changeRoom(currentValue as RoomId);
                     setOpen(false);
                   }}
                 >

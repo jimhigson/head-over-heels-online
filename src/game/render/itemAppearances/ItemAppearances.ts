@@ -58,7 +58,7 @@ export const itemAppearances: {
 
     return container;
   },
-  doorPortal() {
+  portal() {
     throw new Error("these should always be non-rendering");
   },
 

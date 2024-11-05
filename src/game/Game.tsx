@@ -1,9 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Campaign } from "../model/modelTypes";
 import { gameMain } from "./gameMain";
-import { type GameApi } from "./gameMain";
+import { type GameApi } from "./GameApi";
 import { RenderOptions } from "./RenderOptions";
-import { currentRoom } from "./gameState/GameState";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
@@ -42,18 +41,33 @@ const useHashSyncedWithRoom = <RoomId extends string>(
       return;
     }
 
-    if (window.location.hash)
-      gameApi.viewRoom(window.location.hash.substring(1) as RoomId);
+    const parseUrl = (url: Pick<URL, "hash">) => {
+      const maybeRoomId = url.hash.substring(1);
+      if (maybeRoomId === "") return undefined;
+      if (gameApi.campaign.rooms[maybeRoomId as RoomId] === undefined)
+        return undefined;
+      return url.hash.substring(1) as RoomId;
+    };
+
+    if (window.location.hash) {
+      const roomIdFromHash = parseUrl(window.location);
+
+      if (
+        roomIdFromHash !== undefined &&
+        gameApi.currentRoom.id !== roomIdFromHash
+      )
+        gameApi.changeRoom(roomIdFromHash);
+    }
 
     const onHashChange = (e: HashChangeEvent) => {
-      const hashContent = new URL(e.newURL).hash.substring(1);
+      const roomIdFromHash = parseUrl(new URL(e.newURL));
 
-      const newRoomId: RoomId =
-        hashContent === ""
-          ? currentRoom(gameApi.gameState).id
-          : (hashContent as RoomId);
-
-      gameApi.viewRoom(newRoomId);
+      if (
+        roomIdFromHash !== undefined &&
+        roomIdFromHash !== gameApi.currentRoom.id
+      ) {
+        gameApi.changeRoom(roomIdFromHash as RoomId);
+      }
     };
     const onRoomChange = (roomId: RoomId) => {
       window.location.hash = roomId;

@@ -54,10 +54,10 @@ function* keyToAction(
 const standardiseCase = (k: string): string =>
   k.length === 1 ? k.toUpperCase() : k;
 
-export const listenForInput = ({
+export const listenForInput = <RoomId extends string>({
   keyAssignment,
   inputState,
-}: GameState<string>) => {
+}: GameState<RoomId>) => {
   const keyDownHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
 

@@ -11,5 +11,5 @@ export type ShowBoundingBoxes = false | "all" | "non-wall";
 
 export type RenderOptions<RoomId extends string> = {
   onItemClick?: (item: UnknownItemInPlay<RoomId>) => void;
-  showBoundingBoxes?: ShowBoundingBoxes;
+  showBoundingBoxes: ShowBoundingBoxes;
 };

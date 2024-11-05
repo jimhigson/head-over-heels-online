@@ -1,7 +1,7 @@
 import { Game } from "./game/Game";
 import { RoomSelect } from "./game/levelEdit/RoomSelect";
 import { useMemo, useRef, useState } from "react";
-import { GameApi } from "./game/gameMain.tsx";
+import { GameApi } from "./game/GameApi.tsx";
 import { Campaign } from "./model/modelTypes.ts";
 import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
@@ -32,16 +32,16 @@ export const App = <RoomId extends string>({
           item.type === "doorNear" ||
           item.type === "teleporter"
         ) {
-          const toRoom = item.config.toRoom;
-          gameApi.viewRoom(toRoom);
+          const { toRoom } = item.config;
+          gameApi.changeRoom(toRoom);
         }
         if (item.type === "lift") {
-          const toRoom = gameApi.viewingRoom.roomAbove;
-          if (toRoom) gameApi.viewRoom(toRoom);
+          const toRoom = gameApi.currentRoom.roomAbove;
+          if (toRoom) gameApi.changeRoom(toRoom);
         }
         if (item.type === "floor") {
-          const toRoom = gameApi.viewingRoom.roomBelow;
-          if (toRoom) gameApi.viewRoom(toRoom);
+          const toRoom = gameApi.currentRoom.roomBelow;
+          if (toRoom) gameApi.changeRoom(toRoom);
         }
         console.log(item);
       },
@@ -73,28 +73,30 @@ export const App = <RoomId extends string>({
             />
             <Label htmlFor="airplane-mode">inc walls</Label>
           </div>
-          <Button onClick={() => gameApi.viewRoom("blacktooth1head" as RoomId)}>
+          <Button
+            onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
+          >
             Start
           </Button>
-          <Button onClick={() => gameApi.viewRoom("doorsRoom" as RoomId)}>
+          <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
             Test room
           </Button>
           <Button
             onClick={() =>
-              gameApi && console.log(campaign.rooms[gameApi.viewingRoom.id])
+              gameApi && console.log(campaign.rooms[gameApi.currentRoom.id])
             }
           >
             Room JSON to console
           </Button>
-          <Button onClick={() => gameApi && console.log(gameApi.viewingRoom)}>
+          <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
             Room state to console
           </Button>
           <Button
             onClick={() =>
               gameApi &&
               console.log(
-                gameApi.viewingRoom.items.find(
-                  (i) => i.type === gameApi.gameState.currentCharacter,
+                gameApi.currentRoom.items.find(
+                  (i) => i.type === gameApi.gameState.currentCharacterName,
                 ),
               )
             }

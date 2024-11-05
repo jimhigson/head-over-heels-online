@@ -87,11 +87,11 @@ export const drawOrderComparator = (
     // a and b overlap in this axis, so we need to check the next axis
   }
 
-  const errorMsg = `could not compare two items A ${a.id} and B ${b.id} 
+  const errorMsg = `could not compare two items for draw order A ${a.id} and B ${b.id} 
       A @ ${JSON.stringify(a.position)} size ${JSON.stringify(bbA)} and
       B @ ${JSON.stringify(b.position)} size ${JSON.stringify(bbB)} 
       - do these bounding boxes intersect?`;
   console.error(errorMsg);
-  return 0;
+  return 0; // give up and say we don't know the right order
   //throw new Error(errorMsg);
 };

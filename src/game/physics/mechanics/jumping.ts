@@ -2,13 +2,13 @@ import { PlayableItem } from "@/model/ItemInPlay";
 import { playerJumpHeight, playerSpeedPixPerMs } from "../mechanicsConstants";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { InputState } from "../../input/InputState";
-import { PlayableCharacter } from "@/model/modelTypes";
+import { CharacterName } from "@/model/modelTypes";
 
 export const jumping = (
   characterItem: PlayableItem,
   { jump: jumpInput }: InputState,
   deltaMS: number,
-): MechanicResult<PlayableCharacter> => {
+): MechanicResult<CharacterName> => {
   const {
     type,
     state: { jumpRemaining },

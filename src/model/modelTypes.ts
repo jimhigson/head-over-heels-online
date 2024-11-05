@@ -7,7 +7,7 @@ import { PlanetName, Wall } from "../sprites/planets";
 import { Xy } from "../utils/vectors";
 import { blockSizePx } from "../sprites/pixiSpriteSheet";
 
-export type PlayableCharacter = "head" | "heels";
+export type CharacterName = "head" | "heels";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 

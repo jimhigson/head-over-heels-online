@@ -1,4 +1,4 @@
-import { Application, Container } from "pixi.js";
+import { Application, Container, Ticker } from "pixi.js";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { walking } from "./mechanics/walking";
 import { teleporter } from "./mechanics/teleporter";
@@ -17,18 +17,21 @@ import { jumping } from "./mechanics/jumping";
 import { MechanicResult } from "./MechanicResult";
 import { moveItem } from "./moveItem";
 import { InputState } from "../input/InputState";
-import { RoomState } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
 import { steppedOff } from "./mechanics/steppedOff";
+import { RoomState } from "@/model/modelTypes";
+import { renderRoom } from "../render/renderRoom";
+import { RenderOptions } from "../RenderOptions";
 
 const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   inputState: InputState,
-  room: RoomState<PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
   const originalState = item.state;
+  const room = currentRoom(gameState);
 
   /*
    * each mechanic sees the item in the state given it it by the previous ones
@@ -37,7 +40,7 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
    */
 
   const applyResult = ({ positionDelta, stateDelta }: MechanicResult<T>) => {
-    moveItem(item as UnknownItemInPlay, positionDelta, room);
+    moveItem(item as UnknownItemInPlay, positionDelta, gameState);
     item.state = { ...item.state, ...stateDelta };
   };
 
@@ -59,22 +62,50 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 };
 
-export const gameEngineTicks = <RoomId extends string>(
+export const mainLoop = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
-  renderInto: Container,
+  worldContainer: Container,
 ) => {
-  app.ticker.add(({ deltaMS }) => {
+  // the last room we rendered - this allows us to track when the room has changed
+  // since the last tick so we can set up the change
+  let lastRoomRendered: RoomState<PlanetName, RoomId> | undefined = undefined;
+  let lastRenderOptions: RenderOptions<RoomId> | undefined = undefined;
+
+  const handleTick = ({ deltaMS }: Ticker) => {
     const { inputState } = gameState;
 
     const room = currentRoom(gameState);
+    const { renderOptions } = gameState;
+
+    if (
+      lastRoomRendered !== room ||
+      lastRenderOptions !== gameState.renderOptions
+    ) {
+      console.log(
+        `room (or render options) changed!
+          room:${lastRoomRendered?.id} -> ${room.id}
+          renderOptions: ${lastRenderOptions} -> ${gameState.renderOptions}`,
+      );
+
+      // the room has changed since the last tick
+      // so we need to set up the new room
+      worldContainer.removeChildren();
+
+      const roomContainer = renderRoom(room, renderOptions);
+
+      worldContainer.addChild(roomContainer);
+
+      lastRoomRendered = room;
+      lastRenderOptions = gameState.renderOptions;
+    }
 
     // re-sort the room's items:
-    const items = room.items;
+    const { items } = room;
     let sortDirty = false;
 
     for (const item of items) {
-      tickItem(item, inputState, room, deltaMS);
+      tickItem(item, inputState, gameState, deltaMS);
 
       if (item.renderPositionDirty) {
         moveSpriteToItemProjection(item);
@@ -89,5 +120,15 @@ export const gameEngineTicks = <RoomId extends string>(
     if (sortDirty) {
       sortItemsByDrawOrder(room.items);
     }
-  });
+  };
+
+  return {
+    start() {
+      app.ticker.add(handleTick);
+      return this;
+    },
+    stop() {
+      app.ticker.remove(handleTick);
+    },
+  };
 };

@@ -1,7 +1,7 @@
 import { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
-import { PlayableCharacter } from "@/model/modelTypes";
+import { CharacterName } from "@/model/modelTypes";
 import { Direction, directions } from "@/utils/vectors";
 
 export type AnimationsOfFrames<TextureId extends string> = {
@@ -9,7 +9,7 @@ export type AnimationsOfFrames<TextureId extends string> = {
   animations: Record<string, TextureId[]>;
 };
 
-function* walkingFramesGen<P extends PlayableCharacter, D extends Direction>(
+function* walkingFramesGen<P extends CharacterName, D extends Direction>(
   p: P,
   d: D,
 ): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
@@ -18,7 +18,7 @@ function* walkingFramesGen<P extends PlayableCharacter, D extends Direction>(
   yield `${p}.walking.${d}.3`;
   yield `${p}.walking.${d}.2`;
 }
-function walkingFrames<P extends PlayableCharacter>(p: P) {
+function walkingFrames<P extends CharacterName>(p: P) {
   return directions.reduce(
     (ac, d) => ({
       ...ac,

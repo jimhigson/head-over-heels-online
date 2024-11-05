@@ -2,12 +2,12 @@ import { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./paletteSwapFilters";
-import { assignContainerToItem } from "./renderItems";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
-import { assertItemHasContainers } from "@/model/ItemInPlay";
 import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
 import { renderExtent } from "./renderExtent";
+import { moveSpriteToItemProjection, renderItem } from "./renderItems";
+import { itemRenderingInContainerAlongsideBBRendering } from "./maybeRenderBB";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -35,9 +35,41 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
   const itemsContainer = new Container();
 
   for (const item of room.items) {
-    if (item.renders) {
-      assignContainerToItem(item, room, options);
-      assertItemHasContainers(item);
+    const { renders } = item;
+
+    if (renders) {
+      const renderContainer = new Container();
+      item.renderContainer = renderContainer;
+      renderItem(item, room);
+    }
+
+    const renderItemBBs =
+      options.showBoundingBoxes === "all" ||
+      (options.showBoundingBoxes === "non-wall" && item.type !== "wall");
+
+    item.positionContainer = renderItemBBs
+      ? // rendering gets wrapped in an additional container that also contains the bb rendering
+        itemRenderingInContainerAlongsideBBRendering(item)
+      : // position container and item container are one and the same. Note that for
+        // non-rendering items, this is setting positionContainer to undefined
+        item.renderContainer;
+
+    if (
+      options.showBoundingBoxes !== false &&
+      item.renderContainer !== undefined
+    ) {
+      item.renderContainer.alpha = 0.1;
+    }
+
+    if (options.onItemClick && item.renderContainer !== undefined) {
+      item.renderContainer.eventMode = "static";
+      item.renderContainer.on("pointertap", () => {
+        options.onItemClick!(item);
+      });
+    }
+
+    if (item.positionContainer !== undefined) {
+      moveSpriteToItemProjection(item);
       itemsContainer.addChild(item.positionContainer);
     }
   }
@@ -52,3 +84,27 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
 
   return roomContainer;
 };
+
+/*
+
+  for (const item of room.items) {
+    if (item.renders && options.showBoundingBoxes === false) {
+      // normal case in gameplay
+      const itemContainer = new Container();
+      if (options.onItemClick) {
+        itemContainer.eventMode = "static";
+        itemContainer.on("pointertap", () => {
+          options.onItemClick!(item);
+        });
+      }
+
+      item.positionContainer = itemContainer;
+      item.renderContainer = itemContainer;
+
+      //assignContainerToItem(item, room, options);
+      //assertItemHasContainers(item);
+      itemsContainer.addChild(itemContainer);
+    }
+  }
+
+  */

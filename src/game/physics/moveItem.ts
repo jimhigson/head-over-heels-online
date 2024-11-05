@@ -1,7 +1,9 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { UnknownRoomState } from "@/model/modelTypes";
+import { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { AxisXyz, Xyz, addXyz, axesXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
+import { currentRoom, GameState } from "../gameState/GameState";
+import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
+import { PlanetName } from "@/sprites/planets";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
@@ -56,16 +58,17 @@ export const protectAgainstIntersecting = (
  * @param xyzDelta
  * @param inRoom the room the item is moving in
  */
-export const moveItem = (
+export const moveItem = <RoomId extends string>(
   item: UnknownItemInPlay,
   xyzDelta: Partial<Xyz>,
-  room: UnknownRoomState,
+  gameState: GameState<RoomId>,
   /**
    * for no collision detection, provide an empty array
    * TODO: could this be derived from the xyzDelta !== 0 in the axis?
    */
   collisionAxes: AxisXyz[] = ["x", "y", "z"],
 ) => {
+  const room = currentRoom(gameState);
   const targetPosition = addXyz(item.position, xyzDelta);
 
   const collisions = collision1toMany(
@@ -79,8 +82,12 @@ export const moveItem = (
     (ci) => ci.onTouch,
   );
 
-  if (portal !== undefined && portal.length > 0) {
-    console.log("TIME TO GO THROUGH THE PORTAL");
+  const firstPortal = portal?.at(0) as
+    | ItemInPlay<"portal", PlanetName, RoomId>
+    | undefined;
+  if (firstPortal !== undefined) {
+    changeCharacterRoom(gameState, firstPortal.config.toRoom);
+    return;
   }
   if (deadly !== undefined && deadly.length > 0) {
     console.log("LOSE a life");

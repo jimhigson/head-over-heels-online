@@ -76,7 +76,7 @@ export function* loadDoor<RoomId extends string>(
         ...jsonItem.config,
         inHiddenWall,
       },
-      type: "doorPortal",
+      type: "portal",
       position: blockXyzToFineXyz(
         addXyz(
           position,

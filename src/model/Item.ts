@@ -1,5 +1,5 @@
 import { EmptyObject } from "type-fest";
-import { PlayableCharacter } from "./modelTypes";
+import { CharacterName } from "./modelTypes";
 import { PlanetName, Wall } from "../sprites/planets";
 import { AxisXy, Direction, Xyz } from "../utils/vectors";
 
@@ -8,6 +8,7 @@ export type ItemType =
   | "floor" // only in-play, never in json - TODO: remove from json typings
   | "doorNear" // only in-play, never in json - TODO: remove from json typings
   | "doorFar" // only in-play, never in json - TODO: remove from json typings
+  | "portal" // only in-play, never in json - TODO: remove from json typings
   | "teleporter"
   | "barrier"
   | "block"
@@ -49,6 +50,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   doorNear: LoadedDoorConfig<RoomId>;
   doorFar: LoadedDoorConfig<RoomId>;
+  portal: { toRoom: RoomId };
   wall: {
     style: Wall<P>;
     side: Direction;
@@ -84,11 +86,11 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     alive: boolean;
   };
   player: {
-    which: PlayableCharacter;
+    which: CharacterName;
   };
   /** non-playable but looks like the playable char - for the final room */
   sceneryPlayer: {
-    which: PlayableCharacter;
+    which: CharacterName;
   };
   lift: {
     top: number;

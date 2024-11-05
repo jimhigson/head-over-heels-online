@@ -36,8 +36,15 @@ export const sortItemsByDrawOrder = (items: UnknownItemInPlay[]) => {
     }
   }
 
-  const resorted = toposort(isBehindPairs);
-
+  let resorted: UnknownItemInPlay[];
+  try {
+    resorted = toposort(isBehindPairs);
+  } catch (e) {
+    throw new Error(
+      `found a cyclic dependency in the draw order pairs are:\n\t${isBehindPairs.map(([front, behind]) => `${front.id} is behind ${behind.id}`).join("\n\t")}`,
+      e as Error,
+    );
+  }
   for (let i = 0; i < resorted.length; i++) {
     resorted[i].positionContainer!.zIndex = i;
   }

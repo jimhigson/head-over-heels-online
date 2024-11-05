@@ -3,7 +3,7 @@ import { Aabb, Direction, Xyz } from "../utils/vectors";
 import { ItemConfig, ItemType } from "./Item";
 import { Container } from "pixi.js";
 import { SetRequired } from "type-fest";
-import { PlayableCharacter } from "./modelTypes";
+import { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<ItemType, "player" | "door">
@@ -11,7 +11,7 @@ export type ItemInPlayType =
   | "heels"
   | "doorNear"
   | "doorFar"
-  | "doorPortal"
+  | "portal"
   | "floor";
 
 type FallingItemState = {
@@ -112,7 +112,7 @@ export type ItemInPlay<
   falls: boolean;
 };
 
-export type PlayableItem = ItemInPlay<PlayableCharacter>;
+export type PlayableItem = ItemInPlay<CharacterName>;
 
 export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
   return item.type === "head" || item.type === "heels";
@@ -145,14 +145,19 @@ export function itemFalls<
   return item.falls;
 }
 
-export function assertItemHasContainers<T extends ItemInPlayType>(
+export function assertItemHasRenderContainer<T extends ItemInPlayType>(
   item: ItemInPlay<T>,
-): asserts item is SetRequired<
-  ItemInPlay<T>,
-  "positionContainer" | "renderContainer"
-> {
+): asserts item is SetRequired<ItemInPlay<T>, "renderContainer"> {
+  if (item.renderContainer === undefined) {
+    throw new Error("Item does not have a render container");
+  }
+}
+
+export function assertItemHasPositionContainer<T extends ItemInPlayType>(
+  item: ItemInPlay<T>,
+): asserts item is SetRequired<ItemInPlay<T>, "positionContainer"> {
   if (item.positionContainer === undefined) {
-    throw new Error("Item does not have a container");
+    throw new Error("Item does not have a position container");
   }
 }
 
