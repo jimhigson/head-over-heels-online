@@ -73,19 +73,33 @@ export const moveItem = (
     room.items,
     collisionAxes,
   );
+
+  const { nonIntersect, portal, deadly, pickup } = Object.groupBy(
+    collisions,
+    (ci) => ci.onTouch,
+  );
+
+  if (portal !== undefined && portal.length > 0) {
+    console.log("TIME TO GO THROUGH THE PORTAL");
+  }
+  if (deadly !== undefined && deadly.length > 0) {
+    console.log("LOSE a life");
+  }
+  if (pickup !== undefined && pickup.length > 0) {
+    console.log("Got a bunny or something");
+  }
+
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
   const correctedPosition = protectAgainstIntersecting(
     item,
     xyzDelta,
     targetPosition,
-    collisions,
+    nonIntersect || [],
   );
 
   if (!xyzEqual(correctedPosition, item.position)) {
     item.position = correctedPosition;
     item.renderPositionDirty = true;
   }
-
-  return collisions;
 };

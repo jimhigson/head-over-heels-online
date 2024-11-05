@@ -76,6 +76,14 @@ export type ItemInPlay<
   position: Xyz;
   //subPosition: Xyz;
 
+  readonly onTouch:
+    | "nonIntersect"
+    | "deadly"
+    | "pickup"
+    | "portal"
+    | "push"
+    | "glide";
+
   readonly id: string;
   state: ItemState<T>;
 
@@ -136,16 +144,6 @@ export function itemFalls<
 ): item is ItemInPlay<FallingItemTypes, P, RoomId> {
   return item.falls;
 }
-
-/**
- * to spread over items on instantiation and cut down on typing
- **/
-export const defaultItemProperties = {
-  renders: true,
-  renderPositionDirty: false,
-  renderingDirty: false,
-  falls: false,
-} as const satisfies Partial<UnknownItemInPlay>;
 
 export function assertItemHasContainers<T extends ItemInPlayType>(
   item: ItemInPlay<T>,

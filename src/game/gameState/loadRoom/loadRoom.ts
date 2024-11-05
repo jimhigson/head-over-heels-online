@@ -1,10 +1,10 @@
 import { UnknownJsonItem } from "@/model/Item";
 import {
-  defaultItemProperties,
   itemFalls,
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
+import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { RoomState, RoomJson, AnyRoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
 import { entries } from "@/utils/entries";

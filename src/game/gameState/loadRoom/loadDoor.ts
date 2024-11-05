@@ -1,6 +1,7 @@
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
 import { JsonItem } from "@/model/Item";
-import { UnknownItemInPlay, defaultItemProperties } from "@/model/ItemInPlay";
+import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { PlanetName } from "@/sprites/planets";
 import { Xyz, originXyz, addXyz } from "@/utils/vectors";
@@ -86,6 +87,7 @@ export function* loadDoor<RoomId extends string>(
         ),
       ),
       renders: false,
+      onTouch: "portal",
       state: {},
       aabb: {
         [axis]: blockSizePx.w,

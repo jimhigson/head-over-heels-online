@@ -1,9 +1,6 @@
 import { ItemType, UnknownJsonItem } from "@/model/Item";
-import {
-  defaultItemProperties,
-  fallingItemTypes,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import { fallingItemTypes, UnknownItemInPlay } from "@/model/ItemInPlay";
+import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { addXy } from "@/utils/vectors";

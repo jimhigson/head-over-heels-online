@@ -1,4 +1,5 @@
-import { defaultItemProperties, UnknownItemInPlay } from "@/model/ItemInPlay";
+import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { RoomJson } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { PlanetName } from "@/sprites/planets";
