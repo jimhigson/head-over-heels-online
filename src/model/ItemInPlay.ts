@@ -25,6 +25,10 @@ export type CharacterState = FallingItemState & {
   jumpRemaining: number;
   lives: number;
   shield: number;
+
+  // Number of pixels the player will walk forward regardless of input. This
+  // puts players properly inside a room when they enter via a door
+  autoWalkDistance: number;
 };
 
 export type ItemStateMap = {
@@ -118,12 +122,11 @@ export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
   return item.type === "head" || item.type === "heels";
 };
 
-export const isItemType = <T extends ItemInPlayType>(
-  type: T,
-  item: AnyItemInPlay,
-): item is ItemInPlay<T> => {
-  return item.type === type;
-};
+export const isItemType =
+  <T extends ItemInPlayType>(type: T) =>
+  (item: AnyItemInPlay): item is ItemInPlay<T> => {
+    return item.type === type;
+  };
 
 export const fallingItemTypes = [
   "head",

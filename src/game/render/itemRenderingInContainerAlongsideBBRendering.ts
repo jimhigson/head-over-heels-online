@@ -48,15 +48,14 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
 const renderItemBBs = <T extends ItemInPlayType>(
   item: Pick<ItemInPlay<T>, "aabb" | "type" | "id" | "renderAabb">,
 ): Container => {
-  const color =
-    item.type === "wall" ? "rgba(255,0,0, 0.5)" : "rgba(255,255,255,0.5)";
+  const color = item.type === "wall" ? "rgba(255,184,0)" : "rgba(255,255,255)";
 
   const containerWithBB = new Container();
 
   containerWithBB.addChild(new Graphics().circle(0, 0, 2).fill(color));
   containerWithBB.addChild(renderBB(item.aabb, color));
   if (item.renderAabb) {
-    containerWithBB.addChild(renderBB(item.renderAabb, "green"));
+    containerWithBB.addChild(renderBB(item.renderAabb, "rgba(184, 184, 255)"));
   }
   return containerWithBB;
 };

@@ -1,6 +1,9 @@
-import { isItemType } from "@/model/ItemInPlay";
+import { isItemType, ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { GameState } from "./GameState";
 import { loadRoom } from "./loadRoom/loadRoom";
+import { CharacterName } from "@/model/modelTypes";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { PlanetName } from "@/sprites/planets";
 
 export const changeCharacterRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -16,8 +19,8 @@ export const changeCharacterRoom = <RoomId extends string>(
   const loadedRoom = loadRoom(gameState.campaign.rooms[roomId]);
 
   const character = previousRoom.items.find(
-    (i) => i.type === currentCharacterName,
-  );
+    isItemType(currentCharacterName),
+  ) as ItemInPlay<CharacterName, PlanetName, RoomId>;
 
   if (character === undefined) {
     throw new Error(
@@ -30,17 +33,27 @@ export const changeCharacterRoom = <RoomId extends string>(
 
   // find the door (etc) in the new room to enter in:
   const entryPoint = loadedRoom.items.find(
-    (i) => isItemType("portal", i) && i.config.toRoom === previousRoom.id,
+    (i) => isItemType("portal")(i) && i.config.toRoom === previousRoom.id,
   );
 
   if (entryPoint !== undefined) {
     character.position = entryPoint.position;
   }
 
-  // but the character into the newly loaded room:
-  loadedRoom.items.push(character);
+  // remove the character from the new room if they're already there - this only really happens
+  // if the room is their starting room (so they're in it twice since they appear in the starting room
+  // by default):
+  loadedRoom.items = loadedRoom.items.filter(
+    ({ type }) => type !== character.type,
+  );
 
-  gameState.characterRooms[gameState.currentCharacterName] = loadedRoom;
+  character.state.autoWalkDistance = blockSizePx.w * 1;
+
+  // but the character into the newly loaded room:
+  loadedRoom.items.push(character as UnknownItemInPlay<RoomId>);
+
+  // update game state to know which room this character is now in:
+  gameState.characterRooms[currentCharacterName] = loadedRoom;
 
   gameState.events.emit("roomChange", roomId);
 };

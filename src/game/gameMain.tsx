@@ -19,7 +19,7 @@ export const gameMain = async <RoomId extends string>(
 ): Promise<GameApi<RoomId>> => {
   // TODO: re-render on HMR: https://vite.dev/guide/api-hmr.html
 
-  const renderOptions: RenderOptions<RoomId> = { showBoundingBoxes: false };
+  const renderOptions: RenderOptions<RoomId> = { showBoundingBoxes: "none" };
 
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging

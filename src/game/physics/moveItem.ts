@@ -1,4 +1,8 @@
-import { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import {
+  isPlayableItem,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { AxisXyz, Xyz, addXyz, axesXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import { currentRoom, GameState } from "../gameState/GameState";
@@ -82,18 +86,21 @@ export const moveItem = <RoomId extends string>(
     (ci) => ci.onTouch,
   );
 
-  const firstPortal = portal?.at(0) as
-    | ItemInPlay<"portal", PlanetName, RoomId>
-    | undefined;
-  if (firstPortal !== undefined) {
-    changeCharacterRoom(gameState, firstPortal.config.toRoom);
-    return;
-  }
-  if (deadly !== undefined && deadly.length > 0) {
-    console.log("LOSE a life");
-  }
-  if (pickup !== undefined && pickup.length > 0) {
-    console.log("Got a bunny or something");
+  if (isPlayableItem(item)) {
+    const firstPortal = portal?.at(0) as
+      | ItemInPlay<"portal", PlanetName, RoomId>
+      | undefined;
+    if (firstPortal !== undefined && item.state.autoWalkDistance === 0) {
+      changeCharacterRoom(gameState, firstPortal.config.toRoom);
+      return;
+    }
+
+    if (deadly !== undefined && deadly.length > 0) {
+      console.log("LOSE a life");
+    }
+    if (pickup !== undefined && pickup.length > 0) {
+      console.log("Got a bunny or something");
+    }
   }
 
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,

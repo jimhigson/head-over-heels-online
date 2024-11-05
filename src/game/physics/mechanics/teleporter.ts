@@ -1,7 +1,6 @@
 import { ItemInPlay } from "@/model/ItemInPlay";
 import { MechanicResult } from "../MechanicResult";
 import { UnknownRoomState } from "@/model/modelTypes";
-import { originXyz } from "@/utils/vectors";
 import { InputState } from "@/game/input/InputState";
 
 /**
@@ -24,7 +23,6 @@ export function teleporter(
   }
 
   return {
-    positionDelta: originXyz,
     stateDelta: { flashing: !!stoodOn },
   };
 }

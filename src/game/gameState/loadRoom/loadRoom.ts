@@ -1,9 +1,5 @@
 import { UnknownJsonItem } from "@/model/Item";
-import {
-  itemFalls,
-  ItemInPlay,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import { itemFalls, ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { RoomState, RoomJson, AnyRoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
@@ -12,7 +8,7 @@ import { loadWalls } from "./loadWalls";
 import { loadItem } from "./loadItem";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { addXyz } from "@/utils/vectors";
+import { addXy, addXyz } from "@/utils/vectors";
 
 function* loadItems<RoomId extends string>(
   items: Record<string, UnknownJsonItem<RoomId>>,
@@ -30,9 +26,14 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
       type: "floor",
       id: "floor",
       config: {},
-      position: blockXyzToFineXyz({ x: 0, y: 0, z: 0 }),
+      // the floor's bounding box is extended to be 1 block bigger than the room in
+      // all directions - this is because doors extend outside of the box by half a block
+      // on the towards/left sides. Since the floor doesn't render, it doesn't matter
+      // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
+      // safeguards against falling 'off the edge of the world'
+      position: blockXyzToFineXyz({ x: -1, y: -1, z: 0 }),
+      aabb: { ...blockXyzToFineXyz(addXy(room.size, { x: 2, y: 2 })), z: 0 },
       state: {},
-      aabb: { ...blockXyzToFineXyz(room.size), z: 0 },
       renders: false,
     },
   };

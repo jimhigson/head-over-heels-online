@@ -1,12 +1,77 @@
 import { Game } from "./game/Game";
 import { RoomSelect } from "./game/levelEdit/RoomSelect";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameApi } from "./game/GameApi.tsx";
 import { Campaign } from "./model/modelTypes.ts";
 import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
 import { Label } from "./components/ui/label.tsx";
 import { RenderOptions, ShowBoundingBoxes } from "./game/RenderOptions.tsx";
+
+const useHashSyncedWithRoomId = <RoomId extends string>(
+  gameApi: GameApi<RoomId> | undefined,
+): void => {
+  useEffect(() => {
+    if (gameApi === undefined) {
+      return;
+    }
+
+    const parseUrl = (url: Pick<URL, "hash">) => {
+      const maybeRoomId = url.hash.substring(1);
+      if (maybeRoomId === "") return undefined;
+      if (gameApi.campaign.rooms[maybeRoomId as RoomId] === undefined)
+        return undefined;
+      return url.hash.substring(1) as RoomId;
+    };
+
+    if (window.location.hash) {
+      const roomIdFromHash = parseUrl(window.location);
+
+      if (
+        roomIdFromHash !== undefined &&
+        gameApi.currentRoom.id !== roomIdFromHash
+      )
+        gameApi.changeRoom(roomIdFromHash);
+    }
+
+    const onHashChange = (e: HashChangeEvent) => {
+      const roomIdFromHash = parseUrl(new URL(e.newURL));
+
+      if (
+        roomIdFromHash !== undefined &&
+        roomIdFromHash !== gameApi.currentRoom.id
+      ) {
+        gameApi.changeRoom(roomIdFromHash as RoomId);
+      }
+    };
+    const onRoomChange = (roomId: RoomId) => {
+      window.location.hash = roomId;
+    };
+
+    window.addEventListener("hashchange", onHashChange);
+    gameApi.events.on("roomChange", onRoomChange);
+
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      gameApi.events.off("roomChange", onRoomChange);
+    };
+  }, [gameApi]);
+};
+
+const useShowBoundingBoxes = (): [
+  ShowBoundingBoxes,
+  (showBoundingBoxes: ShowBoundingBoxes) => void,
+] => {
+  const [showBBs, setShowBBs] = useState<ShowBoundingBoxes>(
+    (localStorage.getItem("showBBs") || "none") as ShowBoundingBoxes,
+  );
+
+  useEffect(() => {
+    localStorage.setItem("showBBs", showBBs);
+  }, [showBBs]);
+
+  return [showBBs, setShowBBs];
+};
 
 export const App = <RoomId extends string>({
   campaign,
@@ -16,7 +81,8 @@ export const App = <RoomId extends string>({
   const [gameApi, setGameApi] = useState<GameApi<RoomId> | undefined>(
     undefined,
   );
-  const [showBBs, setShowBBs] = useState<ShowBoundingBoxes>(false);
+  const [showBBs, setShowBBs] = useShowBoundingBoxes();
+  useHashSyncedWithRoomId(gameApi);
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)
@@ -58,9 +124,9 @@ export const App = <RoomId extends string>({
           <div className="flex flex-row items-center gap-x-2 justify-center mb-2 mt-2">
             <Switch
               id="airplane-mode"
-              checked={showBBs !== false}
+              checked={showBBs !== "none"}
               onCheckedChange={(checked) =>
-                setShowBBs(checked ? "non-wall" : false)
+                setShowBBs(checked ? "non-wall" : "none")
               }
             />
             <Label htmlFor="airplane-mode">Show BBs</Label>

@@ -40,11 +40,12 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
    */
 
   const applyResult = ({ positionDelta, stateDelta }: MechanicResult<T>) => {
-    moveItem(item as UnknownItemInPlay, positionDelta, gameState);
+    if (positionDelta !== undefined)
+      moveItem(item as UnknownItemInPlay, positionDelta, gameState);
     item.state = { ...item.state, ...stateDelta };
   };
 
-  if (isPlayableItem(item)) {
+  if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
     applyResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
     applyResult(jumping(item, inputState, deltaMS) as MechanicResult<T>);
   }
@@ -53,7 +54,7 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     applyResult(fallingAndLanding(item, room, deltaMS) as MechanicResult<T>);
   }
 
-  if (isItemType("teleporter", item)) {
+  if (isItemType("teleporter")(item)) {
     applyResult(teleporter(item, inputState, room) as MechanicResult<T>);
   }
 

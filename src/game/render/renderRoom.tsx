@@ -7,7 +7,7 @@ import { renderFloor } from "./renderFloor";
 import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
 import { renderExtent } from "./renderExtent";
 import { moveSpriteToItemProjection, renderItem } from "./renderItems";
-import { itemRenderingInContainerAlongsideBBRendering } from "./maybeRenderBB";
+import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -55,7 +55,7 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
         item.renderContainer;
 
     if (
-      options.showBoundingBoxes !== false &&
+      options.showBoundingBoxes !== "none" &&
       item.renderContainer !== undefined
     ) {
       item.renderContainer.alpha = 0.1;
