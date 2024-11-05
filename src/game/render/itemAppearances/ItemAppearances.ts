@@ -58,6 +58,9 @@ export const itemAppearances: {
 
     return container;
   },
+  doorPortal() {
+    throw new Error("these should always be non-rendering");
+  },
 
   wall({ config: { side, style } }, room) {
     if (side === "right" || side === "towards") {

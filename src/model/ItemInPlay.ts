@@ -11,6 +11,7 @@ export type ItemInPlayType =
   | "heels"
   | "doorNear"
   | "doorFar"
+  | "doorPortal"
   | "floor";
 
 type FallingItemState = {

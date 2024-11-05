@@ -66,7 +66,7 @@ export const maybeRenderBB = <T extends ItemInPlayType, RoomId extends string>(
     if (item.renderAabb) {
       containerWithBB.addChild(renderBB(item.renderAabb, "green"));
     }
-    itemRendering.alpha = 0.8;
+    itemRendering.alpha = 0.66;
     return containerWithBB;
   } else return itemRendering;
 };

@@ -50,7 +50,9 @@ export const renderItem = <T extends ItemInPlayType>(
   const itemAppearance = itemAppearances[item.type];
 
   if (itemAppearance === undefined) {
-    throw new Error(`item type "${item.type}" has no appearance`);
+    throw new Error(
+      `item type "${item.type}" has no appearance - if it doesn't render, give it the .renders = false`,
+    );
   }
   item.renderContainer.removeChildren();
 

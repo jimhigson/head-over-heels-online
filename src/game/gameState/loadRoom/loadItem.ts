@@ -8,6 +8,7 @@ import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { addXy } from "@/utils/vectors";
 import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { loadDoor } from "./loadDoor";
 
 const positionAndAabb = (
   item: UnknownJsonItem,
@@ -42,62 +43,7 @@ export function* loadItem<RoomId extends string>(
 ): Generator<UnknownItemInPlay<RoomId>> {
   switch (jsonItem.type) {
     case "door": {
-      const {
-        config: { axis },
-        position,
-      } = jsonItem;
-
-      const crossAxis = axis === "x" ? "y" : "x";
-
-      const inHiddenWall =
-        (axis === "x" && jsonItem.position.y === 0) ||
-        (axis === "y" && jsonItem.position.x === 0);
-
-      // doors on the front are moved back half a square to embed them inside the unseen near-side wall:
-      const crossAxisComponent = {
-        [crossAxis]: inHiddenWall
-          ? position[crossAxis] - 0.5
-          : position[crossAxis],
-      };
-
-      yield {
-        ...jsonItem,
-        ...defaultItemProperties,
-        ...{
-          id: `${id}/far`,
-          config: {
-            ...jsonItem.config,
-            inHiddenWall,
-          },
-          type: "doorFar",
-          position: blockXyzToFineXyz({
-            ...jsonItem.position,
-            [axis]: jsonItem.position[axis] + 1.5,
-            ...crossAxisComponent,
-          }),
-          state: {},
-          aabb: { x: 8, y: 8, z: 48 },
-        },
-      };
-      yield {
-        ...jsonItem,
-        ...defaultItemProperties,
-        ...{
-          id: `${id}/near`,
-          config: {
-            ...jsonItem.config,
-            inHiddenWall,
-          },
-          type: "doorNear",
-          position: blockXyzToFineXyz({
-            ...jsonItem.position,
-            ...crossAxisComponent,
-          }),
-          state: {},
-          aabb: { x: 8, y: 8, z: 48 },
-        },
-      };
-      return;
+      return yield* loadDoor<RoomId>(jsonItem, id);
     }
     case "player": {
       if (jsonItem.config.which === "head") {
