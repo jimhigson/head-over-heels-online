@@ -4,12 +4,10 @@ import {
   ItemInPlay,
 } from "@/model/ItemInPlay";
 import { UnknownRoomState } from "@/model/modelTypes";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
-
-const fallSpeedPixPerMs = blockSizePx.h / 1_000; // fall one block per second
+import { fallSpeedPixPerMs } from "../mechanicsConstants";
 
 export const fallingAndLanding = (
   item: ItemInPlay<FallingItemTypes>,
@@ -25,7 +23,9 @@ export const fallingAndLanding = (
     return unitMechanicalResult;
   }
 
-  const fallVector = scaleXyz(unitVectors.down, fallSpeedPixPerMs * deltaMS);
+  const fallSpeed = fallSpeedPixPerMs[item.type === "head" ? "head" : "others"];
+
+  const fallVector = scaleXyz(unitVectors.down, fallSpeed * deltaMS);
 
   const collisions = collision1toMany(
     { ...item, position: addXyz(item.position, fallVector) },
@@ -34,6 +34,12 @@ export const fallingAndLanding = (
   );
 
   const standingOn = collisions.at(0);
+
+  /**
+   * TODO: for heels there is mandatory moving-forward at normal walking speed if falling
+   * from a jump, but not if falling from a step-off. Move side-ways movement while falling
+   * into here, and walking.ts should only be when on a surface.
+   */
 
   return {
     positionDelta: fallVector,

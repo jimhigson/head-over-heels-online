@@ -9,9 +9,11 @@ export const playerSpeedPixPerMs = {
   heels: (blockSizePx.w * 8) / 2_500,
 };
 
+export const jumpSpeedPixPerMs = (blockSizePx.w * 3.5) / 1_000;
+
 export const playerJumpHeight = {
   // head can jump almost 3 blocks high
-  head: blockSizePx.h * 3 - 1,
+  head: blockSizePx.h * 2.5,
   heels: blockSizePx.h,
 };
 
@@ -19,4 +21,9 @@ export const playerJumpHeight = {
 export const canChangeDirectionInAir = {
   head: true,
   heels: false,
+};
+
+export const fallSpeedPixPerMs = {
+  head: (blockSizePx.h * 2) / 1000,
+  others: jumpSpeedPixPerMs,
 };

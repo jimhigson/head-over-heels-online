@@ -1,5 +1,5 @@
 import { PlayableItem } from "@/model/ItemInPlay";
-import { playerJumpHeight, playerSpeedPixPerMs } from "../mechanicsConstants";
+import { jumpSpeedPixPerMs, playerJumpHeight } from "../mechanicsConstants";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { InputState } from "../../input/InputState";
 import { CharacterName } from "@/model/modelTypes";
@@ -30,7 +30,7 @@ export const jumping = (
   // cap the vertical movement according to how much jump is left.
   // if no jump is remaining, this will be zero
   const zMovement = Math.min(
-    playerSpeedPixPerMs[type] * deltaMS,
+    jumpSpeedPixPerMs * deltaMS,
     isJumpStart ? playerJumpHeight[type] : jumpRemaining,
   );
 
