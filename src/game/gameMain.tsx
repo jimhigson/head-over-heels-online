@@ -1,8 +1,7 @@
 import { Application, Container } from "pixi.js";
-import { Campaign, RoomState, UnknownRoomState } from "../model/modelTypes";
+import { Campaign, RoomState } from "../model/modelTypes";
 import { currentRoom, GameState } from "@/game/gameState/GameState";
 import { zxSpectrumResolution } from "../originalGame";
-import { renderExtent } from "./render/renderExtent";
 import mitt, { Emitter } from "mitt";
 import { loadRoom } from "./gameState/loadRoom/loadRoom";
 import { PlanetName } from "@/sprites/planets";
@@ -12,19 +11,6 @@ import { upscale } from "./upscale";
 import { renderRoom } from "./render/renderRoom";
 import { gameEngineTicks } from "./physics/gameEngineTicks";
 import { RenderOptions } from "./RenderOptions";
-
-const centreRoomInRendering = (
-  room: UnknownRoomState,
-  container: Container,
-): void => {
-  const { leftSide, rightSide, frontSide, top } = renderExtent(room);
-
-  const renderingMedianX = (rightSide.x + leftSide.x) / 2;
-  const renderingMedianY = (top + frontSide.y) / 2;
-
-  container.x = -renderingMedianX;
-  container.y = -renderingMedianY;
-};
 
 type ApiEvents<RoomId extends string> = {
   roomChange: RoomId;
@@ -59,9 +45,6 @@ export const gameMain = async <RoomId extends string>(
 
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });
-  upscale(app);
-
-  gameEngineTicks(app, gameState);
 
   const inputStop = listenForInput(gameState);
 
@@ -70,8 +53,10 @@ export const gameMain = async <RoomId extends string>(
   const worldContainer = new Container();
   app.stage.addChild(worldContainer);
 
-  // move origin to centre horizontally of screen:
-  worldContainer.x = zxSpectrumResolution.width / 2;
+  upscale(app, worldContainer);
+
+  gameEngineTicks(app, gameState, worldContainer);
+
   worldContainer.y = zxSpectrumResolution.height * 0.7;
 
   const viewRoom = (loadedRoom: RoomState<PlanetName, RoomId>) => {
@@ -87,8 +72,6 @@ export const gameMain = async <RoomId extends string>(
     worldContainer.removeChildren();
 
     const roomContainer = renderRoom(loadedRoom, renderOptions);
-
-    centreRoomInRendering(loadedRoom, roomContainer);
 
     worldContainer.addChild(roomContainer);
 

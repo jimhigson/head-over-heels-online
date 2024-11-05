@@ -1,8 +1,8 @@
-import { Application } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import { zxSpectrumResolution } from "../originalGame";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
-export const upscale = async (app: Application) => {
+export const upscale = async (app: Application, worldContainer: Container) => {
   const scaleToFit = () => {
     if (app.renderer.width === 0 || app.renderer.height === 0)
       // not ready yet - size not known
@@ -36,6 +36,7 @@ export const upscale = async (app: Application) => {
     */
 
     app.stage.scale = scaleFactor;
+    worldContainer.x = app.renderer.width / scaleFactor / 2;
   };
 
   app.renderer.on("resize", () => scaleToFit());

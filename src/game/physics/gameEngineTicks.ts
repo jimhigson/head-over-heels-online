@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { walking } from "./mechanics/walking";
 import { teleporter } from "./mechanics/teleporter";
@@ -62,6 +62,7 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 export const gameEngineTicks = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
+  renderInto: Container,
 ) => {
   app.ticker.add(({ deltaMS }) => {
     const { inputState } = gameState;
