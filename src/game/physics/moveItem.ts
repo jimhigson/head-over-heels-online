@@ -8,6 +8,7 @@ import { collision1toMany } from "../collision/aabbCollision";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
 import { PlanetName } from "@/sprites/planets";
+import { blockSizePx } from "@/sprites/pixiSpriteSheet";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
@@ -92,6 +93,10 @@ export const moveItem = <RoomId extends string>(
       | undefined;
     if (firstPortal !== undefined && item.state.autoWalkDistance === 0) {
       changeCharacterRoom(gameState, firstPortal.config.toRoom);
+      // automatically walk forward a short way in the new room to put character properly
+      // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
+      //  - only doors)
+      item.state.autoWalkDistance = blockSizePx.w * 1;
       return;
     }
 

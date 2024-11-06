@@ -1,5 +1,10 @@
 import { UnknownJsonItem } from "@/model/Item";
-import { itemFalls, ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import {
+  FallingItemTypes,
+  itemFalls,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { RoomState, RoomJson, AnyRoomJson } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
@@ -39,30 +44,36 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
   };
 };
 
+export const findStandingOn = (
+  item: ItemInPlay<FallingItemTypes>,
+  items: UnknownItemInPlay[],
+): UnknownItemInPlay | null => {
+  const positionJustBelowItem = addXyz(item.position, { z: -1 });
+  const collisions = collision1toMany(
+    {
+      position: positionJustBelowItem,
+      aabb: item.aabb,
+      id: item.id,
+    },
+    items,
+  );
+
+  for (const collisionItem of collisions) {
+    const collisionItemTop = collisionItem.position.z + collisionItem.aabb.z;
+    const maybeStandingItemBottom = item.position.z;
+
+    if (collisionItemTop === maybeStandingItemBottom) {
+      console.log(item, "is standing on", collisionItem);
+      return collisionItem;
+    }
+  }
+  return null; // not standing on anything in the items list
+};
+
 const initStandingOn = (items: UnknownItemInPlay[]) => {
   for (const item of items) {
     if (itemFalls(item)) {
-      const positionJustBelowItem = addXyz(item.position, { z: -1 });
-      const collisions = collision1toMany(
-        {
-          position: positionJustBelowItem,
-          aabb: item.aabb,
-          id: item.id,
-        },
-        items,
-      );
-
-      for (const collisionItem of collisions) {
-        const collisionItemTop =
-          collisionItem.position.z + collisionItem.aabb.z;
-        const maybeStandingItemBottom = item.position.z;
-
-        if (collisionItemTop === maybeStandingItemBottom) {
-          item.state.standingOn = collisionItem;
-          console.log(item, "is standing on", collisionItem);
-          break;
-        }
-      }
+      item.state.standingOn = findStandingOn(item, items);
     }
   }
 };

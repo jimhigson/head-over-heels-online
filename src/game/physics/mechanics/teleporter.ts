@@ -1,16 +1,20 @@
 import { ItemInPlay } from "@/model/ItemInPlay";
 import { MechanicResult } from "../MechanicResult";
 import { UnknownRoomState } from "@/model/modelTypes";
-import { InputState } from "@/game/input/InputState";
+import { GameState } from "@/game/gameState/GameState";
+import { changeCharacterRoom } from "@/game/gameState/changeCharacterRoom";
+import { PlanetName } from "@/sprites/planets";
 
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export function teleporter(
-  teleporter: ItemInPlay<"teleporter">,
-  inputState: InputState,
+export function teleporter<RoomId extends string>(
+  teleporter: ItemInPlay<"teleporter", PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
   room: UnknownRoomState,
 ): MechanicResult<"teleporter"> {
+  const { inputState } = gameState;
+
   const stoodOn =
     room.items.find(
       (i) =>
@@ -19,7 +23,10 @@ export function teleporter(
     ) !== undefined;
 
   if (stoodOn && inputState.jump) {
-    console.log("TIME TO TELEPORT!!!");
+    // this jump input is now handled - prevent immediate teleport back:
+    // TODO: this can probably be removed when the teleportation animation is implemented
+    inputState.jump = false;
+    changeCharacterRoom(gameState, teleporter.config.toRoom);
   }
 
   return {

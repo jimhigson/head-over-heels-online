@@ -16,7 +16,6 @@ import {
 import { jumping } from "./mechanics/jumping";
 import { MechanicResult } from "./MechanicResult";
 import { moveItem } from "./moveItem";
-import { InputState } from "../input/InputState";
 import { PlanetName } from "@/sprites/planets";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
 import { steppedOff } from "./mechanics/steppedOff";
@@ -27,12 +26,12 @@ import { swopCharacters } from "../gameState/swopCharacters";
 
 const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
-  inputState: InputState,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
   const originalState = item.state;
   const room = currentRoom(gameState);
+  const { inputState } = gameState;
 
   /*
    * each mechanic sees the item in the state given it it by the previous ones
@@ -59,7 +58,7 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isItemType("teleporter")(item)) {
-    applyResult(teleporter(item, inputState, room) as MechanicResult<T>);
+    applyResult(teleporter(item, gameState, room) as MechanicResult<T>);
   }
 
   if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {
@@ -117,7 +116,7 @@ export const mainLoop = <RoomId extends string>(
     let sortDirty = false;
 
     for (const item of items) {
-      tickItem(item, inputState, gameState, deltaMS);
+      tickItem(item, gameState, deltaMS);
 
       if (item.renderPositionDirty) {
         moveSpriteToItemProjection(item);

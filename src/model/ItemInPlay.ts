@@ -128,7 +128,9 @@ export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
 
 export const isItemType =
   <T extends ItemInPlayType>(type: T) =>
-  (item: AnyItemInPlay): item is ItemInPlay<T> => {
+  <RoomId extends string>(
+    item: AnyItemInPlay<RoomId>,
+  ): item is ItemInPlay<T, PlanetName, RoomId> => {
     return item.type === type;
   };
 
