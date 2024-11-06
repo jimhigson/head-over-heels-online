@@ -3,7 +3,7 @@ import { Xyz } from "@/utils/vectors";
 
 export type MechanicResult<T extends ItemInPlayType> = {
   positionDelta?: Partial<Xyz>;
-  stateDelta: Partial<ItemState<T>>;
+  stateDelta?: Partial<ItemState<T>>;
 };
 
 export const unitMechanicalResult = {

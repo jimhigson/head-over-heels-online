@@ -9,6 +9,12 @@ import { collision1toMany } from "../../collision/aabbCollision";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { fallSpeedPixPerMs } from "../mechanicsConstants";
 
+/**
+ * handle *only* the vertical speed downwards, and recognising
+ * when the fall is done
+ *
+ * The item can be anything - a player, a pickup etc
+ */
 export const fallingAndLanding = (
   item: ItemInPlay<FallingItemTypes>,
   room: UnknownRoomState,
@@ -45,12 +51,13 @@ export const fallingAndLanding = (
     positionDelta: fallVector,
     stateDelta: {
       standingOn:
-        standingOn === undefined
-          ? // we are in the air
-            null
-          : // the landing case
-            standingOn,
+        standingOn === undefined ?
+          // we are in the air
+          null
+          // the landing case
+        : standingOn,
       movement: item.type === "head" ? "falling" : undefined,
+      ...(standingOn !== undefined ? { jumped: false } : {}),
     },
   };
 };

@@ -35,11 +35,13 @@ export const jumping = (
   );
 
   return {
-    stateDelta: isJumpStart
-      ? {
+    stateDelta:
+      isJumpStart ?
+        {
           movement: "moving",
           standingOn: null,
           jumpRemaining: playerJumpHeight[type],
+          jumped: true,
         }
       : {
           movement: "moving",

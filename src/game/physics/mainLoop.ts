@@ -40,9 +40,12 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
    */
 
   const applyResult = ({ positionDelta, stateDelta }: MechanicResult<T>) => {
-    if (positionDelta !== undefined)
+    if (positionDelta !== undefined) {
       moveItem(item as UnknownItemInPlay, positionDelta, gameState);
-    item.state = { ...item.state, ...stateDelta };
+    }
+    if (stateDelta !== undefined) {
+      item.state = { ...item.state, ...stateDelta };
+    }
   };
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {

@@ -1,9 +1,4 @@
-import {
-  directions,
-  scaleXyz,
-  unitVectors,
-  originXyz,
-} from "@/utils/vectors";
+import { directions, originXyz, scaleXyz, unitVectors } from "@/utils/vectors";
 import { InputState } from "../../input/InputState";
 import { playerSpeedPixPerMs } from "../mechanicsConstants";
 import { PlayableItem } from "@/model/ItemInPlay";
@@ -71,35 +66,73 @@ export function walking(
 ): MechanicResult<CharacterName> {
   const {
     type,
-    state: { jumpRemaining },
+    state: { jumpRemaining, autoWalkDistance, standingOn, facing, jumped },
   } = playableItem;
 
   const directionPressed = directions.find((d) => {
     return inputState[d] === true;
   });
 
-  // unit vector in direction of movement
-  const directionVector =
-    directionPressed !== undefined || jumpRemaining > 0
-      ? unitVectors[playableItem.state.facing]
-      : originXyz;
+  const walkDistance = playerSpeedPixPerMs[type] * deltaMS;
 
-  const walkVector = scaleXyz(
-    directionVector,
-    playerSpeedPixPerMs[type] * deltaMS,
-  );
+  // just entered a room and autowalkig through the door
+  if (autoWalkDistance > 0) {
+    return {
+      positionDelta: scaleXyz(unitVectors[facing], walkDistance),
+      stateDelta: {
+        autoWalkDistance: Math.max(autoWalkDistance - walkDistance, 0),
+      },
+    };
+  }
 
-  return {
-    positionDelta: walkVector,
-    stateDelta:
-      directionPressed !== undefined
-        ? {
-            // TODO: heels can't change direction while jumping
-            facing: directionPressed,
-            movement: "moving",
-          }
-        : jumpRemaining === 0
-          ? { movement: "idle" }
-          : {},
-  };
+  // handle: ascending in a jump,
+  // falling from a jump,
+  // or falling from walking off something
+  // TODO: for heels, track if jumped off or fell off - mandatory
+  // forward movement while falling if jumped off, but no horizontal
+  // movement if fell off
+  if (standingOn === null) {
+    switch (type) {
+      case "head": {
+        const direction =
+          jumpRemaining > 0 ? directionPressed || facing : directionPressed;
+
+        if (direction !== undefined) {
+          // head can always change direction mid-air, and can fall vertically from a jump
+          return {
+            positionDelta: scaleXyz(unitVectors[direction], walkDistance),
+            stateDelta: {
+              facing: direction,
+            },
+          };
+        } else {
+          // fall vertically with no input:
+          return {};
+        }
+      }
+      case "heels":
+        return {
+          positionDelta:
+            jumped ?
+              // when heels jumps. the whole ascent and descent has to be moving in the jump direction
+              scaleXyz(unitVectors[facing], walkDistance)
+              // when heels jumps off, always drops vertically - no horizontal movement
+            : originXyz,
+          stateDelta: {},
+        };
+    }
+  }
+
+  // normal walking
+  if (directionPressed !== undefined) {
+    return {
+      positionDelta: scaleXyz(unitVectors[directionPressed], walkDistance),
+      stateDelta: {
+        facing: directionPressed,
+        movement: "moving",
+      },
+    };
+  }
+
+  return { stateDelta: { movement: "idle" } };
 }
