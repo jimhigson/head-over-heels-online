@@ -16,7 +16,13 @@ export const changeCharacterRoom = <RoomId extends string>(
     throw new Error(`Can't move to the same room ${roomId}`);
   }
 
-  const loadedRoom = loadRoom(gameState.campaign.rooms[roomId]);
+  const otherCharacter = currentCharacterName === "head" ? "heels" : "head";
+
+  const otherCharacterLoadedRoom = gameState.characterRooms[otherCharacter];
+  const loadedRoom =
+    otherCharacterLoadedRoom.id === roomId ?
+      otherCharacterLoadedRoom
+    : loadRoom(gameState.campaign.rooms[roomId]);
 
   const character = previousRoom.items.find(
     isItemType(currentCharacterName),
