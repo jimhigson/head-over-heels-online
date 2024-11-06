@@ -58,6 +58,10 @@ export const gameMain = async <RoomId extends string>(
     set renderOptions(options: RenderOptions<RoomId>) {
       gameState.renderOptions = options;
     },
+    swopCharacter() {
+      gameState.currentCharacterName =
+        gameState.currentCharacterName === "head" ? "heels" : "head";
+    },
     stop() {
       console.log("tearing down game");
       app.stage.removeChild(worldContainer);
