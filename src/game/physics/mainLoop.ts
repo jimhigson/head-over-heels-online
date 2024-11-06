@@ -23,6 +23,7 @@ import { steppedOff } from "./mechanics/steppedOff";
 import { RoomState } from "@/model/modelTypes";
 import { renderRoom } from "../render/renderRoom";
 import { RenderOptions } from "../RenderOptions";
+import { swopCharacters } from "../gameState/swopCharacters";
 
 const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -78,6 +79,13 @@ export const mainLoop = <RoomId extends string>(
 
   const handleTick = ({ deltaMS }: Ticker) => {
     const { inputState } = gameState;
+
+    if (inputState.swop) {
+      swopCharacters(gameState);
+      // we have now handled that keypress, turn it off until the key is pressed again,
+      // which will turn this flag back on
+      inputState.swop = false;
+    }
 
     const room = currentRoom(gameState);
     const { renderOptions } = gameState;

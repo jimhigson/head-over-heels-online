@@ -139,9 +139,6 @@ export const App = <RoomId extends string>({
             />
             <Label htmlFor="airplane-mode">inc walls</Label>
           </div>
-          <Button onClick={() => gameApi.swopCharacter()}>
-            Swop character
-          </Button>
           <Button
             onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
           >

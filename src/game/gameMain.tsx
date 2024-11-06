@@ -33,7 +33,7 @@ export const gameMain = async <RoomId extends string>(
   app.stage.addChild(worldContainer);
 
   const gameState = initGameState(campaign, renderOptions, apiEvents);
-  const inputStop = listenForInput(gameState);
+  const stopListeningForInput = listenForInput(gameState);
   upscale(app, worldContainer);
 
   const loop = mainLoop(app, gameState, worldContainer).start();
@@ -67,7 +67,7 @@ export const gameMain = async <RoomId extends string>(
       app.stage.removeChild(worldContainer);
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
-      inputStop();
+      stopListeningForInput();
       app.destroy();
     },
   };

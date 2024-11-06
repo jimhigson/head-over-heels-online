@@ -23,7 +23,7 @@ const originalKeyAssignment: KeyAssignment = {
   jump: [" ", "M"],
   carry: ["C", "M"],
   fire: ["N"],
-  swop: ["Enter"],
+  swop: ["Enter", "S"],
   pause: ["H"],
 };
 
