@@ -20,12 +20,12 @@ const positionAndAabb = (
   // 'extra' walls don't get centred on their square (it needs to stay on the edge between
   // squares) - if this extends to more types, make more generic than an if-type
   const centredPosition =
-    item.type === "wall"
-      ? blockPosition
-      : addXy(blockPosition, {
-          x: (blockSizePx.w - aabb.x) / 2,
-          y: (blockSizePx.d - aabb.y) / 2,
-        });
+    item.type === "wall" ?
+      blockPosition
+    : addXy(blockPosition, {
+        x: (blockSizePx.w - aabb.x) / 2,
+        y: (blockSizePx.d - aabb.y) / 2,
+      });
 
   return {
     position: { ...centredPosition, z: blockPosition.z },
@@ -61,6 +61,7 @@ export function* loadItem<RoomId extends string>(
               lives: 8,
               donuts: 0,
               autoWalkDistance: 0,
+              jumped: false,
             },
             ...positionAndAabb(jsonItem),
             falls: true,
@@ -84,6 +85,7 @@ export function* loadItem<RoomId extends string>(
               standingOn: null,
               lives: 8,
               autoWalkDistance: 0,
+              jumped: false,
             },
             ...positionAndAabb(jsonItem),
             falls: true,

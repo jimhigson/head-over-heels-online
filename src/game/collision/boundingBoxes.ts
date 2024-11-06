@@ -53,14 +53,14 @@ export const boundingBoxForItem = (
     case "barrier": {
       return {
         aabb:
-          item.config.axis === "y"
-            ? { x: 3, y: 15, z: blockSizePx.h }
-            : { x: 15, y: 3, z: blockSizePx.h },
+          item.config.axis === "y" ?
+            { x: 3, y: 15, z: blockSizePx.h }
+          : { x: 15, y: 3, z: blockSizePx.h },
       };
     }
     case "wall":
-      return item.config.side === "left" || item.config.side === "right"
-        ? { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
+      return item.config.side === "left" || item.config.side === "right" ?
+          { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
         : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
 
     default:

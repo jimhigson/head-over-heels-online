@@ -102,15 +102,15 @@ const convertItemsArray = (
           convertDirection(item.where) === "right";
 
         const axis =
-          item.kind.endsWith("-east") || item.kind.endsWith("-west")
-            ? "x"
-            : "y";
+          item.kind.endsWith("-east") || item.kind.endsWith("-west") ?
+            "x"
+          : "y";
         const cAxis = crossAxisXy(axis);
 
         const z =
-          position.z === -1
-            ? autoZ({ x: parseInt(item.x), y: parseInt(item.y) }, xml2JsonRoom)
-            : position.z;
+          position.z === -1 ?
+            autoZ({ x: parseInt(item.x), y: parseInt(item.y) }, xml2JsonRoom)
+          : position.z;
 
         const vectorToMoveFrontSideInwards = isFront ? { [cAxis]: 1 } : {};
 

@@ -25,9 +25,9 @@ export const convertWalls = (
     .filter((wall) => wall.along === xmlJsonAxis)
     .forEach(({ position, picture }) => {
       const ordinal =
-        xmlJsonAxis === "x"
-          ? convertX(position, roomJson, sidesWithDoors)
-          : convertY(position, roomJson, sidesWithDoors);
+        xmlJsonAxis === "x" ?
+          convertX(position, roomJson, sidesWithDoors)
+        : convertY(position, roomJson, sidesWithDoors);
 
       return (result[ordinal] = convertWallName(planet, picture));
     });

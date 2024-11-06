@@ -85,21 +85,21 @@ export const itemAppearances: {
 
   conveyor: ({ config: { direction } }) =>
     createSprite(
-      direction === "left" || direction === "right"
-        ? "conveyor.x"
-        : "conveyor.y",
+      direction === "left" || direction === "right" ?
+        "conveyor.x"
+      : "conveyor.y",
     ),
 
   fish: ({ config: { alive } }) =>
     createSprite(
-      alive
-        ? {
-            frames: pixiSpriteSheet.animations.fish,
-            animationSpeed: 0.1,
-          }
-        : {
-            texture: "fish.1",
-          },
+      alive ?
+        {
+          frames: pixiSpriteSheet.animations.fish,
+          animationSpeed: 0.1,
+        }
+      : {
+          texture: "fish.1",
+        },
     ),
 
   lift() {
@@ -120,12 +120,12 @@ export const itemAppearances: {
   spring: () => createSprite("spring.released"),
 
   teleporter: (item) =>
-    item.state.flashing
-      ? createSprite({
-          frames: pixiSpriteSheet.animations["teleporter.flashing"],
-          animationSpeed: 0.1,
-        })
-      : createSprite("teleporter"),
+    item.state.flashing ?
+      createSprite({
+        frames: pixiSpriteSheet.animations["teleporter.flashing"],
+        animationSpeed: 0.1,
+      })
+    : createSprite("teleporter"),
 
   pickup({ config: { gives } }) {
     const pickupIcons: Record<

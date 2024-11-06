@@ -86,8 +86,9 @@ export const readRoomToJson = async (
 
   roomJson = roomJson.room;
   roomJson.walls = roomJson.walls.wall || [];
-  roomJson.items = Array.isArray(roomJson.items.item)
-    ? roomJson.items.item
+  roomJson.items =
+    Array.isArray(roomJson.items.item) ?
+      roomJson.items.item
     : [roomJson.items.item];
 
   delete roomJson._attributes;

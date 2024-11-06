@@ -33,8 +33,6 @@ const useGame = <RoomId extends string>(
   return gameApi;
 };
 
-
-
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */

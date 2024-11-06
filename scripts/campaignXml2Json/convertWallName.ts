@@ -23,9 +23,8 @@ export const parseXmlWallName = (
     axis: regexMatch.groups["axis"] as AxisXy,
     // jail walls only have one tile so in the xml there's no number - use 1 to mean
     // the first (and only) wall variant:
-    wallTypeIndex: regexMatch.groups["number"]
-      ? parseInt(regexMatch.groups["number"])
-      : 1,
+    wallTypeIndex:
+      regexMatch.groups["number"] ? parseInt(regexMatch.groups["number"]) : 1,
   };
 };
 

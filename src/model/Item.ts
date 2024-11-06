@@ -140,8 +140,8 @@ export type ItemConfig<
   T extends ItemType,
   P extends PlanetName,
   RoomId extends string,
-> = T extends keyof ItemConfigMap<P, RoomId>
-  ? ItemConfigMap<P, RoomId>[T]
+> =
+  T extends keyof ItemConfigMap<P, RoomId> ? ItemConfigMap<P, RoomId>[T]
   : EmptyObject;
 
 export type JsonItem<
