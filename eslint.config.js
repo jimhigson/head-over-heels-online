@@ -36,7 +36,7 @@ export default tseslint.config(
       "no-param-reassign": ["off"],
       // this will cause the editor to strip unused imports on save
       "unused-imports/no-unused-imports": "error",
-      
+
       "prefer-destructuring": "error",
       "react-hooks/exhaustive-deps": "error",
       "@typescript-eslint/no-unused-vars": [
@@ -46,7 +46,7 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
-      "prettier/prettier": "error",
+      "prettier/prettier": ["error", { experimentalTernaries: true }],
     },
   },
 );

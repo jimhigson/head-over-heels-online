@@ -47,18 +47,19 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
       options.showBoundingBoxes === "all" ||
       (options.showBoundingBoxes === "non-wall" && item.type !== "wall");
 
-    item.positionContainer = renderItemBBs
-      ? // rendering gets wrapped in an additional container that also contains the bb rendering
+    item.positionContainer =
+      renderItemBBs ?
+        // rendering gets wrapped in an additional container that also contains the bb rendering
         itemRenderingInContainerAlongsideBBRendering(item)
-      : // position container and item container are one and the same. Note that for
+        // position container and item container are one and the same. Note that for
         // non-rendering items, this is setting positionContainer to undefined
-        item.renderContainer;
+      : item.renderContainer;
 
     if (
       options.showBoundingBoxes !== "none" &&
       item.renderContainer !== undefined
     ) {
-      item.renderContainer.alpha = 0.1;
+      item.renderContainer.alpha = 0.4;
     }
 
     if (options.onItemClick && item.renderContainer !== undefined) {

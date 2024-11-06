@@ -29,6 +29,11 @@ export type CharacterState = FallingItemState & {
   // Number of pixels the player will walk forward regardless of input. This
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
+
+  // records if we jumped to get into the state we are in. For Heels, if she
+  // jumped and is falling there is mandatory forward movement. Otherwise,
+  // falls vertically
+  jumped: boolean;
 };
 
 export type ItemStateMap = {
@@ -62,9 +67,8 @@ type EmptyObject = {
   [n in never]: unknown;
 };
 
-export type ItemState<T extends ItemInPlayType> = T extends keyof ItemStateMap
-  ? ItemStateMap[T]
-  : EmptyObject;
+export type ItemState<T extends ItemInPlayType> =
+  T extends keyof ItemStateMap ? ItemStateMap[T] : EmptyObject;
 
 export type ItemInPlay<
   T extends ItemInPlayType,
