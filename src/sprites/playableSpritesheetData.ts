@@ -4,6 +4,7 @@ import { smallItemTextureSize } from "./textureSizes";
 import { CharacterName } from "@/model/modelTypes";
 import { Direction, directions } from "@/utils/vectors";
 import { AnimationsOfFrames } from "./AnimationsOfFrames";
+import { zxSpectrumFrameRate } from "@/originalGame";
 
 function walkingFrames<P extends CharacterName>(p: P) {
   function* walkingFramesGen<P extends CharacterName, D extends Direction>(
@@ -112,6 +113,9 @@ const frames = {
   ),
 } as const;
 
+// head blinks every 5s in the original game
+const headBlinkPeriod = 5_000;
+const nonBlinkingFrames = Math.round(headBlinkPeriod / zxSpectrumFrameRate) - 3;
 export const playableSpritesheetData = {
   frames,
   animations: {
@@ -119,13 +123,13 @@ export const playableSpritesheetData = {
     ...walkingFrames("heels"),
     "head.idle.right": [
       // 50 frames of non-blinking confirmed against original to be about the same rate
-      ...new Array(50).fill("head.idle.right.1"),
+      ...new Array(nonBlinkingFrames).fill("head.idle.right.1"),
       "head.idle.right.2",
       "head.idle.right.1",
       "head.idle.right.2",
     ],
     "head.idle.towards": [
-      ...new Array(50).fill("head.idle.towards.1"),
+      ...new Array(nonBlinkingFrames).fill("head.idle.towards.1"),
       "head.idle.towards.2",
       "head.idle.towards.1",
       "head.idle.towards.2",
