@@ -55,13 +55,22 @@ export const boundingBoxForItem = (
     case "baddie": // TODO: make different size for different baddies
       switch (item.config.which) {
         case "american-football-head":
+        case "bubble-robot":
           return { aabb: { ...smallItemAabb, z: blockSizePx.h * 2 } };
+        case "helicopter-bug":
+          return { aabb: smallItemAabb };
+        default:
+          return { aabb: largeItemAabb };
+      }
+    case "deadly-block":
+      switch (item.config.style) {
+        case "puck":
+          return { aabb: smallItemAabb };
         default:
           return { aabb: largeItemAabb };
       }
     case "book":
     case "conveyor":
-    case "deadly-block":
     case "hush-puppy":
     case "teleporter": {
       return { aabb: largeItemAabb };
