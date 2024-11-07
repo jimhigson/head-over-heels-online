@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { RoomState } from "../../model/modelTypes";
-import type { TextureId } from "../../sprites/pixiSpriteSheet";
+import type { TextureId } from "../../sprites/spriteSheet";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
 import { moveContainerToBlockXyz } from "./projectToScreen";

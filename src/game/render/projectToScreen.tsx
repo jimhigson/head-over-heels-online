@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { XyMaybeZ } from "@/utils/vectors";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 import { Xy, Xyz } from "@/utils/vectors";
 
 export const moveContainerToBlockXyz = (

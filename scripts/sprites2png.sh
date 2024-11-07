@@ -9,7 +9,7 @@ yes | ffmpeg -i gfx/sprites.iff -vf "curves=r='0.00/0.00 0.25/0.22 0.50/0.50 0.7
 #
 # make sprite mask colour actually transparent in the png (dpaint uses a normal colour)
 echo "🤖 making transparent"
-magick gfx/sprites.png -transparent \#ffff00 gfx/sprites.png
+magick gfx/sprites.png -transparent \#3a4e4a gfx/sprites.png
 
 echo "🤖 reducing palette"
 pngquant -vf --quality 100-100 \

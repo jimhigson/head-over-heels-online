@@ -1,7 +1,7 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { RoomJson } from "@/model/modelTypes";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 import { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {

@@ -1,12 +1,17 @@
 import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
-import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
+import { spriteSheet, TextureId } from "../../sprites/spriteSheet";
+import { originalGameFrameDuration } from "@/originalGame";
 
 type AnimatedCreateSpriteOptions = {
   // animated
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
-  animationSpeed: number;
+  /**
+   * if not given, defaults to 12.5 fps, or one frame every other (deinterlaced)
+   * zx-spectrum original game frame
+   */
+  animationSpeed?: number;
   frames: Texture[];
   x?: number;
   y?: number;
@@ -43,11 +48,18 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     let sprite: Sprite;
 
     if (isAnimatedOptions(options)) {
-      sprite = new AnimatedSprite(options.frames);
-      (sprite as AnimatedSprite).animationSpeed = options.animationSpeed || 0.1;
+      sprite = new AnimatedSprite(
+        options.frames.map((frame) => ({
+          texture: frame,
+          time: originalGameFrameDuration,
+        })),
+      );
+      // default animation speed is one frame of animation per twp
+      // original game frames (ie, 12.5 fps)
+      (sprite as AnimatedSprite).animationSpeed = options.animationSpeed || 0.5;
       (sprite as AnimatedSprite).play();
     } else {
-      sprite = new Sprite(pixiSpriteSheet.textures[options.texture]);
+      sprite = new Sprite(spriteSheet.textures[options.texture]);
     }
 
     if (anchor === undefined && pivot === undefined)

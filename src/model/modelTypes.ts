@@ -5,7 +5,7 @@ import { UnknownItemInPlay } from "./ItemInPlay";
 import { Simplify } from "type-fest";
 import { PlanetName, Wall } from "../sprites/planets";
 import { Xy } from "../utils/vectors";
-import { blockSizePx } from "../sprites/pixiSpriteSheet";
+import { blockSizePx } from "../sprites/spriteSheet";
 
 export type CharacterName = "head" | "heels";
 

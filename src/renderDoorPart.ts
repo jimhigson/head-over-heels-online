@@ -4,7 +4,7 @@ import { doorTexture } from "./game/render/itemAppearances/doorAppearance";
 import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
 import { LoadedDoorConfig } from "./model/Item";
 import { UnknownRoomState } from "./model/modelTypes";
-import { blockSizePx, doorTexturePivot } from "./sprites/pixiSpriteSheet";
+import { blockSizePx, doorTexturePivot } from "./sprites/spriteSheet";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
 import { AxisXy, crossAxisXy, Xyz } from "./utils/vectors";
 

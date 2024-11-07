@@ -314,10 +314,10 @@ const spritesheetData = {
   keyof typeof frames
 >;
 
-export const pixiSpriteSheet = new Spritesheet(spritesTexture, spritesheetData);
+export const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);
 
-await pixiSpriteSheet.parse();
-pixiSpriteSheet.textureSource.scaleMode = "nearest";
+await spriteSheet.parse();
+spriteSheet.textureSource.scaleMode = "nearest";
 
-export type TextureId = keyof (typeof pixiSpriteSheet)["textures"];
-export type AnimationId = keyof (typeof pixiSpriteSheet)["animations"];
+export type TextureId = keyof (typeof spriteSheet)["textures"];
+export type AnimationId = keyof (typeof spriteSheet)["animations"];

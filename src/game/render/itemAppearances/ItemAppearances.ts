@@ -2,9 +2,9 @@ import { Container } from "pixi.js";
 import { ItemConfigMap } from "../../../model/Item";
 import {
   barrierPivot,
-  pixiSpriteSheet,
+  spriteSheet,
   TextureId,
-} from "../../../sprites/pixiSpriteSheet";
+} from "../../../sprites/spriteSheet";
 import { createSprite, CreateSpriteOptions } from "../createSprite";
 import { UnknownRoomState } from "../../../model/modelTypes";
 import { wallTextureId } from "../wallTextureId";
@@ -21,8 +21,8 @@ export type ItemAppearance<T extends ItemInPlayType> = (
 ) => Container;
 
 const bubbles = {
-  frames: pixiSpriteSheet.animations["bubbles.cold"],
-  animationSpeed: 0.1,
+  frames: spriteSheet.animations["bubbles.cold"],
+  animationSpeed: 0.25,
 };
 const stackedSprites = (
   head: CreateSpriteOptions,
@@ -94,8 +94,8 @@ export const itemAppearances: {
     createSprite(
       alive ?
         {
-          frames: pixiSpriteSheet.animations.fish,
-          animationSpeed: 0.1,
+          frames: spriteSheet.animations.fish,
+          animationSpeed: 0.25,
         }
       : {
           texture: "fish.1",
@@ -107,8 +107,7 @@ export const itemAppearances: {
 
     container.addChild(
       createSprite({
-        frames: pixiSpriteSheet.animations.lift,
-        animationSpeed: 0.2,
+        frames: spriteSheet.animations.lift,
       }),
     );
 
@@ -122,8 +121,7 @@ export const itemAppearances: {
   teleporter: (item) =>
     item.state.flashing ?
       createSprite({
-        frames: pixiSpriteSheet.animations["teleporter.flashing"],
-        animationSpeed: 0.1,
+        frames: spriteSheet.animations["teleporter.flashing"],
       })
     : createSprite("teleporter"),
 
@@ -160,8 +158,8 @@ export const itemAppearances: {
       case "dalek":
         // animated, no directions
         return createSprite({
-          frames: pixiSpriteSheet.animations[config.which],
-          animationSpeed: 0.2,
+          frames: spriteSheet.animations[config.which],
+          animationSpeed: 0.5,
         });
       case "headless-base":
         // no anim, not directional
@@ -173,8 +171,8 @@ export const itemAppearances: {
       case "turtle":
         // animated, directional:
         return createSprite({
-          frames: pixiSpriteSheet.animations[`turtle.${config.startDirection}`],
-          animationSpeed: 0.1,
+          frames: spriteSheet.animations[`turtle.${config.startDirection}`],
+          animationSpeed: 0.25,
         });
       case "cyberman":
         if (config.charging) {

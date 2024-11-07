@@ -8,7 +8,7 @@ import { collision1toMany } from "../collision/aabbCollision";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
 import { PlanetName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,

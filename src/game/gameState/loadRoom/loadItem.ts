@@ -4,7 +4,7 @@ import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { addXy } from "@/utils/vectors";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 import { loadDoor } from "./loadDoor";
 
 const positionAndAabb = (

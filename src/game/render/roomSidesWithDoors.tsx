@@ -1,7 +1,7 @@
 import { JsonItem } from "@/model/Item";
 import { UnknownRoomState } from "@/model/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};

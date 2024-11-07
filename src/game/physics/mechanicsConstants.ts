@@ -1,6 +1,7 @@
 // NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
 
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx, spriteSheet } from "@/sprites/spriteSheet";
+import { teleportAnimationSpeed } from "../render/itemAppearances/animationSpeeds";
 
 // original game timed at 5s to move 8 blocks
 export const playerSpeedPixPerMs = {
@@ -29,4 +30,7 @@ export const fallSpeedPixPerMs = {
 };
 
 export const originalFrameRate = 1000 / 25;
-export const teleportTime = 9 * originalFrameRate;
+export const teleportTime =
+  // work out duration based on number of frames and frame rate
+  (spriteSheet.animations["head.teleport"].length * originalFrameRate) /
+  teleportAnimationSpeed;

@@ -1,5 +1,5 @@
 import { UnknownRoomState } from "@/model/modelTypes";
-import { pixiSpriteSheet, type TextureId } from "@/sprites/pixiSpriteSheet";
+import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 
 export const doorTexture = (
   room: UnknownRoomState,
@@ -7,7 +7,7 @@ export const doorTexture = (
   nearness: "near" | "far",
 ): TextureId => {
   const worldSpecificTexture =
-    pixiSpriteSheet.textures[
+    spriteSheet.textures[
       `${room.planet}.door.front.${axis}` as TextureId
     ] !== undefined;
 

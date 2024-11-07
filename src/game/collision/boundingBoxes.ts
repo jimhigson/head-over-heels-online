@@ -1,5 +1,5 @@
 import { UnknownJsonItem } from "@/model/Item";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import { blockSizePx } from "@/sprites/spriteSheet";
 import { Aabb } from "@/utils/vectors";
 
 const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
