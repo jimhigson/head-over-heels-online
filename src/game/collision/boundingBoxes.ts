@@ -41,7 +41,17 @@ export const boundingBoxForItem = (
     case "fish":
       return { aabb: mediumItemAabb };
 
-    case "block":
+    case "block": {
+      switch (item.config.style) {
+        case "artificial":
+        case "organic":
+          return { aabb: largeItemAabb };
+        case "tower":
+          return { aabb: { x: 11, y: 11, z: blockSizePx.h } };
+        default:
+          throw new Error("unknown block style");
+      }
+    }
     case "book":
     case "conveyor":
     case "deadly-block":
