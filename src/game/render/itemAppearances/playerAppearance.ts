@@ -10,8 +10,23 @@ import { CharacterName } from "@/model/modelTypes";
 
 export const playerAppearance: ItemAppearance<CharacterName> = ({
   type,
-  state: { movement, facing },
+  state: { movement, facing, teleporting },
 }: ItemInPlay<CharacterName>) => {
+  if (teleporting !== null) {
+    if (teleporting.phase === "out") {
+      return createSprite({
+        frames: pixiSpriteSheet.animations[`${type}.teleport`],
+        animationSpeed: headWalkAnimationSpeed,
+      });
+    }
+
+    if (teleporting.phase === "in") {
+      return createSprite({
+        frames: pixiSpriteSheet.animations[`${type}.teleport`].reverse(),
+        animationSpeed: headWalkAnimationSpeed,
+      });
+    }
+  }
   if (movement === "moving") {
     return createSprite({
       frames: pixiSpriteSheet.animations[`${type}.walking.${facing}`],

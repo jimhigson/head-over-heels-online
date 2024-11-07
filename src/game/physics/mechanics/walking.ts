@@ -66,7 +66,14 @@ export function walking(
 ): MechanicResult<CharacterName> {
   const {
     type,
-    state: { jumpRemaining, autoWalkDistance, standingOn, facing, jumped },
+    state: {
+      jumpRemaining,
+      autoWalkDistance,
+      standingOn,
+      facing,
+      jumped,
+      teleporting,
+    },
   } = playableItem;
 
   const directionPressed = directions.find((d) => {
@@ -83,6 +90,11 @@ export function walking(
         autoWalkDistance: Math.max(autoWalkDistance - walkDistance, 0),
       },
     };
+  }
+
+  if (teleporting !== null) {
+    // do no walking while teleporting
+    return {};
   }
 
   // handle: ascending in a jump,

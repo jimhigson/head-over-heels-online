@@ -1,24 +1,21 @@
-import { SpritesheetData, SpritesheetFrameData } from "pixi.js";
+import { SpritesheetData } from "pixi.js";
 import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
 import { CharacterName } from "@/model/modelTypes";
 import { Direction, directions } from "@/utils/vectors";
+import { AnimationsOfFrames } from "./AnimationsOfFrames";
 
-export type AnimationsOfFrames<TextureId extends string> = {
-  frames: Record<TextureId, SpritesheetFrameData>;
-  animations: Record<string, TextureId[]>;
-};
-
-function* walkingFramesGen<P extends CharacterName, D extends Direction>(
-  p: P,
-  d: D,
-): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
-  yield `${p}.walking.${d}.1`;
-  yield `${p}.walking.${d}.2`;
-  yield `${p}.walking.${d}.3`;
-  yield `${p}.walking.${d}.2`;
-}
 function walkingFrames<P extends CharacterName>(p: P) {
+  function* walkingFramesGen<P extends CharacterName, D extends Direction>(
+    p: P,
+    d: D,
+  ): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
+    yield `${p}.walking.${d}.1`;
+    yield `${p}.walking.${d}.2`;
+    yield `${p}.walking.${d}.3`;
+    yield `${p}.walking.${d}.2`;
+  }
+
   return directions.reduce(
     (ac, d) => ({
       ...ac,
@@ -74,6 +71,12 @@ const frames = {
   "head.falling.right": {
     frame: { x: 79, y: 304, ...smallItemTextureSize },
   },
+  ...seriesOfAnimationFrameTextures(
+    "bubbles.head",
+    6,
+    { x: 4, y: 215 },
+    smallItemTextureSize,
+  ),
 
   // Heels
   // ------------
@@ -101,6 +104,12 @@ const frames = {
     { x: 235, y: 240 },
     smallItemTextureSize,
   ),
+  ...seriesOfAnimationFrameTextures(
+    "bubbles.heels",
+    6,
+    { x: 159, y: 215 },
+    smallItemTextureSize,
+  ),
 } as const;
 
 export const playableSpritesheetData = {
@@ -120,6 +129,30 @@ export const playableSpritesheetData = {
       "head.idle.towards.2",
       "head.idle.towards.1",
       "head.idle.towards.2",
+    ],
+    // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
+    // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
+    "head.teleport": [
+      "bubbles.head.1",
+      "bubbles.head.2",
+      "bubbles.head.4",
+      "bubbles.head.3",
+      "bubbles.head.4",
+      "bubbles.head.6",
+      "bubbles.head.5",
+      "bubbles.head.6",
+      "bubbles.head.5",
+    ],
+    "heels.teleport": [
+      "bubbles.heels.1",
+      "bubbles.heels.2",
+      "bubbles.heels.4",
+      "bubbles.heels.3",
+      "bubbles.heels.4",
+      "bubbles.heels.6",
+      "bubbles.heels.5",
+      "bubbles.heels.6",
+      "bubbles.heels.5",
     ],
   },
 } as const satisfies Pick<

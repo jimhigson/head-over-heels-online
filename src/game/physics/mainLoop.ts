@@ -23,6 +23,7 @@ import { RoomState } from "@/model/modelTypes";
 import { renderRoom } from "../render/renderRoom";
 import { RenderOptions } from "../RenderOptions";
 import { swopCharacters } from "../gameState/swopCharacters";
+import { teleporting } from "./mechanics/teleporting";
 
 const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -49,6 +50,7 @@ const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   };
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
+    applyResult(teleporting(item, gameState, deltaMS) as MechanicResult<T>);
     applyResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
     applyResult(jumping(item, inputState, deltaMS) as MechanicResult<T>);
   }

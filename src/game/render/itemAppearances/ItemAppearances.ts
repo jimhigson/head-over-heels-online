@@ -21,7 +21,7 @@ export type ItemAppearance<T extends ItemInPlayType> = (
 ) => Container;
 
 const bubbles = {
-  frames: pixiSpriteSheet.animations.bubbles,
+  frames: pixiSpriteSheet.animations["bubbles.cold"],
   animationSpeed: 0.1,
 };
 const stackedSprites = (

@@ -38,22 +38,36 @@ export const fourDirections = <TName extends string>(
     SpritesheetFrameData
   >;
 };
+
+export type FrameNumbers<N extends number> =
+  `${N}` extends "2" ? "1" | "2"
+  : `${N}` extends "3" ? "1" | "2" | "3"
+  : `${N}` extends "4" ? "1" | "2" | "3" | "4"
+  : `${N}` extends "5" ? "1" | "2" | "3" | "4" | "5"
+  : `${N}` extends "6" ? "1" | "2" | "3" | "4" | "5" | "6"
+  : never;
+
 //technically not all our animations have four frames but that's the maximum and it'll do ok
 // could be a bit smarter here really
-type AnimatedTextureName<TName extends string> =
-  `${TName}.${"1" | "2" | "3" | "4"}`;
-export const seriesOfAnimationFrameTextures = <TName extends string>(
+export type AnimatedTextureName<
+  TName extends string,
+  N extends number,
+> = `${TName}.${FrameNumbers<N>}`;
+export const seriesOfAnimationFrameTextures = <
+  TName extends string,
+  N extends number,
+>(
   name: TName,
-  n: number,
+  n: N,
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
-): Record<AnimatedTextureName<TName>, SpritesheetFrameData> => {
-  function* generator(): Generator<
-    [AnimatedTextureName<TName>, SpritesheetFrameData]
-  > {
+): Record<AnimatedTextureName<TName, N>, SpritesheetFrameData> => {
+  type Name = AnimatedTextureName<TName, N>;
+
+  function* generator(): Generator<[Name, SpritesheetFrameData]> {
     for (let i = 0; i < n; i++) {
       yield [
-        `${name}.${i + 1}` as AnimatedTextureName<TName>,
+        `${name}.${i + 1}` as Name,
         {
           frame: {
             x: startX + i * (textureSize.w + 1),
@@ -65,8 +79,5 @@ export const seriesOfAnimationFrameTextures = <TName extends string>(
     }
   }
 
-  return Object.fromEntries(generator()) as Record<
-    AnimatedTextureName<TName>,
-    SpritesheetFrameData
-  >;
+  return Object.fromEntries(generator()) as Record<Name, SpritesheetFrameData>;
 };

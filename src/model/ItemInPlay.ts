@@ -3,7 +3,6 @@ import { Aabb, Direction, Xyz } from "../utils/vectors";
 import { ItemConfig, ItemType } from "./Item";
 import { Container } from "pixi.js";
 import { SetRequired } from "type-fest";
-import { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<ItemType, "player" | "door">
@@ -34,6 +33,18 @@ export type CharacterState = FallingItemState & {
   // jumped and is falling there is mandatory forward movement. Otherwise,
   // falls vertically
   jumped: boolean;
+
+  teleporting:
+    | {
+        phase: "out";
+        timeRemaining: number;
+        toRoom: string; // TODO: RoomId
+      }
+    | {
+        phase: "in";
+        timeRemaining: number;
+      }
+    | null;
 };
 
 export type ItemStateMap = {
@@ -120,7 +131,9 @@ export type ItemInPlay<
   falls: boolean;
 };
 
-export type PlayableItem = ItemInPlay<CharacterName>;
+export type PlayableItem<RoomId extends string = string> =
+  | ItemInPlay<"head", PlanetName, RoomId>
+  | ItemInPlay<"heels", PlanetName, RoomId>;
 
 export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
   return item.type === "head" || item.type === "heels";

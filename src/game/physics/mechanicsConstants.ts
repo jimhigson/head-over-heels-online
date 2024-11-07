@@ -27,3 +27,6 @@ export const fallSpeedPixPerMs = {
   head: (blockSizePx.h * 2) / 1000,
   others: jumpSpeedPixPerMs,
 };
+
+export const originalFrameRate = 1000 / 25;
+export const teleportTime = 9 * originalFrameRate;
