@@ -52,11 +52,17 @@ export const boundingBoxForItem = (
           throw new Error("unknown block style");
       }
     }
+    case "baddie": // TODO: make different size for different baddies
+      switch (item.config.which) {
+        case "american-football-head":
+          return { aabb: { ...smallItemAabb, z: blockSizePx.h * 2 } };
+        default:
+          return { aabb: largeItemAabb };
+      }
     case "book":
     case "conveyor":
     case "deadly-block":
     case "hush-puppy":
-    case "baddie": // TODO: make different size for different baddies
     case "teleporter": {
       return { aabb: largeItemAabb };
     }
