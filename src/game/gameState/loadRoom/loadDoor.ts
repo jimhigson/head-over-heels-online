@@ -111,11 +111,14 @@ export function* loadDoor<RoomId extends string>(
       },
       renders: false,
       type: "wall",
-      position: addXyz(blockXyzToFineXyz(addXyz(position)), {
-        z: doorPortalHeight,
-      }),
+      position: {
+        ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+        ...{
+          z: doorPortalHeight,
+        },
+      },
       state: {},
-      aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0 }), z: 999 },
+      aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5 }), z: 999 },
     },
   };
   return;

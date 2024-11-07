@@ -59,7 +59,7 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
       options.showBoundingBoxes !== "none" &&
       item.renderContainer !== undefined
     ) {
-      item.renderContainer.alpha = 1;
+      item.renderContainer.alpha = 0.25;
     }
 
     if (options.onItemClick && item.renderContainer !== undefined) {
