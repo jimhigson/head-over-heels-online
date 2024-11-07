@@ -1,9 +1,6 @@
 import { PlayableItem } from "@/model/ItemInPlay";
-import {
-  jumpSpeedPixPerMs,
-  playerJumpHeight,
-} from "../mechanicsConstants";
-import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { jumpSpeedPixPerMs, playerJumpHeight } from "../mechanicsConstants";
+import { MechanicResult } from "../MechanicResult";
 import { InputState } from "../../input/InputState";
 import { CharacterName } from "@/model/modelTypes";
 
@@ -14,10 +11,11 @@ export const jumping = (
 ): MechanicResult<CharacterName> => {
   const {
     type,
-    state: { jumpRemaining },
+    state: { jumpRemaining, jumpRoundingError: roundingErrorCarriedForward },
   } = characterItem;
 
   if (jumpInput && characterItem.state.standingOn?.type === "teleporter") {
+    // you can't jump from a teleporter!
     return {};
   }
 
@@ -30,15 +28,28 @@ export const jumping = (
   const isJumpStart = jumpInput && isCharacterStandingOnSomethingCanJumpOff;
 
   if (!isJumpStart && jumpRemaining === 0) {
-    // not jumping
-    return unitMechanicalResult;
+    // not jumping - we do nothing
+    return { stateDelta: { jumpRoundingError: 0 } };
   }
 
+  const zMovementCeiling = isJumpStart ? playerJumpHeight[type] : jumpRemaining;
   // cap the vertical movement according to how much jump is left.
   // if no jump is remaining, this will be zero
-  const zMovement = Math.min(
-    jumpSpeedPixPerMs * deltaMS,
-    isJumpStart ? playerJumpHeight[type] : jumpRemaining,
+  const zMovementFloat = Math.min(
+    jumpSpeedPixPerMs * deltaMS + roundingErrorCarriedForward,
+    zMovementCeiling,
+  );
+
+  const zMovementInt = Math.round(zMovementFloat);
+  const zRoundingError = zMovementFloat - zMovementInt;
+
+  console.log(
+    "float",
+    zMovementFloat,
+    "error",
+    zRoundingError,
+    "rounded",
+    zMovementInt,
   );
 
   return {
@@ -46,14 +57,18 @@ export const jumping = (
       isJumpStart ?
         {
           movement: "moving",
+          // whatever we were standing on, we aren't any more:
           standingOn: null,
           jumpRemaining: playerJumpHeight[type],
+          jumpRoundingError: zRoundingError,
           jumped: true,
         }
+        // jumping, but not starting a jump
       : {
           movement: "moving",
-          jumpRemaining: Math.max(jumpRemaining - zMovement, 0),
+          jumpRemaining: Math.max(jumpRemaining - zMovementInt, 0),
+          jumpRoundingError: zRoundingError,
         },
-    positionDelta: { z: zMovement },
+    positionDelta: { z: zMovementInt },
   };
 };

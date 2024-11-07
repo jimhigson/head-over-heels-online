@@ -21,7 +21,16 @@ type FallingItemState = {
 export type CharacterState = FallingItemState & {
   facing: Direction;
   movement: "moving" | "idle" | "falling";
+  /** how much higher we can jump before we start to fall, in pixels */
   jumpRemaining: number;
+  /**
+   * when jumping, the movement will usually be less than 1px per frame on
+   * modern hardware owing to the higher frame rate than the original game,
+   * but the position is always whole pixels. This records how much "correction"
+   * is needed after a frame, to add onto the next frame to maintain smooth movement,
+   * ie it is the character's sub-pixel position
+   */
+  jumpRoundingError: number;
   lives: number;
   shield: number;
 
@@ -59,7 +68,7 @@ export type ItemStateMap = {
   };
   heels: CharacterState & {
     hasBag: boolean;
-    /** how many big jumps we can do */
+    /** how many big jumps we can do (from picking up a bunny) */
     // TODO: these properties should be recognised
     // by the type system as belonging only to head
     // or heels

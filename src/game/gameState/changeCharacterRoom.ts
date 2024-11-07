@@ -3,7 +3,7 @@ import { GameState } from "./GameState";
 import { findStandingOn, loadRoom } from "./loadRoom/loadRoom";
 import { CharacterName } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
-import { addXyz, originXyz } from "@/utils/vectors";
+import { addXyz, originXyz, Xyz } from "@/utils/vectors";
 
 export const changeCharacterRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,

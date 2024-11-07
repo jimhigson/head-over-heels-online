@@ -79,6 +79,7 @@ export const mainLoop = <RoomId extends string>(
   let lastRenderOptions: RenderOptions<RoomId> | undefined = undefined;
 
   const handleTick = ({ deltaMS }: Ticker) => {
+    //console.time("tick");
     const { inputState } = gameState;
 
     if (inputState.swop) {
@@ -133,6 +134,7 @@ export const mainLoop = <RoomId extends string>(
     if (sortDirty) {
       sortItemsByDrawOrder(room.items);
     }
+    //console.timeEnd("tick");
   };
 
   return {
