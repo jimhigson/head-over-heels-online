@@ -26,6 +26,15 @@ export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
     xy,
   );
 
+export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
+  xys.reduce<Xy>(
+    (ac, xyi) => ({
+      x: ac.x - (xyi.x ?? 0),
+      y: ac.y - (xyi.y ?? 0),
+    }),
+    xy,
+  );
+
 export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   x: xy.x * scale,
   y: xy.y * scale,
@@ -38,6 +47,16 @@ export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
       x: ac.x + (xyi.x ?? 0),
       y: ac.y + (xyi.y ?? 0),
       z: ac.z + (xyi.z ?? 0),
+    }),
+    xyz,
+  );
+
+export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
+  xyzs.reduce<Xyz>(
+    (ac, xyi) => ({
+      x: ac.x - (xyi.x ?? 0),
+      y: ac.y - (xyi.y ?? 0),
+      z: ac.z - (xyi.z ?? 0),
     }),
     xyz,
   );

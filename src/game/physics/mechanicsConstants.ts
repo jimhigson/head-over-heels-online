@@ -18,12 +18,6 @@ export const playerJumpHeight = {
   heels: blockSizePx.h,
 };
 
-// TODO: use
-export const canChangeDirectionInAir = {
-  head: true,
-  heels: false,
-};
-
 export const fallSpeedPixPerMs = {
   head: (blockSizePx.h * 2) / 1000,
   others: jumpSpeedPixPerMs,

@@ -50,7 +50,14 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   doorNear: LoadedDoorConfig<RoomId>;
   doorFar: LoadedDoorConfig<RoomId>;
-  portal: { toRoom: RoomId };
+  portal: {
+    toRoom: RoomId;
+    /* 
+      when moving through portals, the position of the character relative to this point is
+      taken, and preserved to be relative to the relativePoint of the portal in the new room
+    */
+    relativePoint: Xyz;
+  };
   wall: {
     style: Wall<P>;
     side: Direction;

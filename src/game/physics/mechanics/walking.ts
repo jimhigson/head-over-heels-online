@@ -82,7 +82,7 @@ export function walking(
 
   const walkDistance = playerSpeedPixPerMs[type] * deltaMS;
 
-  // just entered a room and autowalkig through the door
+  // just entered a room and autowalking through the door
   if (autoWalkDistance > 0) {
     return {
       positionDelta: scaleXyz(unitVectors[facing], walkDistance),

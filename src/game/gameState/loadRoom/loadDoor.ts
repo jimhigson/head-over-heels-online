@@ -52,6 +52,9 @@ export function* loadDoor<RoomId extends string>(
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
   };
+  const doorNearPosition = blockXyzToFineXyz(
+    addXyz(position, crossAxisDisplacement),
+  );
   yield {
     ...jsonItem,
     ...defaultItemProperties,
@@ -62,7 +65,7 @@ export function* loadDoor<RoomId extends string>(
         inHiddenWall,
       },
       type: "doorNear",
-      position: blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+      position: doorNearPosition,
       state: {},
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
@@ -75,6 +78,7 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonItem.config,
         inHiddenWall,
+        relativePoint: doorNearPosition,
       },
       type: "portal",
       position: blockXyzToFineXyz(

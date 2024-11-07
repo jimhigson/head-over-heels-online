@@ -3,10 +3,12 @@ import { GameState } from "./GameState";
 import { findStandingOn, loadRoom } from "./loadRoom/loadRoom";
 import { CharacterName } from "@/model/modelTypes";
 import { PlanetName } from "@/sprites/planets";
+import { addXyz, originXyz } from "@/utils/vectors";
 
 export const changeCharacterRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
   roomId: NoInfer<RoomId>,
+  portalRelative: Xyz = originXyz,
 ) => {
   const { currentCharacterName } = gameState;
   const leavingRoom = gameState.characterRooms[currentCharacterName];
@@ -37,12 +39,16 @@ export const changeCharacterRoom = <RoomId extends string>(
   leavingRoom.items = leavingRoom.items.filter((i) => i !== character);
 
   // find the door (etc) in the new room to enter in:
-  const entryPortal = destinationRoom.items.find(
-    (i) => isItemType("portal")(i) && i.config.toRoom === leavingRoom.id,
+  const destinationPortal = destinationRoom.items.find(
+    (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+      isItemType("portal")(i) && i.config.toRoom === leavingRoom.id,
   );
 
-  if (entryPortal !== undefined) {
-    character.position = entryPortal.position;
+  if (destinationPortal !== undefined) {
+    character.position = addXyz(
+      destinationPortal.config.relativePoint,
+      portalRelative,
+    );
   }
 
   // remove the character from the new room if they're already there - this only really happens

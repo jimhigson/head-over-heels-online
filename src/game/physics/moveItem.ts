@@ -3,7 +3,14 @@ import {
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { AxisXyz, Xyz, addXyz, axesXyz, xyzEqual } from "@/utils/vectors";
+import {
+  AxisXyz,
+  Xyz,
+  addXyz,
+  axesXyz,
+  subXyz,
+  xyzEqual,
+} from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import { currentRoom, GameState } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
@@ -92,11 +99,15 @@ export const moveItem = <RoomId extends string>(
       | ItemInPlay<"portal", PlanetName, RoomId>
       | undefined;
     if (firstPortal !== undefined && item.state.autoWalkDistance === 0) {
-      changeCharacterRoom(gameState, firstPortal.config.toRoom);
+      changeCharacterRoom(
+        gameState,
+        firstPortal.config.toRoom,
+        subXyz(item.position, firstPortal.config.relativePoint),
+      );
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
-      item.state.autoWalkDistance = blockSizePx.w * 1;
+      item.state.autoWalkDistance = blockSizePx.w * 0.75;
       return;
     }
 
