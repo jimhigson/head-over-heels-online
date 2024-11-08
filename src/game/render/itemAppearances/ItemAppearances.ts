@@ -39,7 +39,7 @@ const stackedSprites = (
 export const itemAppearances: {
   [T in ItemInPlayType]: ItemAppearance<T>;
 } = {
-  doorNear({ config, position }, room) {
+  doorNear({ config, state: { position } }, room) {
     const container = new Container();
 
     for (const s of renderDoorPart(config, room, position, "near")) {
@@ -49,7 +49,7 @@ export const itemAppearances: {
     return container;
   },
 
-  doorFar({ config, position }, room) {
+  doorFar({ config, state: { position } }, room) {
     const container = new Container();
 
     for (const s of renderDoorPart(config, room, position, "far")) {

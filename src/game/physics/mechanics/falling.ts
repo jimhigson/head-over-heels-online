@@ -34,7 +34,11 @@ export const fallingAndLanding = (
   const fallVector = scaleXyz(unitVectors.down, fallSpeed * deltaMS);
 
   const collisions = collision1toMany(
-    { ...item, position: addXyz(item.position, fallVector) },
+    {
+      id: item.id,
+      aabb: item.aabb,
+      state: { position: addXyz(item.state.position, fallVector) },
+    },
     room.items,
     //["z"], // collide only in z axis:
   );

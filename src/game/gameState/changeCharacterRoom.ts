@@ -45,7 +45,7 @@ export const changeCharacterRoom = <RoomId extends string>(
   );
 
   if (destinationPortal !== undefined) {
-    character.position = addXyz(
+    character.state.position = addXyz(
       destinationPortal.config.relativePoint,
       portalRelative,
     );

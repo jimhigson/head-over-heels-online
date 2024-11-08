@@ -1,7 +1,9 @@
 import { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { AxisXyz } from "@/utils/vectors";
+import { axesXyz, Xyz } from "@/utils/vectors";
 
-type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
+type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
+  state: { position: Xyz };
+};
 
 /**
  * calculate the Minimum Translation Vector (MTV) to keep a moving item out of a static one.
@@ -38,12 +40,10 @@ type Collideable = Pick<UnknownItemInPlay, "position" | "aabb" | "id">;
  * it is considered a collision
  */
 export const collision1to1 = (
-  { aabb: bbA, position: posA }: Collideable,
-  { aabb: bbB, position: posB }: Collideable,
-  /** which axes to collide on - by default all */
-  axes: AxisXyz[] = ["x", "y", "z"],
+  { aabb: bbA, state: { position: posA } }: Collideable,
+  { aabb: bbB, state: { position: posB } }: Collideable,
 ) => {
-  for (const axis of axes) {
+  for (const axis of axesXyz) {
     if (
       posA[axis] + bbA[axis] <= posB[axis] ||
       posA[axis] >= posB[axis] + bbB[axis]
@@ -60,12 +60,10 @@ export const collision1to1 = (
 export const collision1toMany = (
   subject: Collideable,
   items: UnknownItemInPlay[],
-  axes: AxisXyz[] = ["x", "y", "z"],
 ) => {
   return items.filter(
     (candidateItem) =>
       // prevent self- collision
-      subject.id !== candidateItem.id &&
-      collision1to1(subject, candidateItem, axes),
+      subject.id !== candidateItem.id && collision1to1(subject, candidateItem),
   );
 };

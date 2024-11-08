@@ -10,8 +10,7 @@ export function steppedOff(
   playableItem: ItemInPlay<FallingItemTypes>,
 ): MechanicResult<FallingItemTypes> {
   const {
-    state: { standingOn },
-    position: pos,
+    state: { standingOn, position: pos },
     aabb: bb,
   } = playableItem;
 
@@ -19,7 +18,10 @@ export function steppedOff(
     return unitMechanicalResult;
   }
 
-  const { position: onPos, aabb: onBB } = standingOn;
+  const {
+    state: { position: onPos },
+    aabb: onBB,
+  } = standingOn;
 
   const steppedOff =
     pos.x > onPos.x + onBB.x ||

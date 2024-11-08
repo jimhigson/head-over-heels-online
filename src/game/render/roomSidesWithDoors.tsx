@@ -1,20 +1,18 @@
-import { JsonItem } from "@/model/Item";
 import { UnknownRoomState } from "@/model/modelTypes";
 import { SidesWithDoors } from "./renderFloor";
 import { blockSizePx } from "@/sprites/spriteSheet";
+import { isItemType } from "@/model/ItemInPlay";
 
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};
 
-  const doorIter = room.items
-    .values()
-    .filter((i) => i.type === "doorNear") as ArrayIterator<
-    JsonItem<"doorNear">
-  >;
+  const doorIter = room.items.values().filter(isItemType("doorNear"));
 
   for (const {
     config: { axis },
-    position: { x, y },
+    state: {
+      position: { x, y },
+    },
   } of doorIter) {
     if (axis === "x") {
       if (y < 0) {

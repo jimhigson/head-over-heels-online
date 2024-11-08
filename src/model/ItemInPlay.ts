@@ -87,8 +87,9 @@ type EmptyObject = {
   [n in never]: unknown;
 };
 
-export type ItemState<T extends ItemInPlayType> =
-  T extends keyof ItemStateMap ? ItemStateMap[T] : EmptyObject;
+export type ItemState<T extends ItemInPlayType> = {
+  position: Xyz;
+} & (T extends keyof ItemStateMap ? ItemStateMap[T] : EmptyObject);
 
 export type ItemInPlay<
   T extends ItemInPlayType,
@@ -101,8 +102,8 @@ export type ItemInPlay<
   // borrow the config from the json typings:
   config: T extends ItemType ? ItemConfig<T, P, RoomId> : EmptyObject;
 
-  position: Xyz;
-  //subPosition: Xyz;
+  // position is now in the state:
+  //position: Xyz;
 
   readonly onTouch:
     | "nonIntersect"

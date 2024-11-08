@@ -45,10 +45,11 @@ export function* loadDoor<RoomId extends string>(
         inHiddenWall,
       },
       type: "doorFar",
-      position: blockXyzToFineXyz(
-        addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
-      ),
-      state: {},
+      state: {
+        position: blockXyzToFineXyz(
+          addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
+        ),
+      },
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
   };
@@ -65,8 +66,9 @@ export function* loadDoor<RoomId extends string>(
         inHiddenWall,
       },
       type: "doorNear",
-      position: doorNearPosition,
-      state: {},
+      state: {
+        position: doorNearPosition,
+      },
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
   };
@@ -81,18 +83,19 @@ export function* loadDoor<RoomId extends string>(
         relativePoint: doorNearPosition,
       },
       type: "portal",
-      position: blockXyzToFineXyz(
-        addXyz(
-          position,
-          { [axis]: 0.5 },
-          {
-            [crossAxis]: inHiddenWall ? -0.5 : 0.5,
-          },
-        ),
-      ),
       renders: false,
       onTouch: "portal",
-      state: {},
+      state: {
+        position: blockXyzToFineXyz(
+          addXyz(
+            position,
+            { [axis]: 0.5 },
+            {
+              [crossAxis]: inHiddenWall ? -0.5 : 0.5,
+            },
+          ),
+        ),
+      },
       aabb: {
         [axis]: blockSizePx.w,
         [crossAxis]: 0,
@@ -111,13 +114,14 @@ export function* loadDoor<RoomId extends string>(
       },
       renders: false,
       type: "wall",
-      position: {
-        ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
-        ...{
-          z: doorPortalHeight,
+      state: {
+        position: {
+          ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          ...{
+            z: doorPortalHeight,
+          },
         },
       },
-      state: {},
       aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5 }), z: 999 },
     },
   };

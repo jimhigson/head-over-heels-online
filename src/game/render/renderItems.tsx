@@ -32,7 +32,10 @@ export const renderItem = <T extends ItemInPlayType>(
 export const moveSpriteToItemProjection = (item: AnyItemInPlay) => {
   assertItemHasPositionContainer(item);
 
-  const { position, positionContainer } = item;
+  const {
+    state: { position },
+    positionContainer,
+  } = item;
   const projectionXyz = projectWorldXyzToScreenXy(position);
 
   positionContainer.x = projectionXyz.x;

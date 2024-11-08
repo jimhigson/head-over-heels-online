@@ -36,34 +36,36 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
       // on the towards/left sides. Since the floor doesn't render, it doesn't matter
       // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
       // safeguards against falling 'off the edge of the world'
-      position: blockXyzToFineXyz({ x: -1, y: -1, z: 0 }),
       aabb: { ...blockXyzToFineXyz(addXy(room.size, { x: 2, y: 2 })), z: 0 },
-      state: {},
+      state: {
+        position: blockXyzToFineXyz({ x: -1, y: -1, z: 0 }),
+      },
       renders: false,
     },
   };
 };
 
 export const findStandingOn = (
-  item: ItemInPlay<FallingItemTypes>,
+  { state: { position }, aabb, id }: ItemInPlay<FallingItemTypes>,
   items: UnknownItemInPlay[],
 ): UnknownItemInPlay | null => {
-  const positionJustBelowItem = addXyz(item.position, { z: -1 });
+  const positionJustBelowItem = addXyz(position, { z: -1 });
   const collisions = collision1toMany(
     {
-      position: positionJustBelowItem,
-      aabb: item.aabb,
-      id: item.id,
+      state: { position: positionJustBelowItem },
+      aabb,
+      id,
     },
     items,
   );
 
   for (const collisionItem of collisions) {
-    const collisionItemTop = collisionItem.position.z + collisionItem.aabb.z;
-    const maybeStandingItemBottom = item.position.z;
+    const collisionItemTop =
+      collisionItem.state.position.z + collisionItem.aabb.z;
 
-    if (collisionItemTop === maybeStandingItemBottom) {
-      console.log(item, "is standing on", collisionItem);
+    if (collisionItemTop === position.z) {
+      // the top of the collision item is the same z as the bottom of the item being tested
+      console.log(id, "is standing on", collisionItem);
       return collisionItem;
     }
   }

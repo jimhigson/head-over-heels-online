@@ -115,7 +115,8 @@ const frames = {
 
 // head blinks every 5s in the original game
 const headBlinkPeriod = 5_000;
-const nonBlinkingFrames = Math.round(headBlinkPeriod / zxSpectrumFrameRate) - 3;
+const nonBlinkingFrames =
+  Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4)) - 3;
 export const playableSpritesheetData = {
   frames,
   animations: {

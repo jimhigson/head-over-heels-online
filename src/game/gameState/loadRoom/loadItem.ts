@@ -3,18 +3,33 @@ import { fallingItemTypes, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
-import { addXy } from "@/utils/vectors";
+import { addXyz, Xyz } from "@/utils/vectors";
 import { blockSizePx } from "@/sprites/spriteSheet";
 import { loadDoor } from "./loadDoor";
 
-const positionAndAabb = (
+const boundingBoxes = (
   item: UnknownJsonItem,
-): Pick<UnknownItemInPlay, "aabb" | "position" | "renderAabb"> => {
-  const blockPosition = blockXyzToFineXyz(item.position);
+): Pick<UnknownItemInPlay, "aabb" | "renderAabb"> => {
   const { aabb, renderAabb } = boundingBoxForItem(item);
 
   if (aabb === undefined) {
-    return { position: blockPosition, aabb };
+    throw new Error(
+      `item type= ${item.type} config=${JSON.stringify(item.config)} has no bounding box`,
+    );
+  }
+  return {
+    aabb,
+    renderAabb,
+  };
+};
+const positionCentredInBlock = (item: UnknownJsonItem): Xyz => {
+  const blockPosition = blockXyzToFineXyz(item.position);
+  const { aabb } = boundingBoxForItem(item);
+
+  if (aabb === undefined) {
+    throw new Error(
+      `item type= ${item.type} config=${JSON.stringify(item.config)} has no bounding box`,
+    );
   }
 
   // 'extra' walls don't get centred on their square (it needs to stay on the edge between
@@ -22,16 +37,12 @@ const positionAndAabb = (
   const centredPosition =
     item.type === "wall" ?
       blockPosition
-    : addXy(blockPosition, {
+    : addXyz(blockPosition, {
         x: (blockSizePx.w - aabb.x) / 2,
         y: (blockSizePx.d - aabb.y) / 2,
       });
 
-  return {
-    position: { ...centredPosition, z: blockPosition.z },
-    aabb,
-    renderAabb,
-  };
+  return centredPosition;
 };
 
 export function* loadItem<RoomId extends string>(
@@ -48,6 +59,7 @@ export function* loadItem<RoomId extends string>(
           type: "head",
           config: {},
           ...defaultItemProperties,
+          ...boundingBoxes(jsonItem),
           ...{
             id: "head",
             state: {
@@ -64,8 +76,8 @@ export function* loadItem<RoomId extends string>(
               donuts: 0,
               autoWalkDistance: 0,
               teleporting: null,
+              position: positionCentredInBlock(jsonItem),
             },
-            ...positionAndAabb(jsonItem),
             falls: true,
           },
         };
@@ -74,6 +86,7 @@ export function* loadItem<RoomId extends string>(
           type: "heels",
           config: {},
           ...defaultItemProperties,
+          ...boundingBoxes(jsonItem),
           ...{
             id: "heels",
             state: {
@@ -90,8 +103,8 @@ export function* loadItem<RoomId extends string>(
               autoWalkDistance: 0,
               jumped: false,
               teleporting: null,
+              position: positionCentredInBlock(jsonItem),
             },
-            ...positionAndAabb(jsonItem),
             falls: true,
           },
         };
@@ -107,14 +120,15 @@ export function* loadItem<RoomId extends string>(
       yield {
         ...jsonItem,
         ...defaultItemProperties,
+        ...boundingBoxes(jsonItem),
         ...{
           id,
           renderingDirty: false,
           renderPositionDirty: false,
           state: {
             standingOn: null,
+            position: positionCentredInBlock(jsonItem),
           },
-          ...positionAndAabb(jsonItem),
           falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
         },
       };
@@ -125,14 +139,15 @@ export function* loadItem<RoomId extends string>(
       yield {
         ...jsonItem,
         ...defaultItemProperties,
+        ...boundingBoxes(jsonItem),
         ...{
           id,
           renderingDirty: false,
           renderPositionDirty: false,
           state: {
             flashing: false,
+            position: positionCentredInBlock(jsonItem),
           },
-          ...positionAndAabb(jsonItem),
           falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
         },
       };
@@ -143,12 +158,14 @@ export function* loadItem<RoomId extends string>(
       yield {
         ...jsonItem,
         ...defaultItemProperties,
+        ...boundingBoxes(jsonItem),
         ...{
           id,
           renderingDirty: false,
           renderPositionDirty: false,
-          state: {},
-          ...positionAndAabb(jsonItem),
+          state: {
+            position: positionCentredInBlock(jsonItem),
+          },
           falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),
         },
       };

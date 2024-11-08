@@ -30,7 +30,10 @@ export const protectAgainstIntersecting = (
      * @param collisionItem the item collided with
      * @returns
      */
-    (acPos: Xyz, { position: posC, aabb: cbb }: UnknownItemInPlay) => {
+    (
+      posAc: Xyz,
+      { state: { position: posC }, aabb: bbC }: UnknownItemInPlay,
+    ) => {
       // roll back acPos to just prior to the collision in each axis:
       return axesXyz.reduce<Xyz>((ac: Xyz, axis: AxisXyz) => {
         if (xyzDelta[axis] !== 0) {
@@ -41,14 +44,14 @@ export const protectAgainstIntersecting = (
 
           if (xyzDelta[axis] > 0) {
             // moving positive (left/away/up)
-            const minAC = Math.min(aC, aC + cbb[axis]);
+            const minAC = Math.min(aC, aC + bbC[axis]);
             return {
               ...ac,
               [axis]: minAC - item.aabb[axis],
             };
           } else {
             // moving negative (right/towards/down)
-            const maxAC = Math.max(aC, aC + cbb[axis]);
+            const maxAC = Math.max(aC, aC + bbC[axis]);
             return {
               ...ac,
               [axis]: maxAC,
@@ -56,7 +59,7 @@ export const protectAgainstIntersecting = (
           }
         }
         return ac;
-      }, acPos);
+      }, posAc);
     },
     targetPosition,
   );
@@ -74,19 +77,16 @@ export const moveItem = <RoomId extends string>(
   item: UnknownItemInPlay,
   xyzDelta: Partial<Xyz>,
   gameState: GameState<RoomId>,
-  /**
-   * for no collision detection, provide an empty array
-   * TODO: could this be derived from the xyzDelta !== 0 in the axis?
-   */
-  collisionAxes: AxisXyz[] = ["x", "y", "z"],
 ) => {
   const room = currentRoom(gameState);
-  const targetPosition = addXyz(item.position, xyzDelta);
+  const {
+    state: { position: previousPosition },
+  } = item;
+  const targetPosition = addXyz(previousPosition, xyzDelta);
 
   const collisions = collision1toMany(
-    { aabb: item.aabb, position: targetPosition, id: item.id },
+    { aabb: item.aabb, state: { position: targetPosition }, id: item.id },
     room.items,
-    collisionAxes,
   );
 
   const { nonIntersect, portal, deadly, pickup } = Object.groupBy(
@@ -102,11 +102,12 @@ export const moveItem = <RoomId extends string>(
       changeCharacterRoom(
         gameState,
         firstPortal.config.toRoom,
-        subXyz(item.position, firstPortal.config.relativePoint),
+        subXyz(previousPosition, firstPortal.config.relativePoint),
       );
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
+      // TODO: maybe this should be side-effect free
       item.state.autoWalkDistance = blockSizePx.w * 0.75;
       return;
     }
@@ -128,8 +129,8 @@ export const moveItem = <RoomId extends string>(
     nonIntersect || [],
   );
 
-  if (!xyzEqual(correctedPosition, item.position)) {
-    item.position = correctedPosition;
+  if (!xyzEqual(correctedPosition, previousPosition)) {
+    item.state.position = correctedPosition;
     item.renderPositionDirty = true;
   }
 };
