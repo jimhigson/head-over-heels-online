@@ -3,6 +3,7 @@ import { jumpSpeedPixPerMs, playerJumpHeight } from "../mechanicsConstants";
 import { MechanicResult } from "../MechanicResult";
 import { InputState } from "../../input/InputState";
 import { CharacterName } from "@/model/modelTypes";
+import { roundWithError } from "../../../utils/roundWithError";
 
 export const jumping = (
   characterItem: PlayableItem,
@@ -40,14 +41,15 @@ export const jumping = (
     zMovementCeiling,
   );
 
-  const zMovementInt = Math.round(zMovementFloat);
-  const zRoundingError = zMovementFloat - zMovementInt;
+  const { valueInt: zMovementInt, roundingError } =
+    roundWithError(zMovementFloat);
 
   console.log(
+    "jumping",
     "float",
     zMovementFloat,
     "error",
-    zRoundingError,
+    roundingError,
     "rounded",
     zMovementInt,
   );
@@ -60,14 +62,14 @@ export const jumping = (
           // whatever we were standing on, we aren't any more:
           standingOn: null,
           jumpRemaining: playerJumpHeight[type],
-          jumpRoundingError: zRoundingError,
+          jumpRoundingError: roundingError,
           jumped: true,
         }
         // jumping, but not starting a jump
       : {
           movement: "moving",
           jumpRemaining: Math.max(jumpRemaining - zMovementInt, 0),
-          jumpRoundingError: zRoundingError,
+          jumpRoundingError: roundingError,
         },
     positionDelta: { z: zMovementInt },
   };

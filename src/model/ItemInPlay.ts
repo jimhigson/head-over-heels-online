@@ -16,6 +16,7 @@ export type ItemInPlayType =
 type FallingItemState = {
   /* null meaning we know item is not standing on anything (ie, should fall) */
   standingOn: UnknownItemInPlay | null;
+  fallRoundingError: number;
 };
 
 export type CharacterState = FallingItemState & {

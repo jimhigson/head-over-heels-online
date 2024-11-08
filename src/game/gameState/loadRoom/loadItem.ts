@@ -77,6 +77,7 @@ export function* loadItem<RoomId extends string>(
               autoWalkDistance: 0,
               teleporting: null,
               position: positionCentredInBlock(jsonItem),
+              fallRoundingError: 0,
             },
             falls: true,
           },
@@ -104,6 +105,7 @@ export function* loadItem<RoomId extends string>(
               jumped: false,
               teleporting: null,
               position: positionCentredInBlock(jsonItem),
+              fallRoundingError: 0,
             },
             falls: true,
           },
@@ -127,6 +129,7 @@ export function* loadItem<RoomId extends string>(
           renderPositionDirty: false,
           state: {
             standingOn: null,
+            fallRoundingError: 0,
             position: positionCentredInBlock(jsonItem),
           },
           falls: (fallingItemTypes as ItemType[]).includes(jsonItem.type),

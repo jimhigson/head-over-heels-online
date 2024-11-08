@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "Aabb",
+    "autowalking",
     "blacktooth",
     "bookworld",
     "canonicalize",
@@ -27,6 +28,7 @@
     "swop",
     "teleporter",
     "toposort",
+    "Typesafe",
     "uncollisionable",
     "xyzs"
   ],

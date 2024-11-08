@@ -8,6 +8,7 @@ import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { fallSpeedPixPerMs } from "../mechanicsConstants";
+import { roundWithError } from "@/utils/roundWithError";
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -30,8 +31,12 @@ export const fallingAndLanding = (
   }
 
   const fallSpeed = fallSpeedPixPerMs[item.type === "head" ? "head" : "others"];
+  const zMovementFloat = fallSpeed * deltaMS + item.state.fallRoundingError;
 
-  const fallVector = scaleXyz(unitVectors.down, fallSpeed * deltaMS);
+  const { valueInt: zMovementInt, roundingError } =
+    roundWithError(zMovementFloat);
+
+  const fallVector = scaleXyz(unitVectors.down, zMovementInt);
 
   const collisions = collision1toMany(
     {
@@ -40,45 +45,40 @@ export const fallingAndLanding = (
       state: { position: addXyz(item.state.position, fallVector) },
     },
     room.items,
-    //["z"], // collide only in z axis:
   );
 
   const standingOn = collisions.at(0);
+  const haveLanded = standingOn !== undefined;
 
-  /**
-   * TODO: for heels there is mandatory moving-forward at normal walking speed if falling
-   * from a jump, but not if falling from a step-off. Move side-ways movement while falling
-   * into here, and walking.ts should only be when on a surface.
-   */
+  console.log(
+    "falling",
+    "float",
+    zMovementFloat,
+    "error",
+    roundingError,
+    "rounded",
+    zMovementInt,
+  );
 
   return {
     positionDelta: fallVector,
     stateDelta: {
-      standingOn:
-        standingOn === undefined ?
-          // we are in the air
-          null
-          // the landing case
-        : standingOn,
-      movement: item.type === "head" ? "falling" : undefined,
-      ...(standingOn !== undefined ? { jumped: false } : {}),
+      ...(haveLanded ?
+        // the landing case
+        {
+          // we are standing on something so if we were falling from a jump, that jump is over:
+          jumped: false,
+          // if we are landed, the accumulated error from falling can be reset
+          fallRoundingError: 0,
+          standingOn,
+        }
+        // we are in the air and falling:
+      : {
+          fallRoundingError: roundingError,
+          standingOn: null,
+          // only head has a falling sprite (heels doesn't)
+          ...(item.type === "head" ? { movement: "falling" } : {}),
+        }),
     },
   };
 };
-
-/*
-export const landing = (
-  // we need item type
-  item: Extract<UnknownItemInPlay, { type: FallingItemTypes }>,
-  room: UnknownRoomState,
-  deltaMS: number,
-): MechanicResult<FallingItemTypes> => {
-  const collisions = collision1toMany(
-    { ...item, position: addXyz(item.position, fallVector) },
-    room.items,
-    //["z"], // collide only in z axis:
-  );
-
-  const standingOn = collisions.at(0);
-};
-*/
