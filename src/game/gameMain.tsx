@@ -8,7 +8,7 @@ import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
 import { RenderOptions } from "./RenderOptions";
-import { mainLoop } from "./physics/mainLoop";
+import { mainLoop } from "./mainLoop/mainLoop";
 import { ApiEvents, GameApi } from "./GameApi";
 
 /**
