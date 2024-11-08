@@ -1497,6 +1497,11 @@ export const campaign = {
           position: { x: 5, y: 0, z: 7 },
           type: "pickup",
         },
+        "pickupTemp": {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 5, z: 7 },
+          type: "pickup",
+        },
         "teleporter@5,7,0:Z12mRwL": {
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },

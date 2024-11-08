@@ -2,6 +2,7 @@ import {
   FallingItemTypes,
   isPlayableItem,
   ItemInPlay,
+  OnTouch,
 } from "@/model/ItemInPlay";
 import { UnknownRoomState } from "@/model/modelTypes";
 import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
@@ -10,6 +11,7 @@ import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { fallSpeedPixPerMs } from "../mechanicsConstants";
 import { roundWithError } from "@/utils/roundWithError";
 
+const onTouchCanLandOn: Readonly<OnTouch[]> = ["nonIntersect", "push", "glide"];
 /**
  * handle *only* the vertical speed downwards, and recognising
  * when the fall is done
@@ -48,7 +50,8 @@ export const fallingAndLanding = (
   );
 
   const standingOn = collisions.at(0);
-  const haveLanded = standingOn !== undefined;
+  const haveLanded =
+    standingOn !== undefined && onTouchCanLandOn.includes(standingOn.onTouch);
 
   console.log(
     "falling",

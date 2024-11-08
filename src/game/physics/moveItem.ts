@@ -91,7 +91,7 @@ export const moveItem = <RoomId extends string>(
 
   const { nonIntersect, portal, deadly, pickup } = Object.groupBy(
     collisions,
-    (ci) => ci.onTouch,
+    (colItem) => colItem.onTouch,
   );
 
   if (isPlayableItem(item)) {

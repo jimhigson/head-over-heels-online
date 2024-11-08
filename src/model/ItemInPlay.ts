@@ -92,6 +92,14 @@ export type ItemState<T extends ItemInPlayType> = {
   position: Xyz;
 } & (T extends keyof ItemStateMap ? ItemStateMap[T] : EmptyObject);
 
+export type OnTouch =
+  | "nonIntersect"
+  | "deadly"
+  | "pickup"
+  | "portal"
+  | "push"
+  | "glide";
+
 export type ItemInPlay<
   T extends ItemInPlayType,
   //S extends ItemState<T> = ItemState<T>,
@@ -106,13 +114,7 @@ export type ItemInPlay<
   // position is now in the state:
   //position: Xyz;
 
-  readonly onTouch:
-    | "nonIntersect"
-    | "deadly"
-    | "pickup"
-    | "portal"
-    | "push"
-    | "glide";
+  readonly onTouch: OnTouch;
 
   readonly id: string;
   state: ItemState<T>;
