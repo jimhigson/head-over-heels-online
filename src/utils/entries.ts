@@ -3,6 +3,14 @@ export type ObjectKeys = <K extends keyof any>(
   o: Partial<Record<K, unknown>>,
 ) => K[];
 
+export type EntriesOf<O extends object> =
+  /*O extends Record<infer K, infer V> ? Array<[K, V]>
+  : */ Array<
+    {
+      [K in keyof O]: [K, O[K]];
+    }[keyof O]
+  >;
+
 export type ObjectEntries = <K extends keyof any, V>(
   o: Record<K, V>,
 ) => [K, V][];

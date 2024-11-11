@@ -1,4 +1,4 @@
-import { UnknownJsonItem } from "../model/Item";
+import type { UnknownJsonItem } from "../model/JsonItem";
 import shortHash from "shorthash2";
 import { canonicalize } from "json-canonicalize";
 

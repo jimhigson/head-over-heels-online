@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GameApi } from "../GameApi";
+import type { GameApi } from "../GameApi";
 
 export const useCurrentlyViewedRoom = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,

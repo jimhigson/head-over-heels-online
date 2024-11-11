@@ -1,7 +1,8 @@
-import { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import { ColorSource, Container, Graphics } from "pixi.js";
+import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import type { ColorSource } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
-import { Aabb } from "@/utils/vectors";
+import type { Aabb } from "@/utils/vectors";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
   return (

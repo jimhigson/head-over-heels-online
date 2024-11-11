@@ -1,13 +1,26 @@
-import { Application, Container, Ticker } from "pixi.js";
-import { currentRoom, GameState } from "../gameState/GameState";
+import type { Application, Container, Ticker } from "pixi.js";
+import type { GameState } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
 import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
 import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
-import { PlanetName } from "@/sprites/planets";
-import { RoomState } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
+import type { RoomState } from "@/model/modelTypes";
 import { renderRoom } from "../render/renderRoom";
-import { RenderOptions } from "../RenderOptions";
+import type { RenderOptions } from "../RenderOptions";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { tickItem } from "./tickItem";
+import { objectValues } from "iter-tools";
+
+export const progressGameStateForTick = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+) => {
+  const room = currentRoom(gameState);
+
+  for (const item of objectValues(room.items)) {
+    tickItem(item, gameState, deltaMS);
+  }
+};
 
 export const mainLoop = <RoomId extends string>(
   app: Application,
@@ -20,7 +33,6 @@ export const mainLoop = <RoomId extends string>(
   let lastRenderOptions: RenderOptions<RoomId> | undefined = undefined;
 
   const handleTick = ({ deltaMS }: Ticker) => {
-    //console.time("tick");
     const { inputState } = gameState;
 
     if (inputState.swop) {
@@ -55,13 +67,13 @@ export const mainLoop = <RoomId extends string>(
       lastRenderOptions = gameState.renderOptions;
     }
 
+    progressGameStateForTick(gameState, deltaMS);
+
     // re-sort the room's items:
     const { items } = room;
     let sortDirty = false;
 
-    for (const item of items) {
-      tickItem(item, gameState, deltaMS);
-
+    for (const item of objectValues(items)) {
       if (item.renderPositionDirty) {
         moveSpriteToItemProjection(item);
         item.renderPositionDirty = false;
@@ -73,7 +85,7 @@ export const mainLoop = <RoomId extends string>(
       }
     }
     if (sortDirty) {
-      sortItemsByDrawOrder(room.items);
+      sortItemsByDrawOrder(objectValues(room.items));
     }
     //console.timeEnd("tick");
   };

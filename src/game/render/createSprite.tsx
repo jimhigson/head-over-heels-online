@@ -1,5 +1,7 @@
-import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
-import { spriteSheet, TextureId } from "../../sprites/spriteSheet";
+import type { PointData, Texture } from "pixi.js";
+import { AnimatedSprite, Sprite } from "pixi.js";
+import type { TextureId } from "../../sprites/spriteSheet";
+import { spriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "@/originalGame";
 
 type AnimatedCreateSpriteOptions = {
@@ -15,6 +17,11 @@ type AnimatedCreateSpriteOptions = {
   frames: Texture[];
   x?: number;
   y?: number;
+  /**
+   * If true, will play once and vanish. Otherwise, (by default) will loop
+   * indefinitely
+   */
+  playOnce?: boolean;
 };
 
 export type CreateSpriteOptions =
@@ -37,6 +44,13 @@ const isAnimatedOptions = (
 ): options is AnimatedCreateSpriteOptions =>
   typeof options !== "string" && Object.hasOwn(options, "frames");
 
+/**
+  default animation speed is one frame of animation per twp
+  original game frames (ie, 12.5 fps) - this is the rate most original game animations
+  seem to run at
+*/
+const defaultAnimationSpeed = 0.5;
+
 /** utility for creating a sprite while setting several properties on it */
 export const createSprite = (options: CreateSpriteOptions): Sprite => {
   if (typeof options === "string") {
@@ -48,16 +62,7 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     let sprite: Sprite;
 
     if (isAnimatedOptions(options)) {
-      sprite = new AnimatedSprite(
-        options.frames.map((frame) => ({
-          texture: frame,
-          time: originalGameFrameDuration,
-        })),
-      );
-      // default animation speed is one frame of animation per twp
-      // original game frames (ie, 12.5 fps)
-      (sprite as AnimatedSprite).animationSpeed = options.animationSpeed || 0.5;
-      (sprite as AnimatedSprite).play();
+      sprite = createAnimatedSprite(options);
     } else {
       sprite = new Sprite(spriteSheet.textures[options.texture]);
     }
@@ -85,3 +90,23 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     return sprite;
   }
 };
+function createAnimatedSprite(options: AnimatedCreateSpriteOptions) {
+  const animatedSprite = new AnimatedSprite(
+    options.frames.map((frame) => ({
+      texture: frame,
+      time: originalGameFrameDuration,
+    })),
+  );
+
+  animatedSprite.animationSpeed =
+    options.animationSpeed || defaultAnimationSpeed;
+  animatedSprite.play();
+  if (options.playOnce) {
+    animatedSprite.loop = false;
+    animatedSprite.onComplete = () => {
+      animatedSprite.stop();
+      animatedSprite.visible = false;
+    };
+  }
+  return animatedSprite;
+}

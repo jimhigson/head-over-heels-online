@@ -1,9 +1,9 @@
-import { JsonItem } from "@/model/Item";
+import type { JsonItem } from "@/model/JsonItem";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { PlanetName } from "@/sprites/planets";
-import { PlayableItem } from "@/model/ItemInPlay";
+import type { PlanetName } from "@/sprites/planets";
+import type { PlayableItem } from "@/model/ItemInPlay";
 
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", PlanetName, RoomId>,

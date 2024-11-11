@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import { expectTypeOf } from "vitest";
-import { ItemInPlay, PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
-import { Direction } from "@/utils/vectors";
+import type { ItemInPlay, PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
+import type { Direction } from "@/utils/vectors";
 
 test("heads and heels have the right state", () => {
   expectTypeOf<ItemInPlay<"head">["state"]>().toMatchTypeOf<{

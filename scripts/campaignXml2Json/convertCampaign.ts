@@ -1,21 +1,21 @@
+import type { Xml2JsonRoom, XmlFloorKind } from "./readToJson";
 import {
   readMapToJson,
   readRoomToJson,
-  Xml2JsonRoom,
   roomNameFromXmlFilename,
-  XmlFloorKind,
 } from "./readToJson";
 import { readdir } from "node:fs/promises";
-import { ZxSpectrumRoomColour } from "../../src/originalGame";
+import type { ZxSpectrumRoomColour } from "../../src/originalGame";
 import { convertItems } from "./convertItems";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWalls } from "./convertWalls";
-import { SidesWithDoors, xmlRoomSidesWithDoors } from "./convertDoors";
-import { Direction } from "../../src/utils/vectors";
-import { AnyRoomJson, Floor } from "../../src/model/modelTypes";
+import type { SidesWithDoors } from "./convertDoors";
+import { xmlRoomSidesWithDoors } from "./convertDoors";
+import type { Direction } from "../../src/utils/vectors";
+import type { AnyRoomJson, Floor } from "../../src/model/modelTypes";
 
 export const map = await readMapToJson();
 

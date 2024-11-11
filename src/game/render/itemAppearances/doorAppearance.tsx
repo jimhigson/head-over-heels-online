@@ -1,4 +1,4 @@
-import { UnknownRoomState } from "@/model/modelTypes";
+import type { UnknownRoomState } from "@/model/modelTypes";
 import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 
 export const doorTexture = (
@@ -7,9 +7,8 @@ export const doorTexture = (
   nearness: "near" | "far",
 ): TextureId => {
   const worldSpecificTexture =
-    spriteSheet.textures[
-      `${room.planet}.door.front.${axis}` as TextureId
-    ] !== undefined;
+    spriteSheet.textures[`${room.planet}.door.front.${axis}` as TextureId] !==
+    undefined;
 
   if (nearness == "near") {
     return (

@@ -1,10 +1,12 @@
-import { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
-import { GameState } from "@/game/gameState/GameState";
-import { PlanetName } from "@/sprites/planets";
+import type { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
+import type { GameState } from "@/game/gameState/GameState";
+import type { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
-import { RenderOptions } from "../RenderOptions";
+import type { RenderOptions } from "../RenderOptions";
+import mitt from "mitt";
+import type { ApiEvents } from "../GameApi";
 
 type StartingRooms<RoomId extends string> = Record<CharacterName, RoomId>;
 
@@ -39,7 +41,6 @@ const startingRooms = <RoomId extends string>(
 export const initGameState = <RoomId extends string>(
   campaign: Campaign<RoomId>,
   renderOptions: RenderOptions<RoomId>,
-  events: GameState<RoomId>["events"],
 ): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -56,6 +57,6 @@ export const initGameState = <RoomId extends string>(
     inputState: fromAllEntries(actions.map((action) => [action, false])),
     renderOptions,
     campaign,
-    events,
+    events: mitt<ApiEvents<RoomId>>(),
   };
 };

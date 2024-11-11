@@ -1,6 +1,6 @@
-import { RoomState, UnknownRoomState } from "@/model/modelTypes";
-import { PlanetName } from "@/sprites/planets";
-import { RenderOptions } from "../RenderOptions";
+import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
+import type { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./paletteSwapFilters";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
@@ -8,6 +8,7 @@ import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
 import { renderExtent } from "./renderExtent";
 import { moveSpriteToItemProjection, renderItem } from "./renderItems";
 import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
+import { objectValues } from "iter-tools";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -34,7 +35,7 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
 
   const itemsContainer = new Container();
 
-  for (const item of room.items) {
+  for (const item of objectValues(room.items)) {
     const { renders } = item;
 
     if (renders) {
@@ -75,7 +76,7 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
     }
   }
 
-  sortItemsByDrawOrder(room.items);
+  sortItemsByDrawOrder(objectValues(room.items));
 
   roomContainer.addChild(itemsContainer);
 

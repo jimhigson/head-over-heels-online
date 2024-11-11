@@ -1,14 +1,15 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { drawOrderComparator } from "../render/zComparator";
 import toposort from "toposort";
 
-export const sortItemsByDrawOrder = (items: UnknownItemInPlay[]) => {
+export const sortItemsByDrawOrder = (items: Iterable<UnknownItemInPlay>) => {
   // TODO: filter items to just renderable first, then put non-renderables at the end
   // TODO: only revaluate items that have moved (if we keep the inFrontOfPairs from the last frame)
   //  - but only if this optimisation helps
 
   const isBehindPairs: [UnknownItemInPlay, UnknownItemInPlay][] = [];
 
+  // TODO: rewrite as a generator
   for (const itemI of items) {
     if (!itemI.renders) {
       continue;

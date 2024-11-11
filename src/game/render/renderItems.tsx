@@ -1,12 +1,14 @@
-import {
+import type {
   AnyItemInPlay,
-  assertItemHasPositionContainer,
-  assertItemHasRenderContainer,
   ItemInPlay,
   ItemInPlayType,
 } from "@/model/ItemInPlay";
+import {
+  assertItemHasPositionContainer,
+  assertItemHasRenderContainer,
+} from "@/model/ItemInPlay";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
-import { UnknownRoomState } from "@/model/modelTypes";
+import type { UnknownRoomState } from "@/model/modelTypes";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 
 /** render an item inside the container it was previously assigned */

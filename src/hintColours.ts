@@ -1,5 +1,5 @@
 import { Color } from "pixi.js";
-import { ZxSpectrumRoomColour } from "./originalGame";
+import type { ZxSpectrumRoomColour } from "./originalGame";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/

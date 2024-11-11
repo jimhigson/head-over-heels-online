@@ -1,4 +1,4 @@
-import { SpritesheetFrameData } from "pixi.js";
+import type { SpritesheetFrameData } from "pixi.js";
 
 /**
  * Add some extra type safety to pixi's spritesheets by forcing animation

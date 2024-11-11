@@ -1,8 +1,8 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { RoomJson } from "@/model/modelTypes";
-import { blockSizePx } from "@/sprites/spriteSheet";
-import { PlanetName } from "@/sprites/planets";
+import type { RoomJson } from "@/model/modelTypes";
+import { blockSizePx } from "@/sprites/spritePivots";
+import type { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {
   xAxisWallAabb,

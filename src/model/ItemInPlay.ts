@@ -1,8 +1,8 @@
-import { PlanetName } from "../sprites/planets";
-import { Aabb, Direction, Xyz } from "../utils/vectors";
-import { ItemConfig, ItemType } from "./Item";
-import { Container } from "pixi.js";
-import { SetRequired } from "type-fest";
+import type { PlanetName } from "../sprites/planets";
+import type { Aabb, Direction, Xyz } from "../utils/vectors";
+import type { ItemConfig, ItemType } from "./JsonItem";
+import type { Container } from "pixi.js";
+import type { SetRequired } from "type-fest";
 
 export type ItemInPlayType =
   | Exclude<ItemType, "player" | "door">
@@ -80,7 +80,7 @@ export type ItemStateMap = {
   "portable-block": FallingItemState;
   baddie: FallingItemState;
   spring: FallingItemState;
-  pickup: FallingItemState;
+  pickup: FallingItemState & { collected: boolean };
 };
 
 // type-fest's EmptyObject was creating issues
@@ -105,6 +105,7 @@ export type ItemInPlay<
   //S extends ItemState<T> = ItemState<T>,
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
+  ID extends string = string,
 > = {
   type: T;
 
@@ -116,7 +117,7 @@ export type ItemInPlay<
 
   readonly onTouch: OnTouch;
 
-  readonly id: string;
+  readonly id: ID;
   state: ItemState<T>;
 
   /**
@@ -145,8 +146,8 @@ export type ItemInPlay<
 };
 
 export type PlayableItem<RoomId extends string = string> =
-  | ItemInPlay<"head", PlanetName, RoomId>
-  | ItemInPlay<"heels", PlanetName, RoomId>;
+  | ItemInPlay<"head", PlanetName, RoomId, "head">
+  | ItemInPlay<"heels", PlanetName, RoomId, "heels">;
 
 export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
   return item.type === "head" || item.type === "heels";

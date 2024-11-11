@@ -1,8 +1,8 @@
-import { Campaign, RoomState } from "@/model/modelTypes";
-import { PlanetName } from "@/sprites/planets";
-import { Emitter } from "mitt";
-import { GameState } from "./gameState/GameState";
-import { RenderOptions } from "./RenderOptions";
+import type { Campaign, RoomState } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
+import type { Emitter } from "mitt";
+import type { GameState } from "./gameState/GameState";
+import type { RenderOptions } from "./RenderOptions";
 
 export type ApiEvents<RoomId extends string> = {
   roomChange: RoomId;

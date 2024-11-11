@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { GameApi } from "../GameApi";
+import type { GameApi } from "../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 
 export type RoomSelectProps<RoomId extends string> = {

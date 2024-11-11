@@ -17,6 +17,7 @@
     "fallable",
     "freeitem",
     "griditem",
+    "immer",
     "moonbase",
     "pixi",
     "pointertap",

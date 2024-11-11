@@ -1,8 +1,8 @@
-import { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "@/model/ItemInPlay";
 import { jumpSpeedPixPerMs, playerJumpHeight } from "../mechanicsConstants";
-import { MechanicResult } from "../MechanicResult";
-import { InputState } from "../../input/InputState";
-import { CharacterName } from "@/model/modelTypes";
+import type { MechanicResult } from "../MechanicResult";
+import type { InputState } from "../../input/InputState";
+import type { CharacterName } from "@/model/modelTypes";
 import { roundWithError } from "../../../utils/roundWithError";
 
 export const jumping = (
@@ -44,6 +44,7 @@ export const jumping = (
   const { valueInt: zMovementInt, roundingError } =
     roundWithError(zMovementFloat);
 
+  /*
   console.log(
     "jumping",
     "float",
@@ -53,6 +54,7 @@ export const jumping = (
     "rounded",
     zMovementInt,
   );
+  */
 
   return {
     stateDelta:

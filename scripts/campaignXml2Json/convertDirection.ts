@@ -1,5 +1,5 @@
-import { Direction } from "../../src/utils/vectors";
-import { CompassDirections } from "./readToJson";
+import type { Direction } from "../../src/utils/vectors";
+import type { CompassDirections } from "./readToJson";
 
 export const convertDirection = (
   compassDirection: CompassDirections,

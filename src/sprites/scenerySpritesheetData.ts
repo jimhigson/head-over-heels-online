@@ -1,6 +1,7 @@
-import { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-import { AnimationsOfFrames } from "./AnimationsOfFrames";
-import { PlanetName, Wall, planets } from "./planets";
+import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
+import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type { PlanetName, Wall } from "./planets";
+import { planets } from "./planets";
 import { wallTileSize, floorTileSize } from "./textureSizes";
 
 export type WallTextureId<PS extends PlanetName> = {

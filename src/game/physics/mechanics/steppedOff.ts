@@ -1,5 +1,6 @@
-import { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
-import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import type { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
+import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult } from "../MechanicResult";
 import { originXyz } from "@/utils/vectors";
 
 /**

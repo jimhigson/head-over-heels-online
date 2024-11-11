@@ -1,15 +1,13 @@
-import {
-  FallingItemTypes,
-  isPlayableItem,
-  ItemInPlay,
-  OnTouch,
-} from "@/model/ItemInPlay";
-import { UnknownRoomState } from "@/model/modelTypes";
+import type { FallingItemTypes, ItemInPlay, OnTouch } from "@/model/ItemInPlay";
+import { isPlayableItem } from "@/model/ItemInPlay";
+import type { UnknownRoomState } from "@/model/modelTypes";
 import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult } from "../MechanicResult";
 import { fallSpeedPixPerMs } from "../mechanicsConstants";
 import { roundWithError } from "@/utils/roundWithError";
+import { first, objectValues } from "iter-tools";
 
 const onTouchCanLandOn: Readonly<OnTouch[]> = ["nonIntersect", "push", "glide"];
 /**
@@ -46,14 +44,14 @@ export const fallingAndLanding = (
       aabb: item.aabb,
       state: { position: addXyz(item.state.position, fallVector) },
     },
-    room.items,
+    objectValues(room.items),
   );
 
-  const standingOn = collisions.at(0);
+  const standingOn = first(collisions);
   const haveLanded =
     standingOn !== undefined && onTouchCanLandOn.includes(standingOn.onTouch);
 
-  console.log(
+  /*  console.log(
     "falling",
     "float",
     zMovementFloat,
@@ -61,7 +59,7 @@ export const fallingAndLanding = (
     roundingError,
     "rounded",
     zMovementInt,
-  );
+  ); */
 
   return {
     positionDelta: fallVector,

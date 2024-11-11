@@ -1,4 +1,4 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { addXyz, axesXyz } from "@/utils/vectors";
 import {
   projectWorldXyzToScreenXy,

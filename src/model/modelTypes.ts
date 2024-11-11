@@ -1,11 +1,11 @@
-import { ZxSpectrumRoomColour } from "../originalGame";
-import { SpritesheetFrameData } from "pixi.js";
-import { UnknownJsonItem } from "./Item";
-import { UnknownItemInPlay } from "./ItemInPlay";
-import { Simplify } from "type-fest";
-import { PlanetName, Wall } from "../sprites/planets";
-import { Xy } from "../utils/vectors";
-import { blockSizePx } from "../sprites/spriteSheet";
+import type { ZxSpectrumRoomColour } from "../originalGame";
+import type { SpritesheetFrameData } from "pixi.js";
+import type { UnknownJsonItem } from "./JsonItem";
+import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
+import type { Simplify } from "type-fest";
+import type { PlanetName, Wall } from "../sprites/planets";
+import type { Xy } from "../utils/vectors";
+import { blockSizePx } from "@/sprites/spritePivots";
 
 export type CharacterName = "head" | "heels";
 
@@ -52,13 +52,29 @@ export type RoomJson<P extends PlanetName, RoomId extends string> = {
 export type AnyRoomJson = RoomJson<PlanetName, string>;
 
 /**
+ * a map of items-in-play in a room
+ **/
+export type RoomStateItems<
+  P extends PlanetName,
+  RoomId extends string,
+  ItemId extends string = string,
+> = Record<ItemId, UnknownItemInPlay<RoomId>> & {
+  head?: ItemInPlay<"head", P, RoomId, "head">;
+  heels?: ItemInPlay<"heels", P, RoomId, "heels">;
+};
+
+/**
  * Representation of a room in-play. This is in memory only for the current
  * one or two rooms (that head and heels are in, but they could be in the same
  * room)
  */
-export type RoomState<P extends PlanetName, RoomId extends string> = Simplify<
+export type RoomState<
+  P extends PlanetName,
+  RoomId extends string,
+  ItemId extends string = string,
+> = Simplify<
   Omit<RoomJson<P, RoomId>, "items"> & {
-    items: Array<UnknownItemInPlay<RoomId>>;
+    items: RoomStateItems<P, RoomId, ItemId>;
   }
 >;
 export type UnknownRoomState = RoomState<PlanetName, string>;

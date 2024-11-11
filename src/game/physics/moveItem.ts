@@ -1,31 +1,29 @@
-import {
-  isPlayableItem,
+import type {
   ItemInPlay,
+  PlayableItem,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import {
-  AxisXyz,
-  Xyz,
-  addXyz,
-  axesXyz,
-  subXyz,
-  xyzEqual,
-} from "@/utils/vectors";
+import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
+import type { AxisXyz, Xyz } from "@/utils/vectors";
+import { addXyz, axesXyz, subXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
-import { currentRoom, GameState } from "../gameState/GameState";
+import type { GameState } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
-import { PlanetName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spriteSheet";
+import type { PlanetName } from "@/sprites/planets";
+import { blockSizePx } from "@/sprites/spritePivots";
+import { iterate } from "@/utils/iterate";
+import { objectValues } from "iter-tools";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
   xyzDelta: Partial<Xyz>,
   targetPosition: Xyz,
-  collisionsAtTargetPosition: UnknownItemInPlay[],
+  collisionsWithSolids: Iterable<UnknownItemInPlay>,
 ) => {
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
-  const correctedPosition = collisionsAtTargetPosition.reduce<Xyz>(
+  const correctedPosition = iterate(collisionsWithSolids).reduce<Xyz>(
     /**
      * @param collisionItem the item collided with
      * @returns
@@ -67,70 +65,125 @@ export const protectAgainstIntersecting = (
   return correctedPosition;
 };
 
+const handlePlayerTouchingPickup = (
+  player: PlayableItem,
+  pickup: ItemInPlay<"pickup">,
+) => {
+  if (pickup.state.collected) {
+    // ignore already picked up items
+    return;
+  }
+
+  pickup.state.collected = true;
+  pickup.renderingDirty = true;
+
+  switch (pickup.config.gives) {
+    case "extra-life":
+      player.state.lives += 2;
+  }
+};
+
+const handlePlayerTouchingPortal = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  player: PlayableItem,
+  portal: ItemInPlay<"portal", PlanetName, RoomId>,
+) => {
+  changeCharacterRoom(
+    gameState,
+    portal.config.toRoom,
+    subXyz(player.state.position, portal.config.relativePoint),
+  );
+  // automatically walk forward a short way in the new room to put character properly
+  // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
+  //  - only doors)
+  // TODO: maybe this should be side-effect free
+  player.state.autoWalkDistance = blockSizePx.w * 0.75;
+};
+
 /**
- *
- * @param item
+ * @param subjectItem the item that is wanting to move
  * @param xyzDelta
- * @param inRoom the room the item is moving in
  */
 export const moveItem = <RoomId extends string>(
-  item: UnknownItemInPlay,
+  subjectItem: UnknownItemInPlay,
   xyzDelta: Partial<Xyz>,
   gameState: GameState<RoomId>,
 ) => {
   const room = currentRoom(gameState);
   const {
     state: { position: previousPosition },
-  } = item;
+  } = subjectItem;
   const targetPosition = addXyz(previousPosition, xyzDelta);
 
   const collisions = collision1toMany(
-    { aabb: item.aabb, state: { position: targetPosition }, id: item.id },
-    room.items,
+    {
+      aabb: subjectItem.aabb,
+      state: { position: targetPosition },
+      id: subjectItem.id,
+    },
+    objectValues(room.items),
   );
 
-  const { nonIntersect, portal, deadly, pickup } = Object.groupBy(
-    collisions,
-    (colItem) => colItem.onTouch,
-  );
+  const solidItems =
+    collisions.filter(
+      (item) =>
+        item.type !== "portal" &&
+        // a collected pickup is just an animation out that should not be interacted with
+        !(item.type === "pickup" && item.state.collected) &&
+        !(item.type === "pickup" && isPlayableItem(subjectItem)) &&
+        !(subjectItem.type === "pickup" && isPlayableItem(item)),
+    ) || [];
 
-  if (isPlayableItem(item)) {
-    const firstPortal = portal?.at(0) as
-      | ItemInPlay<"portal", PlanetName, RoomId>
-      | undefined;
-    if (firstPortal !== undefined && item.state.autoWalkDistance === 0) {
-      changeCharacterRoom(
-        gameState,
-        firstPortal.config.toRoom,
-        subXyz(previousPosition, firstPortal.config.relativePoint),
-      );
-      // automatically walk forward a short way in the new room to put character properly
-      // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
-      //  - only doors)
-      // TODO: maybe this should be side-effect free
-      item.state.autoWalkDistance = blockSizePx.w * 0.75;
+  if (isPlayableItem(subjectItem)) {
+    const {
+      portal = [],
+      deadly = [],
+      pickup = [],
+    } = Object.groupBy(collisions, (colItem) => colItem.onTouch) as {
+      portal: Array<ItemInPlay<"portal", PlanetName, RoomId>>;
+      deadly: Array<
+        | ItemInPlay<"baddie", PlanetName, RoomId>
+        | ItemInPlay<"deadly-block", PlanetName, RoomId>
+      >;
+      pickup: Array<ItemInPlay<"pickup", PlanetName, RoomId>>;
+    };
+
+    const firstPortal = portal.at(0);
+    if (
+      firstPortal !== undefined &&
+      // don't use portals if autowalking - otherwise would flip right back to the previous room
+      subjectItem.state.autoWalkDistance === 0
+    ) {
+      handlePlayerTouchingPortal(gameState, subjectItem, firstPortal);
       return;
     }
 
-    if (deadly !== undefined && deadly.length > 0) {
+    if (deadly?.length) {
       console.log("LOSE a life");
     }
-    if (pickup !== undefined && pickup.length > 0) {
-      console.log("Got a bunny or something");
+    for (const p of pickup) {
+      handlePlayerTouchingPickup(subjectItem, p);
+    }
+  }
+
+  if (isItemType("pickup")(subjectItem)) {
+    const player = collisions.find(isPlayableItem);
+    if (player !== undefined) {
+      handlePlayerTouchingPickup(player, subjectItem);
     }
   }
 
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
   const correctedPosition = protectAgainstIntersecting(
-    item,
+    subjectItem,
     xyzDelta,
     targetPosition,
-    nonIntersect || [],
+    solidItems,
   );
 
   if (!xyzEqual(correctedPosition, previousPosition)) {
-    item.state.position = correctedPosition;
-    item.renderPositionDirty = true;
+    subjectItem.state.position = correctedPosition;
+    subjectItem.renderPositionDirty = true;
   }
 };

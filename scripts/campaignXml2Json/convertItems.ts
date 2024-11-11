@@ -1,6 +1,7 @@
 import { addXy, crossAxisXy } from "../../src/utils/vectors";
-import { PlanetName } from "../../src/sprites/planets";
-import { LooseDoorMap, convertXYZ, autoZ } from "./convertCampaign";
+import type { PlanetName } from "../../src/sprites/planets";
+import type { LooseDoorMap } from "./convertCampaign";
+import { convertXYZ, autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
@@ -9,11 +10,12 @@ import {
   isWallName,
   parseXmlWallName,
 } from "./convertWallName";
-import { MapJson, Xml2JsonRoom, roomNameFromXmlFilename } from "./readToJson";
+import type { MapJson, Xml2JsonRoom } from "./readToJson";
+import { roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
-import { Xml2JsonItem } from "./Xml2JsonItem";
+import type { Xml2JsonItem } from "./Xml2JsonItem";
 import { keyItems } from "../../src/utils/keyItems";
-import { ItemConfigMap, UnknownJsonItem } from "../../src/model/Item";
+import type { ItemConfigMap, UnknownJsonItem } from "../../src/model/Item";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",

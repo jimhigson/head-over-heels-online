@@ -1,7 +1,7 @@
-import { PlayableItem } from "@/model/ItemInPlay";
-import { MechanicResult } from "../MechanicResult";
-import { CharacterName } from "@/model/modelTypes";
-import { GameState } from "@/game/gameState/GameState";
+import type { PlayableItem } from "@/model/ItemInPlay";
+import type { MechanicResult } from "../MechanicResult";
+import type { CharacterName } from "@/model/modelTypes";
+import type { GameState } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "@/game/gameState/changeCharacterRoom";
 import { teleportTime } from "../mechanicsConstants";
 

@@ -1,16 +1,15 @@
 import { Container } from "pixi.js";
-import { ItemConfigMap } from "../../../model/Item";
-import {
-  barrierPivot,
-  spriteSheet,
-  TextureId,
-} from "../../../sprites/spriteSheet";
-import { createSprite, CreateSpriteOptions } from "../createSprite";
-import { UnknownRoomState } from "../../../model/modelTypes";
+import type { ItemConfigMap } from "../../../model/JsonItem";
+import type { TextureId } from "../../../sprites/spriteSheet";
+import { spriteSheet } from "../../../sprites/spriteSheet";
+import { barrierPivot } from "@/sprites/spritePivots";
+import type { CreateSpriteOptions } from "../createSprite";
+import { createSprite } from "../createSprite";
+import type { UnknownRoomState } from "../../../model/modelTypes";
 import { wallTextureId } from "../wallTextureId";
-import { PlanetName } from "../../../sprites/planets";
+import type { PlanetName } from "../../../sprites/planets";
 import { renderDoorPart } from "../../../renderDoorPart";
-import { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playerAppearance } from "./playerAppearance";
 
 // how an item is rendered
@@ -87,7 +86,7 @@ export const itemAppearances: {
     createSprite(
       direction === "left" || direction === "right" ?
         "conveyor.x"
-      : "conveyor.y",
+        : "conveyor.y",
     ),
 
   fish: ({ config: { alive } }) =>
@@ -97,7 +96,7 @@ export const itemAppearances: {
           frames: spriteSheet.animations.fish,
           animationSpeed: 0.25,
         }
-      : {
+        : {
           texture: "fish.1",
         },
     ),
@@ -123,9 +122,21 @@ export const itemAppearances: {
       createSprite({
         frames: spriteSheet.animations["teleporter.flashing"],
       })
-    : createSprite("teleporter"),
+      : createSprite("teleporter"),
 
-  pickup({ config: { gives } }) {
+  pickup({ config: { gives }, state: { collected } }) {
+    if (collected) {
+      return createSprite({
+        frames: spriteSheet.animations["bubbles.pickup"],
+
+        // TODO: (1) onTouch: "pickup" items should (for zOrder sorting) be ordered according to
+        // x+y+z for any item that intersects them (usually the player)
+
+        // TODO: (2) implement playOnce for createSprite
+        playOnce: true,
+      });
+    }
+
     const pickupIcons: Record<
       ItemConfigMap<PlanetName, string>["pickup"]["gives"],
       TextureId

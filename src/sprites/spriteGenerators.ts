@@ -1,6 +1,6 @@
-import { SpriteSize } from "@/model/modelTypes";
-import { Direction, Xy } from "@/utils/vectors";
-import { SpritesheetFrameData } from "pixi.js";
+import type { SpriteSize } from "@/model/modelTypes";
+import type { Direction, Xy } from "@/utils/vectors";
+import type { SpritesheetFrameData } from "pixi.js";
 
 type DirectionalTexture<TName extends string> = `${TName}.${Direction}`;
 export const fourDirections = <TName extends string>(

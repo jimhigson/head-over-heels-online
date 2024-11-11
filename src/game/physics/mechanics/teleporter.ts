@@ -1,8 +1,8 @@
-import { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
-import { MechanicResult } from "../MechanicResult";
-import { UnknownRoomState } from "@/model/modelTypes";
-import { GameState } from "@/game/gameState/GameState";
-import { PlanetName } from "@/sprites/planets";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { MechanicResult } from "../MechanicResult";
+import type { UnknownRoomState } from "@/model/modelTypes";
+import type { GameState } from "@/game/gameState/GameState";
+import type { PlanetName } from "@/sprites/planets";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -12,13 +12,11 @@ export function teleporter<RoomId extends string>(
   _gameState: GameState<RoomId>,
   room: UnknownRoomState,
 ): MechanicResult<"teleporter"> {
-  const stoodItem = room.items.find(
-    (i): i is PlayableItem =>
-      (i.type === "head" || i.type === "heels") &&
-      i.state.standingOn === teleporter,
-  );
-
   return {
-    stateDelta: { flashing: !!stoodItem },
+    stateDelta: {
+      flashing:
+        room.items.head?.state.standingOn === teleporter ||
+        room.items.heels?.state.standingOn === teleporter,
+    },
   };
 }

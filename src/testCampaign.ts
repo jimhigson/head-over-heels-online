@@ -1,16 +1,19 @@
-import { Campaign, type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
-import { PlanetName, planetNames, planets, Wall } from "./sprites/planets.ts";
-import { zxSpectrumRoomColours, ZxSpectrumRoomColour } from "./originalGame.ts";
+import type { Campaign } from "./model/modelTypes.ts";
+import { type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
+import type { PlanetName, Wall } from "./sprites/planets.ts";
+import { planetNames, planets } from "./sprites/planets.ts";
+import type { ZxSpectrumRoomColour } from "./originalGame.ts";
+import { zxSpectrumRoomColours } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
-import { UnknownJsonItem } from "./model/Item.ts";
-import { AxisXy, Xy } from "./utils/vectors.ts";
+import type { UnknownJsonItem } from "./model/JsonItem.ts";
+import type { AxisXy, Xy } from "./utils/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,
   planet: P,
   skip?: Record<AxisXy, number[]>,
 ): RoomWalls<P> => {
-  const walls = planets[planet].walls;
+  const { walls } = planets[planet];
 
   function* gen(axis: AxisXy): Generator<Wall<P>> {
     const n = walls.length;
@@ -446,8 +449,8 @@ const rooms = {
     color: "cyan",
   } satisfies RoomJson<"moonbase", TestCampaignRoomId>,
   tiny: {
-    size: { x: 1, y: 1 },
-    walls: generateWalls({ x: 1, y: 1 }, "egyptus"),
+    size: { x: 3, y: 3 },
+    walls: generateWalls({ x: 3, y: 3 }, "egyptus"),
     floor: "deadly",
     floorSkip: [] as Xy[],
     id: "tiny",
@@ -461,7 +464,7 @@ const rooms = {
         config: { which: "head" },
         position: { x: 0, y: 0, z: 5 },
         type: "player",
-      }*/
+      },*/
     ]),
     planet: "egyptus",
     color: "yellow",

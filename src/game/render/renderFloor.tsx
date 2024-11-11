@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { RoomState } from "../../model/modelTypes";
+import type { RoomState } from "../../model/modelTypes";
 import type { TextureId } from "../../sprites/spriteSheet";
 import { edgePaletteSwapFilters } from "./paletteSwapFilters";
 import { createSprite } from "./createSprite";
@@ -7,8 +7,8 @@ import { moveContainerToBlockXyz } from "./projectToScreen";
 import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
-import { PlanetName } from "@/sprites/planets";
-import { Direction } from "@/utils/vectors";
+import type { PlanetName } from "@/sprites/planets";
+import type { Direction } from "@/utils/vectors";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 

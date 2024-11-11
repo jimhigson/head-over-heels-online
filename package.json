@@ -58,6 +58,8 @@
     "fast-json-patch": "^3.1.1",
     "gh-pages": "^6.2.0",
     "globals": "^15.9.0",
+    "immer": "^10.1.1",
+    "iter-tools": "^7.5.3",
     "json-canonicalize": "^1.0.6",
     "mitt": "^3.0.1",
     "pixi-filters": "^6.0.5",

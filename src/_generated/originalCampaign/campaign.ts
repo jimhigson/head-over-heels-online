@@ -1497,9 +1497,24 @@ export const campaign = {
           position: { x: 5, y: 0, z: 7 },
           type: "pickup",
         },
-        "pickupTemp": {
+        pickupTemp: {
           config: { gives: "extra-life" },
           position: { x: 5, y: 5, z: 7 },
+          type: "pickup",
+        },
+        pickupTemp2: {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 5, z: 5 },
+          type: "pickup",
+        },
+        pickupTemp3: {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 5, z: 9 },
+          type: "pickup",
+        },
+        pickupTemp4: {
+          config: { gives: "extra-life" },
+          position: { x: 2.5, y: 3.5, z: 3 },
           type: "pickup",
         },
         "teleporter@5,7,0:Z12mRwL": {

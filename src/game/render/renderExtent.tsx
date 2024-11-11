@@ -1,4 +1,4 @@
-import { UnknownRoomState } from "../../model/modelTypes";
+import type { UnknownRoomState } from "../../model/modelTypes";
 import { wallTileSize } from "@/sprites/textureSizes";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";

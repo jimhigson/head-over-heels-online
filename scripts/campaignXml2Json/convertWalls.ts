@@ -2,9 +2,9 @@ import { convertX, convertY } from "./convertCampaign";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
-import { Xml2JsonRoom } from "./readToJson";
+import type { Xml2JsonRoom } from "./readToJson";
 import { type SidesWithDoors } from "./convertDoors";
-import { AnyWall } from "../../src/model/modelTypes";
+import type { AnyWall } from "../../src/model/modelTypes";
 
 export const convertWalls = (
   roomJson: Xml2JsonRoom,

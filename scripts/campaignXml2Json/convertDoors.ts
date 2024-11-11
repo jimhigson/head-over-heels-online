@@ -1,5 +1,5 @@
-import { Direction } from "../../src/utils/vectors";
-import { Xml2JsonRoom } from "./readToJson";
+import type { Direction } from "../../src/utils/vectors";
+import type { Xml2JsonRoom } from "./readToJson";
 
 export type SidesWithDoors = Partial<Record<Direction, true>>;
 export const xmlRoomSidesWithDoors = (room: Xml2JsonRoom): SidesWithDoors => {

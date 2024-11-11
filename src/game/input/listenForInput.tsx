@@ -1,7 +1,8 @@
 import { directions } from "@/utils/vectors";
-import { isKey, Key } from "./keys";
+import type { Key } from "./keys";
+import { isKey } from "./keys";
 import { entries } from "@/utils/entries";
-import { GameState } from "../gameState/GameState";
+import type { GameState } from "../gameState/GameState";
 
 export const actions = [
   ...directions,

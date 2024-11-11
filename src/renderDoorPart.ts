@@ -1,12 +1,14 @@
-import { Container } from "pixi.js";
+import type { Container } from "pixi.js";
 import { createSprite } from "./game/render/createSprite";
 import { doorTexture } from "./game/render/itemAppearances/doorAppearance";
 import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
-import { LoadedDoorConfig } from "./model/Item";
-import { UnknownRoomState } from "./model/modelTypes";
-import { blockSizePx, doorTexturePivot } from "./sprites/spriteSheet";
+import type { LoadedDoorConfig } from "./model/JsonItem";
+import type { UnknownRoomState } from "./model/modelTypes";
+import { doorTexturePivot } from "./sprites/spritePivots";
+import { blockSizePx } from "./sprites/spritePivots";
 import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
-import { AxisXy, crossAxisXy, Xyz } from "./utils/vectors";
+import type { AxisXy, Xyz } from "./utils/vectors";
+import { crossAxisXy } from "./utils/vectors";
 
 function* renderDoorLeg(axis: AxisXy, z: number): Generator<Container> {
   // drag legs etc

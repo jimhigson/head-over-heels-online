@@ -1,7 +1,13 @@
-import { ItemInPlayType, ItemInPlay, UnknownItemInPlay, isPlayableItem, itemFalls, isItemType } from "@/model/ItemInPlay";
-import { PlanetName } from "@/sprites/planets";
-import { GameState, currentRoom } from "../gameState/GameState";
-import { MechanicResult } from "../physics/MechanicResult";
+import type {
+  ItemInPlayType,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
+import { isPlayableItem, itemFalls, isItemType } from "@/model/ItemInPlay";
+import type { PlanetName } from "@/sprites/planets";
+import type { GameState } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
+import type { MechanicResult } from "../physics/MechanicResult";
 import { fallingAndLanding } from "../physics/mechanics/falling";
 import { jumping } from "../physics/mechanics/jumping";
 import { steppedOff } from "../physics/mechanics/steppedOff";
@@ -14,7 +20,7 @@ import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
-  deltaMS: number
+  deltaMS: number,
 ) => {
   const originalState = item.state;
   const room = currentRoom(gameState);

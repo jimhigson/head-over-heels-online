@@ -1,4 +1,4 @@
-import { Application, Container } from "pixi.js";
+import type { Application, Container } from "pixi.js";
 import { zxSpectrumResolution } from "../originalGame";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 

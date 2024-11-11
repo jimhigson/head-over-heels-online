@@ -1,5 +1,6 @@
-import { hintColours, Shades } from "@/hintColours";
-import { UnknownRoomState } from "@/model/modelTypes";
+import type { Shades } from "@/hintColours";
+import { hintColours } from "@/hintColours";
+import type { UnknownRoomState } from "@/model/modelTypes";
 import { ColorReplaceFilter } from "pixi-filters";
 
 const paletteSwapFilters = (shades: Shades) => [

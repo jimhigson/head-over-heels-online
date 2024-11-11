@@ -1,9 +1,9 @@
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { createSprite } from "../createSprite";
-import { ItemAppearance } from "./ItemAppearances";
+import type { ItemAppearance } from "./ItemAppearances";
 
-import { ItemInPlay } from "@/model/ItemInPlay";
-import { CharacterName } from "@/model/modelTypes";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { CharacterName } from "@/model/modelTypes";
 
 export const playerAppearance: ItemAppearance<CharacterName> = ({
   type,

@@ -1,5 +1,5 @@
-import { PlanetName } from "../../src/sprites/planets";
-import { XmlScenery } from "./readToJson";
+import type { PlanetName } from "../../src/sprites/planets";
+import type { XmlScenery } from "./readToJson";
 
 export const convertPlanetName = (
   xmlSceneryName: XmlScenery | undefined,

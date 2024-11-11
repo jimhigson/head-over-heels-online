@@ -1,6 +1,6 @@
-import { AnyWall } from "../../src/model/modelTypes";
-import { AxisXy } from "../../src/utils/vectors";
-import { PlanetName } from "../../src/sprites/planets";
+import type { AnyWall } from "../../src/model/modelTypes";
+import type { AxisXy } from "../../src/utils/vectors";
+import type { PlanetName } from "../../src/sprites/planets";
 import { wallNumbers } from "./wallNumbers";
 
 // .png must be optional - it is given in <wall> elements in the xml

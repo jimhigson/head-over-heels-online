@@ -1,4 +1,4 @@
-import { PlanetName, Wall } from "../../src/sprites/planets";
+import type { PlanetName, Wall } from "../../src/sprites/planets";
 
 /**
  * the walls are numbered in the xml - convert from the numbers to my names (which

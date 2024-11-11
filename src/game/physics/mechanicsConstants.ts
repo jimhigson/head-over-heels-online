@@ -1,6 +1,7 @@
 // NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
 
-import { blockSizePx, spriteSheet } from "@/sprites/spriteSheet";
+import { spriteSheet } from "@/sprites/spriteSheet";
+import { blockSizePx } from "@/sprites/spritePivots";
 import { teleportAnimationSpeed } from "../render/itemAppearances/animationSpeeds";
 
 // original game timed at 5s to move 8 blocks

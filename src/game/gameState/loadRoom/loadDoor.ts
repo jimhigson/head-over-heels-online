@@ -1,10 +1,11 @@
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import { JsonItem } from "@/model/Item";
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { JsonItem } from "@/model/JsonItem";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { blockSizePx } from "@/sprites/spriteSheet";
-import { PlanetName } from "@/sprites/planets";
-import { Xyz, originXyz, addXyz } from "@/utils/vectors";
+import { blockSizePx } from "@/sprites/spritePivots";
+import type { PlanetName } from "@/sprites/planets";
+import type { Xyz } from "@/utils/vectors";
+import { originXyz, addXyz } from "@/utils/vectors";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually

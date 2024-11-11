@@ -1,7 +1,7 @@
-import { EmptyObject } from "type-fest";
-import { CharacterName } from "./modelTypes";
-import { PlanetName, Wall } from "../sprites/planets";
-import { AxisXy, Direction, Xyz } from "../utils/vectors";
+import type { EmptyObject } from "type-fest";
+import type { CharacterName } from "./modelTypes";
+import type { PlanetName, Wall } from "../sprites/planets";
+import type { AxisXy, Direction, Xyz } from "../utils/vectors";
 
 export type ItemType =
   | "door"

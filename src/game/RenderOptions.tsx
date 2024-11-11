@@ -1,5 +1,5 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { SetRequired } from "type-fest";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { SetRequired } from "type-fest";
 
 export const hasItemClick = <RoomId extends string>(
   options: RenderOptions<RoomId>,

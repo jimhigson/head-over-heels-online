@@ -1,15 +1,14 @@
 import { Application, Container } from "pixi.js";
-import { Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { currentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/changeCharacterRoom";
 import { zxSpectrumResolution } from "../originalGame";
-import mitt from "mitt";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import { upscale } from "./upscale";
-import { RenderOptions } from "./RenderOptions";
+import type { RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
-import { ApiEvents, GameApi } from "./GameApi";
+import type { GameApi } from "./GameApi";
 
 /**
  * we are now outside of React-land - pure pixi game engine!
@@ -27,12 +26,10 @@ export const gameMain = async <RoomId extends string>(
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });
 
-  const apiEvents = mitt<ApiEvents<RoomId>>();
-
   const worldContainer = new Container();
   app.stage.addChild(worldContainer);
 
-  const gameState = initGameState(campaign, renderOptions, apiEvents);
+  const gameState = initGameState(campaign, renderOptions);
   const stopListeningForInput = listenForInput(gameState);
   upscale(app, worldContainer);
 
@@ -42,7 +39,7 @@ export const gameMain = async <RoomId extends string>(
 
   return {
     campaign,
-    events: apiEvents,
+    events: gameState.events,
     renderIn(gameDiv) {
       gameDiv.appendChild(app.canvas);
     },

@@ -1,4 +1,4 @@
-import { UnknownItemInPlay } from "./ItemInPlay";
+import type { UnknownItemInPlay } from "./ItemInPlay";
 
 /**
  * to spread over items on instantiation and cut down on typing

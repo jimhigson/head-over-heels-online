@@ -1,5 +1,7 @@
-import { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { axesXyz, Xyz } from "@/utils/vectors";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { iterate } from "@/utils/iterate";
+import type { Xyz } from "@/utils/vectors";
+import { axesXyz } from "@/utils/vectors";
 
 type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
@@ -56,14 +58,19 @@ export const collision1to1 = (
   return true;
 };
 
-/** check for collisions between a single item and multiple others */
+/**
+ * check for collisions between a single item and multiple others
+ */
 export const collision1toMany = (
   subject: Collideable,
-  items: UnknownItemInPlay[],
-) => {
-  return items.filter(
-    (candidateItem) =>
-      // prevent self- collision
-      subject.id !== candidateItem.id && collision1to1(subject, candidateItem),
-  );
+  items: Iterable<UnknownItemInPlay>,
+): Array<UnknownItemInPlay> => {
+  return [
+    ...iterate(items).filter(
+      (candidateItem) =>
+        // prevent self- collision
+        subject.id !== candidateItem.id &&
+        collision1to1(subject, candidateItem),
+    ),
+  ];
 };

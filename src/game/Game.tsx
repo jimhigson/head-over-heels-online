@@ -1,8 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Campaign } from "../model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 import { gameMain } from "./gameMain";
 import { type GameApi } from "./GameApi";
-import { RenderOptions } from "./RenderOptions";
+import type { RenderOptions } from "./RenderOptions";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,

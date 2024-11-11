@@ -1,5 +1,5 @@
-import { WallTextureId } from "@/sprites/scenerySpritesheetData";
-import { PlanetName, Wall } from "@/sprites/planets";
+import type { WallTextureId } from "@/sprites/scenerySpritesheetData";
+import type { PlanetName, Wall } from "@/sprites/planets";
 
 export const wallTextureId = <P extends PlanetName>(
   planet: P,

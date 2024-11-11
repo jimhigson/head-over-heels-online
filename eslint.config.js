@@ -46,6 +46,7 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/consistent-type-imports": "error",
       "prettier/prettier": ["error", { experimentalTernaries: true }],
     },
   },

@@ -1,19 +1,26 @@
-import { UnknownJsonItem } from "@/model/Item";
-import {
+import type { UnknownJsonItem } from "@/model/JsonItem";
+import type {
   FallingItemTypes,
-  itemFalls,
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
+import { itemFalls } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { RoomState, RoomJson, AnyRoomJson } from "@/model/modelTypes";
-import { PlanetName } from "@/sprites/planets";
+import type {
+  RoomState,
+  RoomJson,
+  AnyRoomJson,
+  RoomStateItems,
+} from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
 import { entries } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItem } from "./loadItem";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { addXy, addXyz } from "@/utils/vectors";
+import { iterate } from "@/utils/iterate";
+import { objectValues } from "iter-tools";
 
 function* loadItems<RoomId extends string>(
   items: Record<string, UnknownJsonItem<RoomId>>,
@@ -47,7 +54,7 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
 
 export const findStandingOn = (
   { state: { position }, aabb, id }: ItemInPlay<FallingItemTypes>,
-  items: UnknownItemInPlay[],
+  items: Iterable<UnknownItemInPlay>,
 ): UnknownItemInPlay | null => {
   const positionJustBelowItem = addXyz(position, { z: -1 });
   const collisions = collision1toMany(
@@ -65,32 +72,53 @@ export const findStandingOn = (
 
     if (collisionItemTop === position.z) {
       // the top of the collision item is the same z as the bottom of the item being tested
-      console.log(id, "is standing on", collisionItem);
+      //console.log(id, "is standing on", collisionItem);
       return collisionItem;
     }
   }
   return null; // not standing on anything in the items list
 };
 
-const initStandingOn = (items: UnknownItemInPlay[]) => {
-  for (const item of items) {
+const initStandingOn = (items: RoomStateItems<PlanetName, string>) => {
+  for (const item of objectValues(items)) {
     if (itemFalls(item)) {
-      item.state.standingOn = findStandingOn(item, items);
+      item.state.standingOn = findStandingOn(item, objectValues(items));
     }
   }
 };
 
 /**
+ * convert items from a flat list to an object map, key'd by their ids
+ */
+const keyItems = <
+  P extends PlanetName,
+  RoomId extends string,
+  ItemId extends string,
+>(
+  items: Iterable<UnknownItemInPlay<RoomId>>,
+) => {
+  return iterate(items).reduce(
+    (ac, cur) => {
+      return {
+        ...ac,
+        [cur.id]: cur,
+      };
+    },
+    {} as RoomStateItems<P, RoomId, ItemId>,
+  );
+};
+
+/**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
-export const loadRoom = <P extends PlanetName, R extends string>(
-  roomJson: RoomJson<P, R>,
-): RoomState<P, R> => {
-  const loadedItems = [
-    loadFloor(roomJson),
-    ...loadWalls(roomJson),
-    ...loadItems(roomJson.items),
-  ];
+export const loadRoom = <P extends PlanetName, RoomId extends string>(
+  roomJson: RoomJson<P, RoomId>,
+): RoomState<P, RoomId> => {
+  const loadedItems: RoomStateItems<P, RoomId> = {
+    floor: loadFloor(roomJson),
+    ...keyItems(loadWalls(roomJson)),
+    ...keyItems(loadItems(roomJson.items)),
+  };
 
   initStandingOn(loadedItems);
 

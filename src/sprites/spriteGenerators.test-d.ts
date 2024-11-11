@@ -1,9 +1,6 @@
 import { expectTypeOf, test } from "vitest";
-import {
-  AnimatedTextureName,
-  FrameNumbers,
-  seriesOfAnimationFrameTextures,
-} from "./spriteGenerators";
+import type { AnimatedTextureName, FrameNumbers } from "./spriteGenerators";
+import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 
 test("generating frame number types", () => {
   expectTypeOf<FrameNumbers<2>>().toEqualTypeOf<"1" | "2">();

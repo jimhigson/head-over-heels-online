@@ -1,9 +1,9 @@
 import { directions, originXyz, scaleXyz, unitVectors } from "@/utils/vectors";
-import { InputState } from "../../input/InputState";
+import type { InputState } from "../../input/InputState";
 import { playerSpeedPixPerMs } from "../mechanicsConstants";
-import { PlayableItem } from "@/model/ItemInPlay";
-import { MechanicResult } from "../MechanicResult";
-import { CharacterName } from "@/model/modelTypes";
+import type { PlayableItem } from "@/model/ItemInPlay";
+import type { MechanicResult } from "../MechanicResult";
+import type { CharacterName } from "@/model/modelTypes";
 
 /* 
 

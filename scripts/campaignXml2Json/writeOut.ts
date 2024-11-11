@@ -1,8 +1,9 @@
 import patch from "../../src/_generated/originalCampaign/patch.json";
-import fastJsonPatch, { Operation } from "fast-json-patch";
+import type { Operation } from "fast-json-patch";
+import fastJsonPatch from "fast-json-patch";
 import { writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
-import { AnyRoomJson } from "../../src/model/modelTypes";
+import type { AnyRoomJson } from "../../src/model/modelTypes";
 
 const roomTsObjectEntry = (room: AnyRoomJson): string =>
   `"${room.id}": ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;

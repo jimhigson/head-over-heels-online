@@ -1,12 +1,15 @@
 import { Game } from "./game/Game";
 import { RoomSelect } from "./game/levelEdit/RoomSelect";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { GameApi } from "./game/GameApi.tsx";
-import { Campaign } from "./model/modelTypes.ts";
+import type { GameApi } from "./game/GameApi.tsx";
+import type { Campaign } from "./model/modelTypes.ts";
 import { Button } from "./components/ui/button.tsx";
 import { Switch } from "./components/ui/switch.tsx";
 import { Label } from "./components/ui/label.tsx";
-import { RenderOptions, ShowBoundingBoxes } from "./game/RenderOptions.tsx";
+import type {
+  RenderOptions,
+  ShowBoundingBoxes,
+} from "./game/RenderOptions.tsx";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -163,9 +166,9 @@ export const App = <RoomId extends string>({
             onClick={() =>
               gameApi &&
               console.log(
-                gameApi.currentRoom.items.find(
-                  (i) => i.type === gameApi.gameState.currentCharacterName,
-                ),
+                gameApi.currentRoom.items[
+                  gameApi.gameState.currentCharacterName
+                ],
               )
             }
           >

@@ -1,12 +1,12 @@
-import { UnknownRoomState } from "@/model/modelTypes";
-import { SidesWithDoors } from "./renderFloor";
-import { blockSizePx } from "@/sprites/spriteSheet";
+import type { UnknownRoomState } from "@/model/modelTypes";
+import type { SidesWithDoors } from "./renderFloor";
+import { blockSizePx } from "@/sprites/spritePivots";
 import { isItemType } from "@/model/ItemInPlay";
 
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};
 
-  const doorIter = room.items.values().filter(isItemType("doorNear"));
+  const doorIter = Object.values(room.items).filter(isItemType("doorNear"));
 
   for (const {
     config: { axis },

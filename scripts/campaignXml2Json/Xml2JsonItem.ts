@@ -1,4 +1,4 @@
-import { CompassDirections, CompassDirectionsNESW } from "./readToJson";
+import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
 
 export type Xml2JsonItem = {
   x: string;

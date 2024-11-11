@@ -1,9 +1,6 @@
-import { ItemType, JsonItem, UnknownJsonItem } from "@/model/Item";
-import {
-  fallingItemTypes,
-  ItemInPlayType,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import type { ItemType, JsonItem, UnknownJsonItem } from "@/model/JsonItem";
+import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
+import { fallingItemTypes } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
@@ -61,5 +58,6 @@ const initialState = <T extends ItemType & ItemInPlayType>(
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(falls ? { standingOn: null, fallRoundingError: 0 } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
+    ...(jsonItem.type === "pickup" ? { collected: false } : {}),
   };
 };
