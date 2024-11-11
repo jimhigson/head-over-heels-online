@@ -53,45 +53,29 @@ export const drawOrderComparator = (
     // console.log(`check for <= in ${axis} :`, { axisMaxA, axisMinB });
 
     if (axisMaxA <= axisMinB) {
-      const result = 1 * (axis === "z" ? -1 : 1);
       // a is entirely less than b in this axis (no overlap)
       // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
-      // console.log(
-      //   "returning result",
-      //   result,
-      //   "ie",
-      //   a.id,
-      //   result > 0 ? "in front of" : "behind",
-      //   b.id,
-      // );
-      return result;
+      return 1 * (axis === "z" ? -1 : 1);
     }
 
     // console.log(`check for >= in ${axis} :`, { axisMinA, axisMaxB });
 
     if (axisMinA >= axisMaxB) {
-      const result = -1 * (axis === "z" ? -1 : 1);
       // a is entirely less than b in this axis (no overlap)
       // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
-      // console.log(
-      //   "returning result",
-      //   result,
-      //   "ie",
-      //   a.id,
-      //   result > 0 ? "in front of" : "behind",
-      //   b.id,
-      // );
-      return result;
+      return -1 * (axis === "z" ? -1 : 1);
     }
 
     // a and b overlap in this axis, so we need to check the next axis
   }
 
-  const errorMsg = `could not compare two items for draw order A ${a.id} and B ${b.id} 
-      A @ ${JSON.stringify(a.state.position)} size ${JSON.stringify(bbA)} and
-      B @ ${JSON.stringify(b.state.position)} size ${JSON.stringify(bbB)} 
-      - do these bounding boxes intersect?`;
-  console.error(errorMsg);
-  return 0; // give up and say we don't know the right order
-  //throw new Error(errorMsg);
+  // if we get here, two items are intersecting - this is very unusual, but can happen
+  // for non-solid items - eg, the cloud left over after a pickup is collected can be
+  // walked through. Return the difference of the isometric z-buffer depth for the two items.
+  // since these intersecting items should be the same size, and this isn't critical, the bounding boxes
+  // are not used to decide the order
+  return zScore(b) - zScore(a);
 };
+
+const zScore = (item: UnknownItemInPlay) =>
+  item.state.position.x + item.state.position.y - item.state.position.z;
