@@ -21,6 +21,13 @@ export const pickupCollected = <RoomId extends string>(
   pickupItemId: string,
 ): boolean => gameState.pickupsCollected[roomId][pickupItemId] === true;
 
+export const characterItem = (
+  gameState: AnyGameState,
+  character: CharacterName,
+) => {
+  return gameState.characterRooms[character].items[character];
+};
+
 export type PickupsCollected<RoomId extends string> = Record<
   RoomId,
   Record<string, true>
@@ -39,3 +46,7 @@ export type GameState<RoomId extends string> = {
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;
 };
+
+// if you don't care about the RoomId generic, you can't emit events (since they are callbacks)
+// but that's fine since most code never emits events
+export type AnyGameState = Omit<GameState<string>, "events" | "renderOptions">;

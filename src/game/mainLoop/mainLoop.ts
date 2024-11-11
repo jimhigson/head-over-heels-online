@@ -1,4 +1,5 @@
-import type { Application, Container, Ticker } from "pixi.js";
+import type { Application, Ticker } from "pixi.js";
+import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
@@ -10,6 +11,9 @@ import type { RenderOptions } from "../RenderOptions";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { tickItem } from "./tickItem";
 import { objectValues } from "iter-tools";
+import { zxSpectrumResolution } from "@/originalGame";
+import { upscale } from "../render/upscale";
+import { renderHud } from "../render/hud/renderHud";
 
 export const progressGameStateForTick = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -25,14 +29,28 @@ export const progressGameStateForTick = <RoomId extends string>(
 export const mainLoop = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
-  worldContainer: Container,
 ) => {
   // the last room we rendered - this allows us to track when the room has changed
   // since the last tick so we can set up the change
   let lastRoomRendered: RoomState<PlanetName, RoomId> | undefined = undefined;
   let lastRenderOptions: RenderOptions<RoomId> | undefined = undefined;
 
+  const worldContainer = new Container();
+  worldContainer.y = zxSpectrumResolution.height * 0.7;
+  app.stage.addChild(worldContainer);
+
+  const hudContainer = new Container();
+  app.stage.addChild(hudContainer);
+
+  const updateHud = renderHud(hudContainer);
+
+  const upscaler = upscale(app);
   const handleTick = ({ deltaMS }: Ticker) => {
+    upscaler.rescale();
+    worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
+
+    updateHud(gameState);
+
     const { inputState } = gameState;
 
     if (inputState.swop) {
@@ -96,6 +114,7 @@ export const mainLoop = <RoomId extends string>(
       return this;
     },
     stop() {
+      app.stage.removeChild(worldContainer);
       app.ticker.remove(handleTick);
     },
   };

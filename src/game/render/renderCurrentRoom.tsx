@@ -1,6 +1,6 @@
 import type { UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
-import { mainPaletteSwapFilters } from "./paletteSwapFilters";
+import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
 import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
@@ -89,27 +89,3 @@ export const renderCurrentRoom = <RoomId extends string>(
 
   return roomContainer;
 };
-
-/*
-
-  for (const item of room.items) {
-    if (item.renders && options.showBoundingBoxes === false) {
-      // normal case in gameplay
-      const itemContainer = new Container();
-      if (options.onItemClick) {
-        itemContainer.eventMode = "static";
-        itemContainer.on("pointertap", () => {
-          options.onItemClick!(item);
-        });
-      }
-
-      item.positionContainer = itemContainer;
-      item.renderContainer = itemContainer;
-
-      //assignContainerToItem(item, room, options);
-      //assertItemHasContainers(item);
-      itemsContainer.addChild(itemContainer);
-    }
-  }
-
-  */

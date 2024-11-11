@@ -1,11 +1,9 @@
-import { Application, Container } from "pixi.js";
+import { Application } from "pixi.js";
 import type { Campaign } from "../model/modelTypes";
 import { currentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/changeCharacterRoom";
-import { zxSpectrumResolution } from "../originalGame";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
-import { upscale } from "./upscale";
 import type { RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
@@ -23,19 +21,15 @@ export const gameMain = async <RoomId extends string>(
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging
 
+  // can set: {resizeTo: document.querySelector('.pixi-container')} to resize the app in a different container
+  // (ie, a div created by react) and also {resolution:4} to do some resolution scaling
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });
 
-  const worldContainer = new Container();
-  app.stage.addChild(worldContainer);
-
   const gameState = initGameState(campaign, renderOptions);
   const stopListeningForInput = listenForInput(gameState);
-  upscale(app, worldContainer);
 
-  const loop = mainLoop(app, gameState, worldContainer).start();
-
-  worldContainer.y = zxSpectrumResolution.height * 0.7;
+  const loop = mainLoop(app, gameState).start();
 
   return {
     campaign,
@@ -61,7 +55,6 @@ export const gameMain = async <RoomId extends string>(
     },
     stop() {
       console.log("tearing down game");
-      app.stage.removeChild(worldContainer);
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
       stopListeningForInput();

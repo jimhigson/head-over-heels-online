@@ -7,7 +7,8 @@ import type { PlanetName, Wall } from "../sprites/planets";
 import type { Xy } from "../utils/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 
-export type CharacterName = "head" | "heels";
+export const characterNames = ["head", "heels"] as const;
+export type CharacterName = (typeof characterNames)[number];
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 

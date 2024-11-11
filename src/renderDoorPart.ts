@@ -6,7 +6,7 @@ import type { LoadedDoorConfig } from "./model/JsonItem";
 import type { UnknownRoomState } from "./model/modelTypes";
 import { doorTexturePivot } from "./sprites/spritePivots";
 import { blockSizePx } from "./sprites/spritePivots";
-import { edgePaletteSwapFilters } from "./game/render/paletteSwapFilters";
+import { edgePaletteSwapFilters } from "./game/render/filters/paletteSwapFilters";
 import type { AxisXy, Xyz } from "./utils/vectors";
 import { crossAxisXy } from "./utils/vectors";
 
