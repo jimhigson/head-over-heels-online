@@ -1,5 +1,5 @@
 import type { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
-import type { GameState } from "@/game/gameState/GameState";
+import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { actions, defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
@@ -44,8 +44,12 @@ export const initGameState = <RoomId extends string>(
 ): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
-  const headsRoom = loadRoom(campaign.rooms[starts.head]);
-  const heelsRoom = loadRoom(campaign.rooms[starts.heels]);
+  const pickupsCollected = fromAllEntries(
+    Object.keys(campaign.rooms).map((roomId) => [roomId, {}]),
+  ) as PickupsCollected<RoomId>;
+
+  const headsRoom = loadRoom(campaign.rooms[starts.head], pickupsCollected);
+  const heelsRoom = loadRoom(campaign.rooms[starts.heels], pickupsCollected);
 
   return {
     keyAssignment: defaultKeyAssignments,
@@ -58,5 +62,6 @@ export const initGameState = <RoomId extends string>(
     renderOptions,
     campaign,
     events: mitt<ApiEvents<RoomId>>(),
+    pickupsCollected,
   };
 };

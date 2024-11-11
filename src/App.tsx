@@ -152,6 +152,9 @@ export const App = <RoomId extends string>({
           <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
             Test room
           </Button>
+          <Button onClick={() => gameApi && console.log(gameApi.gameState)}>
+            Game state to console
+          </Button>
           <Button
             onClick={() =>
               gameApi && console.log(campaign.rooms[gameApi.currentRoom.id])

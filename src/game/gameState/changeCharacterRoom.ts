@@ -26,7 +26,7 @@ export const changeCharacterRoom = <RoomId extends string>(
   const destinationRoom =
     otherCharacterLoadedRoom.id === roomId ?
       otherCharacterLoadedRoom
-    : loadRoom(gameState.campaign.rooms[roomId]);
+    : loadRoom(gameState.campaign.rooms[roomId], gameState.pickupsCollected);
 
   const character = leavingRoom.items[currentCharacterName];
 

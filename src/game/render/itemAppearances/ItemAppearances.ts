@@ -5,19 +5,16 @@ import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
-import type { UnknownRoomState } from "../../../model/modelTypes";
 import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
 import { renderDoorPart } from "../../../renderDoorPart";
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playerAppearance } from "./playerAppearance";
-
-// how an item is rendered
-export type ItemAppearance<T extends ItemInPlayType> = (
-  // appearances don't care about the romId generic so give it string
-  item: ItemInPlay<T, PlanetName, string>,
-  room: UnknownRoomState,
-) => Container;
+import {
+  currentRoom,
+  pickupCollected,
+  type GameState,
+} from "@/game/gameState/GameState";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -36,22 +33,43 @@ const stackedSprites = (
 };
 
 export const itemAppearances: {
-  [T in ItemInPlayType]: ItemAppearance<T>;
+  [T in ItemInPlayType]: <RoomId extends string>(
+    // appearances don't care about the romId generic so give it string
+    item: ItemInPlay<T, PlanetName, RoomId>,
+    gameState: GameState<RoomId>,
+  ) => Container;
 } = {
-  doorNear({ config, state: { position } }, room) {
+  head(playerItem, _gameState) {
+    return playerAppearance(playerItem);
+  },
+  heels(playerItem, _gameState) {
+    return playerAppearance(playerItem);
+  },
+
+  doorNear({ config, state: { position } }, gameState) {
     const container = new Container();
 
-    for (const s of renderDoorPart(config, room, position, "near")) {
+    for (const s of renderDoorPart(
+      config,
+      currentRoom(gameState),
+      position,
+      "near",
+    )) {
       container.addChild(s);
     }
 
     return container;
   },
 
-  doorFar({ config, state: { position } }, room) {
+  doorFar({ config, state: { position } }, gameState) {
     const container = new Container();
 
-    for (const s of renderDoorPart(config, room, position, "far")) {
+    for (const s of renderDoorPart(
+      config,
+      currentRoom(gameState),
+      position,
+      "far",
+    )) {
       container.addChild(s);
     }
 
@@ -61,12 +79,12 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall({ config: { side, style } }, room) {
+  wall({ config: { side, style } }, gameState) {
     if (side === "right" || side === "towards") {
       return new Container();
     }
     return createSprite({
-      texture: wallTextureId(room.planet, style, side),
+      texture: wallTextureId(currentRoom(gameState).planet, style, side),
       anchor: side === "away" ? { x: 1, y: 1 } : { x: 0, y: 1 },
     });
   },
@@ -86,7 +104,7 @@ export const itemAppearances: {
     createSprite(
       direction === "left" || direction === "right" ?
         "conveyor.x"
-        : "conveyor.y",
+      : "conveyor.y",
     ),
 
   fish: ({ config: { alive } }) =>
@@ -96,7 +114,7 @@ export const itemAppearances: {
           frames: spriteSheet.animations.fish,
           animationSpeed: 0.25,
         }
-        : {
+      : {
           texture: "fish.1",
         },
     ),
@@ -122,9 +140,12 @@ export const itemAppearances: {
       createSprite({
         frames: spriteSheet.animations["teleporter.flashing"],
       })
-      : createSprite("teleporter"),
+    : createSprite("teleporter"),
 
-  pickup({ config: { gives }, state: { collected } }) {
+  pickup({ id: pickupId, config: { gives } }, gameState) {
+    const roomId = currentRoom(gameState).id;
+    const collected = pickupCollected(gameState, roomId, pickupId);
+
     if (collected) {
       return createSprite({
         frames: spriteSheet.animations["bubbles.pickup"],
@@ -154,12 +175,6 @@ export const itemAppearances: {
     return createSprite(pickupIcons[gives]);
   },
 
-  head(playerItem, room) {
-    return playerAppearance(playerItem, room);
-  },
-  heels(playerItem, room) {
-    return playerAppearance(playerItem, room);
-  },
   sceneryPlayer: ({ config: { which } }) =>
     createSprite(`${which}.walking.towards.2`),
 

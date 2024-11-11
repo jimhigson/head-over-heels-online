@@ -1,5 +1,4 @@
-import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./paletteSwapFilters";
 import { Container } from "pixi.js";
@@ -9,6 +8,8 @@ import { renderExtent } from "./renderExtent";
 import { moveSpriteToItemProjection, renderItem } from "./renderItems";
 import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
 import { objectValues } from "iter-tools";
+import type { GameState } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -23,10 +24,12 @@ const centreRoomInRendering = (
   container.y = -renderingMedianY;
 };
 
-export const renderRoom = <P extends PlanetName, RoomId extends string>(
-  room: RoomState<P, RoomId>,
+export const renderCurrentRoom = <RoomId extends string>(
+  gameState: GameState<RoomId>,
   options: RenderOptions<RoomId>,
 ) => {
+  const room = currentRoom(gameState);
+
   // nothing in a room can ever be under the floor, so we can render
   // it outside of the normal object loop
   const roomContainer = new Container();
@@ -41,7 +44,7 @@ export const renderRoom = <P extends PlanetName, RoomId extends string>(
     if (renders) {
       const renderContainer = new Container();
       item.renderContainer = renderContainer;
-      renderItem(item, room);
+      renderItem(item, gameState);
     }
 
     const renderItemBBs =

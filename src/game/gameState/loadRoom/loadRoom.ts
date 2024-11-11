@@ -1,4 +1,3 @@
-import type { UnknownJsonItem } from "@/model/JsonItem";
 import type {
   FallingItemTypes,
   ItemInPlay,
@@ -21,13 +20,15 @@ import { collision1toMany } from "../../collision/aabbCollision";
 import { addXy, addXyz } from "@/utils/vectors";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
+import type { PickupsCollected } from "../GameState";
 
 function* loadItems<RoomId extends string>(
-  items: Record<string, UnknownJsonItem<RoomId>>,
+  roomJson: RoomJson<PlanetName, RoomId>,
+  pickupsCollected: PickupsCollected<RoomId>,
 ): Generator<UnknownItemInPlay<RoomId>> {
-  const ent = entries(items);
+  const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
-    yield* loadItem(id, item);
+    yield* loadItem(id, item, roomJson, pickupsCollected);
   }
 }
 
@@ -90,7 +91,7 @@ const initStandingOn = (items: RoomStateItems<PlanetName, string>) => {
 /**
  * convert items from a flat list to an object map, key'd by their ids
  */
-const keyItems = <
+const itemArrayToItemObjectMap = <
   P extends PlanetName,
   RoomId extends string,
   ItemId extends string,
@@ -113,11 +114,12 @@ const keyItems = <
  */
 export const loadRoom = <P extends PlanetName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
+  pickupsCollected: PickupsCollected<RoomId>,
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     floor: loadFloor(roomJson),
-    ...keyItems(loadWalls(roomJson)),
-    ...keyItems(loadItems(roomJson.items)),
+    ...itemArrayToItemObjectMap(loadWalls(roomJson)),
+    ...itemArrayToItemObjectMap(loadItems(roomJson, pickupsCollected)),
   };
 
   initStandingOn(loadedItems);

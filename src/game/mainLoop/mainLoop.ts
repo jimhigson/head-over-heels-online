@@ -5,7 +5,7 @@ import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
 import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
 import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
-import { renderRoom } from "../render/renderRoom";
+import { renderCurrentRoom } from "../render/renderCurrentRoom";
 import type { RenderOptions } from "../RenderOptions";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { tickItem } from "./tickItem";
@@ -59,7 +59,7 @@ export const mainLoop = <RoomId extends string>(
       // so we need to set up the new room
       worldContainer.removeChildren();
 
-      const roomContainer = renderRoom(room, renderOptions);
+      const roomContainer = renderCurrentRoom(gameState, renderOptions);
 
       worldContainer.addChild(roomContainer);
 
@@ -80,7 +80,7 @@ export const mainLoop = <RoomId extends string>(
         sortDirty = true;
       }
       if (item.renderingDirty) {
-        renderItem(item, room);
+        renderItem(item, gameState);
         item.renderingDirty = false;
       }
     }

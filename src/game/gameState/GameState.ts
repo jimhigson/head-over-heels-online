@@ -15,6 +15,17 @@ export const currentRoom = <RoomId extends string>(
 ): RoomState<PlanetName, RoomId> =>
   gameState.characterRooms[gameState.currentCharacterName];
 
+export const pickupCollected = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  roomId: RoomId,
+  pickupItemId: string,
+): boolean => gameState.pickupsCollected[roomId][pickupItemId] === true;
+
+export type PickupsCollected<RoomId extends string> = Record<
+  RoomId,
+  Record<string, true>
+>;
+
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   keyAssignment: KeyAssignment;
@@ -24,4 +35,7 @@ export type GameState<RoomId extends string> = {
   characterRooms: Record<CharacterName, RoomState<PlanetName, RoomId>>;
   renderOptions: RenderOptions<RoomId>;
   events: Emitter<ApiEvents<RoomId>>;
+  // pickups don't respawn, so we keep track of which ones have been picked up
+  // outside of the room's state
+  pickupsCollected: PickupsCollected<RoomId>;
 };

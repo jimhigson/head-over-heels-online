@@ -1,11 +1,10 @@
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearances";
 
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { CharacterName } from "@/model/modelTypes";
 
-export const playerAppearance: ItemAppearance<CharacterName> = ({
+export const playerAppearance = ({
   type,
   state: { movement, facing, teleporting },
 }: ItemInPlay<CharacterName>) => {

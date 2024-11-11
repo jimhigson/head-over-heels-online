@@ -8,13 +8,14 @@ import {
   assertItemHasRenderContainer,
 } from "@/model/ItemInPlay";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
-import type { UnknownRoomState } from "@/model/modelTypes";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
+import type { GameState } from "../gameState/GameState";
+import type { PlanetName } from "@/sprites/planets";
 
 /** render an item inside the container it was previously assigned */
-export const renderItem = <T extends ItemInPlayType>(
-  item: ItemInPlay<T>,
-  room: UnknownRoomState,
+export const renderItem = <T extends ItemInPlayType, RoomId extends string>(
+  item: ItemInPlay<T, PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
 ) => {
   assertItemHasRenderContainer(item);
 
@@ -27,7 +28,7 @@ export const renderItem = <T extends ItemInPlayType>(
   }
   item.renderContainer.removeChildren();
 
-  const sprite = itemAppearance(item, room);
+  const sprite = itemAppearance(item, gameState);
   item.renderContainer.addChild(sprite);
 };
 

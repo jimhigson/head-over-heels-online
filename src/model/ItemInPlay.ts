@@ -80,7 +80,7 @@ export type ItemStateMap = {
   "portable-block": FallingItemState;
   baddie: FallingItemState;
   spring: FallingItemState;
-  pickup: FallingItemState & { collected: boolean };
+  pickup: FallingItemState;
 };
 
 // type-fest's EmptyObject was creating issues

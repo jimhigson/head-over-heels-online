@@ -8,7 +8,7 @@ import type { AxisXyz, Xyz } from "@/utils/vectors";
 import { addXyz, axesXyz, subXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { currentRoom, pickupCollected } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
@@ -65,16 +65,22 @@ export const protectAgainstIntersecting = (
   return correctedPosition;
 };
 
-const handlePlayerTouchingPickup = (
+const handlePlayerTouchingPickup = <RoomId extends string>(
+  gameState: GameState<RoomId>,
   player: PlayableItem,
   pickup: ItemInPlay<"pickup">,
 ) => {
-  if (pickup.state.collected) {
+  const roomId = currentRoom(gameState).id;
+  if (pickupCollected(gameState, roomId, pickup.id)) {
     // ignore already picked up items
     return;
   }
 
-  pickup.state.collected = true;
+  const roomPickupCollections = gameState.pickupsCollected[roomId] as Record<
+    string,
+    true
+  >;
+  roomPickupCollections[pickup.id] = true;
   pickup.renderingDirty = true;
 
   switch (pickup.config.gives) {
@@ -129,7 +135,9 @@ export const moveItem = <RoomId extends string>(
       (item) =>
         item.type !== "portal" &&
         // a collected pickup is just an animation out that should not be interacted with
-        !(item.type === "pickup" && item.state.collected) &&
+        !(
+          item.type === "pickup" && pickupCollected(gameState, room.id, item.id)
+        ) &&
         !(item.type === "pickup" && isPlayableItem(subjectItem)) &&
         !(subjectItem.type === "pickup" && isPlayableItem(item)),
     ) || [];
@@ -162,14 +170,14 @@ export const moveItem = <RoomId extends string>(
       console.log("LOSE a life");
     }
     for (const p of pickup) {
-      handlePlayerTouchingPickup(subjectItem, p);
+      handlePlayerTouchingPickup(gameState, subjectItem, p);
     }
   }
 
   if (isItemType("pickup")(subjectItem)) {
     const player = collisions.find(isPlayableItem);
     if (player !== undefined) {
-      handlePlayerTouchingPickup(player, subjectItem);
+      handlePlayerTouchingPickup(gameState, player, subjectItem);
     }
   }
 

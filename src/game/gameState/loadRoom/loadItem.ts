@@ -6,14 +6,24 @@ import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
+import type { PickupsCollected } from "../GameState";
+import type { RoomJson } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
 
 export function* loadItem<RoomId extends string>(
-  id: string,
+  itemId: string,
   jsonItem: UnknownJsonItem<RoomId>,
-): Generator<UnknownItemInPlay<RoomId>> {
+  { id: roomId }: RoomJson<PlanetName, RoomId>,
+  pickupsCollected: PickupsCollected<RoomId>,
+): Generator<UnknownItemInPlay<RoomId>, undefined> {
+  if (jsonItem.type === "pickup" && pickupsCollected[roomId][itemId]) {
+    // skip pickups that have already been collected
+    return;
+  }
+
   switch (jsonItem.type) {
     case "door": {
-      return yield* loadDoor<RoomId>(jsonItem, id);
+      return yield* loadDoor<RoomId>(jsonItem, itemId);
     }
     case "player": {
       yield loadPlayer(jsonItem);
@@ -38,7 +48,7 @@ export function* loadItem<RoomId extends string>(
           ) ?
             "push"
           : "nonIntersect",
-        id,
+        id: itemId,
         renderingDirty: false,
         renderPositionDirty: false,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions

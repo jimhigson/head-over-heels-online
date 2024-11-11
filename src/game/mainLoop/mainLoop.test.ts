@@ -2,12 +2,11 @@ import { describe, test, expect } from "vitest";
 import { produce, setAutoFreeze } from "immer";
 import { progressGameStateForTick } from "./mainLoop";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { currentRoom, pickupCollected } from "../gameState/GameState";
 import { initGameState } from "../gameState/initGameState";
 import type { RoomJson } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import type { InputState } from "../input/InputState";
-import type { ItemInPlay } from "@/model/ItemInPlay";
 
 // immer is used to set up the game, but the game itself relies on being
 // able to directly mutate state:
@@ -119,16 +118,20 @@ describe("pickups", () => {
     // walk left for one second at 60fps:
     playGameThrough(gameState);
 
-    // should have collected the pickup:
-    const pickupTwoSquaresFromHead = currentRoom(gameState).items
-      .pickupTwoSquaresFromHead as ItemInPlay<"pickup">;
-    expect(pickupTwoSquaresFromHead.state.collected).toBe(true);
+    // should have recorded collecting the pickup:
+    expect(
+      pickupCollected(gameState, testRoomId, "pickupTwoSquaresFromHead"),
+    ).toBe(true);
     expect(currentRoom(gameState).items.head?.state.lives).toBe(10);
 
     // but not this one (included as a control):
-    const pickupCharactersWillNotGetInThisTest = currentRoom(gameState).items
-      .pickupCharactersWillNotGetInThisTest as ItemInPlay<"pickup">;
-    expect(pickupCharactersWillNotGetInThisTest.state.collected).toBe(false);
+    expect(
+      pickupCollected(
+        gameState,
+        testRoomId,
+        "pickupCharactersWillNotGetInThisTest",
+      ),
+    ).toBe(false);
   });
   test("pickup can land on character", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
@@ -158,10 +161,10 @@ describe("pickups", () => {
     // walk left for one second at 60fps:
     playGameThrough(gameState);
 
-    const pickup = currentRoom(gameState).items
-      .pickupAboveHeels as ItemInPlay<"pickup">;
     // should have collected the pickup:
-    expect(pickup.state.collected).toBe(true);
+    expect(pickupCollected(gameState, testRoomId, "pickupAboveHeels")).toBe(
+      true,
+    );
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
   });
 });
