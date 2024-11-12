@@ -14,6 +14,7 @@ import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
+import { teleportAnimationDuration } from "../render/animationTimings";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
@@ -81,6 +82,7 @@ const handlePlayerTouchingPickup = <RoomId extends string>(
     true
   >;
   roomPickupCollections[pickup.id] = true;
+  pickup.state.expires = gameState.gameTime + teleportAnimationDuration;
   pickup.renderingDirty = true;
 
   switch (pickup.config.gives) {

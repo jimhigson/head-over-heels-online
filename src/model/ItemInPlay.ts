@@ -48,7 +48,7 @@ export type CharacterState = FallingItemState & {
     | {
         phase: "out";
         timeRemaining: number;
-        toRoom: string; // TODO: RoomId
+        toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
       }
     | {
         phase: "in";
@@ -88,9 +88,19 @@ type EmptyObject = {
   [n in never]: unknown;
 };
 
-export type ItemState<T extends ItemInPlayType> = {
+type BaseItemState = {
   position: Xyz;
-} & (T extends keyof ItemStateMap ? ItemStateMap[T] : EmptyObject);
+  /**
+   * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
+   * set to -1. Otherwise, can set to the duration of an animation that needs to play
+   *
+   * If undefined, the item is not scheduled for removal (the normal case)
+   */
+  expires?: number;
+};
+
+export type ItemState<T extends ItemInPlayType> = BaseItemState &
+  (T extends keyof ItemStateMap ? ItemStateMap[T] : BaseItemState);
 
 export type OnTouch =
   | "nonIntersect"

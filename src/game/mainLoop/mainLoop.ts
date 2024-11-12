@@ -14,6 +14,7 @@ import { objectValues } from "iter-tools";
 import { zxSpectrumResolution } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const progressGameStateForTick = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -25,6 +26,12 @@ export const progressGameStateForTick = <RoomId extends string>(
     tickItem(item, gameState, deltaMS);
   }
 };
+
+const itemHasExpired = <RoomId extends string>(
+  item: UnknownItemInPlay,
+  gameState: GameState<RoomId>,
+) =>
+  item.state.expires !== undefined && item.state.expires < gameState.gameTime;
 
 export const mainLoop = <RoomId extends string>(
   app: Application,
@@ -89,13 +96,17 @@ export const mainLoop = <RoomId extends string>(
       lastRenderOptions = gameState.renderOptions;
     }
 
+    for (const item of objectValues(room.items)) {
+      if (itemHasExpired(item, gameState)) {
+        delete room.items[item.id];
+        continue;
+      }
+    }
+
     progressGameStateForTick(gameState, deltaMS);
 
-    // re-sort the room's items:
-    const { items } = room;
     let sortDirty = false;
-
-    for (const item of objectValues(items)) {
+    for (const item of objectValues(room.items)) {
       if (item.renderPositionDirty) {
         moveSpriteToItemProjection(item);
         item.renderPositionDirty = false;
@@ -107,8 +118,11 @@ export const mainLoop = <RoomId extends string>(
       }
     }
     if (sortDirty) {
+      // re-sort the room's items:
       sortItemsByDrawOrder(objectValues(room.items));
     }
+
+    gameState.gameTime += deltaMS;
     //console.timeEnd("tick");
   };
 

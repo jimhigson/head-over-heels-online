@@ -45,6 +45,8 @@ export type GameState<RoomId extends string> = {
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;
+  /** how many ms has this game been played for? */
+  gameTime: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

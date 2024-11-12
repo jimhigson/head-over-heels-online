@@ -3,6 +3,7 @@ import { AnimatedSprite, Sprite } from "pixi.js";
 import type { TextureId } from "../../sprites/spriteSheet";
 import { spriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "@/originalGame";
+import { defaultAnimationSpeed } from "./animationTimings";
 
 type AnimatedCreateSpriteOptions = {
   // animated
@@ -43,13 +44,6 @@ const isAnimatedOptions = (
   options: CreateSpriteOptions,
 ): options is AnimatedCreateSpriteOptions =>
   typeof options !== "string" && Object.hasOwn(options, "frames");
-
-/**
-  default animation speed is one frame of animation per twp
-  original game frames (ie, 12.5 fps) - this is the rate most original game animations
-  seem to run at
-*/
-const defaultAnimationSpeed = 0.5;
 
 /** utility for creating a sprite while setting several properties on it */
 export const createSprite = (options: CreateSpriteOptions): Sprite => {
