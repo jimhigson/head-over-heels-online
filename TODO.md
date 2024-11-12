@@ -35,17 +35,32 @@ _ find/write a new xml parser is probably the way
 [x] prettier
 [x] render supports under doors with z!=0
 
-[ ] load items into their pixel locations
-[ ] render based on pixel locations
+[x] load items into their pixel locations
+[x] render based on pixel locations
 
-[ ] base z-index off the top of objects using their bounding boxes
+[x] base z-index off the top of objects using their bounding boxes
 
 [x] support stacked sprites
 
-[ ] investigate rooms:
+[x] investigate rooms:
 moonbase12 - puppies seem to go nowhere!
 
 Game engine
-[ ] init mutable game state based off of room on entering a room
+[x] init mutable game state based off of room on entering a room
 
 Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1%20ratio%20can,to%20move%201.732%20pixels%20vertically.
+
+[ ] first room blacktooth1head:
+    [ ] door-slide walking
+    [ ] pixelated walking
+    [ ] collected bunnies don't poof again when switching character back after collecting them
+        [ ] store time collected? - then, don't render cloud after a reasonable time after that?
+        [ ] remove the item after poof happens?
+            * currently don't have any way to remove an item from the scene graph
+                * will also need for turtles (and other badies) falling out of the world
+            [ ] listener on animated sprite?
+                - don't like this - all modifications should be in main loop ticks
+            [?] ttl om items?
+                - this would still (really) have to be on the pan-room state
+                    - well, not really; a boolean works for not showing the item again    
+            [?] removed flag on item state that marks it for removal on next frame

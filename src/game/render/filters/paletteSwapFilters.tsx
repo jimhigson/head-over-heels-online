@@ -1,9 +1,10 @@
 import { PaletteSwapFilter } from "@/filters/colorReplace/PaletteSwapFilter";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import type { Shades } from "@/hintColours";
-import { hintColours } from "@/hintColours";
+import { colorScheme } from "@/hintColours";
 import type { UnknownRoomState } from "@/model/modelTypes";
 import { spritesheetPalette } from "@/sprites/samplePalette";
+import { type Filter } from "pixi.js";
 
 const paletteSwapFilters = (shades: Shades) => [
   // MultiColorReplaceFilter from '@pixi/filter-multi-color-replace' is also an option but its api is not as friendly
@@ -22,11 +23,13 @@ const paletteSwapFilters = (shades: Shades) => [
 export const edgePaletteSwapFilters = (
   room: UnknownRoomState,
   side: "right" | "towards",
-) => paletteSwapFilters(hintColours[room.color].edges[side]);
+) => paletteSwapFilters(colorScheme[room.color].edges[side]);
 
 export const mainPaletteSwapFilters = (room: UnknownRoomState) =>
-  paletteSwapFilters(hintColours[room.color].main);
+  paletteSwapFilters(colorScheme[room.color].main);
 
 export const revertColouriseDim = new RevertColouriseFilter(
   spritesheetPalette.shadow,
 );
+
+export const noFilters: Filter[] = [];

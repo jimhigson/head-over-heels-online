@@ -9,7 +9,7 @@ uniform vec3 uTargetColor;
 // colours are floats so check if they're very close rather than exactly equal:
 bool colorsEffectivelyEqual(vec3 color1, vec3 color2) {    
     
-    return distance(color1, color2) < 0.1;
+    return distance(color1, color2) < 0.05;
 }
 
 void main(void) {

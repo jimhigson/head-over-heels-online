@@ -1,4 +1,5 @@
-import { characterItem, type AnyGameState } from "@/game/gameState/GameState";
+import type { GameState } from "@/game/gameState/GameState";
+import { characterItem, currentRoom } from "@/game/gameState/GameState";
 import type { Container } from "pixi.js";
 import { Assets, Sprite, Text } from "pixi.js";
 import headOverHeelsFont from "../head-over-heels.ttf";
@@ -6,7 +7,9 @@ import { zxSpectrumResolution } from "@/originalGame";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { smallItemTextureSize } from "@/sprites/textureSizes";
 import { characterNames, type CharacterName } from "@/model/modelTypes";
-import { revertColouriseDim } from "../filters/paletteSwapFilters";
+import { colorScheme } from "@/hintColours";
+import { noFilters } from "../filters/paletteSwapFilters";
+import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 
 const smallTextSize = 8;
 
@@ -65,13 +68,24 @@ export const renderHud = (hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.livesText);
   hudContainer.addChild(hudElements.heels.sprite);
 
-  return (gameState: AnyGameState) => {
+  const spriteFilter = new RevertColouriseFilter();
+
+  return <RoomId extends string>(gameState: GameState<RoomId>) => {
+    const room = currentRoom(gameState);
+    const {
+      hud: { dimmed, lives },
+    } = colorScheme[room.color];
+
     for (const character of characterNames) {
       const isCurrent = gameState.currentCharacterName === character;
       const itemInPlay = characterItem(gameState, character);
+
+      spriteFilter.targetColor = dimmed.dimmed;
+
+      hudElements[character].livesText.style.fill = lives.basic;
       hudElements[character].livesText.text = `${itemInPlay?.state.lives ?? 0}`;
       hudElements[character].sprite.filters =
-        isCurrent ? [] : [revertColouriseDim];
+        isCurrent ? noFilters : spriteFilter;
     }
   };
 };

@@ -3,6 +3,7 @@ import { Color, Filter, GlProgram } from "pixi.js";
 import { vertex } from "../defaults";
 import fragment from "./revertColourise.frag?raw";
 import { spritesheetPalette } from "@/sprites/samplePalette";
+import { yellowShades } from "@/hintColours";
 
 const sourceBlacks: [Color, Color] = [
   spritesheetPalette.pureBlack,
@@ -21,7 +22,7 @@ export class RevertColouriseFilter extends Filter {
   /**
    * @param options - Options for the RevertColouriseFilter constructor.
    */
-  constructor(targetColor: ColorSource) {
+  constructor(targetColor: ColorSource = yellowShades.basic) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
@@ -64,5 +65,12 @@ export class RevertColouriseFilter extends Filter {
     this.uniforms.uTargetColor[2] = bT;
 
     console.log(this.uniforms);
+  }
+
+  set targetColor(value: ColorSource) {
+    const [r, g, b] = new Color(value).toArray();
+    this.uniforms.uTargetColor[0] = r;
+    this.uniforms.uTargetColor[1] = g;
+    this.uniforms.uTargetColor[2] = b;
   }
 }

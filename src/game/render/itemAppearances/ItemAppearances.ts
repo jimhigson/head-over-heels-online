@@ -149,11 +149,6 @@ export const itemAppearances: {
     if (collected) {
       return createSprite({
         frames: spriteSheet.animations["bubbles.pickup"],
-
-        // TODO: (1) onTouch: "pickup" items should (for zOrder sorting) be ordered according to
-        // x+y+z for any item that intersects them (usually the player)
-
-        // TODO: (2) implement playOnce for createSprite
         playOnce: true,
       });
     }

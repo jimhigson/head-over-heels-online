@@ -1,42 +1,90 @@
 import { Color } from "pixi.js";
 import type { ZxSpectrumRoomColour } from "./originalGame";
+import { spritesheetPalette } from "./sprites/samplePalette";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/
 export type Shades = { basic: Color; dimmed: Color };
-const white = {
+export const whiteShades = {
   basic: new Color("rgb(210, 210, 210)"),
   dimmed: new Color("rgb(120, 120, 120)"),
 };
-const yellow = {
+export const yellowShades = {
   basic: new Color("hsl(50,58%,70%)"),
-  dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
+  dimmed: spritesheetPalette.redShadow,
+  //dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
-const magenta = {
+export const magentaShades = {
   basic: new Color("hsl(290,25%,60%)"),
   dimmed: new Color("hsl(290,25%,40%)"),
 };
-const cyan = {
+export const cyanShades = {
   basic: new Color("hsl(183, 28%, 50%)"),
   dimmed: new Color("hsl(183, 28%,30%)"),
 };
-const green = {
+export const greenShades = {
   basic: new Color("hsl(73,35%,48%)"),
   dimmed: new Color("hsl(73,35%,30%)"),
 };
 
-export const hintColours = {
-  white: { main: white, edges: { towards: cyan, right: yellow } },
-  // white dimmed should be green/cyan
-  yellow: { main: yellow, edges: { towards: green, right: white } },
-  // yellow dimmed should be cyan/cyan
-  magenta: { main: magenta, edges: { towards: green, right: cyan } },
-  // magenta dimmed is the same
-  cyan: { main: cyan, edges: { towards: magenta, right: white } },
-  // cyan dimmed is the same
-  green: { main: green, edges: { towards: cyan, right: yellow } },
-  // green dimmed is the same
-} as const satisfies Record<
-  ZxSpectrumRoomColour,
-  { main: Shades; edges: { right: Shades; towards: Shades } }
->;
+type ColorScheme = {
+  main: Shades;
+  edges: {
+    right: Shades;
+    towards: Shades;
+  };
+  hud: {
+    lives: Shades;
+    dimmed: Shades;
+    icons: Shades;
+  };
+};
+
+export const colorScheme = {
+  white: {
+    main: whiteShades,
+    edges: { towards: cyanShades, right: yellowShades },
+    hud: {
+      lives: yellowShades,
+      dimmed: magentaShades,
+      icons: cyanShades,
+    },
+  },
+  // white dimmed edges should be green/cyan
+  yellow: {
+    main: yellowShades,
+    edges: { towards: greenShades, right: whiteShades },
+    hud: {
+      lives: cyanShades,
+      dimmed: magentaShades,
+      icons: greenShades,
+    },
+  },
+  // yellow dimmed edges should be cyan/cyan
+  magenta: {
+    main: magentaShades,
+    edges: { towards: greenShades, right: cyanShades },
+    hud: { lives: whiteShades, dimmed: cyanShades, icons: yellowShades },
+  },
+  // magenta dimmed edges is the same
+  cyan: {
+    main: cyanShades,
+    edges: { towards: magentaShades, right: whiteShades },
+    hud: {
+      lives: whiteShades,
+      dimmed: greenShades,
+      icons: yellowShades,
+    },
+  },
+  // cyan dimmed edges is the same
+  green: {
+    main: greenShades,
+    edges: { towards: cyanShades, right: yellowShades },
+    hud: {
+      lives: whiteShades,
+      dimmed: magentaShades,
+      icons: cyanShades,
+    },
+  },
+  // green dimmed edges is the same
+} as const satisfies Record<ZxSpectrumRoomColour, ColorScheme>;

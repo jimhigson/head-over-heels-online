@@ -42,6 +42,10 @@ export const mainLoop = <RoomId extends string>(
   const hudContainer = new Container();
   app.stage.addChild(hudContainer);
 
+  //app.stage.filters = new RevertColouriseFilter(
+  // new Color("rgb(255, 255, 0)"),
+  //);
+
   const updateHud = renderHud(hudContainer);
 
   const upscaler = upscale(app);
