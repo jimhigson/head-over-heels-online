@@ -5,7 +5,7 @@ import type {
 } from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
 import type { AxisXyz, Xyz } from "@/utils/vectors";
-import { addXyz, axesXyz, subXyz, xyzEqual } from "@/utils/vectors";
+import { addXyz, axesXyz, originXyz, subXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom, pickupCollected } from "../gameState/GameState";
@@ -18,10 +18,12 @@ import { teleportAnimationDuration } from "../render/animationTimings";
 
 export const protectAgainstIntersecting = (
   item: UnknownItemInPlay,
-  xyzDelta: Partial<Xyz>,
+  xyzDelta: Xyz,
   targetPosition: Xyz,
   collisionsWithSolids: Iterable<UnknownItemInPlay>,
 ) => {
+  const itemIsPlayer = isPlayableItem(item);
+
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
   const correctedPosition = iterate(collisionsWithSolids).reduce<Xyz>(
@@ -31,10 +33,36 @@ export const protectAgainstIntersecting = (
      */
     (
       posAc: Xyz,
-      { state: { position: posC }, aabb: bbC }: UnknownItemInPlay,
+      {
+        type: typeC,
+        config,
+        state: { position: posC },
+        aabb: bbC,
+      }: UnknownItemInPlay,
     ) => {
+      // colliding with doors is a special case - since they are so narrow, the playable character
+      // slides sideways into their opening, to make them easier to walk through
+      const movementBias =
+        itemIsPlayer ?
+          typeC === "doorFar" ?
+            {
+              x: config.axis === "x" ? -Math.abs(xyzDelta.y) : 0,
+              y: config.axis === "y" ? -Math.abs(xyzDelta.x) : 0,
+              z: 0,
+            }
+          : typeC === "doorNear" ?
+            {
+              x: config.axis === "x" ? Math.abs(xyzDelta.y) : 0,
+              y: config.axis === "y" ? Math.abs(xyzDelta.x) : 0,
+              z: 0,
+            }
+          : originXyz
+        : originXyz;
+
+      //console.log("bias", movementBias);
+
       // roll back acPos to just prior to the collision in each axis:
-      return axesXyz.reduce<Xyz>((ac: Xyz, axis: AxisXyz) => {
+      const backedOffXyDelta = axesXyz.reduce<Xyz>((ac: Xyz, axis: AxisXyz) => {
         if (xyzDelta[axis] !== 0) {
           const aC = posC[axis];
           if (xyzDelta[axis] === undefined) {
@@ -43,6 +71,7 @@ export const protectAgainstIntersecting = (
 
           if (xyzDelta[axis] > 0) {
             // moving positive (left/away/up)
+            // - clamp to the right/towards/bottom edge of the item:
             const minAC = Math.min(aC, aC + bbC[axis]);
             return {
               ...ac,
@@ -50,6 +79,7 @@ export const protectAgainstIntersecting = (
             };
           } else {
             // moving negative (right/towards/down)
+            // - clamp to the left/away/top edge of the item:
             const maxAC = Math.max(aC, aC + bbC[axis]);
             return {
               ...ac,
@@ -59,6 +89,8 @@ export const protectAgainstIntersecting = (
         }
         return ac;
       }, posAc);
+
+      return addXyz(backedOffXyDelta, movementBias);
     },
     targetPosition,
   );
@@ -114,9 +146,10 @@ const handlePlayerTouchingPortal = <RoomId extends string>(
  */
 export const moveItem = <RoomId extends string>(
   subjectItem: UnknownItemInPlay,
-  xyzDelta: Partial<Xyz>,
+  xyzDeltaPartial: Partial<Xyz>,
   gameState: GameState<RoomId>,
 ) => {
+  const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
   const room = currentRoom(gameState);
   const {
     state: { position: previousPosition },
