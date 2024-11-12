@@ -19,11 +19,11 @@ export const entries = Object.entries as ObjectEntries;
 export const keys = Object.keys as ObjectKeys;
 
 export type ObjectFromEntries = <K extends keyof any, V>(
-  o: [K, V][],
+  o: Iterable<[K, V]>,
 ) => Partial<Record<K, V>>;
 
 export type ObjectFromAllEntries = <K extends keyof any, V>(
-  o: [K, V][],
+  o: Iterable<[K, V]>,
 ) => Record<K, V>;
 
 export const fromEntries = Object.fromEntries as ObjectFromEntries;

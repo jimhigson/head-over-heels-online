@@ -2,58 +2,30 @@ import type { ColorSource } from "pixi.js";
 import { Color, Filter, GlProgram } from "pixi.js";
 import { vertex } from "../defaults";
 import fragment from "./revertColourise.frag?raw";
+import { spritesheetPalette } from "@/sprites/samplePalette";
 
-/** Options for the RevertColouriseFilter constructor. */
-export interface RevertColouriseFilterOptions {
-  /**
-   * The color that will be changed.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0xff0000
-   */
-  originalColor?: ColorSource;
-  /**
-   * The resulting color.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0x000000
-   */
-  targetColor?: ColorSource;
-  /**
-   * Tolerance/sensitivity of the floating-point comparison between colors (lower = more exact, higher = more inclusive)
-   * @default 0.4
-   */
-  tolerance?: number;
-}
+const sourceBlacks: [Color, Color] = [
+  spritesheetPalette.pureBlack,
+  spritesheetPalette.lightBlack,
+];
 
 /**
  * Filter to put graphics back to how they looked on the spectrum!
  */
 export class RevertColouriseFilter extends Filter {
-  /** Default values for options. */
-  public static readonly DEFAULT_OPTIONS: RevertColouriseFilterOptions = {
-    originalColor: 0xff0000,
-    targetColor: 0x000000,
-    tolerance: 0.4,
-  };
-
   public uniforms: {
-    uOriginalColor: Float32Array;
+    uSourceBlacks: Float32Array;
     uTargetColor: Float32Array;
-    uTolerance: number;
   };
-
-  private _originalColor: Color;
-  private _targetColor: Color;
 
   /**
    * @param options - Options for the RevertColouriseFilter constructor.
    */
-  constructor(options: RevertColouriseFilterOptions) {
-    options = { ...RevertColouriseFilter.DEFAULT_OPTIONS, ...options };
-
+  constructor(targetColor: ColorSource) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
-      name: "palette-swap-filter",
+      name: "revert-colourise-filter",
     });
 
     super({
@@ -62,65 +34,35 @@ export class RevertColouriseFilter extends Filter {
       glProgram,
       resources: {
         colorReplaceUniforms: {
-          uOriginalColor: { value: new Float32Array(3), type: "vec3<f32>" },
+          uSourceBlacks: {
+            value: new Float32Array(6),
+            type: "vec3<f32>",
+            size: 6,
+          },
           uTargetColor: { value: new Float32Array(3), type: "vec3<f32>" },
-          uTolerance: { value: options.tolerance, type: "f32" },
         },
       },
     });
 
     this.uniforms = this.resources.colorReplaceUniforms.uniforms;
 
-    this._originalColor = new Color();
-    this._targetColor = new Color();
-    this.originalColor = options.originalColor ?? 0xff0000;
-    this.targetColor = options.targetColor ?? 0x000000;
+    const [r1, g1, b1] = sourceBlacks[0].toArray();
 
-    Object.assign(this, options);
-  }
+    this.uniforms.uSourceBlacks[0] = r1;
+    this.uniforms.uSourceBlacks[1] = g1;
+    this.uniforms.uSourceBlacks[2] = b1;
 
-  /**
-   * The color that will be changed.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0xff0000
-   */
-  get originalColor(): ColorSource {
-    return this._originalColor.value as ColorSource;
-  }
-  set originalColor(value: ColorSource) {
-    this._originalColor.setValue(value);
-    const [r, g, b] = this._originalColor.toArray();
+    const [r2, g2, b2] = sourceBlacks[1].toArray();
+    this.uniforms.uSourceBlacks[3] = r2;
+    this.uniforms.uSourceBlacks[4] = g2;
+    this.uniforms.uSourceBlacks[5] = b2;
 
-    this.uniforms.uOriginalColor[0] = r;
-    this.uniforms.uOriginalColor[1] = g;
-    this.uniforms.uOriginalColor[2] = b;
-  }
+    const [rT, gT, bT] = new Color(targetColor).toArray();
 
-  /**
-   * The resulting color.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0x000000
-   */
-  get targetColor(): ColorSource {
-    return this._targetColor.value as ColorSource;
-  }
-  set targetColor(value: ColorSource) {
-    this._targetColor.setValue(value);
-    const [r, g, b] = this._targetColor.toArray();
+    this.uniforms.uTargetColor[0] = rT;
+    this.uniforms.uTargetColor[1] = gT;
+    this.uniforms.uTargetColor[2] = bT;
 
-    this.uniforms.uTargetColor[0] = r;
-    this.uniforms.uTargetColor[1] = g;
-    this.uniforms.uTargetColor[2] = b;
-  }
-
-  /**
-   * Tolerance/sensitivity of the floating-point comparison between colors (lower = more exact, higher = more inclusive)
-   * @default 0.4
-   */
-  get tolerance(): number {
-    return this.uniforms.uTolerance;
-  }
-  set tolerance(value: number) {
-    this.uniforms.uTolerance = value;
+    console.log(this.uniforms);
   }
 }
