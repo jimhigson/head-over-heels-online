@@ -72,6 +72,7 @@ export const colorScheme = {
     },
   },
   // yellow dimmed edges should be cyan/cyan
+  // yellow dimmed hud is white/magenta/green
   magenta: {
     main: magentaShades,
     edges: { towards: greenShades, right: cyanShades },
