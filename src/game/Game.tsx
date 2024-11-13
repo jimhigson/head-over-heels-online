@@ -1,28 +1,39 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import type { Campaign } from "../model/modelTypes";
-import { gameMain } from "./gameMain";
 import { type GameApi } from "./GameApi";
 import type { RenderOptions } from "./RenderOptions";
+import { load as loadPalette } from "@/sprites/samplePalette";
+import { loadFont } from "./render/hud/loadHohFont";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
   renderOptions: RenderOptions<RoomId>,
 ): GameApi<RoomId> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
+  const [loadedAssets, setLoadedAssets] = useState<boolean>();
 
   useEffect(() => {
-    let created: GameApi<RoomId> | undefined;
+    Promise.all([loadPalette(), loadFont()]).then(() => setLoadedAssets(true));
+  }, []);
+
+  useEffect(() => {
+    if (!loadedAssets) return;
+
+    let createdGameApi: GameApi<RoomId> | undefined;
     const go = async () => {
-      created = await gameMain(campaign);
-      setGameApi(created);
+      // we don't import the game until we know the assets are loaded - it is
+      // not safe to do so since some modules have top-level imports that rely on them
+      const { gameMain } = await import("./gameMain");
+      createdGameApi = await gameMain(campaign);
+      setGameApi(createdGameApi);
     };
 
     go();
 
     return () => {
-      created?.stop();
+      createdGameApi?.stop();
     };
-  }, [campaign]);
+  }, [campaign, loadedAssets]);
 
   useEffect(() => {
     if (gameApi === undefined) return;

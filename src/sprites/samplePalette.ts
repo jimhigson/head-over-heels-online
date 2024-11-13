@@ -46,8 +46,10 @@ export const colourPaletteNames = [
 ] as const;
 export type ColorPaletteName = (typeof colourPaletteNames)[number];
 
+export type SpritesheetPalette = Record<ColorPaletteName, Color>;
+
 const sampleSpritesheetPalette = () =>
-  new Promise<Record<ColorPaletteName, Color>>((resolve, reject) => {
+  new Promise<SpritesheetPalette>((resolve, reject) => {
     // Load the image
     const image = new Image();
     image.src = spritesheetUrl;
@@ -89,11 +91,17 @@ const sampleSpritesheetPalette = () =>
     image.onerror = reject;
   });
 
+// note - we are abusing the type system here to avoid a top-level await
+let loaded: SpritesheetPalette = undefined as unknown as SpritesheetPalette;
+export const load = async () => {
+  loaded = await sampleSpritesheetPalette();
+};
+
 /**
  * the 16 colours sampled from the spirtesheet, in the order they were originally in d-paint, but
  * after any processing done by the conversion to png.
  * The sprite sheet's first 16 pixels contains the colours in order, for us to sample from
+ *
+ * WARNING: If this is called before calling load, it will return an incorrectly typed undefined!
  */
-export const spritesheetPalette = await sampleSpritesheetPalette();
-
-console.log(spritesheetPalette);
+export const spritesheetPalette = () => loaded;

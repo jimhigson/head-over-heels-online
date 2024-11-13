@@ -11,21 +11,21 @@ export const whiteShades = {
 };
 export const yellowShades = {
   basic: new Color("hsl(50,58%,70%)"),
-  dimmed: spritesheetPalette.redShadow,
+  dimmed: spritesheetPalette().redShadow,
   //dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
 export const magentaShades = {
-  basic: spritesheetPalette.pink,
+  basic: spritesheetPalette().pink,
   //basic: new Color("hsl(290,25%,60%)"),
   dimmed: new Color("hsl(290,25%,40%)"),
 };
 export const cyanShades = {
   basic: new Color("hsl(183, 28%, 50%)"),
-  dimmed: spritesheetPalette.shadow,
+  dimmed: spritesheetPalette().shadow,
   //dimmed: new Color("hsl(183, 28%,30%)"),
 };
 export const greenShades = {
-  basic: spritesheetPalette.moss,
+  basic: spritesheetPalette().moss,
   //basic: new Color("hsl(73,35%,48%)"),
   dimmed: new Color("hsl(73,35%,30%)"),
 };

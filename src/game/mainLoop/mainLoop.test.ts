@@ -1,4 +1,8 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
+vi.mock("../../sprites/samplePalette", () => ({
+  spritesheetPalette: vi.fn().mockReturnValue({}),
+}));
+
 import { produce, setAutoFreeze } from "immer";
 import { progressGameStateForTick } from "./mainLoop";
 import type { GameState } from "../gameState/GameState";
@@ -65,15 +69,22 @@ const playGameThrough = (
   {
     frameRate = 60,
     forTime = 1_000,
+    frameCallback = (gameState) => gameState,
   }: {
     frameRate?: number;
     forTime?: number;
+    /**
+     * allows us to change the gamestate after certain frames, for example to change the
+     * joystick input while the simulation is running
+     */
+    frameCallback?: (gameState: GameState<TestRoomId>) => GameState<TestRoomId>;
   } = { frameRate: 60, forTime: 1_000 },
 ) => {
-  // walk left for one second at 60fps:
   const deltaMS = 1_000 / frameRate;
-  for (let i = 0; i < forTime; i += deltaMS) {
+
+  while (gameState.gameTime < forTime) {
     progressGameStateForTick(gameState, deltaMS);
+    gameState = frameCallback(gameState);
   }
 };
 
@@ -133,6 +144,7 @@ describe("pickups", () => {
       ),
     ).toBe(false);
   });
+
   test("pickup can land on character", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       head: {
@@ -167,4 +179,68 @@ describe("pickups", () => {
     );
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
   });
+});
+
+const testFrameRates = [
+  25, // original game
+  60, // typical default
+  144, // high update rate
+  500, // highest monitor refresh rate commercially available (2024) - and a bit silly!
+];
+
+describe("jumping", () => {
+  test.each(testFrameRates)(
+    "head can jump between two blocks forming a ladder (%iHz)",
+    (frameRate) => {
+      const gameState: GameState<TestRoomId> = basicGameState(
+        {
+          head: {
+            type: "player",
+            position: { x: 0, y: 1, z: 0 },
+            config: {
+              which: "head",
+            },
+          },
+          heels: {
+            type: "player",
+            position: { x: 0, y: 4, z: 0 },
+            config: {
+              which: "heels",
+            },
+          },
+          lowerBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 0 },
+            config: { style: "organic" },
+          },
+          upperBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 2 },
+            config: { style: "organic" },
+          },
+        },
+        { towards: true, jump: true },
+      );
+
+      playGameThrough(gameState, {
+        frameRate,
+        forTime: 2_000,
+        frameCallback(gameState) {
+          // stop pressing jump after a short time
+          return gameState.gameTime < 50 ?
+              gameState
+            : {
+                ...gameState,
+                inputState: {
+                  ...gameState.inputState,
+                  jump: false,
+                },
+              };
+        },
+      });
+      expect(currentRoom(gameState).items.head?.state.standingOn?.id).toBe(
+        "lowerBlock",
+      );
+    },
+  );
 });

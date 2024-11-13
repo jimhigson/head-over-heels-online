@@ -25,6 +25,7 @@ export const progressGameStateForTick = <RoomId extends string>(
   for (const item of objectValues(room.items)) {
     tickItem(item, gameState, deltaMS);
   }
+  gameState.gameTime += deltaMS;
 };
 
 const itemHasExpired = <RoomId extends string>(
@@ -122,7 +123,6 @@ export const mainLoop = <RoomId extends string>(
       sortItemsByDrawOrder(objectValues(room.items));
     }
 
-    gameState.gameTime += deltaMS;
     //console.timeEnd("tick");
   };
 

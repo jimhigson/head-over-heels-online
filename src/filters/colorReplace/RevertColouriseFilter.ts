@@ -6,8 +6,8 @@ import { spritesheetPalette } from "@/sprites/samplePalette";
 import { yellowShades } from "@/hintColours";
 
 const sourceBlacks: [Color, Color] = [
-  spritesheetPalette.pureBlack,
-  spritesheetPalette.lightBlack,
+  spritesheetPalette().pureBlack,
+  spritesheetPalette().lightBlack,
 ];
 
 /**
