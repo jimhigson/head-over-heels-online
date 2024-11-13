@@ -58,13 +58,7 @@ export class RevertColouriseFilter extends Filter {
     this.uniforms.uSourceBlacks[4] = g2;
     this.uniforms.uSourceBlacks[5] = b2;
 
-    const [rT, gT, bT] = new Color(targetColor).toArray();
-
-    this.uniforms.uTargetColor[0] = rT;
-    this.uniforms.uTargetColor[1] = gT;
-    this.uniforms.uTargetColor[2] = bT;
-
-    console.log(this.uniforms);
+    this.targetColor = targetColor;
   }
 
   set targetColor(value: ColorSource) {

@@ -30,6 +30,14 @@ export const greenShades = {
   dimmed: new Color("hsl(73,35%,30%)"),
 };
 
+export const shades = {
+  white: whiteShades,
+  yellow: yellowShades,
+  magenta: magentaShades,
+  cyan: cyanShades,
+  green: greenShades,
+};
+
 type ColorScheme = {
   main: Shades;
   edges: {

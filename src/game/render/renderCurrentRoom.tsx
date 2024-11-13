@@ -10,6 +10,9 @@ import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInC
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
+import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
+import { shades } from "@/hintColours";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -22,6 +25,31 @@ const centreRoomInRendering = (
 
   container.x = -renderingMedianX;
   container.y = -renderingMedianY;
+};
+
+const assignMouseActions = <RoomId extends string>(
+  item: UnknownItemInPlay<RoomId>,
+  options: RenderOptions<RoomId>,
+  room: UnknownRoomState,
+) => {
+  if (item.renderContainer !== undefined) {
+    if (options.onItemClick && item.renderContainer !== undefined) {
+      item.renderContainer.eventMode = "static";
+      item.renderContainer.on("pointertap", () => {
+        options.onItemClick!(item);
+      });
+    }
+
+    item.renderContainer.on("pointerenter", () => {
+      item.renderContainer!.filters = new RevertColouriseFilter(
+        shades[room.color].basic,
+      );
+    });
+
+    item.renderContainer.on("pointerleave", () => {
+      item.renderContainer!.filters = [];
+    });
+  }
 };
 
 export const renderCurrentRoom = <RoomId extends string>(
@@ -66,12 +94,7 @@ export const renderCurrentRoom = <RoomId extends string>(
       item.renderContainer.alpha = 0.25;
     }
 
-    if (options.onItemClick && item.renderContainer !== undefined) {
-      item.renderContainer.eventMode = "static";
-      item.renderContainer.on("pointertap", () => {
-        options.onItemClick!(item);
-      });
-    }
+    assignMouseActions(item, options, room);
 
     if (item.positionContainer !== undefined) {
       moveSpriteToItemProjection(item);
