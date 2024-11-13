@@ -112,9 +112,16 @@ export const App = <RoomId extends string>({
           const toRoom = gameApi.currentRoom.roomBelow;
           if (toRoom) gameApi.changeRoom(toRoom);
         }
-        console.log("item (live):", item, "state (shallow copy):", {
-          ...item.state,
-        });
+        console.log(
+          "item (live):",
+          item,
+          "state (shallow copy):",
+          {
+            ...item.state,
+          },
+          "item.positionContainer",
+          item.positionContainer,
+        );
       },
     };
   }, [showBBs, gameApi]);

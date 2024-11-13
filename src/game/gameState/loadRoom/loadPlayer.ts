@@ -4,6 +4,7 @@ import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { PlanetName } from "@/sprites/planets";
 import type { PlayableItem } from "@/model/ItemInPlay";
+import { originXy } from "@/utils/vectors";
 
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", PlanetName, RoomId>,
@@ -21,7 +22,6 @@ export const loadPlayer = <RoomId extends string>(
           movement: "idle",
           jumpRemaining: 0,
           jumped: false,
-          jumpRoundingError: 0,
           hasHooter: false,
           fast: 0,
           shield: 0,
@@ -31,7 +31,9 @@ export const loadPlayer = <RoomId extends string>(
           autoWalkDistance: 0,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
+          jumpRoundingError: 0,
           fallRoundingError: 0,
+          walkRoundingError: originXy,
         },
         falls: true,
       },
@@ -48,7 +50,6 @@ export const loadPlayer = <RoomId extends string>(
           facing: "towards",
           movement: "idle",
           jumpRemaining: 0,
-          jumpRoundingError: 0,
           carrying: null,
           hasBag: false,
           jumps: 0,
@@ -59,7 +60,9 @@ export const loadPlayer = <RoomId extends string>(
           jumped: false,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
+          jumpRoundingError: 0,
           fallRoundingError: 0,
+          walkRoundingError: originXy,
         },
         falls: true,
       },

@@ -68,7 +68,8 @@ export const xyzEqual = (
   return ax === bx && ay === by && az === bz;
 };
 
-export const originXyz: Xyz = { x: 0, y: 0, z: 0 };
+export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
+export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
 
 export type Xyz = {
   x: number;

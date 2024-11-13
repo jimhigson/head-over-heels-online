@@ -62,8 +62,6 @@ export const protectAgainstIntersecting = (
   targetPosition: Xyz,
   collisionsWithSolids: Iterable<UnknownItemInPlay>,
 ) => {
-  //const itemIsPlayer = isPlayableItem(item);
-
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
   const correctedPosition = iterate(collisionsWithSolids).reduce<Xyz>(

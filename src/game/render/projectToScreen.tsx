@@ -26,7 +26,7 @@ export const projectWorldXyzToScreenY = ({
   x = 0,
   y = 0,
   z = 0,
-}: Partial<Xyz>): number => -(x + y) / 2 - z;
+}: Partial<Xyz>): number => (-(x + y) >> 1) - z;
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectWorldXyzToScreenXy = ({
@@ -36,7 +36,7 @@ export const projectWorldXyzToScreenXy = ({
 }: Partial<Xyz>): Xy => {
   return {
     x: y - x,
-    y: -(x + y) / 2 - z,
+    y: (-(x + y) >> 1) - z,
   };
 };
 

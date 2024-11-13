@@ -1,69 +1,77 @@
-import { directions, originXyz, scaleXyz, unitVectors } from "@/utils/vectors";
+import type { Xy } from "@/utils/vectors";
+import {
+  directions,
+  originXy,
+  originXyz,
+  scaleXyz,
+  unitVectors,
+} from "@/utils/vectors";
 import type { InputState } from "../../input/InputState";
 import { playerSpeedPixPerMs } from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import type { MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
+import type { RoundedWithError } from "@/utils/roundWithError";
+import { roundWithError } from "@/utils/roundWithError";
 
-/* 
+const zeroValueError = Object.freeze({ valueInt: 0, roundingError: 0 });
 
-why?
+const withError = (
+  input: MechanicResult<CharacterName>,
+  previousRoundingError: Xy,
+): MechanicResult<CharacterName> => {
+  const { positionDelta, stateDelta } = input;
 
-* original game ran at 25fps
-* minimum move speed of 1px/frame was feasible
-* now that is too fast, so many movements move less than 1 frame
-* however, collision detection and all other mechanics should still use the whole pixel positions
+  if (positionDelta === undefined) {
+    return {
+      // if movement is stopped, throw away the rounding error and go back to whole pixels:
+      stateDelta: { ...stateDelta, walkRoundingError: originXy },
+    };
+  }
+  const { x: deltaX = 0, y: deltaY = 0, z: deltaZ } = positionDelta;
 
-need subpositions to do:
+  // we only want to keep the rounding error in axes where there is some movement.
+  // ie, if there was rounding error in the x axis, but the character is now moving in y,
+  // the x rounding error meeds to be reset to 0 since it is no longer necessary to handle small
+  // (sub-1px) movement per frame
+  const { roundingError: xRoundingError, valueInt: xInt }: RoundedWithError =
+    deltaX === 0 ? zeroValueError : (
+      roundWithError(deltaX + previousRoundingError.x)
+    );
 
-* walking
-* falling
-* jumping
+  const { roundingError: yRoundingError, valueInt: yInt }: RoundedWithError =
+    deltaY === 0 ? zeroValueError : (
+      roundWithError(deltaY + previousRoundingError.y)
+    );
 
-for: 
-
-* playable item
-* fallable item (for animated falling downwards)
-* enemies that move
-* anything else that moves
-
-reset subpositions when:
-
-* stop moving
-* start jumping
-* change direction of walk
-
-how about:
-* MechanicResult has a subpositionReset flag
-
-*/
-/*
-const roundVector = ({ x, y, z }: Xyz) => {
-  const xRound = Math.round(x);
-  const yRound = Math.round(y);
-  const zRound = Math.round(z);
   return {
-    rounded: {
-      x: xRound,
-      y: yRound,
-      z: zRound,
-    },
-    remainder: {
-      x: x - xRound,
-      y: y - yRound,
-      z: z - zRound,
+    positionDelta: { x: xInt, y: yInt, z: deltaZ },
+    stateDelta: {
+      ...stateDelta,
+      walkRoundingError: { x: xRoundingError, y: yRoundingError },
     },
   };
 };
-*/
-/**
- * walking, but also gliding and changing direction mid-air
- */
-export function walking(
+
+export const walking = (
   playableItem: PlayableItem,
   inputState: InputState,
   deltaMS: number,
-): MechanicResult<CharacterName> {
+): MechanicResult<CharacterName> => {
+  return withError(
+    walkingImpl(playableItem, inputState, deltaMS),
+    playableItem.state.walkRoundingError,
+  );
+};
+
+/**
+ * walking, but also gliding and changing direction mid-air
+ */
+const walkingImpl = (
+  playableItem: PlayableItem,
+  inputState: InputState,
+  deltaMS: number,
+): MechanicResult<CharacterName> => {
   const {
     type,
     state: {
@@ -97,12 +105,7 @@ export function walking(
     return {};
   }
 
-  // handle: ascending in a jump,
-  // falling from a jump,
-  // or falling from walking off something
-  // TODO: for heels, track if jumped off or fell off - mandatory
-  // forward movement while falling if jumped off, but no horizontal
-  // movement if fell off
+  // handle 'walking' while ascending/falling:
   if (standingOn === null) {
     switch (type) {
       case "head": {
@@ -146,5 +149,7 @@ export function walking(
     };
   }
 
+  // whenever we're idle, the walking rounding error resets so the character sits on their 'true'
+  // pixel again for the sake of the next walk movement
   return { stateDelta: { movement: "idle" } };
-}
+};
