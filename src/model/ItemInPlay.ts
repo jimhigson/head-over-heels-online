@@ -164,11 +164,11 @@ export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
 };
 
 export const isItemType =
-  <T extends ItemInPlayType>(type: T) =>
+  <T extends ItemInPlayType>(...types: Array<T>) =>
   <RoomId extends string>(
     item: AnyItemInPlay<RoomId>,
   ): item is ItemInPlay<T, PlanetName, RoomId> => {
-    return item.type === type;
+    return (types as Array<string>).includes(item.type);
   };
 
 export const fallingItemTypes = [
