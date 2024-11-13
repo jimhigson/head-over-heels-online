@@ -1,8 +1,7 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { characterItem, currentRoom } from "@/game/gameState/GameState";
 import type { Container } from "pixi.js";
-import { Assets, Sprite, Text } from "pixi.js";
-import headOverHeelsFont from "../head-over-heels.ttf";
+import { Text, Sprite } from "pixi.js";
 import { zxSpectrumResolution } from "@/originalGame";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { smallItemTextureSize } from "@/sprites/textureSizes";
@@ -48,8 +47,6 @@ const characterSprite = (character: CharacterName) => {
 
   return characterSprite;
 };
-
-await Assets.load(headOverHeelsFont);
 
 export const renderHud = (hudContainer: Container) => {
   const hudElements = {

@@ -224,7 +224,11 @@ describe("jumping", () => {
 
       playGameThrough(gameState, {
         frameRate,
-        forTime: 2_000,
+        // TODO: this test is only passing because the game is running for long enough for the
+        // player to fall
+        // back in between - it should be always possible to get in on the upwards jump, This is
+        // happening because the jump is too fast and doesn't visit every pixel on the way up
+        forTime: 2_000, // TODO: reduce this time to < 1s when the bug is fixed
         frameCallback(gameState) {
           // stop pressing jump after a short time
           return gameState.gameTime < 50 ?

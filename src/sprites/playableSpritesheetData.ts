@@ -55,12 +55,12 @@ const frames = {
     { x: 80, y: 240 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
-    "head.idle.towards",
-    2,
-    { x: 4, y: 304 },
-    smallItemTextureSize,
-  ),
+  "head.blinking.towards": {
+    frame: { x: 54, y: 291, ...smallItemTextureSize },
+  },
+  "head.blinking.right": {
+    frame: { x: 130, y: 291, ...smallItemTextureSize },
+  },
   ...seriesOfAnimationFrameTextures(
     "head.idle.right",
     2,
@@ -68,10 +68,10 @@ const frames = {
     smallItemTextureSize,
   ),
   "head.falling.towards": {
-    frame: { x: 54, y: 304, ...smallItemTextureSize },
+    frame: { x: 29, y: 291, ...smallItemTextureSize },
   },
   "head.falling.right": {
-    frame: { x: 79, y: 304, ...smallItemTextureSize },
+    frame: { x: 105, y: 291, ...smallItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "bubbles.head",
@@ -125,16 +125,16 @@ export const playableSpritesheetData = {
     ...walkingFrames("heels"),
     "head.idle.right": [
       // 50 frames of non-blinking confirmed against original to be about the same rate
-      ...new Array(nonBlinkingFrames).fill("head.idle.right.1"),
-      "head.idle.right.2",
-      "head.idle.right.1",
-      "head.idle.right.2",
+      ...new Array(nonBlinkingFrames).fill("head.walking.right.3"),
+      "head.blinking.right",
+      "head.walking.right.3",
+      "head.blinking.right",
     ],
     "head.idle.towards": [
-      ...new Array(nonBlinkingFrames).fill("head.idle.towards.1"),
-      "head.idle.towards.2",
-      "head.idle.towards.1",
-      "head.idle.towards.2",
+      ...new Array(nonBlinkingFrames).fill("head.walking.towards.3"),
+      "head.blinking.towards",
+      "head.walking.towards.3",
+      "head.blinking.towards",
     ],
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
