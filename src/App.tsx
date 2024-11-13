@@ -115,12 +115,16 @@ export const App = <RoomId extends string>({
         console.log(
           "item (live):",
           item,
-          "state (shallow copy):",
+          "\nstate (shallow copy):",
           {
             ...item.state,
           },
-          "item.positionContainer",
+          "\nposition",
+          `(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
+          "\nitem.positionContainer",
           item.positionContainer,
+          "\ncontainer xy",
+          `(${item.positionContainer!.x}, ${item.positionContainer!.y})`,
         );
       },
     };

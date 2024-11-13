@@ -20,9 +20,9 @@ export const positionCentredInBlock = (item: UnknownJsonItem): Xyz => {
   const centredPosition =
     item.type === "wall" ?
       blockPosition
-      : addXyz(blockPosition, {
-        x: (blockSizePx.w - aabb.x) / 2,
-        y: (blockSizePx.d - aabb.y) / 2,
+    : addXyz(blockPosition, {
+        x: (blockSizePx.w - aabb.x) >> 1,
+        y: (blockSizePx.d - aabb.y) >> 1,
       });
 
   return centredPosition;
