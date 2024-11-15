@@ -123,16 +123,39 @@ export function* loadDoor<RoomId extends string>(
       renders: false,
       type: "wall",
       state: {
-        position: {
-          ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
-          ...{
+        position: addXyz(
+          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          {
             z: doorPortalHeight,
           },
-        },
+        ),
         expires: null,
       },
       aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5 }), z: 999 },
     },
   };
-  return;
+  if (position.z > 0)
+    yield {
+      ...jsonDoor,
+      ...defaultItemProperties,
+      ...{
+        id: `${id}/legs`,
+        config: {
+          style: "none",
+          side: "away", // TODO: look at typings - this isn't needed for hidden walls
+        },
+        renders: false,
+        type: "wall",
+        state: {
+          position: addXyz({
+            ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+            z: 0,
+          }),
+          expires: null,
+        },
+        aabb: {
+          ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
+        },
+      },
+    };
 }
