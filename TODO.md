@@ -50,17 +50,10 @@ Game engine
 
 Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1%20ratio%20can,to%20move%201.732%20pixels%20vertically.
 
-[ ] first room blacktooth1head:
-    [ ] door-slide walking
-    [ ] pixelated walking
-    [ ] collected bunnies don't poof again when switching character back after collecting them
-        [ ] store time collected? - then, don't render cloud after a reasonable time after that?
-        [ ] remove the item after poof happens?
-            * currently don't have any way to remove an item from the scene graph
-                * will also need for turtles (and other badies) falling out of the world
-            [ ] listener on animated sprite?
-                - don't like this - all modifications should be in main loop ticks
-            [?] ttl om items?
-                - this would still (really) have to be on the pan-room state
-                    - well, not really; a boolean works for not showing the item again    
-            [?] removed flag on item state that marks it for removal on next frame
+[x] first room blacktooth1head:
+    [x] door-slide walking
+    [x] pixelated walking
+    [x] collected bunnies don't poof again when switching character back after collecting them
+        [x] every item now has an expiry on its state
+
+[ ] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens        

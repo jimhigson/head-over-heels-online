@@ -117,7 +117,7 @@ const frames = {
     frame: { x: 286, y: 414, ...smallItemTextureSize },
   },
   volcano: {
-    frame: { x: 344, y: 414, ...largeItemTextureSize },
+    frame: { x: 193, y: 420, ...largeItemTextureSize },
   },
   toaster: {
     frame: { x: 111, y: 423, ...largeItemTextureSize },
@@ -126,10 +126,10 @@ const frames = {
     frame: { x: 379, y: 414, ...largeItemTextureSize },
   },
   "conveyor.x": {
-    frame: { x: 259, y: 440, ...largeItemTextureSize },
+    frame: { x: 35, y: 399, ...largeItemTextureSize },
   },
   "conveyor.y": {
-    frame: { x: 292, y: 440, ...largeItemTextureSize },
+    frame: { x: 68, y: 399, ...largeItemTextureSize },
   },
   bunny: {
     frame: { x: 263, y: 333, ...smallItemTextureSize },
@@ -153,10 +153,10 @@ const frames = {
     smallItemTextureSize,
   ),
   "spring.compressed": {
-    frame: { x: 4, y: 421, ...smallItemTextureSize },
+    frame: { x: 2, y: 453, ...smallItemTextureSize },
   },
   "spring.released": {
-    frame: { x: 29, y: 421, ...smallItemTextureSize },
+    frame: { x: 27, y: 453, ...smallItemTextureSize },
   },
 
   // Head
