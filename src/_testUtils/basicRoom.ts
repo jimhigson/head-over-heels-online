@@ -15,13 +15,13 @@ import { setAutoFreeze, produce } from "immer";
 // able to directly mutate state:
 setAutoFreeze(false);
 
-const firstRoomId = "firstRoom" as const;
+export const firstRoomId = "firstRoom" as const;
 // we have a second room to test doors, teleporters etc
-const secondRoomId = "secondRoom" as const;
-type TestRoomId = typeof firstRoomId | typeof secondRoomId;
+export const secondRoomId = "secondRoom" as const;
+export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 
-type TestRoomJson = RoomJson<"blacktooth", TestRoomId>;
-type ItemsInTestRoomJson = TestRoomJson["items"];
+export type TestRoomJson = RoomJson<"blacktooth", TestRoomId>;
+export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
   id,
@@ -42,6 +42,21 @@ const basicEmptyRoomWithItems = (
   items: ItemsInTestRoomJson,
 ): TestRoomJson => {
   const emptyRoom = basicEmptyRoom(id);
+
+  // set walls to none where there are doors:
+  emptyRoom.walls = produce(emptyRoom.walls, (wallsDraft) => {
+    Object.values(items).forEach((item) => {
+      if (item.type === "door") {
+        if (item.config.direction === "left") {
+          wallsDraft.left[item.position.y] = "none";
+          wallsDraft.left[item.position.y + 1] = "none";
+        } else if (item.config.direction === "right") {
+          wallsDraft.away[item.position.x] = "none";
+          wallsDraft.away[item.position.x + 1] = "none";
+        }
+      }
+    });
+  });
 
   return {
     ...emptyRoom,

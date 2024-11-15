@@ -1,7 +1,7 @@
 import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
-import type { AxisXyz, Xyz } from "@/utils/vectors";
-import { addXyz, axesXyz, originXyz, xyzEqual } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors";
+import { addXyz, doorAlongAxis, originXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
@@ -33,8 +33,10 @@ export const slideOnDoors = (
 
   const {
     type: typeC,
-    config: { axis },
+    config: { direction },
   } = doorPart;
+
+  const axis = doorAlongAxis(direction);
 
   return (
     typeC === "doorFar" ?
@@ -51,60 +53,6 @@ export const slideOnDoors = (
       }
     : originXyz
   );
-};
-
-export const protectAgainstIntersectingOrthogonal = (
-  item: UnknownItemInPlay,
-  xyzDelta: Xyz,
-  targetPosition: Xyz,
-  collisionsWithSolids: Iterable<UnknownItemInPlay>,
-) => {
-  // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
-  // or dying (if it is deadly), and maybe some others
-  const correctedPosition = iterate(collisionsWithSolids).reduce<Xyz>(
-    /**
-     * @param collisionItem the item collided with
-     * @returns
-     */
-    (
-      posAc: Xyz,
-      { state: { position: posC }, aabb: bbC }: UnknownItemInPlay,
-    ) => {
-      // roll back acPos to just prior to the collision in each axis:
-      const backedOffXyPositionForCollisionItem = axesXyz.reduce<Xyz>(
-        (ac: Xyz, axis: AxisXyz) => {
-          if (xyzDelta[axis] !== 0) {
-            const aC = posC[axis];
-
-            if (xyzDelta[axis] > 0) {
-              // moving positive (left/away/up)
-              // - clamp to the right/towards/bottom edge of the item:
-              const minAC = Math.min(aC, aC + bbC[axis]);
-              return {
-                ...ac,
-                [axis]: minAC - item.aabb[axis],
-              };
-            } else {
-              // moving negative (right/towards/down)
-              // - clamp to the left/away/top edge of the item:
-              const maxAC = Math.max(aC, aC + bbC[axis]);
-              return {
-                ...ac,
-                [axis]: maxAC,
-              };
-            }
-          }
-          return ac;
-        },
-        posAc,
-      );
-
-      return backedOffXyPositionForCollisionItem;
-    },
-    targetPosition,
-  );
-
-  return correctedPosition;
 };
 
 /**
@@ -182,12 +130,7 @@ export const moveItem = <RoomId extends string>(
     subjectItem,
     targetPosition,
     solidItems,
-  ); /* protectAgainstIntersectingOrthogonal(
-    subjectItem,
-    xyzDelta,
-    targetPosition,
-    solidItems,
-  );*/
+  );
 
   const correctedPosition2 =
     // only players slide on doors:

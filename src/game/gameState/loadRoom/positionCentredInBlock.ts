@@ -1,6 +1,6 @@
 import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import type { UnknownJsonItem } from "@/model/JsonItem";
+import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { Xyz } from "@/utils/vectors";
 import { addXyz } from "@/utils/vectors";

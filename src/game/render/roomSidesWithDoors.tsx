@@ -2,6 +2,7 @@ import type { UnknownRoomState } from "@/model/modelTypes";
 import type { SidesWithDoors } from "./renderFloor";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isItemType } from "@/model/ItemInPlay";
+import { doorAlongAxis } from "@/utils/vectors";
 
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};
@@ -9,11 +10,13 @@ export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const doorIter = Object.values(room.items).filter(isItemType("doorNear"));
 
   for (const {
-    config: { axis },
+    config: { direction },
     state: {
       position: { x, y },
     },
   } of doorIter) {
+    const axis = doorAlongAxis(direction);
+
     if (axis === "x") {
       if (y < 0) {
         result.towards = true;

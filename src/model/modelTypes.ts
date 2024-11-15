@@ -1,6 +1,6 @@
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SpritesheetFrameData } from "pixi.js";
-import type { UnknownJsonItem } from "./JsonItem";
+import type { UnknownJsonItem } from "./json/JsonItem";
 import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
 import type { PlanetName, Wall } from "../sprites/planets";

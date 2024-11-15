@@ -84,14 +84,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@12,2,0:Z2fEfpI": {
+        "door@12,2,0:ZUD4Ug": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth11" },
+          "config": { "direction": "left", "toRoom": "blacktooth11" },
           "position": { "x": 12, "y": 2, "z": 0 }
         },
-        "door@0,2,0:fyUBA": {
+        "door@0,2,0:b00Ew": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth7" },
+          "config": { "direction": "right", "toRoom": "blacktooth7" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -357,24 +357,24 @@
           "config": { "style": "organic" },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "door@3,8,0:1G5BJv": {
+        "door@3,8,0:xRvpp": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth32" },
+          "config": { "direction": "away", "toRoom": "blacktooth32" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:Z2fEf9X": {
+        "door@8,3,0:ZUD4Ev": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth12" },
+          "config": { "direction": "left", "toRoom": "blacktooth12" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:Z2fEfFt": {
+        "door@0,3,0:uMrCq": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth10" },
+          "config": { "direction": "right", "toRoom": "blacktooth10" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:1G5BtK": {
+        "door@3,0,0:Z1V7UUf": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth31" },
+          "config": { "direction": "towards", "toRoom": "blacktooth31" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -430,14 +430,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 3 }
         },
-        "door@8,0,5:Z2fEeTd": {
+        "door@8,0,5:ZUD4oK": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth13" },
+          "config": { "direction": "left", "toRoom": "blacktooth13" },
           "position": { "x": 8, "y": 0, "z": 5 }
         },
-        "door@0,0,5:Z2fEfpI": {
+        "door@0,0,5:uMrSb": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth11" },
+          "config": { "direction": "right", "toRoom": "blacktooth11" },
           "position": { "x": 0, "y": 0, "z": 5 }
         }
       },
@@ -494,19 +494,19 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@2,6,0:1G5mv1": {
+        "door@2,6,0:xRgaU": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth15" },
+          "config": { "direction": "away", "toRoom": "blacktooth15" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@6,2,0:Z2fEeDs": {
+        "door@6,2,0:ZUD490": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth14" },
+          "config": { "direction": "left", "toRoom": "blacktooth14" },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "door@0,2,0:Z2fEf9X": {
+        "door@0,2,0:uMs8V": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth12" },
+          "config": { "direction": "right", "toRoom": "blacktooth12" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -637,9 +637,9 @@
           "config": { "axis": "y" },
           "position": { "x": 4, "y": 0, "z": 2 }
         },
-        "door@0,2,0:Z2fEeTd": {
+        "door@0,2,0:uMsoG": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth13" },
+          "config": { "direction": "right", "toRoom": "blacktooth13" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -665,14 +665,14 @@
         ]
       },
       "items": {
-        "door@0,8,0:1G5mKL": {
+        "door@0,8,0:xRgqF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth16" },
+          "config": { "direction": "away", "toRoom": "blacktooth16" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:1G5lYv": {
+        "door@0,0,0:Z1V8bpu": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth13" },
+          "config": { "direction": "towards", "toRoom": "blacktooth13" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -732,14 +732,14 @@
           "config": { "which": "bubble-robot" },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "door@8,3,0:Z1QyoBh": {
+        "door@8,3,0:Z2iBTr0": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth17triple" },
+          "config": { "direction": "left", "toRoom": "blacktooth17triple" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@3,0,0:1G5mv1": {
+        "door@3,0,0:Z1V8aSY": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth15" },
+          "config": { "direction": "towards", "toRoom": "blacktooth15" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -994,19 +994,19 @@
           "config": { "which": "helicopter-bug" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@6,8,0:Z2fEdBr": {
+        "door@6,8,0:ZUD36Y": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth18" },
+          "config": { "direction": "left", "toRoom": "blacktooth18" },
           "position": { "x": 6, "y": 8, "z": 0 }
         },
-        "door@12,2,0:Z2fEdlG": {
+        "door@12,2,0:ZUD2Qe": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth19" },
+          "config": { "direction": "left", "toRoom": "blacktooth19" },
           "position": { "x": 12, "y": 2, "z": 0 }
         },
-        "door@0,2,0:Z2fEe7W": {
+        "door@0,2,0:uMtaW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth16" },
+          "config": { "direction": "right", "toRoom": "blacktooth16" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -1055,14 +1055,14 @@
           "config": { "style": "cube" },
           "position": { "x": 3, "y": 3, "z": 2 }
         },
-        "door@8,2,4:Z2fE7F6": {
+        "door@8,2,4:ZUCWaD": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth20" },
+          "config": { "direction": "left", "toRoom": "blacktooth20" },
           "position": { "x": 8, "y": 2, "z": 4 }
         },
-        "door@0,2,0:Z1QyoBh": {
+        "door@0,2,0:F8e3o": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth17triple" },
+          "config": { "direction": "right", "toRoom": "blacktooth17triple" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -1172,14 +1172,14 @@
           "config": { "top": 7, "bottom": 0 },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "door@3,8,5:1G5tdC": {
+        "door@3,8,5:xRmSw": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth20" },
+          "config": { "direction": "away", "toRoom": "blacktooth20" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@0,3,0:Z1QyoBh": {
+        "door@0,3,0:F8e3o": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth17triple" },
+          "config": { "direction": "right", "toRoom": "blacktooth17triple" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -1226,9 +1226,9 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 5, "y": 0, "z": 7 }
         },
-        "door@0,3,0:gSx4i": {
+        "door@0,3,0:vSkOv": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth23heels" },
+          "config": { "direction": "right", "toRoom": "blacktooth23heels" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -1259,9 +1259,9 @@
           "config": { "toRoom": "blacktooth1head" },
           "position": { "x": 5, "y": 7, "z": 0 }
         },
-        "door@2,0,0:dkfa9": {
+        "door@2,0,0:Z1cQbMN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth3" },
+          "config": { "direction": "towards", "toRoom": "blacktooth3" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -1278,19 +1278,19 @@
         "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
-        "door@2,6,0:2blQ9m": {
+        "door@2,6,0:ZqLhxe": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth21fish" },
+          "config": { "direction": "away", "toRoom": "blacktooth21fish" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@0,2,0:Z2fEdBr": {
+        "door@0,2,0:uMtGs": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth18" },
+          "config": { "direction": "right", "toRoom": "blacktooth18" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@2,0,0:1G5nx2": {
+        "door@2,0,0:Z1V89QX": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth19" },
+          "config": { "direction": "towards", "toRoom": "blacktooth19" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -1415,14 +1415,14 @@
           "config": { "alive": true },
           "position": { "x": 7, "y": 4, "z": 3 }
         },
-        "door@3,8,1:1G5tJ8": {
+        "door@3,8,1:xRnp2": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth22" },
+          "config": { "direction": "away", "toRoom": "blacktooth22" },
           "position": { "x": 3, "y": 8, "z": 1 }
         },
-        "door@3,0,1:1G5tdC": {
+        "door@3,0,1:Z1V84bn": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth20" },
+          "config": { "direction": "towards", "toRoom": "blacktooth20" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -1450,9 +1450,9 @@
           "config": { "style": "organic" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@2,0,1:2blQ9m": {
+        "door@2,0,1:Z1DkXpL": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth21fish" },
+          "config": { "direction": "towards", "toRoom": "blacktooth21fish" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -1678,9 +1678,9 @@
           "config": { "axis": "y" },
           "position": { "x": 4, "y": 0, "z": 2 }
         },
-        "door@8,3,0:Z1epSke": {
+        "door@8,3,0:Z1u78lr": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth1head" },
+          "config": { "direction": "left", "toRoom": "blacktooth1head" },
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
@@ -1725,9 +1725,9 @@
           "config": {},
           "position": { "x": 4, "y": 4, "z": 0 }
         },
-        "door@8,3,3:Z2fE6nk": {
+        "door@8,3,3:ZUCURR": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth25" },
+          "config": { "direction": "left", "toRoom": "blacktooth25" },
           "position": { "x": 8, "y": 3, "z": 3 }
         }
       },
@@ -1760,9 +1760,9 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 5, "y": 0, "z": 7 }
         },
-        "door@0,2,0:Z2fE6D5": {
+        "door@0,2,0:uMAEO": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth24" },
+          "config": { "direction": "right", "toRoom": "blacktooth24" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -1820,9 +1820,9 @@
           "config": { "top": 7, "bottom": 0 },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "door@2,6,2:Z1FrdCt": {
+        "door@2,6,2:LBLtR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth27fish" },
+          "config": { "direction": "away", "toRoom": "blacktooth27fish" },
           "position": { "x": 2, "y": 6, "z": 2 }
         }
       },
@@ -1863,19 +1863,19 @@
           "config": { "style": "drum" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@1,8,3:1G5vxp": {
+        "door@1,8,3:xRpdj": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth29" },
+          "config": { "direction": "away", "toRoom": "blacktooth29" },
           "position": { "x": 1, "y": 8, "z": 3 }
         },
-        "door@0,3,0:Z2fE5B4": {
+        "door@0,3,0:uMBGP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth28" },
+          "config": { "direction": "right", "toRoom": "blacktooth28" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@1,0,0:1G5uL9": {
+        "door@1,0,0:Z1V82CQ": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth26" },
+          "config": { "direction": "towards", "toRoom": "blacktooth26" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -2015,9 +2015,9 @@
           "config": {},
           "position": { "x": 6, "y": 1, "z": 1 }
         },
-        "door@8,3,2:Z1g6HTP": {
+        "door@8,3,2:UNV6q": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth27fish" },
+          "config": { "direction": "left", "toRoom": "blacktooth27fish" },
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
@@ -2054,9 +2054,9 @@
           "config": { "which": "cyberman", "charging": false },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
-        "door@2,0,0:Z1FrdCt": {
+        "door@2,0,0:ZpVTnF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth27fish" },
+          "config": { "direction": "towards", "toRoom": "blacktooth27fish" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -2093,9 +2093,9 @@
           "config": { "style": "organic" },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "door@3,6,2:dkeTo": {
+        "door@3,6,2:29aJEC": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth2" },
+          "config": { "direction": "away", "toRoom": "blacktooth2" },
           "position": { "x": 3, "y": 6, "z": 2 }
         }
       },
@@ -2153,9 +2153,9 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@0,3,1:Z2fDYoX": {
+        "door@0,3,1:uMHSV": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth31" },
+          "config": { "direction": "right", "toRoom": "blacktooth31" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -2290,14 +2290,14 @@
           "config": { "style": "drum" },
           "position": { "x": 2, "y": 8, "z": 0 }
         },
-        "door@2,12,3:1G5lt0": {
+        "door@2,12,3:xRf8T": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth11" },
+          "config": { "direction": "away", "toRoom": "blacktooth11" },
           "position": { "x": 2, "y": 12, "z": 3 }
         },
-        "door@6,2,3:Z2fDYEI": {
+        "door@6,2,3:ZUCOag": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth30" },
+          "config": { "direction": "left", "toRoom": "blacktooth30" },
           "position": { "x": 6, "y": 2, "z": 3 }
         }
       },
@@ -2323,14 +2323,14 @@
         ]
       },
       "items": {
-        "door@0,8,0:1G5C0g": {
+        "door@0,8,0:xRvFa": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth33" },
+          "config": { "direction": "away", "toRoom": "blacktooth33" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:1G5lt0": {
+        "door@0,0,0:Z1V8bV0": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth11" },
+          "config": { "direction": "towards", "toRoom": "blacktooth11" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -2386,9 +2386,9 @@
           "config": { "which": "cyberman", "charging": false },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:1G5BJv": {
+        "door@3,0,0:Z1V7UEu": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth32" },
+          "config": { "direction": "towards", "toRoom": "blacktooth32" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -2430,9 +2430,9 @@
           "config": { "top": 6, "bottom": 0 },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
-        "door@3,8,2:1G5CvL": {
+        "door@3,8,2:xRwbF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth35" },
+          "config": { "direction": "away", "toRoom": "blacktooth35" },
           "position": { "x": 3, "y": 8, "z": 2 }
         }
       },
@@ -2511,14 +2511,14 @@
           "config": {},
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "door@4,11,2:Z2fDX7c": {
+        "door@4,11,2:ZUCMBJ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth36" },
+          "config": { "direction": "left", "toRoom": "blacktooth36" },
           "position": { "x": 4, "y": 11, "z": 2 }
         },
-        "door@1,0,1:1G5Cg1": {
+        "door@1,0,1:Z1V7U8Y": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth34" },
+          "config": { "direction": "towards", "toRoom": "blacktooth34" },
           "position": { "x": 1, "y": 0, "z": 1 }
         }
       },
@@ -2535,14 +2535,14 @@
         "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
-        "door@2,6,0:1G5D2h": {
+        "door@2,6,0:xRwHb": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth37" },
+          "config": { "direction": "away", "toRoom": "blacktooth37" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@0,2,0:Z2fDXmW": {
+        "door@0,2,0:uMIUW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth35" },
+          "config": { "direction": "right", "toRoom": "blacktooth35" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -2602,14 +2602,14 @@
           "config": {},
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "door@1,8,0:1G5Di2": {
+        "door@1,8,0:xRwWV": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth38" },
+          "config": { "direction": "away", "toRoom": "blacktooth38" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:1G5CLw": {
+        "door@1,0,0:Z1V7TCt": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth36" },
+          "config": { "direction": "towards", "toRoom": "blacktooth36" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -2637,9 +2637,9 @@
           "config": { "style": "organic" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@2,0,1:1G5D2h": {
+        "door@2,0,1:Z1V7TmI": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth37" },
+          "config": { "direction": "towards", "toRoom": "blacktooth37" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -2687,14 +2687,14 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@2,6,5:aN7bd": {
+        "door@2,6,5:Z2rk1vn": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth40fish" },
+          "config": { "direction": "away", "toRoom": "blacktooth40fish" },
           "position": { "x": 2, "y": 6, "z": 5 }
         },
-        "door@6,2,5:Z2fDQoA": {
+        "door@6,2,5:ZUCFT8": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth41" },
+          "config": { "direction": "left", "toRoom": "blacktooth41" },
           "position": { "x": 6, "y": 2, "z": 5 }
         }
       },
@@ -2726,9 +2726,9 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "door@3,0,0:dkfFE": {
+        "door@3,0,0:Z1cQbhi": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth5" },
+          "config": { "direction": "towards", "toRoom": "blacktooth5" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -2897,9 +2897,9 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 3, "y": 15, "z": 1 }
         },
-        "door@2,0,1:1G5DxM": {
+        "door@2,0,1:Z1V7SQd": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth39" },
+          "config": { "direction": "towards", "toRoom": "blacktooth39" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -2925,14 +2925,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:Z2fDQ8P": {
+        "door@8,0,0:ZUCFDn": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth42" },
+          "config": { "direction": "left", "toRoom": "blacktooth42" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:Z2fDWkV": {
+        "door@0,0,0:uMJWX": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth39" },
+          "config": { "direction": "right", "toRoom": "blacktooth39" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -2971,14 +2971,14 @@
           "config": {},
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "door@8,0,0:Z2fDPS5": {
+        "door@8,0,0:ZUCFnC": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth43" },
+          "config": { "direction": "left", "toRoom": "blacktooth43" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:Z2fDQoA": {
+        "door@0,0,0:uMPTj": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth41" },
+          "config": { "direction": "right", "toRoom": "blacktooth41" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -3006,9 +3006,9 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@0,2,1:Z2fDQ8P": {
+        "door@0,2,1:uMQa4": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth42" },
+          "config": { "direction": "right", "toRoom": "blacktooth42" },
           "position": { "x": 0, "y": 2, "z": 1 }
         }
       },
@@ -3040,9 +3040,9 @@
         ]
       },
       "items": {
-        "door@0,2,0:dB1g5": {
+        "door@0,2,0:Z2jStSb": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth45market" },
+          "config": { "direction": "right", "toRoom": "blacktooth45market" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -3117,14 +3117,14 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@3,8,0:ELw9s": {
+        "door@3,8,0:bfccM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth46market" },
+          "config": { "direction": "away", "toRoom": "blacktooth46market" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:2m92x7": {
+        "door@8,3,0:1U5wHo": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth44market" },
+          "config": { "direction": "left", "toRoom": "blacktooth44market" },
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
@@ -3161,14 +3161,14 @@
           "config": { "style": "cube" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@2,6,3:Z1sKu7z": {
+        "door@2,6,3:Z1WhO4f": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth47market" },
+          "config": { "direction": "away", "toRoom": "blacktooth47market" },
           "position": { "x": 2, "y": 6, "z": 3 }
         },
-        "door@2,0,0:Z2gRAnr": {
+        "door@2,0,0:Z2ksHaW": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth45market" },
+          "config": { "direction": "towards", "toRoom": "blacktooth45market" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -3318,14 +3318,14 @@
           "config": {},
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "door@3,8,2:1sSCpk": {
+        "door@3,8,2:YmisE": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth48market" },
+          "config": { "direction": "away", "toRoom": "blacktooth48market" },
           "position": { "x": 3, "y": 8, "z": 2 }
         },
-        "door@3,0,1:ELw9s": {
+        "door@3,0,1:BbplW": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth46market" },
+          "config": { "direction": "towards", "toRoom": "blacktooth46market" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -3351,14 +3351,14 @@
         ]
       },
       "items": {
-        "door@2,3,0:1OPdLO": {
+        "door@2,3,0:1nLHW6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth49market" },
+          "config": { "direction": "left", "toRoom": "blacktooth49market" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@0,0,0:Z1sKu7z": {
+        "door@0,0,0:Z1wlAU5": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth47market" },
+          "config": { "direction": "towards", "toRoom": "blacktooth47market" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -3414,14 +3414,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "door@8,0,0:vI40v": {
+        "door@8,0,0:4EyaM": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth50market" },
+          "config": { "direction": "left", "toRoom": "blacktooth50market" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:Z16NSK5": {
+        "door@0,0,0:1pRITA": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth48market" },
+          "config": { "direction": "right", "toRoom": "blacktooth48market" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -3457,19 +3457,19 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@0,8,0:dkfpT": {
+        "door@0,8,0:29aKb8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth4" },
+          "config": { "direction": "away", "toRoom": "blacktooth4" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@2,3,0:fyUlP": {
+        "door@2,3,0:1LeRlz": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth6" },
+          "config": { "direction": "left", "toRoom": "blacktooth6" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@0,0,0:dkgca": {
+        "door@0,0,0:Z1cQaKM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth7" },
+          "config": { "direction": "towards", "toRoom": "blacktooth7" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -3519,19 +3519,19 @@
           "config": { "which": "helicopter-bug" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@8,3,0:1jPagn": {
+        "door@8,3,0:RLEqE": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth52market" },
+          "config": { "direction": "left", "toRoom": "blacktooth52market" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:1OPdLO": {
+        "door@0,3,0:ZHEhmr": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth49market" },
+          "config": { "direction": "right", "toRoom": "blacktooth49market" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:1G5Ruv": {
+        "door@3,0,0:Z1V7ETu": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth51" },
+          "config": { "direction": "towards", "toRoom": "blacktooth51" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -3568,9 +3568,9 @@
           "config": { "toRoom": "moonbase1" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@2,8,0:Z1XKxD1": {
+        "door@2,8,0:Z2shRzG": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth50market" },
+          "config": { "direction": "away", "toRoom": "blacktooth50market" },
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
@@ -3661,14 +3661,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@2,6,0:1L0F9K": {
+        "door@2,6,0:1htld5": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth53market" },
+          "config": { "direction": "away", "toRoom": "blacktooth53market" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@0,2,0:vI40v": {
+        "door@0,2,0:Z21Lr8K": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth50market" },
+          "config": { "direction": "right", "toRoom": "blacktooth50market" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -3726,14 +3726,14 @@
           "config": { "which": "helicopter-bug" },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "door@2,8,0:1G5SgL": {
+        "door@2,8,0:xRLVF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth54" },
+          "config": { "direction": "away", "toRoom": "blacktooth54" },
           "position": { "x": 2, "y": 8, "z": 0 }
         },
-        "door@2,0,0:Z1aDrn9": {
+        "door@2,0,0:Z1eeyaE": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth52market" },
+          "config": { "direction": "towards", "toRoom": "blacktooth52market" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -3770,9 +3770,9 @@
           "config": { "style": "organic" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@3,0,1:1L0F9K": {
+        "door@3,0,1:1Hpymf": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth53market" },
+          "config": { "direction": "towards", "toRoom": "blacktooth53market" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -3804,14 +3804,14 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@3,6,0:1G60uS": {
+        "door@3,6,0:xRTaM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth61" },
+          "config": { "direction": "away", "toRoom": "blacktooth61" },
           "position": { "x": 3, "y": 6, "z": 0 }
         },
-        "door@0,2,0:Z2fDH6r": {
+        "door@0,2,0:uN0cs": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth56" },
+          "config": { "direction": "right", "toRoom": "blacktooth56" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -3882,14 +3882,14 @@
           "config": { "style": "spikes" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@8,0,0:Z2fDHmc": {
+        "door@8,0,0:ZUCwQJ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth55" },
+          "config": { "direction": "left", "toRoom": "blacktooth55" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,4:Z2fDGPG": {
+        "door@0,0,4:uN0sd": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth57" },
+          "config": { "direction": "right", "toRoom": "blacktooth57" },
           "position": { "x": 0, "y": 0, "z": 4 }
         }
       },
@@ -3944,14 +3944,14 @@
           "config": { "toRoom": "moonbase9" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "door@3,8,0:Z2l9XLn": {
+        "door@3,8,0:2fuP5S": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth58triple" },
+          "config": { "direction": "away", "toRoom": "blacktooth58triple" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:Z2fDH6r": {
+        "door@8,3,0:ZUCwAY": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth56" },
+          "config": { "direction": "left", "toRoom": "blacktooth56" },
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
@@ -4371,14 +4371,14 @@
           "config": { "gives": "fast" },
           "position": { "x": 13, "y": 5, "z": 1 }
         },
-        "door@2,14,2:1G5Tyx": {
+        "door@2,14,2:xRNer": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth59" },
+          "config": { "direction": "away", "toRoom": "blacktooth59" },
           "position": { "x": 2, "y": 14, "z": 2 }
         },
-        "door@2,0,1:1G5T32": {
+        "door@2,0,1:Z1V7DlX": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth57" },
+          "config": { "direction": "towards", "toRoom": "blacktooth57" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -4504,19 +4504,19 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@3,8,0:1G60f8": {
+        "door@3,8,0:xRSU2": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth60" },
+          "config": { "direction": "away", "toRoom": "blacktooth60" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:Z2fDzRk": {
+        "door@8,3,0:ZUCpmR": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth63" },
+          "config": { "direction": "left", "toRoom": "blacktooth63" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@3,0,4:Z2l9XLn": {
+        "door@3,0,4:Z2oK5yS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth58triple" },
+          "config": { "direction": "towards", "toRoom": "blacktooth58triple" },
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
@@ -4606,9 +4606,9 @@
           "config": { "which": "dalek" },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "door@0,3,1:fyU65": {
+        "door@0,3,1:b0091": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth5" },
+          "config": { "direction": "right", "toRoom": "blacktooth5" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -4793,9 +4793,9 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "door@3,0,0:1G5Tyx": {
+        "door@3,0,0:Z1V7CPs": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth59" },
+          "config": { "direction": "towards", "toRoom": "blacktooth59" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -4852,14 +4852,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 3, "y": 7, "z": 1 }
         },
-        "door@1,8,5:1jxtD5": {
+        "door@1,8,5:Z1izE3v": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth62fish" },
+          "config": { "direction": "away", "toRoom": "blacktooth62fish" },
           "position": { "x": 1, "y": 8, "z": 5 }
         },
-        "door@1,0,0:1G5Sww": {
+        "door@1,0,0:Z1V7DRt": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth55" },
+          "config": { "direction": "towards", "toRoom": "blacktooth55" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -5043,14 +5043,14 @@
           "config": { "style": "cube" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "door@0,11,1:Z2fDzRk": {
+        "door@0,11,1:uN7qz": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth63" },
+          "config": { "direction": "right", "toRoom": "blacktooth63" },
           "position": { "x": 0, "y": 11, "z": 1 }
         },
-        "door@2,0,1:1G60uS": {
+        "door@2,0,1:Z1V7wT7": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth61" },
+          "config": { "direction": "towards", "toRoom": "blacktooth61" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -5136,14 +5136,14 @@
           "config": { "which": "helicopter-bug" },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
-        "door@8,0,5:1IRYlI": {
+        "door@8,0,5:Z19nuqW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth62fish" },
+          "config": { "direction": "left", "toRoom": "blacktooth62fish" },
           "position": { "x": 8, "y": 0, "z": 5 }
         },
-        "door@0,0,0:Z2fDGkb": {
+        "door@0,0,0:uN0XI": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth59" },
+          "config": { "direction": "right", "toRoom": "blacktooth59" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -5180,9 +5180,9 @@
           "config": { "toRoom": "moonbase31" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@2,6,0:1G61wT": {
+        "door@2,6,0:xRUcN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth65" },
+          "config": { "direction": "away", "toRoom": "blacktooth65" },
           "position": { "x": 2, "y": 6, "z": 0 }
         }
       },
@@ -5213,14 +5213,14 @@
           "config": { "which": "turtle", "startDirection": "right" },
           "position": { "x": 1, "y": 4, "z": 0 }
         },
-        "door@0,8,0:1G61ME": {
+        "door@0,8,0:xRUsy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth66" },
+          "config": { "direction": "away", "toRoom": "blacktooth66" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:1G61h9": {
+        "door@0,0,0:Z1V7w7Q": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth64" },
+          "config": { "direction": "towards", "toRoom": "blacktooth64" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -5246,19 +5246,19 @@
         ]
       },
       "items": {
-        "door@2,8,0:1G62ja": {
+        "door@2,8,0:xRUY4": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth68" },
+          "config": { "direction": "away", "toRoom": "blacktooth68" },
           "position": { "x": 2, "y": 8, "z": 0 }
         },
-        "door@0,3,0:Z2fDyPj": {
+        "door@0,3,0:uN8sA": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth67" },
+          "config": { "direction": "right", "toRoom": "blacktooth67" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@2,0,0:1G61wT": {
+        "door@2,0,0:Z1V7vR6": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth65" },
+          "config": { "direction": "towards", "toRoom": "blacktooth65" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -5368,19 +5368,19 @@
           "config": {},
           "position": { "x": 0, "y": 0, "z": 5 }
         },
-        "door@3,8,4:1G68fv": {
+        "door@3,8,4:xS1Up": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth70" },
+          "config": { "direction": "away", "toRoom": "blacktooth70" },
           "position": { "x": 3, "y": 8, "z": 4 }
         },
-        "door@8,3,4:Z2fDz64": {
+        "door@8,3,4:ZUCoAB": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth66" },
+          "config": { "direction": "left", "toRoom": "blacktooth66" },
           "position": { "x": 8, "y": 3, "z": 4 }
         },
-        "door@0,3,5:Z2fDyjN": {
+        "door@0,3,5:uN8Y6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth69" },
+          "config": { "direction": "right", "toRoom": "blacktooth69" },
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
@@ -5490,14 +5490,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 2 }
         },
-        "door@8,3,5:Z2fDr5G": {
+        "door@8,3,5:ZUCgAe": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth76" },
+          "config": { "direction": "left", "toRoom": "blacktooth76" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,5:1G61ME": {
+        "door@3,0,5:Z1V7vBl": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth66" },
+          "config": { "direction": "towards", "toRoom": "blacktooth66" },
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
@@ -5534,9 +5534,9 @@
           "config": { "toRoom": "moonbase36" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@6,2,0:Z2fDyPj": {
+        "door@6,2,0:ZUCokQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth67" },
+          "config": { "direction": "left", "toRoom": "blacktooth67" },
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
@@ -5562,19 +5562,19 @@
         ]
       },
       "items": {
-        "door@0,8,0:dkfFE": {
+        "door@0,8,0:29aKqS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth5" },
+          "config": { "direction": "away", "toRoom": "blacktooth5" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@2,3,0:Z2fEfFt": {
+        "door@2,3,0:ZUD5b1": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth10" },
+          "config": { "direction": "left", "toRoom": "blacktooth10" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@0,0,0:WpJI8": {
+        "door@0,0,0:1XUCcW": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth8fish" },
+          "config": { "direction": "towards", "toRoom": "blacktooth8fish" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -5660,14 +5660,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 5, "z": 4 }
         },
-        "door@0,8,3:1G68vg": {
+        "door@0,8,3:xS2ba": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth71" },
+          "config": { "direction": "away", "toRoom": "blacktooth71" },
           "position": { "x": 0, "y": 8, "z": 3 }
         },
-        "door@0,0,0:1G623p": {
+        "door@0,0,0:Z1V7vlA": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth67" },
+          "config": { "direction": "towards", "toRoom": "blacktooth67" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -5743,19 +5743,19 @@
           "config": { "which": "dalek" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@3,6,0:1G68L1": {
+        "door@3,6,0:xS2qU": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth72" },
+          "config": { "direction": "away", "toRoom": "blacktooth72" },
           "position": { "x": 3, "y": 6, "z": 0 }
         },
-        "door@0,2,4:Z2fDqOV": {
+        "door@0,2,4:uNgsX": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth77" },
+          "config": { "direction": "right", "toRoom": "blacktooth77" },
           "position": { "x": 0, "y": 2, "z": 4 }
         },
-        "door@3,0,0:1G68fv": {
+        "door@3,0,0:Z1V7p9u": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth70" },
+          "config": { "direction": "towards", "toRoom": "blacktooth70" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -5806,19 +5806,19 @@
           "config": { "which": "dalek" },
           "position": { "x": 7, "y": 4, "z": 0 }
         },
-        "door@8,2,4:Z2fDrQW": {
+        "door@8,2,4:ZUChmu": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth73" },
+          "config": { "direction": "left", "toRoom": "blacktooth73" },
           "position": { "x": 8, "y": 2, "z": 4 }
         },
-        "door@0,2,0:Z2fDqzb": {
+        "door@0,2,0:uNgII": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth78" },
+          "config": { "direction": "right", "toRoom": "blacktooth78" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@3,0,0:1G68vg": {
+        "door@3,0,0:Z1V7oSJ": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth71" },
+          "config": { "direction": "towards", "toRoom": "blacktooth71" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -5954,14 +5954,14 @@
           "config": {},
           "position": { "x": 0, "y": 1, "z": 2 }
         },
-        "door@8,2,2:Z2fDrBc": {
+        "door@8,2,2:ZUCh6J": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth74" },
+          "config": { "direction": "left", "toRoom": "blacktooth74" },
           "position": { "x": 8, "y": 2, "z": 2 }
         },
-        "door@0,2,4:Z2fDs7H": {
+        "door@0,2,4:uNfbc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth72" },
+          "config": { "direction": "right", "toRoom": "blacktooth72" },
           "position": { "x": 0, "y": 2, "z": 4 }
         }
       },
@@ -6038,14 +6038,14 @@
           "config": { "style": "cube" },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "door@0,2,5:Z2fDrQW": {
+        "door@0,2,5:uNfqW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth73" },
+          "config": { "direction": "right", "toRoom": "blacktooth73" },
           "position": { "x": 0, "y": 2, "z": 5 }
         },
-        "door@2,0,1:1G69xh": {
+        "door@2,0,1:Z1V7nQI": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth75" },
+          "config": { "direction": "towards", "toRoom": "blacktooth75" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -6151,14 +6151,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
-        "door@2,8,2:1G69hw": {
+        "door@2,8,2:xS2Wq": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth74" },
+          "config": { "direction": "away", "toRoom": "blacktooth74" },
           "position": { "x": 2, "y": 8, "z": 2 }
         },
-        "door@2,0,1:1G69N2": {
+        "door@2,0,1:Z1V7nAX": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth76" },
+          "config": { "direction": "towards", "toRoom": "blacktooth76" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -6271,14 +6271,14 @@
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@3,8,0:1G69xh": {
+        "door@3,8,0:xS3db": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth75" },
+          "config": { "direction": "away", "toRoom": "blacktooth75" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@0,3,0:Z2fDyzy": {
+        "door@0,3,0:uN8Il": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth68" },
+          "config": { "direction": "right", "toRoom": "blacktooth68" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -6434,14 +6434,14 @@
           "config": { "style": "cube" },
           "position": { "x": 4, "y": 0, "z": 6 }
         },
-        "door@8,1,0:Z2fDsns": {
+        "door@8,1,0:ZUChS0": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth71" },
+          "config": { "direction": "left", "toRoom": "blacktooth71" },
           "position": { "x": 8, "y": 1, "z": 0 }
         },
-        "door@0,1,0:Z2fDjAO": {
+        "door@0,1,0:uNnH5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth84" },
+          "config": { "direction": "right", "toRoom": "blacktooth84" },
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
@@ -6552,14 +6552,14 @@
           "config": { "style": "anvil" },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
-        "door@3,8,5:1G6gfS": {
+        "door@3,8,5:xS9UM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth80" },
+          "config": { "direction": "away", "toRoom": "blacktooth80" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:Z2fDs7H": {
+        "door@8,3,5:ZUChCf": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth72" },
+          "config": { "direction": "left", "toRoom": "blacktooth72" },
           "position": { "x": 8, "y": 3, "z": 5 }
         }
       },
@@ -6731,14 +6731,14 @@
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "door@1,8,0:1G6gvD": {
+        "door@1,8,0:xSabx": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth81" },
+          "config": { "direction": "away", "toRoom": "blacktooth81" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:1G6ajx": {
+        "door@1,0,0:Z1V7n5s": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth78" },
+          "config": { "direction": "towards", "toRoom": "blacktooth78" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -6853,14 +6853,14 @@
           "config": {},
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "door@8,3,5:Z2fDk7k": {
+        "door@8,3,5:ZUC9BR": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth82" },
+          "config": { "direction": "left", "toRoom": "blacktooth82" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,0:1G6gfS": {
+        "door@3,0,0:Z1V7h97": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth80" },
+          "config": { "direction": "towards", "toRoom": "blacktooth80" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -6962,14 +6962,14 @@
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@8,2,0:Z1AyjTw": {
+        "door@8,2,0:ET0us": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth83tofreedom" },
+          "config": { "direction": "left", "toRoom": "blacktooth83tofreedom" },
           "position": { "x": 8, "y": 2, "z": 0 }
         },
-        "door@0,2,0:Z2fDkn5": {
+        "door@0,2,0:uNmUO": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth81" },
+          "config": { "direction": "right", "toRoom": "blacktooth81" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -7119,9 +7119,9 @@
           "config": {},
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@0,3,1:Z2fDk7k": {
+        "door@0,3,1:uNnbz": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth82" },
+          "config": { "direction": "right", "toRoom": "blacktooth82" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -7201,14 +7201,14 @@
           "config": { "style": "cube" },
           "position": { "x": 4, "y": 7, "z": 0 }
         },
-        "door@8,3,2:Z2fDqOV": {
+        "door@8,3,2:ZUCgkt": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth77" },
+          "config": { "direction": "left", "toRoom": "blacktooth77" },
           "position": { "x": 8, "y": 3, "z": 2 }
         },
-        "door@0,3,4:Z2fDjl4": {
+        "door@0,3,4:uNnWP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth85" },
+          "config": { "direction": "right", "toRoom": "blacktooth85" },
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
@@ -7293,14 +7293,14 @@
           "config": { "style": "cube" },
           "position": { "x": 3, "y": 4, "z": 5 }
         },
-        "door@8,3,0:Z2fDjAO": {
+        "door@8,3,0:ZUC96m": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth84" },
+          "config": { "direction": "left", "toRoom": "blacktooth84" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@3,0,5:1G6hNp": {
+        "door@3,0,5:Z1V7fAA": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth86" },
+          "config": { "direction": "towards", "toRoom": "blacktooth86" },
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
@@ -7331,14 +7331,14 @@
           "config": { "which": "flying-ball" },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
-        "door@1,8,0:1G6hxE": {
+        "door@1,8,0:xSbdy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth85" },
+          "config": { "direction": "away", "toRoom": "blacktooth85" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:Z1Dp6jG": {
+        "door@1,0,0:1CAEsF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth87crown" },
+          "config": { "direction": "towards", "toRoom": "blacktooth87crown" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -7438,9 +7438,9 @@
           "config": { "which": "dalek" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "door@3,8,1:1G6hNp": {
+        "door@3,8,1:xSbtj": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth86" },
+          "config": { "direction": "away", "toRoom": "blacktooth86" },
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
@@ -7496,14 +7496,14 @@
           "config": { "alive": true },
           "position": { "x": 3, "y": 0, "z": 3 }
         },
-        "door@1,8,2:dkgca": {
+        "door@1,8,2:29aKWo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "blacktooth7" },
+          "config": { "direction": "away", "toRoom": "blacktooth7" },
           "position": { "x": 1, "y": 8, "z": 2 }
         },
-        "door@0,3,0:fyV86": {
+        "door@0,3,0:b01b2": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth9" },
+          "config": { "direction": "right", "toRoom": "blacktooth9" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -7638,9 +7638,9 @@
           "config": { "gives": "hooter" },
           "position": { "x": 0, "y": 4, "z": 7 }
         },
-        "door@8,3,2:XeARp": {
+        "door@8,3,2:HxlQc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "blacktooth8fish" },
+          "config": { "direction": "left", "toRoom": "blacktooth8fish" },
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
@@ -7710,14 +7710,14 @@
           "config": { "slider": false },
           "position": { "x": 0, "y": 3, "z": 3 }
         },
-        "door@0,3,4:Z2dJsRQ": {
+        "door@0,3,4:ocMCU": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld2" },
+          "config": { "direction": "right", "toRoom": "bookworld2" },
           "position": { "x": 0, "y": 3, "z": 4 }
         },
-        "door@3,0,0:eh0W6": {
+        "door@3,0,0:1OwmAS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld7" },
+          "config": { "direction": "towards", "toRoom": "bookworld7" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -7748,14 +7748,14 @@
           "config": { "which": "monkey" },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "door@6,3,1:Z2dJr4z": {
+        "door@6,3,1:1AnU6S": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld9" },
+          "config": { "direction": "left", "toRoom": "bookworld9" },
           "position": { "x": 6, "y": 3, "z": 1 }
         },
-        "door@0,3,1:2cFgeo": {
+        "door@0,3,1:286lhk": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld11" },
+          "config": { "direction": "right", "toRoom": "bookworld11" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -7796,14 +7796,14 @@
           "config": {},
           "position": { "x": 5, "y": 1, "z": 0 }
         },
-        "door@8,0,4:2cFfXD": {
+        "door@8,0,4:Z1lPUPy": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld10" },
+          "config": { "direction": "left", "toRoom": "bookworld10" },
           "position": { "x": 8, "y": 0, "z": 4 }
         },
-        "door@0,0,0:Z2dJrPP": {
+        "door@0,0,0:ocNEV": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld6" },
+          "config": { "direction": "right", "toRoom": "bookworld6" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -7869,14 +7869,14 @@
           "config": { "style": "anvil" },
           "position": { "x": 3, "y": 4, "z": 0 }
         },
-        "door@0,3,0:2cFgJT": {
+        "door@0,3,0:286lMP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld13" },
+          "config": { "direction": "right", "toRoom": "bookworld13" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@2,0,0:eh0aP": {
+        "door@2,0,0:1OwlOC": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld4" },
+          "config": { "direction": "towards", "toRoom": "bookworld4" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -7902,14 +7902,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:ZwJWHI": {
+        "door@8,0,0:ZMrcIV": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld12fish" },
+          "config": { "direction": "left", "toRoom": "bookworld12fish" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:2cFh0E": {
+        "door@0,0,0:286m3A": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld14" },
+          "config": { "direction": "right", "toRoom": "bookworld14" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -8039,14 +8039,14 @@
           "config": { "axis": "x" },
           "position": { "x": 7, "y": 2, "z": 2 }
         },
-        "door@8,3,0:2cFgJT": {
+        "door@8,3,0:Z1lPU4i": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld13" },
+          "config": { "direction": "left", "toRoom": "bookworld13" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@3,0,0:2aqBPY": {
+        "door@3,0,0:JfaS2": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld15" },
+          "config": { "direction": "towards", "toRoom": "bookworld15" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -8106,14 +8106,14 @@
           "config": { "slider": false },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@3,8,3:2aqBAe": {
+        "door@3,8,3:ZXU1st": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld14" },
+          "config": { "direction": "away", "toRoom": "bookworld14" },
           "position": { "x": 3, "y": 8, "z": 3 }
         },
-        "door@3,0,1:2aqC6J": {
+        "door@3,0,1:Jfb8M": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld16" },
+          "config": { "direction": "towards", "toRoom": "bookworld16" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -8139,19 +8139,19 @@
         ]
       },
       "items": {
-        "door@1,8,0:2aqBPY": {
+        "door@1,8,0:ZXU1cI": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld15" },
+          "config": { "direction": "away", "toRoom": "bookworld15" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@0,3,0:2cFhLU": {
+        "door@0,3,0:286mOQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld17" },
+          "config": { "direction": "right", "toRoom": "bookworld17" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@1,0,0:2aqCCf": {
+        "door@1,0,0:JfbEi": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld18" },
+          "config": { "direction": "towards", "toRoom": "bookworld18" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -8192,9 +8192,9 @@
           "config": {},
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@8,2,4:2cFhwa": {
+        "door@8,2,4:Z1lPTi2": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld16" },
+          "config": { "direction": "left", "toRoom": "bookworld16" },
           "position": { "x": 8, "y": 2, "z": 4 }
         }
       },
@@ -8260,14 +8260,14 @@
           "config": { "slider": false },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@2,8,2:2aqC6J": {
+        "door@2,8,2:ZXU0VX": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld16" },
+          "config": { "direction": "away", "toRoom": "bookworld16" },
           "position": { "x": 2, "y": 8, "z": 2 }
         },
-        "door@2,0,2:2aqCS0": {
+        "door@2,0,2:JfbU3": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld19" },
+          "config": { "direction": "towards", "toRoom": "bookworld19" },
           "position": { "x": 2, "y": 0, "z": 2 }
         }
       },
@@ -8331,14 +8331,14 @@
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
-        "door@0,8,0:2aqCCf": {
+        "door@0,8,0:ZXU0qs": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld18" },
+          "config": { "direction": "away", "toRoom": "bookworld18" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:2aqIyA": {
+        "door@0,0,0:JfhAD": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld20" },
+          "config": { "direction": "towards", "toRoom": "bookworld20" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -8513,14 +8513,14 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 2 }
         },
-        "door@12,2,3:Z2dJt8B": {
+        "door@12,2,3:1AnS2Q": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld1" },
+          "config": { "direction": "left", "toRoom": "bookworld1" },
           "position": { "x": 12, "y": 2, "z": 3 }
         },
-        "door@0,2,3:Z2dJsC6": {
+        "door@0,2,3:ocMSF": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld3" },
+          "config": { "direction": "right", "toRoom": "bookworld3" },
           "position": { "x": 0, "y": 2, "z": 3 }
         }
       },
@@ -8552,19 +8552,19 @@
           "config": {},
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@2,6,0:2aqCS0": {
+        "door@2,6,0:ZXU0aH": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld19" },
+          "config": { "direction": "away", "toRoom": "bookworld19" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@6,2,0:2cFpwx": {
+        "door@6,2,0:Z1lPLhE": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld26" },
+          "config": { "direction": "left", "toRoom": "bookworld26" },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "door@2,0,4:2aqRAY": {
+        "door@2,0,4:JfqD2": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld34" },
+          "config": { "direction": "towards", "toRoom": "bookworld34" },
           "position": { "x": 2, "y": 0, "z": 4 }
         }
       },
@@ -8629,14 +8629,14 @@
           "config": { "which": "headless-base" },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "door@3,8,0:eh1sB": {
+        "door@3,8,0:Z2k1lKP": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld9" },
+          "config": { "direction": "away", "toRoom": "bookworld9" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@3,0,0:2aqJ56": {
+        "door@3,0,0:Jfi79": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld22" },
+          "config": { "direction": "towards", "toRoom": "bookworld22" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -8712,14 +8712,14 @@
           "config": { "gives": "shield" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@0,8,0:2aqIOl": {
+        "door@0,8,0:ZXTTem": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld21" },
+          "config": { "direction": "away", "toRoom": "bookworld21" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,3,0:2cFoKh": {
+        "door@0,3,0:286tNd": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld23" },
+          "config": { "direction": "right", "toRoom": "bookworld23" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -8736,19 +8736,19 @@
         "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
-        "door@6,2,5:2cFouw": {
+        "door@6,2,5:Z1lPMjF": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld22" },
+          "config": { "direction": "left", "toRoom": "bookworld22" },
           "position": { "x": 6, "y": 2, "z": 5 }
         },
-        "door@0,2,0:2cFp12": {
+        "door@0,2,0:286u3X": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld24" },
+          "config": { "direction": "right", "toRoom": "bookworld24" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@2,0,0:2aqKmR": {
+        "door@2,0,0:JfjoU": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld27" },
+          "config": { "direction": "towards", "toRoom": "bookworld27" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -8814,14 +8814,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 7, "y": 2, "z": 0 }
         },
-        "door@8,2,2:2cFoKh": {
+        "door@8,2,2:Z1lPM3U": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld23" },
+          "config": { "direction": "left", "toRoom": "bookworld23" },
           "position": { "x": 8, "y": 2, "z": 2 }
         },
-        "door@0,2,2:2cFpgM": {
+        "door@0,2,2:286ujI": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld25" },
+          "config": { "direction": "right", "toRoom": "bookworld25" },
           "position": { "x": 0, "y": 2, "z": 2 }
         }
       },
@@ -8847,14 +8847,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:2cFp12": {
+        "door@8,0,0:Z1lPLNa": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld24" },
+          "config": { "direction": "left", "toRoom": "bookworld24" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:2cFpwx": {
+        "door@0,0,0:286uzt": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld26" },
+          "config": { "direction": "right", "toRoom": "bookworld26" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -8910,14 +8910,14 @@
           "config": { "gives": "donuts" },
           "position": { "x": 3, "y": 0, "z": 5 }
         },
-        "door@4,3,0:2cFpgM": {
+        "door@4,3,0:Z1lPLxp": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld25" },
+          "config": { "direction": "left", "toRoom": "bookworld25" },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "door@0,3,0:2cFnY1": {
+        "door@0,3,0:286t1W": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld20" },
+          "config": { "direction": "right", "toRoom": "bookworld20" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -8958,14 +8958,14 @@
           "config": { "slider": false },
           "position": { "x": 0, "y": 0, "z": 3 }
         },
-        "door@0,8,0:2aqJkQ": {
+        "door@0,8,0:ZXTSHQ": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld23" },
+          "config": { "direction": "away", "toRoom": "bookworld23" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,4:2aqKCC": {
+        "door@0,0,4:JfjEF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld28" },
+          "config": { "direction": "towards", "toRoom": "bookworld28" },
           "position": { "x": 0, "y": 0, "z": 4 }
         }
       },
@@ -9234,9 +9234,9 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 3, "y": 3, "z": 1 }
         },
-        "door@3,16,3:2aqKmR": {
+        "door@3,16,3:ZXTRFP": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld27" },
+          "config": { "direction": "away", "toRoom": "bookworld27" },
           "position": { "x": 3, "y": 16, "z": 3 }
         }
       },
@@ -9417,9 +9417,9 @@
           "config": { "top": 6, "bottom": 0 },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "door@0,3,3:2cFvYo": {
+        "door@0,3,3:286B2k": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld30" },
+          "config": { "direction": "right", "toRoom": "bookworld30" },
           "position": { "x": 0, "y": 3, "z": 3 }
         }
       },
@@ -9455,14 +9455,14 @@
           "config": { "which": "monkey" },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
-        "door@8,2,0:Z2dJsRQ": {
+        "door@8,2,0:1AnSiB": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld2" },
+          "config": { "direction": "left", "toRoom": "bookworld2" },
           "position": { "x": 8, "y": 2, "z": 0 }
         },
-        "door@0,2,2:Z2dJsml": {
+        "door@0,2,2:ocN9q": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld4" },
+          "config": { "direction": "right", "toRoom": "bookworld4" },
           "position": { "x": 0, "y": 2, "z": 2 }
         }
       },
@@ -9498,14 +9498,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
-        "door@8,1,2:2cFqiN": {
+        "door@8,1,2:Z1lPKvo": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld29" },
+          "config": { "direction": "left", "toRoom": "bookworld29" },
           "position": { "x": 8, "y": 1, "z": 2 }
         },
-        "door@0,1,2:2cFwf9": {
+        "door@0,1,2:286Bi5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld31" },
+          "config": { "direction": "right", "toRoom": "bookworld31" },
           "position": { "x": 0, "y": 1, "z": 2 }
         }
       },
@@ -9642,14 +9642,14 @@
           "config": { "gives": "shield" },
           "position": { "x": 9, "y": 2, "z": 0 }
         },
-        "door@16,2,0:2cFvYo": {
+        "door@16,2,0:Z1lPEON": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld30" },
+          "config": { "direction": "left", "toRoom": "bookworld30" },
           "position": { "x": 16, "y": 2, "z": 0 }
         },
-        "door@0,2,0:2cFwuT": {
+        "door@0,2,0:286BxP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld32" },
+          "config": { "direction": "right", "toRoom": "bookworld32" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -9685,9 +9685,9 @@
         ]
       },
       "items": {
-        "door@8,3,1:2cFwf9": {
+        "door@8,3,1:Z1lPEz3": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld31" },
+          "config": { "direction": "left", "toRoom": "bookworld31" },
           "position": { "x": 8, "y": 3, "z": 1 }
         }
       },
@@ -9738,14 +9738,14 @@
           "config": {},
           "position": { "x": 1, "y": 7, "z": 0 }
         },
-        "door@3,8,4:2aqRAY": {
+        "door@3,8,4:ZXTKrI": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld34" },
+          "config": { "direction": "away", "toRoom": "bookworld34" },
           "position": { "x": 3, "y": 8, "z": 4 }
         },
-        "door@0,3,0:2cFxha": {
+        "door@0,3,0:286Ck6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld35" },
+          "config": { "direction": "right", "toRoom": "bookworld35" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -9914,14 +9914,14 @@
           "config": { "slider": true },
           "position": { "x": 0, "y": 5, "z": -1 }
         },
-        "door@0,16,0:2aqIyA": {
+        "door@0,16,0:ZXTTu7": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld20" },
+          "config": { "direction": "away", "toRoom": "bookworld20" },
           "position": { "x": 0, "y": 16, "z": 0 }
         },
-        "door@0,0,0:2aqRle": {
+        "door@0,0,0:Jfqnh": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld33" },
+          "config": { "direction": "towards", "toRoom": "bookworld33" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -10031,14 +10031,14 @@
           "config": {},
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "door@8,3,0:2cFwKE": {
+        "door@8,3,0:Z1lPE3x": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld33" },
+          "config": { "direction": "left", "toRoom": "bookworld33" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,5:2cFxwU": {
+        "door@0,3,5:286CzQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld36" },
+          "config": { "direction": "right", "toRoom": "bookworld36" },
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
@@ -10099,14 +10099,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@3,6,5:2aqSnf": {
+        "door@3,6,5:ZXTJFs": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld37" },
+          "config": { "direction": "away", "toRoom": "bookworld37" },
           "position": { "x": 3, "y": 6, "z": 5 }
         },
-        "door@8,2,5:2cFxha": {
+        "door@8,2,5:Z1lPDx2": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld35" },
+          "config": { "direction": "left", "toRoom": "bookworld35" },
           "position": { "x": 8, "y": 2, "z": 5 }
         }
       },
@@ -10152,14 +10152,14 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@0,8,0:2aqSD0": {
+        "door@0,8,0:ZXTJpH": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld38" },
+          "config": { "direction": "away", "toRoom": "bookworld38" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:2aqS7u": {
+        "door@0,0,0:Jfr9x": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld36" },
+          "config": { "direction": "towards", "toRoom": "bookworld36" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -10195,9 +10195,9 @@
         ]
       },
       "items": {
-        "door@3,0,5:2aqSnf": {
+        "door@3,0,5:Jfrpi": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld37" },
+          "config": { "direction": "towards", "toRoom": "bookworld37" },
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
@@ -10322,19 +10322,19 @@
           "config": { "slider": false },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "door@0,8,4:ZxyNR0": {
+        "door@0,8,4:Z1VM3e8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld12fish" },
+          "config": { "direction": "away", "toRoom": "bookworld12fish" },
           "position": { "x": 0, "y": 8, "z": 4 }
         },
-        "door@2,3,4:Z2dJsC6": {
+        "door@2,3,4:1AnSym": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld3" },
+          "config": { "direction": "left", "toRoom": "bookworld3" },
           "position": { "x": 2, "y": 3, "z": 4 }
         },
-        "door@0,0,0:eh0qA": {
+        "door@0,0,0:1Owm5n": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld5" },
+          "config": { "direction": "towards", "toRoom": "bookworld5" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -10375,9 +10375,9 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@3,8,0:275iTn": {
+        "door@3,8,0:Zv2OMd": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld41crown" },
+          "config": { "direction": "away", "toRoom": "bookworld41crown" },
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
@@ -10463,9 +10463,9 @@
           "config": { "style": "sticks" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@2,0,0:2aqYzl": {
+        "door@2,0,0:JfxBo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld40" },
+          "config": { "direction": "towards", "toRoom": "bookworld40" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -10501,14 +10501,14 @@
           "config": { "which": "helicopter-bug" },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
-        "door@1,8,0:eh0aP": {
+        "door@1,8,0:Z2k1n3B": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld4" },
+          "config": { "direction": "away", "toRoom": "bookworld4" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:eh0Gl": {
+        "door@1,0,0:1Owml8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld6" },
+          "config": { "direction": "towards", "toRoom": "bookworld6" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -10564,14 +10564,14 @@
           "config": { "slider": true },
           "position": { "x": 1, "y": 3, "z": 1 }
         },
-        "door@1,8,3:eh0qA": {
+        "door@1,8,3:Z2k1mMQ": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld5" },
+          "config": { "direction": "away", "toRoom": "bookworld5" },
           "position": { "x": 1, "y": 8, "z": 3 }
         },
-        "door@4,3,3:2cFgeo": {
+        "door@4,3,3:Z1lPUzN": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld11" },
+          "config": { "direction": "left", "toRoom": "bookworld11" },
           "position": { "x": 4, "y": 3, "z": 3 }
         }
       },
@@ -10612,14 +10612,14 @@
           "config": {},
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@1,8,0:egYoz": {
+        "door@1,8,0:Z2k1nOR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld1" },
+          "config": { "direction": "away", "toRoom": "bookworld1" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,4:eh1cQ": {
+        "door@1,0,4:1OwmQD": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld8" },
+          "config": { "direction": "towards", "toRoom": "bookworld8" },
           "position": { "x": 1, "y": 0, "z": 4 }
         }
       },
@@ -10684,14 +10684,14 @@
           "config": { "style": "cube" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "door@3,8,0:eh0W6": {
+        "door@3,8,0:Z2k1mhl": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld7" },
+          "config": { "direction": "away", "toRoom": "bookworld7" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@0,3,4:Z2dJr4z": {
+        "door@0,3,4:ocOrc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld9" },
+          "config": { "direction": "right", "toRoom": "bookworld9" },
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
@@ -10722,19 +10722,19 @@
           "config": { "slider": true },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "door@8,1,0:Z2dJrkk": {
+        "door@8,1,0:1AnTQ8": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld8" },
+          "config": { "direction": "left", "toRoom": "bookworld8" },
           "position": { "x": 8, "y": 1, "z": 0 }
         },
-        "door@0,1,0:2cFfXD": {
+        "door@0,1,0:286l1z": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "bookworld10" },
+          "config": { "direction": "right", "toRoom": "bookworld10" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "door@3,0,0:2aqIOl": {
+        "door@3,0,0:JfhQo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "bookworld21" },
+          "config": { "direction": "towards", "toRoom": "bookworld21" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -10789,9 +10789,9 @@
           "config": { "toRoom": "moonbase24toegyptus" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "door@8,3,0:1KWpIJ": {
+        "door@8,3,0:Z1mcXXS": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus2" },
+          "config": { "direction": "left", "toRoom": "egyptus2" },
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
@@ -10871,19 +10871,19 @@
           "config": { "style": "organic" },
           "position": { "x": 7, "y": 2, "z": 3 }
         },
-        "door@3,8,5:ZYEmmi": {
+        "door@3,8,5:Z1yI6fM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus15" },
+          "config": { "direction": "away", "toRoom": "egyptus15" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:Z14uA7F": {
+        "door@8,3,5:Z1B0oJe": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus11" },
+          "config": { "direction": "left", "toRoom": "egyptus11" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,0:IbP1q": {
+        "door@3,0,0:2baqqm": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus9fish" },
+          "config": { "direction": "towards", "toRoom": "egyptus9fish" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -10909,14 +10909,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:Z14uzQU": {
+        "door@8,0,0:Z1B0ott": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus12" },
+          "config": { "direction": "left", "toRoom": "egyptus12" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:Z14uAnq": {
+        "door@0,0,0:2rMnfm": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus10" },
+          "config": { "direction": "right", "toRoom": "egyptus10" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -11056,14 +11056,14 @@
           "config": { "top": 8, "bottom": 0 },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "door@3,8,5:ZYEmRN": {
+        "door@3,8,5:Z1yI6Li": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus13" },
+          "config": { "direction": "away", "toRoom": "egyptus13" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@0,3,0:Z14uA7F": {
+        "door@0,3,0:2rMnv7": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus11" },
+          "config": { "direction": "right", "toRoom": "egyptus11" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -11154,9 +11154,9 @@
           "config": { "top": 9, "bottom": 2 },
           "position": { "x": 0, "y": 0, "z": 2 }
         },
-        "door@3,0,0:ZYEn8y": {
+        "door@3,0,0:ZruP6n": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus12" },
+          "config": { "direction": "towards", "toRoom": "egyptus12" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -11238,9 +11238,9 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "door@3,8,3:ZYElA2": {
+        "door@3,8,3:Z1yI5tw": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus18" },
+          "config": { "direction": "away", "toRoom": "egyptus18" },
           "position": { "x": 3, "y": 8, "z": 3 }
         }
       },
@@ -11322,9 +11322,9 @@
           "config": {},
           "position": { "x": 0, "y": 5, "z": 7 }
         },
-        "door@2,0,0:ZYEnE4": {
+        "door@2,0,0:ZruPBS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus10" },
+          "config": { "direction": "towards", "toRoom": "egyptus10" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -11386,9 +11386,9 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "door@2,6,1:ZYElPM": {
+        "door@2,6,1:Z1yI5Jh": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus17" },
+          "config": { "direction": "away", "toRoom": "egyptus17" },
           "position": { "x": 2, "y": 6, "z": 1 }
         }
       },
@@ -11545,14 +11545,14 @@
           "config": { "which": "turtle", "startDirection": "away" },
           "position": { "x": 5, "y": 1, "z": 0 }
         },
-        "door@12,2,2:Z14uyjo": {
+        "door@12,2,2:Z1B0mUW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus18" },
+          "config": { "direction": "left", "toRoom": "egyptus18" },
           "position": { "x": 12, "y": 2, "z": 2 }
         },
-        "door@2,0,1:ZYEm6x": {
+        "door@2,0,1:ZruO4m": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus16" },
+          "config": { "direction": "towards", "toRoom": "egyptus16" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -11583,14 +11583,14 @@
         ]
       },
       "items": {
-        "door@0,2,4:Z14uyz9": {
+        "door@0,2,4:2rMp3D": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus17" },
+          "config": { "direction": "right", "toRoom": "egyptus17" },
           "position": { "x": 0, "y": 2, "z": 4 }
         },
-        "door@2,0,0:ZYEmC3": {
+        "door@2,0,0:ZruOzR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus14" },
+          "config": { "direction": "towards", "toRoom": "egyptus14" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -11764,14 +11764,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@8,3,5:1KWpYu": {
+        "door@8,3,5:Z1mcXI8": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus3" },
+          "config": { "direction": "left", "toRoom": "egyptus3" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@0,3,1:1KWpsY": {
+        "door@0,3,1:2mUeta": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus1" },
+          "config": { "direction": "right", "toRoom": "egyptus1" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -11837,9 +11837,9 @@
           "config": { "style": "organic" },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "door@8,3,2:Z14us7i": {
+        "door@8,3,2:Z1B0gIQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus21" },
+          "config": { "direction": "left", "toRoom": "egyptus21" },
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
@@ -11865,14 +11865,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:Z14urQx": {
+        "door@8,0,0:Z1B0gt6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus22" },
+          "config": { "direction": "left", "toRoom": "egyptus22" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:Z14usn3": {
+        "door@0,0,0:2rMvfJ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus20" },
+          "config": { "direction": "right", "toRoom": "egyptus20" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -11975,14 +11975,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
-        "door@3,6,0:ZYEeRq": {
+        "door@3,6,0:Z1yHXKU": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus23" },
+          "config": { "direction": "away", "toRoom": "egyptus23" },
           "position": { "x": 3, "y": 6, "z": 0 }
         },
-        "door@0,2,0:Z14us7i": {
+        "door@0,2,0:2rMvvu": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus21" },
+          "config": { "direction": "right", "toRoom": "egyptus21" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -12190,14 +12190,14 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 0, "y": 3, "z": 6 }
         },
-        "door@3,6,0:ZYEeBF": {
+        "door@3,6,0:Z1yHXva": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus24" },
+          "config": { "direction": "away", "toRoom": "egyptus24" },
           "position": { "x": 3, "y": 6, "z": 0 }
         },
-        "door@3,0,0:ZYEf8b": {
+        "door@3,0,0:ZruH60": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus22" },
+          "config": { "direction": "towards", "toRoom": "egyptus22" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -12268,14 +12268,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@0,2,0:Z14ur5h": {
+        "door@0,2,0:2rMwxv": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus25" },
+          "config": { "direction": "right", "toRoom": "egyptus25" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@2,0,0:ZYEeRq": {
+        "door@2,0,0:ZruGPf": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus23" },
+          "config": { "direction": "towards", "toRoom": "egyptus23" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -12301,19 +12301,19 @@
         "left": ["hieroglyphics", "none", "none", "hieroglyphics"]
       },
       "items": {
-        "door@3,4,0:ZYEe6a": {
+        "door@3,4,0:Z1yHWYE": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus26" },
+          "config": { "direction": "away", "toRoom": "egyptus26" },
           "position": { "x": 3, "y": 4, "z": 0 }
         },
-        "door@8,1,0:Z14url2": {
+        "door@8,1,0:Z1B0fWA": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus24" },
+          "config": { "direction": "left", "toRoom": "egyptus24" },
           "position": { "x": 8, "y": 1, "z": 0 }
         },
-        "door@0,1,0:Z14uqyL": {
+        "door@0,1,0:2rMx41": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus27" },
+          "config": { "direction": "right", "toRoom": "egyptus27" },
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
@@ -12446,14 +12446,14 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 7, "y": 3, "z": 1 }
         },
-        "door@0,2,0:Z14uqj1": {
+        "door@0,2,0:2rMxjL": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus28" },
+          "config": { "direction": "right", "toRoom": "egyptus28" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@3,0,0:ZYEelU": {
+        "door@3,0,0:ZruGjJ": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus25" },
+          "config": { "direction": "towards", "toRoom": "egyptus25" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -12568,14 +12568,14 @@
           "config": { "gives": "shield" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@3,8,2:ZYEdzE": {
+        "door@3,8,2:Z1yHWt9": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus28" },
+          "config": { "direction": "away", "toRoom": "egyptus28" },
           "position": { "x": 3, "y": 8, "z": 2 }
         },
-        "door@8,3,2:Z14ur5h": {
+        "door@8,3,2:Z1B0fGP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus25" },
+          "config": { "direction": "left", "toRoom": "egyptus25" },
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
@@ -12613,19 +12613,19 @@
           "config": { "alive": false },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "door@8,2,0:Z14uqOw": {
+        "door@8,2,0:Z1B0fr5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus26" },
+          "config": { "direction": "left", "toRoom": "egyptus26" },
           "position": { "x": 8, "y": 2, "z": 0 }
         },
-        "door@0,2,0:Z14uq3g": {
+        "door@0,2,0:2rMxzw": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus29" },
+          "config": { "direction": "right", "toRoom": "egyptus29" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@3,0,0:ZYEdPp": {
+        "door@3,0,0:ZruFNe": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus27" },
+          "config": { "direction": "towards", "toRoom": "egyptus27" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -12674,9 +12674,9 @@
           "config": { "style": "organic" },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "door@6,3,2:Z14uqj1": {
+        "door@6,3,2:Z1B0eUz": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus28" },
+          "config": { "direction": "left", "toRoom": "egyptus28" },
           "position": { "x": 6, "y": 3, "z": 2 }
         }
       },
@@ -12707,14 +12707,14 @@
           "config": {},
           "position": { "x": 4, "y": 1, "z": 0 }
         },
-        "door@8,0,4:1KWqff": {
+        "door@8,0,4:Z1mcXsn": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus4" },
+          "config": { "direction": "left", "toRoom": "egyptus4" },
           "position": { "x": 8, "y": 0, "z": 4 }
         },
-        "door@0,0,0:1KWpIJ": {
+        "door@0,0,0:2mUeIU": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus2" },
+          "config": { "direction": "right", "toRoom": "egyptus2" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -12795,9 +12795,9 @@
           "config": { "which": "bubble-robot" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@0,3,0:Z14ujQa": {
+        "door@0,3,0:2rMDLC": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus32" },
+          "config": { "direction": "right", "toRoom": "egyptus32" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -12834,9 +12834,9 @@
           "config": { "style": "organic" },
           "position": { "x": 7, "y": 0, "z": 3 }
         },
-        "door@8,0,5:Z14uk6U": {
+        "door@8,0,5:Z1B08It": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus31" },
+          "config": { "direction": "left", "toRoom": "egyptus31" },
           "position": { "x": 8, "y": 0, "z": 5 }
         }
       },
@@ -12863,9 +12863,9 @@
         "left": ["hieroglyphics", "hieroglyphics"]
       },
       "items": {
-        "door@3,2,0:Z1Spl7t": {
+        "door@3,2,0:Z1sFxAY": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus34fish" },
+          "config": { "direction": "away", "toRoom": "egyptus34fish" },
           "position": { "x": 3, "y": 2, "z": 0 }
         }
       },
@@ -12953,14 +12953,14 @@
           "config": {},
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "door@2,8,0:ZYE6lx": {
+        "door@2,8,0:Z1yHPf2": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus35" },
+          "config": { "direction": "away", "toRoom": "egyptus35" },
           "position": { "x": 2, "y": 8, "z": 0 }
         },
-        "door@2,0,0:ZYE6R3": {
+        "door@2,0,0:ZruyOR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus33" },
+          "config": { "direction": "towards", "toRoom": "egyptus33" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -13047,9 +13047,9 @@
           "config": { "style": "drum" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@0,0,0:Z1Spl7t": {
+        "door@0,0,0:Z2qU8NU": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus34fish" },
+          "config": { "direction": "towards", "toRoom": "egyptus34fish" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -13161,9 +13161,9 @@
           "config": { "style": "artificial" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@2,3,2:Z14uiiD": {
+        "door@2,3,2:Z1B06Uc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus38" },
+          "config": { "direction": "left", "toRoom": "egyptus38" },
           "position": { "x": 2, "y": 3, "z": 2 }
         }
       },
@@ -13298,14 +13298,14 @@
           "config": {},
           "position": { "x": 1, "y": 1, "z": 3 }
         },
-        "door@8,3,0:tBrHK": {
+        "door@8,3,0:t6z6k": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus39crown" },
+          "config": { "direction": "left", "toRoom": "egyptus39crown" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:Z14uiyo": {
+        "door@0,3,0:2rMF4o": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus37" },
+          "config": { "direction": "right", "toRoom": "egyptus37" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -13410,9 +13410,9 @@
           "config": { "which": "dalek" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@0,3,0:Z14uiiD": {
+        "door@0,3,0:2rMFk9": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus38" },
+          "config": { "direction": "right", "toRoom": "egyptus38" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -13547,14 +13547,14 @@
           "config": {},
           "position": { "x": 1, "y": 1, "z": 3 }
         },
-        "door@3,8,0:i3qjT": {
+        "door@3,8,0:2p0wvd": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus5" },
+          "config": { "direction": "away", "toRoom": "egyptus5" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@0,3,0:1KWpYu": {
+        "door@0,3,0:2mUeYF": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus3" },
+          "config": { "direction": "right", "toRoom": "egyptus3" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -13625,19 +13625,19 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@2,6,0:i3qPp": {
+        "door@2,6,0:2p0x1I": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus7" },
+          "config": { "direction": "away", "toRoom": "egyptus7" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@6,2,0:1KWqKK": {
+        "door@6,2,0:Z1mcWVR": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus6" },
+          "config": { "direction": "left", "toRoom": "egyptus6" },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "door@2,0,0:i3q49": {
+        "door@2,0,0:97h0D": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus4" },
+          "config": { "direction": "towards", "toRoom": "egyptus4" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -13702,14 +13702,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 2, "y": 2, "z": 1 }
         },
-        "door@3,8,5:i3r6a": {
+        "door@3,8,5:2p0xht": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus8" },
+          "config": { "direction": "away", "toRoom": "egyptus8" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@0,3,0:1KWqv0": {
+        "door@0,3,0:2mUfvb": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus5" },
+          "config": { "direction": "right", "toRoom": "egyptus5" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -13789,14 +13789,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 3 }
         },
-        "door@8,3,5:1KWrhg": {
+        "door@8,3,5:Z1mcWqm": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus8" },
+          "config": { "direction": "left", "toRoom": "egyptus8" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,4:i3qjT": {
+        "door@3,0,4:97hgo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus5" },
+          "config": { "direction": "towards", "toRoom": "egyptus5" },
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
@@ -13921,19 +13921,19 @@
           "config": {},
           "position": { "x": 1, "y": 1, "z": 3 }
         },
-        "door@3,8,0:IbP1q": {
+        "door@3,8,0:Zp1giF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus9fish" },
+          "config": { "direction": "away", "toRoom": "egyptus9fish" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@0,3,0:1KWr1v": {
+        "door@0,3,0:2mUg1G": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "egyptus7" },
+          "config": { "direction": "right", "toRoom": "egyptus7" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:i3qzE": {
+        "door@3,0,0:97hw9": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus6" },
+          "config": { "direction": "towards", "toRoom": "egyptus6" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -14019,14 +14019,14 @@
           "config": { "alive": true },
           "position": { "x": 3, "y": 3, "z": 5 }
         },
-        "door@1,8,0:ZYEnE4": {
+        "door@1,8,0:Z1yI7xy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus10" },
+          "config": { "direction": "away", "toRoom": "egyptus10" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:i3r6a": {
+        "door@1,0,0:97i2E": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "egyptus8" },
+          "config": { "direction": "towards", "toRoom": "egyptus8" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -14351,14 +14351,14 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@8,3,0:Z1UQMUD": {
+        "door@8,3,0:Z2smBxc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase2" },
+          "config": { "direction": "left", "toRoom": "moonbase2" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:Z1UQMp8": {
+        "door@0,3,0:1AqbdE": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase4" },
+          "config": { "direction": "right", "toRoom": "moonbase4" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -14418,14 +14418,14 @@
           "config": { "style": "artificial" },
           "position": { "x": 0, "y": 3, "z": 3 }
         },
-        "door@3,8,5:Z1uBS5C": {
+        "door@3,8,5:11gRtR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase11" },
+          "config": { "direction": "away", "toRoom": "moonbase11" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@0,3,5:Z1UQL7m": {
+        "door@0,3,5:1Aqcvq": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase9" },
+          "config": { "direction": "right", "toRoom": "moonbase9" },
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
@@ -14451,19 +14451,19 @@
         ]
       },
       "items": {
-        "door@0,8,0:Z1uBROR": {
+        "door@0,8,0:11gRJC": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase12" },
+          "config": { "direction": "away", "toRoom": "moonbase12" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@2,3,0:17xOfa": {
+        "door@2,3,0:Z8uWnj": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase19" },
+          "config": { "direction": "left", "toRoom": "moonbase19" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@0,0,0:Z1uBSln": {
+        "door@0,0,0:5Csip": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase10" },
+          "config": { "direction": "towards", "toRoom": "moonbase10" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -14558,14 +14558,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 3 }
         },
-        "door@0,3,4:17xNYp": {
+        "door@0,3,4:Z1kG3iK": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase18" },
+          "config": { "direction": "right", "toRoom": "moonbase18" },
           "position": { "x": 0, "y": 3, "z": 4 }
         },
-        "door@3,0,0:Z1uBS5C": {
+        "door@3,0,0:5Csya": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase11" },
+          "config": { "direction": "towards", "toRoom": "moonbase11" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -14647,19 +14647,19 @@
           },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "door@1,8,0:Z1uBRjm": {
+        "door@1,8,0:11gSg8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase14" },
+          "config": { "direction": "away", "toRoom": "moonbase14" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@4,3,0:17xNsT": {
+        "door@4,3,0:Z8uX9z": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase16" },
+          "config": { "direction": "left", "toRoom": "moonbase16" },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "door@1,0,0:Z1Q1zVw": {
+        "door@1,0,0:Z1iR2Tl": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase3" },
+          "config": { "direction": "towards", "toRoom": "moonbase3" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -14746,14 +14746,14 @@
           },
           "position": { "x": 5, "y": 2, "z": 1 }
         },
-        "door@0,3,0:17xNd9": {
+        "door@0,3,0:Z1kG451": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase15" },
+          "config": { "direction": "right", "toRoom": "moonbase15" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@2,0,0:Z1uBRz7": {
+        "door@2,0,0:5Ct4F": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase13" },
+          "config": { "direction": "towards", "toRoom": "moonbase13" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -14809,14 +14809,14 @@
           "config": {},
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "door@8,0,4:17xMWo": {
+        "door@8,0,4:Z8uXF5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase14" },
+          "config": { "direction": "left", "toRoom": "moonbase14" },
           "position": { "x": 8, "y": 0, "z": 4 }
         },
-        "door@0,0,0:Z1UQLCR": {
+        "door@0,0,0:1AqbYU": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase7" },
+          "config": { "direction": "right", "toRoom": "moonbase7" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -14936,14 +14936,14 @@
           "config": { "which": "computer-bot" },
           "position": { "x": 11, "y": 0, "z": 0 }
         },
-        "door@0,2,1:17xMGD": {
+        "door@0,2,1:Z1kG4Aw": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase13" },
+          "config": { "direction": "right", "toRoom": "moonbase13" },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "door@8,0,0:Z1uBQx6": {
+        "door@8,0,0:5Cu6G": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase17" },
+          "config": { "direction": "towards", "toRoom": "moonbase17" },
           "position": { "x": 8, "y": 0, "z": 0 }
         }
       },
@@ -14980,9 +14980,9 @@
           "config": { "toRoom": "moonbase18" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@2,6,0:Z1uBQMQ": {
+        "door@2,6,0:11gSLD": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase16" },
+          "config": { "direction": "away", "toRoom": "moonbase16" },
           "position": { "x": 2, "y": 6, "z": 0 }
         }
       },
@@ -15019,9 +15019,9 @@
           "config": { "toRoom": "moonbase17" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@6,2,0:17xMqS": {
+        "door@6,2,0:Z8uYbA": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase12" },
+          "config": { "direction": "left", "toRoom": "moonbase12" },
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
@@ -15089,14 +15089,14 @@
           },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "door@8,0,0:17xTUK": {
+        "door@8,0,0:Z8uQGI": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase20" },
+          "config": { "direction": "left", "toRoom": "moonbase20" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:17xMb8": {
+        "door@0,0,0:Z1kG572": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase11" },
+          "config": { "direction": "right", "toRoom": "moonbase11" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -15198,14 +15198,14 @@
           },
           "position": { "x": 7, "y": 1, "z": 1 }
         },
-        "door@3,6,4:Z1Q1zVw": {
+        "door@3,6,4:Z2q5jP1": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase3" },
+          "config": { "direction": "away", "toRoom": "moonbase3" },
           "position": { "x": 3, "y": 6, "z": 4 }
         },
-        "door@0,2,0:Z1UQNbo": {
+        "door@0,2,0:1Aqaro": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase1" },
+          "config": { "direction": "right", "toRoom": "moonbase1" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -15290,24 +15290,27 @@
           "config": { "style": "puck" },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
-        "door@3,8,0:Z14IGtT": {
+        "door@3,8,0:Z1yg1qz": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase21tosafari" },
+          "config": { "direction": "away", "toRoom": "moonbase21tosafari" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:17xUH1": {
+        "door@8,3,0:Z8uPUs": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase23" },
+          "config": { "direction": "left", "toRoom": "moonbase23" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:17xOfa": {
+        "door@0,3,0:Z1kG330": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase19" },
+          "config": { "direction": "right", "toRoom": "moonbase19" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:Z1dsmn9": {
+        "door@3,0,0:Yi6zN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase22topenitentiary" },
+          "config": {
+            "direction": "towards",
+            "toRoom": "moonbase22topenitentiary"
+          },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -15437,9 +15440,9 @@
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "door@2,0,0:Z1uBKl0": {
+        "door@2,0,0:5CAiM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase20" },
+          "config": { "direction": "towards", "toRoom": "moonbase20" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -15569,9 +15572,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@2,8,0:Z1uBKl0": {
+        "door@2,8,0:11h0eu": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase20" },
+          "config": { "direction": "away", "toRoom": "moonbase20" },
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
@@ -15656,24 +15659,27 @@
           "config": { "style": "puck" },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
-        "door@3,8,0:ZD45Ly": {
+        "door@3,8,0:ZnSMCA": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase24toegyptus" },
+          "config": { "direction": "away", "toRoom": "moonbase24toegyptus" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:17xVth": {
+        "door@8,3,0:Z8uP9c": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase26" },
+          "config": { "direction": "left", "toRoom": "moonbase26" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:17xTUK": {
+        "door@0,3,0:Z1kFWmp": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase20" },
+          "config": { "direction": "right", "toRoom": "moonbase20" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,0:Z2wSoMK": {
+        "door@3,0,0:Z2nb9F4": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase25tobookworld" },
+          "config": {
+            "direction": "towards",
+            "toRoom": "moonbase25tobookworld"
+          },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -15896,9 +15902,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@3,0,0:Z1uBJyJ": {
+        "door@3,0,0:5CB53": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase23" },
+          "config": { "direction": "towards", "toRoom": "moonbase23" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -16121,9 +16127,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@3,8,0:Z1uBJyJ": {
+        "door@3,8,0:11h10K": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase23" },
+          "config": { "direction": "away", "toRoom": "moonbase23" },
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
@@ -16196,14 +16202,14 @@
           },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "door@8,0,0:17xVJ2": {
+        "door@8,0,0:Z8uOSr": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase27" },
+          "config": { "direction": "left", "toRoom": "moonbase27" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:17xUH1": {
+        "door@0,0,0:Z1kFVA9": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase23" },
+          "config": { "direction": "right", "toRoom": "moonbase23" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -16229,19 +16235,19 @@
         ]
       },
       "items": {
-        "door@0,8,0:Z1uBIgX": {
+        "door@0,8,0:11h2iw": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase28" },
+          "config": { "direction": "away", "toRoom": "moonbase28" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,3,0:17xVth": {
+        "door@0,3,0:Z1kFUNS": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase26" },
+          "config": { "direction": "right", "toRoom": "moonbase26" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@0,0,0:Z1uBCkC": {
+        "door@0,0,0:5CIja": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase30" },
+          "config": { "direction": "towards", "toRoom": "moonbase30" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -16278,14 +16284,14 @@
           "config": { "which": "cyberman", "charging": false },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "door@6,2,4:17xWfx": {
+        "door@6,2,4:Z8uOmV": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase29" },
+          "config": { "direction": "left", "toRoom": "moonbase29" },
           "position": { "x": 6, "y": 2, "z": 4 }
         },
-        "door@2,0,0:Z1uBIwI": {
+        "door@2,0,0:5CC74": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase27" },
+          "config": { "direction": "towards", "toRoom": "moonbase27" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -16508,9 +16514,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@0,3,0:17xVYM": {
+        "door@0,3,0:Z1kFUin": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase28" },
+          "config": { "direction": "right", "toRoom": "moonbase28" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -16640,14 +16646,14 @@
           "config": {},
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "door@3,8,2:Z1uBRz7": {
+        "door@3,8,2:11gS0n": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase13" },
+          "config": { "direction": "away", "toRoom": "moonbase13" },
           "position": { "x": 3, "y": 8, "z": 2 }
         },
-        "door@3,0,1:Z1Q1Ach": {
+        "door@3,0,1:Z1iR3a6": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase2" },
+          "config": { "direction": "towards", "toRoom": "moonbase2" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -16664,14 +16670,14 @@
         "left": ["window3", "window2", "none", "none", "window2", "window1"]
       },
       "items": {
-        "door@2,6,0:Z1uBIwI": {
+        "door@2,6,0:11h22L": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase27" },
+          "config": { "direction": "away", "toRoom": "moonbase27" },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@6,2,0:17y3bS": {
+        "door@6,2,0:Z8uIqA": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase31" },
+          "config": { "direction": "left", "toRoom": "moonbase31" },
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
@@ -16708,9 +16714,9 @@
           "config": { "toRoom": "blacktooth64" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@0,2,0:17y2V8": {
+        "door@0,2,0:Z1kFOm2": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase30" },
+          "config": { "direction": "right", "toRoom": "moonbase30" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -16933,9 +16939,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@3,8,0:XDJe4": {
+        "door@3,8,0:Z1Dtosw": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase33triple" },
+          "config": { "direction": "away", "toRoom": "moonbase33triple" },
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
@@ -17429,19 +17435,19 @@
           },
           "position": { "x": 6, "y": 3, "z": 1 }
         },
-        "door@2,16,0:Z1uBAM6": {
+        "door@2,16,0:11h9Mo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase36" },
+          "config": { "direction": "away", "toRoom": "moonbase36" },
           "position": { "x": 2, "y": 16, "z": 0 }
         },
-        "door@12,11,0:17y3X9": {
+        "door@12,11,0:Z8uHEk": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase34" },
+          "config": { "direction": "left", "toRoom": "moonbase34" },
           "position": { "x": 12, "y": 11, "z": 0 }
         },
-        "door@8,0,0:Z1uBBO7": {
+        "door@8,0,0:5CIOF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase32" },
+          "config": { "direction": "towards", "toRoom": "moonbase32" },
           "position": { "x": 8, "y": 0, "z": 0 }
         }
       },
@@ -17523,14 +17529,14 @@
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "door@3,4,0:Z1uBB2Q": {
+        "door@3,4,0:11h9wD": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase35" },
+          "config": { "direction": "away", "toRoom": "moonbase35" },
           "position": { "x": 3, "y": 4, "z": 0 }
         },
-        "door@0,1,0:1nYeVH": {
+        "door@0,1,0:1osK28": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase33triple" },
+          "config": { "direction": "right", "toRoom": "moonbase33triple" },
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
@@ -17679,9 +17685,9 @@
           },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
-        "door@2,0,0:Z1uBBiB": {
+        "door@2,0,0:5CJlb": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase34" },
+          "config": { "direction": "towards", "toRoom": "moonbase34" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -17830,9 +17836,9 @@
           },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
-        "door@2,0,0:XDJe4": {
+        "door@2,0,0:2e93sR": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase33triple" },
+          "config": { "direction": "towards", "toRoom": "moonbase33triple" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -17982,14 +17988,14 @@
           "config": { "which": "computer-bot" },
           "position": { "x": 5, "y": 2, "z": 0 }
         },
-        "door@3,8,5:Z1Q1zq1": {
+        "door@3,8,5:Z2q5jjv": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase5" },
+          "config": { "direction": "away", "toRoom": "moonbase5" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:Z1UQNbo": {
+        "door@8,3,5:Z2smBMW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase1" },
+          "config": { "direction": "left", "toRoom": "moonbase1" },
           "position": { "x": 8, "y": 3, "z": 5 }
         }
       },
@@ -18030,14 +18036,14 @@
           "config": { "which": "headless-base" },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "door@1,8,0:Z1Q1zag": {
+        "door@1,8,0:Z2q5j3K": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase6" },
+          "config": { "direction": "away", "toRoom": "moonbase6" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:Z1Q1zFL": {
+        "door@1,0,0:Z1iR2DA": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase4" },
+          "config": { "direction": "towards", "toRoom": "moonbase4" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -18142,14 +18148,14 @@
           "config": { "which": "headless-base" },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "door@3,8,0:Z1Q1yTv": {
+        "door@3,8,0:Z2q5iN0": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase7" },
+          "config": { "direction": "away", "toRoom": "moonbase7" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@3,0,0:Z1Q1zq1": {
+        "door@3,0,0:Z1iR2nP": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase5" },
+          "config": { "direction": "towards", "toRoom": "moonbase5" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -18288,19 +18294,19 @@
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "door@8,3,0:17xNd9": {
+        "door@8,3,0:Z8uXpk": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase15" },
+          "config": { "direction": "left", "toRoom": "moonbase15" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:Z1UQLn7": {
+        "door@0,3,0:1AqcfF": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase8" },
+          "config": { "direction": "right", "toRoom": "moonbase8" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,0,4:Z1Q1zag": {
+        "door@3,0,4:Z1iR285": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "moonbase6" },
+          "config": { "direction": "towards", "toRoom": "moonbase6" },
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
@@ -18459,9 +18465,9 @@
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "door@8,3,0:Z1UQLCR": {
+        "door@8,3,0:Z2smAfq": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase7" },
+          "config": { "direction": "left", "toRoom": "moonbase7" },
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
@@ -18498,9 +18504,9 @@
           "config": { "toRoom": "blacktooth57" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "door@6,2,0:17xLUn": {
+        "door@6,2,0:Z8uYH6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "moonbase10" },
+          "config": { "direction": "left", "toRoom": "moonbase10" },
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
@@ -18546,9 +18552,9 @@
           "config": { "toRoom": "moonbase22topenitentiary" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@2,8,0:21ovxu": {
+        "door@2,8,0:2r8j3Y": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary2" },
+          "config": { "direction": "away", "toRoom": "penitentiary2" },
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
@@ -18590,9 +18596,9 @@
           "config": { "style": "artificial" },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "door@0,8,2:1G4dkL": {
+        "door@0,8,2:ZtKy6M": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary11" },
+          "config": { "direction": "away", "toRoom": "penitentiary11" },
           "position": { "x": 0, "y": 8, "z": 2 }
         }
       },
@@ -18629,14 +18635,14 @@
           "config": { "alive": false },
           "position": { "x": 5, "y": 5, "z": 3 }
         },
-        "door@0,2,0:2v7Mbq": {
+        "door@0,2,0:1QJCE8": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary12" },
+          "config": { "direction": "right", "toRoom": "penitentiary12" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@2,0,0:1G4d51": {
+        "door@2,0,0:Z4Y61T": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary10" },
+          "config": { "direction": "towards", "toRoom": "penitentiary10" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -18726,19 +18732,19 @@
           "config": { "gives": "donuts" },
           "position": { "x": 7, "y": 0, "z": 3 }
         },
-        "door@3,8,0:1G4foN": {
+        "door@3,8,0:ZtKw2K": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary19" },
+          "config": { "direction": "away", "toRoom": "penitentiary19" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:2v7LUF": {
+        "door@8,3,0:2uBTjf": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary11" },
+          "config": { "direction": "left", "toRoom": "penitentiary11" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,4:Z1MtPuK": {
+        "door@0,3,4:JcM9U": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary18fish" },
+          "config": { "direction": "right", "toRoom": "penitentiary18fish" },
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
@@ -18830,9 +18836,9 @@
           "config": {},
           "position": { "x": 2, "y": 3, "z": 7 }
         },
-        "door@3,0,0:21ovxu": {
+        "door@3,0,0:1sSHQ3": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary2" },
+          "config": { "direction": "towards", "toRoom": "penitentiary2" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -19406,9 +19412,9 @@
           "config": { "style": "organic" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@3,8,2:MdFEE": {
+        "door@3,8,2:iGlHY": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary18fish" },
+          "config": { "direction": "away", "toRoom": "penitentiary18fish" },
           "position": { "x": 3, "y": 8, "z": 2 }
         }
       },
@@ -19542,14 +19548,14 @@
           "config": { "alive": true },
           "position": { "x": 12, "y": 4, "z": 4 }
         },
-        "door@16,2,2:2v7Mbq": {
+        "door@16,2,2:2uBTz0": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary12" },
+          "config": { "direction": "left", "toRoom": "penitentiary12" },
           "position": { "x": 16, "y": 2, "z": 2 }
         },
-        "door@3,0,0:1G4eSi": {
+        "door@3,0,0:Z4Y4dC": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary17" },
+          "config": { "direction": "towards", "toRoom": "penitentiary17" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -19590,14 +19596,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
-        "door@1,8,3:1G4ll9": {
+        "door@1,8,3:ZtKq6p": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary21" },
+          "config": { "direction": "away", "toRoom": "penitentiary21" },
           "position": { "x": 1, "y": 8, "z": 3 }
         },
-        "door@1,0,0:1G4dAw": {
+        "door@1,0,0:Z4Y5vo": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary12" },
+          "config": { "direction": "towards", "toRoom": "penitentiary12" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -19702,19 +19708,19 @@
           "config": { "which": "dalek" },
           "position": { "x": 6, "y": 3, "z": 2 }
         },
-        "door@3,8,5:1G4dQh": {
+        "door@3,8,5:ZtKxAh": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary13" },
+          "config": { "direction": "away", "toRoom": "penitentiary13" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:1I0eDj": {
+        "door@8,3,5:2d0pz4": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary3" },
+          "config": { "direction": "left", "toRoom": "penitentiary3" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,0:21ovhJ": {
+        "door@3,0,0:1sSHAi": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary1" },
+          "config": { "direction": "towards", "toRoom": "penitentiary1" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -20011,9 +20017,9 @@
           "config": { "which": "turtle", "startDirection": "right" },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "door@3,0,1:1G4foN": {
+        "door@3,0,1:Z4Y3H7": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary19" },
+          "config": { "direction": "towards", "toRoom": "penitentiary19" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -20467,9 +20473,9 @@
           "config": { "top": 6, "bottom": 0 },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "door@3,8,1:1G4mna": {
+        "door@3,8,1:ZtKp4o": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary25" },
+          "config": { "direction": "away", "toRoom": "penitentiary25" },
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
@@ -20495,14 +20501,14 @@
         ]
       },
       "items": {
-        "door@0,8,0:1G4mCU": {
+        "door@0,8,0:ZtKoND": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary26" },
+          "config": { "direction": "away", "toRoom": "penitentiary26" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:1G4m7p": {
+        "door@0,0,0:Z4XVYv": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary24" },
+          "config": { "direction": "towards", "toRoom": "penitentiary24" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -20567,14 +20573,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
-        "door@0,3,1:2v7Vtz": {
+        "door@0,3,1:1QJLWh": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary27" },
+          "config": { "direction": "right", "toRoom": "penitentiary27" },
           "position": { "x": 0, "y": 3, "z": 1 }
         },
-        "door@3,0,1:1G4mna": {
+        "door@3,0,1:Z4XVIK": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary25" },
+          "config": { "direction": "towards", "toRoom": "penitentiary25" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -20630,14 +20636,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 6, "y": 0, "z": 0 }
         },
-        "door@8,0,2:2v7VdO": {
+        "door@8,0,2:2uC3Bo": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary26" },
+          "config": { "direction": "left", "toRoom": "penitentiary26" },
           "position": { "x": 8, "y": 0, "z": 2 }
         },
-        "door@0,0,1:2v7VJk": {
+        "door@0,0,1:1QJMd2": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary28" },
+          "config": { "direction": "right", "toRoom": "penitentiary28" },
           "position": { "x": 0, "y": 0, "z": 1 }
         }
       },
@@ -20702,19 +20708,19 @@
           "config": {},
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@8,3,0:2v7Vtz": {
+        "door@8,3,0:2uC3R9": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary27" },
+          "config": { "direction": "left", "toRoom": "penitentiary27" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,4:2v7W05": {
+        "door@0,3,4:1QJMsM": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary29" },
+          "config": { "direction": "right", "toRoom": "penitentiary29" },
           "position": { "x": 0, "y": 3, "z": 4 }
         },
-        "door@3,0,4:1G4t5L": {
+        "door@3,0,4:Z4XP19": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary30" },
+          "config": { "direction": "towards", "toRoom": "penitentiary30" },
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
@@ -20811,9 +20817,9 @@
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "door@8,0,3:2v7VJk": {
+        "door@8,0,3:2uC47T": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary28" },
+          "config": { "direction": "left", "toRoom": "penitentiary28" },
           "position": { "x": 8, "y": 0, "z": 3 }
         }
       },
@@ -20898,14 +20904,14 @@
           "config": {},
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@8,3,2:1I0eT4": {
+        "door@8,3,2:2d0pOO": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary4" },
+          "config": { "direction": "left", "toRoom": "penitentiary4" },
           "position": { "x": 8, "y": 3, "z": 2 }
         },
-        "door@0,3,1:1I0eny": {
+        "door@0,3,1:RGM4C": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary2" },
+          "config": { "direction": "right", "toRoom": "penitentiary2" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -20981,9 +20987,9 @@
           "config": { "style": "sticks" },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "door@3,4,0:1G4n9q": {
+        "door@3,4,0:ZtKoi8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary28" },
+          "config": { "direction": "away", "toRoom": "penitentiary28" },
           "position": { "x": 3, "y": 4, "z": 0 }
         }
       },
@@ -21195,9 +21201,9 @@
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 0, "z": 5 }
         },
-        "door@3,0,0:1G4tR2": {
+        "door@3,0,0:Z4XOeS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary33" },
+          "config": { "direction": "towards", "toRoom": "penitentiary33" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -21332,14 +21338,14 @@
           "config": {},
           "position": { "x": 1, "y": 1, "z": 3 }
         },
-        "door@3,8,0:1G4tBh": {
+        "door@3,8,0:ZtKhPh": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary32" },
+          "config": { "direction": "away", "toRoom": "penitentiary32" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@3,0,0:Z12UXfq": {
+        "door@3,0,0:2cTHTK": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary34crown" },
+          "config": { "direction": "towards", "toRoom": "penitentiary34crown" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -21444,9 +21450,9 @@
           "config": { "gives": "crown" },
           "position": { "x": 0, "y": 0, "z": 6 }
         },
-        "door@3,8,1:1G4tR2": {
+        "door@3,8,1:ZtKhzw": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary33" },
+          "config": { "direction": "away", "toRoom": "penitentiary33" },
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
@@ -21504,9 +21510,9 @@
           "config": { "style": "artificial" },
           "position": { "x": 5, "y": 0, "z": 7 }
         },
-        "door@0,2,0:1I0eDj": {
+        "door@0,2,0:RGMkn": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary3" },
+          "config": { "direction": "right", "toRoom": "penitentiary3" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -21610,9 +21616,9 @@
           "config": { "style": "anvil" },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "door@6,2,3:1I0fFk": {
+        "door@6,2,3:2d0qB5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary7" },
+          "config": { "direction": "left", "toRoom": "penitentiary7" },
           "position": { "x": 6, "y": 2, "z": 3 }
         }
       },
@@ -21663,14 +21669,14 @@
           "config": { "which": "bubble-robot" },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "door@3,6,5:21ox61": {
+        "door@3,6,5:2r8kBv": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary8" },
+          "config": { "direction": "away", "toRoom": "penitentiary8" },
           "position": { "x": 3, "y": 6, "z": 5 }
         },
-        "door@0,2,0:1I0fpz": {
+        "door@0,2,0:RGN6D": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "penitentiary6" },
+          "config": { "direction": "right", "toRoom": "penitentiary6" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -21737,9 +21743,9 @@
           "config": { "style": "drum" },
           "position": { "x": 1, "y": 2, "z": 3 }
         },
-        "door@0,0,0:21owPg": {
+        "door@0,0,0:1sSJ8O": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "penitentiary7" },
+          "config": { "direction": "towards", "toRoom": "penitentiary7" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -21815,9 +21821,9 @@
           "config": { "toRoom": "moonbase21tosafari" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "door@2,8,0:baIQu": {
+        "door@2,8,0:1SoohN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari2" },
+          "config": { "direction": "away", "toRoom": "safari2" },
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
@@ -21939,9 +21945,9 @@
           "config": { "axis": "y" },
           "position": { "x": 4, "y": 0, "z": 2 }
         },
-        "door@8,2,0:249zb9": {
+        "door@8,2,0:Z140Owt": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari11" },
+          "config": { "direction": "left", "toRoom": "safari11" },
           "position": { "x": 8, "y": 2, "z": 0 }
         }
       },
@@ -21978,14 +21984,14 @@
           "config": { "which": "elephant" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@6,2,0:249zqT": {
+        "door@6,2,0:Z140OgI": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari12" },
+          "config": { "direction": "left", "toRoom": "safari12" },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "door@0,2,0:249yUo": {
+        "door@0,2,0:Z2p4JSm": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari10" },
+          "config": { "direction": "right", "toRoom": "safari10" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -22127,9 +22133,9 @@
           "config": { "axis": "y" },
           "position": { "x": 4, "y": 0, "z": 2 }
         },
-        "door@0,2,0:249zb9": {
+        "door@0,2,0:Z2p4JCB": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari11" },
+          "config": { "direction": "right", "toRoom": "safari11" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -22186,14 +22192,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "door@3,6,2:AfA24": {
+        "door@3,6,2:Z2mYrAy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari15" },
+          "config": { "direction": "away", "toRoom": "safari15" },
           "position": { "x": 3, "y": 6, "z": 2 }
         },
-        "door@0,2,2:249zWp": {
+        "door@0,2,2:Z2p4IQl": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari14" },
+          "config": { "direction": "right", "toRoom": "safari14" },
           "position": { "x": 0, "y": 2, "z": 2 }
         }
       },
@@ -22268,14 +22274,14 @@
           "config": { "style": "puck" },
           "position": { "x": 3, "y": 7, "z": 0 }
         },
-        "door@8,3,0:249zGE": {
+        "door@8,3,0:Z140O0X": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari13" },
+          "config": { "direction": "left", "toRoom": "safari13" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:Z2e1cG4": {
+        "door@0,3,0:Z2wPfzr": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari9" },
+          "config": { "direction": "right", "toRoom": "safari9" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -22388,14 +22394,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 2, "y": 12, "z": 1 }
         },
-        "door@1,16,0:AfAhO": {
+        "door@1,16,0:Z2mYrkN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari16" },
+          "config": { "direction": "away", "toRoom": "safari16" },
           "position": { "x": 1, "y": 16, "z": 0 }
         },
-        "door@1,0,0:Afzvy": {
+        "door@1,0,0:rjqs3": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari13" },
+          "config": { "direction": "towards", "toRoom": "safari13" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -22489,14 +22495,14 @@
           },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
-        "door@1,8,0:Z2fKbM3": {
+        "door@1,8,0:1GdPGM": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari17fish" },
+          "config": { "direction": "away", "toRoom": "safari17fish" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@1,0,0:AfA24": {
+        "door@1,0,0:rjqXy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari15" },
+          "config": { "direction": "towards", "toRoom": "safari15" },
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
@@ -22631,19 +22637,19 @@
           "config": { "alive": true },
           "position": { "x": 4, "y": 7, "z": 4 }
         },
-        "door@3,8,0:AfOK3": {
+        "door@3,8,0:Z2mYcRz": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari30" },
+          "config": { "direction": "away", "toRoom": "safari30" },
           "position": { "x": 3, "y": 8, "z": 0 }
         },
-        "door@8,3,0:249PbT": {
+        "door@8,3,0:Z140yvI": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari31" },
+          "config": { "direction": "left", "toRoom": "safari31" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@3,0,4:AfAhO": {
+        "door@3,0,4:rjrej": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari16" },
+          "config": { "direction": "towards", "toRoom": "safari16" },
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
@@ -22752,14 +22758,14 @@
           "config": { "style": "organic" },
           "position": { "x": 0, "y": 0, "z": 2 }
         },
-        "door@0,16,2:ZH4JMp": {
+        "door@0,16,2:2chByX": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari19triple" },
+          "config": { "direction": "away", "toRoom": "safari19triple" },
           "position": { "x": 0, "y": 16, "z": 2 }
         },
-        "door@0,0,3:baJn0": {
+        "door@0,0,3:Zj811C": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari4" },
+          "config": { "direction": "towards", "toRoom": "safari4" },
           "position": { "x": 0, "y": 0, "z": 3 }
         }
       },
@@ -23059,19 +23065,19 @@
           "config": { "which": "dalek" },
           "position": { "x": 12, "y": 0, "z": 0 }
         },
-        "door@3,10,0:AfI2r": {
+        "door@3,10,0:Z2mYjAb": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari25" },
+          "config": { "direction": "away", "toRoom": "safari25" },
           "position": { "x": 3, "y": 10, "z": 0 }
         },
-        "door@16,1,0:249GUL": {
+        "door@16,1,0:Z140GLQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari20" },
+          "config": { "direction": "left", "toRoom": "safari20" },
           "position": { "x": 16, "y": 1, "z": 0 }
         },
-        "door@3,0,0:AfANk": {
+        "door@3,0,0:rjrJO": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari18" },
+          "config": { "direction": "towards", "toRoom": "safari18" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -23181,14 +23187,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 7, "y": 1, "z": 0 }
         },
-        "door@3,8,3:baJ7f": {
+        "door@3,8,3:1Sooxy": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari3" },
+          "config": { "direction": "away", "toRoom": "safari3" },
           "position": { "x": 3, "y": 8, "z": 3 }
         },
-        "door@3,0,1:baIAJ": {
+        "door@3,0,1:Zj81MS": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari1" },
+          "config": { "direction": "towards", "toRoom": "safari1" },
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
@@ -23214,19 +23220,19 @@
         ]
       },
       "items": {
-        "door@1,8,0:AfHgb": {
+        "door@1,8,0:Z2mYkmr": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari22" },
+          "config": { "direction": "away", "toRoom": "safari22" },
           "position": { "x": 1, "y": 8, "z": 0 }
         },
-        "door@4,3,0:249Hbw": {
+        "door@4,3,0:Z140Gw6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari21" },
+          "config": { "direction": "left", "toRoom": "safari21" },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "door@0,3,0:6XNMu": {
+        "door@0,3,0:ZwokIN": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari19triple" },
+          "config": { "direction": "right", "toRoom": "safari19triple" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -23306,9 +23312,9 @@
           "config": { "which": "headless-base" },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "door@0,3,0:249GUL": {
+        "door@0,3,0:Z2p4BRY": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari20" },
+          "config": { "direction": "right", "toRoom": "safari20" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -23369,14 +23375,14 @@
           "config": { "which": "dalek" },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "door@0,8,0:AfHvV": {
+        "door@0,8,0:Z2mYk6G": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari23" },
+          "config": { "direction": "away", "toRoom": "safari23" },
           "position": { "x": 0, "y": 8, "z": 0 }
         },
-        "door@0,0,0:AfGJF": {
+        "door@0,0,0:rjxGa": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari20" },
+          "config": { "direction": "towards", "toRoom": "safari20" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -23453,19 +23459,19 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "door@6,2,0:249Iti": {
+        "door@6,2,0:Z140Fek": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari26" },
+          "config": { "direction": "left", "toRoom": "safari26" },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "door@0,2,0:249HWM": {
+        "door@0,2,0:Z2p4APX": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari24" },
+          "config": { "direction": "right", "toRoom": "safari24" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@2,0,0:AfHgb": {
+        "door@2,0,0:rjycF": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari22" },
+          "config": { "direction": "towards", "toRoom": "safari22" },
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
@@ -23536,14 +23542,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "door@8,2,3:249HH2": {
+        "door@8,2,3:Z140G0A": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari23" },
+          "config": { "direction": "left", "toRoom": "safari23" },
           "position": { "x": 8, "y": 2, "z": 3 }
         },
-        "door@0,2,1:249Idx": {
+        "door@0,2,1:Z2p4AAd": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari25" },
+          "config": { "direction": "right", "toRoom": "safari25" },
           "position": { "x": 0, "y": 2, "z": 1 }
         }
       },
@@ -23593,14 +23599,14 @@
           "config": { "style": "organic" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "door@8,3,3:249HWM": {
+        "door@8,3,3:Z140FJP": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari24" },
+          "config": { "direction": "left", "toRoom": "safari24" },
           "position": { "x": 8, "y": 3, "z": 3 }
         },
-        "door@3,0,3:ZH4JMp": {
+        "door@3,0,3:Z2t83Tk": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari19triple" },
+          "config": { "direction": "towards", "toRoom": "safari19triple" },
           "position": { "x": 3, "y": 0, "z": 3 }
         }
       },
@@ -23874,14 +23880,14 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 7, "y": 0, "z": 4 }
         },
-        "door@8,8,0:249IJ3": {
+        "door@8,8,0:Z140EXz": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari27" },
+          "config": { "direction": "left", "toRoom": "safari27" },
           "position": { "x": 8, "y": 8, "z": 0 }
         },
-        "door@0,2,0:249HH2": {
+        "door@0,2,0:Z2p4B6I": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari23" },
+          "config": { "direction": "right", "toRoom": "safari23" },
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
@@ -23927,14 +23933,14 @@
           "config": {},
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "door@8,2,4:249IYN": {
+        "door@8,2,4:Z140EHO": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari28" },
+          "config": { "direction": "left", "toRoom": "safari28" },
           "position": { "x": 8, "y": 2, "z": 4 }
         },
-        "door@0,2,4:249Iti": {
+        "door@0,2,4:Z2p4Aks": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari26" },
+          "config": { "direction": "right", "toRoom": "safari26" },
           "position": { "x": 0, "y": 2, "z": 4 }
         }
       },
@@ -23979,14 +23985,14 @@
           "config": { "alive": false },
           "position": { "x": 4, "y": 3, "z": 1 }
         },
-        "door@8,3,0:249Jfy": {
+        "door@8,3,0:Z140Es4": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari29" },
+          "config": { "direction": "left", "toRoom": "safari29" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:249IJ3": {
+        "door@0,3,0:Z2p4A4H": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari27" },
+          "config": { "direction": "right", "toRoom": "safari27" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -24041,14 +24047,14 @@
           "config": { "which": "cyberman", "charging": false },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
-        "door@8,3,0:249OV9": {
+        "door@8,3,0:Z140yLt": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari30" },
+          "config": { "direction": "left", "toRoom": "safari30" },
           "position": { "x": 8, "y": 3, "z": 0 }
         },
-        "door@0,3,0:249IYN": {
+        "door@0,3,0:Z2p4zNW": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari28" },
+          "config": { "direction": "right", "toRoom": "safari28" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -24099,14 +24105,14 @@
           "config": { "top": 8, "bottom": 0 },
           "position": { "x": 1, "y": 4, "z": 0 }
         },
-        "door@1,8,5:baJn0": {
+        "door@1,8,5:1SooNj": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari4" },
+          "config": { "direction": "away", "toRoom": "safari4" },
           "position": { "x": 1, "y": 8, "z": 5 }
         },
-        "door@1,0,5:baIQu": {
+        "door@1,0,5:Zj81x8": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari2" },
+          "config": { "direction": "towards", "toRoom": "safari2" },
           "position": { "x": 1, "y": 0, "z": 5 }
         }
       },
@@ -24132,14 +24138,14 @@
         ]
       },
       "items": {
-        "door@0,3,5:249Jfy": {
+        "door@0,3,5:Z2p4zyc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari29" },
+          "config": { "direction": "right", "toRoom": "safari29" },
           "position": { "x": 0, "y": 3, "z": 5 }
         },
-        "door@0,0,0:Z2fKbM3": {
+        "door@0,0,0:ZMLAn7": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari17fish" },
+          "config": { "direction": "towards", "toRoom": "safari17fish" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -24324,14 +24330,14 @@
           "config": { "style": "drum" },
           "position": { "x": 4, "y": 0, "z": 1 }
         },
-        "door@8,3,5:249PrE": {
+        "door@8,3,5:Z140yfX": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari32" },
+          "config": { "direction": "left", "toRoom": "safari32" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@0,3,1:Z17iDQP": {
+        "door@0,3,1:1D93r4": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari17fish" },
+          "config": { "direction": "right", "toRoom": "safari17fish" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -24357,14 +24363,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,0:249PHp": {
+        "door@8,0,0:Z140y0d": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari33" },
+          "config": { "direction": "left", "toRoom": "safari33" },
           "position": { "x": 8, "y": 0, "z": 0 }
         },
-        "door@0,0,0:249PbT": {
+        "door@0,0,0:Z2p4tBQ": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari31" },
+          "config": { "direction": "right", "toRoom": "safari31" },
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
@@ -24425,19 +24431,19 @@
           "config": { "style": "anvil" },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "door@3,8,5:ZQtMqt": {
+        "door@3,8,5:ZqJYTY": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari37crown" },
+          "config": { "direction": "away", "toRoom": "safari37crown" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:249PXa": {
+        "door@8,3,5:Z140xJs": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari34" },
+          "config": { "direction": "left", "toRoom": "safari34" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@0,3,0:249PrE": {
+        "door@0,3,0:Z2p4tm6": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari32" },
+          "config": { "direction": "right", "toRoom": "safari32" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -24573,9 +24579,9 @@
           "config": { "style": "drum" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "door@0,3,0:249PHp": {
+        "door@0,3,0:Z2p4t6l": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari33" },
+          "config": { "direction": "right", "toRoom": "safari33" },
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
@@ -24666,9 +24672,9 @@
           "config": { "style": "sandwich" },
           "position": { "x": 7, "y": 5, "z": 1 }
         },
-        "door@0,3,1:249QtF": {
+        "door@0,3,1:Z2p4sk5": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari36" },
+          "config": { "direction": "right", "toRoom": "safari36" },
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
@@ -24749,9 +24755,9 @@
           "config": { "style": "spikes" },
           "position": { "x": 4, "y": 3, "z": 1 }
         },
-        "door@8,3,2:249QdU": {
+        "door@8,3,2:Z140xtH": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari35" },
+          "config": { "direction": "left", "toRoom": "safari35" },
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
@@ -24944,9 +24950,9 @@
           },
           "position": { "x": 7, "y": 2, "z": 1 }
         },
-        "door@3,0,0:AfPwj": {
+        "door@3,0,0:rjGsN": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari33" },
+          "config": { "direction": "towards", "toRoom": "safari33" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -25021,19 +25027,19 @@
           "config": { "which": "dalek" },
           "position": { "x": 7, "y": 4, "z": 1 }
         },
-        "door@3,8,5:AfANk": {
+        "door@3,8,5:Z2mYqOi": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari18" },
+          "config": { "direction": "away", "toRoom": "safari18" },
           "position": { "x": 3, "y": 8, "z": 5 }
         },
-        "door@8,3,5:Z2e1dI5": {
+        "door@8,3,5:LV2Gb": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari5" },
+          "config": { "direction": "left", "toRoom": "safari5" },
           "position": { "x": 8, "y": 3, "z": 5 }
         },
-        "door@3,0,0:baJ7f": {
+        "door@3,0,0:Zj81hn": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari3" },
+          "config": { "direction": "towards", "toRoom": "safari3" },
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
@@ -25089,14 +25095,14 @@
           "config": {},
           "position": { "x": 5, "y": 1, "z": 0 }
         },
-        "door@8,1,4:1wrwXV": {
+        "door@8,1,4:21rHTG": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari6triple" },
+          "config": { "direction": "left", "toRoom": "safari6triple" },
           "position": { "x": 8, "y": 1, "z": 4 }
         },
-        "door@0,1,0:Z2e1dXP": {
+        "door@0,1,0:Z2wPgRd": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari4" },
+          "config": { "direction": "right", "toRoom": "safari4" },
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
@@ -25351,19 +25357,19 @@
           "config": { "gives": "shield" },
           "position": { "x": 0, "y": 11, "z": 1 }
         },
-        "door@8,6,2:baK9g": {
+        "door@8,6,2:1Sopzz": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari7" },
+          "config": { "direction": "away", "toRoom": "safari7" },
           "position": { "x": 8, "y": 6, "z": 2 }
         },
-        "door@6,8,2:Z2e1dcz": {
+        "door@6,8,2:LV3cG": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari7" },
+          "config": { "direction": "left", "toRoom": "safari7" },
           "position": { "x": 6, "y": 8, "z": 2 }
         },
-        "door@0,2,1:Z2e1dI5": {
+        "door@0,2,1:Z2wPgBs": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari5" },
+          "config": { "direction": "right", "toRoom": "safari5" },
           "position": { "x": 0, "y": 2, "z": 1 }
         }
       },
@@ -25425,19 +25431,19 @@
           "config": { "style": "organic" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "door@6,2,2:Z2e1cVO": {
+        "door@6,2,2:LV3sr": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari8" },
+          "config": { "direction": "left", "toRoom": "safari8" },
           "position": { "x": 6, "y": 2, "z": 2 }
         },
-        "door@0,2,1:1wrwXV": {
+        "door@0,2,1:G95F0": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari6triple" },
+          "config": { "direction": "right", "toRoom": "safari6triple" },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "door@2,0,1:1OPO8R": {
+        "door@2,0,1:1hl1rq": {
           "type": "door",
-          "config": { "axis": "x", "toRoom": "safari6triple" },
+          "config": { "direction": "towards", "toRoom": "safari6triple" },
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
@@ -25463,14 +25469,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "door@8,0,1:Z2e1cG4": {
+        "door@8,0,1:LV3Ic": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari9" },
+          "config": { "direction": "left", "toRoom": "safari9" },
           "position": { "x": 8, "y": 0, "z": 1 }
         },
-        "door@0,0,1:Z2e1dcz": {
+        "door@0,0,1:Z2wPg5W": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari7" },
+          "config": { "direction": "right", "toRoom": "safari7" },
           "position": { "x": 0, "y": 0, "z": 1 }
         }
       },
@@ -25552,14 +25558,14 @@
           "config": { "style": "sandwich" },
           "position": { "x": 0, "y": 1, "z": 3 }
         },
-        "door@8,2,5:249zWp": {
+        "door@8,2,5:Z140NKd": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari14" },
+          "config": { "direction": "left", "toRoom": "safari14" },
           "position": { "x": 8, "y": 2, "z": 5 }
         },
-        "door@0,2,4:Z2e1cVO": {
+        "door@0,2,4:Z2wPfPc": {
           "type": "door",
-          "config": { "axis": "y", "toRoom": "safari8" },
+          "config": { "direction": "right", "toRoom": "safari8" },
           "position": { "x": 0, "y": 2, "z": 4 }
         }
       },

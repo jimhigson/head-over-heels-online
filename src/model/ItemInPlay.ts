@@ -1,6 +1,6 @@
 import type { PlanetName } from "../sprites/planets";
 import type { Aabb, Direction, Xyz } from "../utils/vectors";
-import type { ItemConfig, ItemType } from "./JsonItem";
+import type { ItemConfig, ItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
 

@@ -1,7 +1,6 @@
-import { addXy, crossAxisXy } from "../../src/utils/vectors";
 import type { PlanetName } from "../../src/sprites/planets";
 import type { LooseDoorMap } from "./convertCampaign";
-import { convertXYZ, autoZ } from "./convertCampaign";
+import { convertXYZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
@@ -15,7 +14,11 @@ import { roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import type { Xml2JsonItem } from "./Xml2JsonItem";
 import { keyItems } from "../../src/utils/keyItems";
-import type { ItemConfigMap, UnknownJsonItem } from "../../src/model/Item";
+import type {
+  ItemConfigMap,
+  UnknownJsonItem,
+} from "../../src/model/json/JsonItem";
+import { convertDoor } from "./convertDoor";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",
@@ -85,55 +88,7 @@ const convertItemsArray = (
       }
 
       if (item.class === "door") {
-        const roomOnMap = map[roomName];
-        const toRoom = convertRoomId(
-          roomNameFromXmlFilename(roomOnMap[item.where]!),
-        );
-
-        // this is unreliable - east and west can be used interchangeably in the xml(!).
-        // ie, foo-door-west will sometimes be used to go wast (!) - presumably because they look
-        // similar
-        //const isFront =
-        //  item.kind.endsWith("-west") || item.kind.endsWith("-south");
-
-        // this isn't really reliable either since the "where" is just a label
-        // but might be the best we have (for now) - it is sometimes wrong in the "triple" rooms
-        // so these probably need manual patching
-        const isFront =
-          convertDirection(item.where) === "towards" ||
-          convertDirection(item.where) === "right";
-
-        const axis =
-          item.kind.endsWith("-east") || item.kind.endsWith("-west") ?
-            "x"
-          : "y";
-        const cAxis = crossAxisXy(axis);
-
-        const z =
-          position.z === -1 ?
-            autoZ({ x: parseInt(item.x), y: parseInt(item.y) }, xml2JsonRoom)
-          : position.z;
-
-        const vectorToMoveFrontSideInwards = isFront ? { [cAxis]: 1 } : {};
-
-        // axes have flipped, so start the door on its opposite side:
-        const vectorToMoveStartingOnLowSide = { [axis]: -1 };
-
-        return {
-          type: "door",
-          config: {
-            axis,
-            toRoom,
-          },
-          position: {
-            ...addXy(
-              position,
-              vectorToMoveStartingOnLowSide,
-              vectorToMoveFrontSideInwards,
-            ),
-            z,
-          },
-        };
+        return convertDoor(map, roomName, item, position, xml2JsonRoom);
       }
 
       switch (item.kind) {

@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import type { ItemConfigMap } from "../../../model/JsonItem";
+import type { ItemConfigMap } from "../../../model/json/JsonItem";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot } from "@/sprites/spritePivots";

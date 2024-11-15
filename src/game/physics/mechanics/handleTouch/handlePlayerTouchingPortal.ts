@@ -11,6 +11,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
   portal: ItemInPlay<"portal", PlanetName, RoomId>,
 ) => {
   console.log(
+    "🙈",
     gameState.gameTime,
     "player",
     player.id,

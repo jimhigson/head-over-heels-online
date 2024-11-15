@@ -12,8 +12,8 @@ import { writeOut } from "./writeOut";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWalls } from "./convertWalls";
-import type { SidesWithDoors } from "./convertDoors";
-import { xmlRoomSidesWithDoors } from "./convertDoors";
+import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
+import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 import type { Direction } from "../../src/utils/vectors";
 import type { AnyRoomJson, Floor } from "../../src/model/modelTypes";
 
@@ -145,7 +145,6 @@ const convertRoomJson = async (xmlRoomName: string) => {
       roomOnMap["above"] &&
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
-    //doors: doorMap,
     walls: {
       away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
       left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),

@@ -33,11 +33,6 @@ export const walking = (
 
   // just entered a room and autowalking through the door
   if (autoWalkDistance > 0) {
-    console.log(
-      "walking.ts: will autowalk",
-      scaleXyz(unitVectors[facing], walkDistance),
-    );
-
     return {
       positionDelta: scaleXyz(unitVectors[facing], walkDistance),
       stateDelta: {

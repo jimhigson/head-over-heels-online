@@ -1,6 +1,15 @@
 export const directions = ["away", "towards", "left", "right"] as const;
 export type Direction = (typeof directions)[number];
 
+export const directionAxis = (direction: Direction): AxisXy =>
+  direction === "away" || direction === "towards" ? "y" : "x";
+
+/**
+ * doors sit along the axis perpendicular to their direction
+ */
+export const doorAlongAxis = (doorDirection: Direction): AxisXy =>
+  perpendicularAxisXy(directionAxis(doorDirection));
+
 export const unitVectors: Record<Direction | "down" | "up", Xyz> = {
   away: { x: 0, y: 1, z: 0 },
   left: { x: 1, y: 0, z: 0 },
@@ -15,7 +24,8 @@ export type Xy = {
   y: number;
 };
 
-export const crossAxisXy = (axis: AxisXy): AxisXy => (axis === "x" ? "y" : "x");
+export const perpendicularAxisXy = (axis: AxisXy): AxisXy =>
+  axis === "x" ? "y" : "x";
 
 export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
   xys.reduce<Xy>(

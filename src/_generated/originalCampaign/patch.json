@@ -35,22 +35,34 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/heels",
     "value": {
-      "config": { "which": "heels" },
-      "position": { "x": 3.5, "y": 3.5, "z": 0 },
+      "config": {
+        "which": "heels"
+      },
+      "position": {
+        "x": 3.5,
+        "y": 3.5,
+        "z": 0
+      },
       "type": "player"
     }
   },
   {
     "op": "replace",
-    "path": "/rooms/blacktooth21fish/items/door@3,8,1:1G5tJ8/position/z",
+    "path": "/rooms/blacktooth21fish/items/door@3,8,1:xRnp2/position/z",
     "value": 2
   },
   {
     "op": "add",
     "path": "/rooms/blacktooth1head/items/head",
     "value": {
-      "config": { "which": "head" },
-      "position": { "x": 2.5, "y": 3.5, "z": 0 },
+      "config": {
+        "which": "head"
+      },
+      "position": {
+        "x": 2.5,
+        "y": 3.5,
+        "z": 0
+      },
       "type": "player"
     }
   }

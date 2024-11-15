@@ -3,7 +3,7 @@ import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
 import type { Xml2JsonRoom } from "./readToJson";
-import { type SidesWithDoors } from "./convertDoors";
+import { type SidesWithDoors } from "./xmlRoomSidesWithDoors";
 import type { AnyWall } from "../../src/model/modelTypes";
 
 export const convertWalls = (

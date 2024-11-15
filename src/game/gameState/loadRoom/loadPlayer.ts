@@ -1,4 +1,4 @@
-import type { JsonItem } from "@/model/JsonItem";
+import type { JsonItem } from "@/model/json/JsonItem";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";

@@ -17,7 +17,7 @@ const zBias = 0.1;
 /**
  * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem
  */
-export const mtvCollisionWithOneItem = (
+const mtv = (
   moverPosition: Xyz,
   moverAabb: Xyz,
   { state: { position: solidPosition }, aabb: solidAabb }: Collideable,
@@ -57,7 +57,7 @@ export const slidingCollisionWithManyItems = (
 ): Xyz => {
   return iterate(collidingSolids).reduce<Xyz>(
     (posAc: Xyz, collisionItem: UnknownItemInPlay) => {
-      return addXyz(posAc, mtvCollisionWithOneItem(posAc, aabb, collisionItem));
+      return addXyz(posAc, mtv(posAc, aabb, collisionItem));
     },
     targetPosition,
   );

@@ -2,13 +2,13 @@ import type { Container } from "pixi.js";
 import { createSprite } from "./game/render/createSprite";
 import { doorTexture } from "./game/render/itemAppearances/doorAppearance";
 import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
-import type { LoadedDoorConfig } from "./model/JsonItem";
+import type { LoadedDoorConfig } from "./model/json/JsonItem";
 import type { UnknownRoomState } from "./model/modelTypes";
 import { doorTexturePivot } from "./sprites/spritePivots";
 import { blockSizePx } from "./sprites/spritePivots";
 import { edgePaletteSwapFilters } from "./game/render/filters/paletteSwapFilters";
 import type { AxisXy, Xyz } from "./utils/vectors";
-import { crossAxisXy } from "./utils/vectors";
+import { perpendicularAxisXy, doorAlongAxis } from "./utils/vectors";
 
 function* renderDoorLeg(axis: AxisXy, z: number): Generator<Container> {
   // drag legs etc
@@ -34,15 +34,18 @@ function* renderDoorLeg(axis: AxisXy, z: number): Generator<Container> {
   });
 }
 export function* renderDoorPart(
-  { axis, inHiddenWall }: LoadedDoorConfig<string>,
+  { direction, inHiddenWall }: LoadedDoorConfig<string>,
   room: UnknownRoomState,
-  { z }: Xyz,
+  position: Xyz,
   /** is this the near post of the doorframe, or the far one? */
   nearness: "near" | "far",
 ): Generator<Container> {
+  const axis = doorAlongAxis(direction);
+  const { z } = position;
+
   if (inHiddenWall) {
     if (z !== 0) {
-      //draw the 'floating' threshold:
+      //draw the 'floating' (no legs) threshold:
       const pivotX = axis === "x" ? 18 : 8;
 
       const sprite = createSprite({
@@ -61,7 +64,9 @@ export function* renderDoorPart(
       // drag legs etc
       yield* renderDoorLeg(axis, z);
     } else {
-      const offset = projectBlockXyzToScreenXy({ [crossAxisXy(axis)]: 0.5 });
+      const offset = projectBlockXyzToScreenXy({
+        [perpendicularAxisXy(axis)]: 0.5,
+      });
 
       if (nearness === "far") {
         yield createSprite({

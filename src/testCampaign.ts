@@ -5,7 +5,7 @@ import { planetNames, planets } from "./sprites/planets.ts";
 import type { ZxSpectrumRoomColour } from "./originalGame.ts";
 import { zxSpectrumRoomColours } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
-import type { UnknownJsonItem } from "./model/JsonItem.ts";
+import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
@@ -94,7 +94,7 @@ const colourRooms = () => {
                 type: "door",
                 position: { x: 0, y: 0, z: 3 },
                 config: {
-                  axis: "x",
+                  direction: "towards",
                   toRoom: `${p}-${zxSpectrumRoomColours[(zxSpectrumRoomColours.length + ic - 1) % zxSpectrumRoomColours.length]}`,
                 },
               },
@@ -102,7 +102,7 @@ const colourRooms = () => {
                 type: "door",
                 position: { x: 4, y: 8, z: 3 },
                 config: {
-                  axis: "x",
+                  direction: "away",
                   toRoom: `${p}-${zxSpectrumRoomColours[(ic + 1) % zxSpectrumRoomColours.length]}`,
                 },
               },
@@ -110,7 +110,7 @@ const colourRooms = () => {
                 type: "door",
                 position: { x: 0, y: 4, z: 3 },
                 config: {
-                  axis: "y",
+                  direction: "right",
                   toRoom: `${planetNames[(planetNames.length + ip - 1) % planetNames.length]}-${c}`,
                 },
               },
@@ -118,7 +118,7 @@ const colourRooms = () => {
                 type: "door",
                 position: { x: 8, y: 4, z: 3 },
                 config: {
-                  axis: "y",
+                  direction: "left",
                   toRoom: `${planetNames[(planetNames.length + ip + 1) % planetNames.length]}-${c}`,
                 },
               },
@@ -155,22 +155,22 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "deep", axis: "x" },
+        config: { toRoom: "deep", direction: "towards" },
         position: { x: 1, y: 0, z: 0 },
       },
       {
         type: "door",
-        config: { toRoom: "wide", axis: "x" },
+        config: { toRoom: "wide", direction: "towards" },
         position: { x: 3, y: 0, z: 1 },
       },
       {
         type: "door",
-        config: { toRoom: "big", axis: "x" },
+        config: { toRoom: "big", direction: "towards" },
         position: { x: 5, y: 0, z: 2 },
       },
       {
         type: "door",
-        config: { toRoom: "zRoom", axis: "x" },
+        config: { toRoom: "zRoom", direction: "towards" },
         position: { x: 7, y: 0, z: 3 },
       },
     ]),
@@ -186,7 +186,7 @@ const rooms = {
     items: keyItems([
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "towards" },
         position: { x: 1, y: 0, z: 1 },
       },
       {
@@ -196,7 +196,7 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "towards" },
         position: { x: 3, y: 0, z: 1 },
       },
       {
@@ -206,7 +206,7 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "towards" },
         position: { x: 5, y: 0, z: 1 },
       },
       {
@@ -216,7 +216,7 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "away" },
         position: { x: 8, y: 8, z: 1 },
       },
       {
@@ -424,7 +424,7 @@ const rooms = {
     items: keyItems([
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "towards" },
         position: { x: 1, y: 0, z: 1 },
       },
     ]),
@@ -441,7 +441,7 @@ const rooms = {
     items: keyItems([
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "towards" },
         position: { x: 1, y: 0, z: 1 },
       },
     ]),
@@ -478,7 +478,7 @@ const rooms = {
     items: keyItems([
       {
         type: "door",
-        config: { toRoom: "doorsRoom", axis: "x" },
+        config: { toRoom: "doorsRoom", direction: "away" },
         position: { x: 1, y: 11, z: 4 },
       },
       {

@@ -1,5 +1,5 @@
 import type { Xy } from "../../src/utils/vectors";
-import type { SidesWithDoors } from "./convertDoors";
+import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
 import type { Xml2JsonRoom } from "./readToJson";
 
 export const convertRoomDimensions = (

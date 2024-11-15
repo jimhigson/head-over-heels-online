@@ -1,4 +1,4 @@
-import type { ItemType, JsonItem, UnknownJsonItem } from "@/model/JsonItem";
+import type { ItemType, JsonItem, UnknownJsonItem } from "@/model/json/JsonItem";
 import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { fallingItemTypes } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";

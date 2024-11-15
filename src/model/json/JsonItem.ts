@@ -1,7 +1,7 @@
 import type { EmptyObject } from "type-fest";
-import type { CharacterName } from "./modelTypes";
-import type { PlanetName, Wall } from "../sprites/planets";
-import type { AxisXy, Direction, Xyz } from "../utils/vectors";
+import type { CharacterName } from "../modelTypes";
+import type { PlanetName, Wall } from "../../sprites/planets";
+import type { AxisXy, Direction, Xyz } from "../../utils/vectors";
 
 export type ItemType =
   | "door"
@@ -35,10 +35,20 @@ export type ItemType =
 
 export type RenderItemType = ItemType | "door-front" | "door-back";
 
+/**
+ * test for if a door is embedded in an undrawn wall - ie, is on the right or towards
+ * edge of the room and needs extra space for it
+ */
+export const doorIsInHiddenWall = ({
+  config: { direction },
+  position,
+}: JsonItem<"door", PlanetName, string>) =>
+  (direction === "right" && position.x === 0) ||
+  (direction === "towards" && position.y === 0);
+
 export type LoadedDoorConfig<RoomId extends string> = {
   toRoom: RoomId;
-  axis: AxisXy;
-  /** does the door come into the hidden/invisible walls that are closest to us? */
+  direction: Direction;
   inHiddenWall: boolean;
 };
 
@@ -46,7 +56,8 @@ export type LoadedDoorConfig<RoomId extends string> = {
 export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
     toRoom: RoomId;
-    axis: AxisXy;
+    // the direction this door takes the character when they walk through it
+    direction: Direction;
   };
   doorNear: LoadedDoorConfig<RoomId>;
   doorFar: LoadedDoorConfig<RoomId>;
@@ -143,6 +154,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
 };
 
+/** config used in both json and in-play items */
 export type ItemConfig<
   T extends ItemType,
   P extends PlanetName,

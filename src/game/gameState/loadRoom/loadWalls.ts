@@ -10,6 +10,7 @@ import {
   yAxisWallAabb,
   yAxisWallRenderAabb,
 } from "../../collision/boundingBoxes";
+import { doorAlongAxis } from "@/utils/vectors";
 
 /**
  * convert a room's walls into normal items (that can be collided with as with any other item)
@@ -20,6 +21,7 @@ export function* loadWalls<R extends string>(
   // left/right sides:
   for (let yi = room.size.y - 1; yi >= 0; yi--) {
     const style = room.walls.left[yi];
+    // visible wall - gaps for doors are explicitly given with "none"
     if (style !== "none") {
       yield {
         ...defaultItemProperties,
@@ -36,17 +38,18 @@ export function* loadWalls<R extends string>(
       };
     }
 
+    // hidden wall - gaps with door are implicit
     // this lookup is slow, but is only done on room load:
-    const skipInvisibleWall =
+    const hasDoorAtThisWall =
       Object.values(room.items).find(
         (i) =>
           i.type === "door" &&
-          i.config.axis === "y" &&
+          doorAlongAxis(i.config.direction) === "y" &&
           i.position.x === 0 &&
           (i.position.y === yi || i.position.y + 1 === yi),
       ) !== undefined;
 
-    if (!skipInvisibleWall) {
+    if (!hasDoorAtThisWall) {
       yield {
         ...defaultItemProperties,
         ...{
@@ -67,6 +70,7 @@ export function* loadWalls<R extends string>(
 
   // towards/away sides:
   for (let xi = room.size.x - 1; xi >= 0; xi--) {
+    // visible wall - gaps for doors are explicitly given with "none"
     const style = room.walls.away[xi];
     if (style !== "none") {
       yield {
@@ -84,16 +88,17 @@ export function* loadWalls<R extends string>(
       };
     }
 
-    const skipInvisibleWall =
+    // hidden wall - gaps with door are implicit
+    const hasDoorInHiddenWall =
       Object.values(room.items).find(
         (i) =>
           i.type === "door" &&
-          i.config.axis === "x" &&
+          doorAlongAxis(i.config.direction) === "x" &&
           (i.position.x === xi || i.position.x + 1 === xi) &&
           i.position.y === 0,
       ) !== undefined;
 
-    if (!skipInvisibleWall) {
+    if (!hasDoorInHiddenWall) {
       yield {
         ...defaultItemProperties,
         ...{

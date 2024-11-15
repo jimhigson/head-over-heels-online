@@ -3,16 +3,15 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { produce, setAutoFreeze } from "immer";
-import { progressGameStateForTick } from "./mainLoop";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom, pickupCollected } from "../gameState/GameState";
-import { initGameState } from "../gameState/initGameState";
-import type { RoomJson } from "@/model/modelTypes";
-import type { RenderOptions } from "../RenderOptions";
-import type { InputState } from "../input/InputState";
-
-
+import type { TestRoomId } from "@/_testUtils/basicRoom";
+import {
+  basicGameState,
+  playGameThrough,
+  firstRoomId,
+  secondRoomId,
+} from "@/_testUtils/basicRoom";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -163,12 +162,25 @@ describe("jumping", () => {
 });
 
 describe("doors", () => {
-  test.only("moving from first room to second through door", () => {
+  test.each([
+    {
+      x: 1,
+      // at this y heels is pefectly aligned to get through the door without colliding with the doorframe
+      y: 2.5,
+      z: 0,
+    },
+    {
+      x: 1,
+      // at this y, heels is not perfectly aligned with the door - needs sliding to get through
+      y: 2,
+      z: 0,
+    },
+  ])("moving from first room to second through door", (startPosition) => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
-          position: { x: 1, y: 2.5, z: 0 },
+          position: startPosition,
           config: {
             which: "head",
           },
@@ -176,14 +188,14 @@ describe("doors", () => {
         doorToSecondRoom: {
           type: "door",
           position: { x: 0, y: 2, z: 0 },
-          config: { axis: "y", toRoom: secondRoomId },
+          config: { direction: "right", toRoom: secondRoomId },
         },
       },
       secondRoomItems: {
         doorToFirstRoom: {
           type: "door",
           position: { x: 8, y: 2, z: 0 },
-          config: { axis: "y", toRoom: firstRoomId },
+          config: { direction: "left", toRoom: firstRoomId },
         },
       },
       inputState: { right: true },
@@ -191,11 +203,6 @@ describe("doors", () => {
 
     playGameThrough(gameState, {
       forTime: 2_000,
-      frameCallback(gameState) {
-        const headState = currentRoom(gameState).items.head?.state;
-        console.log(headState?.position, headState?.autoWalkDistance);
-        return gameState;
-      },
     });
     expect(currentRoom(gameState).id).toBe("secondRoom");
   });

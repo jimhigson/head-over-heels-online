@@ -1,11 +1,16 @@
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import type { JsonItem } from "@/model/JsonItem";
+import { doorIsInHiddenWall, type JsonItem } from "@/model/json/JsonItem";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors";
-import { originXyz, addXyz } from "@/utils/vectors";
+import {
+  originXyz,
+  addXyz,
+  perpendicularAxisXy,
+  doorAlongAxis,
+} from "@/utils/vectors";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -16,19 +21,18 @@ export const doorPortalHeight = 24;
 export const doorPostHeight = 48;
 
 export function* loadDoor<RoomId extends string>(
-  jsonItem: JsonItem<"door", PlanetName, RoomId>,
+  jsonDoor: JsonItem<"door", PlanetName, RoomId>,
   id: string,
 ): Generator<UnknownItemInPlay<RoomId>> {
   const {
-    config: { axis },
+    config: { direction },
     position,
-  } = jsonItem;
+  } = jsonDoor;
 
-  const crossAxis = axis === "x" ? "y" : "x";
+  const axis = doorAlongAxis(direction);
+  const crossAxis = perpendicularAxisXy(axis);
 
-  const inHiddenWall =
-    (axis === "x" && jsonItem.position.y === 0) ||
-    (axis === "y" && jsonItem.position.x === 0);
+  const inHiddenWall = doorIsInHiddenWall(jsonDoor);
 
   // doors on the left/front are moved back half a square to embed them inside the unseen near-side wall:
   const crossAxisDisplacement: Xyz = {
@@ -37,12 +41,12 @@ export function* loadDoor<RoomId extends string>(
   };
 
   yield {
-    ...jsonItem,
+    ...jsonDoor,
     ...defaultItemProperties,
     ...{
       id: `${id}/far`,
       config: {
-        ...jsonItem.config,
+        ...jsonDoor.config,
         inHiddenWall,
       },
       type: "doorFar",
@@ -58,12 +62,12 @@ export function* loadDoor<RoomId extends string>(
     addXyz(position, crossAxisDisplacement),
   );
   yield {
-    ...jsonItem,
+    ...jsonDoor,
     ...defaultItemProperties,
     ...{
       id: `${id}/near`,
       config: {
-        ...jsonItem.config,
+        ...jsonDoor.config,
         inHiddenWall,
       },
       type: "doorNear",
@@ -74,12 +78,12 @@ export function* loadDoor<RoomId extends string>(
     },
   };
   yield {
-    ...jsonItem,
+    ...jsonDoor,
     ...defaultItemProperties,
     ...{
       id: `${id}/portal`,
       config: {
-        ...jsonItem.config,
+        ...jsonDoor.config,
         inHiddenWall,
         relativePoint: doorNearPosition,
       },
@@ -105,7 +109,7 @@ export function* loadDoor<RoomId extends string>(
     },
   };
   yield {
-    ...jsonItem,
+    ...jsonDoor,
     ...defaultItemProperties,
     ...{
       id: `${id}/wall`,

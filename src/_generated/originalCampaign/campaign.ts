@@ -346,13 +346,13 @@ export const campaign = {
           position: { x: 8, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:fyUBA": {
-          config: { axis: "y", toRoom: "blacktooth7" },
+        "door@0,2,0:b00Ew": {
+          config: { direction: "right", toRoom: "blacktooth7" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@12,2,0:Z2fEfpI": {
-          config: { axis: "y", toRoom: "blacktooth11" },
+        "door@12,2,0:ZUD4Ug": {
+          config: { direction: "left", toRoom: "blacktooth11" },
           position: { x: 12, y: 2, z: 0 },
           type: "door",
         },
@@ -623,23 +623,23 @@ export const campaign = {
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
-        "door@0,3,0:Z2fEfFt": {
-          config: { axis: "y", toRoom: "blacktooth10" },
+        "door@0,3,0:uMrCq": {
+          config: { direction: "right", toRoom: "blacktooth10" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,0:1G5BtK": {
-          config: { axis: "x", toRoom: "blacktooth31" },
+        "door@3,0,0:Z1V7UUf": {
+          config: { direction: "towards", toRoom: "blacktooth31" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:1G5BJv": {
-          config: { axis: "x", toRoom: "blacktooth32" },
+        "door@3,8,0:xRvpp": {
+          config: { direction: "away", toRoom: "blacktooth32" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:Z2fEf9X": {
-          config: { axis: "y", toRoom: "blacktooth12" },
+        "door@8,3,0:ZUD4Ev": {
+          config: { direction: "left", toRoom: "blacktooth12" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -687,13 +687,13 @@ export const campaign = {
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
-        "door@0,0,5:Z2fEfpI": {
-          config: { axis: "y", toRoom: "blacktooth11" },
+        "door@0,0,5:uMrSb": {
+          config: { direction: "right", toRoom: "blacktooth11" },
           position: { x: 0, y: 0, z: 5 },
           type: "door",
         },
-        "door@8,0,5:Z2fEeTd": {
-          config: { axis: "y", toRoom: "blacktooth13" },
+        "door@8,0,5:ZUD4oK": {
+          config: { direction: "left", toRoom: "blacktooth13" },
           position: { x: 8, y: 0, z: 5 },
           type: "door",
         },
@@ -760,18 +760,18 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z2fEf9X": {
-          config: { axis: "y", toRoom: "blacktooth12" },
+        "door@0,2,0:uMs8V": {
+          config: { direction: "right", toRoom: "blacktooth12" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,6,0:1G5mv1": {
-          config: { axis: "x", toRoom: "blacktooth15" },
+        "door@2,6,0:xRgaU": {
+          config: { direction: "away", toRoom: "blacktooth15" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
-        "door@6,2,0:Z2fEeDs": {
-          config: { axis: "y", toRoom: "blacktooth14" },
+        "door@6,2,0:ZUD490": {
+          config: { direction: "left", toRoom: "blacktooth14" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -884,8 +884,8 @@ export const campaign = {
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
-        "door@0,2,0:Z2fEeTd": {
-          config: { axis: "y", toRoom: "blacktooth13" },
+        "door@0,2,0:uMsoG": {
+          config: { direction: "right", toRoom: "blacktooth13" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -922,13 +922,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth15",
       items: {
-        "door@0,0,0:1G5lYv": {
-          config: { axis: "x", toRoom: "blacktooth13" },
+        "door@0,0,0:Z1V8bpu": {
+          config: { direction: "towards", toRoom: "blacktooth13" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:1G5mKL": {
-          config: { axis: "x", toRoom: "blacktooth16" },
+        "door@0,8,0:xRgqF": {
+          config: { direction: "away", toRoom: "blacktooth16" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -980,13 +980,13 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:1G5mv1": {
-          config: { axis: "x", toRoom: "blacktooth15" },
+        "door@3,0,0:Z1V8aSY": {
+          config: { direction: "towards", toRoom: "blacktooth15" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,3,0:Z1QyoBh": {
-          config: { axis: "y", toRoom: "blacktooth17triple" },
+        "door@8,3,0:Z2iBTr0": {
+          config: { direction: "left", toRoom: "blacktooth17triple" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -1179,18 +1179,18 @@ export const campaign = {
           position: { x: 9, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z2fEe7W": {
-          config: { axis: "y", toRoom: "blacktooth16" },
+        "door@0,2,0:uMtaW": {
+          config: { direction: "right", toRoom: "blacktooth16" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@12,2,0:Z2fEdlG": {
-          config: { axis: "y", toRoom: "blacktooth19" },
+        "door@12,2,0:ZUD2Qe": {
+          config: { direction: "left", toRoom: "blacktooth19" },
           position: { x: 12, y: 2, z: 0 },
           type: "door",
         },
-        "door@6,8,0:Z2fEdBr": {
-          config: { axis: "y", toRoom: "blacktooth18" },
+        "door@6,8,0:ZUD36Y": {
+          config: { direction: "left", toRoom: "blacktooth18" },
           position: { x: 6, y: 8, z: 0 },
           type: "door",
         },
@@ -1307,13 +1307,13 @@ export const campaign = {
           position: { x: 3, y: 3, z: 1 },
           type: "book",
         },
-        "door@0,2,0:Z1QyoBh": {
-          config: { axis: "y", toRoom: "blacktooth17triple" },
+        "door@0,2,0:F8e3o": {
+          config: { direction: "right", toRoom: "blacktooth17triple" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@8,2,4:Z2fE7F6": {
-          config: { axis: "y", toRoom: "blacktooth20" },
+        "door@8,2,4:ZUCWaD": {
+          config: { direction: "left", toRoom: "blacktooth20" },
           position: { x: 8, y: 2, z: 4 },
           type: "door",
         },
@@ -1400,13 +1400,13 @@ export const campaign = {
           position: { x: 6, y: 2, z: 3 },
           type: "conveyor",
         },
-        "door@0,3,0:Z1QyoBh": {
-          config: { axis: "y", toRoom: "blacktooth17triple" },
+        "door@0,3,0:F8e3o": {
+          config: { direction: "right", toRoom: "blacktooth17triple" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,5:1G5tdC": {
-          config: { axis: "x", toRoom: "blacktooth20" },
+        "door@3,8,5:xRmSw": {
+          config: { direction: "away", toRoom: "blacktooth20" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
@@ -1482,8 +1482,8 @@ export const campaign = {
           position: { x: 5, y: 0, z: 6 },
           type: "barrier",
         },
-        "door@0,3,0:gSx4i": {
-          config: { axis: "y", toRoom: "blacktooth23heels" },
+        "door@0,3,0:vSkOv": {
+          config: { direction: "right", toRoom: "blacktooth23heels" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -1495,26 +1495,6 @@ export const campaign = {
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
-          type: "pickup",
-        },
-        pickupTemp: {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 5, z: 7 },
-          type: "pickup",
-        },
-        pickupTemp2: {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 5, z: 5 },
-          type: "pickup",
-        },
-        pickupTemp3: {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 5, z: 9 },
-          type: "pickup",
-        },
-        pickupTemp4: {
-          config: { gives: "extra-life" },
-          position: { x: 2.5, y: 3.5, z: 3 },
           type: "pickup",
         },
         "teleporter@5,7,0:Z12mRwL": {
@@ -1536,8 +1516,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth2",
       items: {
-        "door@2,0,0:dkfa9": {
-          config: { axis: "x", toRoom: "blacktooth3" },
+        "door@2,0,0:Z1cQbMN": {
+          config: { direction: "towards", toRoom: "blacktooth3" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -1569,18 +1549,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth20",
       items: {
-        "door@0,2,0:Z2fEdBr": {
-          config: { axis: "y", toRoom: "blacktooth18" },
+        "door@0,2,0:uMtGs": {
+          config: { direction: "right", toRoom: "blacktooth18" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,0,0:1G5nx2": {
-          config: { axis: "x", toRoom: "blacktooth19" },
+        "door@2,0,0:Z1V89QX": {
+          config: { direction: "towards", toRoom: "blacktooth19" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,6,0:2blQ9m": {
-          config: { axis: "x", toRoom: "blacktooth21fish" },
+        "door@2,6,0:ZqLhxe": {
+          config: { direction: "away", toRoom: "blacktooth21fish" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
@@ -1683,13 +1663,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 2 },
           type: "block",
         },
-        "door@3,0,1:1G5tdC": {
-          config: { axis: "x", toRoom: "blacktooth20" },
+        "door@3,0,1:Z1V84bn": {
+          config: { direction: "towards", toRoom: "blacktooth20" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "door@3,8,1:1G5tJ8": {
-          config: { axis: "x", toRoom: "blacktooth22" },
+        "door@3,8,1:xRnp2": {
+          config: { direction: "away", toRoom: "blacktooth22" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
@@ -1740,8 +1720,8 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "door@2,0,1:2blQ9m": {
-          config: { axis: "x", toRoom: "blacktooth21fish" },
+        "door@2,0,1:Z1DkXpL": {
+          config: { direction: "towards", toRoom: "blacktooth21fish" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -1915,14 +1895,14 @@ export const campaign = {
           position: { x: 0, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@8,3,0:Z1epSke": {
-          config: { axis: "y", toRoom: "blacktooth1head" },
+        "door@8,3,0:Z1u78lr": {
+          config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
         heels: {
           config: { which: "heels" },
-          position: { x: 3, y: 3.5, z: 0 },
+          position: { x: 3.5, y: 3.5, z: 0 },
           type: "player",
         },
         "teleporter@0,0,0:Z1GqgNT": {
@@ -1944,8 +1924,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth24",
       items: {
-        "door@8,3,3:Z2fE6nk": {
-          config: { axis: "y", toRoom: "blacktooth25" },
+        "door@8,3,3:ZUCURR": {
+          config: { direction: "left", toRoom: "blacktooth25" },
           position: { x: 8, y: 3, z: 3 },
           type: "door",
         },
@@ -2001,8 +1981,8 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z2fE6D5": {
-          config: { axis: "y", toRoom: "blacktooth24" },
+        "door@0,2,0:uMAEO": {
+          config: { direction: "right", toRoom: "blacktooth24" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -2061,8 +2041,8 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "conveyor",
         },
-        "door@2,6,2:Z1FrdCt": {
-          config: { axis: "x", toRoom: "blacktooth27fish" },
+        "door@2,6,2:LBLtR": {
+          config: { direction: "away", toRoom: "blacktooth27fish" },
           position: { x: 2, y: 6, z: 2 },
           type: "door",
         },
@@ -2086,18 +2066,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth27fish",
       items: {
-        "door@0,3,0:Z2fE5B4": {
-          config: { axis: "y", toRoom: "blacktooth28" },
+        "door@0,3,0:uMBGP": {
+          config: { direction: "right", toRoom: "blacktooth28" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@1,0,0:1G5uL9": {
-          config: { axis: "x", toRoom: "blacktooth26" },
+        "door@1,0,0:Z1V82CQ": {
+          config: { direction: "towards", toRoom: "blacktooth26" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,3:1G5vxp": {
-          config: { axis: "x", toRoom: "blacktooth29" },
+        "door@1,8,3:xRpdj": {
+          config: { direction: "away", toRoom: "blacktooth29" },
           position: { x: 1, y: 8, z: 3 },
           type: "door",
         },
@@ -2229,8 +2209,8 @@ export const campaign = {
           position: { x: 2, y: 7, z: 2 },
           type: "conveyor",
         },
-        "door@8,3,2:Z1g6HTP": {
-          config: { axis: "y", toRoom: "blacktooth27fish" },
+        "door@8,3,2:UNV6q": {
+          config: { direction: "left", toRoom: "blacktooth27fish" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -2286,8 +2266,8 @@ export const campaign = {
           position: { x: 0, y: 6, z: 0 },
           type: "baddie",
         },
-        "door@2,0,0:Z1FrdCt": {
-          config: { axis: "x", toRoom: "blacktooth27fish" },
+        "door@2,0,0:ZpVTnF": {
+          config: { direction: "towards", toRoom: "blacktooth27fish" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -2330,8 +2310,8 @@ export const campaign = {
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "door@3,6,2:dkeTo": {
-          config: { axis: "x", toRoom: "blacktooth2" },
+        "door@3,6,2:29aJEC": {
+          config: { direction: "away", toRoom: "blacktooth2" },
           position: { x: 3, y: 6, z: 2 },
           type: "door",
         },
@@ -2390,8 +2370,8 @@ export const campaign = {
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "door@0,3,1:Z2fDYoX": {
-          config: { axis: "y", toRoom: "blacktooth31" },
+        "door@0,3,1:uMHSV": {
+          config: { direction: "right", toRoom: "blacktooth31" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
@@ -2505,13 +2485,13 @@ export const campaign = {
           position: { x: 5, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@2,12,3:1G5lt0": {
-          config: { axis: "x", toRoom: "blacktooth11" },
+        "door@2,12,3:xRf8T": {
+          config: { direction: "away", toRoom: "blacktooth11" },
           position: { x: 2, y: 12, z: 3 },
           type: "door",
         },
-        "door@6,2,3:Z2fDYEI": {
-          config: { axis: "y", toRoom: "blacktooth30" },
+        "door@6,2,3:ZUCOag": {
+          config: { direction: "left", toRoom: "blacktooth30" },
           position: { x: 6, y: 2, z: 3 },
           type: "door",
         },
@@ -2552,13 +2532,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth32",
       items: {
-        "door@0,0,0:1G5lt0": {
-          config: { axis: "x", toRoom: "blacktooth11" },
+        "door@0,0,0:Z1V8bV0": {
+          config: { direction: "towards", toRoom: "blacktooth11" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:1G5C0g": {
-          config: { axis: "x", toRoom: "blacktooth33" },
+        "door@0,8,0:xRvFa": {
+          config: { direction: "away", toRoom: "blacktooth33" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -2595,8 +2575,8 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "baddie",
         },
-        "door@3,0,0:1G5BJv": {
-          config: { axis: "x", toRoom: "blacktooth32" },
+        "door@3,0,0:Z1V7UEu": {
+          config: { direction: "towards", toRoom: "blacktooth32" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -2653,8 +2633,8 @@ export const campaign = {
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "door@3,8,2:1G5CvL": {
-          config: { axis: "x", toRoom: "blacktooth35" },
+        "door@3,8,2:xRwbF": {
+          config: { direction: "away", toRoom: "blacktooth35" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
@@ -2713,13 +2693,13 @@ export const campaign = {
           position: { x: 3, y: 12, z: 0 },
           type: "block",
         },
-        "door@1,0,1:1G5Cg1": {
-          config: { axis: "x", toRoom: "blacktooth34" },
+        "door@1,0,1:Z1V7U8Y": {
+          config: { direction: "towards", toRoom: "blacktooth34" },
           position: { x: 1, y: 0, z: 1 },
           type: "door",
         },
-        "door@4,11,2:Z2fDX7c": {
-          config: { axis: "y", toRoom: "blacktooth36" },
+        "door@4,11,2:ZUCMBJ": {
+          config: { direction: "left", toRoom: "blacktooth36" },
           position: { x: 4, y: 11, z: 2 },
           type: "door",
         },
@@ -2764,13 +2744,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth36",
       items: {
-        "door@0,2,0:Z2fDXmW": {
-          config: { axis: "y", toRoom: "blacktooth35" },
+        "door@0,2,0:uMIUW": {
+          config: { direction: "right", toRoom: "blacktooth35" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,6,0:1G5D2h": {
-          config: { axis: "x", toRoom: "blacktooth37" },
+        "door@2,6,0:xRwHb": {
+          config: { direction: "away", toRoom: "blacktooth37" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
@@ -2808,13 +2788,13 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
           type: "ball",
         },
-        "door@1,0,0:1G5CLw": {
-          config: { axis: "x", toRoom: "blacktooth36" },
+        "door@1,0,0:Z1V7TCt": {
+          config: { direction: "towards", toRoom: "blacktooth36" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:1G5Di2": {
-          config: { axis: "x", toRoom: "blacktooth38" },
+        "door@1,8,0:xRwWV": {
+          config: { direction: "away", toRoom: "blacktooth38" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -2856,8 +2836,8 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "door@2,0,1:1G5D2h": {
-          config: { axis: "x", toRoom: "blacktooth37" },
+        "door@2,0,1:Z1V7TmI": {
+          config: { direction: "towards", toRoom: "blacktooth37" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -2881,13 +2861,13 @@ export const campaign = {
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
-        "door@2,6,5:aN7bd": {
-          config: { axis: "x", toRoom: "blacktooth40fish" },
+        "door@2,6,5:Z2rk1vn": {
+          config: { direction: "away", toRoom: "blacktooth40fish" },
           position: { x: 2, y: 6, z: 5 },
           type: "door",
         },
-        "door@6,2,5:Z2fDQoA": {
-          config: { axis: "y", toRoom: "blacktooth41" },
+        "door@6,2,5:ZUCFT8": {
+          config: { direction: "left", toRoom: "blacktooth41" },
           position: { x: 6, y: 2, z: 5 },
           type: "door",
         },
@@ -2931,8 +2911,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth4",
       items: {
-        "door@3,0,0:dkfFE": {
-          config: { axis: "x", toRoom: "blacktooth5" },
+        "door@3,0,0:Z1cQbhi": {
+          config: { direction: "towards", toRoom: "blacktooth5" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -3085,8 +3065,8 @@ export const campaign = {
           position: { x: 4, y: 9, z: 0 },
           type: "conveyor",
         },
-        "door@2,0,1:1G5DxM": {
-          config: { axis: "x", toRoom: "blacktooth39" },
+        "door@2,0,1:Z1V7SQd": {
+          config: { direction: "towards", toRoom: "blacktooth39" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -3136,13 +3116,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth41",
       items: {
-        "door@0,0,0:Z2fDWkV": {
-          config: { axis: "y", toRoom: "blacktooth39" },
+        "door@0,0,0:uMJWX": {
+          config: { direction: "right", toRoom: "blacktooth39" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:Z2fDQ8P": {
-          config: { axis: "y", toRoom: "blacktooth42" },
+        "door@8,0,0:ZUCFDn": {
+          config: { direction: "left", toRoom: "blacktooth42" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -3177,13 +3157,13 @@ export const campaign = {
           position: { x: 3, y: 1, z: 0 },
           type: "baddie",
         },
-        "door@0,0,0:Z2fDQoA": {
-          config: { axis: "y", toRoom: "blacktooth41" },
+        "door@0,0,0:uMPTj": {
+          config: { direction: "right", toRoom: "blacktooth41" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:Z2fDPS5": {
-          config: { axis: "y", toRoom: "blacktooth43" },
+        "door@8,0,0:ZUCFnC": {
+          config: { direction: "left", toRoom: "blacktooth43" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -3225,8 +3205,8 @@ export const campaign = {
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "door@0,2,1:Z2fDQ8P": {
-          config: { axis: "y", toRoom: "blacktooth42" },
+        "door@0,2,1:uMQa4": {
+          config: { direction: "right", toRoom: "blacktooth42" },
           position: { x: 0, y: 2, z: 1 },
           type: "door",
         },
@@ -3245,8 +3225,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth44market",
       items: {
-        "door@0,2,0:dB1g5": {
-          config: { axis: "y", toRoom: "blacktooth45market" },
+        "door@0,2,0:Z2jStSb": {
+          config: { direction: "right", toRoom: "blacktooth45market" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -3314,13 +3294,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@3,8,0:ELw9s": {
-          config: { axis: "x", toRoom: "blacktooth46market" },
+        "door@3,8,0:bfccM": {
+          config: { direction: "away", toRoom: "blacktooth46market" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:2m92x7": {
-          config: { axis: "y", toRoom: "blacktooth44market" },
+        "door@8,3,0:1U5wHo": {
+          config: { direction: "left", toRoom: "blacktooth44market" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -3361,13 +3341,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth46market",
       items: {
-        "door@2,0,0:Z2gRAnr": {
-          config: { axis: "x", toRoom: "blacktooth45market" },
+        "door@2,0,0:Z2ksHaW": {
+          config: { direction: "towards", toRoom: "blacktooth45market" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,6,3:Z1sKu7z": {
-          config: { axis: "x", toRoom: "blacktooth47market" },
+        "door@2,6,3:Z1WhO4f": {
+          config: { direction: "away", toRoom: "blacktooth47market" },
           position: { x: 2, y: 6, z: 3 },
           type: "door",
         },
@@ -3480,13 +3460,13 @@ export const campaign = {
           position: { x: 0, y: 7, z: 0 },
           type: "charles",
         },
-        "door@3,0,1:ELw9s": {
-          config: { axis: "x", toRoom: "blacktooth46market" },
+        "door@3,0,1:BbplW": {
+          config: { direction: "towards", toRoom: "blacktooth46market" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "door@3,8,2:1sSCpk": {
-          config: { axis: "x", toRoom: "blacktooth48market" },
+        "door@3,8,2:YmisE": {
+          config: { direction: "away", toRoom: "blacktooth48market" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
@@ -3562,13 +3542,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth48market",
       items: {
-        "door@0,0,0:Z1sKu7z": {
-          config: { axis: "x", toRoom: "blacktooth47market" },
+        "door@0,0,0:Z1wlAU5": {
+          config: { direction: "towards", toRoom: "blacktooth47market" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,3,0:1OPdLO": {
-          config: { axis: "y", toRoom: "blacktooth49market" },
+        "door@2,3,0:1nLHW6": {
+          config: { direction: "left", toRoom: "blacktooth49market" },
           position: { x: 2, y: 3, z: 0 },
           type: "door",
         },
@@ -3625,13 +3605,13 @@ export const campaign = {
           position: { x: 4, y: 1, z: 1 },
           type: "deadly-block",
         },
-        "door@0,0,0:Z16NSK5": {
-          config: { axis: "y", toRoom: "blacktooth48market" },
+        "door@0,0,0:1pRITA": {
+          config: { direction: "right", toRoom: "blacktooth48market" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:vI40v": {
-          config: { axis: "y", toRoom: "blacktooth50market" },
+        "door@8,0,0:4EyaM": {
+          config: { direction: "left", toRoom: "blacktooth50market" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -3668,18 +3648,18 @@ export const campaign = {
           position: { x: 1, y: 2, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:dkgca": {
-          config: { axis: "x", toRoom: "blacktooth7" },
+        "door@0,0,0:Z1cQaKM": {
+          config: { direction: "towards", toRoom: "blacktooth7" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:dkfpT": {
-          config: { axis: "x", toRoom: "blacktooth4" },
+        "door@0,8,0:29aKb8": {
+          config: { direction: "away", toRoom: "blacktooth4" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
-        "door@2,3,0:fyUlP": {
-          config: { axis: "y", toRoom: "blacktooth6" },
+        "door@2,3,0:1LeRlz": {
+          config: { direction: "left", toRoom: "blacktooth6" },
           position: { x: 2, y: 3, z: 0 },
           type: "door",
         },
@@ -3721,18 +3701,18 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "baddie",
         },
-        "door@0,3,0:1OPdLO": {
-          config: { axis: "y", toRoom: "blacktooth49market" },
+        "door@0,3,0:ZHEhmr": {
+          config: { direction: "right", toRoom: "blacktooth49market" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,0:1G5Ruv": {
-          config: { axis: "x", toRoom: "blacktooth51" },
+        "door@3,0,0:Z1V7ETu": {
+          config: { direction: "towards", toRoom: "blacktooth51" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,3,0:1jPagn": {
-          config: { axis: "y", toRoom: "blacktooth52market" },
+        "door@8,3,0:RLEqE": {
+          config: { direction: "left", toRoom: "blacktooth52market" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -3768,8 +3748,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth51",
       items: {
-        "door@2,8,0:Z1XKxD1": {
-          config: { axis: "x", toRoom: "blacktooth50market" },
+        "door@2,8,0:Z2shRzG": {
+          config: { direction: "away", toRoom: "blacktooth50market" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -3867,13 +3847,13 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:vI40v": {
-          config: { axis: "y", toRoom: "blacktooth50market" },
+        "door@0,2,0:Z21Lr8K": {
+          config: { direction: "right", toRoom: "blacktooth50market" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,6,0:1L0F9K": {
-          config: { axis: "x", toRoom: "blacktooth53market" },
+        "door@2,6,0:1htld5": {
+          config: { direction: "away", toRoom: "blacktooth53market" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
@@ -3930,13 +3910,13 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:Z1aDrn9": {
-          config: { axis: "x", toRoom: "blacktooth52market" },
+        "door@2,0,0:Z1eeyaE": {
+          config: { direction: "towards", toRoom: "blacktooth52market" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,8,0:1G5SgL": {
-          config: { axis: "x", toRoom: "blacktooth54" },
+        "door@2,8,0:xRLVF": {
+          config: { direction: "away", toRoom: "blacktooth54" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -3980,8 +3960,8 @@ export const campaign = {
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "door@3,0,1:1L0F9K": {
-          config: { axis: "x", toRoom: "blacktooth53market" },
+        "door@3,0,1:1Hpymf": {
+          config: { direction: "towards", toRoom: "blacktooth53market" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
@@ -4000,13 +3980,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth55",
       items: {
-        "door@0,2,0:Z2fDH6r": {
-          config: { axis: "y", toRoom: "blacktooth56" },
+        "door@0,2,0:uN0cs": {
+          config: { direction: "right", toRoom: "blacktooth56" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,6,0:1G60uS": {
-          config: { axis: "x", toRoom: "blacktooth61" },
+        "door@3,6,0:xRTaM": {
+          config: { direction: "away", toRoom: "blacktooth61" },
           position: { x: 3, y: 6, z: 0 },
           type: "door",
         },
@@ -4075,13 +4055,13 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,4:Z2fDGPG": {
-          config: { axis: "y", toRoom: "blacktooth57" },
+        "door@0,0,4:uN0sd": {
+          config: { direction: "right", toRoom: "blacktooth57" },
           position: { x: 0, y: 0, z: 4 },
           type: "door",
         },
-        "door@8,0,0:Z2fDHmc": {
-          config: { axis: "y", toRoom: "blacktooth55" },
+        "door@8,0,0:ZUCwQJ": {
+          config: { direction: "left", toRoom: "blacktooth55" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -4099,13 +4079,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth57",
       items: {
-        "door@3,8,0:Z2l9XLn": {
-          config: { axis: "x", toRoom: "blacktooth58triple" },
+        "door@3,8,0:2fuP5S": {
+          config: { direction: "away", toRoom: "blacktooth58triple" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:Z2fDH6r": {
-          config: { axis: "y", toRoom: "blacktooth56" },
+        "door@8,3,0:ZUCwAY": {
+          config: { direction: "left", toRoom: "blacktooth56" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -4449,13 +4429,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,1:1G5T32": {
-          config: { axis: "x", toRoom: "blacktooth57" },
+        "door@2,0,1:Z1V7DlX": {
+          config: { direction: "towards", toRoom: "blacktooth57" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "door@2,14,2:1G5Tyx": {
-          config: { axis: "x", toRoom: "blacktooth59" },
+        "door@2,14,2:xRNer": {
+          config: { direction: "away", toRoom: "blacktooth59" },
           position: { x: 2, y: 14, z: 2 },
           type: "door",
         },
@@ -4688,18 +4668,18 @@ export const campaign = {
           position: { x: 1, y: 1, z: 6 },
           type: "deadly-block",
         },
-        "door@3,0,4:Z2l9XLn": {
-          config: { axis: "x", toRoom: "blacktooth58triple" },
+        "door@3,0,4:Z2oK5yS": {
+          config: { direction: "towards", toRoom: "blacktooth58triple" },
           position: { x: 3, y: 0, z: 4 },
           type: "door",
         },
-        "door@3,8,0:1G60f8": {
-          config: { axis: "x", toRoom: "blacktooth60" },
+        "door@3,8,0:xRSU2": {
+          config: { direction: "away", toRoom: "blacktooth60" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:Z2fDzRk": {
-          config: { axis: "y", toRoom: "blacktooth63" },
+        "door@8,3,0:ZUCpmR": {
+          config: { direction: "left", toRoom: "blacktooth63" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -4762,8 +4742,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "door@0,3,1:fyU65": {
-          config: { axis: "y", toRoom: "blacktooth5" },
+        "door@0,3,1:b0091": {
+          config: { direction: "right", toRoom: "blacktooth5" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
@@ -4914,8 +4894,8 @@ export const campaign = {
           position: { x: 3, y: 7, z: 2 },
           type: "barrier",
         },
-        "door@3,0,0:1G5Tyx": {
-          config: { axis: "x", toRoom: "blacktooth59" },
+        "door@3,0,0:Z1V7CPs": {
+          config: { direction: "towards", toRoom: "blacktooth59" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -5001,13 +4981,13 @@ export const campaign = {
           position: { x: 3, y: 7, z: 1 },
           type: "baddie",
         },
-        "door@1,0,0:1G5Sww": {
-          config: { axis: "x", toRoom: "blacktooth55" },
+        "door@1,0,0:Z1V7DRt": {
+          config: { direction: "towards", toRoom: "blacktooth55" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,5:1jxtD5": {
-          config: { axis: "x", toRoom: "blacktooth62fish" },
+        "door@1,8,5:Z1izE3v": {
+          config: { direction: "away", toRoom: "blacktooth62fish" },
           position: { x: 1, y: 8, z: 5 },
           type: "door",
         },
@@ -5180,13 +5160,13 @@ export const campaign = {
           position: { x: 5, y: 8, z: 0 },
           type: "conveyor",
         },
-        "door@0,11,1:Z2fDzRk": {
-          config: { axis: "y", toRoom: "blacktooth63" },
+        "door@0,11,1:uN7qz": {
+          config: { direction: "right", toRoom: "blacktooth63" },
           position: { x: 0, y: 11, z: 1 },
           type: "door",
         },
-        "door@2,0,1:1G60uS": {
-          config: { axis: "x", toRoom: "blacktooth61" },
+        "door@2,0,1:Z1V7wT7": {
+          config: { direction: "towards", toRoom: "blacktooth61" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -5276,13 +5256,13 @@ export const campaign = {
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
-        "door@0,0,0:Z2fDGkb": {
-          config: { axis: "y", toRoom: "blacktooth59" },
+        "door@0,0,0:uN0XI": {
+          config: { direction: "right", toRoom: "blacktooth59" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,5:1IRYlI": {
-          config: { axis: "y", toRoom: "blacktooth62fish" },
+        "door@8,0,5:Z19nuqW": {
+          config: { direction: "left", toRoom: "blacktooth62fish" },
           position: { x: 8, y: 0, z: 5 },
           type: "door",
         },
@@ -5335,8 +5315,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth64",
       items: {
-        "door@2,6,0:1G61wT": {
-          config: { axis: "x", toRoom: "blacktooth65" },
+        "door@2,6,0:xRUcN": {
+          config: { direction: "away", toRoom: "blacktooth65" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
@@ -5379,13 +5359,13 @@ export const campaign = {
           position: { x: 1, y: 4, z: 0 },
           type: "baddie",
         },
-        "door@0,0,0:1G61h9": {
-          config: { axis: "x", toRoom: "blacktooth64" },
+        "door@0,0,0:Z1V7w7Q": {
+          config: { direction: "towards", toRoom: "blacktooth64" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:1G61ME": {
-          config: { axis: "x", toRoom: "blacktooth66" },
+        "door@0,8,0:xRUsy": {
+          config: { direction: "away", toRoom: "blacktooth66" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -5412,18 +5392,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth66",
       items: {
-        "door@0,3,0:Z2fDyPj": {
-          config: { axis: "y", toRoom: "blacktooth67" },
+        "door@0,3,0:uN8sA": {
+          config: { direction: "right", toRoom: "blacktooth67" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@2,0,0:1G61wT": {
-          config: { axis: "x", toRoom: "blacktooth65" },
+        "door@2,0,0:Z1V7vR6": {
+          config: { direction: "towards", toRoom: "blacktooth65" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,8,0:1G62ja": {
-          config: { axis: "x", toRoom: "blacktooth68" },
+        "door@2,8,0:xRUY4": {
+          config: { direction: "away", toRoom: "blacktooth68" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -5520,18 +5500,18 @@ export const campaign = {
           position: { x: 7, y: 4, z: 2 },
           type: "block",
         },
-        "door@0,3,5:Z2fDyjN": {
-          config: { axis: "y", toRoom: "blacktooth69" },
+        "door@0,3,5:uN8Y6": {
+          config: { direction: "right", toRoom: "blacktooth69" },
           position: { x: 0, y: 3, z: 5 },
           type: "door",
         },
-        "door@3,8,4:1G68fv": {
-          config: { axis: "x", toRoom: "blacktooth70" },
+        "door@3,8,4:xS1Up": {
+          config: { direction: "away", toRoom: "blacktooth70" },
           position: { x: 3, y: 8, z: 4 },
           type: "door",
         },
-        "door@8,3,4:Z2fDz64": {
-          config: { axis: "y", toRoom: "blacktooth66" },
+        "door@8,3,4:ZUCoAB": {
+          config: { direction: "left", toRoom: "blacktooth66" },
           position: { x: 8, y: 3, z: 4 },
           type: "door",
         },
@@ -5647,13 +5627,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 2 },
           type: "block",
         },
-        "door@3,0,5:1G61ME": {
-          config: { axis: "x", toRoom: "blacktooth66" },
+        "door@3,0,5:Z1V7vBl": {
+          config: { direction: "towards", toRoom: "blacktooth66" },
           position: { x: 3, y: 0, z: 5 },
           type: "door",
         },
-        "door@8,3,5:Z2fDr5G": {
-          config: { axis: "y", toRoom: "blacktooth76" },
+        "door@8,3,5:ZUCgAe": {
+          config: { direction: "left", toRoom: "blacktooth76" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -5689,8 +5669,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth69",
       items: {
-        "door@6,2,0:Z2fDyPj": {
-          config: { axis: "y", toRoom: "blacktooth67" },
+        "door@6,2,0:ZUCokQ": {
+          config: { direction: "left", toRoom: "blacktooth67" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -5728,18 +5708,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth7",
       items: {
-        "door@0,0,0:WpJI8": {
-          config: { axis: "x", toRoom: "blacktooth8fish" },
+        "door@0,0,0:1XUCcW": {
+          config: { direction: "towards", toRoom: "blacktooth8fish" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:dkfFE": {
-          config: { axis: "x", toRoom: "blacktooth5" },
+        "door@0,8,0:29aKqS": {
+          config: { direction: "away", toRoom: "blacktooth5" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
-        "door@2,3,0:Z2fEfFt": {
-          config: { axis: "y", toRoom: "blacktooth10" },
+        "door@2,3,0:ZUD5b1": {
+          config: { direction: "left", toRoom: "blacktooth10" },
           position: { x: 2, y: 3, z: 0 },
           type: "door",
         },
@@ -5826,13 +5806,13 @@ export const campaign = {
           position: { x: 1, y: 5, z: 4 },
           type: "deadly-block",
         },
-        "door@0,0,0:1G623p": {
-          config: { axis: "x", toRoom: "blacktooth67" },
+        "door@0,0,0:Z1V7vlA": {
+          config: { direction: "towards", toRoom: "blacktooth67" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,3:1G68vg": {
-          config: { axis: "x", toRoom: "blacktooth71" },
+        "door@0,8,3:xS2ba": {
+          config: { direction: "away", toRoom: "blacktooth71" },
           position: { x: 0, y: 8, z: 3 },
           type: "door",
         },
@@ -5904,18 +5884,18 @@ export const campaign = {
           position: { x: 3, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,4:Z2fDqOV": {
-          config: { axis: "y", toRoom: "blacktooth77" },
+        "door@0,2,4:uNgsX": {
+          config: { direction: "right", toRoom: "blacktooth77" },
           position: { x: 0, y: 2, z: 4 },
           type: "door",
         },
-        "door@3,0,0:1G68fv": {
-          config: { axis: "x", toRoom: "blacktooth70" },
+        "door@3,0,0:Z1V7p9u": {
+          config: { direction: "towards", toRoom: "blacktooth70" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,6,0:1G68L1": {
-          config: { axis: "x", toRoom: "blacktooth72" },
+        "door@3,6,0:xS2qU": {
+          config: { direction: "away", toRoom: "blacktooth72" },
           position: { x: 3, y: 6, z: 0 },
           type: "door",
         },
@@ -5972,18 +5952,18 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "door@0,2,0:Z2fDqzb": {
-          config: { axis: "y", toRoom: "blacktooth78" },
+        "door@0,2,0:uNgII": {
+          config: { direction: "right", toRoom: "blacktooth78" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,0,0:1G68vg": {
-          config: { axis: "x", toRoom: "blacktooth71" },
+        "door@3,0,0:Z1V7oSJ": {
+          config: { direction: "towards", toRoom: "blacktooth71" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,2,4:Z2fDrQW": {
-          config: { axis: "y", toRoom: "blacktooth73" },
+        "door@8,2,4:ZUChmu": {
+          config: { direction: "left", toRoom: "blacktooth73" },
           position: { x: 8, y: 2, z: 4 },
           type: "door",
         },
@@ -6095,13 +6075,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 3 },
           type: "deadly-block",
         },
-        "door@0,2,4:Z2fDs7H": {
-          config: { axis: "y", toRoom: "blacktooth72" },
+        "door@0,2,4:uNfbc": {
+          config: { direction: "right", toRoom: "blacktooth72" },
           position: { x: 0, y: 2, z: 4 },
           type: "door",
         },
-        "door@8,2,2:Z2fDrBc": {
-          config: { axis: "y", toRoom: "blacktooth74" },
+        "door@8,2,2:ZUCh6J": {
+          config: { direction: "left", toRoom: "blacktooth74" },
           position: { x: 8, y: 2, z: 2 },
           type: "door",
         },
@@ -6193,13 +6173,13 @@ export const campaign = {
           position: { x: 5, y: 3, z: 4 },
           type: "block",
         },
-        "door@0,2,5:Z2fDrQW": {
-          config: { axis: "y", toRoom: "blacktooth73" },
+        "door@0,2,5:uNfqW": {
+          config: { direction: "right", toRoom: "blacktooth73" },
           position: { x: 0, y: 2, z: 5 },
           type: "door",
         },
-        "door@2,0,1:1G69xh": {
-          config: { axis: "x", toRoom: "blacktooth75" },
+        "door@2,0,1:Z1V7nQI": {
+          config: { direction: "towards", toRoom: "blacktooth75" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -6317,13 +6297,13 @@ export const campaign = {
           position: { x: 5, y: 6, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,1:1G69N2": {
-          config: { axis: "x", toRoom: "blacktooth76" },
+        "door@2,0,1:Z1V7nAX": {
+          config: { direction: "towards", toRoom: "blacktooth76" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "door@2,8,2:1G69hw": {
-          config: { axis: "x", toRoom: "blacktooth74" },
+        "door@2,8,2:xS2Wq": {
+          config: { direction: "away", toRoom: "blacktooth74" },
           position: { x: 2, y: 8, z: 2 },
           type: "door",
         },
@@ -6425,13 +6405,13 @@ export const campaign = {
           position: { x: 7, y: 2, z: 1 },
           type: "deadly-block",
         },
-        "door@0,3,0:Z2fDyzy": {
-          config: { axis: "y", toRoom: "blacktooth68" },
+        "door@0,3,0:uN8Il": {
+          config: { direction: "right", toRoom: "blacktooth68" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,0:1G69xh": {
-          config: { axis: "x", toRoom: "blacktooth75" },
+        "door@3,8,0:xS3db": {
+          config: { direction: "away", toRoom: "blacktooth75" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -6582,13 +6562,13 @@ export const campaign = {
           position: { x: 4, y: 3, z: 5 },
           type: "barrier",
         },
-        "door@0,1,0:Z2fDjAO": {
-          config: { axis: "y", toRoom: "blacktooth84" },
+        "door@0,1,0:uNnH5": {
+          config: { direction: "right", toRoom: "blacktooth84" },
           position: { x: 0, y: 1, z: 0 },
           type: "door",
         },
-        "door@8,1,0:Z2fDsns": {
-          config: { axis: "y", toRoom: "blacktooth71" },
+        "door@8,1,0:ZUChS0": {
+          config: { direction: "left", toRoom: "blacktooth71" },
           position: { x: 8, y: 1, z: 0 },
           type: "door",
         },
@@ -6690,13 +6670,13 @@ export const campaign = {
           position: { x: 2, y: 1, z: 1 },
           type: "deadly-block",
         },
-        "door@3,8,5:1G6gfS": {
-          config: { axis: "x", toRoom: "blacktooth80" },
+        "door@3,8,5:xS9UM": {
+          config: { direction: "away", toRoom: "blacktooth80" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:Z2fDs7H": {
-          config: { axis: "y", toRoom: "blacktooth72" },
+        "door@8,3,5:ZUChCf": {
+          config: { direction: "left", toRoom: "blacktooth72" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -6894,13 +6874,13 @@ export const campaign = {
           position: { x: 3, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@1,0,0:1G6ajx": {
-          config: { axis: "x", toRoom: "blacktooth78" },
+        "door@1,0,0:Z1V7n5s": {
+          config: { direction: "towards", toRoom: "blacktooth78" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:1G6gvD": {
-          config: { axis: "x", toRoom: "blacktooth81" },
+        "door@1,8,0:xSabx": {
+          config: { direction: "away", toRoom: "blacktooth81" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -6982,13 +6962,13 @@ export const campaign = {
           position: { x: 0, y: 7, z: 3 },
           type: "charles",
         },
-        "door@3,0,0:1G6gfS": {
-          config: { axis: "x", toRoom: "blacktooth80" },
+        "door@3,0,0:Z1V7h97": {
+          config: { direction: "towards", toRoom: "blacktooth80" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,3,5:Z2fDk7k": {
-          config: { axis: "y", toRoom: "blacktooth82" },
+        "door@8,3,5:ZUC9BR": {
+          config: { direction: "left", toRoom: "blacktooth82" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -7125,13 +7105,13 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z2fDkn5": {
-          config: { axis: "y", toRoom: "blacktooth81" },
+        "door@0,2,0:uNmUO": {
+          config: { direction: "right", toRoom: "blacktooth81" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@8,2,0:Z1AyjTw": {
-          config: { axis: "y", toRoom: "blacktooth83tofreedom" },
+        "door@8,2,0:ET0us": {
+          config: { direction: "left", toRoom: "blacktooth83tofreedom" },
           position: { x: 8, y: 2, z: 0 },
           type: "door",
         },
@@ -7243,8 +7223,8 @@ export const campaign = {
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "door@0,3,1:Z2fDk7k": {
-          config: { axis: "y", toRoom: "blacktooth82" },
+        "door@0,3,1:uNnbz": {
+          config: { direction: "right", toRoom: "blacktooth82" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
@@ -7350,13 +7330,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "door@0,3,4:Z2fDjl4": {
-          config: { axis: "y", toRoom: "blacktooth85" },
+        "door@0,3,4:uNnWP": {
+          config: { direction: "right", toRoom: "blacktooth85" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@8,3,2:Z2fDqOV": {
-          config: { axis: "y", toRoom: "blacktooth77" },
+        "door@8,3,2:ZUCgkt": {
+          config: { direction: "left", toRoom: "blacktooth77" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -7437,13 +7417,13 @@ export const campaign = {
           position: { x: 4, y: 0, z: 4 },
           type: "block",
         },
-        "door@3,0,5:1G6hNp": {
-          config: { axis: "x", toRoom: "blacktooth86" },
+        "door@3,0,5:Z1V7fAA": {
+          config: { direction: "towards", toRoom: "blacktooth86" },
           position: { x: 3, y: 0, z: 5 },
           type: "door",
         },
-        "door@8,3,0:Z2fDjAO": {
-          config: { axis: "y", toRoom: "blacktooth84" },
+        "door@8,3,0:ZUC96m": {
+          config: { direction: "left", toRoom: "blacktooth84" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -7494,13 +7474,13 @@ export const campaign = {
           position: { x: 1, y: 3, z: 0 },
           type: "baddie",
         },
-        "door@1,0,0:Z1Dp6jG": {
-          config: { axis: "x", toRoom: "blacktooth87crown" },
+        "door@1,0,0:1CAEsF": {
+          config: { direction: "towards", toRoom: "blacktooth87crown" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:1G6hxE": {
-          config: { axis: "x", toRoom: "blacktooth85" },
+        "door@1,8,0:xSbdy": {
+          config: { direction: "away", toRoom: "blacktooth85" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -7587,8 +7567,8 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@3,8,1:1G6hNp": {
-          config: { axis: "x", toRoom: "blacktooth86" },
+        "door@3,8,1:xSbtj": {
+          config: { direction: "away", toRoom: "blacktooth86" },
           position: { x: 3, y: 8, z: 1 },
           type: "door",
         },
@@ -7649,13 +7629,13 @@ export const campaign = {
           position: { x: 3, y: 0, z: 2 },
           type: "block",
         },
-        "door@0,3,0:fyV86": {
-          config: { axis: "y", toRoom: "blacktooth9" },
+        "door@0,3,0:b01b2": {
+          config: { direction: "right", toRoom: "blacktooth9" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@1,8,2:dkgca": {
-          config: { axis: "x", toRoom: "blacktooth7" },
+        "door@1,8,2:29aKWo": {
+          config: { direction: "away", toRoom: "blacktooth7" },
           position: { x: 1, y: 8, z: 2 },
           type: "door",
         },
@@ -7787,8 +7767,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 2 },
           type: "block",
         },
-        "door@8,3,2:XeARp": {
-          config: { axis: "y", toRoom: "blacktooth8fish" },
+        "door@8,3,2:HxlQc": {
+          config: { direction: "left", toRoom: "blacktooth8fish" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -7844,13 +7824,13 @@ export const campaign = {
           position: { x: 0, y: 3, z: 3 },
           type: "book",
         },
-        "door@0,3,4:Z2dJsRQ": {
-          config: { axis: "y", toRoom: "bookworld2" },
+        "door@0,3,4:ocMCU": {
+          config: { direction: "right", toRoom: "bookworld2" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@3,0,0:eh0W6": {
-          config: { axis: "x", toRoom: "bookworld7" },
+        "door@3,0,0:1OwmAS": {
+          config: { direction: "towards", toRoom: "bookworld7" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -7911,13 +7891,13 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "door@0,3,1:2cFgeo": {
-          config: { axis: "y", toRoom: "bookworld11" },
+        "door@0,3,1:286lhk": {
+          config: { direction: "right", toRoom: "bookworld11" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "door@6,3,1:Z2dJr4z": {
-          config: { axis: "y", toRoom: "bookworld9" },
+        "door@6,3,1:1AnU6S": {
+          config: { direction: "left", toRoom: "bookworld9" },
           position: { x: 6, y: 3, z: 1 },
           type: "door",
         },
@@ -7944,13 +7924,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld11",
       items: {
-        "door@0,0,0:Z2dJrPP": {
-          config: { axis: "y", toRoom: "bookworld6" },
+        "door@0,0,0:ocNEV": {
+          config: { direction: "right", toRoom: "bookworld6" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,4:2cFfXD": {
-          config: { axis: "y", toRoom: "bookworld10" },
+        "door@8,0,4:Z1lPUPy": {
+          config: { direction: "left", toRoom: "bookworld10" },
           position: { x: 8, y: 0, z: 4 },
           type: "door",
         },
@@ -8017,13 +7997,13 @@ export const campaign = {
           position: { x: 0, y: 7, z: 4 },
           type: "book",
         },
-        "door@0,3,0:2cFgJT": {
-          config: { axis: "y", toRoom: "bookworld13" },
+        "door@0,3,0:286lMP": {
+          config: { direction: "right", toRoom: "bookworld13" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@2,0,0:eh0aP": {
-          config: { axis: "x", toRoom: "bookworld4" },
+        "door@2,0,0:1OwlOC": {
+          config: { direction: "towards", toRoom: "bookworld4" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -8065,13 +8045,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld13",
       items: {
-        "door@0,0,0:2cFh0E": {
-          config: { axis: "y", toRoom: "bookworld14" },
+        "door@0,0,0:286m3A": {
+          config: { direction: "right", toRoom: "bookworld14" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:ZwJWHI": {
-          config: { axis: "y", toRoom: "bookworld12fish" },
+        "door@8,0,0:ZMrcIV": {
+          config: { direction: "left", toRoom: "bookworld12fish" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -8193,13 +8173,13 @@ export const campaign = {
           position: { x: 4, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:2aqBPY": {
-          config: { axis: "x", toRoom: "bookworld15" },
+        "door@3,0,0:JfaS2": {
+          config: { direction: "towards", toRoom: "bookworld15" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,3,0:2cFgJT": {
-          config: { axis: "y", toRoom: "bookworld13" },
+        "door@8,3,0:Z1lPU4i": {
+          config: { direction: "left", toRoom: "bookworld13" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -8260,13 +8240,13 @@ export const campaign = {
           position: { x: 4, y: 0, z: 0 },
           type: "book",
         },
-        "door@3,0,1:2aqC6J": {
-          config: { axis: "x", toRoom: "bookworld16" },
+        "door@3,0,1:Jfb8M": {
+          config: { direction: "towards", toRoom: "bookworld16" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "door@3,8,3:2aqBAe": {
-          config: { axis: "x", toRoom: "bookworld14" },
+        "door@3,8,3:ZXU1st": {
+          config: { direction: "away", toRoom: "bookworld14" },
           position: { x: 3, y: 8, z: 3 },
           type: "door",
         },
@@ -8302,18 +8282,18 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld16",
       items: {
-        "door@0,3,0:2cFhLU": {
-          config: { axis: "y", toRoom: "bookworld17" },
+        "door@0,3,0:286mOQ": {
+          config: { direction: "right", toRoom: "bookworld17" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@1,0,0:2aqCCf": {
-          config: { axis: "x", toRoom: "bookworld18" },
+        "door@1,0,0:JfbEi": {
+          config: { direction: "towards", toRoom: "bookworld18" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:2aqBPY": {
-          config: { axis: "x", toRoom: "bookworld15" },
+        "door@1,8,0:ZXU1cI": {
+          config: { direction: "away", toRoom: "bookworld15" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -8350,8 +8330,8 @@ export const campaign = {
           position: { x: 3, y: 2, z: 0 },
           type: "baddie",
         },
-        "door@8,2,4:2cFhwa": {
-          config: { axis: "y", toRoom: "bookworld16" },
+        "door@8,2,4:Z1lPTi2": {
+          config: { direction: "left", toRoom: "bookworld16" },
           position: { x: 8, y: 2, z: 4 },
           type: "door",
         },
@@ -8423,13 +8403,13 @@ export const campaign = {
           position: { x: 3, y: 7, z: 0 },
           type: "book",
         },
-        "door@2,0,2:2aqCS0": {
-          config: { axis: "x", toRoom: "bookworld19" },
+        "door@2,0,2:JfbU3": {
+          config: { direction: "towards", toRoom: "bookworld19" },
           position: { x: 2, y: 0, z: 2 },
           type: "door",
         },
-        "door@2,8,2:2aqC6J": {
-          config: { axis: "x", toRoom: "bookworld16" },
+        "door@2,8,2:ZXU0VX": {
+          config: { direction: "away", toRoom: "bookworld16" },
           position: { x: 2, y: 8, z: 2 },
           type: "door",
         },
@@ -8494,13 +8474,13 @@ export const campaign = {
           position: { x: 1, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:2aqIyA": {
-          config: { axis: "x", toRoom: "bookworld20" },
+        "door@0,0,0:JfhAD": {
+          config: { direction: "towards", toRoom: "bookworld20" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:2aqCCf": {
-          config: { axis: "x", toRoom: "bookworld18" },
+        "door@0,8,0:ZXU0qs": {
+          config: { direction: "away", toRoom: "bookworld18" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -8672,13 +8652,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 2 },
           type: "deadly-block",
         },
-        "door@0,2,3:Z2dJsC6": {
-          config: { axis: "y", toRoom: "bookworld3" },
+        "door@0,2,3:ocMSF": {
+          config: { direction: "right", toRoom: "bookworld3" },
           position: { x: 0, y: 2, z: 3 },
           type: "door",
         },
-        "door@12,2,3:Z2dJt8B": {
-          config: { axis: "y", toRoom: "bookworld1" },
+        "door@12,2,3:1AnS2Q": {
+          config: { direction: "left", toRoom: "bookworld1" },
           position: { x: 12, y: 2, z: 3 },
           type: "door",
         },
@@ -8709,18 +8689,18 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld20",
       items: {
-        "door@2,0,4:2aqRAY": {
-          config: { axis: "x", toRoom: "bookworld34" },
+        "door@2,0,4:JfqD2": {
+          config: { direction: "towards", toRoom: "bookworld34" },
           position: { x: 2, y: 0, z: 4 },
           type: "door",
         },
-        "door@2,6,0:2aqCS0": {
-          config: { axis: "x", toRoom: "bookworld19" },
+        "door@2,6,0:ZXU0aH": {
+          config: { direction: "away", toRoom: "bookworld19" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
-        "door@6,2,0:2cFpwx": {
-          config: { axis: "y", toRoom: "bookworld26" },
+        "door@6,2,0:Z1lPLhE": {
+          config: { direction: "left", toRoom: "bookworld26" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -8783,13 +8763,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "book",
         },
-        "door@3,0,0:2aqJ56": {
-          config: { axis: "x", toRoom: "bookworld22" },
+        "door@3,0,0:Jfi79": {
+          config: { direction: "towards", toRoom: "bookworld22" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:eh1sB": {
-          config: { axis: "x", toRoom: "bookworld9" },
+        "door@3,8,0:Z2k1lKP": {
+          config: { direction: "away", toRoom: "bookworld9" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -8865,13 +8845,13 @@ export const campaign = {
           position: { x: 0, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:2cFoKh": {
-          config: { axis: "y", toRoom: "bookworld23" },
+        "door@0,3,0:286tNd": {
+          config: { direction: "right", toRoom: "bookworld23" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@0,8,0:2aqIOl": {
-          config: { axis: "x", toRoom: "bookworld21" },
+        "door@0,8,0:ZXTTem": {
+          config: { direction: "away", toRoom: "bookworld21" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -8908,18 +8888,18 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld23",
       items: {
-        "door@0,2,0:2cFp12": {
-          config: { axis: "y", toRoom: "bookworld24" },
+        "door@0,2,0:286u3X": {
+          config: { direction: "right", toRoom: "bookworld24" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,0,0:2aqKmR": {
-          config: { axis: "x", toRoom: "bookworld27" },
+        "door@2,0,0:JfjoU": {
+          config: { direction: "towards", toRoom: "bookworld27" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@6,2,5:2cFouw": {
-          config: { axis: "y", toRoom: "bookworld22" },
+        "door@6,2,5:Z1lPMjF": {
+          config: { direction: "left", toRoom: "bookworld22" },
           position: { x: 6, y: 2, z: 5 },
           type: "door",
         },
@@ -8972,13 +8952,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,2:2cFpgM": {
-          config: { axis: "y", toRoom: "bookworld25" },
+        "door@0,2,2:286ujI": {
+          config: { direction: "right", toRoom: "bookworld25" },
           position: { x: 0, y: 2, z: 2 },
           type: "door",
         },
-        "door@8,2,2:2cFoKh": {
-          config: { axis: "y", toRoom: "bookworld23" },
+        "door@8,2,2:Z1lPM3U": {
+          config: { direction: "left", toRoom: "bookworld23" },
           position: { x: 8, y: 2, z: 2 },
           type: "door",
         },
@@ -9010,13 +8990,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld25",
       items: {
-        "door@0,0,0:2cFpwx": {
-          config: { axis: "y", toRoom: "bookworld26" },
+        "door@0,0,0:286uzt": {
+          config: { direction: "right", toRoom: "bookworld26" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:2cFp12": {
-          config: { axis: "y", toRoom: "bookworld24" },
+        "door@8,0,0:Z1lPLNa": {
+          config: { direction: "left", toRoom: "bookworld24" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -9068,13 +9048,13 @@ export const campaign = {
           position: { x: 3, y: 0, z: 4 },
           type: "book",
         },
-        "door@0,3,0:2cFnY1": {
-          config: { axis: "y", toRoom: "bookworld20" },
+        "door@0,3,0:286t1W": {
+          config: { direction: "right", toRoom: "bookworld20" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@4,3,0:2cFpgM": {
-          config: { axis: "y", toRoom: "bookworld25" },
+        "door@4,3,0:Z1lPLxp": {
+          config: { direction: "left", toRoom: "bookworld25" },
           position: { x: 4, y: 3, z: 0 },
           type: "door",
         },
@@ -9121,13 +9101,13 @@ export const campaign = {
           position: { x: 0, y: 0, z: 3 },
           type: "book",
         },
-        "door@0,0,4:2aqKCC": {
-          config: { axis: "x", toRoom: "bookworld28" },
+        "door@0,0,4:JfjEF": {
+          config: { direction: "towards", toRoom: "bookworld28" },
           position: { x: 0, y: 0, z: 4 },
           type: "door",
         },
-        "door@0,8,0:2aqJkQ": {
-          config: { axis: "x", toRoom: "bookworld23" },
+        "door@0,8,0:ZXTSHQ": {
+          config: { direction: "away", toRoom: "bookworld23" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -9374,8 +9354,8 @@ export const campaign = {
           position: { x: 4, y: 3, z: 1 },
           type: "deadly-block",
         },
-        "door@3,16,3:2aqKmR": {
-          config: { axis: "x", toRoom: "bookworld27" },
+        "door@3,16,3:ZXTRFP": {
+          config: { direction: "away", toRoom: "bookworld27" },
           position: { x: 3, y: 16, z: 3 },
           type: "door",
         },
@@ -9565,8 +9545,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "door@0,3,3:2cFvYo": {
-          config: { axis: "y", toRoom: "bookworld30" },
+        "door@0,3,3:286B2k": {
+          config: { direction: "right", toRoom: "bookworld30" },
           position: { x: 0, y: 3, z: 3 },
           type: "door",
         },
@@ -9618,13 +9598,13 @@ export const campaign = {
           position: { x: 4, y: 0, z: 0 },
           type: "baddie",
         },
-        "door@0,2,2:Z2dJsml": {
-          config: { axis: "y", toRoom: "bookworld4" },
+        "door@0,2,2:ocN9q": {
+          config: { direction: "right", toRoom: "bookworld4" },
           position: { x: 0, y: 2, z: 2 },
           type: "door",
         },
-        "door@8,2,0:Z2dJsRQ": {
-          config: { axis: "y", toRoom: "bookworld2" },
+        "door@8,2,0:1AnSiB": {
+          config: { direction: "left", toRoom: "bookworld2" },
           position: { x: 8, y: 2, z: 0 },
           type: "door",
         },
@@ -9661,13 +9641,13 @@ export const campaign = {
           position: { x: 4, y: 1, z: 0 },
           type: "baddie",
         },
-        "door@0,1,2:2cFwf9": {
-          config: { axis: "y", toRoom: "bookworld31" },
+        "door@0,1,2:286Bi5": {
+          config: { direction: "right", toRoom: "bookworld31" },
           position: { x: 0, y: 1, z: 2 },
           type: "door",
         },
-        "door@8,1,2:2cFqiN": {
-          config: { axis: "y", toRoom: "bookworld29" },
+        "door@8,1,2:Z1lPKvo": {
+          config: { direction: "left", toRoom: "bookworld29" },
           position: { x: 8, y: 1, z: 2 },
           type: "door",
         },
@@ -9789,13 +9769,13 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:2cFwuT": {
-          config: { axis: "y", toRoom: "bookworld32" },
+        "door@0,2,0:286BxP": {
+          config: { direction: "right", toRoom: "bookworld32" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@16,2,0:2cFvYo": {
-          config: { axis: "y", toRoom: "bookworld30" },
+        "door@16,2,0:Z1lPEON": {
+          config: { direction: "left", toRoom: "bookworld30" },
           position: { x: 16, y: 2, z: 0 },
           type: "door",
         },
@@ -9835,8 +9815,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld32",
       items: {
-        "door@8,3,1:2cFwf9": {
-          config: { axis: "y", toRoom: "bookworld31" },
+        "door@8,3,1:Z1lPEz3": {
+          config: { direction: "left", toRoom: "bookworld31" },
           position: { x: 8, y: 3, z: 1 },
           type: "door",
         },
@@ -9873,13 +9853,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld33",
       items: {
-        "door@0,3,0:2cFxha": {
-          config: { axis: "y", toRoom: "bookworld35" },
+        "door@0,3,0:286Ck6": {
+          config: { direction: "right", toRoom: "bookworld35" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,4:2aqRAY": {
-          config: { axis: "x", toRoom: "bookworld34" },
+        "door@3,8,4:ZXTKrI": {
+          config: { direction: "away", toRoom: "bookworld34" },
           position: { x: 3, y: 8, z: 4 },
           type: "door",
         },
@@ -10061,13 +10041,13 @@ export const campaign = {
           position: { x: 1, y: 9, z: 3 },
           type: "book",
         },
-        "door@0,0,0:2aqRle": {
-          config: { axis: "x", toRoom: "bookworld33" },
+        "door@0,0,0:Jfqnh": {
+          config: { direction: "towards", toRoom: "bookworld33" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,16,0:2aqIyA": {
-          config: { axis: "x", toRoom: "bookworld20" },
+        "door@0,16,0:ZXTTu7": {
+          config: { direction: "away", toRoom: "bookworld20" },
           position: { x: 0, y: 16, z: 0 },
           type: "door",
         },
@@ -10157,13 +10137,13 @@ export const campaign = {
           position: { x: 5, y: 7, z: 5 },
           type: "charles",
         },
-        "door@0,3,5:2cFxwU": {
-          config: { axis: "y", toRoom: "bookworld36" },
+        "door@0,3,5:286CzQ": {
+          config: { direction: "right", toRoom: "bookworld36" },
           position: { x: 0, y: 3, z: 5 },
           type: "door",
         },
-        "door@8,3,0:2cFwKE": {
-          config: { axis: "y", toRoom: "bookworld33" },
+        "door@8,3,0:Z1lPE3x": {
+          config: { direction: "left", toRoom: "bookworld33" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -10244,13 +10224,13 @@ export const campaign = {
           position: { x: 7, y: 2, z: 2 },
           type: "book",
         },
-        "door@3,6,5:2aqSnf": {
-          config: { axis: "x", toRoom: "bookworld37" },
+        "door@3,6,5:ZXTJFs": {
+          config: { direction: "away", toRoom: "bookworld37" },
           position: { x: 3, y: 6, z: 5 },
           type: "door",
         },
-        "door@8,2,5:2cFxha": {
-          config: { axis: "y", toRoom: "bookworld35" },
+        "door@8,2,5:Z1lPDx2": {
+          config: { direction: "left", toRoom: "bookworld35" },
           position: { x: 8, y: 2, z: 5 },
           type: "door",
         },
@@ -10312,13 +10292,13 @@ export const campaign = {
           position: { x: 1, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:2aqS7u": {
-          config: { axis: "x", toRoom: "bookworld36" },
+        "door@0,0,0:Jfr9x": {
+          config: { direction: "towards", toRoom: "bookworld36" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:2aqSD0": {
-          config: { axis: "x", toRoom: "bookworld38" },
+        "door@0,8,0:ZXTJpH": {
+          config: { direction: "away", toRoom: "bookworld38" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -10345,8 +10325,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld38",
       items: {
-        "door@3,0,5:2aqSnf": {
-          config: { axis: "x", toRoom: "bookworld37" },
+        "door@3,0,5:Jfrpi": {
+          config: { direction: "towards", toRoom: "bookworld37" },
           position: { x: 3, y: 0, z: 5 },
           type: "door",
         },
@@ -10482,18 +10462,18 @@ export const campaign = {
           position: { x: 0, y: 7, z: 1 },
           type: "book",
         },
-        "door@0,0,0:eh0qA": {
-          config: { axis: "x", toRoom: "bookworld5" },
+        "door@0,0,0:1Owm5n": {
+          config: { direction: "towards", toRoom: "bookworld5" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,4:ZxyNR0": {
-          config: { axis: "x", toRoom: "bookworld12fish" },
+        "door@0,8,4:Z1VM3e8": {
+          config: { direction: "away", toRoom: "bookworld12fish" },
           position: { x: 0, y: 8, z: 4 },
           type: "door",
         },
-        "door@2,3,4:Z2dJsC6": {
-          config: { axis: "y", toRoom: "bookworld3" },
+        "door@2,3,4:1AnSym": {
+          config: { direction: "left", toRoom: "bookworld3" },
           position: { x: 2, y: 3, z: 4 },
           type: "door",
         },
@@ -10520,8 +10500,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld40",
       items: {
-        "door@3,8,0:275iTn": {
-          config: { axis: "x", toRoom: "bookworld41crown" },
+        "door@3,8,0:Zv2OMd": {
+          config: { direction: "away", toRoom: "bookworld41crown" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -10608,8 +10588,8 @@ export const campaign = {
           position: { x: 3, y: 4, z: 5 },
           type: "book",
         },
-        "door@2,0,0:2aqYzl": {
-          config: { axis: "x", toRoom: "bookworld40" },
+        "door@2,0,0:JfxBo": {
+          config: { direction: "towards", toRoom: "bookworld40" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -10661,13 +10641,13 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "door@1,0,0:eh0Gl": {
-          config: { axis: "x", toRoom: "bookworld6" },
+        "door@1,0,0:1Owml8": {
+          config: { direction: "towards", toRoom: "bookworld6" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:eh0aP": {
-          config: { axis: "x", toRoom: "bookworld4" },
+        "door@1,8,0:Z2k1n3B": {
+          config: { direction: "away", toRoom: "bookworld4" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -10714,13 +10694,13 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@1,8,3:eh0qA": {
-          config: { axis: "x", toRoom: "bookworld5" },
+        "door@1,8,3:Z2k1mMQ": {
+          config: { direction: "away", toRoom: "bookworld5" },
           position: { x: 1, y: 8, z: 3 },
           type: "door",
         },
-        "door@4,3,3:2cFgeo": {
-          config: { axis: "y", toRoom: "bookworld11" },
+        "door@4,3,3:Z1lPUzN": {
+          config: { direction: "left", toRoom: "bookworld11" },
           position: { x: 4, y: 3, z: 3 },
           type: "door",
         },
@@ -10757,13 +10737,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld7",
       items: {
-        "door@1,0,4:eh1cQ": {
-          config: { axis: "x", toRoom: "bookworld8" },
+        "door@1,0,4:1OwmQD": {
+          config: { direction: "towards", toRoom: "bookworld8" },
           position: { x: 1, y: 0, z: 4 },
           type: "door",
         },
-        "door@1,8,0:egYoz": {
-          config: { axis: "x", toRoom: "bookworld1" },
+        "door@1,8,0:Z2k1nOR": {
+          config: { direction: "away", toRoom: "bookworld1" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -10825,13 +10805,13 @@ export const campaign = {
           position: { x: 0, y: 3, z: 3 },
           type: "book",
         },
-        "door@0,3,4:Z2dJr4z": {
-          config: { axis: "y", toRoom: "bookworld9" },
+        "door@0,3,4:ocOrc": {
+          config: { direction: "right", toRoom: "bookworld9" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@3,8,0:eh0W6": {
-          config: { axis: "x", toRoom: "bookworld7" },
+        "door@3,8,0:Z2k1mhl": {
+          config: { direction: "away", toRoom: "bookworld7" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -10882,18 +10862,18 @@ export const campaign = {
           position: { x: 3, y: 2, z: 0 },
           type: "book",
         },
-        "door@0,1,0:2cFfXD": {
-          config: { axis: "y", toRoom: "bookworld10" },
+        "door@0,1,0:286l1z": {
+          config: { direction: "right", toRoom: "bookworld10" },
           position: { x: 0, y: 1, z: 0 },
           type: "door",
         },
-        "door@3,0,0:2aqIOl": {
-          config: { axis: "x", toRoom: "bookworld21" },
+        "door@3,0,0:JfhQo": {
+          config: { direction: "towards", toRoom: "bookworld21" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,1,0:Z2dJrkk": {
-          config: { axis: "y", toRoom: "bookworld8" },
+        "door@8,1,0:1AnTQ8": {
+          config: { direction: "left", toRoom: "bookworld8" },
           position: { x: 8, y: 1, z: 0 },
           type: "door",
         },
@@ -10920,8 +10900,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus1",
       items: {
-        "door@8,3,0:1KWpIJ": {
-          config: { axis: "y", toRoom: "egyptus2" },
+        "door@8,3,0:Z1mcXXS": {
+          config: { direction: "left", toRoom: "egyptus2" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -11002,18 +10982,18 @@ export const campaign = {
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "door@3,0,0:IbP1q": {
-          config: { axis: "x", toRoom: "egyptus9fish" },
+        "door@3,0,0:2baqqm": {
+          config: { direction: "towards", toRoom: "egyptus9fish" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,5:ZYEmmi": {
-          config: { axis: "x", toRoom: "egyptus15" },
+        "door@3,8,5:Z1yI6fM": {
+          config: { direction: "away", toRoom: "egyptus15" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:Z14uA7F": {
-          config: { axis: "y", toRoom: "egyptus11" },
+        "door@8,3,5:Z1B0oJe": {
+          config: { direction: "left", toRoom: "egyptus11" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -11069,13 +11049,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus11",
       items: {
-        "door@0,0,0:Z14uAnq": {
-          config: { axis: "y", toRoom: "egyptus10" },
+        "door@0,0,0:2rMnfm": {
+          config: { direction: "right", toRoom: "egyptus10" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:Z14uzQU": {
-          config: { axis: "y", toRoom: "egyptus12" },
+        "door@8,0,0:Z1B0ott": {
+          config: { direction: "left", toRoom: "egyptus12" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -11177,13 +11157,13 @@ export const campaign = {
           position: { x: 7, y: 6, z: 3 },
           type: "deadly-block",
         },
-        "door@0,3,0:Z14uA7F": {
-          config: { axis: "y", toRoom: "egyptus11" },
+        "door@0,3,0:2rMnv7": {
+          config: { direction: "right", toRoom: "egyptus11" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,5:ZYEmRN": {
-          config: { axis: "x", toRoom: "egyptus13" },
+        "door@3,8,5:Z1yI6Li": {
+          config: { direction: "away", toRoom: "egyptus13" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
@@ -11284,8 +11264,8 @@ export const campaign = {
           position: { x: 7, y: 0, z: 6 },
           type: "block",
         },
-        "door@3,0,0:ZYEn8y": {
-          config: { axis: "x", toRoom: "egyptus12" },
+        "door@3,0,0:ZruP6n": {
+          config: { direction: "towards", toRoom: "egyptus12" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -11382,8 +11362,8 @@ export const campaign = {
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "door@3,8,3:ZYElA2": {
-          config: { axis: "x", toRoom: "egyptus18" },
+        "door@3,8,3:Z1yI5tw": {
+          config: { direction: "away", toRoom: "egyptus18" },
           position: { x: 3, y: 8, z: 3 },
           type: "door",
         },
@@ -11471,8 +11451,8 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:ZYEnE4": {
-          config: { axis: "x", toRoom: "egyptus10" },
+        "door@2,0,0:ZruPBS": {
+          config: { direction: "towards", toRoom: "egyptus10" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -11540,8 +11520,8 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "door@2,6,1:ZYElPM": {
-          config: { axis: "x", toRoom: "egyptus17" },
+        "door@2,6,1:Z1yI5Jh": {
+          config: { direction: "away", toRoom: "egyptus17" },
           position: { x: 2, y: 6, z: 1 },
           type: "door",
         },
@@ -11689,13 +11669,13 @@ export const campaign = {
           position: { x: 4, y: 1, z: 0 },
           type: "deadly-block",
         },
-        "door@12,2,2:Z14uyjo": {
-          config: { axis: "y", toRoom: "egyptus18" },
+        "door@12,2,2:Z1B0mUW": {
+          config: { direction: "left", toRoom: "egyptus18" },
           position: { x: 12, y: 2, z: 2 },
           type: "door",
         },
-        "door@2,0,1:ZYEm6x": {
-          config: { axis: "x", toRoom: "egyptus16" },
+        "door@2,0,1:ZruO4m": {
+          config: { direction: "towards", toRoom: "egyptus16" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
@@ -11738,13 +11718,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus18",
       items: {
-        "door@0,2,4:Z14uyz9": {
-          config: { axis: "y", toRoom: "egyptus17" },
+        "door@0,2,4:2rMp3D": {
+          config: { direction: "right", toRoom: "egyptus17" },
           position: { x: 0, y: 2, z: 4 },
           type: "door",
         },
-        "door@2,0,0:ZYEmC3": {
-          config: { axis: "x", toRoom: "egyptus14" },
+        "door@2,0,0:ZruOzR": {
+          config: { direction: "towards", toRoom: "egyptus14" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -11895,13 +11875,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "door@0,3,1:1KWpsY": {
-          config: { axis: "y", toRoom: "egyptus1" },
+        "door@0,3,1:2mUeta": {
+          config: { direction: "right", toRoom: "egyptus1" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "door@8,3,5:1KWpYu": {
-          config: { axis: "y", toRoom: "egyptus3" },
+        "door@8,3,5:Z1mcXI8": {
+          config: { direction: "left", toRoom: "egyptus3" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -11987,8 +11967,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "door@8,3,2:Z14us7i": {
-          config: { axis: "y", toRoom: "egyptus21" },
+        "door@8,3,2:Z1B0gIQ": {
+          config: { direction: "left", toRoom: "egyptus21" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -12025,13 +12005,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus21",
       items: {
-        "door@0,0,0:Z14usn3": {
-          config: { axis: "y", toRoom: "egyptus20" },
+        "door@0,0,0:2rMvfJ": {
+          config: { direction: "right", toRoom: "egyptus20" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:Z14urQx": {
-          config: { axis: "y", toRoom: "egyptus22" },
+        "door@8,0,0:Z1B0gt6": {
+          config: { direction: "left", toRoom: "egyptus22" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -12128,13 +12108,13 @@ export const campaign = {
           position: { x: 2, y: 5, z: 2 },
           type: "barrier",
         },
-        "door@0,2,0:Z14us7i": {
-          config: { axis: "y", toRoom: "egyptus21" },
+        "door@0,2,0:2rMvvu": {
+          config: { direction: "right", toRoom: "egyptus21" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,6,0:ZYEeRq": {
-          config: { axis: "x", toRoom: "egyptus23" },
+        "door@3,6,0:Z1yHXKU": {
+          config: { direction: "away", toRoom: "egyptus23" },
           position: { x: 3, y: 6, z: 0 },
           type: "door",
         },
@@ -12338,13 +12318,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:ZYEf8b": {
-          config: { axis: "x", toRoom: "egyptus22" },
+        "door@3,0,0:ZruH60": {
+          config: { direction: "towards", toRoom: "egyptus22" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,6,0:ZYEeBF": {
-          config: { axis: "x", toRoom: "egyptus24" },
+        "door@3,6,0:Z1yHXva": {
+          config: { direction: "away", toRoom: "egyptus24" },
           position: { x: 3, y: 6, z: 0 },
           type: "door",
         },
@@ -12423,13 +12403,13 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z14ur5h": {
-          config: { axis: "y", toRoom: "egyptus25" },
+        "door@0,2,0:2rMwxv": {
+          config: { direction: "right", toRoom: "egyptus25" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,0,0:ZYEeRq": {
-          config: { axis: "x", toRoom: "egyptus23" },
+        "door@2,0,0:ZruGPf": {
+          config: { direction: "towards", toRoom: "egyptus23" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -12461,18 +12441,18 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus25",
       items: {
-        "door@0,1,0:Z14uqyL": {
-          config: { axis: "y", toRoom: "egyptus27" },
+        "door@0,1,0:2rMx41": {
+          config: { direction: "right", toRoom: "egyptus27" },
           position: { x: 0, y: 1, z: 0 },
           type: "door",
         },
-        "door@3,4,0:ZYEe6a": {
-          config: { axis: "x", toRoom: "egyptus26" },
+        "door@3,4,0:Z1yHWYE": {
+          config: { direction: "away", toRoom: "egyptus26" },
           position: { x: 3, y: 4, z: 0 },
           type: "door",
         },
-        "door@8,1,0:Z14url2": {
-          config: { axis: "y", toRoom: "egyptus24" },
+        "door@8,1,0:Z1B0fWA": {
+          config: { direction: "left", toRoom: "egyptus24" },
           position: { x: 8, y: 1, z: 0 },
           type: "door",
         },
@@ -12594,13 +12574,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z14uqj1": {
-          config: { axis: "y", toRoom: "egyptus28" },
+        "door@0,2,0:2rMxjL": {
+          config: { direction: "right", toRoom: "egyptus28" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,0,0:ZYEelU": {
-          config: { axis: "x", toRoom: "egyptus25" },
+        "door@3,0,0:ZruGjJ": {
+          config: { direction: "towards", toRoom: "egyptus25" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -12714,13 +12694,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "door@3,8,2:ZYEdzE": {
-          config: { axis: "x", toRoom: "egyptus28" },
+        "door@3,8,2:Z1yHWt9": {
+          config: { direction: "away", toRoom: "egyptus28" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
-        "door@8,3,2:Z14ur5h": {
-          config: { axis: "y", toRoom: "egyptus25" },
+        "door@8,3,2:Z1B0fGP": {
+          config: { direction: "left", toRoom: "egyptus25" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -12761,18 +12741,18 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus28",
       items: {
-        "door@0,2,0:Z14uq3g": {
-          config: { axis: "y", toRoom: "egyptus29" },
+        "door@0,2,0:2rMxzw": {
+          config: { direction: "right", toRoom: "egyptus29" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,0,0:ZYEdPp": {
-          config: { axis: "x", toRoom: "egyptus27" },
+        "door@3,0,0:ZruFNe": {
+          config: { direction: "towards", toRoom: "egyptus27" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,2,0:Z14uqOw": {
-          config: { axis: "y", toRoom: "egyptus26" },
+        "door@8,2,0:Z1B0fr5": {
+          config: { direction: "left", toRoom: "egyptus26" },
           position: { x: 8, y: 2, z: 0 },
           type: "door",
         },
@@ -12826,8 +12806,8 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "block",
         },
-        "door@6,3,2:Z14uqj1": {
-          config: { axis: "y", toRoom: "egyptus28" },
+        "door@6,3,2:Z1B0eUz": {
+          config: { direction: "left", toRoom: "egyptus28" },
           position: { x: 6, y: 3, z: 2 },
           type: "door",
         },
@@ -12862,13 +12842,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus3",
       items: {
-        "door@0,0,0:1KWpIJ": {
-          config: { axis: "y", toRoom: "egyptus2" },
+        "door@0,0,0:2mUeIU": {
+          config: { direction: "right", toRoom: "egyptus2" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,4:1KWqff": {
-          config: { axis: "y", toRoom: "egyptus4" },
+        "door@8,0,4:Z1mcXsn": {
+          config: { direction: "left", toRoom: "egyptus4" },
           position: { x: 8, y: 0, z: 4 },
           type: "door",
         },
@@ -12942,8 +12922,8 @@ export const campaign = {
           position: { x: 2, y: 0, z: 0 },
           type: "baddie",
         },
-        "door@0,3,0:Z14ujQa": {
-          config: { axis: "y", toRoom: "egyptus32" },
+        "door@0,3,0:2rMDLC": {
+          config: { direction: "right", toRoom: "egyptus32" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -12993,8 +12973,8 @@ export const campaign = {
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
-        "door@8,0,5:Z14uk6U": {
-          config: { axis: "y", toRoom: "egyptus31" },
+        "door@8,0,5:Z1B08It": {
+          config: { direction: "left", toRoom: "egyptus31" },
           position: { x: 8, y: 0, z: 5 },
           type: "door",
         },
@@ -13022,8 +13002,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus33",
       items: {
-        "door@3,2,0:Z1Spl7t": {
-          config: { axis: "x", toRoom: "egyptus34fish" },
+        "door@3,2,0:Z1sFxAY": {
+          config: { direction: "away", toRoom: "egyptus34fish" },
           position: { x: 3, y: 2, z: 0 },
           type: "door",
         },
@@ -13101,13 +13081,13 @@ export const campaign = {
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
-        "door@2,0,0:ZYE6R3": {
-          config: { axis: "x", toRoom: "egyptus33" },
+        "door@2,0,0:ZruyOR": {
+          config: { direction: "towards", toRoom: "egyptus33" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,8,0:ZYE6lx": {
-          config: { axis: "x", toRoom: "egyptus35" },
+        "door@2,8,0:Z1yHPf2": {
+          config: { direction: "away", toRoom: "egyptus35" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -13196,8 +13176,8 @@ export const campaign = {
           position: { x: 1, y: 7, z: 3 },
           type: "deadly-block",
         },
-        "door@0,0,0:Z1Spl7t": {
-          config: { axis: "x", toRoom: "egyptus34fish" },
+        "door@0,0,0:Z2qU8NU": {
+          config: { direction: "towards", toRoom: "egyptus34fish" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
@@ -13320,8 +13300,8 @@ export const campaign = {
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
-        "door@2,3,2:Z14uiiD": {
-          config: { axis: "y", toRoom: "egyptus38" },
+        "door@2,3,2:Z1B06Uc": {
+          config: { direction: "left", toRoom: "egyptus38" },
           position: { x: 2, y: 3, z: 2 },
           type: "door",
         },
@@ -13429,13 +13409,13 @@ export const campaign = {
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
-        "door@0,3,0:Z14uiyo": {
-          config: { axis: "y", toRoom: "egyptus37" },
+        "door@0,3,0:2rMF4o": {
+          config: { direction: "right", toRoom: "egyptus37" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@8,3,0:tBrHK": {
-          config: { axis: "y", toRoom: "egyptus39crown" },
+        "door@8,3,0:t6z6k": {
+          config: { direction: "left", toRoom: "egyptus39crown" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -13551,8 +13531,8 @@ export const campaign = {
           position: { x: 4, y: 3, z: 6 },
           type: "block",
         },
-        "door@0,3,0:Z14uiiD": {
-          config: { axis: "y", toRoom: "egyptus38" },
+        "door@0,3,0:2rMFk9": {
+          config: { direction: "right", toRoom: "egyptus38" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -13698,13 +13678,13 @@ export const campaign = {
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
-        "door@0,3,0:1KWpYu": {
-          config: { axis: "y", toRoom: "egyptus3" },
+        "door@0,3,0:2mUeYF": {
+          config: { direction: "right", toRoom: "egyptus3" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,0:i3qjT": {
-          config: { axis: "x", toRoom: "egyptus5" },
+        "door@3,8,0:2p0wvd": {
+          config: { direction: "away", toRoom: "egyptus5" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -13780,18 +13760,18 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:i3q49": {
-          config: { axis: "x", toRoom: "egyptus4" },
+        "door@2,0,0:97h0D": {
+          config: { direction: "towards", toRoom: "egyptus4" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@2,6,0:i3qPp": {
-          config: { axis: "x", toRoom: "egyptus7" },
+        "door@2,6,0:2p0x1I": {
+          config: { direction: "away", toRoom: "egyptus7" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
-        "door@6,2,0:1KWqKK": {
-          config: { axis: "y", toRoom: "egyptus6" },
+        "door@6,2,0:Z1mcWVR": {
+          config: { direction: "left", toRoom: "egyptus6" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -13838,13 +13818,13 @@ export const campaign = {
           position: { x: 4, y: 3, z: 2 },
           type: "block",
         },
-        "door@0,3,0:1KWqv0": {
-          config: { axis: "y", toRoom: "egyptus5" },
+        "door@0,3,0:2mUfvb": {
+          config: { direction: "right", toRoom: "egyptus5" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,5:i3r6a": {
-          config: { axis: "x", toRoom: "egyptus8" },
+        "door@3,8,5:2p0xht": {
+          config: { direction: "away", toRoom: "egyptus8" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
@@ -13940,13 +13920,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 3 },
           type: "block",
         },
-        "door@3,0,4:i3qjT": {
-          config: { axis: "x", toRoom: "egyptus5" },
+        "door@3,0,4:97hgo": {
+          config: { direction: "towards", toRoom: "egyptus5" },
           position: { x: 3, y: 0, z: 4 },
           type: "door",
         },
-        "door@8,3,5:1KWrhg": {
-          config: { axis: "y", toRoom: "egyptus8" },
+        "door@8,3,5:Z1mcWqm": {
+          config: { direction: "left", toRoom: "egyptus8" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -14072,18 +14052,18 @@ export const campaign = {
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
-        "door@0,3,0:1KWr1v": {
-          config: { axis: "y", toRoom: "egyptus7" },
+        "door@0,3,0:2mUg1G": {
+          config: { direction: "right", toRoom: "egyptus7" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,0:i3qzE": {
-          config: { axis: "x", toRoom: "egyptus6" },
+        "door@3,0,0:97hw9": {
+          config: { direction: "towards", toRoom: "egyptus6" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:IbP1q": {
-          config: { axis: "x", toRoom: "egyptus9fish" },
+        "door@3,8,0:Zp1giF": {
+          config: { direction: "away", toRoom: "egyptus9fish" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -14164,13 +14144,13 @@ export const campaign = {
           position: { x: 3, y: 7, z: 4 },
           type: "block",
         },
-        "door@1,0,0:i3r6a": {
-          config: { axis: "x", toRoom: "egyptus8" },
+        "door@1,0,0:97i2E": {
+          config: { direction: "towards", toRoom: "egyptus8" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:ZYEnE4": {
-          config: { axis: "x", toRoom: "egyptus10" },
+        "door@1,8,0:Z1yI7xy": {
+          config: { direction: "away", toRoom: "egyptus10" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -14458,13 +14438,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:Z1UQMp8": {
-          config: { axis: "y", toRoom: "moonbase4" },
+        "door@0,3,0:1AqbdE": {
+          config: { direction: "right", toRoom: "moonbase4" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@8,3,0:Z1UQMUD": {
-          config: { axis: "y", toRoom: "moonbase2" },
+        "door@8,3,0:Z2smBxc": {
+          config: { direction: "left", toRoom: "moonbase2" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -14545,13 +14525,13 @@ export const campaign = {
           position: { x: 0, y: 7, z: 6 },
           type: "deadly-block",
         },
-        "door@0,3,5:Z1UQL7m": {
-          config: { axis: "y", toRoom: "moonbase9" },
+        "door@0,3,5:1Aqcvq": {
+          config: { direction: "right", toRoom: "moonbase9" },
           position: { x: 0, y: 3, z: 5 },
           type: "door",
         },
-        "door@3,8,5:Z1uBS5C": {
-          config: { axis: "x", toRoom: "moonbase11" },
+        "door@3,8,5:11gRtR": {
+          config: { direction: "away", toRoom: "moonbase11" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
@@ -14587,18 +14567,18 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase11",
       items: {
-        "door@0,0,0:Z1uBSln": {
-          config: { axis: "x", toRoom: "moonbase10" },
+        "door@0,0,0:5Csip": {
+          config: { direction: "towards", toRoom: "moonbase10" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:Z1uBROR": {
-          config: { axis: "x", toRoom: "moonbase12" },
+        "door@0,8,0:11gRJC": {
+          config: { direction: "away", toRoom: "moonbase12" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
-        "door@2,3,0:17xOfa": {
-          config: { axis: "y", toRoom: "moonbase19" },
+        "door@2,3,0:Z8uWnj": {
+          config: { direction: "left", toRoom: "moonbase19" },
           position: { x: 2, y: 3, z: 0 },
           type: "door",
         },
@@ -14670,13 +14650,13 @@ export const campaign = {
           position: { x: 5, y: 0, z: 3 },
           type: "block",
         },
-        "door@0,3,4:17xNYp": {
-          config: { axis: "y", toRoom: "moonbase18" },
+        "door@0,3,4:Z1kG3iK": {
+          config: { direction: "right", toRoom: "moonbase18" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@3,0,0:Z1uBS5C": {
-          config: { axis: "x", toRoom: "moonbase11" },
+        "door@3,0,0:5Csya": {
+          config: { direction: "towards", toRoom: "moonbase11" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -14767,18 +14747,18 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@1,0,0:Z1Q1zVw": {
-          config: { axis: "x", toRoom: "moonbase3" },
+        "door@1,0,0:Z1iR2Tl": {
+          config: { direction: "towards", toRoom: "moonbase3" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:Z1uBRjm": {
-          config: { axis: "x", toRoom: "moonbase14" },
+        "door@1,8,0:11gSg8": {
+          config: { direction: "away", toRoom: "moonbase14" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
-        "door@4,3,0:17xNsT": {
-          config: { axis: "y", toRoom: "moonbase16" },
+        "door@4,3,0:Z8uX9z": {
+          config: { direction: "left", toRoom: "moonbase16" },
           position: { x: 4, y: 3, z: 0 },
           type: "door",
         },
@@ -14866,13 +14846,13 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:17xNd9": {
-          config: { axis: "y", toRoom: "moonbase15" },
+        "door@0,3,0:Z1kG451": {
+          config: { direction: "right", toRoom: "moonbase15" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@2,0,0:Z1uBRz7": {
-          config: { axis: "x", toRoom: "moonbase13" },
+        "door@2,0,0:5Ct4F": {
+          config: { direction: "towards", toRoom: "moonbase13" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -14899,13 +14879,13 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase15",
       items: {
-        "door@0,0,0:Z1UQLCR": {
-          config: { axis: "y", toRoom: "moonbase7" },
+        "door@0,0,0:1AqbYU": {
+          config: { direction: "right", toRoom: "moonbase7" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,4:17xMWo": {
-          config: { axis: "y", toRoom: "moonbase14" },
+        "door@8,0,4:Z8uXF5": {
+          config: { direction: "left", toRoom: "moonbase14" },
           position: { x: 8, y: 0, z: 4 },
           type: "door",
         },
@@ -15027,13 +15007,13 @@ export const campaign = {
           position: { x: 2, y: 5, z: 1 },
           type: "deadly-block",
         },
-        "door@0,2,1:17xMGD": {
-          config: { axis: "y", toRoom: "moonbase13" },
+        "door@0,2,1:Z1kG4Aw": {
+          config: { direction: "right", toRoom: "moonbase13" },
           position: { x: 0, y: 2, z: 1 },
           type: "door",
         },
-        "door@8,0,0:Z1uBQx6": {
-          config: { axis: "x", toRoom: "moonbase17" },
+        "door@8,0,0:5Cu6G": {
+          config: { direction: "towards", toRoom: "moonbase17" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -15089,8 +15069,8 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase17",
       items: {
-        "door@2,6,0:Z1uBQMQ": {
-          config: { axis: "x", toRoom: "moonbase16" },
+        "door@2,6,0:11gSLD": {
+          config: { direction: "away", toRoom: "moonbase16" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
@@ -15128,8 +15108,8 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase18",
       items: {
-        "door@6,2,0:17xMqS": {
-          config: { axis: "y", toRoom: "moonbase12" },
+        "door@6,2,0:Z8uYbA": {
+          config: { direction: "left", toRoom: "moonbase12" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -15197,13 +15177,13 @@ export const campaign = {
           position: { x: 5, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:17xMb8": {
-          config: { axis: "y", toRoom: "moonbase11" },
+        "door@0,0,0:Z1kG572": {
+          config: { direction: "right", toRoom: "moonbase11" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:17xTUK": {
-          config: { axis: "y", toRoom: "moonbase20" },
+        "door@8,0,0:Z8uQGI": {
+          config: { direction: "left", toRoom: "moonbase20" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -15291,13 +15271,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:Z1UQNbo": {
-          config: { axis: "y", toRoom: "moonbase1" },
+        "door@0,2,0:1Aqaro": {
+          config: { direction: "right", toRoom: "moonbase1" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,6,4:Z1Q1zVw": {
-          config: { axis: "x", toRoom: "moonbase3" },
+        "door@3,6,4:Z2q5jP1": {
+          config: { direction: "away", toRoom: "moonbase3" },
           position: { x: 3, y: 6, z: 4 },
           type: "door",
         },
@@ -15339,23 +15319,23 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase20",
       items: {
-        "door@0,3,0:17xOfa": {
-          config: { axis: "y", toRoom: "moonbase19" },
+        "door@0,3,0:Z1kG330": {
+          config: { direction: "right", toRoom: "moonbase19" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,0:Z1dsmn9": {
-          config: { axis: "x", toRoom: "moonbase22topenitentiary" },
+        "door@3,0,0:Yi6zN": {
+          config: { direction: "towards", toRoom: "moonbase22topenitentiary" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:Z14IGtT": {
-          config: { axis: "x", toRoom: "moonbase21tosafari" },
+        "door@3,8,0:Z1yg1qz": {
+          config: { direction: "away", toRoom: "moonbase21tosafari" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:17xUH1": {
-          config: { axis: "y", toRoom: "moonbase23" },
+        "door@8,3,0:Z8uPUs": {
+          config: { direction: "left", toRoom: "moonbase23" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -15525,8 +15505,8 @@ export const campaign = {
           position: { x: 5, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:Z1uBKl0": {
-          config: { axis: "x", toRoom: "moonbase20" },
+        "door@2,0,0:5CAiM": {
+          config: { direction: "towards", toRoom: "moonbase20" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -15633,8 +15613,8 @@ export const campaign = {
           position: { x: 5, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@2,8,0:Z1uBKl0": {
-          config: { axis: "x", toRoom: "moonbase20" },
+        "door@2,8,0:11h0eu": {
+          config: { direction: "away", toRoom: "moonbase20" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -15681,23 +15661,23 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase23",
       items: {
-        "door@0,3,0:17xTUK": {
-          config: { axis: "y", toRoom: "moonbase20" },
+        "door@0,3,0:Z1kFWmp": {
+          config: { direction: "right", toRoom: "moonbase20" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,0:Z2wSoMK": {
-          config: { axis: "x", toRoom: "moonbase25tobookworld" },
+        "door@3,0,0:Z2nb9F4": {
+          config: { direction: "towards", toRoom: "moonbase25tobookworld" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:ZD45Ly": {
-          config: { axis: "x", toRoom: "moonbase24toegyptus" },
+        "door@3,8,0:ZnSMCA": {
+          config: { direction: "away", toRoom: "moonbase24toegyptus" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:17xVth": {
-          config: { axis: "y", toRoom: "moonbase26" },
+        "door@8,3,0:Z8uP9c": {
+          config: { direction: "left", toRoom: "moonbase26" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -15927,8 +15907,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:Z1uBJyJ": {
-          config: { axis: "x", toRoom: "moonbase23" },
+        "door@3,0,0:5CB53": {
+          config: { direction: "towards", toRoom: "moonbase23" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -16128,8 +16108,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@3,8,0:Z1uBJyJ": {
-          config: { axis: "x", toRoom: "moonbase23" },
+        "door@3,8,0:11h10K": {
+          config: { direction: "away", toRoom: "moonbase23" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -16220,13 +16200,13 @@ export const campaign = {
           position: { x: 5, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:17xUH1": {
-          config: { axis: "y", toRoom: "moonbase23" },
+        "door@0,0,0:Z1kFVA9": {
+          config: { direction: "right", toRoom: "moonbase23" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:17xVJ2": {
-          config: { axis: "y", toRoom: "moonbase27" },
+        "door@8,0,0:Z8uOSr": {
+          config: { direction: "left", toRoom: "moonbase27" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -16253,18 +16233,18 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase27",
       items: {
-        "door@0,0,0:Z1uBCkC": {
-          config: { axis: "x", toRoom: "moonbase30" },
+        "door@0,0,0:5CIja": {
+          config: { direction: "towards", toRoom: "moonbase30" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,3,0:17xVth": {
-          config: { axis: "y", toRoom: "moonbase26" },
+        "door@0,3,0:Z1kFUNS": {
+          config: { direction: "right", toRoom: "moonbase26" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@0,8,0:Z1uBIgX": {
-          config: { axis: "x", toRoom: "moonbase28" },
+        "door@0,8,0:11h2iw": {
+          config: { direction: "away", toRoom: "moonbase28" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -16296,13 +16276,13 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
-        "door@2,0,0:Z1uBIwI": {
-          config: { axis: "x", toRoom: "moonbase27" },
+        "door@2,0,0:5CC74": {
+          config: { direction: "towards", toRoom: "moonbase27" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@6,2,4:17xWfx": {
-          config: { axis: "y", toRoom: "moonbase29" },
+        "door@6,2,4:Z8uOmV": {
+          config: { direction: "left", toRoom: "moonbase29" },
           position: { x: 6, y: 2, z: 4 },
           type: "door",
         },
@@ -16479,8 +16459,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:17xVYM": {
-          config: { axis: "y", toRoom: "moonbase28" },
+        "door@0,3,0:Z1kFUin": {
+          config: { direction: "right", toRoom: "moonbase28" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -16601,13 +16581,13 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,1:Z1Q1Ach": {
-          config: { axis: "x", toRoom: "moonbase2" },
+        "door@3,0,1:Z1iR3a6": {
+          config: { direction: "towards", toRoom: "moonbase2" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "door@3,8,2:Z1uBRz7": {
-          config: { axis: "x", toRoom: "moonbase13" },
+        "door@3,8,2:11gS0n": {
+          config: { direction: "away", toRoom: "moonbase13" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
@@ -16673,13 +16653,13 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase30",
       items: {
-        "door@2,6,0:Z1uBIwI": {
-          config: { axis: "x", toRoom: "moonbase27" },
+        "door@2,6,0:11h22L": {
+          config: { direction: "away", toRoom: "moonbase27" },
           position: { x: 2, y: 6, z: 0 },
           type: "door",
         },
-        "door@6,2,0:17y3bS": {
-          config: { axis: "y", toRoom: "moonbase31" },
+        "door@6,2,0:Z8uIqA": {
+          config: { direction: "left", toRoom: "moonbase31" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -16697,8 +16677,8 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase31",
       items: {
-        "door@0,2,0:17y2V8": {
-          config: { axis: "y", toRoom: "moonbase30" },
+        "door@0,2,0:Z1kFOm2": {
+          config: { direction: "right", toRoom: "moonbase30" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -16880,8 +16860,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@3,8,0:XDJe4": {
-          config: { axis: "x", toRoom: "moonbase33triple" },
+        "door@3,8,0:Z1Dtosw": {
+          config: { direction: "away", toRoom: "moonbase33triple" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -17266,18 +17246,18 @@ export const campaign = {
           position: { x: 6, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@12,11,0:17y3X9": {
-          config: { axis: "y", toRoom: "moonbase34" },
+        "door@12,11,0:Z8uHEk": {
+          config: { direction: "left", toRoom: "moonbase34" },
           position: { x: 12, y: 11, z: 0 },
           type: "door",
         },
-        "door@2,16,0:Z1uBAM6": {
-          config: { axis: "x", toRoom: "moonbase36" },
+        "door@2,16,0:11h9Mo": {
+          config: { direction: "away", toRoom: "moonbase36" },
           position: { x: 2, y: 16, z: 0 },
           type: "door",
         },
-        "door@8,0,0:Z1uBBO7": {
-          config: { axis: "x", toRoom: "moonbase32" },
+        "door@8,0,0:5CIOF": {
+          config: { direction: "towards", toRoom: "moonbase32" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -17451,13 +17431,13 @@ export const campaign = {
           position: { x: 7, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@0,1,0:1nYeVH": {
-          config: { axis: "y", toRoom: "moonbase33triple" },
+        "door@0,1,0:1osK28": {
+          config: { direction: "right", toRoom: "moonbase33triple" },
           position: { x: 0, y: 1, z: 0 },
           type: "door",
         },
-        "door@3,4,0:Z1uBB2Q": {
-          config: { axis: "x", toRoom: "moonbase35" },
+        "door@3,4,0:11h9wD": {
+          config: { direction: "away", toRoom: "moonbase35" },
           position: { x: 3, y: 4, z: 0 },
           type: "door",
         },
@@ -17580,8 +17560,8 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:Z1uBBiB": {
-          config: { axis: "x", toRoom: "moonbase34" },
+        "door@2,0,0:5CJlb": {
+          config: { direction: "towards", toRoom: "moonbase34" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -17715,8 +17695,8 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@2,0,0:XDJe4": {
-          config: { axis: "x", toRoom: "moonbase33triple" },
+        "door@2,0,0:2e93sR": {
+          config: { direction: "towards", toRoom: "moonbase33triple" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -17869,13 +17849,13 @@ export const campaign = {
           position: { x: 6, y: 6, z: 0 },
           type: "deadly-block",
         },
-        "door@3,8,5:Z1Q1zq1": {
-          config: { axis: "x", toRoom: "moonbase5" },
+        "door@3,8,5:Z2q5jjv": {
+          config: { direction: "away", toRoom: "moonbase5" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:Z1UQNbo": {
-          config: { axis: "y", toRoom: "moonbase1" },
+        "door@8,3,5:Z2smBMW": {
+          config: { direction: "left", toRoom: "moonbase1" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -17926,13 +17906,13 @@ export const campaign = {
           position: { x: 3, y: 6, z: 0 },
           type: "baddie",
         },
-        "door@1,0,0:Z1Q1zFL": {
-          config: { axis: "x", toRoom: "moonbase4" },
+        "door@1,0,0:Z1iR2DA": {
+          config: { direction: "towards", toRoom: "moonbase4" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:Z1Q1zag": {
-          config: { axis: "x", toRoom: "moonbase6" },
+        "door@1,8,0:Z2q5j3K": {
+          config: { direction: "away", toRoom: "moonbase6" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -18024,13 +18004,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:Z1Q1zq1": {
-          config: { axis: "x", toRoom: "moonbase5" },
+        "door@3,0,0:Z1iR2nP": {
+          config: { direction: "towards", toRoom: "moonbase5" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:Z1Q1yTv": {
-          config: { axis: "x", toRoom: "moonbase7" },
+        "door@3,8,0:Z2q5iN0": {
+          config: { direction: "away", toRoom: "moonbase7" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -18175,18 +18155,18 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:Z1UQLn7": {
-          config: { axis: "y", toRoom: "moonbase8" },
+        "door@0,3,0:1AqcfF": {
+          config: { direction: "right", toRoom: "moonbase8" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,0,4:Z1Q1zag": {
-          config: { axis: "x", toRoom: "moonbase6" },
+        "door@3,0,4:Z1iR285": {
+          config: { direction: "towards", toRoom: "moonbase6" },
           position: { x: 3, y: 0, z: 4 },
           type: "door",
         },
-        "door@8,3,0:17xNd9": {
-          config: { axis: "y", toRoom: "moonbase15" },
+        "door@8,3,0:Z8uXpk": {
+          config: { direction: "left", toRoom: "moonbase15" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -18282,8 +18262,8 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@8,3,0:Z1UQLCR": {
-          config: { axis: "y", toRoom: "moonbase7" },
+        "door@8,3,0:Z2smAfq": {
+          config: { direction: "left", toRoom: "moonbase7" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -18359,8 +18339,8 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase9",
       items: {
-        "door@6,2,0:17xLUn": {
-          config: { axis: "y", toRoom: "moonbase10" },
+        "door@6,2,0:Z8uYH6": {
+          config: { direction: "left", toRoom: "moonbase10" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -18398,8 +18378,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary1",
       items: {
-        "door@2,8,0:21ovxu": {
-          config: { axis: "x", toRoom: "penitentiary2" },
+        "door@2,8,0:2r8j3Y": {
+          config: { direction: "away", toRoom: "penitentiary2" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -18461,8 +18441,8 @@ export const campaign = {
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "door@0,8,2:1G4dkL": {
-          config: { axis: "x", toRoom: "penitentiary11" },
+        "door@0,8,2:ZtKy6M": {
+          config: { direction: "away", toRoom: "penitentiary11" },
           position: { x: 0, y: 8, z: 2 },
           type: "door",
         },
@@ -18505,13 +18485,13 @@ export const campaign = {
           position: { x: 5, y: 5, z: 2 },
           type: "block",
         },
-        "door@0,2,0:2v7Mbq": {
-          config: { axis: "y", toRoom: "penitentiary12" },
+        "door@0,2,0:1QJCE8": {
+          config: { direction: "right", toRoom: "penitentiary12" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,0,0:1G4d51": {
-          config: { axis: "x", toRoom: "penitentiary10" },
+        "door@2,0,0:Z4Y61T": {
+          config: { direction: "towards", toRoom: "penitentiary10" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
@@ -18564,18 +18544,18 @@ export const campaign = {
           position: { x: 7, y: 0, z: 2 },
           type: "block",
         },
-        "door@0,3,4:Z1MtPuK": {
-          config: { axis: "y", toRoom: "penitentiary18fish" },
+        "door@0,3,4:JcM9U": {
+          config: { direction: "right", toRoom: "penitentiary18fish" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@3,8,0:1G4foN": {
-          config: { axis: "x", toRoom: "penitentiary19" },
+        "door@3,8,0:ZtKw2K": {
+          config: { direction: "away", toRoom: "penitentiary19" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:2v7LUF": {
-          config: { axis: "y", toRoom: "penitentiary11" },
+        "door@8,3,0:2uBTjf": {
+          config: { direction: "left", toRoom: "penitentiary11" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -18696,8 +18676,8 @@ export const campaign = {
           position: { x: 4, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@3,0,0:21ovxu": {
-          config: { axis: "x", toRoom: "penitentiary2" },
+        "door@3,0,0:1sSHQ3": {
+          config: { direction: "towards", toRoom: "penitentiary2" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -19268,8 +19248,8 @@ export const campaign = {
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "door@3,8,2:MdFEE": {
-          config: { axis: "x", toRoom: "penitentiary18fish" },
+        "door@3,8,2:iGlHY": {
+          config: { direction: "away", toRoom: "penitentiary18fish" },
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
@@ -19386,13 +19366,13 @@ export const campaign = {
           position: { x: 9, y: 4, z: 3 },
           type: "block",
         },
-        "door@16,2,2:2v7Mbq": {
-          config: { axis: "y", toRoom: "penitentiary12" },
+        "door@16,2,2:2uBTz0": {
+          config: { direction: "left", toRoom: "penitentiary12" },
           position: { x: 16, y: 2, z: 2 },
           type: "door",
         },
-        "door@3,0,0:1G4eSi": {
-          config: { axis: "x", toRoom: "penitentiary17" },
+        "door@3,0,0:Z4Y4dC": {
+          config: { direction: "towards", toRoom: "penitentiary17" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -19457,13 +19437,13 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "door@1,0,0:1G4dAw": {
-          config: { axis: "x", toRoom: "penitentiary12" },
+        "door@1,0,0:Z4Y5vo": {
+          config: { direction: "towards", toRoom: "penitentiary12" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,3:1G4ll9": {
-          config: { axis: "x", toRoom: "penitentiary21" },
+        "door@1,8,3:ZtKq6p": {
+          config: { direction: "away", toRoom: "penitentiary21" },
           position: { x: 1, y: 8, z: 3 },
           type: "door",
         },
@@ -19550,18 +19530,18 @@ export const campaign = {
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "door@3,0,0:21ovhJ": {
-          config: { axis: "x", toRoom: "penitentiary1" },
+        "door@3,0,0:1sSHAi": {
+          config: { direction: "towards", toRoom: "penitentiary1" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,5:1G4dQh": {
-          config: { axis: "x", toRoom: "penitentiary13" },
+        "door@3,8,5:ZtKxAh": {
+          config: { direction: "away", toRoom: "penitentiary13" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:1I0eDj": {
-          config: { axis: "y", toRoom: "penitentiary3" },
+        "door@8,3,5:2d0pz4": {
+          config: { direction: "left", toRoom: "penitentiary3" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -19867,8 +19847,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "door@3,0,1:1G4foN": {
-          config: { axis: "x", toRoom: "penitentiary19" },
+        "door@3,0,1:Z4Y3H7": {
+          config: { direction: "towards", toRoom: "penitentiary19" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
@@ -20324,8 +20304,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary24",
       items: {
-        "door@3,8,1:1G4mna": {
-          config: { axis: "x", toRoom: "penitentiary25" },
+        "door@3,8,1:ZtKp4o": {
+          config: { direction: "away", toRoom: "penitentiary25" },
           position: { x: 3, y: 8, z: 1 },
           type: "door",
         },
@@ -20367,13 +20347,13 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary25",
       items: {
-        "door@0,0,0:1G4m7p": {
-          config: { axis: "x", toRoom: "penitentiary24" },
+        "door@0,0,0:Z4XVYv": {
+          config: { direction: "towards", toRoom: "penitentiary24" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:1G4mCU": {
-          config: { axis: "x", toRoom: "penitentiary26" },
+        "door@0,8,0:ZtKoND": {
+          config: { direction: "away", toRoom: "penitentiary26" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -20425,13 +20405,13 @@ export const campaign = {
           position: { x: 7, y: 3, z: 1 },
           type: "deadly-block",
         },
-        "door@0,3,1:2v7Vtz": {
-          config: { axis: "y", toRoom: "penitentiary27" },
+        "door@0,3,1:1QJLWh": {
+          config: { direction: "right", toRoom: "penitentiary27" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "door@3,0,1:1G4mna": {
-          config: { axis: "x", toRoom: "penitentiary25" },
+        "door@3,0,1:Z4XVIK": {
+          config: { direction: "towards", toRoom: "penitentiary25" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
@@ -20497,13 +20477,13 @@ export const campaign = {
           position: { x: 3, y: 1, z: 1 },
           type: "deadly-block",
         },
-        "door@0,0,1:2v7VJk": {
-          config: { axis: "y", toRoom: "penitentiary28" },
+        "door@0,0,1:1QJMd2": {
+          config: { direction: "right", toRoom: "penitentiary28" },
           position: { x: 0, y: 0, z: 1 },
           type: "door",
         },
-        "door@8,0,2:2v7VdO": {
-          config: { axis: "y", toRoom: "penitentiary26" },
+        "door@8,0,2:2uC3Bo": {
+          config: { direction: "left", toRoom: "penitentiary26" },
           position: { x: 8, y: 0, z: 2 },
           type: "door",
         },
@@ -20550,18 +20530,18 @@ export const campaign = {
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "door@0,3,4:2v7W05": {
-          config: { axis: "y", toRoom: "penitentiary29" },
+        "door@0,3,4:1QJMsM": {
+          config: { direction: "right", toRoom: "penitentiary29" },
           position: { x: 0, y: 3, z: 4 },
           type: "door",
         },
-        "door@3,0,4:1G4t5L": {
-          config: { axis: "x", toRoom: "penitentiary30" },
+        "door@3,0,4:Z4XP19": {
+          config: { direction: "towards", toRoom: "penitentiary30" },
           position: { x: 3, y: 0, z: 4 },
           type: "door",
         },
-        "door@8,3,0:2v7Vtz": {
-          config: { axis: "y", toRoom: "penitentiary27" },
+        "door@8,3,0:2uC3R9": {
+          config: { direction: "left", toRoom: "penitentiary27" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -20682,8 +20662,8 @@ export const campaign = {
           position: { x: 2, y: 1, z: 1 },
           type: "deadly-block",
         },
-        "door@8,0,3:2v7VJk": {
-          config: { axis: "y", toRoom: "penitentiary28" },
+        "door@8,0,3:2uC47T": {
+          config: { direction: "left", toRoom: "penitentiary28" },
           position: { x: 8, y: 0, z: 3 },
           type: "door",
         },
@@ -20746,13 +20726,13 @@ export const campaign = {
           position: { x: 7, y: 1, z: 1 },
           type: "deadly-block",
         },
-        "door@0,3,1:1I0eny": {
-          config: { axis: "y", toRoom: "penitentiary2" },
+        "door@0,3,1:RGM4C": {
+          config: { direction: "right", toRoom: "penitentiary2" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "door@8,3,2:1I0eT4": {
-          config: { axis: "y", toRoom: "penitentiary4" },
+        "door@8,3,2:2d0pOO": {
+          config: { direction: "left", toRoom: "penitentiary4" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -20833,8 +20813,8 @@ export const campaign = {
           position: { x: 5, y: 3, z: 3 },
           type: "block",
         },
-        "door@3,4,0:1G4n9q": {
-          config: { axis: "x", toRoom: "penitentiary28" },
+        "door@3,4,0:ZtKoi8": {
+          config: { direction: "away", toRoom: "penitentiary28" },
           position: { x: 3, y: 4, z: 0 },
           type: "door",
         },
@@ -21066,8 +21046,8 @@ export const campaign = {
           position: { x: 2, y: 1, z: 5 },
           type: "deadly-block",
         },
-        "door@3,0,0:1G4tR2": {
-          config: { axis: "x", toRoom: "penitentiary33" },
+        "door@3,0,0:Z4XOeS": {
+          config: { direction: "towards", toRoom: "penitentiary33" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -21175,13 +21155,13 @@ export const campaign = {
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
-        "door@3,0,0:Z12UXfq": {
-          config: { axis: "x", toRoom: "penitentiary34crown" },
+        "door@3,0,0:2cTHTK": {
+          config: { direction: "towards", toRoom: "penitentiary34crown" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,0:1G4tBh": {
-          config: { axis: "x", toRoom: "penitentiary32" },
+        "door@3,8,0:ZtKhPh": {
+          config: { direction: "away", toRoom: "penitentiary32" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
@@ -21287,8 +21267,8 @@ export const campaign = {
           position: { x: 7, y: 4, z: 4 },
           type: "block",
         },
-        "door@3,8,1:1G4tR2": {
-          config: { axis: "x", toRoom: "penitentiary33" },
+        "door@3,8,1:ZtKhzw": {
+          config: { direction: "away", toRoom: "penitentiary33" },
           position: { x: 3, y: 8, z: 1 },
           type: "door",
         },
@@ -21384,8 +21364,8 @@ export const campaign = {
           position: { x: 5, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:1I0eDj": {
-          config: { axis: "y", toRoom: "penitentiary3" },
+        "door@0,2,0:RGMkn": {
+          config: { direction: "right", toRoom: "penitentiary3" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -21485,8 +21465,8 @@ export const campaign = {
           position: { x: 3, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@6,2,3:1I0fFk": {
-          config: { axis: "y", toRoom: "penitentiary7" },
+        "door@6,2,3:2d0qB5": {
+          config: { direction: "left", toRoom: "penitentiary7" },
           position: { x: 6, y: 2, z: 3 },
           type: "door",
         },
@@ -21535,13 +21515,13 @@ export const campaign = {
           position: { x: 4, y: 5, z: 3 },
           type: "block",
         },
-        "door@0,2,0:1I0fpz": {
-          config: { axis: "y", toRoom: "penitentiary6" },
+        "door@0,2,0:RGN6D": {
+          config: { direction: "right", toRoom: "penitentiary6" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@3,6,5:21ox61": {
-          config: { axis: "x", toRoom: "penitentiary8" },
+        "door@3,6,5:2r8kBv": {
+          config: { direction: "away", toRoom: "penitentiary8" },
           position: { x: 3, y: 6, z: 5 },
           type: "door",
         },
@@ -21593,8 +21573,8 @@ export const campaign = {
           position: { x: 1, y: 2, z: 2 },
           type: "block",
         },
-        "door@0,0,0:21owPg": {
-          config: { axis: "x", toRoom: "penitentiary7" },
+        "door@0,0,0:1sSJ8O": {
+          config: { direction: "towards", toRoom: "penitentiary7" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
@@ -21667,8 +21647,8 @@ export const campaign = {
       floorSkip: [],
       id: "safari1",
       items: {
-        "door@2,8,0:baIQu": {
-          config: { axis: "x", toRoom: "safari2" },
+        "door@2,8,0:1SoohN": {
+          config: { direction: "away", toRoom: "safari2" },
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
@@ -21805,8 +21785,8 @@ export const campaign = {
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
-        "door@8,2,0:249zb9": {
-          config: { axis: "y", toRoom: "safari11" },
+        "door@8,2,0:Z140Owt": {
+          config: { direction: "left", toRoom: "safari11" },
           position: { x: 8, y: 2, z: 0 },
           type: "door",
         },
@@ -21859,13 +21839,13 @@ export const campaign = {
           position: { x: 3, y: 5, z: 0 },
           type: "baddie",
         },
-        "door@0,2,0:249yUo": {
-          config: { axis: "y", toRoom: "safari10" },
+        "door@0,2,0:Z2p4JSm": {
+          config: { direction: "right", toRoom: "safari10" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@6,2,0:249zqT": {
-          config: { axis: "y", toRoom: "safari12" },
+        "door@6,2,0:Z140OgI": {
+          config: { direction: "left", toRoom: "safari12" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -21988,8 +21968,8 @@ export const campaign = {
           position: { x: 4, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:249zb9": {
-          config: { axis: "y", toRoom: "safari11" },
+        "door@0,2,0:Z2p4JCB": {
+          config: { direction: "right", toRoom: "safari11" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
@@ -22057,13 +22037,13 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "door@0,2,2:249zWp": {
-          config: { axis: "y", toRoom: "safari14" },
+        "door@0,2,2:Z2p4IQl": {
+          config: { direction: "right", toRoom: "safari14" },
           position: { x: 0, y: 2, z: 2 },
           type: "door",
         },
-        "door@3,6,2:AfA24": {
-          config: { axis: "x", toRoom: "safari15" },
+        "door@3,6,2:Z2mYrAy": {
+          config: { direction: "away", toRoom: "safari15" },
           position: { x: 3, y: 6, z: 2 },
           type: "door",
         },
@@ -22121,13 +22101,13 @@ export const campaign = {
           position: { x: 5, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:Z2e1cG4": {
-          config: { axis: "y", toRoom: "safari9" },
+        "door@0,3,0:Z2wPfzr": {
+          config: { direction: "right", toRoom: "safari9" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@8,3,0:249zGE": {
-          config: { axis: "y", toRoom: "safari13" },
+        "door@8,3,0:Z140O0X": {
+          config: { direction: "left", toRoom: "safari13" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -22243,13 +22223,13 @@ export const campaign = {
           position: { x: 3, y: 6, z: 0 },
           type: "deadly-block",
         },
-        "door@1,0,0:Afzvy": {
-          config: { axis: "x", toRoom: "safari13" },
+        "door@1,0,0:rjqs3": {
+          config: { direction: "towards", toRoom: "safari13" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,16,0:AfAhO": {
-          config: { axis: "x", toRoom: "safari16" },
+        "door@1,16,0:Z2mYrkN": {
+          config: { direction: "away", toRoom: "safari16" },
           position: { x: 1, y: 16, z: 0 },
           type: "door",
         },
@@ -22352,13 +22332,13 @@ export const campaign = {
           position: { x: 3, y: 6, z: 0 },
           type: "deadly-block",
         },
-        "door@1,0,0:AfA24": {
-          config: { axis: "x", toRoom: "safari15" },
+        "door@1,0,0:rjqXy": {
+          config: { direction: "towards", toRoom: "safari15" },
           position: { x: 1, y: 0, z: 0 },
           type: "door",
         },
-        "door@1,8,0:Z2fKbM3": {
-          config: { axis: "x", toRoom: "safari17fish" },
+        "door@1,8,0:1GdPGM": {
+          config: { direction: "away", toRoom: "safari17fish" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
@@ -22465,18 +22445,18 @@ export const campaign = {
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
-        "door@3,0,4:AfAhO": {
-          config: { axis: "x", toRoom: "safari16" },
+        "door@3,0,4:rjrej": {
+          config: { direction: "towards", toRoom: "safari16" },
           position: { x: 3, y: 0, z: 4 },
           type: "door",
         },
-        "door@3,8,0:AfOK3": {
-          config: { axis: "x", toRoom: "safari30" },
+        "door@3,8,0:Z2mYcRz": {
+          config: { direction: "away", toRoom: "safari30" },
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "door@8,3,0:249PbT": {
-          config: { axis: "y", toRoom: "safari31" },
+        "door@8,3,0:Z140yvI": {
+          config: { direction: "left", toRoom: "safari31" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -22607,13 +22587,13 @@ export const campaign = {
           position: { x: 1, y: 9, z: 0 },
           type: "block",
         },
-        "door@0,0,3:baJn0": {
-          config: { axis: "x", toRoom: "safari4" },
+        "door@0,0,3:Zj811C": {
+          config: { direction: "towards", toRoom: "safari4" },
           position: { x: 0, y: 0, z: 3 },
           type: "door",
         },
-        "door@0,16,2:ZH4JMp": {
-          config: { axis: "x", toRoom: "safari19triple" },
+        "door@0,16,2:2chByX": {
+          config: { direction: "away", toRoom: "safari19triple" },
           position: { x: 0, y: 16, z: 2 },
           type: "door",
         },
@@ -22808,18 +22788,18 @@ export const campaign = {
           position: { x: 6, y: 8, z: 0 },
           type: "block",
         },
-        "door@16,1,0:249GUL": {
-          config: { axis: "y", toRoom: "safari20" },
+        "door@16,1,0:Z140GLQ": {
+          config: { direction: "left", toRoom: "safari20" },
           position: { x: 16, y: 1, z: 0 },
           type: "door",
         },
-        "door@3,0,0:AfANk": {
-          config: { axis: "x", toRoom: "safari18" },
+        "door@3,0,0:rjrJO": {
+          config: { direction: "towards", toRoom: "safari18" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,10,0:AfI2r": {
-          config: { axis: "x", toRoom: "safari25" },
+        "door@3,10,0:Z2mYjAb": {
+          config: { direction: "away", toRoom: "safari25" },
           position: { x: 3, y: 10, z: 0 },
           type: "door",
         },
@@ -23030,13 +23010,13 @@ export const campaign = {
           position: { x: 7, y: 0, z: 1 },
           type: "deadly-block",
         },
-        "door@3,0,1:baIAJ": {
-          config: { axis: "x", toRoom: "safari1" },
+        "door@3,0,1:Zj81MS": {
+          config: { direction: "towards", toRoom: "safari1" },
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "door@3,8,3:baJ7f": {
-          config: { axis: "x", toRoom: "safari3" },
+        "door@3,8,3:1Sooxy": {
+          config: { direction: "away", toRoom: "safari3" },
           position: { x: 3, y: 8, z: 3 },
           type: "door",
         },
@@ -23077,18 +23057,18 @@ export const campaign = {
       floorSkip: [],
       id: "safari20",
       items: {
-        "door@0,3,0:6XNMu": {
-          config: { axis: "y", toRoom: "safari19triple" },
+        "door@0,3,0:ZwokIN": {
+          config: { direction: "right", toRoom: "safari19triple" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@1,8,0:AfHgb": {
-          config: { axis: "x", toRoom: "safari22" },
+        "door@1,8,0:Z2mYkmr": {
+          config: { direction: "away", toRoom: "safari22" },
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
-        "door@4,3,0:249Hbw": {
-          config: { axis: "y", toRoom: "safari21" },
+        "door@4,3,0:Z140Gw6": {
+          config: { direction: "left", toRoom: "safari21" },
           position: { x: 4, y: 3, z: 0 },
           type: "door",
         },
@@ -23155,8 +23135,8 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
-        "door@0,3,0:249GUL": {
-          config: { axis: "y", toRoom: "safari20" },
+        "door@0,3,0:Z2p4BRY": {
+          config: { direction: "right", toRoom: "safari20" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -23232,13 +23212,13 @@ export const campaign = {
           position: { x: 1, y: 6, z: 0 },
           type: "deadly-block",
         },
-        "door@0,0,0:AfGJF": {
-          config: { axis: "x", toRoom: "safari20" },
+        "door@0,0,0:rjxGa": {
+          config: { direction: "towards", toRoom: "safari20" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,8,0:AfHvV": {
-          config: { axis: "x", toRoom: "safari23" },
+        "door@0,8,0:Z2mYk6G": {
+          config: { direction: "away", toRoom: "safari23" },
           position: { x: 0, y: 8, z: 0 },
           type: "door",
         },
@@ -23325,18 +23305,18 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,2,0:249HWM": {
-          config: { axis: "y", toRoom: "safari24" },
+        "door@0,2,0:Z2p4APX": {
+          config: { direction: "right", toRoom: "safari24" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@2,0,0:AfHgb": {
-          config: { axis: "x", toRoom: "safari22" },
+        "door@2,0,0:rjycF": {
+          config: { direction: "towards", toRoom: "safari22" },
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "door@6,2,0:249Iti": {
-          config: { axis: "y", toRoom: "safari26" },
+        "door@6,2,0:Z140Fek": {
+          config: { direction: "left", toRoom: "safari26" },
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
@@ -23394,13 +23374,13 @@ export const campaign = {
           position: { x: 4, y: 5, z: 1 },
           type: "deadly-block",
         },
-        "door@0,2,1:249Idx": {
-          config: { axis: "y", toRoom: "safari25" },
+        "door@0,2,1:Z2p4AAd": {
+          config: { direction: "right", toRoom: "safari25" },
           position: { x: 0, y: 2, z: 1 },
           type: "door",
         },
-        "door@8,2,3:249HH2": {
-          config: { axis: "y", toRoom: "safari23" },
+        "door@8,2,3:Z140G0A": {
+          config: { direction: "left", toRoom: "safari23" },
           position: { x: 8, y: 2, z: 3 },
           type: "door",
         },
@@ -23447,13 +23427,13 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "door@3,0,3:ZH4JMp": {
-          config: { axis: "x", toRoom: "safari19triple" },
+        "door@3,0,3:Z2t83Tk": {
+          config: { direction: "towards", toRoom: "safari19triple" },
           position: { x: 3, y: 0, z: 3 },
           type: "door",
         },
-        "door@8,3,3:249HWM": {
-          config: { axis: "y", toRoom: "safari24" },
+        "door@8,3,3:Z140FJP": {
+          config: { direction: "left", toRoom: "safari24" },
           position: { x: 8, y: 3, z: 3 },
           type: "door",
         },
@@ -23719,13 +23699,13 @@ export const campaign = {
           position: { x: 3, y: 8, z: 2 },
           type: "deadly-block",
         },
-        "door@0,2,0:249HH2": {
-          config: { axis: "y", toRoom: "safari23" },
+        "door@0,2,0:Z2p4B6I": {
+          config: { direction: "right", toRoom: "safari23" },
           position: { x: 0, y: 2, z: 0 },
           type: "door",
         },
-        "door@8,8,0:249IJ3": {
-          config: { axis: "y", toRoom: "safari27" },
+        "door@8,8,0:Z140EXz": {
+          config: { direction: "left", toRoom: "safari27" },
           position: { x: 8, y: 8, z: 0 },
           type: "door",
         },
@@ -23785,13 +23765,13 @@ export const campaign = {
           position: { x: 4, y: 3, z: 0 },
           type: "baddie",
         },
-        "door@0,2,4:249Iti": {
-          config: { axis: "y", toRoom: "safari26" },
+        "door@0,2,4:Z2p4Aks": {
+          config: { direction: "right", toRoom: "safari26" },
           position: { x: 0, y: 2, z: 4 },
           type: "door",
         },
-        "door@8,2,4:249IYN": {
-          config: { axis: "y", toRoom: "safari28" },
+        "door@8,2,4:Z140EHO": {
+          config: { direction: "left", toRoom: "safari28" },
           position: { x: 8, y: 2, z: 4 },
           type: "door",
         },
@@ -23828,13 +23808,13 @@ export const campaign = {
           position: { x: 4, y: 3, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:249IJ3": {
-          config: { axis: "y", toRoom: "safari27" },
+        "door@0,3,0:Z2p4A4H": {
+          config: { direction: "right", toRoom: "safari27" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@8,3,0:249Jfy": {
-          config: { axis: "y", toRoom: "safari29" },
+        "door@8,3,0:Z140Es4": {
+          config: { direction: "left", toRoom: "safari29" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -23895,13 +23875,13 @@ export const campaign = {
           position: { x: 3, y: 1, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:249IYN": {
-          config: { axis: "y", toRoom: "safari28" },
+        "door@0,3,0:Z2p4zNW": {
+          config: { direction: "right", toRoom: "safari28" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@8,3,0:249OV9": {
-          config: { axis: "y", toRoom: "safari30" },
+        "door@8,3,0:Z140yLt": {
+          config: { direction: "left", toRoom: "safari30" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
@@ -23957,13 +23937,13 @@ export const campaign = {
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "door@1,0,5:baIQu": {
-          config: { axis: "x", toRoom: "safari2" },
+        "door@1,0,5:Zj81x8": {
+          config: { direction: "towards", toRoom: "safari2" },
           position: { x: 1, y: 0, z: 5 },
           type: "door",
         },
-        "door@1,8,5:baJn0": {
-          config: { axis: "x", toRoom: "safari4" },
+        "door@1,8,5:1SooNj": {
+          config: { direction: "away", toRoom: "safari4" },
           position: { x: 1, y: 8, z: 5 },
           type: "door",
         },
@@ -23995,13 +23975,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari30",
       items: {
-        "door@0,0,0:Z2fKbM3": {
-          config: { axis: "x", toRoom: "safari17fish" },
+        "door@0,0,0:ZMLAn7": {
+          config: { direction: "towards", toRoom: "safari17fish" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@0,3,5:249Jfy": {
-          config: { axis: "y", toRoom: "safari29" },
+        "door@0,3,5:Z2p4zyc": {
+          config: { direction: "right", toRoom: "safari29" },
           position: { x: 0, y: 3, z: 5 },
           type: "door",
         },
@@ -24153,13 +24133,13 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,1:Z17iDQP": {
-          config: { axis: "y", toRoom: "safari17fish" },
+        "door@0,3,1:1D93r4": {
+          config: { direction: "right", toRoom: "safari17fish" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "door@8,3,5:249PrE": {
-          config: { axis: "y", toRoom: "safari32" },
+        "door@8,3,5:Z140yfX": {
+          config: { direction: "left", toRoom: "safari32" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -24220,13 +24200,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari32",
       items: {
-        "door@0,0,0:249PbT": {
-          config: { axis: "y", toRoom: "safari31" },
+        "door@0,0,0:Z2p4tBQ": {
+          config: { direction: "right", toRoom: "safari31" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "door@8,0,0:249PHp": {
-          config: { axis: "y", toRoom: "safari33" },
+        "door@8,0,0:Z140y0d": {
+          config: { direction: "left", toRoom: "safari33" },
           position: { x: 8, y: 0, z: 0 },
           type: "door",
         },
@@ -24273,18 +24253,18 @@ export const campaign = {
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "door@0,3,0:249PrE": {
-          config: { axis: "y", toRoom: "safari32" },
+        "door@0,3,0:Z2p4tm6": {
+          config: { direction: "right", toRoom: "safari32" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
-        "door@3,8,5:ZQtMqt": {
-          config: { axis: "x", toRoom: "safari37crown" },
+        "door@3,8,5:ZqJYTY": {
+          config: { direction: "away", toRoom: "safari37crown" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:249PXa": {
-          config: { axis: "y", toRoom: "safari34" },
+        "door@8,3,5:Z140xJs": {
+          config: { direction: "left", toRoom: "safari34" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -24406,8 +24386,8 @@ export const campaign = {
           position: { x: 4, y: 7, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,0:249PHp": {
-          config: { axis: "y", toRoom: "safari33" },
+        "door@0,3,0:Z2p4t6l": {
+          config: { direction: "right", toRoom: "safari33" },
           position: { x: 0, y: 3, z: 0 },
           type: "door",
         },
@@ -24514,8 +24494,8 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "deadly-block",
         },
-        "door@0,3,1:249QtF": {
-          config: { axis: "y", toRoom: "safari36" },
+        "door@0,3,1:Z2p4sk5": {
+          config: { direction: "right", toRoom: "safari36" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
@@ -24602,8 +24582,8 @@ export const campaign = {
           position: { x: 4, y: 3, z: 1 },
           type: "deadly-block",
         },
-        "door@8,3,2:249QdU": {
-          config: { axis: "y", toRoom: "safari35" },
+        "door@8,3,2:Z140xtH": {
+          config: { direction: "left", toRoom: "safari35" },
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
@@ -24775,8 +24755,8 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "door@3,0,0:AfPwj": {
-          config: { axis: "x", toRoom: "safari33" },
+        "door@3,0,0:rjGsN": {
+          config: { direction: "towards", toRoom: "safari33" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
@@ -24872,18 +24852,18 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "door@3,0,0:baJ7f": {
-          config: { axis: "x", toRoom: "safari3" },
+        "door@3,0,0:Zj81hn": {
+          config: { direction: "towards", toRoom: "safari3" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "door@3,8,5:AfANk": {
-          config: { axis: "x", toRoom: "safari18" },
+        "door@3,8,5:Z2mYqOi": {
+          config: { direction: "away", toRoom: "safari18" },
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "door@8,3,5:Z2e1dI5": {
-          config: { axis: "y", toRoom: "safari5" },
+        "door@8,3,5:LV2Gb": {
+          config: { direction: "left", toRoom: "safari5" },
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
@@ -24919,13 +24899,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari5",
       items: {
-        "door@0,1,0:Z2e1dXP": {
-          config: { axis: "y", toRoom: "safari4" },
+        "door@0,1,0:Z2wPgRd": {
+          config: { direction: "right", toRoom: "safari4" },
           position: { x: 0, y: 1, z: 0 },
           type: "door",
         },
-        "door@8,1,4:1wrwXV": {
-          config: { axis: "y", toRoom: "safari6triple" },
+        "door@8,1,4:21rHTG": {
+          config: { direction: "left", toRoom: "safari6triple" },
           position: { x: 8, y: 1, z: 4 },
           type: "door",
         },
@@ -25147,18 +25127,18 @@ export const campaign = {
           position: { x: 9, y: 0, z: 0 },
           type: "block",
         },
-        "door@0,2,1:Z2e1dI5": {
-          config: { axis: "y", toRoom: "safari5" },
+        "door@0,2,1:Z2wPgBs": {
+          config: { direction: "right", toRoom: "safari5" },
           position: { x: 0, y: 2, z: 1 },
           type: "door",
         },
-        "door@6,8,2:Z2e1dcz": {
-          config: { axis: "y", toRoom: "safari7" },
+        "door@6,8,2:LV3cG": {
+          config: { direction: "left", toRoom: "safari7" },
           position: { x: 6, y: 8, z: 2 },
           type: "door",
         },
-        "door@8,6,2:baK9g": {
-          config: { axis: "x", toRoom: "safari7" },
+        "door@8,6,2:1Sopzz": {
+          config: { direction: "away", toRoom: "safari7" },
           position: { x: 8, y: 6, z: 2 },
           type: "door",
         },
@@ -25294,18 +25274,18 @@ export const campaign = {
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "door@0,2,1:1wrwXV": {
-          config: { axis: "y", toRoom: "safari6triple" },
+        "door@0,2,1:G95F0": {
+          config: { direction: "right", toRoom: "safari6triple" },
           position: { x: 0, y: 2, z: 1 },
           type: "door",
         },
-        "door@2,0,1:1OPO8R": {
-          config: { axis: "x", toRoom: "safari6triple" },
+        "door@2,0,1:1hl1rq": {
+          config: { direction: "towards", toRoom: "safari6triple" },
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "door@6,2,2:Z2e1cVO": {
-          config: { axis: "y", toRoom: "safari8" },
+        "door@6,2,2:LV3sr": {
+          config: { direction: "left", toRoom: "safari8" },
           position: { x: 6, y: 2, z: 2 },
           type: "door",
         },
@@ -25323,13 +25303,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari8",
       items: {
-        "door@0,0,1:Z2e1dcz": {
-          config: { axis: "y", toRoom: "safari7" },
+        "door@0,0,1:Z2wPg5W": {
+          config: { direction: "right", toRoom: "safari7" },
           position: { x: 0, y: 0, z: 1 },
           type: "door",
         },
-        "door@8,0,1:Z2e1cG4": {
-          config: { axis: "y", toRoom: "safari9" },
+        "door@8,0,1:LV3Ic": {
+          config: { direction: "left", toRoom: "safari9" },
           position: { x: 8, y: 0, z: 1 },
           type: "door",
         },
@@ -25406,13 +25386,13 @@ export const campaign = {
           position: { x: 7, y: 1, z: 2 },
           type: "deadly-block",
         },
-        "door@0,2,4:Z2e1cVO": {
-          config: { axis: "y", toRoom: "safari8" },
+        "door@0,2,4:Z2wPfPc": {
+          config: { direction: "right", toRoom: "safari8" },
           position: { x: 0, y: 2, z: 4 },
           type: "door",
         },
-        "door@8,2,5:249zWp": {
-          config: { axis: "y", toRoom: "safari14" },
+        "door@8,2,5:Z140NKd": {
+          config: { direction: "left", toRoom: "safari14" },
           position: { x: 8, y: 2, z: 5 },
           type: "door",
         },

@@ -18,10 +18,16 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     JSON.stringify({ rooms }),
   );
 
-  const patchedJson = fastJsonPatch.applyPatch(
-    { rooms },
-    patch as Operation[],
-  ).newDocument;
+  let patchedJson;
+  try {
+    patchedJson = fastJsonPatch.applyPatch(
+      { rooms },
+      patch as Operation[],
+    ).newDocument;
+  } catch (e) {
+    console.error("Error applying patch", "to", { rooms }, e);
+    process.exit(1);
+  }
 
   const writeTsPromise = writeFile(
     tsFilename,
