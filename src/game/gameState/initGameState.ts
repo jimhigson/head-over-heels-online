@@ -7,6 +7,7 @@ import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { ApiEvents } from "../GameApi";
+import { entryState } from "./EntryState";
 
 type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -49,7 +50,7 @@ export const initGameState = <RoomId extends string>(
     Object.keys(campaign.rooms).map((roomId) => [roomId, {}]),
   ) as PickupsCollected<RoomId>;
 
-  const headsRoom =
+  const headRoom =
     starts.head && loadRoom(campaign.rooms[starts.head], pickupsCollected);
   const heelsRoom =
     starts.heels && loadRoom(campaign.rooms[starts.heels], pickupsCollected);
@@ -59,8 +60,14 @@ export const initGameState = <RoomId extends string>(
     // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {
-      head: headsRoom,
-      heels: heelsRoom,
+      head:
+        headRoom === undefined ? undefined : (
+          { room: headRoom, entryState: entryState(headRoom.items.head!) }
+        ),
+      heels:
+        heelsRoom === undefined ? undefined : (
+          { room: heelsRoom, entryState: entryState(heelsRoom.items.heels!) }
+        ),
     },
     inputState: fromAllEntries(actions.map((action) => [action, false])),
     renderOptions,

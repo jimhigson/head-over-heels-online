@@ -1,12 +1,14 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { isItemType } from "@/model/ItemInPlay";
-import type { GameState } from "./GameState";
-import { findStandingOn, loadRoom } from "./loadRoom/loadRoom";
+import type { GameState } from "../GameState";
+import { findStandingOn, loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors";
 import { addXyz, originXyz } from "@/utils/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
+import { entryState } from "../EntryState";
+import { otherCharacterName } from "@/model/modelTypes";
 
 export const changeCharacterRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -14,7 +16,7 @@ export const changeCharacterRoom = <RoomId extends string>(
   portalRelative: Xyz = originXyz,
 ) => {
   const { currentCharacterName } = gameState;
-  const leavingRoom = gameState.characterRooms[currentCharacterName]!;
+  const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
 
   if (roomId === leavingRoom.id) {
     throw new Error(
@@ -22,9 +24,9 @@ export const changeCharacterRoom = <RoomId extends string>(
     );
   }
 
-  const otherCharacter = currentCharacterName === "head" ? "heels" : "head";
+  const otherName = otherCharacterName(currentCharacterName);
 
-  const otherCharacterLoadedRoom = gameState.characterRooms[otherCharacter];
+  const otherCharacterLoadedRoom = gameState.characterRooms[otherName]?.room;
   const destinationRoom =
     otherCharacterLoadedRoom?.id === roomId ?
       otherCharacterLoadedRoom
@@ -73,7 +75,10 @@ export const changeCharacterRoom = <RoomId extends string>(
 
   // update game state to know which room this character is now in:
   console.log("destinationRoom", destinationRoom.id);
-  gameState.characterRooms[currentCharacterName] = destinationRoom;
+  gameState.characterRooms[currentCharacterName] = {
+    room: destinationRoom,
+    entryState: entryState(character),
+  };
 
   gameState.events.emit("roomChange", roomId);
 };

@@ -1,5 +1,5 @@
 import type { GameState } from "@/game/gameState/GameState";
-import { characterItem, currentRoom } from "@/game/gameState/GameState";
+import { playableItem, currentRoom } from "@/game/gameState/GameState";
 import type { Container } from "pixi.js";
 import { Text, Sprite } from "pixi.js";
 import { zxSpectrumResolution } from "@/originalGame";
@@ -75,7 +75,7 @@ export const renderHud = (hudContainer: Container) => {
 
     for (const character of characterNames) {
       const isCurrent = gameState.currentCharacterName === character;
-      const itemInPlay = characterItem(gameState, character);
+      const itemInPlay = playableItem(gameState, character);
 
       spriteFilter.targetColor = dimmed.dimmed;
 

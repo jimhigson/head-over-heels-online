@@ -4,7 +4,7 @@ import {
   currentRoom,
   pickupCollected,
 } from "../../gameState/GameState";
-import { teleportAnimationDuration } from "../../render/animationTimings";
+import { characterFadeInOrOutDuration } from "../../render/animationTimings";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -22,7 +22,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     true
   >;
   roomPickupCollections[pickup.id] = true;
-  pickup.state.expires = gameState.gameTime + teleportAnimationDuration;
+  pickup.state.expires = gameState.gameTime + characterFadeInOrOutDuration;
   pickup.renderingDirty = true;
 
   switch (pickup.config.gives) {

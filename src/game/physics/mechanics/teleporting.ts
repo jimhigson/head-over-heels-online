@@ -2,8 +2,8 @@ import type { PlayableItem } from "@/model/ItemInPlay";
 import type { MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
-import { changeCharacterRoom } from "@/game/gameState/changeCharacterRoom";
-import { teleportAnimationDuration } from "@/game/render/animationTimings";
+import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
+import { characterFadeInOrOutDuration } from "@/game/render/animationTimings";
 
 export function teleporting<RoomId extends string>(
   playableItem: PlayableItem<RoomId>,
@@ -24,7 +24,7 @@ export function teleporting<RoomId extends string>(
           teleporting: {
             phase: "out",
             toRoom: playableItem.state.standingOn.config.toRoom,
-            timeRemaining: teleportAnimationDuration,
+            timeRemaining: characterFadeInOrOutDuration,
           },
         },
       };
@@ -45,7 +45,7 @@ export function teleporting<RoomId extends string>(
           stateDelta: {
             teleporting: {
               phase: "in",
-              timeRemaining: teleportAnimationDuration,
+              timeRemaining: characterFadeInOrOutDuration,
             },
           },
         };

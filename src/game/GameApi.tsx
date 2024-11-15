@@ -17,7 +17,6 @@ export type GameApi<RoomId extends string> = {
   currentRoom: RoomState<PlanetName, RoomId>;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
-  swopCharacter: () => void;
   set renderOptions(options: RenderOptions<RoomId>);
   stop: () => void;
 };

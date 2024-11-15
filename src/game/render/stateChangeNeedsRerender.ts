@@ -11,7 +11,7 @@ export const stateChangeNeedsRerender = (
     case "heels":
       return (
         item.state.facing !== (previousState as typeof item.state).facing ||
-        item.state.movement !== (previousState as typeof item.state).movement ||
+        item.state.action !== (previousState as typeof item.state).action ||
         item.state.teleporting?.phase !==
           (previousState as typeof item.state).teleporting?.phase
       );

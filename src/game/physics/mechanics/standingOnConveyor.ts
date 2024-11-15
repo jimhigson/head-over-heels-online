@@ -42,7 +42,7 @@ export const standingOnConveyor = <RoomId extends string>(
    */
   const heelsWalkingAgainst =
     isItemType("heels")(item) &&
-    item.state.movement === "moving" &&
+    item.state.action === "moving" &&
     item.state.facing === oppositeDirection(direction);
 
   const conveyorSpeed =

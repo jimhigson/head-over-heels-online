@@ -261,3 +261,46 @@ describe("conveyors", () => {
     });
   });
 });
+
+describe("deadly blocks", () => {
+  test.only("player loses life on touching volcano", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 0, y: 0, z: 2 },
+          config: {
+            which: "head",
+          },
+        },
+        conveyor: {
+          type: "deadly-block",
+          position: { x: 0, y: 0, z: 0 },
+          config: { style: "volcano" },
+        },
+      },
+      secondRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 2, y: 2, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+      },
+    });
+
+    const {
+      items: { head },
+    } = currentRoom(gameState);
+
+    playGameThrough(gameState, {
+      forTime: 20_000,
+    });
+
+    // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
+    expect(head?.state.lives).toBe(0);
+    expect(gameState.currentCharacterName).toBe("heels");
+    expect(currentRoom(gameState).id).toBe("secondRoom");
+  });
+});

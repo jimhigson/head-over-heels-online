@@ -9,6 +9,8 @@ import { blockSizePx } from "@/sprites/spritePivots";
 
 export const characterNames = ["head", "heels"] as const;
 export type CharacterName = (typeof characterNames)[number];
+export const otherCharacterName = (name: CharacterName) =>
+  name === "head" ? "heels" : "head";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 

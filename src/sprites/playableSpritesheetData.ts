@@ -139,9 +139,10 @@ export const playableSpritesheetData = {
       "head.walking.towards.3",
       "head.blinking.towards",
     ],
+    // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
-    "head.teleport": [
+    "head.fadeOut": [
       "bubbles.head.1",
       "bubbles.head.2",
       "bubbles.head.4",
@@ -152,7 +153,7 @@ export const playableSpritesheetData = {
       "bubbles.head.6",
       "bubbles.head.5",
     ],
-    "heels.teleport": [
+    "heels.fadeOut": [
       "bubbles.heels.1",
       "bubbles.heels.2",
       "bubbles.heels.4",

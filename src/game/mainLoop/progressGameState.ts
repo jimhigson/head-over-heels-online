@@ -5,14 +5,16 @@
 // can be guaranteed to take up every half-pixel position.
 
 import type { UnknownItemInPlay, AnyItemInPlay } from "@/model/ItemInPlay";
-import { itemFalls } from "@/model/ItemInPlay";
+import { isPlayableItem, itemFalls } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
+import { swopCharacters } from "../gameState/swopCharacters";
+import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
 
 //  So, 10ms = 0.01s, at 50px/s gives 0.01 * 50 = 0.5px
 const maximumDeltaMS = 10;
@@ -20,8 +22,7 @@ const maximumDeltaMS = 10;
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
   gameState: GameState<RoomId>,
-) =>
-  item.state.expires !== undefined && item.state.expires < gameState.gameTime;
+) => item.state.expires !== null && item.state.expires < gameState.gameTime;
 
 const deleteItemFromRoom = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
@@ -47,19 +48,38 @@ export const progressGameState = <RoomId extends string>(
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
 
+  const { inputState } = gameState;
+
+  if (inputState.swop) {
+    swopCharacters(gameState);
+    // we have now handled that keypress, turn it off until the key is pressed again,
+    // which will turn this flag back on
+    inputState.swop = false;
+  }
+
   for (let i = 0; i < physicsTickCount; i++) {
+    gameState.gameTime += physicsTickMs;
     const room = currentRoom(gameState);
 
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
-        deleteItemFromRoom(room, item);
+        if (isPlayableItem(item)) {
+          characterLosesLife(gameState);
+          // we won't run the rest of the render tick now, so the next render
+          // gets the true starting room state
+          return;
+        } else {
+          deleteItemFromRoom(room, item);
+        }
       }
     }
 
-    for (const item of objectValues(room.items)) {
+    tickAllItems: for (const item of objectValues(room.items)) {
+      if (currentPlayableItem(gameState).state.action === "death") {
+        // all physics is suspended while death animation plays
+        break tickAllItems;
+      }
       tickItem(item, gameState, physicsTickMs);
     }
-
-    gameState.gameTime += physicsTickMs;
   }
 };

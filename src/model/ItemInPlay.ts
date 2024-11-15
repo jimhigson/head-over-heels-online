@@ -20,7 +20,12 @@ type FallingItemState = {
 
 export type CharacterState = FallingItemState & {
   facing: Direction;
-  movement: "moving" | "idle" | "falling";
+  action:
+    | "moving"
+    | "idle"
+    | "falling"
+    /** death animation is playing - character will have had expired set  */
+    | "death";
   /** how much higher we can jump before we start to fall, in pixels */
   jumpRemaining: number;
 
@@ -88,7 +93,7 @@ type BaseItemState = {
    *
    * If undefined, the item is not scheduled for removal (the normal case)
    */
-  expires?: number;
+  expires: number | null;
 };
 
 export type ItemState<T extends ItemInPlayType> = BaseItemState &

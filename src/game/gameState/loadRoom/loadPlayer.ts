@@ -18,7 +18,7 @@ export const loadPlayer = <RoomId extends string>(
         id: "head",
         state: {
           facing: "towards",
-          movement: "idle",
+          action: "idle",
           jumpRemaining: 0,
           jumped: false,
           hasHooter: false,
@@ -30,6 +30,7 @@ export const loadPlayer = <RoomId extends string>(
           autoWalkDistance: 0,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
+          expires: null,
         },
         falls: true,
       },
@@ -44,7 +45,7 @@ export const loadPlayer = <RoomId extends string>(
         id: "heels",
         state: {
           facing: "towards",
-          movement: "idle",
+          action: "idle",
           jumpRemaining: 0,
           carrying: null,
           hasBag: false,
@@ -56,6 +57,7 @@ export const loadPlayer = <RoomId extends string>(
           jumped: false,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
+          expires: null,
         },
         falls: true,
       },

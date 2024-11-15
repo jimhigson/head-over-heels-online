@@ -20,8 +20,8 @@ export const animationDuration = (
 };
 
 export const pickupAnimationDuration = animationDuration(
-  spriteSheet.animations["head.teleport"].length,
+  spriteSheet.animations["bubbles.pickup"].length,
 );
-export const teleportAnimationDuration = animationDuration(
-  spriteSheet.animations["head.teleport"].length,
+export const characterFadeInOrOutDuration = animationDuration(
+  spriteSheet.animations["head.fadeOut"].length,
 );

@@ -54,6 +54,7 @@ export function* loadDoor<RoomId extends string>(
         position: blockXyzToFineXyz(
           addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
         ),
+        expires: null,
       },
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
@@ -73,6 +74,7 @@ export function* loadDoor<RoomId extends string>(
       type: "doorNear",
       state: {
         position: doorNearPosition,
+        expires: null,
       },
       aabb: { x: 8, y: 8, z: doorPostHeight },
     },
@@ -100,6 +102,7 @@ export function* loadDoor<RoomId extends string>(
             },
           ),
         ),
+        expires: null,
       },
       aabb: {
         [axis]: blockSizePx.w,
@@ -126,6 +129,7 @@ export function* loadDoor<RoomId extends string>(
             z: doorPortalHeight,
           },
         },
+        expires: null,
       },
       aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5 }), z: 999 },
     },

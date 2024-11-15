@@ -65,7 +65,7 @@ describe("collision1toMany", () => {
       id: "subject",
       type: "block",
       config: { style: "artificial" },
-      state: { position: { x: 0, y: 0, z: 0 } },
+      state: { position: { x: 0, y: 0, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
@@ -74,7 +74,7 @@ describe("collision1toMany", () => {
       id: "colliding1",
       type: "block",
       config: { style: "artificial" },
-      state: { position: { x: 1.9, y: 0, z: 0 } },
+      state: { position: { x: 1.9, y: 0, z: 0 }, expires: null },
       aabb: { x: 1, y: 1, z: 1 },
     };
     const colliding2: UnknownItemInPlay = {
@@ -82,7 +82,7 @@ describe("collision1toMany", () => {
       id: "colliding2",
       type: "block",
       config: { style: "artificial" },
-      state: { position: { x: 0, y: 0.9, z: 0 } },
+      state: { position: { x: 0, y: 0.9, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
@@ -91,7 +91,7 @@ describe("collision1toMany", () => {
       id: "nonColliding1",
       type: "block",
       config: { style: "artificial" },
-      state: { position: { x: 0, y: 0, z: 1 } },
+      state: { position: { x: 0, y: 0, z: 1 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
@@ -100,7 +100,7 @@ describe("collision1toMany", () => {
       id: "nonColliding2",
       type: "block",
       config: { style: "artificial" },
-      state: { position: { x: 2, y: 0, z: 0 } },
+      state: { position: { x: 2, y: 0, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
 

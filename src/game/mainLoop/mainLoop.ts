@@ -8,14 +8,13 @@ import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
 import { renderCurrentRoom } from "../render/renderCurrentRoom";
 import type { RenderOptions } from "../RenderOptions";
-import { swopCharacters } from "../gameState/swopCharacters";
 import { objectValues } from "iter-tools";
 import { zxSpectrumResolution } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
 
-const updateRenderingToMatchState = <RoomId extends string>(
+const updateWorldRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   lastRenderedRoom: RoomState<PlanetName, RoomId> | undefined,
   worldContainer: Container,
@@ -85,17 +84,6 @@ export const mainLoop = <RoomId extends string>(
     upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
 
-    updateHud(gameState);
-
-    const { inputState } = gameState;
-
-    if (inputState.swop) {
-      swopCharacters(gameState);
-      // we have now handled that keypress, turn it off until the key is pressed again,
-      // which will turn this flag back on
-      inputState.swop = false;
-    }
-
     const { renderOptions } = gameState;
 
     if (lastRenderOptions !== renderOptions) {
@@ -111,12 +99,13 @@ export const mainLoop = <RoomId extends string>(
 
     progressGameState(gameState, deltaMS);
 
-    updateRenderingToMatchState(
+    updateWorldRenderingToMatchState(
       gameState,
       lastRenderedRoom,
       worldContainer,
       renderOptions,
     );
+    updateHud(gameState);
     lastRenderedRoom = currentRoom(gameState);
   };
 

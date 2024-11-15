@@ -65,7 +65,7 @@ export const fallingAndLanding = <RoomId extends string>(
       : {
           standingOn: null,
           // only head has a falling sprite (heels doesn't)
-          ...(item.type === "head" ? { movement: "falling" } : {}),
+          ...(item.type === "head" ? { action: "falling" } : {}),
         }),
     },
   };

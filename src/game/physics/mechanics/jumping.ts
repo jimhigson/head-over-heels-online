@@ -43,7 +43,7 @@ export const jumping = (
     stateDelta:
       isJumpStart ?
         {
-          movement: "moving",
+          action: "moving",
           // whatever we were standing on, we aren't any more:
           standingOn: null,
           jumpRemaining: playerJumpHeight[type],
@@ -51,7 +51,7 @@ export const jumping = (
         }
         // jumping, but not starting a jump
       : {
-          movement: "moving",
+          action: "moving",
           jumpRemaining: Math.max(jumpRemaining - zMovementFloat, 0),
         },
     positionDelta: { z: zMovementFloat },

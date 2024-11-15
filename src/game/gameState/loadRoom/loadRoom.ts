@@ -47,6 +47,7 @@ const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
       aabb: { ...blockXyzToFineXyz(addXy(room.size, { x: 2, y: 2 })), z: 0 },
       state: {
         position: blockXyzToFineXyz({ x: -1, y: -1, z: 0 }),
+        expires: null,
       },
       renders: false,
     },
@@ -80,10 +81,17 @@ export const findStandingOn = (
   return null; // not standing on anything in the items list
 };
 
-const initStandingOn = (items: RoomStateItems<PlanetName, string>) => {
+export const initStandingOnForItem = (
+  item: ItemInPlay<FallingItemTypes, PlanetName, string>,
+  items: RoomStateItems<PlanetName, string>,
+) => {
+  item.state.standingOn = findStandingOn(item, objectValues(items));
+};
+
+const initStandingOnForItems = (items: RoomStateItems<PlanetName, string>) => {
   for (const item of objectValues(items)) {
     if (itemFalls(item)) {
-      item.state.standingOn = findStandingOn(item, objectValues(items));
+      initStandingOnForItem(item, items);
     }
   }
 };
@@ -122,7 +130,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     ...itemArrayToItemObjectMap(loadItems(roomJson, pickupsCollected)),
   };
 
-  initStandingOn(loadedItems);
+  initStandingOnForItems(loadedItems);
 
   return {
     ...roomJson,

@@ -12,6 +12,7 @@ import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPi
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isSolid } from "./isSolid";
 import { slidingCollisionWithManyItems } from "./slidingCollision";
+import { characterFadeInOrOutDuration } from "../render/animationTimings";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -108,8 +109,11 @@ export const moveItem = <RoomId extends string>(
       return;
     }
 
-    if (deadly?.length) {
-      console.log("LOSE a life");
+    if (deadly?.length > 0) {
+      subjectItem.state.action = "death";
+      subjectItem.state.expires =
+        gameState.gameTime + characterFadeInOrOutDuration;
+      return;
     }
     for (const p of pickup) {
       handlePlayerTouchingPickup(gameState, subjectItem, p);

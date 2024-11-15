@@ -31,6 +31,7 @@ export function* loadWalls<R extends string>(
           config: { side: "left", style },
           state: {
             position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
+            expires: null,
           },
           aabb: yAxisWallAabb,
           renderAabb: yAxisWallRenderAabb,
@@ -56,7 +57,10 @@ export function* loadWalls<R extends string>(
           type: "wall",
           id: `wall-right-${yi}`,
           config: { side: "left", style: "none" },
-          state: { position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }) },
+          state: {
+            position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
+            expires: null,
+          },
           aabb: {
             x: 0,
             y: blockSizePx.d,
@@ -81,6 +85,7 @@ export function* loadWalls<R extends string>(
           config: { side: "away", style },
           state: {
             position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
+            expires: null,
           },
           aabb: xAxisWallAabb,
           renderAabb: xAxisWallRenderAabb,
@@ -107,6 +112,7 @@ export function* loadWalls<R extends string>(
           config: { side: "towards", style: "none" },
           state: {
             position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
+            expires: null,
           },
           aabb: {
             x: blockSizePx.w,

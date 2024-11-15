@@ -85,12 +85,12 @@ export const walking = (
       positionDelta: scaleXyz(unitVectors[directionPressed], walkDistance),
       stateDelta: {
         facing: directionPressed,
-        movement: "moving",
+        action: "moving",
       },
     };
   }
 
   // whenever we're idle, the walking rounding error resets so the character sits on their 'true'
   // pixel again for the sake of the next walk movement
-  return { stateDelta: { movement: "idle" } };
+  return { stateDelta: { action: "idle" } };
 };

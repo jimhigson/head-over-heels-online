@@ -6,7 +6,7 @@ import type { Direction } from "@/utils/vectors";
 test("heads and heels have the right state", () => {
   expectTypeOf<ItemInPlay<"head">["state"]>().toMatchTypeOf<{
     facing: Direction;
-    movement: "moving" | "idle" | "falling";
+    action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay | null;
     jumpRemaining: number;
     lives: number;
@@ -22,7 +22,7 @@ test("heads and heels have the right state", () => {
 
   expectTypeOf<PlayableItem["state"]>().toMatchTypeOf<{
     facing: Direction;
-    movement: "moving" | "idle" | "falling";
+    action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay | null;
     jumpRemaining: number;
     lives: number;
