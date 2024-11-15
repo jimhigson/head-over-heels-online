@@ -3,8 +3,8 @@ import {
   type GameState,
   currentRoom,
   pickupCollected,
-} from "../../../gameState/GameState";
-import { teleportAnimationDuration } from "../../../render/animationTimings";
+} from "../../gameState/GameState";
+import { teleportAnimationDuration } from "../../render/animationTimings";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,

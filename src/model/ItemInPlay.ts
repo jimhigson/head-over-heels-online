@@ -1,5 +1,5 @@
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, Direction, Xyz } from "../utils/vectors";
+import type { Aabb, Direction, Matrix3x3, Xyz } from "../utils/vectors";
 import type { ItemConfig, ItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
@@ -139,6 +139,8 @@ export type ItemInPlay<
   renderContainer?: Container;
 
   renders: boolean;
+
+  characterSlideMatrix: Matrix3x3;
 
   /**
    * true if this object should fall whenever it is not supported. Otherwise,

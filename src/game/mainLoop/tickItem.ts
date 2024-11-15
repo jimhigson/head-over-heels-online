@@ -17,6 +17,7 @@ import { walking } from "../physics/mechanics/walking";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
 import { addXyz, isIntegerXyz, originXyz, roundXyz } from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
+import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
 
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -59,6 +60,9 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     accumulateResult(steppedOff(item) as MechanicResult<T>);
     accumulateResult(
       fallingAndLanding(item, gameState, deltaMS) as MechanicResult<T>,
+    );
+    accumulateResult(
+      standingOnConveyor(item, gameState, deltaMS) as MechanicResult<T>,
     );
   }
 

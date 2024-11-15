@@ -6,6 +6,4 @@ export type MechanicResult<T extends ItemInPlayType> = {
   stateDelta?: Partial<ItemState<T>>;
 };
 
-export const unitMechanicalResult = {
-  stateDelta: {},
-} satisfies MechanicResult<ItemInPlayType>;
+export const unitMechanicalResult = {} satisfies MechanicResult<ItemInPlayType>;

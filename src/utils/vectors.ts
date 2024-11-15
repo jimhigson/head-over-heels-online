@@ -4,6 +4,12 @@ export type Direction = (typeof directions)[number];
 export const directionAxis = (direction: Direction): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
+export const oppositeDirection = (direction: Direction): Direction =>
+  direction === "away" ? "towards"
+  : direction === "towards" ? "away"
+  : direction === "left" ? "right"
+  : "left";
+
 /**
  * doors sit along the axis perpendicular to their direction
  */

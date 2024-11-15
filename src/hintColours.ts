@@ -4,27 +4,32 @@ import { spritesheetPalette } from "./sprites/samplePalette";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/
-export type Shades = { basic: Color; dimmed: Color };
+export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
+  original: new Color("rgb(255, 255, 255)"),
   basic: new Color("rgb(210, 210, 210)"),
   dimmed: new Color("rgb(120, 120, 120)"),
 };
 export const yellowShades = {
+  original: new Color("rgb(255, 255, 0)"),
   basic: new Color("hsl(50,58%,70%)"),
   dimmed: spritesheetPalette().redShadow,
   //dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
 export const magentaShades = {
+  original: new Color("rgb(255, 0, 255)"),
   basic: spritesheetPalette().pink,
   //basic: new Color("hsl(290,25%,60%)"),
   dimmed: new Color("hsl(290,25%,40%)"),
 };
 export const cyanShades = {
+  original: new Color("rgb(0, 255, 255)"),
   basic: new Color("hsl(183, 28%, 50%)"),
   dimmed: spritesheetPalette().shadow,
   //dimmed: new Color("hsl(183, 28%,30%)"),
 };
 export const greenShades = {
+  original: new Color("rgb(0, 255, 0)"),
   basic: spritesheetPalette().moss,
   //basic: new Color("hsl(73,35%,48%)"),
   dimmed: new Color("hsl(73,35%,30%)"),

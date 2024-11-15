@@ -42,7 +42,7 @@ const assignMouseActions = <RoomId extends string>(
 
     item.renderContainer.on("pointerenter", () => {
       item.renderContainer!.filters = new RevertColouriseFilter(
-        shades[room.color].basic,
+        shades[room.color].original,
       );
     });
 

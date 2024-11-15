@@ -86,6 +86,7 @@ const updateRenderingToMatchState = <RoomId extends string>(
     );
     // the room is not currently rendered - render from scratch
     worldContainer.removeChildren();
+    worldContainer.label = "world";
     const roomContainer = renderCurrentRoom(gameState, renderOptions);
     worldContainer.addChild(roomContainer);
   } else {
@@ -119,6 +120,7 @@ export const mainLoop = <RoomId extends string>(
   let lastRenderOptions: RenderOptions<RoomId> | undefined = undefined;
 
   const worldContainer = new Container();
+  worldContainer.label = "world";
   worldContainer.y = zxSpectrumResolution.height * 0.7;
   app.stage.addChild(worldContainer);
 

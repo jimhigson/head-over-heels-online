@@ -9,6 +9,8 @@ export const playerWalkSpeedPixPerMs = {
   heels: (2 * zxSpectrumFrameRate) / 1_000, // 2px per frame in original game - may also need acceleration
 };
 
+export const conveyorSpeedPixPerMs = zxSpectrumFrameRate / 1_000; // 1px per frame in original game;
+
 // two pixels per original zx spectrum game frame (25fps)
 export const jumpSpeedPixPerMs = (2 * zxSpectrumFrameRate) / 1_000;
 

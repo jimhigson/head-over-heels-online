@@ -2,8 +2,8 @@ import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { subXyz } from "@/utils/vectors";
-import { changeCharacterRoom } from "../../../gameState/changeCharacterRoom";
-import { currentRoom, type GameState } from "../../../gameState/GameState";
+import { changeCharacterRoom } from "../../gameState/changeCharacterRoom";
+import { currentRoom, type GameState } from "../../gameState/GameState";
 
 export const handlePlayerTouchingPortal = <RoomId extends string>(
   gameState: GameState<RoomId>,

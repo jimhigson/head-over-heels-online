@@ -8,8 +8,8 @@ import { currentRoom } from "../gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
-import { handlePlayerTouchingPickup } from "./mechanics/handleTouch/handlePlayerTouchingPickup";
-import { handlePlayerTouchingPortal } from "./mechanics/handleTouch/handlePlayerTouchingPortal";
+import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
+import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isSolid } from "./isSolid";
 import { slidingCollisionWithManyItems } from "./slidingCollision";
 
