@@ -3,7 +3,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { initGameState } from "@/game/gameState/initGameState";
 import type { InputState } from "@/game/input/InputState";
-import { progressGameStateForTick } from "@/game/mainLoop/mainLoop";
 import type { RenderOptions } from "@/game/RenderOptions";
 import type { RoomJson } from "@/model/modelTypes";
 import { setAutoFreeze, produce } from "immer";
@@ -93,28 +92,4 @@ export const basicGameState = ({
   );
 
   return gameStateWithInput(gameState, inputState);
-};
-
-export const playGameThrough = (
-  gameState: GameState<TestRoomId>,
-  {
-    frameRate = 60,
-    forTime = 1_000,
-    frameCallback = (gameState) => gameState,
-  }: {
-    frameRate?: number;
-    forTime?: number;
-    /**
-     * allows us to change the gamestate after certain frames, for example to change the
-     * joystick input while the simulation is running
-     */
-    frameCallback?: (gameState: GameState<TestRoomId>) => GameState<TestRoomId>;
-  } = { frameRate: 60, forTime: 1_000 },
-) => {
-  const deltaMS = 1_000 / frameRate;
-
-  while (gameState.gameTime < forTime) {
-    progressGameStateForTick(gameState, deltaMS);
-    gameState = frameCallback(gameState);
-  }
 };

@@ -9,7 +9,7 @@ import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
 import { renderDoorPart } from "../../../renderDoorPart";
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import { playerAppearance } from "./playerAppearance";
+import { playableAppearance } from "./playableAppearance";
 import {
   currentRoom,
   pickupCollected,
@@ -40,10 +40,10 @@ export const itemAppearances: {
   ) => Container;
 } = {
   head(playerItem, _gameState) {
-    return playerAppearance(playerItem);
+    return playableAppearance(playerItem);
   },
   heels(playerItem, _gameState) {
-    return playerAppearance(playerItem);
+    return playableAppearance(playerItem);
   },
 
   doorNear({ config, state: { position } }, gameState) {

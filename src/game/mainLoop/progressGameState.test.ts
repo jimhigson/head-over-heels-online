@@ -8,10 +8,12 @@ import { currentRoom, pickupCollected } from "../gameState/GameState";
 import type { TestRoomId } from "@/_testUtils/basicRoom";
 import {
   basicGameState,
-  playGameThrough,
   firstRoomId,
   secondRoomId,
 } from "@/_testUtils/basicRoom";
+import { playGameThrough } from "@/_testUtils/playGameThrough";
+import { blockSizePx } from "@/sprites/spritePivots";
+import type { ItemInPlay } from "@/model/ItemInPlay";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -205,5 +207,57 @@ describe("doors", () => {
       forTime: 2_000,
     });
     expect(currentRoom(gameState).id).toBe("secondRoom");
+  });
+});
+
+describe("conveyors", () => {
+  test("items move on conveyors", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        portableBlock: {
+          type: "portable-block",
+          position: { x: 0, y: 0, z: 4 },
+          config: {
+            style: "cube",
+          },
+        },
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 2 },
+          config: {
+            which: "heels",
+          },
+        },
+        conveyor: {
+          type: "conveyor",
+          position: { x: 0, y: 0, z: 0 },
+          config: { direction: "away" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 3_000,
+    });
+    const {
+      items: { heels, portableBlock },
+    } = currentRoom(gameState);
+    // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
+    expect(heels?.state.standingOn?.id).toBe(`floor`);
+    expect(heels?.state.position).toEqual({
+      x: 2,
+      y: blockSizePx.d,
+      z: 0,
+    });
+
+    // the block should have also moved on the conveyor, and now be on heels:
+    expect(
+      (portableBlock as ItemInPlay<"portable-block">).state.standingOn?.id,
+    ).toBe(`heels`);
+    expect(portableBlock?.state.position).toEqual({
+      x: 2,
+      y: blockSizePx.d,
+      z: blockSizePx.h,
+    });
   });
 });

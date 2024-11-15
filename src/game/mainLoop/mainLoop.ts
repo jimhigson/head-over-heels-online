@@ -9,64 +9,11 @@ import type { RoomState } from "@/model/modelTypes";
 import { renderCurrentRoom } from "../render/renderCurrentRoom";
 import type { RenderOptions } from "../RenderOptions";
 import { swopCharacters } from "../gameState/swopCharacters";
-import { tickItem } from "./tickItem";
 import { objectValues } from "iter-tools";
 import { zxSpectrumResolution } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
-import {
-  itemFalls,
-  type AnyItemInPlay,
-  type UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import { iterate } from "@/utils/iterate";
-
-// if the period of the frame rate is less than this value, each rendering tick
-// will be split into multiple physics ticks down to this size:
-// this needs to be small enough that the fastest movement
-// (jumping: 2px per frame in original game @25fps, so 50px per second)
-// can be guaranteed to take up every half-pixel position.
-//  So, 10ms = 0.01s, at 50px/s gives 0.01 * 50 = 0.5px
-const maximumDeltaMS = 10;
-
-export const progressGameStateForTick = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  deltaMS: number,
-) => {
-  const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
-  const physicsTickMs = deltaMS / physicsTickCount;
-
-  for (let i = 0; i < physicsTickCount; i++) {
-    const room = currentRoom(gameState);
-
-    for (const item of objectValues(room.items)) {
-      tickItem(item, gameState, physicsTickMs);
-    }
-
-    gameState.gameTime += physicsTickMs;
-  }
-};
-
-const itemHasExpired = <RoomId extends string>(
-  item: UnknownItemInPlay,
-  gameState: GameState<RoomId>,
-) =>
-  item.state.expires !== undefined && item.state.expires < gameState.gameTime;
-
-const deleteItemFromRoom = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
-  itemToDelete: AnyItemInPlay<RoomId>,
-) => {
-  if (itemToDelete.positionContainer !== undefined) {
-    itemToDelete.positionContainer.destroy();
-  }
-  delete room.items[itemToDelete.id];
-  for (const item of iterate(objectValues(room.items))) {
-    if (itemFalls(item) && item.state.standingOn === itemToDelete) {
-      item.state.standingOn = null;
-    }
-  }
-};
+import { progressGameState } from "./progressGameState";
 
 const updateRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -149,7 +96,6 @@ export const mainLoop = <RoomId extends string>(
       inputState.swop = false;
     }
 
-    const room = currentRoom(gameState);
     const { renderOptions } = gameState;
 
     if (lastRenderOptions !== renderOptions) {
@@ -163,13 +109,7 @@ export const mainLoop = <RoomId extends string>(
       lastRenderOptions = renderOptions;
     }
 
-    for (const item of objectValues(room.items)) {
-      if (itemHasExpired(item, gameState)) {
-        deleteItemFromRoom(room, item);
-      }
-    }
-
-    progressGameStateForTick(gameState, deltaMS);
+    progressGameState(gameState, deltaMS);
 
     updateRenderingToMatchState(
       gameState,

@@ -15,7 +15,13 @@ import { teleporter } from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
-import { addXyz, isIntegerXyz, originXyz, roundXyz } from "@/utils/vectors";
+import {
+  addXyz,
+  isIntegerXyz,
+  originXyz,
+  roundXyz,
+  xyzEqual,
+} from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
 import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
 
@@ -71,12 +77,13 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isMovable) {
+    const originalPosition = item.state.position;
     moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
 
-    if (
-      /* item hasn't moved in this tick (is static) */ !item.renderPositionDirty &&
-      /* isn't on a pixel grid position */ !isIntegerXyz(item.state.position)
-    ) {
+    const moved = xyzEqual(originalPosition, item.state.position);
+    const snapToPixelGrid = moved && !isIntegerXyz(item.state.position);
+
+    if (snapToPixelGrid) {
       // items that aren't moving look strange if they sit in sub-pixel positions so round to integer values:
       item.state.position = roundXyz(item.state.position);
       item.renderPositionDirty = true;

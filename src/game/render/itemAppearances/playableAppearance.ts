@@ -4,7 +4,7 @@ import { createSprite } from "../createSprite";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { CharacterName } from "@/model/modelTypes";
 
-export const playerAppearance = ({
+export const playableAppearance = ({
   type,
   state: { movement, facing, teleporting },
 }: ItemInPlay<CharacterName>) => {
