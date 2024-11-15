@@ -108,13 +108,16 @@ const frames = {
     frame: { x: 2, y: 349, w: 24, h: 24 },
   },
   "block.organic": {
-    frame: { x: 172, y: 388, ...largeItemTextureSize },
+    frame: { x: 160, y: 449, ...largeItemTextureSize },
+  },
+  "block.organic.weak": {
+    frame: { x: 160, y: 420, ...largeItemTextureSize },
   },
   "block.artificial": {
-    frame: { x: 138, y: 388, ...largeItemTextureSize },
+    frame: { x: 127, y: 449, ...largeItemTextureSize },
   },
   "block.tower": {
-    frame: { x: 286, y: 414, ...smallItemTextureSize },
+    frame: { x: 27, y: 374, ...smallItemTextureSize },
   },
   volcano: {
     frame: { x: 193, y: 420, ...largeItemTextureSize },
