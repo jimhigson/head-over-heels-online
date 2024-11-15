@@ -12,10 +12,11 @@ function walkingFrames<P extends CharacterName>(p: P) {
     p: P,
     d: D,
   ): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
+    // if are starting walking from standing, am coming from walking frame 3 already (which doubles up as the idle frame)
+    yield `${p}.walking.${d}.2`;
     yield `${p}.walking.${d}.1`;
     yield `${p}.walking.${d}.2`;
     yield `${p}.walking.${d}.3`;
-    yield `${p}.walking.${d}.2`;
   }
 
   return directions.reduce(

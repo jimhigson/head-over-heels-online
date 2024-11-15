@@ -92,20 +92,20 @@ const frames = {
     frame: { x: 512, y: 153, ...doorTextureSize },
   },
   teleporter: {
-    frame: { x: 4, y: 450, ...largeItemTextureSize },
+    frame: { x: 2, y: 478, ...largeItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "teleporter.flashing",
     2,
-    { x: 37, y: 450 },
+    { x: 35, y: 478 },
     largeItemTextureSize,
   ),
 
   "barrier.x": {
-    frame: { x: 313, y: 389, w: 24, h: 24 },
+    frame: { x: 27, y: 349, w: 24, h: 24 },
   },
   "barrier.y": {
-    frame: { x: 313, y: 414, w: 24, h: 24 },
+    frame: { x: 2, y: 349, w: 24, h: 24 },
   },
   "block.organic": {
     frame: { x: 172, y: 388, ...largeItemTextureSize },
@@ -132,7 +132,7 @@ const frames = {
     frame: { x: 292, y: 440, ...largeItemTextureSize },
   },
   bunny: {
-    frame: { x: 340, y: 358, ...smallItemTextureSize },
+    frame: { x: 263, y: 333, ...smallItemTextureSize },
   },
   donuts: {
     frame: { x: 313, y: 358, ...smallItemTextureSize },

@@ -14,17 +14,19 @@ export const changeCharacterRoom = <RoomId extends string>(
   portalRelative: Xyz = originXyz,
 ) => {
   const { currentCharacterName } = gameState;
-  const leavingRoom = gameState.characterRooms[currentCharacterName];
+  const leavingRoom = gameState.characterRooms[currentCharacterName]!;
 
   if (roomId === leavingRoom.id) {
-    throw new Error(`Can't move to the same room ${roomId}`);
+    throw new Error(
+      `Can't move to the same room "${roomId}" from "${leavingRoom.id}"`,
+    );
   }
 
   const otherCharacter = currentCharacterName === "head" ? "heels" : "head";
 
   const otherCharacterLoadedRoom = gameState.characterRooms[otherCharacter];
   const destinationRoom =
-    otherCharacterLoadedRoom.id === roomId ?
+    otherCharacterLoadedRoom?.id === roomId ?
       otherCharacterLoadedRoom
     : loadRoom(gameState.campaign.rooms[roomId], gameState.pickupsCollected);
 
@@ -70,6 +72,7 @@ export const changeCharacterRoom = <RoomId extends string>(
   );
 
   // update game state to know which room this character is now in:
+  console.log("destinationRoom", destinationRoom.id);
   gameState.characterRooms[currentCharacterName] = destinationRoom;
 
   gameState.events.emit("roomChange", roomId);

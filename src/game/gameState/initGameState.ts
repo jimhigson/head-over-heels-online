@@ -8,7 +8,9 @@ import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { ApiEvents } from "../GameApi";
 
-type StartingRooms<RoomId extends string> = Record<CharacterName, RoomId>;
+type StartingRooms<RoomId extends string> = Partial<
+  Record<CharacterName, RoomId>
+>;
 
 /** 
   For a given campaign, get the starting room for the two playable characters.
@@ -28,11 +30,10 @@ const startingRooms = <RoomId extends string>(
     }
   }
 
-  if (startingRooms.head === undefined) {
-    throw new Error("couldn't find head in campaign");
-  }
-  if (startingRooms.heels === undefined) {
-    throw new Error("couldn't find heels in campaign");
+  // note it is technically possible to have a campaign with only one character, but
+  // not no characters
+  if (startingRooms.head === undefined && startingRooms.heels === undefined) {
+    throw new Error("couldn't find either head or heels in campaign");
   }
 
   return startingRooms as StartingRooms<RoomId>;
@@ -48,12 +49,15 @@ export const initGameState = <RoomId extends string>(
     Object.keys(campaign.rooms).map((roomId) => [roomId, {}]),
   ) as PickupsCollected<RoomId>;
 
-  const headsRoom = loadRoom(campaign.rooms[starts.head], pickupsCollected);
-  const heelsRoom = loadRoom(campaign.rooms[starts.heels], pickupsCollected);
+  const headsRoom =
+    starts.head && loadRoom(campaign.rooms[starts.head], pickupsCollected);
+  const heelsRoom =
+    starts.heels && loadRoom(campaign.rooms[starts.heels], pickupsCollected);
 
   return {
     keyAssignment: defaultKeyAssignments,
-    currentCharacterName: "head",
+    // if head isn't in the campaign (unusual!), start with heels
+    currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {
       head: headsRoom,
       heels: heelsRoom,

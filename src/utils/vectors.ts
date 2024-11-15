@@ -68,6 +68,16 @@ export const xyzEqual = (
   return ax === bx && ay === by && az === bz;
 };
 
+/* is the xyz in integer position? */
+export const isIntegerXyz = ({ x, y, z }: Xyz) =>
+  Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
+
+export const roundXyz = ({ x, y, z }: Xyz) => ({
+  x: Math.round(x),
+  y: Math.round(y),
+  z: Math.round(z),
+});
+
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
 

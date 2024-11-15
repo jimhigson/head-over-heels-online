@@ -3,7 +3,7 @@ import { iterate } from "@/utils/iterate";
 import type { Xyz } from "@/utils/vectors";
 import { axesXyz } from "@/utils/vectors";
 
-type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
+export type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
 };
 
@@ -61,10 +61,10 @@ export const collision1to1 = (
 /**
  * check for collisions between a single item and multiple others
  */
-export const collision1toMany = (
+export const collision1toMany = <RoomId extends string>(
   subject: Collideable,
-  items: Iterable<UnknownItemInPlay>,
-): Array<UnknownItemInPlay> => {
+  items: Iterable<UnknownItemInPlay<RoomId>>,
+): Array<UnknownItemInPlay<RoomId>> => {
   return [
     ...iterate(items).filter(
       (candidateItem) =>

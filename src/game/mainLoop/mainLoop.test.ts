@@ -12,98 +12,17 @@ import type { RoomJson } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import type { InputState } from "../input/InputState";
 
-// immer is used to set up the game, but the game itself relies on being
-// able to directly mutate state:
-setAutoFreeze(false);
 
-const testRoomId = "testRoomId" as const;
-type TestRoomId = typeof testRoomId;
-
-const basicEmptyRoom: RoomJson<"blacktooth", TestRoomId> = {
-  id: testRoomId,
-  planet: "blacktooth",
-  color: "cyan",
-  floor: "blacktooth",
-  floorSkip: [],
-  items: {},
-  size: { x: 8, y: 8 },
-  walls: {
-    left: new Array(8).fill(""),
-    away: new Array(8).fill(""),
-  },
-};
-const basicEmptyRoomWithItems = (
-  items: (typeof basicEmptyRoom)["items"],
-): typeof basicEmptyRoom => ({
-  ...basicEmptyRoom,
-  items,
-});
-const basicRenderOptions: RenderOptions<TestRoomId> = {
-  showBoundingBoxes: "none",
-};
-
-const gameStateWithInput = produce(
-  (draft: GameState<TestRoomId>, inputState?: Partial<InputState>) => {
-    draft.inputState = { ...draft.inputState, ...inputState };
-  },
-);
-
-const basicGameState = (
-  items: (typeof basicEmptyRoom)["items"],
-  inputState?: Partial<InputState>,
-) => {
-  const gameState = initGameState<TestRoomId>(
-    {
-      rooms: {
-        testRoomId: basicEmptyRoomWithItems(items),
-      },
-    },
-    basicRenderOptions,
-  );
-
-  return gameStateWithInput(gameState, inputState);
-};
-
-const playGameThrough = (
-  gameState: GameState<TestRoomId>,
-  {
-    frameRate = 60,
-    forTime = 1_000,
-    frameCallback = (gameState) => gameState,
-  }: {
-    frameRate?: number;
-    forTime?: number;
-    /**
-     * allows us to change the gamestate after certain frames, for example to change the
-     * joystick input while the simulation is running
-     */
-    frameCallback?: (gameState: GameState<TestRoomId>) => GameState<TestRoomId>;
-  } = { frameRate: 60, forTime: 1_000 },
-) => {
-  const deltaMS = 1_000 / frameRate;
-
-  while (gameState.gameTime < forTime) {
-    progressGameStateForTick(gameState, deltaMS);
-    gameState = frameCallback(gameState);
-  }
-};
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
-    const gameState: GameState<TestRoomId> = basicGameState(
-      {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
         head: {
           type: "player",
           position: { x: 0, y: 0, z: 0 },
           config: {
             which: "head",
-          },
-        },
-        heels: {
-          type: "player",
-          position: { x: 0, y: 4, z: 0 },
-          config: {
-            which: "heels",
           },
         },
         pickupTwoSquaresFromHead: {
@@ -121,8 +40,8 @@ describe("pickups", () => {
           },
         },
       },
-      { left: true },
-    );
+      inputState: { left: true },
+    });
 
     expect(currentRoom(gameState).items.head?.state.lives).toBe(8);
 
@@ -131,7 +50,7 @@ describe("pickups", () => {
 
     // should have recorded collecting the pickup:
     expect(
-      pickupCollected(gameState, testRoomId, "pickupTwoSquaresFromHead"),
+      pickupCollected(gameState, firstRoomId, "pickupTwoSquaresFromHead"),
     ).toBe(true);
     expect(currentRoom(gameState).items.head?.state.lives).toBe(10);
 
@@ -139,7 +58,7 @@ describe("pickups", () => {
     expect(
       pickupCollected(
         gameState,
-        testRoomId,
+        firstRoomId,
         "pickupCharactersWillNotGetInThisTest",
       ),
     ).toBe(false);
@@ -147,25 +66,20 @@ describe("pickups", () => {
 
   test("pickup can land on character", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
-      head: {
-        type: "player",
-        position: { x: 0, y: 0, z: 0 },
-        config: {
-          which: "head",
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 4, z: 0 },
+          config: {
+            which: "heels",
+          },
         },
-      },
-      heels: {
-        type: "player",
-        position: { x: 0, y: 4, z: 0 },
-        config: {
-          which: "heels",
-        },
-      },
-      pickupAboveHeels: {
-        type: "pickup",
-        position: { x: 0, y: 4, z: 2 },
-        config: {
-          gives: "extra-life",
+        pickupAboveHeels: {
+          type: "pickup",
+          position: { x: 0, y: 4, z: 2 },
+          config: {
+            gives: "extra-life",
+          },
         },
       },
     });
@@ -174,7 +88,7 @@ describe("pickups", () => {
     playGameThrough(gameState);
 
     // should have collected the pickup:
-    expect(pickupCollected(gameState, testRoomId, "pickupAboveHeels")).toBe(
+    expect(pickupCollected(gameState, firstRoomId, "pickupAboveHeels")).toBe(
       true,
     );
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
@@ -182,8 +96,14 @@ describe("pickups", () => {
 });
 
 const testFrameRates = [
-  25, // original game
+  15, // crazy slow - slower than original
+  25, // original game, PAL
+  29.97, // NTSC real
+  30, // NTSC almost
+  50, // double original (interlaced)
+  50.04, // double original (interlaced, measured)
   60, // typical default
+  75, // typical/high
   144, // high update rate
   500, // highest monitor refresh rate commercially available (2024) - and a bit silly!
 ];
@@ -192,20 +112,13 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "head can jump between two blocks forming a ladder (%iHz)",
     (frameRate) => {
-      const gameState: GameState<TestRoomId> = basicGameState(
-        {
+      const gameState: GameState<TestRoomId> = basicGameState({
+        firstRoomItems: {
           head: {
             type: "player",
             position: { x: 0, y: 1, z: 0 },
             config: {
               which: "head",
-            },
-          },
-          heels: {
-            type: "player",
-            position: { x: 0, y: 4, z: 0 },
-            config: {
-              which: "heels",
             },
           },
           lowerBlock: {
@@ -219,16 +132,16 @@ describe("jumping", () => {
             config: { style: "organic" },
           },
         },
-        { towards: true, jump: true },
-      );
+        inputState: { towards: true, jump: true },
+      });
 
       playGameThrough(gameState, {
         frameRate,
-        // TODO: this test is only passing because the game is running for long enough for the
-        // player to fall
-        // back in between - it should be always possible to get in on the upwards jump, This is
-        // happening because the jump is too fast and doesn't visit every pixel on the way up
-        forTime: 2_000, // TODO: reduce this time to < 1s when the bug is fixed
+        // in 800ms, head only has time to get into the gap on the way up - it won't
+        // pass if he needs to get in while travelling more slowly on the way down
+        // - at lower frame rates, this tests that the multiple physics frame
+        // per graphics frame is working correctly
+        forTime: 800,
         frameCallback(gameState) {
           // stop pressing jump after a short time
           return gameState.gameTime < 50 ?
@@ -247,4 +160,43 @@ describe("jumping", () => {
       );
     },
   );
+});
+
+describe("doors", () => {
+  test.only("moving from first room to second through door", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 1, y: 2.5, z: 0 },
+          config: {
+            which: "head",
+          },
+        },
+        doorToSecondRoom: {
+          type: "door",
+          position: { x: 0, y: 2, z: 0 },
+          config: { axis: "y", toRoom: secondRoomId },
+        },
+      },
+      secondRoomItems: {
+        doorToFirstRoom: {
+          type: "door",
+          position: { x: 8, y: 2, z: 0 },
+          config: { axis: "y", toRoom: firstRoomId },
+        },
+      },
+      inputState: { right: true },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 2_000,
+      frameCallback(gameState) {
+        const headState = currentRoom(gameState).items.head?.state;
+        console.log(headState?.position, headState?.autoWalkDistance);
+        return gameState;
+      },
+    });
+    expect(currentRoom(gameState).id).toBe("secondRoom");
+  });
 });

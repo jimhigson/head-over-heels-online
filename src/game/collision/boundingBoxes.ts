@@ -1,6 +1,6 @@
 import type { UnknownJsonItem } from "@/model/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { Aabb } from "@/utils/vectors";
+import { type Aabb } from "@/utils/vectors";
 
 const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -32,9 +32,12 @@ export const boundingBoxForItem = (
     case "spring":
     case "portable-block":
     case "lift":
-    case "player": // head's nose seems to be rendered outside of his bb in the original
     case "pickup":
+    case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
+
+    // shorter player experiment:
+    //return { aabb: addXyz(smallItemAabb, { z: -1 }) };
 
     case "ball":
     case "switch":

@@ -66,7 +66,7 @@ const initialState = <T extends ItemType & ItemInPlayType>(
 
   return {
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: null, fallRoundingError: 0 } : {}),
+    ...(falls ? { standingOn: null } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
   };

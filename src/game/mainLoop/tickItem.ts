@@ -14,8 +14,9 @@ import { steppedOff } from "../physics/mechanics/steppedOff";
 import { teleporter } from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
-import { moveItem } from "../physics/moveItem";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
+import { addXyz, isIntegerXyz, originXyz, roundXyz } from "@/utils/vectors";
+import { moveItem } from "../physics/moveItem";
 
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -26,14 +27,21 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   const room = currentRoom(gameState);
   const { inputState } = gameState;
 
+  let accumulatedMovement = originXyz;
+
+  const isMovable = itemFalls(item);
+
   /*
    * each mechanic sees the item in the state given it it by the previous ones
    * ie, the overall mechanic is the result of functional composition of the
    * individual mechanics
    */
-  const applyResult = ({ positionDelta, stateDelta }: MechanicResult<T>) => {
+  const accumulateResult = ({
+    positionDelta,
+    stateDelta,
+  }: MechanicResult<T>) => {
     if (positionDelta !== undefined) {
-      moveItem(item as UnknownItemInPlay, positionDelta, gameState);
+      accumulatedMovement = addXyz(accumulatedMovement, positionDelta);
     }
     if (stateDelta !== undefined) {
       item.state = { ...item.state, ...stateDelta };
@@ -41,17 +49,34 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   };
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
-    applyResult(teleporting(item, gameState, deltaMS) as MechanicResult<T>);
-    applyResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
-    applyResult(jumping(item, inputState, deltaMS) as MechanicResult<T>);
+    accumulateResult(
+      teleporting(item, gameState, deltaMS) as MechanicResult<T>,
+    );
+    accumulateResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
+    accumulateResult(jumping(item, inputState, deltaMS) as MechanicResult<T>);
   }
-  if (itemFalls(item)) {
-    applyResult(steppedOff(item) as MechanicResult<T>);
-    applyResult(fallingAndLanding(item, room, deltaMS) as MechanicResult<T>);
+  if (isMovable) {
+    accumulateResult(steppedOff(item) as MechanicResult<T>);
+    accumulateResult(
+      fallingAndLanding(item, gameState, deltaMS) as MechanicResult<T>,
+    );
   }
 
   if (isItemType("teleporter")(item)) {
-    applyResult(teleporter(item, gameState, room) as MechanicResult<T>);
+    accumulateResult(teleporter(item, gameState, room) as MechanicResult<T>);
+  }
+
+  if (isMovable) {
+    moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
+
+    if (
+      /* item hasn't moved in this tick (is static) */ !item.renderPositionDirty &&
+      /* isn't on a pixel grid position */ !isIntegerXyz(item.state.position)
+    ) {
+      // items that aren't moving look strange if they sit in sub-pixel positions so round to integer values:
+      item.state.position = roundXyz(item.state.position);
+      item.renderPositionDirty = true;
+    }
   }
 
   if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {

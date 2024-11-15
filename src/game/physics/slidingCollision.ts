@@ -1,0 +1,64 @@
+import { addXyz, type Xyz } from "@/utils/vectors";
+import type { Collideable } from "../collision/aabbCollision";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { iterate } from "@/utils/iterate";
+
+/**
+ * zBias causes the sliding collision to slightly favour moving in z over x and y.
+ *
+ * Why? Because head has to jump into gaps (ladders) that he only just fits in. Sometimes,
+ * he has moved forward twice and up once. Since he moves forward at half the speed he moves
+ * up, the x/y and z vectors are "equal" but because of floating point error, the collision
+ * can choose x/y and put him outside of the ladder. It should choose z to clamp him between
+ * the ladder rungs vertically
+ */
+const zBias = 0.1;
+
+/**
+ * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem
+ */
+export const mtvCollisionWithOneItem = (
+  moverPosition: Xyz,
+  moverAabb: Xyz,
+  { state: { position: solidPosition }, aabb: solidAabb }: Collideable,
+): Xyz => {
+  const dx1 = solidPosition.x + solidAabb.x - moverPosition.x; // Right overlap
+  const dy1 = solidPosition.y + solidAabb.y - moverPosition.y; // Far overlap
+  const dz1 = solidPosition.z + solidAabb.z - moverPosition.z; // overlap Bottom of mover with Top of solid
+
+  const dx2 = moverPosition.x + moverAabb.x - solidPosition.x; // overlap Left of mover with Right of solid
+  const dy2 = moverPosition.y + moverAabb.y - solidPosition.y; // overlap Away of mover with Towards of solid
+  const dzT = moverPosition.z + moverAabb.z - solidPosition.z; // overlap Top of mover with Bottom of solid
+
+  // Find minimum x overlap in x,y,z
+  const mtvX = Math.abs(dx1) < Math.abs(dx2) ? dx1 : -dx2;
+  const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
+  const mtvZ = Math.abs(dz1) < Math.abs(dzT) ? dz1 : -dzT;
+
+  const absoluteMtvZ = Math.abs(mtvZ) - zBias;
+
+  if (Math.abs(mtvX) < Math.abs(mtvY) && Math.abs(mtvX) < absoluteMtvZ) {
+    // x is the smallest
+    return { x: mtvX, y: 0, z: 0 }; // Slide along x-axis
+  }
+  if (Math.abs(mtvY) < absoluteMtvZ) {
+    // y is the smallest
+    return { x: 0, y: mtvY, z: 0 }; // Slide along y-axis
+  } else {
+    // z is the smallest
+    return { x: 0, y: 0, z: mtvZ }; // Slide along z-axis
+  }
+};
+
+export const slidingCollisionWithManyItems = (
+  { aabb }: UnknownItemInPlay,
+  targetPosition: Xyz,
+  collidingSolids: Iterable<UnknownItemInPlay>,
+): Xyz => {
+  return iterate(collidingSolids).reduce<Xyz>(
+    (posAc: Xyz, collisionItem: UnknownItemInPlay) => {
+      return addXyz(posAc, mtvCollisionWithOneItem(posAc, aabb, collisionItem));
+    },
+    targetPosition,
+  );
+};

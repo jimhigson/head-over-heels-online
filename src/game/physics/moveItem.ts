@@ -1,20 +1,17 @@
-import type {
-  ItemInPlay,
-  PlayableItem,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
 import type { AxisXyz, Xyz } from "@/utils/vectors";
-import { addXyz, axesXyz, originXyz, subXyz, xyzEqual } from "@/utils/vectors";
+import { addXyz, axesXyz, originXyz, xyzEqual } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom, pickupCollected } from "../gameState/GameState";
-import { changeCharacterRoom } from "../gameState/changeCharacterRoom";
+import { currentRoom } from "../gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
-import { teleportAnimationDuration } from "../render/animationTimings";
+import { handlePlayerTouchingPickup } from "./mechanics/handleTouch/handlePlayerTouchingPickup";
+import { handlePlayerTouchingPortal } from "./mechanics/handleTouch/handlePlayerTouchingPortal";
+import { isSolid } from "./isSolid";
+import { slidingCollisionWithManyItems } from "./slidingCollision";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -56,7 +53,7 @@ export const slideOnDoors = (
   );
 };
 
-export const protectAgainstIntersecting = (
+export const protectAgainstIntersectingOrthogonal = (
   item: UnknownItemInPlay,
   xyzDelta: Xyz,
   targetPosition: Xyz,
@@ -110,54 +107,12 @@ export const protectAgainstIntersecting = (
   return correctedPosition;
 };
 
-const handlePlayerTouchingPickup = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  player: PlayableItem,
-  pickup: ItemInPlay<"pickup">,
-) => {
-  const roomId = currentRoom(gameState).id;
-  if (pickupCollected(gameState, roomId, pickup.id)) {
-    // ignore already picked up items
-    return;
-  }
-
-  const roomPickupCollections = gameState.pickupsCollected[roomId] as Record<
-    string,
-    true
-  >;
-  roomPickupCollections[pickup.id] = true;
-  pickup.state.expires = gameState.gameTime + teleportAnimationDuration;
-  pickup.renderingDirty = true;
-
-  switch (pickup.config.gives) {
-    case "extra-life":
-      player.state.lives += 2;
-  }
-};
-
-const handlePlayerTouchingPortal = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  player: PlayableItem,
-  portal: ItemInPlay<"portal", PlanetName, RoomId>,
-) => {
-  changeCharacterRoom(
-    gameState,
-    portal.config.toRoom,
-    subXyz(player.state.position, portal.config.relativePoint),
-  );
-  // automatically walk forward a short way in the new room to put character properly
-  // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
-  //  - only doors)
-  // TODO: maybe this should be side-effect free
-  player.state.autoWalkDistance = blockSizePx.w * 0.75;
-};
-
 /**
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
  */
 export const moveItem = <RoomId extends string>(
-  subjectItem: UnknownItemInPlay,
+  subjectItem: UnknownItemInPlay<RoomId>,
   xyzDeltaPartial: Partial<Xyz>,
   gameState: GameState<RoomId>,
 ) => {
@@ -177,17 +132,9 @@ export const moveItem = <RoomId extends string>(
     objectValues(room.items),
   );
 
-  const solidItems =
-    collisions.filter(
-      (item) =>
-        item.type !== "portal" &&
-        // a collected pickup is just an animation out that should not be interacted with
-        !(
-          item.type === "pickup" && pickupCollected(gameState, room.id, item.id)
-        ) &&
-        !(item.type === "pickup" && isPlayableItem(subjectItem)) &&
-        !(subjectItem.type === "pickup" && isPlayableItem(item)),
-    ) || [];
+  const solidItems = collisions.filter((collidedWith) =>
+    isSolid(subjectItem, collidedWith, gameState),
+  );
 
   if (isPlayableItem(subjectItem)) {
     const {
@@ -230,12 +177,17 @@ export const moveItem = <RoomId extends string>(
 
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
-  const correctedPosition1 = protectAgainstIntersecting(
+
+  const correctedPosition1 = slidingCollisionWithManyItems(
+    subjectItem,
+    targetPosition,
+    solidItems,
+  ); /* protectAgainstIntersectingOrthogonal(
     subjectItem,
     xyzDelta,
     targetPosition,
     solidItems,
-  );
+  );*/
 
   const correctedPosition2 =
     // only players slide on doors:

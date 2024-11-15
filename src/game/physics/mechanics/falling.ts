@@ -1,26 +1,29 @@
-import type { FallingItemTypes, ItemInPlay, OnTouch } from "@/model/ItemInPlay";
+import type { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/model/ItemInPlay";
-import type { UnknownRoomState } from "@/model/modelTypes";
 import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import type { MechanicResult } from "../MechanicResult";
 import { unitMechanicalResult } from "../MechanicResult";
 import { fallSpeedPixPerMs } from "../mechanicsConstants";
-import { roundWithError } from "@/utils/roundWithError";
-import { first, objectValues } from "iter-tools";
+import { objectValues } from "iter-tools";
+import { isSolid } from "../isSolid";
+import type { GameState } from "@/game/gameState/GameState";
+import { currentRoom } from "@/game/gameState/GameState";
+import type { PlanetName } from "@/sprites/planets";
 
-const onTouchCanLandOn: Readonly<OnTouch[]> = ["nonIntersect", "push", "glide"];
 /**
  * handle *only* the vertical speed downwards, and recognising
  * when the fall is done
  *
  * The item can be anything - a player, a pickup etc
  */
-export const fallingAndLanding = (
-  item: ItemInPlay<FallingItemTypes>,
-  room: UnknownRoomState,
+export const fallingAndLanding = <RoomId extends string>(
+  item: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FallingItemTypes> => {
+  const room = currentRoom(gameState);
+
   const isFalling =
     item.state.standingOn === null &&
     // if a playable item, it can't be falling while it's jumping:
@@ -31,12 +34,9 @@ export const fallingAndLanding = (
   }
 
   const fallSpeed = fallSpeedPixPerMs[item.type === "head" ? "head" : "others"];
-  const zMovementFloat = fallSpeed * deltaMS + item.state.fallRoundingError;
+  const zMovementFloat = fallSpeed * deltaMS;
 
-  const { valueInt: zMovementInt, roundingError } =
-    roundWithError(zMovementFloat);
-
-  const fallVector = scaleXyz(unitVectors.down, zMovementInt);
+  const fallVector = scaleXyz(unitVectors.down, zMovementFloat);
 
   const collisions = collision1toMany(
     {
@@ -47,35 +47,22 @@ export const fallingAndLanding = (
     objectValues(room.items),
   );
 
-  const standingOn = first(collisions);
-  const haveLanded =
-    standingOn !== undefined && onTouchCanLandOn.includes(standingOn.onTouch);
-
-  /*  console.log(
-    "falling",
-    "float",
-    zMovementFloat,
-    "error",
-    roundingError,
-    "rounded",
-    zMovementInt,
-  ); */
+  const landedOn = collisions.find((collisionItem) =>
+    isSolid(item, collisionItem, gameState),
+  );
 
   return {
     positionDelta: fallVector,
     stateDelta: {
-      ...(haveLanded ?
+      ...(landedOn ?
         // the landing case
         {
           // we are standing on something so if we were falling from a jump, that jump is over:
           jumped: false,
-          // if we are landed, the accumulated error from falling can be reset
-          fallRoundingError: 0,
-          standingOn,
+          standingOn: landedOn,
         }
         // we are in the air and falling:
       : {
-          fallRoundingError: roundingError,
           standingOn: null,
           // only head has a falling sprite (heels doesn't)
           ...(item.type === "head" ? { movement: "falling" } : {}),

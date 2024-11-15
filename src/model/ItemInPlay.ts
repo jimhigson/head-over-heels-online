@@ -1,5 +1,5 @@
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, Direction, Xy, Xyz } from "../utils/vectors";
+import type { Aabb, Direction, Xyz } from "../utils/vectors";
 import type { ItemConfig, ItemType } from "./JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
@@ -16,52 +16,38 @@ export type ItemInPlayType =
 type FallingItemState = {
   /* null meaning we know item is not standing on anything (ie, should fall) */
   standingOn: UnknownItemInPlay | null;
-  fallRoundingError: number;
 };
 
-type WalkingItemState = {
-  /* null meaning we know item is not standing on anything (ie, should fall) */
-  walkRoundingError: Xy;
+export type CharacterState = FallingItemState & {
+  facing: Direction;
+  movement: "moving" | "idle" | "falling";
+  /** how much higher we can jump before we start to fall, in pixels */
+  jumpRemaining: number;
+
+  lives: number;
+  shield: number;
+
+  // Number of pixels the player will walk forward regardless of input. This
+  // puts players properly inside a room when they enter via a door
+  autoWalkDistance: number;
+
+  // records if we jumped to get into the state we are in. For Heels, if she
+  // jumped and is falling there is mandatory forward movement. Otherwise,
+  // falls vertically
+  jumped: boolean;
+
+  teleporting:
+    | {
+        phase: "out";
+        timeRemaining: number;
+        toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
+      }
+    | {
+        phase: "in";
+        timeRemaining: number;
+      }
+    | null;
 };
-
-export type CharacterState = FallingItemState &
-  WalkingItemState & {
-    facing: Direction;
-    movement: "moving" | "idle" | "falling";
-    /** how much higher we can jump before we start to fall, in pixels */
-    jumpRemaining: number;
-    /**
-     * when jumping, the movement will usually be less than 1px per frame on
-     * modern hardware owing to the higher frame rate than the original game,
-     * but the position is always whole pixels. This records how much "correction"
-     * is needed after a frame, to add onto the next frame to maintain smooth movement,
-     * ie it is the character's sub-pixel position
-     */
-    jumpRoundingError: number;
-    lives: number;
-    shield: number;
-
-    // Number of pixels the player will walk forward regardless of input. This
-    // puts players properly inside a room when they enter via a door
-    autoWalkDistance: number;
-
-    // records if we jumped to get into the state we are in. For Heels, if she
-    // jumped and is falling there is mandatory forward movement. Otherwise,
-    // falls vertically
-    jumped: boolean;
-
-    teleporting:
-      | {
-          phase: "out";
-          timeRemaining: number;
-          toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
-        }
-      | {
-          phase: "in";
-          timeRemaining: number;
-        }
-      | null;
-  };
 
 export type ItemStateMap = {
   head: CharacterState & {
