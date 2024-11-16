@@ -14,6 +14,7 @@ import {
 import { playGameThrough } from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { ItemInPlay } from "@/model/ItemInPlay";
+import { headState, heelsState } from "@/_testUtils/characterState";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -44,7 +45,7 @@ describe("pickups", () => {
       inputState: { left: true },
     });
 
-    expect(currentRoom(gameState).items.head?.state.lives).toBe(8);
+    expect(headState(gameState).lives).toBe(8);
 
     // walk left for one second at 60fps:
     playGameThrough(gameState);
@@ -53,7 +54,7 @@ describe("pickups", () => {
     expect(
       pickupCollected(gameState, firstRoomId, "pickupTwoSquaresFromHead"),
     ).toBe(true);
-    expect(currentRoom(gameState).items.head?.state.lives).toBe(10);
+    expect(headState(gameState).lives).toBe(10);
 
     // but not this one (included as a control):
     expect(
@@ -110,6 +111,19 @@ const testFrameRates = [
 ];
 
 describe("jumping", () => {
+  const stopJumping = (gameState: GameState<TestRoomId>) => {
+    // stop pressing jump after a short time
+    return gameState.gameTime < 50 ?
+        gameState
+      : {
+          ...gameState,
+          inputState: {
+            ...gameState.inputState,
+            jump: false,
+          },
+        };
+  };
+
   test.each(testFrameRates)(
     "head can jump between two blocks forming a ladder (%iHz)",
     (frameRate) => {
@@ -143,22 +157,88 @@ describe("jumping", () => {
         // - at lower frame rates, this tests that the multiple physics frame
         // per graphics frame is working correctly
         forTime: 800,
-        frameCallback(gameState) {
-          // stop pressing jump after a short time
-          return gameState.gameTime < 50 ?
-              gameState
-            : {
-                ...gameState,
-                inputState: {
-                  ...gameState.inputState,
-                  jump: false,
-                },
-              };
-        },
+        frameCallback: stopJumping,
       });
-      expect(currentRoom(gameState).items.head?.state.standingOn?.id).toBe(
-        "lowerBlock",
-      );
+      expect(headState(gameState).standingOn?.id).toBe("lowerBlock");
+    },
+  );
+
+  test.each(testFrameRates)(
+    "doesn't snag on the boundary between bounding boxes on the way up a jump (%iHz)",
+    (frameRate) => {
+      const gameState: GameState<TestRoomId> = basicGameState({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 0, y: 1, z: 0 },
+            config: {
+              which: "head",
+            },
+          },
+          // player will need to slide past the boundary between these two blocks via sliding collision
+          lowBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 0 },
+            config: { style: "organic" },
+          },
+          highBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 1 },
+            config: { style: "organic" },
+          },
+        },
+        inputState: { towards: true, jump: true },
+      });
+
+      playGameThrough(gameState, {
+        forTime: 1_000,
+        frameRate,
+        frameCallback: stopJumping,
+      });
+      expect(headState(gameState).standingOn?.id).toBe("highBlock");
+    },
+  );
+
+  test.each(testFrameRates)(
+    "doesn't snag on the boundary between bounding boxes while falling (%iHz)",
+    (frameRate) => {
+      const gameState: GameState<TestRoomId> = basicGameState({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 0, y: 1, z: 2 },
+            config: {
+              which: "head",
+            },
+          },
+          // player will need to slide past the boundary between these two blocks via sliding collision
+          lowBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 0 },
+            config: { style: "organic" },
+          },
+          mediumBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 1 },
+            config: { style: "organic" },
+          },
+          highBlock: {
+            type: "block",
+            position: { x: 0, y: 0, z: 2 },
+            config: { style: "organic" },
+          },
+        },
+        inputState: { towards: true },
+      });
+
+      playGameThrough(gameState, {
+        // plenty of time to reach the floor:
+        forTime: 3_000,
+        frameRate,
+        frameCallback: stopJumping,
+      });
+      expect(headState(gameState).position.z).toBe(0);
+      expect(headState(gameState).standingOn?.id).toBe("floor");
     },
   );
 });
@@ -240,11 +320,11 @@ describe("conveyors", () => {
       forTime: 3_000,
     });
     const {
-      items: { heels, portableBlock },
+      items: { portableBlock },
     } = currentRoom(gameState);
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
-    expect(heels?.state.standingOn?.id).toBe(`floor`);
-    expect(heels?.state.position).toEqual({
+    expect(heelsState(gameState).standingOn?.id).toBe(`floor`);
+    expect(heelsState(gameState).position).toEqual({
       x: 2,
       y: blockSizePx.d,
       z: 0,
@@ -263,7 +343,7 @@ describe("conveyors", () => {
 });
 
 describe("deadly blocks", () => {
-  test.only("player loses life on touching volcano", () => {
+  test("player loses life on touching volcano", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         head: {
@@ -290,16 +370,12 @@ describe("deadly blocks", () => {
       },
     });
 
-    const {
-      items: { head },
-    } = currentRoom(gameState);
-
     playGameThrough(gameState, {
       forTime: 20_000,
     });
 
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
-    expect(head?.state.lives).toBe(0);
+    expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
     expect(currentRoom(gameState).id).toBe("secondRoom");
   });

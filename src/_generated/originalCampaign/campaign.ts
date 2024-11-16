@@ -1462,6 +1462,7 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth1head",
       items: {
+
         "barrier@5,0,0:Is9Xq": {
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 0 },
@@ -1488,9 +1489,21 @@ export const campaign = {
           type: "door",
         },
         head: {
-          config: { which: "head" },
-          position: { x: 2.5, y: 3.5, z: 0 },
           type: "player",
+          position: { x: 0, y: 1, z: 0 },
+          config: {
+            which: "head",
+          },
+        },
+        lowBlock: {
+          type: "block",
+          position: { x: 0, y: 0, z: 0 },
+          config: { style: "organic" },
+        },
+        highBlock: {
+          type: "block",
+          position: { x: 0, y: 0, z: 1 },
+          config: { style: "organic" },
         },
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
