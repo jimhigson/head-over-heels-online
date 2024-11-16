@@ -6,8 +6,8 @@ import type { AxisXy, Direction, Xyz } from "../../utils/vectors";
 export type ItemType =
   | "door"
   | "floor" // only in-play, never in json - TODO: remove from json typings
-  | "doorNear" // only in-play, never in json - TODO: remove from json typings
-  | "doorFar" // only in-play, never in json - TODO: remove from json typings
+  | "doorFrame" // only in-play, never in json - TODO: remove from json typings
+  | "doorLegs" // only in-play, never in json - TODO: remove from json typings
   | "portal" // only in-play, never in json - TODO: remove from json typings
   | "teleporter"
   | "barrier"
@@ -46,10 +46,19 @@ export const doorIsInHiddenWall = ({
   (direction === "right" && position.x === 0) ||
   (direction === "towards" && position.y === 0);
 
-export type LoadedDoorConfig<RoomId extends string> = {
-  toRoom: RoomId;
+export type DoorFrameConfig<RoomId extends string> = {
   direction: Direction;
   inHiddenWall: boolean;
+  toRoom: RoomId;
+
+  /** is this the near post of the doorframe, or the far one? */
+  nearness: "near" | "far";
+};
+export type DoorLegsConfig = {
+  direction: Direction;
+  inHiddenWall: boolean;
+  // equal to the z of the door
+  height: number;
 };
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
@@ -59,8 +68,8 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     // the direction this door takes the character when they walk through it
     direction: Direction;
   };
-  doorNear: LoadedDoorConfig<RoomId>;
-  doorFar: LoadedDoorConfig<RoomId>;
+  doorFrame: DoorFrameConfig<RoomId>;
+  doorLegs: DoorLegsConfig;
   portal: {
     toRoom: RoomId;
     /* 

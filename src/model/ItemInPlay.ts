@@ -8,8 +8,7 @@ export type ItemInPlayType =
   | Exclude<ItemType, "player" | "door">
   | "head"
   | "heels"
-  | "doorNear"
-  | "doorFar"
+  | "doorFrame"
   | "portal"
   | "floor";
 

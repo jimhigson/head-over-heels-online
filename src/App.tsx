@@ -10,6 +10,7 @@ import type {
   RenderOptions,
   ShowBoundingBoxes,
 } from "./game/RenderOptions.tsx";
+import { isItemType } from "./model/ItemInPlay.ts";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -96,11 +97,7 @@ export const App = <RoomId extends string>({
     return {
       showBoundingBoxes: showBBs,
       onItemClick(item) {
-        if (
-          item.type === "doorFar" ||
-          item.type === "doorNear" ||
-          item.type === "teleporter"
-        ) {
+        if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
           gameApi.changeRoom(toRoom);
         }

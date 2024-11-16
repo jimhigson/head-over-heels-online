@@ -18,42 +18,35 @@ import { characterFadeInOrOutDuration } from "../render/animationTimings";
  * colliding with doors is a special case - since they are so narrow, the playable character
  * slides sideways into their opening, to make them easier to walk through
  */
-export const slideOnDoors = (
+export const slideOnDoorFrames = (
   xyzDelta: Xyz,
-  collisionsWithSolids: Iterable<UnknownItemInPlay>,
+  obstructions: Iterable<UnknownItemInPlay>,
 ): Xyz => {
   // it is only possible (at least in normal level design) to collide with one door at once
   // so take the first one:
-  const doorPart = iterate(collisionsWithSolids).find(
-    isItemType("doorFar", "doorNear"),
-  );
+  const doorFrame = iterate(obstructions).find(isItemType("doorFrame"));
 
-  if (doorPart === undefined) {
+  if (doorFrame === undefined) {
     return originXyz;
   }
 
   const {
-    type: typeC,
-    config: { direction },
-  } = doorPart;
+    config: { direction, nearness },
+  } = doorFrame;
 
   const axis = doorAlongAxis(direction);
 
-  return (
-    typeC === "doorFar" ?
+  return nearness === "far" ?
       {
         x: axis === "x" ? -Math.abs(xyzDelta.y) : 0,
         y: axis === "y" ? -Math.abs(xyzDelta.x) : 0,
         z: 0,
       }
-    : typeC === "doorNear" ?
-      {
+    : {
         x: axis === "x" ? Math.abs(xyzDelta.y) : 0,
         y: axis === "y" ? Math.abs(xyzDelta.x) : 0,
         z: 0,
-      }
-    : originXyz
-  );
+      };
 };
 
 /**
@@ -139,7 +132,7 @@ export const moveItem = <RoomId extends string>(
   const correctedPosition2 =
     // only players slide on doors:
     isPlayableItem(subjectItem) ?
-      addXyz(correctedPosition1, slideOnDoors(xyzDelta, solidObstacles))
+      addXyz(correctedPosition1, slideOnDoorFrames(xyzDelta, solidObstacles))
     : correctedPosition1;
 
   if (!xyzEqual(correctedPosition2, previousPosition)) {

@@ -7,7 +7,10 @@ import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
-import { renderDoorPart } from "../../../renderDoorPart";
+import {
+  doorFrameAppearance,
+  doorLegsAppearance,
+} from "../../../doorAppearance";
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
 import {
@@ -39,42 +42,11 @@ export const itemAppearances: {
     gameState: GameState<RoomId>,
   ) => Container;
 } = {
-  head(playerItem, _gameState) {
-    return playableAppearance(playerItem);
-  },
-  heels(playerItem, _gameState) {
-    return playableAppearance(playerItem);
-  },
+  head: playableAppearance,
+  heels: playableAppearance,
+  doorFrame: doorFrameAppearance,
+  doorLegs: doorLegsAppearance,
 
-  doorNear({ config, state: { position } }, gameState) {
-    const container = new Container();
-
-    for (const s of renderDoorPart(
-      config,
-      currentRoom(gameState),
-      position,
-      "near",
-    )) {
-      container.addChild(s);
-    }
-
-    return container;
-  },
-
-  doorFar({ config, state: { position } }, gameState) {
-    const container = new Container();
-
-    for (const s of renderDoorPart(
-      config,
-      currentRoom(gameState),
-      position,
-      "far",
-    )) {
-      container.addChild(s);
-    }
-
-    return container;
-  },
   portal() {
     throw new Error("these should always be non-rendering");
   },

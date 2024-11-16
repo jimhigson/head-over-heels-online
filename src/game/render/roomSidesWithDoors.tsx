@@ -7,7 +7,7 @@ import { doorAlongAxis } from "@/utils/vectors";
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};
 
-  const doorIter = Object.values(room.items).filter(isItemType("doorNear"));
+  const doorIter = Object.values(room.items).filter(isItemType("doorFrame"));
 
   for (const {
     config: { direction },

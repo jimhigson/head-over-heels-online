@@ -83,6 +83,17 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     const moved = xyzEqual(originalPosition, item.state.position);
     const snapToPixelGrid = moved && !isIntegerXyz(item.state.position);
 
+    /*
+    console.log(
+      moved,
+      snapToPixelGrid,
+      item.state.position,
+      "isIntegerXyz",
+      isIntegerXyz(item.state.position),
+    );*/
+
+    // EVEN with this snapping, it can still render on half-pixels - the rendering needs to track the movement since the last frame!
+
     if (snapToPixelGrid) {
       // items that aren't moving look strange if they sit in sub-pixel positions so round to integer values:
       item.state.position = roundXyz(item.state.position);

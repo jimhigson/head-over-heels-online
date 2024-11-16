@@ -48,8 +48,9 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
+        nearness: "far",
       },
-      type: "doorFar",
+      type: "doorFrame",
       state: {
         position: blockXyzToFineXyz(
           addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
@@ -70,8 +71,9 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
+        nearness: "near",
       },
-      type: "doorNear",
+      type: "doorFrame",
       state: {
         position: doorNearPosition,
         expires: null,
@@ -141,11 +143,14 @@ export function* loadDoor<RoomId extends string>(
       ...{
         id: `${id}/legs`,
         config: {
+          ...jsonDoor.config,
+          inHiddenWall,
           style: "none",
           side: "away", // TODO: look at typings - this isn't needed for hidden walls
+          height: position.z,
         },
-        renders: false,
-        type: "wall",
+        renders: true,
+        type: "doorLegs",
         state: {
           position: addXyz({
             ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
