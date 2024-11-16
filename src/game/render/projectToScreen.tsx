@@ -22,24 +22,22 @@ export const projectWorldXyzToScreenX = ({
 }: Partial<Xyz>): number => y - x;
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectWorldXyzToScreenY = ({
-  x = 0,
-  y = 0,
-  z = 0,
-}: Partial<Xyz>): number =>
-  // NB: /2, not >>1 because we support sub-pixel rendering
-  -(x + y) / 2 - z;
-
-/* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectWorldXyzToScreenXy = ({
   x = 0,
   y = 0,
   z = 0,
 }: Partial<Xyz>): Xy => {
+  const coordinatesAreInteger =
+    Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
+
   return {
     x: y - x,
-    // NB: /2, not >>1 because we support sub-pixel rendering
-    y: -(x + y) / 2 - z,
+    y:
+      coordinatesAreInteger ?
+        // >> 1 is /2 but rounded down
+        -((x + y) >> 1) - z
+        // NB: /2, not >>1 because we were given floats so support sub-pixel rendering
+      : -(x + y) / 2 - z,
   };
 };
 

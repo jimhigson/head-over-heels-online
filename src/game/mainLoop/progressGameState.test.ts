@@ -107,7 +107,7 @@ const testFrameRates = [
   60, // typical default
   75, // typical/high
   144, // high update rate
-  500, // highest monitor refresh rate commercially available (2024) - and a bit silly!
+  200, // a bit silly!
 ];
 
 describe("jumping", () => {

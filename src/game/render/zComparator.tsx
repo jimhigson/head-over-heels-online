@@ -1,9 +1,6 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { addXyz, axesXyz } from "@/utils/vectors";
-import {
-  projectWorldXyzToScreenXy,
-  projectWorldXyzToScreenY,
-} from "./projectToScreen";
+import { projectWorldXyzToScreenXy } from "./projectToScreen";
 
 export const drawOrderComparator = (
   a: UnknownItemInPlay,
@@ -36,8 +33,12 @@ export const drawOrderComparator = (
     return 0;
   }
 
-  const screenMaxYA = projectWorldXyzToScreenY(addXyz(a.state.position, bbA));
-  const screenMaxYB = projectWorldXyzToScreenY(addXyz(b.state.position, bbB));
+  const screenMaxYA = projectWorldXyzToScreenXy(
+    addXyz(a.state.position, bbA),
+  ).y;
+  const screenMaxYB = projectWorldXyzToScreenXy(
+    addXyz(b.state.position, bbB),
+  ).y;
 
   if (screenBottomXyA.y <= screenMaxYB || screenBottomXyB.y <= screenMaxYA) {
     return 0;
