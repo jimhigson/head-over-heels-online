@@ -40,7 +40,7 @@ const frames = {
     frame: { x: 210, y: 4, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.floor.deadly": {
-    frame: { x: 379, y: 444, ...floorTileSize },
+    frame: { x: 422, y: 407, ...floorTileSize },
   },
   // doors names after the axis they go along: x=towards/away, y=left/right
   "generic.door.legs.base": {
@@ -147,12 +147,12 @@ const frames = {
     frame: { x: 286, y: 358, ...smallItemTextureSize },
   },
   bag: {
-    frame: { x: 259, y: 358, ...smallItemTextureSize },
+    frame: { x: 263, y: 358, ...smallItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "fish",
     2,
-    { x: 259, y: 388 },
+    { x: 238, y: 383 },
     smallItemTextureSize,
   ),
   "spring.compressed": {
@@ -183,10 +183,10 @@ const frames = {
     frame: { x: 57, y: 4, ...smallItemTextureSize },
   },
   joystick: {
-    frame: { x: 259, y: 414, ...smallItemTextureSize },
+    frame: { x: 2, y: 374, ...smallItemTextureSize },
   },
   anvil: {
-    frame: { x: 144, y: 423, ...largeItemTextureSize },
+    frame: { x: 134, y: 478, ...largeItemTextureSize },
   },
   "book.x": {
     frame: { x: 184, y: 450, ...largeItemTextureSize },
@@ -201,16 +201,16 @@ const frames = {
     frame: { x: 4, y: 391, ...smallItemTextureSize },
   },
   cube: {
-    frame: { x: 31, y: 391, ...smallItemTextureSize },
+    frame: { x: 27, y: 428, ...smallItemTextureSize },
   },
   drum: {
-    frame: { x: 58, y: 391, ...smallItemTextureSize },
+    frame: { x: 52, y: 428, ...smallItemTextureSize },
   },
   "switch.off": {
-    frame: { x: 111, y: 454, ...smallItemTextureSize },
+    frame: { x: 52, y: 453, ...smallItemTextureSize },
   },
   "switch.on": {
-    frame: { x: 136, y: 454, ...smallItemTextureSize },
+    frame: { x: 77, y: 453, ...smallItemTextureSize },
   },
   ...fourDirections(
     "american-football-head",
