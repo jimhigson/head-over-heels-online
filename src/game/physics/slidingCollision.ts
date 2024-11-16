@@ -1,5 +1,4 @@
 import { addXyz, type Xyz } from "@/utils/vectors";
-import type { Collideable } from "../collision/aabbCollision";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
 
@@ -20,7 +19,7 @@ const zBias = 0.1;
 const mtv = (
   moverPosition: Xyz,
   moverAabb: Xyz,
-  { state: { position: solidPosition }, aabb: solidAabb }: Collideable,
+  { state: { position: solidPosition }, aabb: solidAabb }: Obstacle,
 ): Xyz => {
   const dx1 = solidPosition.x + solidAabb.x - moverPosition.x; // Right overlap
   const dy1 = solidPosition.y + solidAabb.y - moverPosition.y; // Far overlap
@@ -50,15 +49,75 @@ const mtv = (
   }
 };
 
-export const slidingCollisionWithManyItems = (
-  { aabb }: UnknownItemInPlay,
-  targetPosition: Xyz,
-  collidingSolids: Iterable<UnknownItemInPlay>,
+type Obstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
+  state: { position: Xyz };
+};
+
+const dotProductXyz = (a: Xyz, b: Xyz): number => {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+};
+
+export const obstaclePointEarliestPointInVector = (
+  vector: Xyz,
+  obstacle: Obstacle,
 ): Xyz => {
-  return iterate(collidingSolids).reduce<Xyz>(
-    (posAc: Xyz, collisionItem: UnknownItemInPlay) => {
-      return addXyz(posAc, mtv(posAc, aabb, collisionItem));
+  return {
+    x:
+      vector.x > 0 ?
+        obstacle.state.position.x
+      : obstacle.state.position.x + obstacle.aabb.x,
+    y:
+      vector.y > 0 ?
+        obstacle.state.position.y
+      : obstacle.state.position.y + obstacle.aabb.y,
+    z:
+      vector.z > 0 ?
+        obstacle.state.position.z
+      : obstacle.state.position.z + obstacle.aabb.z,
+  };
+};
+
+/** sort obstacles so that the ones the subject will see first (travelling along the
+ * @param vector) are first in the list. This gives the natural order of collision
+ * to process the mtvs in.
+ *
+ * Without this, the order of the obstacles can be arbitrary and snagging is possible
+ * on the boundary of two adjacent obstacles, for exmaple if falling while holding
+ * the direction towards a tower of blocks
+ */
+export const sortObstaclesAboutVector = (
+  vector: Xyz,
+  obstacles: Iterable<Obstacle>,
+) => {
+  return [...obstacles].sort((a, b) => {
+    const aProjectedAlongVector = dotProductXyz(
+      vector,
+      obstaclePointEarliestPointInVector(vector, a),
+    );
+    const bProjectedAlongVector = dotProductXyz(
+      vector,
+      obstaclePointEarliestPointInVector(vector, b),
+    );
+    return aProjectedAlongVector - bProjectedAlongVector;
+  });
+};
+
+export const slidingCollisionWithManyItems = (
+  subjectItem: UnknownItemInPlay,
+  xyzDelta: Xyz,
+  obstacles: Iterable<Obstacle>,
+): Xyz => {
+  const {
+    state: { position: previousPosition },
+  } = subjectItem;
+
+  const sortedObstacles = sortObstaclesAboutVector(xyzDelta, obstacles);
+
+  return iterate(sortedObstacles).reduce<Xyz>(
+    (posAc: Xyz, collisionItem: Obstacle) => {
+      return addXyz(posAc, mtv(posAc, subjectItem.aabb, collisionItem));
     },
-    targetPosition,
+    // the target position:
+    addXyz(previousPosition, xyzDelta),
   );
 };

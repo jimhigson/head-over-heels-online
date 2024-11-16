@@ -81,7 +81,7 @@ export const moveItem = <RoomId extends string>(
     objectValues(room.items),
   );
 
-  const solidItems = collisions.filter((collidedWith) =>
+  const solidObstacles = collisions.filter((collidedWith) =>
     isSolid(subjectItem, collidedWith, gameState),
   );
 
@@ -132,14 +132,14 @@ export const moveItem = <RoomId extends string>(
 
   const correctedPosition1 = slidingCollisionWithManyItems(
     subjectItem,
-    targetPosition,
-    solidItems,
+    xyzDelta,
+    solidObstacles,
   );
 
   const correctedPosition2 =
     // only players slide on doors:
     isPlayableItem(subjectItem) ?
-      addXyz(correctedPosition1, slideOnDoors(xyzDelta, solidItems))
+      addXyz(correctedPosition1, slideOnDoors(xyzDelta, solidObstacles))
     : correctedPosition1;
 
   if (!xyzEqual(correctedPosition2, previousPosition)) {
