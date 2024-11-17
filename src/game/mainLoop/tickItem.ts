@@ -60,7 +60,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       teleporting(item, gameState, deltaMS) as MechanicResult<T>,
     );
     accumulateResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
-    accumulateResult(jumping(item, inputState, deltaMS) as MechanicResult<T>);
+    accumulateResult(jumping(item, gameState, deltaMS) as MechanicResult<T>);
   }
   if (isMovable) {
     accumulateResult(steppedOff(item) as MechanicResult<T>);

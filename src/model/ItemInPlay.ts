@@ -25,8 +25,6 @@ export type CharacterState = FallingItemState & {
     | "falling"
     /** death animation is playing - character will have had expired set  */
     | "death";
-  /** how much higher we can jump before we start to fall, in pixels */
-  jumpRemaining: number;
 
   lives: number;
   shield: number;
@@ -34,6 +32,9 @@ export type CharacterState = FallingItemState & {
   // Number of pixels the player will walk forward regardless of input. This
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
+
+  /** how much higher we can jump before we start to fall, in pixels */
+  jumpStartTime: number | null;
 
   // records if we jumped to get into the state we are in. For Heels, if she
   // jumped and is falling there is mandatory forward movement. Otherwise,

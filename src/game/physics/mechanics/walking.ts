@@ -16,12 +16,12 @@ export const walking = (
   const {
     type,
     state: {
-      jumpRemaining,
       autoWalkDistance,
       standingOn,
       facing,
       jumped,
       teleporting,
+      jumpStartTime,
     },
   } = playableItem;
 
@@ -50,8 +50,9 @@ export const walking = (
   if (standingOn === null) {
     switch (type) {
       case "head": {
+        const isJumping = jumpStartTime !== null;
         const direction =
-          jumpRemaining > 0 ? directionPressed || facing : directionPressed;
+          isJumping ? directionPressed || facing : directionPressed;
 
         if (direction !== undefined) {
           // head can always change direction mid-air, and can fall vertically from a jump

@@ -27,7 +27,7 @@ export const fallingAndLanding = <RoomId extends string>(
   const isFalling =
     item.state.standingOn === null &&
     // if a playable item, it can't be falling while it's jumping:
-    (!isPlayableItem(item) || item.state.jumpRemaining === 0);
+    (!isPlayableItem(item) || item.state.jumpStartTime === null);
 
   if (!isFalling) {
     return unitMechanicalResult;

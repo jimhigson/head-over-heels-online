@@ -19,7 +19,7 @@ export const loadPlayer = <RoomId extends string>(
         state: {
           facing: "towards",
           action: "idle",
-          jumpRemaining: 0,
+          jumpStartTime: null,
           jumped: false,
           hasHooter: false,
           fast: 0,
@@ -46,7 +46,7 @@ export const loadPlayer = <RoomId extends string>(
         state: {
           facing: "towards",
           action: "idle",
-          jumpRemaining: 0,
+          jumpStartTime: null,
           carrying: null,
           hasBag: false,
           jumps: 0,

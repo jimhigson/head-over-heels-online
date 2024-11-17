@@ -81,6 +81,8 @@ export const mainLoop = <RoomId extends string>(
 
   const upscaler = upscale(app);
   const handleTick = ({ deltaMS }: Ticker) => {
+    //console.time("tick");
+
     upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
 
@@ -107,6 +109,7 @@ export const mainLoop = <RoomId extends string>(
     );
     updateHud(gameState);
     lastRenderedRoom = currentRoom(gameState);
+    //console.timeEnd("tick");
   };
 
   return {

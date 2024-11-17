@@ -8,7 +8,7 @@ test("heads and heels have the right state", () => {
     facing: Direction;
     action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay | null;
-    jumpRemaining: number;
+    jumpStartTime: number | null;
     lives: number;
     shield: number;
     hasHooter: boolean;
@@ -24,7 +24,7 @@ test("heads and heels have the right state", () => {
     facing: Direction;
     action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay | null;
-    jumpRemaining: number;
+    jumpStartTime: number | null;
     lives: number;
     shield: number;
   }>();
