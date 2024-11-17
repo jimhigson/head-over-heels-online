@@ -26,6 +26,9 @@ export const renderItem = <T extends ItemInPlayType, RoomId extends string>(
       `item type "${item.type}" has no appearance - if it doesn't render, give it the .renders = false`,
     );
   }
+  item.renderContainer.children.forEach((child) =>
+    child.destroy({ children: true, context: true }),
+  );
   item.renderContainer.removeChildren();
 
   const sprite = itemAppearance(item, gameState);

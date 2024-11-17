@@ -60,6 +60,7 @@ export const fallingAndLanding = <RoomId extends string>(
           // we are standing on something so if we were falling from a jump, that jump is over:
           jumped: false,
           standingOn: landedOn,
+          jumpStartTime: null,
         }
         // we are in the air and falling:
       : {

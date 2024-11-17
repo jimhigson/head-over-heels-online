@@ -3,29 +3,35 @@ import type { MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { originalGameFrameDuration } from "@/originalGame";
-import { blockSizePx } from "@/sprites/spritePivots";
+import {
+  jumpG,
+  originalGameJumpPxPerFrame,
+  playerJumpHeightPx,
+} from "../mechanicsConstants";
 
-const createVerticalVelocityFunction = (g: number, apexY: number) => {
-  const originalGameJumpPxPerFrame = 2;
-  const tTotal =
-    (apexY / originalGameJumpPxPerFrame) * originalGameFrameDuration;
+const timeToApexByJumpHeight = (apexZ: number) =>
+  (apexZ / originalGameJumpPxPerFrame) * originalGameFrameDuration;
+
+const createVerticalVelocityFunction = (g: number, apexZ: number) => {
+  const timeToApex = timeToApexByJumpHeight(apexZ);
 
   // Precompute values that do not change
-  const initialVelocityPxPerMs = (2 * apexY + g * tTotal ** 2) / (2 * tTotal);
+  const initialVelocityPxPerMs =
+    (2 * apexZ + g * timeToApex ** 2) / (2 * timeToApex);
 
   /**
    * gives the pixel ascent over a period of @param deltaMS at @param t since the
    * start of the jump
    */
-  return (t: number, deltaMS: number) =>
-    (t > tTotal ? 0 : initialVelocityPxPerMs - g * t) * deltaMS;
+  const zDelta = (t: number, deltaMS: number) =>
+    (initialVelocityPxPerMs - g * t) * deltaMS;
+
+  return { timeToApex, zDelta };
 };
 
 const jumpFunction = {
-  // setting g to zero gives the old, linear jump behaviour. Higher figures mean
-  // more contrast between initial jump speed and average jump speed
-  head: createVerticalVelocityFunction(0.0002, blockSizePx.h * 2.5),
-  heels: createVerticalVelocityFunction(0.0002, blockSizePx.h),
+  head: createVerticalVelocityFunction(jumpG, playerJumpHeightPx.head),
+  heels: createVerticalVelocityFunction(jumpG, playerJumpHeightPx.heels),
 };
 
 export const jumping = <RoomId extends string>(
@@ -56,10 +62,19 @@ export const jumping = <RoomId extends string>(
     return {};
   }
 
-  const zV = jumpFunction[characterType](
+  const zD = jumpFunction[characterType].zDelta(
     jumpStartTime === null ? 0 : gameTime - jumpStartTime,
     deltaMS,
   );
+
+  const jumpFinished =
+    jumpStartTime !== null &&
+    gameTime - jumpStartTime >=
+      jumpFunction[characterType].timeToApex *
+        // heels is considered to be jumping for twice as long, because
+        // head glides from the top of the jump, whereas heels continues
+        // on the parabolic arc
+        (characterType === "heels" ? 2 : 1);
 
   return {
     stateDelta:
@@ -74,13 +89,13 @@ export const jumping = <RoomId extends string>(
         // jumping, but not starting a jump
       : {
           action: "moving",
-          ...(zV <= 0 ?
+          ...(jumpFinished ?
             {
               // the vertical velocity has reached zero - the jump is spent
               jumpStartTime: null,
             }
           : {}),
         },
-    positionDelta: { z: zV },
+    positionDelta: { z: zD },
   };
 };

@@ -21,6 +21,13 @@ export const projectWorldXyzToScreenX = ({
   y = 0,
 }: Partial<Xyz>): number => y - x;
 
+/**
+ * because of floating point error, after processing mtv it is possible to get
+ * values that should be integers but are off by a tiny amount. To correct, we consider
+ * anything that is within 1/1000 of a pixel to be exactly on that pixel
+ */
+const isIntegerOrCloseTo = (n: number) => Math.abs(n - Math.round(n)) < 0.001;
+
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectWorldXyzToScreenXy = ({
   x = 0,
@@ -28,7 +35,7 @@ export const projectWorldXyzToScreenXy = ({
   z = 0,
 }: Partial<Xyz>): Xy => {
   const coordinatesAreInteger =
-    Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
+    isIntegerOrCloseTo(x) && isIntegerOrCloseTo(y) && isIntegerOrCloseTo(z);
 
   return {
     x: y - x,

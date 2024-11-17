@@ -72,7 +72,13 @@ export const walking = (
           positionDelta:
             jumped ?
               // when heels jumps. the whole ascent and descent has to be moving in the jump direction
-              scaleXyz(unitVectors[facing], walkDistance)
+              scaleXyz(
+                unitVectors[facing],
+                walkDistance *
+                  // heel's forward movement is reduced when not on the ground - in the original game this is
+                  // really only while descending, but this value keeps the overall jump distance the same
+                  0.6,
+              )
               // when heels jumps off, always drops vertically - no horizontal movement
             : originXyz,
           stateDelta: {},
