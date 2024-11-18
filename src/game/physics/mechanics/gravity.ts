@@ -1,10 +1,8 @@
-import type { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
-import { isPlayableItem } from "@/model/ItemInPlay";
-import { unitVectors, scaleXyz, addXyz } from "@/utils/vectors";
+import { type FallingItemTypes, type ItemInPlay } from "@/model/ItemInPlay";
+import { addXyz } from "@/utils/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import type { MechanicResult } from "../MechanicResult";
-import { unitMechanicalResult } from "../MechanicResult";
-import { fallSpeedPixPerMs } from "../mechanicsConstants";
+import { fallG, fallSpeedPixPerMs } from "../mechanicsConstants";
 import { objectValues } from "iter-tools";
 import { isSolid } from "../isSolid";
 import type { GameState } from "@/game/gameState/GameState";
@@ -17,56 +15,52 @@ import type { PlanetName } from "@/sprites/planets";
  *
  * The item can be anything - a player, a pickup etc
  */
-export const fallingAndLanding = <RoomId extends string>(
+export const gravity = <RoomId extends string>(
   item: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FallingItemTypes> => {
   const room = currentRoom(gameState);
 
-  const isFalling =
-    item.state.standingOn === null &&
-    // if a playable item, it can't be falling while it's jumping:
-    (!isPlayableItem(item) || item.state.jumpStartTime === null);
+  const {
+    state: { velZ: previousVelZ },
+  } = item;
 
-  if (!isFalling) {
-    return unitMechanicalResult;
-  }
+  const terminalZ = fallSpeedPixPerMs[item.type === "head" ? "head" : "others"];
 
-  const fallSpeed = fallSpeedPixPerMs[item.type === "head" ? "head" : "others"];
-  const zMovementFloat = fallSpeed * deltaMS;
-
-  const fallVector = scaleXyz(unitVectors.down, zMovementFloat);
+  const velZ = Math.max(previousVelZ - fallG * deltaMS, terminalZ);
+  const fallPositionDelta = { x: 0, y: 0, z: velZ * deltaMS };
 
   const collisions = collision1toMany(
     {
       id: item.id,
       aabb: item.aabb,
-      state: { position: addXyz(item.state.position, fallVector) },
+      state: { position: addXyz(item.state.position, fallPositionDelta) },
     },
     objectValues(room.items),
   );
 
-  const landedOn = collisions.find((collisionItem) =>
+  const standingOn = collisions.find((collisionItem) =>
     isSolid(item, collisionItem, gameState),
   );
 
   return {
-    positionDelta: fallVector,
+    positionDelta: fallPositionDelta,
     stateDelta: {
-      ...(landedOn ?
+      velZ,
+      ...(standingOn ?
         // the landing case
         {
           // we are standing on something so if we were falling from a jump, that jump is over:
           jumped: false,
-          standingOn: landedOn,
+          standingOn,
           jumpStartTime: null,
         }
-        // we are in the air and falling:
       : {
+          // we are in the air (falling or ascending)::
           standingOn: null,
           // only head has a falling sprite (heels doesn't)
-          ...(item.type === "head" ? { action: "falling" } : {}),
+          ...(item.type === "head" && velZ < 0 ? { action: "falling" } : {}),
         }),
     },
   };

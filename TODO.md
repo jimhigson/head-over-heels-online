@@ -56,4 +56,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     [x] collected bunnies don't poof again when switching character back after collecting them
         [x] every item now has an expiry on its state
 
-[ ] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens        
+[x] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens        
+
+
+General 
+-------
+[ ] standing on is not sticky any more
+    - fix and test
+[ ] heels should fall vertically after jump is done    

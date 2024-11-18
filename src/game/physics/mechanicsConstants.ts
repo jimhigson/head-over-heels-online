@@ -30,9 +30,9 @@ export const playerJumpHeightPx = {
   setting to zero gives the old, linear jump behaviour. Higher figures mean
   more contrast between initial jump speed and average jump speed
  */
-export const jumpG = 0.0002;
+export const fallG = 0.0002;
 
 export const fallSpeedPixPerMs = {
-  head: (blockSizePx.h * 2) / 1000,
-  others: originalGameJumpSpeedPixPerMs,
+  head: -(blockSizePx.h * 2) / 1000,
+  others: -originalGameJumpSpeedPixPerMs,
 };

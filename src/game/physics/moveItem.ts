@@ -87,7 +87,7 @@ export const moveItem = <RoomId extends string>(
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
    */
-  pusher: AnyItemInPlay | undefined,
+  pusher?: AnyItemInPlay,
 ) => {
   let xyzDelta = addXyz(originXyz, xyzDeltaPartial);
 

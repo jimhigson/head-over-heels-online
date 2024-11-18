@@ -4,40 +4,40 @@ import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { originalGameFrameDuration } from "@/originalGame";
 import {
-  jumpG,
+  fallG,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
+import { blockSizePx } from "@/sprites/spritePivots";
 
-const timeToApexByJumpHeight = (apexZ: number) =>
-  (apexZ / originalGameJumpPxPerFrame) * originalGameFrameDuration;
+const createJumpAbility = (apexZ: number) => {
+  // Calculate the time to reach the apex in milliseconds in the original game:
+  const framesToApex = apexZ / originalGameJumpPxPerFrame;
+  const tApex = framesToApex * originalGameFrameDuration;
 
-const createVerticalVelocityFunction = (g: number, apexZ: number) => {
-  const timeToApex = timeToApexByJumpHeight(apexZ);
+  // Calculate the initial velZ needed to reach the apex
+  const velZ = (apexZ + 0.5 * fallG * tApex ** 2) / tApex;
 
-  // Precompute values that do not change
-  const initialVelocityPxPerMs =
-    (2 * apexZ + g * timeToApex ** 2) / (2 * timeToApex);
-
-  /**
-   * gives the pixel ascent over a period of @param deltaMS at @param t since the
-   * start of the jump
-   */
-  const zDelta = (t: number, deltaMS: number) =>
-    (initialVelocityPxPerMs - g * t) * deltaMS;
-
-  return { timeToApex, zDelta };
+  return { velZ, tApex };
 };
 
-const jumpFunction = {
-  head: createVerticalVelocityFunction(jumpG, playerJumpHeightPx.head),
-  heels: createVerticalVelocityFunction(jumpG, playerJumpHeightPx.heels),
+const jumpAbilities = {
+  head: createJumpAbility(playerJumpHeightPx.head),
+  // TODO: confirm that springs give one extra block of height for head - this is
+  // correct for heels (from 1 to 2) but that could be a doubling
+  headOnSpring: createJumpAbility(playerJumpHeightPx.head + blockSizePx.h),
+  heels: createJumpAbility(playerJumpHeightPx.heels),
+  heelsOnSpring: createJumpAbility(playerJumpHeightPx.heels + blockSizePx.h),
+};
+
+const getJumpAbility = (characterName: CharacterName, onSpring: boolean) => {
+  return jumpAbilities[`${characterName}${onSpring ? "OnSpring" : ""}`];
 };
 
 export const jumping = <RoomId extends string>(
   characterItem: PlayableItem,
   { inputState: { jump: jumpInput }, gameTime }: GameState<RoomId>,
-  deltaMS: number,
+  _deltaMS: number,
 ): MechanicResult<CharacterName> => {
   const {
     type: characterType,
@@ -49,28 +49,41 @@ export const jumping = <RoomId extends string>(
     return {};
   }
 
+  const standingOnItemType = characterItem.state.standingOn?.type ?? null;
   const isCharacterStandingOnSomethingCanJumpOff =
-    characterItem.state.standingOn !== null &&
     // can jump off anything except a teleporter (because the jump button is also used
     // to teleport)
-    characterItem.state.standingOn.type !== "teleporter";
+    standingOnItemType !== null && standingOnItemType !== "teleporter";
 
   const isJumpStart = jumpInput && isCharacterStandingOnSomethingCanJumpOff;
 
   if (!isJumpStart && jumpStartTime === null) {
-    // not jumping - we do nothing
+    // not jumping - we change nothing
     return {};
   }
 
-  const zD = jumpFunction[characterType].zDelta(
-    jumpStartTime === null ? 0 : gameTime - jumpStartTime,
-    deltaMS,
+  const { velZ, tApex } = getJumpAbility(
+    characterType,
+    standingOnItemType === "spring",
   );
+
+  if (isJumpStart) {
+    console.log(characterType, standingOnItemType === "spring");
+
+    return {
+      stateDelta: {
+        action: "moving",
+        standingOn: null,
+        jumped: true,
+        velZ,
+      },
+    };
+  }
 
   const jumpFinished =
     jumpStartTime !== null &&
     gameTime - jumpStartTime >=
-      jumpFunction[characterType].timeToApex *
+      tApex *
         // heels is considered to be jumping for twice as long, because
         // head glides from the top of the jump, whereas heels continues
         // on the parabolic arc
@@ -78,24 +91,17 @@ export const jumping = <RoomId extends string>(
 
   return {
     stateDelta:
-      isJumpStart ?
-        {
-          action: "moving",
-          // whatever we were standing on, we aren't any more:
-          standingOn: null,
-          jumpStartTime: gameTime,
-          jumped: true,
-        }
-        // jumping, but not starting a jump
-      : {
-          action: "moving",
-          ...(jumpFinished ?
-            {
-              // the vertical velocity has reached zero - the jump is spent
-              jumpStartTime: null,
-            }
-          : {}),
-        },
-    positionDelta: { z: zD },
+      // jumping, but not starting a jump
+      {
+        action: "moving",
+        ...(jumpFinished ?
+          {
+            // the vertical velocity has reached zero - the jump is spent
+            jumpStartTime: null,
+          }
+        : {}),
+      },
+    //positionDelta: not set because jumping doesn't cause movement, only sets the zV, which will
+    //cause movement in "falling" mechanic
   };
 };

@@ -8,9 +8,8 @@ import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import type { MechanicResult } from "../physics/MechanicResult";
-import { fallingAndLanding } from "../physics/mechanics/falling";
+import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
-import { steppedOff } from "../physics/mechanics/steppedOff";
 import { teleporter } from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
@@ -58,10 +57,8 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     accumulateResult(jumping(item, gameState, deltaMS) as MechanicResult<T>);
   }
   if (isMovable) {
-    accumulateResult(steppedOff(item) as MechanicResult<T>);
-    accumulateResult(
-      fallingAndLanding(item, gameState, deltaMS) as MechanicResult<T>,
-    );
+    //accumulateResult(steppedOff(item) as MechanicResult<T>);
+    accumulateResult(gravity(item, gameState, deltaMS) as MechanicResult<T>);
     accumulateResult(
       standingOnConveyor(item, gameState, deltaMS) as MechanicResult<T>,
     );

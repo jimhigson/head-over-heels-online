@@ -107,6 +107,8 @@ export const progressGameState = <RoomId extends string>(
   const startingPositions = getStatingPositions(room);
 
   for (let i = 0; i < physicsTickCount; i++) {
+    //console.log("a new frame is being processed, deltaMs is", deltaMS);
+
     gameState.gameTime += physicsTickMs;
 
     for (const item of objectValues(room.items)) {

@@ -15,6 +15,8 @@ export type ItemInPlayType =
 type FallingItemState = {
   /* null meaning we know item is not standing on anything (ie, should fall) */
   standingOn: UnknownItemInPlay | null;
+  /** vertical velocity - needed for parabolic jumping and falling */
+  velZ: number;
 };
 
 export type CharacterState = FallingItemState & {
@@ -33,7 +35,7 @@ export type CharacterState = FallingItemState & {
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
 
-  /** how much higher we can jump before we start to fall, in pixels */
+  /** the time we started to jump, if we are jumping */
   jumpStartTime: number | null;
 
   // records if we jumped to get into the state we are in. For Heels, if she

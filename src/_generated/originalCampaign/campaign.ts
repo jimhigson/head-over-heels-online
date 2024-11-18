@@ -1510,6 +1510,21 @@ export const campaign = {
           position: { x: 0, y: 0, z: 2 },
           config: { style: "organic" },
         },
+        pickupTemp: {
+          type: "pickup",
+          position: { x: 0, y: 0, z: 5 },
+          config: { gives: 'extra-life' }
+        },
+        pickupTemp2: {
+          type: "pickup",
+          position: { x: 5, y: 5, z: 5 },
+          config: { gives: 'extra-life' }
+        },
+        pickupTemp3: {
+          type: "pickup",
+          position: { x: 5, y: 5, z: 3 },
+          config: { gives: 'extra-life' }
+        },
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
@@ -1926,6 +1941,16 @@ export const campaign = {
         "teleporter@0,0,0:Z1GqgNT": {
           config: { toRoom: "blacktooth24" },
           position: { x: 0, y: 0, z: 0 },
+          type: "teleporter",
+        },
+        "teleporter2": {
+          config: { toRoom: "blacktooth24" },
+          position: { x: 1, y: 0, z: 0 },
+          type: "teleporter",
+        },
+        "teleporter3": {
+          config: { toRoom: "blacktooth24" },
+          position: { x: 1, y: 1, z: 0 },
           type: "teleporter",
         },
       },

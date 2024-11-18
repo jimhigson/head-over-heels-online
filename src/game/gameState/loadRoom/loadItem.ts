@@ -1,4 +1,8 @@
-import type { ItemType, JsonItem, UnknownJsonItem } from "@/model/json/JsonItem";
+import type {
+  ItemType,
+  JsonItem,
+  UnknownJsonItem,
+} from "@/model/json/JsonItem";
 import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { fallingItemTypes } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
@@ -66,7 +70,7 @@ const initialState = <T extends ItemType & ItemInPlayType>(
 
   return {
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: null } : {}),
+    ...(falls ? { standingOn: null, velZ: 0 } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
   };
