@@ -10,8 +10,12 @@ import { iterate } from "@/utils/iterate";
  * up, the x/y and z vectors are "equal" but because of floating point error, the collision
  * can choose x/y and put him outside of the ladder. It should choose z to clamp him between
  * the ladder rungs vertically
+ *
+ * An abosolute bias of 0.1 works for most frame rates, but at very high rates the value was
+ * overwhelmed by the constant bias. A weight works better - a value of 0.5 was found experimentally
+ * to allow getting into small gaps and not snagging
  */
-const zBias = 0.1;
+const zWeight = 0.5;
 
 /**
  * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem
@@ -34,7 +38,7 @@ const mtv = (
   const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
   const mtvZ = Math.abs(dz1) < Math.abs(dzT) ? dz1 : -dzT;
 
-  const absoluteMtvZ = Math.abs(mtvZ) - zBias;
+  const absoluteMtvZ = Math.abs(mtvZ) * zWeight;
 
   if (Math.abs(mtvX) < Math.abs(mtvY) && Math.abs(mtvX) < absoluteMtvZ) {
     // x is the smallest
@@ -117,7 +121,7 @@ export const slidingCollisionWithManyItems = (
     (posAc: Xyz, collisionItem: Obstacle) => {
       return addXyz(posAc, mtv(posAc, subjectItem.aabb, collisionItem));
     },
-    // the target position:
+    // original target position:
     addXyz(previousPosition, xyzDelta),
   );
 };

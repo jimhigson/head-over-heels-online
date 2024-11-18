@@ -1500,12 +1500,12 @@ export const campaign = {
           position: { x: 0, y: 0, z: 0 },
           config: { style: "organic" },
         },
-        highBlock: {
+        midBlock: {
           type: "block",
           position: { x: 0, y: 0, z: 1 },
           config: { style: "organic" },
         },
-        higherBlock: {
+        highBlock: {
           type: "block",
           position: { x: 0, y: 0, z: 2 },
           config: { style: "organic" },

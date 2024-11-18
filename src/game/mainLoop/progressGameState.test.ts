@@ -107,7 +107,7 @@ const testFrameRates = [
   60, // typical default
   75, // typical/high
   144, // high update rate
-  200, // a bit silly!
+  500, // highest available currently (2024) and maybe a bit silly!
 ];
 
 describe("jumping", () => {
