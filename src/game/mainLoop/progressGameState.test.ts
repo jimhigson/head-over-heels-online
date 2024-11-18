@@ -150,7 +150,7 @@ describe("jumping", () => {
         // - at lower frame rates, this tests that the multiple physics frame
         // per graphics frame is working correctly
         forTime: 800,
-        frameCallback: stopJumpingAMomentAfterStartingPlay,
+        frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
       expect(headState(gameState).standingOn?.id).toBe("lowerBlock");
     },
@@ -186,8 +186,9 @@ describe("jumping", () => {
       playGameThrough(gameState, {
         forTime: 1_000,
         frameRate,
-        frameCallback: stopJumpingAMomentAfterStartingPlay,
+        frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
+
       expect(headState(gameState).standingOn?.id).toBe("highBlock");
     },
   );
@@ -224,11 +225,19 @@ describe("jumping", () => {
         inputState: { towards: true },
       });
 
+      // TODO: test that standing on is ull all the way though the fall - should never be a block
+
       playGameThrough(gameState, {
         // plenty of time to reach the floor:
         forTime: 3_000,
         frameRate,
-        frameCallback: stopJumpingAMomentAfterStartingPlay,
+        frameCallbacks: [
+          stopJumpingAMomentAfterStartingPlay,
+          (gameState) => {
+            expect(headState(gameState).standingOn?.type).not.toBe("block");
+            return gameState;
+          },
+        ],
       });
       expect(headState(gameState).position.z).toBe(0);
       expect(headState(gameState).standingOn?.id).toBe("floor");
@@ -284,7 +293,7 @@ describe("doors", () => {
 });
 
 describe("conveyors", () => {
-  test("items move on conveyors", () => {
+  test.only("items move on conveyors and can push on top of other items", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         portableBlock: {
@@ -439,7 +448,7 @@ describe("snapping stationary items to pixel grid", () => {
     });
 
     playGameThrough(gameState, {
-      frameCallback: stopAllInputAfter(400),
+      frameCallbacks: stopAllInputAfter(400),
       forTime: 450,
     });
 

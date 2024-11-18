@@ -3,12 +3,16 @@ import { progressGameState } from "@/game/mainLoop/progressGameState";
 import type { TestRoomId } from "./basicRoom";
 import { noInput } from "@/game/input/InputState";
 
+type FrameCallback = (
+  gameState: GameState<TestRoomId>,
+) => GameState<TestRoomId>;
+
 export const playGameThrough = (
   gameState: GameState<TestRoomId>,
   {
     frameRate = 60,
     forTime = 1000,
-    frameCallback = (gameState) => gameState,
+    frameCallbacks = [],
   }: {
     frameRate?: number;
     forTime?: number;
@@ -16,14 +20,20 @@ export const playGameThrough = (
      * allows us to change the gamestate after certain frames, for example to change the
      * joystick input while the simulation is running
      */
-    frameCallback?: (gameState: GameState<TestRoomId>) => GameState<TestRoomId>;
+    frameCallbacks?: FrameCallback | Array<FrameCallback>;
   } = { frameRate: 60, forTime: 1000 },
 ) => {
   const deltaMS = 1000 / frameRate;
+  const callbacksArray =
+    Array.isArray(frameCallbacks) ? frameCallbacks : [frameCallbacks];
 
   while (gameState.gameTime < forTime) {
     progressGameState(gameState, deltaMS);
-    gameState = frameCallback(gameState);
+
+    gameState = callbacksArray.reduce(
+      (gameStateAc, frameCallback) => frameCallback(gameStateAc),
+      gameState,
+    );
   }
 };
 
