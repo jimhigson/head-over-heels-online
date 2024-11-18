@@ -23,7 +23,7 @@ import { objectValues } from "iter-tools";
 import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isPushable, isSolid } from "./isSolid";
-import { mtv, slidingCollisionWithManyItems } from "./slidingCollision";
+import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
 import { characterFadeInOrOutDuration } from "../render/animationTimings";
 
 /*
@@ -61,6 +61,7 @@ export const slideOnDoorFrames = (
       };
 };
 
+/*
 const pushVector = (
   pusher: AnyItemInPlay,
   pusherTargetLocation: Xyz,
@@ -75,6 +76,7 @@ const pushVector = (
   // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
   return scaleXyz(m, 0.5);
 };
+*/
 
 const findStandingOn = <RoomId extends string>(
   subjectItem: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
@@ -121,7 +123,7 @@ export const moveItem = <RoomId extends string>(
    */
   pusher?: AnyItemInPlay,
 ) => {
-  let xyzDelta = addXyz(originXyz, xyzDeltaPartial);
+  const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
 
   if (xyzEqual(xyzDelta, originXyz)) {
     return;
@@ -196,6 +198,7 @@ export const moveItem = <RoomId extends string>(
     );
   }
 
+  /*
   for (const obstacle of solidObstacles) {
     if (isPushable(obstacle) && pusher !== obstacle) {
       const pV = pushVector(subjectItem, targetPosition, obstacle);
@@ -203,14 +206,46 @@ export const moveItem = <RoomId extends string>(
       moveItem<RoomId>(obstacle, pV, gameState, subjectItem);
     }
   }
+    */
 
   // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
   // or dying (if it is deadly), and maybe some others
-
-  const correctedPosition1 = slidingCollisionWithManyItems(
+  /*const correctedPosition1 = slidingCollisionWithManyItems(
     subjectItem,
     xyzDelta,
     solidObstacles,
+  );*/
+
+  const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
+
+  const correctedPosition1 = iterate(sortedObstacles).reduce<Xyz>(
+    (posAc: Xyz, obstacle) => {
+      let m = mtv(
+        posAc,
+        subjectItem.aabb,
+        obstacle.state.position,
+        obstacle.aabb,
+      );
+
+      if (isPushable(obstacle) && obstacle !== pusher) {
+        // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
+        const pushVector = scaleXyz(m, -0.5);
+        moveItem<RoomId>(obstacle, pushVector, gameState, subjectItem);
+        // scale back how far we want to push:
+        posAc = subXyz(xyzDelta, pushVector);
+        // recalculate the mtv for the new pushee position, in case it couldn't move that far and we have to squash against it now:
+        m = mtv(
+          posAc,
+          subjectItem.aabb,
+          obstacle.state.position,
+          obstacle.aabb,
+        );
+      }
+
+      return addXyz(posAc, m);
+    },
+    // original target position:
+    addXyz(previousPosition, xyzDelta),
   );
 
   const correctedPosition2 =

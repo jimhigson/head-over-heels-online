@@ -130,6 +130,17 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     ...itemArrayToItemObjectMap(loadItems(roomJson, pickupsCollected)),
   };
 
+  // the physics will go nuts if things are overlapping, so check and reject
+  // if they are:
+  for (const loadedItem of objectValues(loadedItems)) {
+    const collisions = collision1toMany(loadedItem, objectValues(loadedItems));
+    if (collisions.length > 0) {
+      throw new Error(
+        `item ${loadedItem.id} is colliding with ${collisions.map((c) => c.id)}`,
+      );
+    }
+  }
+
   initStandingOnForItems(loadedItems);
 
   return {

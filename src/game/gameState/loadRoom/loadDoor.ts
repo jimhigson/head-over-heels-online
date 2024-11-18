@@ -18,7 +18,6 @@ import {
  * it is set to exactly match the door sprite's internal height
  */
 export const doorPortalHeight = 24;
-export const doorPostHeight = 48;
 
 export function* loadDoor<RoomId extends string>(
   jsonDoor: JsonItem<"door", PlanetName, RoomId>,
@@ -57,7 +56,7 @@ export function* loadDoor<RoomId extends string>(
         ),
         expires: null,
       },
-      aabb: { x: 8, y: 8, z: doorPostHeight },
+      aabb: { x: 8, y: 8, z: doorPortalHeight },
     },
   };
   const doorNearPosition = blockXyzToFineXyz(
@@ -78,7 +77,7 @@ export function* loadDoor<RoomId extends string>(
         position: doorNearPosition,
         expires: null,
       },
-      aabb: { x: 8, y: 8, z: doorPostHeight },
+      aabb: { x: 8, y: 8, z: doorPortalHeight },
     },
   };
   yield {

@@ -87,10 +87,10 @@ export const obstaclePointEarliestPointInVector = (
  * on the boundary of two adjacent obstacles, for exmaple if falling while holding
  * the direction towards a tower of blocks
  */
-export const sortObstaclesAboutVector = (
+export const sortObstaclesAboutVector = <I extends Obstacle>(
   vector: Xyz,
-  obstacles: Iterable<Obstacle>,
-) => {
+  obstacles: Iterable<I>,
+): Array<I> => {
   return [...obstacles].sort((a, b) => {
     const aProjectedAlongVector = dotProductXyz(
       vector,
@@ -114,6 +114,8 @@ export const slidingCollisionWithManyItems = (
   } = subjectItem;
 
   const sortedObstacles = sortObstaclesAboutVector(xyzDelta, obstacles);
+
+  //const foundStandingOn = iterate(sortedObstacles).find();
 
   return iterate(sortedObstacles).reduce<Xyz>(
     (posAc: Xyz, collisionItem: Obstacle) => {
