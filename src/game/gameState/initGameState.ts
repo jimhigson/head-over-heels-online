@@ -1,13 +1,14 @@
 import type { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
 import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { actions, defaultKeyAssignments } from "../input/listenForInput";
+import { defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { ApiEvents } from "../GameApi";
 import { entryState } from "./EntryState";
+import { noInput } from "../input/InputState";
 
 type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -69,7 +70,7 @@ export const initGameState = <RoomId extends string>(
           { room: heelsRoom, entryState: entryState(heelsRoom.items.heels!) }
         ),
     },
-    inputState: fromAllEntries(actions.map((action) => [action, false])),
+    inputState: noInput(),
     renderOptions,
     campaign,
     events: mitt<ApiEvents<RoomId>>(),

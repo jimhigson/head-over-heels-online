@@ -1,11 +1,10 @@
-import type { KeyAssignment } from "../input/listenForInput";
 import type {
   RoomState,
   CharacterName,
   Campaign,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
-import type { InputState } from "../input/InputState";
+import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { ApiEvents } from "../GameApi";

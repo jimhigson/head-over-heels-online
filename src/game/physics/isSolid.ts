@@ -1,5 +1,13 @@
-import { type AnyItemInPlay, type UnknownItemInPlay, isPlayableItem } from "@/model/ItemInPlay";
-import { type GameState, currentRoom, pickupCollected } from "../gameState/GameState";
+import {
+  type AnyItemInPlay,
+  type UnknownItemInPlay,
+  isPlayableItem,
+} from "@/model/ItemInPlay";
+import {
+  type GameState,
+  currentRoom,
+  pickupCollected,
+} from "../gameState/GameState";
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
@@ -8,7 +16,7 @@ import { type GameState, currentRoom, pickupCollected } from "../gameState/GameS
 export const isSolid = <RoomId extends string>(
   mover: AnyItemInPlay<RoomId>,
   collidedWith: UnknownItemInPlay<RoomId>,
-  gameState: GameState<RoomId>
+  gameState: GameState<RoomId>,
 ) => {
   const room = currentRoom(gameState);
 
@@ -21,5 +29,13 @@ export const isSolid = <RoomId extends string>(
     ) &&
     !(collidedWith.type === "pickup" && isPlayableItem(mover)) &&
     !(mover.type === "pickup" && isPlayableItem(collidedWith))
+  );
+};
+
+export const isPushable = (collisionItem: AnyItemInPlay) => {
+  return (
+    collisionItem.type === "portable-block" ||
+    collisionItem.type === "spring" ||
+    isPlayableItem(collisionItem)
   );
 };

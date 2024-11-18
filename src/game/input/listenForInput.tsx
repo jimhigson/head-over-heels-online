@@ -1,20 +1,8 @@
-import { directions } from "@/utils/vectors";
 import type { Key } from "./keys";
 import { isKey } from "./keys";
 import { entries } from "@/utils/entries";
 import type { GameState } from "../gameState/GameState";
-
-export const actions = [
-  ...directions,
-  "jump",
-  "fire",
-  "carry",
-  "swop",
-  "pause",
-] as const;
-export type Action = (typeof actions)[number];
-
-export type KeyAssignment = Record<Action, Key[]>;
+import type { KeyAssignment, Action } from "./InputState";
 
 const originalKeyAssignment: KeyAssignment = {
   right: ["P"],

@@ -84,8 +84,17 @@ export const xyzEqual = (
   return ax === bx && ay === by && az === bz;
 };
 
-/* is the xyz in integer position? */
-export const isIntegerXyz = ({ x, y, z }: Xyz) =>
+/**
+ * because of floating point error, after processing mtv it is possible to get
+ * values that should be integers but are off by a tiny amount. To correct, we consider
+ * anything that is within 1/1000 of a pixel to be exactly on that pixel
+ */
+const isIntegerOrCloseTo = (n: number) => Math.abs(n - Math.round(n)) < 0.001;
+/* is the xyz in integer position (or very close to) */
+export const isIntegerXyzOrCloseTo = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
+  isIntegerOrCloseTo(x) && isIntegerOrCloseTo(y) && isIntegerOrCloseTo(z);
+
+export const isExactIntegerXyz = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
   Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
 
 export const roundXyz = ({ x, y, z }: Xyz) => ({
@@ -112,6 +121,9 @@ export type AxisXy = "x" | "y";
 export const axesXyz = ["x", "y", "z"] as const;
 export type AxisXyz = (typeof axesXyz)[number];
 
-//export type Aabb = [Xyz, Xyz];
-/** how big is the collision box around an item? */
 export type Aabb = Xyz;
+
+/** how big is the collision box around an item? */
+export const dotProductXyz = (a: Xyz, b: Xyz): number => {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+};

@@ -37,19 +37,20 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
     worldContainer.addChild(roomContainer);
   } else {
     // the room is already rendered but needs updating
-    let sortDirty = false;
+    let itemsHaveMoved = false;
     for (const item of objectValues(curRoom.items)) {
       if (item.renderPositionDirty) {
+        //console.log("position dirty for item", item.id, item.state.position);
         moveSpriteToItemProjection(item);
         item.renderPositionDirty = false;
-        sortDirty = true;
+        itemsHaveMoved = true;
       }
       if (item.renderingDirty) {
         renderItem(item, gameState);
         item.renderingDirty = false;
       }
     }
-    if (sortDirty) {
+    if (itemsHaveMoved) {
       // re-sort the room's items:
       sortItemsByDrawOrder(objectValues(curRoom.items));
     }

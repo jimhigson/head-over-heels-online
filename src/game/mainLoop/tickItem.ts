@@ -15,16 +15,11 @@ import { teleporter } from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
-import {
-  addXyz,
-  isIntegerXyz,
-  originXyz,
-  roundXyz,
-  xyzEqual,
-} from "@/utils/vectors";
+import { addXyz, originXyz } from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
 import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
 
+/** ticks all items THAT CAN DO THINGS in the world - this may also cause movements in other items */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
@@ -77,28 +72,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isMovable) {
-    const originalPosition = item.state.position;
     moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
-
-    const moved = xyzEqual(originalPosition, item.state.position);
-    const snapToPixelGrid = moved && !isIntegerXyz(item.state.position);
-
-    /*
-    console.log(
-      moved,
-      snapToPixelGrid,
-      item.state.position,
-      "isIntegerXyz",
-      isIntegerXyz(item.state.position),
-    );*/
-
-    // EVEN with this snapping, it can still render on half-pixels - the rendering needs to track the movement since the last frame!
-
-    if (snapToPixelGrid) {
-      // items that aren't moving look strange if they sit in sub-pixel positions so round to integer values:
-      item.state.position = roundXyz(item.state.position);
-      item.renderPositionDirty = true;
-    }
   }
 
   if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {

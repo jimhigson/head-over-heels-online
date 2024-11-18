@@ -9,12 +9,18 @@ import { isPlayableItem, itemFalls } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
-import { objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
+import {
+  isExactIntegerXyz,
+  roundXyz,
+  xyzEqual,
+  type Xyz,
+} from "@/utils/vectors";
 
 //  So, 10ms = 0.01s, at 50px/s gives 0.01 * 50 = 0.5px
 // however, with parabolic jumping (g=0.0002m/s²) the speed at 1block of z gain can be as muc has
@@ -43,6 +49,42 @@ const deleteItemFromRoom = <RoomId extends string>(
   }
 };
 
+const getStatingPositions = <RoomId extends string>(
+  room: RoomState<PlanetName, RoomId>,
+) => {
+  return Object.fromEntries(
+    iterate(objectEntries(room.items)).map(
+      ([id, item]) => [id, item.state.position] as [string, Xyz],
+    ),
+  );
+};
+
+/**
+ * snap all items that haven't moved to the pixel grid - sub-pixel locations are
+ * only allowed while items are moving
+ */
+const snapStationaryItemsToPixelGrid = <RoomId extends string>(
+  room: RoomState<PlanetName, RoomId>,
+  startingPositions: Record<string, Xyz>,
+) => {
+  for (const item of objectValues(room.items)) {
+    if (startingPositions[item.id] === undefined) {
+      // item had no starting position - was introduced during the tick
+      continue;
+    }
+    const itemIsStationary = xyzEqual(
+      startingPositions[item.id],
+      item.state.position,
+    );
+    const snapToPixelGrid =
+      itemIsStationary && !isExactIntegerXyz(item.state.position);
+    if (snapToPixelGrid) {
+      item.state.position = roundXyz(item.state.position);
+      item.renderPositionDirty = true;
+    }
+  }
+};
+
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -57,11 +99,15 @@ export const progressGameState = <RoomId extends string>(
     // we have now handled that keypress, turn it off until the key is pressed again,
     // which will turn this flag back on
     inputState.swop = false;
+    return;
   }
+
+  const room = currentRoom(gameState);
+
+  const startingPositions = getStatingPositions(room);
 
   for (let i = 0; i < physicsTickCount; i++) {
     gameState.gameTime += physicsTickMs;
-    const room = currentRoom(gameState);
 
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
@@ -84,4 +130,6 @@ export const progressGameState = <RoomId extends string>(
       tickItem(item, gameState, physicsTickMs);
     }
   }
+
+  snapStationaryItemsToPixelGrid(room, startingPositions);
 };

@@ -1,5 +1,5 @@
 import type { Container } from "pixi.js";
-import type { XyMaybeZ } from "@/utils/vectors";
+import { isIntegerXyzOrCloseTo, type XyMaybeZ } from "@/utils/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { Xy, Xyz } from "@/utils/vectors";
 
@@ -21,21 +21,11 @@ export const projectWorldXyzToScreenX = ({
   y = 0,
 }: Partial<Xyz>): number => y - x;
 
-/**
- * because of floating point error, after processing mtv it is possible to get
- * values that should be integers but are off by a tiny amount. To correct, we consider
- * anything that is within 1/1000 of a pixel to be exactly on that pixel
- */
-const isIntegerOrCloseTo = (n: number) => Math.abs(n - Math.round(n)) < 0.001;
-
 /* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectWorldXyzToScreenXy = ({
-  x = 0,
-  y = 0,
-  z = 0,
-}: Partial<Xyz>): Xy => {
-  const coordinatesAreInteger =
-    isIntegerOrCloseTo(x) && isIntegerOrCloseTo(y) && isIntegerOrCloseTo(z);
+export const projectWorldXyzToScreenXy = (position: Partial<Xyz>): Xy => {
+  const coordinatesAreInteger = isIntegerXyzOrCloseTo(position);
+
+  const { x = 0, y = 0, z = 0 } = position;
 
   return {
     x: y - x,

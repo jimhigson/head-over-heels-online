@@ -1,6 +1,7 @@
 import { addXyz, type Xyz } from "@/utils/vectors";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
+import { dotProductXyz } from "@/utils/vectors";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.
@@ -20,18 +21,19 @@ const zWeight = 0.5;
 /**
  * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem
  */
-const mtv = (
+export const mtv = (
   moverPosition: Xyz,
   moverAabb: Xyz,
-  { state: { position: solidPosition }, aabb: solidAabb }: Obstacle,
+  obstaclePosition: Xyz,
+  obstacleAabb: Xyz,
 ): Xyz => {
-  const dx1 = solidPosition.x + solidAabb.x - moverPosition.x; // Right overlap
-  const dy1 = solidPosition.y + solidAabb.y - moverPosition.y; // Far overlap
-  const dz1 = solidPosition.z + solidAabb.z - moverPosition.z; // overlap Bottom of mover with Top of solid
+  const dx1 = obstaclePosition.x + obstacleAabb.x - moverPosition.x; // Right overlap
+  const dy1 = obstaclePosition.y + obstacleAabb.y - moverPosition.y; // Far overlap
+  const dz1 = obstaclePosition.z + obstacleAabb.z - moverPosition.z; // overlap Bottom of mover with Top of solid
 
-  const dx2 = moverPosition.x + moverAabb.x - solidPosition.x; // overlap Left of mover with Right of solid
-  const dy2 = moverPosition.y + moverAabb.y - solidPosition.y; // overlap Away of mover with Towards of solid
-  const dzT = moverPosition.z + moverAabb.z - solidPosition.z; // overlap Top of mover with Bottom of solid
+  const dx2 = moverPosition.x + moverAabb.x - obstaclePosition.x; // overlap Left of mover with Right of solid
+  const dy2 = moverPosition.y + moverAabb.y - obstaclePosition.y; // overlap Away of mover with Towards of solid
+  const dzT = moverPosition.z + moverAabb.z - obstaclePosition.z; // overlap Top of mover with Bottom of solid
 
   // Find minimum x overlap in x,y,z
   const mtvX = Math.abs(dx1) < Math.abs(dx2) ? dx1 : -dx2;
@@ -55,10 +57,6 @@ const mtv = (
 
 type Obstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
-};
-
-const dotProductXyz = (a: Xyz, b: Xyz): number => {
-  return a.x * b.x + a.y * b.y + a.z * b.z;
 };
 
 export const obstaclePointEarliestPointInVector = (
@@ -119,7 +117,15 @@ export const slidingCollisionWithManyItems = (
 
   return iterate(sortedObstacles).reduce<Xyz>(
     (posAc: Xyz, collisionItem: Obstacle) => {
-      return addXyz(posAc, mtv(posAc, subjectItem.aabb, collisionItem));
+      return addXyz(
+        posAc,
+        mtv(
+          posAc,
+          subjectItem.aabb,
+          collisionItem.state.position,
+          collisionItem.aabb,
+        ),
+      );
     },
     // original target position:
     addXyz(previousPosition, xyzDelta),

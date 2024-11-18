@@ -1,7 +1,18 @@
-import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type {
+  AnyItemInPlay,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors";
-import { addXyz, doorAlongAxis, originXyz, xyzEqual } from "@/utils/vectors";
+import {
+  addXyz,
+  doorAlongAxis,
+  originXyz,
+  scaleXyz,
+  subXyz,
+  xyzEqual,
+} from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
@@ -10,8 +21,8 @@ import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
-import { isSolid } from "./isSolid";
-import { slidingCollisionWithManyItems } from "./slidingCollision";
+import { isPushable, isSolid } from "./isSolid";
+import { mtv, slidingCollisionWithManyItems } from "./slidingCollision";
 import { characterFadeInOrOutDuration } from "../render/animationTimings";
 
 /*
@@ -49,6 +60,21 @@ export const slideOnDoorFrames = (
       };
 };
 
+const pushVector = (
+  pusher: AnyItemInPlay,
+  pusherTargetLocation: Xyz,
+  pushee: AnyItemInPlay,
+) => {
+  const m = mtv(
+    pushee.state.position,
+    pushee.aabb,
+    pusherTargetLocation,
+    pusher.aabb,
+  );
+  // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
+  return scaleXyz(m, 0.5);
+};
+
 /**
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
@@ -57,8 +83,18 @@ export const moveItem = <RoomId extends string>(
   subjectItem: UnknownItemInPlay<RoomId>,
   xyzDeltaPartial: Partial<Xyz>,
   gameState: GameState<RoomId>,
+  /**
+   * if given, the item that pushed this item to cause it to move. This is primarily a protection
+   * against infinite loops where two items get stuck pushing each other
+   */
+  pusher: AnyItemInPlay | undefined,
 ) => {
-  const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
+  let xyzDelta = addXyz(originXyz, xyzDeltaPartial);
+
+  if (xyzEqual(xyzDelta, originXyz)) {
+    return;
+  }
+
   const room = currentRoom(gameState);
   const {
     state: { position: previousPosition },
@@ -117,6 +153,14 @@ export const moveItem = <RoomId extends string>(
     const player = collisions.find(isPlayableItem);
     if (player !== undefined) {
       handlePlayerTouchingPickup(gameState, player, subjectItem);
+    }
+  }
+
+  for (const obstacle of solidObstacles) {
+    if (isPushable(obstacle) && pusher !== obstacle) {
+      const pV = pushVector(subjectItem, targetPosition, obstacle);
+      xyzDelta = subXyz(xyzDelta, pV);
+      moveItem<RoomId>(obstacle, pV, gameState, subjectItem);
     }
   }
 

@@ -11,10 +11,16 @@ import {
   firstRoomId,
   secondRoomId,
 } from "@/_testUtils/basicRoom";
-import { playGameThrough } from "@/_testUtils/playGameThrough";
+import {
+  playGameThrough,
+  stopAllInputAfter,
+  stopJumpingAMomentAfterStartingPlay,
+} from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { headState, heelsState } from "@/_testUtils/characterState";
+import { iterate } from "@/utils/iterate";
+import { objectValues } from "iter-tools";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -111,19 +117,6 @@ const testFrameRates = [
 ];
 
 describe("jumping", () => {
-  const stopJumping = (gameState: GameState<TestRoomId>) => {
-    // stop pressing jump after a short time
-    return gameState.gameTime < 50 ?
-        gameState
-      : {
-          ...gameState,
-          inputState: {
-            ...gameState.inputState,
-            jump: false,
-          },
-        };
-  };
-
   test.each(testFrameRates)(
     "head can jump between two blocks forming a ladder (%iHz)",
     (frameRate) => {
@@ -157,7 +150,7 @@ describe("jumping", () => {
         // - at lower frame rates, this tests that the multiple physics frame
         // per graphics frame is working correctly
         forTime: 800,
-        frameCallback: stopJumping,
+        frameCallback: stopJumpingAMomentAfterStartingPlay,
       });
       expect(headState(gameState).standingOn?.id).toBe("lowerBlock");
     },
@@ -193,7 +186,7 @@ describe("jumping", () => {
       playGameThrough(gameState, {
         forTime: 1_000,
         frameRate,
-        frameCallback: stopJumping,
+        frameCallback: stopJumpingAMomentAfterStartingPlay,
       });
       expect(headState(gameState).standingOn?.id).toBe("highBlock");
     },
@@ -235,7 +228,7 @@ describe("jumping", () => {
         // plenty of time to reach the floor:
         forTime: 3_000,
         frameRate,
-        frameCallback: stopJumping,
+        frameCallback: stopJumpingAMomentAfterStartingPlay,
       });
       expect(headState(gameState).position.z).toBe(0);
       expect(headState(gameState).standingOn?.id).toBe("floor");
@@ -378,5 +371,85 @@ describe("deadly blocks", () => {
     expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
     expect(currentRoom(gameState).id).toBe("secondRoom");
+  });
+});
+
+describe("renderPositionDirty", () => {
+  test("marks only moved items as dirty", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        head: {
+          type: "player",
+          position: { x: 0, y: 0, z: 2 },
+          config: {
+            which: "head",
+          },
+        },
+        fallingPickup: {
+          type: "pickup",
+          position: { x: 0, y: 0, z: 2 },
+          config: { gives: "extra-life" },
+        },
+        sittingPickup: {
+          type: "pickup",
+          position: { x: 0, y: 0, z: 0 },
+          config: { gives: "extra-life" },
+        },
+        block: {
+          type: "block",
+          position: { x: 0, y: 0, z: 0 },
+          config: { style: "organic" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 10, // 10ms - just run for a short time
+    });
+
+    const positionDirtyItems = [
+      ...iterate(objectValues(currentRoom(gameState).items))
+        .filter((i) => i.renderPositionDirty)
+        .map((i) => i.id),
+    ];
+
+    // falling items marked as dirty:
+    expect(positionDirtyItems.includes("head")).toBeTruthy();
+    expect(positionDirtyItems.includes("fallingPickup")).toBeTruthy();
+    // nothing else is marked as dirty:
+    expect(positionDirtyItems.length).toBe(2);
+  });
+});
+
+describe("snapping stationary items to pixel grid", () => {
+  test("snaps to grid after moving and stopping", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        head: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "head",
+          },
+        },
+      },
+      inputState: { away: true },
+    });
+
+    playGameThrough(gameState, {
+      frameCallback: stopAllInputAfter(400),
+      forTime: 450,
+    });
+
+    // this should always be an integer position since head has been stopped for more than a frame
+    expect(headState(gameState).position).toMatchInlineSnapshot(`
+      {
+        "x": 2,
+        "y": 12,
+        "z": 0,
+      }
+    `);
   });
 });
