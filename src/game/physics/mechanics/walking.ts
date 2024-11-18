@@ -1,28 +1,21 @@
-import { directions, originXyz, scaleXyz, unitVectors } from "@/utils/vectors";
-import type { InputState } from "../../input/InputState";
+import { directions, scaleXyz, unitVectors } from "@/utils/vectors";
 import { playerWalkSpeedPixPerMs } from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
-import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
+import type { GameState } from "@/game/gameState/GameState";
 
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export const walking = (
-  playableItem: PlayableItem,
-  inputState: InputState,
+export const walking = <RoomId extends string>(
+  playableItem: PlayableItem<RoomId>,
+  { inputState, gameTime }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName> => {
   const {
     type,
-    state: {
-      autoWalkDistance,
-      standingOn,
-      facing,
-      jumped,
-      teleporting,
-      jumpStartTime,
-    },
+    state: { autoWalkDistance, standingOn, facing, jumpEndTime, teleporting },
   } = playableItem;
 
   const directionPressed = directions.find((d) => {
@@ -46,43 +39,59 @@ export const walking = (
     return {};
   }
 
+  if (type === "heels" && standingOn === null) {
+    console.log(
+      //standingOn?.type,
+      "jumping",
+      jumpEndTime - gameTime,
+      "until jump start",
+    );
+  }
+
   // handle 'walking' while ascending/falling:
   if (standingOn === null) {
     switch (type) {
       case "head": {
-        const isJumping = jumpStartTime !== null;
-        const direction =
-          isJumping ? directionPressed || facing : directionPressed;
+        const ascending = playableItem.state.velZ > 0;
+        const action = ascending ? "moving" : "falling";
 
-        if (direction !== undefined) {
-          // head can always change direction mid-air, and can fall vertically from a jump
+        if (directionPressed === undefined) {
+          // I vary from the original game in that head ca jump straight up (original
+          // allowed change of direction while jumping but not no direction) - the original
+          // allowed falling straight down (like I do)
           return {
-            positionDelta: scaleXyz(unitVectors[direction], walkDistance),
             stateDelta: {
-              facing: direction,
+              action,
             },
           };
         } else {
-          // fall vertically with no input:
-          return {};
+          // head can always change direction mid-air, and can fall vertically from a jump
+          return {
+            positionDelta: scaleXyz(
+              unitVectors[directionPressed],
+              walkDistance,
+            ),
+            stateDelta: {
+              facing: directionPressed,
+              action,
+            },
+          };
         }
       }
       case "heels":
-        return {
-          positionDelta:
-            jumped ?
-              // when heels jumps. the whole ascent and descent has to be moving in the jump direction
-              scaleXyz(
-                unitVectors[facing],
-                walkDistance *
-                  // heel's forward movement is reduced when not on the ground - in the original game this is
-                  // really only while descending, but this value keeps the overall jump distance the same
-                  0.6,
-              )
-              // when heels jumps off, always drops vertically - no horizontal movement
-            : originXyz,
-          stateDelta: {},
-        };
+        if (jumpEndTime > gameTime) {
+          return {
+            positionDelta: scaleXyz(
+              unitVectors[facing],
+              walkDistance *
+                // heel's forward movement is reduced when not on the ground - in the original game this is
+                // really only while descending, but this value keeps the overall jump distance the same
+                0.6,
+            ),
+          };
+        } else {
+          return unitMechanicalResult;
+        }
     }
   }
 

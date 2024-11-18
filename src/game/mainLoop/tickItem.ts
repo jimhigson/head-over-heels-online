@@ -26,7 +26,6 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 ) => {
   const originalState = item.state;
   const room = currentRoom(gameState);
-  const { inputState } = gameState;
 
   let accumulatedMovement = originXyz;
 
@@ -53,7 +52,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     accumulateResult(
       teleporting(item, gameState, deltaMS) as MechanicResult<T>,
     );
-    accumulateResult(walking(item, inputState, deltaMS) as MechanicResult<T>);
+    accumulateResult(walking(item, gameState, deltaMS) as MechanicResult<T>);
     accumulateResult(jumping(item, gameState, deltaMS) as MechanicResult<T>);
   }
   if (isMovable) {

@@ -39,69 +39,43 @@ export const jumping = <RoomId extends string>(
   { inputState: { jump: jumpInput }, gameTime }: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<CharacterName> => {
-  const {
-    type: characterType,
-    state: { jumpStartTime },
-  } = characterItem;
+  const { type: characterType } = characterItem;
 
-  if (jumpInput && characterItem.state.standingOn?.type === "teleporter") {
+  if (
+    !jumpInput ||
+    // can't jump if not standing on anything!
+    characterItem.state.standingOn === null ||
     // you can't jump from a teleporter!
-    return {};
-  }
-
-  const standingOnItemType = characterItem.state.standingOn?.type ?? null;
-  const isCharacterStandingOnSomethingCanJumpOff =
-    // can jump off anything except a teleporter (because the jump button is also used
-    // to teleport)
-    standingOnItemType !== null && standingOnItemType !== "teleporter";
-
-  const isJumpStart = jumpInput && isCharacterStandingOnSomethingCanJumpOff;
-
-  if (!isJumpStart && jumpStartTime === null) {
-    // not jumping - we change nothing
+    characterItem.state.standingOn?.type === "teleporter"
+  ) {
     return {};
   }
 
   const { velZ, tApex } = getJumpAbility(
     characterType,
-    standingOnItemType === "spring",
+    characterItem.state.standingOn?.type === "spring",
   );
 
-  if (isJumpStart) {
-    console.log(characterType, standingOnItemType === "spring");
+  console.log("starting jump with end time after", tApex * 2);
 
-    return {
-      stateDelta: {
-        action: "moving",
-        standingOn: null,
-        jumped: true,
-        velZ,
-      },
-    };
-  }
-
-  const jumpFinished =
-    jumpStartTime !== null &&
-    gameTime - jumpStartTime >=
-      tApex *
-        // heels is considered to be jumping for twice as long, because
-        // head glides from the top of the jump, whereas heels continues
-        // on the parabolic arc
-        (characterType === "heels" ? 2 : 1);
+  const jumpEndTime =
+    gameTime +
+    // heels is considered to be jumping for twice as long, because
+    // head glides from the top of the jump, whereas heels continues
+    // on the parabolic arc. Hover, use *2 for both for simplicity since
+    // it doesn't matter if head thinks he is in a jump or not
+    //tApex * 2;
+    // actually, tPex * 2 doesn't totally work - this value is experimentally
+    // decided on. This might be because of the terminal velocity of the falling,
+    // but actually probably not
+    740;
 
   return {
-    stateDelta:
-      // jumping, but not starting a jump
-      {
-        action: "moving",
-        ...(jumpFinished ?
-          {
-            // the vertical velocity has reached zero - the jump is spent
-            jumpStartTime: null,
-          }
-        : {}),
-      },
-    //positionDelta: not set because jumping doesn't cause movement, only sets the zV, which will
-    //cause movement in "falling" mechanic
+    stateDelta: {
+      action: "moving",
+      standingOn: null,
+      jumpEndTime,
+      velZ,
+    },
   };
 };

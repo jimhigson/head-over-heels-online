@@ -8,15 +8,15 @@ import type { CharacterName } from "@/model/modelTypes";
 
 export type EntryState = Pick<
   ItemState<CharacterName>,
-  "position" | "facing" | "autoWalkDistance" | "jumpStartTime" | "action"
+  "position" | "facing" | "autoWalkDistance" | "jumpEndTime" | "action"
 >;
 
 export const entryState = ({
-  state: { position, facing, autoWalkDistance, jumpStartTime, action },
+  state: { position, facing, autoWalkDistance, jumpEndTime, action },
 }: PlayableItem): EntryState => ({
   position,
   facing,
   autoWalkDistance,
-  jumpStartTime, // TODO: this is wrong simce the gameTime will have changed since - a vertical velocity would fix it
+  jumpEndTime, // TODO: this is wrong simce the gameTime will have changed since - a vertical velocity would fix it
   action,
 });

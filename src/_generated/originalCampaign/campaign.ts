@@ -1953,6 +1953,11 @@ export const campaign = {
           position: { x: 1, y: 1, z: 0 },
           type: "teleporter",
         },
+        "block": {
+          config: { style: 'organic' },
+          position: { x: 3, y: 5, z: 0 },
+          type: "block",
+        },
       },
       planet: "jail",
       size: { x: 8, y: 8 },

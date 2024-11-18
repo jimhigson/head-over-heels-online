@@ -19,8 +19,7 @@ export const loadPlayer = <RoomId extends string>(
         state: {
           facing: "towards",
           action: "idle",
-          jumpStartTime: null,
-          jumped: false,
+          jumpEndTime: -1, // jump has already finished - ie, we are not jumping
           hasHooter: false,
           fast: 0,
           shield: 0,
@@ -47,7 +46,6 @@ export const loadPlayer = <RoomId extends string>(
         state: {
           facing: "towards",
           action: "idle",
-          jumpStartTime: null,
           carrying: null,
           hasBag: false,
           jumps: 0,
@@ -56,7 +54,7 @@ export const loadPlayer = <RoomId extends string>(
           velZ: 0,
           lives: 8,
           autoWalkDistance: 0,
-          jumped: false,
+          jumpEndTime: -1, // jump has already finished - ie, we are not jumping
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
           expires: null,

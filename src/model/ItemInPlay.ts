@@ -35,13 +35,12 @@ export type CharacterState = FallingItemState & {
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
 
-  /** the time we started to jump, if we are jumping */
-  jumpStartTime: number | null;
-
-  // records if we jumped to get into the state we are in. For Heels, if she
-  // jumped and is falling there is mandatory forward movement. Otherwise,
-  // falls vertically
-  jumped: boolean;
+  /**
+   * the time we will finish being in a jump state, for the most recent jump.
+   * This value can be used at any time to say if we are in a jump or not by
+   * comparing with the current game time.
+   */
+  jumpEndTime: number;
 
   teleporting:
     | {

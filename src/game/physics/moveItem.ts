@@ -1,9 +1,10 @@
 import type {
   AnyItemInPlay,
+  FallingItemTypes,
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isItemType, isPlayableItem } from "@/model/ItemInPlay";
+import { isItemType, isPlayableItem, itemFalls } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors";
 import {
   addXyz,
@@ -73,6 +74,37 @@ const pushVector = (
   );
   // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
   return scaleXyz(m, 0.5);
+};
+
+const findStandingOn = <RoomId extends string>(
+  subjectItem: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  targetPosition: Xyz,
+  solidObstacles: Array<UnknownItemInPlay<RoomId>>,
+): UnknownItemInPlay<RoomId> | null => {
+  // check if still standing on the same item as before:
+  const stillStandingOnTheSame = solidObstacles.find(
+    (obstacle) => obstacle === subjectItem.state.standingOn,
+  );
+  if (stillStandingOnTheSame) {
+    return stillStandingOnTheSame;
+  }
+
+  // TODO: sort by the items with the most overlap so that if we stand on two
+  // simultaneously, it's the one we're most obviously on that we are standing on
+  for (const obstacle of solidObstacles) {
+    // check if we've standing on the collided item:
+    const standingOn =
+      mtv(
+        targetPosition,
+        subjectItem.aabb,
+        obstacle.state.position,
+        obstacle.aabb,
+      ).z > 0;
+    if (standingOn) {
+      return obstacle;
+    }
+  }
+  return null;
 };
 
 /**
@@ -154,6 +186,14 @@ export const moveItem = <RoomId extends string>(
     if (player !== undefined) {
       handlePlayerTouchingPickup(gameState, player, subjectItem);
     }
+  }
+
+  if (itemFalls(subjectItem)) {
+    subjectItem.state.standingOn = findStandingOn(
+      subjectItem,
+      targetPosition,
+      solidObstacles,
+    );
   }
 
   for (const obstacle of solidObstacles) {

@@ -14,11 +14,6 @@ export const conveyorSpeedPixPerMs = zxSpectrumFrameRate / 1_000; // 1px per fra
 // original game jumps were 2px per 1/25s frame. Kept things nice and simple and integer-y!
 export const originalGameJumpPxPerFrame = 2;
 
-// two pixels per original zx spectrum game frame (25fps)
-// NOTE that this is no longer the real jump speed since we now use a parabolic curve
-export const originalGameJumpSpeedPixPerMs =
-  (originalGameJumpPxPerFrame * zxSpectrumFrameRate) / 1_000;
-
 export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
   head: blockSizePx.h * 2.5,
@@ -32,7 +27,10 @@ export const playerJumpHeightPx = {
  */
 export const fallG = 0.0002;
 
-export const fallSpeedPixPerMs = {
+export const terminalVelocityPixPerMs = {
+  // head glides at height of two blocks per second
   head: -(blockSizePx.h * 2) / 1000,
-  others: -originalGameJumpSpeedPixPerMs,
+  // everyone else tops out at 2px/sec in original game
+  //others: -(originalGameJumpPxPerFrame * zxSpectrumFrameRate) / 1_000,
+  others: -(blockSizePx.h * 6) / 1000,
 };
