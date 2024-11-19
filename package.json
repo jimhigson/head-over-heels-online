@@ -20,7 +20,7 @@
     "predeploy": "pnpm run check:lint && pnpm run check:type && pnpm run check:format && pnpm run build",
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
-    "watch:iff2png": "pnpm run sprites2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\""
+    "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
