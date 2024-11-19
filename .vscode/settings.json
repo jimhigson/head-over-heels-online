@@ -23,7 +23,9 @@
     "moonbase",
     "pixi",
     "pointertap",
+    "Precompute",
     "predeploy",
+    "pushee",
     "recognise",
     "Renderable",
     "shortcutted",
@@ -34,6 +36,7 @@
     "toposort",
     "Typesafe",
     "uncollisionable",
+    "unsnag",
     "upscaler",
     "xyzs"
   ],

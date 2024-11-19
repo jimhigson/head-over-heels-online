@@ -1462,7 +1462,6 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth1head",
       items: {
-
         "barrier@5,0,0:Is9Xq": {
           config: { axis: "y" },
           position: { x: 5, y: 0, z: 0 },
@@ -1513,22 +1512,22 @@ export const campaign = {
         pickupTemp: {
           type: "pickup",
           position: { x: 0, y: 0, z: 5 },
-          config: { gives: 'extra-life' }
+          config: { gives: "extra-life" },
         },
         pickupTemp2: {
           type: "pickup",
           position: { x: 5, y: 5, z: 5 },
-          config: { gives: 'extra-life' }
+          config: { gives: "extra-life" },
         },
         pickupTemp3: {
           type: "pickup",
           position: { x: 5, y: 5, z: 3 },
-          config: { gives: 'extra-life' }
+          config: { gives: "extra-life" },
         },
         pickupStartingOnFloor: {
           type: "pickup",
           position: { x: 2, y: 0, z: 0 },
-          config: { gives: 'extra-life' }
+          config: { gives: "extra-life" },
         },
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
@@ -1934,7 +1933,7 @@ export const campaign = {
           type: "player",
         },
         pickup: {
-          config: { style: 'cube' },
+          config: { style: "cube" },
           position: { x: 0, y: 3, z: 8 },
           type: "portable-block",
         },
@@ -1943,18 +1942,18 @@ export const campaign = {
           position: { x: 0, y: 0, z: 0 },
           type: "teleporter",
         },
-        "teleporter2": {
+        teleporter2: {
           config: { toRoom: "blacktooth24" },
           position: { x: 1, y: 0, z: 0 },
           type: "teleporter",
         },
-        "teleporter3": {
+        teleporter3: {
           config: { toRoom: "blacktooth24" },
           position: { x: 1, y: 1, z: 0 },
           type: "teleporter",
         },
-        "block": {
-          config: { style: 'organic' },
+        block: {
+          config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },

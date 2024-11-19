@@ -3,3 +3,4 @@ build
 coverage
 pnpm-lock.yaml
 build-stats.html
+*.frag

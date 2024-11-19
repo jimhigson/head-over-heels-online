@@ -51,16 +51,15 @@ Game engine
 Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1%20ratio%20can,to%20move%201.732%20pixels%20vertically.
 
 [x] first room blacktooth1head:
-    [x] door-slide walking
-    [x] pixelated walking
-    [x] collected bunnies don't poof again when switching character back after collecting them
-        [x] every item now has an expiry on its state
+[x] door-slide walking
+[x] pixelated walking
+[x] collected bunnies don't poof again when switching character back after collecting them
+[x] every item now has an expiry on its state
 
-[x] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens        
+[x] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens
 
+## General
 
-General 
--------
-[ ] standing on is not sticky any more
-    - fix and test
-[ ] heels should fall vertically after jump is done    
+[x] standing on is not sticky any more - fix and test
+[ ] heels should fall vertically after jump is done  
+[ ] jumpEndTime will be wrong after dying - wil think we already finished the jump since game time has spun on
