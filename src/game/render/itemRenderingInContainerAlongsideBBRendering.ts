@@ -46,10 +46,16 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
   );
 };
 
+const bbColors: Partial<Record<ItemInPlayType, string>> = {
+  head: "rgba(255,184,0)",
+  wall: "rgba(128,200,0)",
+  portal: "rgba(255,0,255)",
+};
+
 const renderItemBBs = <T extends ItemInPlayType>(
   item: Pick<ItemInPlay<T>, "aabb" | "type" | "id" | "renderAabb">,
 ): Container => {
-  const color = item.type === "wall" ? "rgba(255,184,0)" : "rgba(255,255,255)";
+  const color = bbColors[item.type] ?? "rgba(255,255,255)";
 
   const containerWithBB = new Container();
 

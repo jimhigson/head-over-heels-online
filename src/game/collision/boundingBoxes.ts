@@ -1,6 +1,7 @@
 import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors";
+import { roomHeightBlocks } from "../physics/mechanicsConstants";
 
 const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -10,7 +11,7 @@ const wallRenderHeight = 50;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
   y: 0,
-  z: 999, // for collisions the bounding box extends waaay up....
+  z: roomHeightBlocks * blockSizePx.h,
 };
 export const xAxisWallRenderAabb = {
   ...xAxisWallAabb,
@@ -20,7 +21,7 @@ export const xAxisWallRenderAabb = {
 export const yAxisWallAabb = {
   x: 0, //wallThicknessBlocks * blockSizePx.w,
   y: blockSizePx.d,
-  z: 999,
+  z: roomHeightBlocks * blockSizePx.h,
 };
 export const yAxisWallRenderAabb = { ...yAxisWallAabb, z: wallRenderHeight };
 

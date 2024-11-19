@@ -46,20 +46,20 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
       }
 
       if (itemNeedsRerender(item)) {
-        console.log("rerendering item", item.id);
+        //console.log("rerendering item", item.id);
         renderItem(item, gameState);
       }
       if (
         item.lastRenderedState === undefined ||
         !xyzEqual(item.lastRenderedState.position, item.state.position)
       ) {
-        console.log(
+        /*console.log(
           "repositioning item",
           item.id,
           item.lastRenderedState?.position,
           "->",
           item.state.position,
-        );
+        );*/
         moveSpriteToItemProjection(item);
         itemsHaveMoved = true;
       }

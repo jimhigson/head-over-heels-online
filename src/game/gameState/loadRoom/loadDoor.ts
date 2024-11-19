@@ -11,13 +11,14 @@ import {
   perpendicularAxisXy,
   doorAlongAxis,
 } from "@/utils/vectors";
+import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
  * it is set to exactly match the door sprite's internal height
  */
-export const doorPortalHeight = 24;
+export const doorPortalHeight = blockSizePx.h * 2;
 
 export function* loadDoor<RoomId extends string>(
   jsonDoor: JsonItem<"door", PlanetName, RoomId>,
@@ -92,7 +93,6 @@ export function* loadDoor<RoomId extends string>(
       },
       type: "portal",
       renders: false,
-      onTouch: "portal",
       state: {
         position: blockXyzToFineXyz(
           addXyz(
@@ -132,7 +132,11 @@ export function* loadDoor<RoomId extends string>(
         ),
         expires: null,
       },
-      aabb: { ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5 }), z: 999 },
+      aabb: blockXyzToFineXyz({
+        [axis]: 2,
+        [crossAxis]: 0.5,
+        z: roomHeightBlocks - position.z - 2,
+      }),
     },
   };
   if (position.z > 0)

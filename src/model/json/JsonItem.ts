@@ -3,7 +3,7 @@ import type { CharacterName } from "../modelTypes";
 import type { PlanetName, Wall } from "../../sprites/planets";
 import type { AxisXy, Direction, Xyz } from "../../utils/vectors";
 
-export type ItemType =
+export type JsonItemType =
   | "door"
   | "floor" // only in-play, never in json - TODO: remove from json typings
   | "doorFrame" // only in-play, never in json - TODO: remove from json typings
@@ -33,7 +33,7 @@ export type ItemType =
   | "book"
   | "wall";
 
-export type RenderItemType = ItemType | "door-front" | "door-back";
+export type RenderItemType = JsonItemType | "door-front" | "door-back";
 
 /**
  * test for if a door is embedded in an undrawn wall - ie, is on the right or towards
@@ -164,8 +164,8 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
 };
 
 /** config used in both json and in-play items */
-export type ItemConfig<
-  T extends ItemType,
+export type JsonItemConfig<
+  T extends JsonItemType,
   P extends PlanetName,
   RoomId extends string,
 > =
@@ -173,15 +173,15 @@ export type ItemConfig<
   : EmptyObject;
 
 export type JsonItem<
-  T extends ItemType,
+  T extends JsonItemType,
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
 > = {
   type: T;
-  config: ItemConfig<T, P, RoomId>;
+  config: JsonItemConfig<T, P, RoomId>;
   position: Xyz;
 };
 
 export type UnknownJsonItem<RoomId extends string = string> = {
-  [IT in ItemType]: JsonItem<IT, PlanetName, RoomId>;
-}[ItemType];
+  [IT in JsonItemType]: JsonItem<IT, PlanetName, RoomId>;
+}[JsonItemType];

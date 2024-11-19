@@ -4,23 +4,17 @@ import type {
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import { itemFalls } from "@/model/ItemInPlay";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type {
-  RoomState,
-  RoomJson,
-  AnyRoomJson,
-  RoomStateItems,
-} from "@/model/modelTypes";
+import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { entries } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItem } from "./loadItem";
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { addXy, addXyz } from "@/utils/vectors";
+import { addXyz } from "@/utils/vectors";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { PickupsCollected } from "../GameState";
+import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
@@ -31,28 +25,6 @@ function* loadItems<RoomId extends string>(
     yield* loadItem(id, item, roomJson, pickupsCollected);
   }
 }
-
-const loadFloor = (room: AnyRoomJson): ItemInPlay<"floor"> => {
-  return {
-    ...defaultItemProperties,
-    ...{
-      type: "floor",
-      id: "floor",
-      config: {},
-      // the floor's bounding box is extended to be 1 block bigger than the room in
-      // all directions - this is because doors extend outside of the box by half a block
-      // on the towards/left sides. Since the floor doesn't render, it doesn't matter
-      // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
-      // safeguards against falling 'off the edge of the world'
-      aabb: { ...blockXyzToFineXyz(addXy(room.size, { x: 2, y: 2 })), z: 0 },
-      state: {
-        position: blockXyzToFineXyz({ x: -1, y: -1, z: 0 }),
-        expires: null,
-      },
-      renders: false,
-    },
-  };
-};
 
 export const findStandingOn = (
   { state: { position }, aabb, id }: ItemInPlay<FallingItemTypes>,
@@ -99,7 +71,7 @@ const initStandingOnForItems = (items: RoomStateItems<PlanetName, string>) => {
 /**
  * convert items from a flat list to an object map, key'd by their ids
  */
-const itemArrayToItemObjectMap = <
+const itemsInItemObjectMap = <
   P extends PlanetName,
   RoomId extends string,
   ItemId extends string,
@@ -125,9 +97,9 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
   pickupsCollected: PickupsCollected<RoomId>,
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
-    floor: loadFloor(roomJson),
-    ...itemArrayToItemObjectMap(loadWalls(roomJson)),
-    ...itemArrayToItemObjectMap(loadItems(roomJson, pickupsCollected)),
+    ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
+    ...itemsInItemObjectMap(loadWalls(roomJson)),
+    ...itemsInItemObjectMap(loadItems(roomJson, pickupsCollected)),
   };
 
   // the physics will go nuts if things are overlapping, so check and reject

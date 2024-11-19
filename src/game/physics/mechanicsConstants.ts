@@ -34,3 +34,5 @@ export const terminalVelocityPixPerMs = {
   //others: -(originalGameJumpPxPerFrame * zxSpectrumFrameRate) / 1_000,
   others: -(blockSizePx.h * 6) / 1000,
 };
+
+export const roomHeightBlocks = 8;

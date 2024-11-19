@@ -96,20 +96,30 @@ export const moveItem = <RoomId extends string>(
     objectValues(room.items),
   );
 
-  const solidObstacles = collisions.filter((collidedWith) =>
-    isSolid(subjectItem, collidedWith, gameState),
-  );
-
   if (isPlayableItem(subjectItem)) {
     const {
       portal = [],
       deadly = [],
       pickup = [],
-    } = Object.groupBy(collisions, (colItem) => colItem.onTouch) as {
+    } = Object.groupBy(collisions, (item) => {
+      switch (item.type) {
+        case "baddie":
+        case "deadly-block":
+          return "deadly";
+        case "floor":
+          return item.config.deadly ? "deadly" : "other";
+        case "portal":
+          return "portal";
+        case "pickup":
+          return "pickup";
+      }
+      return "other"; // no special behaviour for player colliding with
+    }) as {
       portal: Array<ItemInPlay<"portal", PlanetName, RoomId>>;
       deadly: Array<
         | ItemInPlay<"baddie", PlanetName, RoomId>
         | ItemInPlay<"deadly-block", PlanetName, RoomId>
+        | ItemInPlay<"floor", PlanetName, RoomId>
       >;
       pickup: Array<ItemInPlay<"pickup", PlanetName, RoomId>>;
     };
@@ -141,6 +151,10 @@ export const moveItem = <RoomId extends string>(
       handlePlayerTouchingPickup(gameState, player, subjectItem);
     }
   }
+
+  const solidObstacles = collisions.filter((collidedWith) =>
+    isSolid(subjectItem, collidedWith, gameState),
+  );
 
   // standing on is sticky, so if we are still in contact with the item we were previously
   // standing on, that relationship survives to the next generation, even if there's now

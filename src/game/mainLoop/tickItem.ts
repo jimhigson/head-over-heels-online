@@ -1,7 +1,4 @@
-import type {
-  ItemInPlayType,
-  ItemInPlay,
-} from "@/model/ItemInPlay";
+import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
 import { isPlayableItem, itemFalls, isItemType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";

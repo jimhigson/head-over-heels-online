@@ -1,11 +1,11 @@
 import type { PlanetName } from "../sprites/planets";
 import type { Aabb, Direction, Xyz } from "../utils/vectors";
-import type { ItemConfig, ItemType } from "./json/JsonItem";
+import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 export type ItemInPlayType =
-  | Exclude<ItemType, "player" | "door">
+  | Exclude<JsonItemType, "player" | "door">
   | "head"
   | "heels"
   | "doorFrame"
@@ -65,7 +65,7 @@ export type ItemStateMap = {
     // by the type system as belonging only to head
     // or heels
     jumps: number;
-    carrying: ItemType | null;
+    carrying: JsonItemType | null;
   };
   teleporter: { stoodOn: boolean };
   spring: FallingItemState & { stoodOn: boolean };
@@ -74,10 +74,25 @@ export type ItemStateMap = {
   pickup: FallingItemState;
 };
 
+type ItemInPlayConfigMap = {
+  floor: { deadly: boolean };
+};
+
 // type-fest's EmptyObject was creating issues
 type EmptyObject = {
   [n in never]: unknown;
 };
+
+export type ItemInPlayConfig<
+  T extends ItemInPlayType,
+  P extends PlanetName,
+  RoomId extends string,
+> =
+  // config type explicitly given for this item type:
+  T extends keyof ItemInPlayConfigMap ? ItemInPlayConfigMap[T]
+  : // fall back to the config from the json types:
+  T extends JsonItemType ? JsonItemConfig<T, P, RoomId>
+  : EmptyObject;
 
 type BaseItemState = {
   position: Readonly<Xyz>;
@@ -93,14 +108,6 @@ type BaseItemState = {
 export type ItemState<T extends ItemInPlayType> = BaseItemState &
   (T extends keyof ItemStateMap ? ItemStateMap[T] : BaseItemState);
 
-export type OnTouch =
-  | "nonIntersect"
-  | "deadly"
-  | "pickup"
-  | "portal"
-  | "push"
-  | "glide";
-
 export type ItemInPlay<
   T extends ItemInPlayType,
   //S extends ItemState<T> = ItemState<T>,
@@ -111,12 +118,7 @@ export type ItemInPlay<
   type: T;
 
   // borrow the config from the json typings:
-  config: T extends ItemType ? ItemConfig<T, P, RoomId> : EmptyObject;
-
-  // position is now in the state:
-  //position: Xyz;
-
-  readonly onTouch: OnTouch;
+  config: ItemInPlayConfig<T, P, RoomId>;
 
   readonly id: ID;
   state: ItemState<T>;

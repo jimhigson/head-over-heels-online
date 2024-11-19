@@ -1,7 +1,6 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { RoomJson } from "@/model/modelTypes";
-import { blockSizePx } from "@/sprites/spritePivots";
 import type { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {
@@ -61,11 +60,7 @@ export function* loadWalls<R extends string>(
             position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
             expires: null,
           },
-          aabb: {
-            x: 0,
-            y: blockSizePx.d,
-            z: 999,
-          },
+          aabb: yAxisWallAabb,
           renders: false,
         },
       };
@@ -114,11 +109,7 @@ export function* loadWalls<R extends string>(
             position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
             expires: null,
           },
-          aabb: {
-            x: blockSizePx.w,
-            y: 0,
-            z: 999,
-          },
+          aabb: xAxisWallAabb,
           // invisible walls are never rendered so give no renderAabb
           renders: false,
         },

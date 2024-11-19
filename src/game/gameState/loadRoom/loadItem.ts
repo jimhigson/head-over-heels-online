@@ -1,5 +1,5 @@
 import type {
-  ItemType,
+  JsonItemType,
   JsonItem,
   UnknownJsonItem,
 } from "@/model/json/JsonItem";
@@ -36,23 +36,16 @@ export function* loadItem<RoomId extends string>(
 
     // catch-all for all items that don't need special handling:
     default: {
-      const falls = (fallingItemTypes as ItemType[]).includes(jsonItem.type);
+      const falls = (fallingItemTypes as JsonItemType[]).includes(
+        jsonItem.type,
+      );
       yield {
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
-        onTouch:
-          jsonItem.type === "pickup" ? "pickup"
-          : jsonItem.type === "baddie" || jsonItem.type === "deadly-block" ?
-            "deadly"
-          : (
-            jsonItem.type === "spring" ||
-            jsonItem.type === "portable-block" ||
-            jsonItem.type === "movable-block"
-          ) ?
-            "push"
-          : "nonIntersect",
         id: itemId,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        config: jsonItem.config as any,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
         state: initialState(jsonItem) as any,
         falls,
@@ -61,10 +54,10 @@ export function* loadItem<RoomId extends string>(
   }
 }
 
-const initialState = <T extends ItemType & ItemInPlayType>(
+const initialState = <T extends JsonItemType & ItemInPlayType>(
   jsonItem: JsonItem<T>,
 ) => {
-  const falls = (fallingItemTypes as ItemType[]).includes(jsonItem.type);
+  const falls = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
