@@ -3,24 +3,30 @@ import { isItemType } from "@/model/ItemInPlay";
 import type { GameState } from "../GameState";
 import { findStandingOn, loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
-import type { Xyz } from "@/utils/vectors";
-import { addXyz, originXyz } from "@/utils/vectors";
+import type { DirectionXyz, Xyz } from "@/utils/vectors";
+import { addXyz, directionsXy, originXyz } from "@/utils/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
+import { blockSizePx } from "@/sprites/spritePivots";
 
-export const changeCharacterRoom = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  roomId: NoInfer<RoomId>,
-  portalRelative: Xyz = originXyz,
-) => {
+export const changeCharacterRoom = <RoomId extends string>({
+  gameState,
+  toRoom,
+  portalRelative = originXyz,
+}: {
+  gameState: GameState<RoomId>;
+  toRoom: NoInfer<RoomId>;
+  portalRelative?: Xyz;
+  fromPortal?: ItemInPlay<"portal", PlanetName, RoomId>;
+}) => {
   const { currentCharacterName } = gameState;
   const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
 
-  if (roomId === leavingRoom.id) {
+  if (toRoom === leavingRoom.id) {
     throw new Error(
-      `Can't move to the same room "${roomId}" from "${leavingRoom.id}"`,
+      `Can't move to the same room "${toRoom}" from "${leavingRoom.id}"`,
     );
   }
 
@@ -28,15 +34,15 @@ export const changeCharacterRoom = <RoomId extends string>(
 
   const otherCharacterLoadedRoom = gameState.characterRooms[otherName]?.room;
   const destinationRoom =
-    otherCharacterLoadedRoom?.id === roomId ?
+    otherCharacterLoadedRoom?.id === toRoom ?
       otherCharacterLoadedRoom
-    : loadRoom(gameState.campaign.rooms[roomId], gameState.pickupsCollected);
+    : loadRoom(gameState.campaign.rooms[toRoom], gameState.pickupsCollected);
 
   const character = leavingRoom.items[currentCharacterName];
 
   if (character === undefined) {
     throw new Error(
-      `Couldn't find character ${currentCharacterName} in room ${leavingRoom.id} - can't move them to new room ${roomId}`,
+      `Couldn't find character ${currentCharacterName} in room ${leavingRoom.id} - can't move them to new room ${toRoom}`,
     );
   }
 
@@ -54,6 +60,16 @@ export const changeCharacterRoom = <RoomId extends string>(
       destinationPortal.config.relativePoint,
       portalRelative,
     );
+    const {
+      config: { direction: portalDirection },
+    } = destinationPortal;
+    if ((directionsXy as Readonly<DirectionXyz[]>).includes(portalDirection)) {
+      // automatically walk forward a short way in the new room to put character properly
+      // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
+      //  - only doors)
+      // TODO: maybe this should be side-effect free
+      character.state.autoWalkDistance = blockSizePx.w * 0.75;
+    }
   }
 
   // remove the character from the new room if they're already there - this only really happens
@@ -80,5 +96,5 @@ export const changeCharacterRoom = <RoomId extends string>(
     entryState: entryState(character),
   };
 
-  gameState.events.emit("roomChange", roomId);
+  gameState.events.emit("roomChange", toRoom);
 };

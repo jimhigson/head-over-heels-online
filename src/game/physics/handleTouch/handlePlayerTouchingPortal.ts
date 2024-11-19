@@ -1,24 +1,40 @@
 import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { subXyz } from "@/utils/vectors";
-import { changeCharacterRoom } from "../../gameState/gameStateTransitions/changeCharacterRoom";
+import type { Xyz } from "@/utils/vectors";
+import { dotProductXyz, subXyz, unitVectors } from "@/utils/vectors";
 import { type GameState } from "../../gameState/GameState";
+import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
 
+/**
+ *
+ * @returns true if the player went through the portal
+ */
 export const handlePlayerTouchingPortal = <RoomId extends string>(
   gameState: GameState<RoomId>,
   player: PlayableItem,
-  portal: ItemInPlay<"portal", PlanetName, RoomId>,
-) => {
-  changeCharacterRoom(
-    gameState,
-    portal.config.toRoom,
-    subXyz(player.state.position, portal.config.relativePoint),
+  {
+    config: { relativePoint, toRoom, direction: portalDirection },
+  }: ItemInPlay<"portal", PlanetName, RoomId>,
+  /** the movement that caused the player to touch the portal */
+  movementDelta: Xyz,
+): boolean => {
+  const doorDirectionVector = unitVectors[portalDirection];
+  const movementComponentInDoorDirection = dotProductXyz(
+    doorDirectionVector,
+    movementDelta,
   );
 
-  // automatically walk forward a short way in the new room to put character properly
-  // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
-  //  - only doors)
-  // TODO: maybe this should be side-effect free
-  player.state.autoWalkDistance = blockSizePx.w * 0.75;
+  if (movementComponentInDoorDirection <= 0) {
+    // player is not walking in the right direction of the portal. ie, they might
+    // be auto-walking into the room
+    return false;
+  }
+
+  changeCharacterRoom({
+    gameState,
+    toRoom,
+    portalRelative: subXyz(player.state.position, relativePoint),
+  });
+
+  return true;
 };

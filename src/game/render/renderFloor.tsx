@@ -8,9 +8,9 @@ import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import type { PlanetName } from "@/sprites/planets";
-import type { Direction } from "@/utils/vectors";
+import type { DirectionXy } from "@/utils/vectors";
 
-export type SidesWithDoors = Partial<Record<Direction, true>>;
+export type SidesWithDoors = Partial<Record<DirectionXy, true>>;
 
 export const renderFloor = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,

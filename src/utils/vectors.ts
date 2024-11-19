@@ -1,10 +1,10 @@
-export const directions = ["away", "towards", "left", "right"] as const;
-export type Direction = (typeof directions)[number];
+export const directionsXy = ["away", "towards", "left", "right"] as const;
+export type DirectionXy = (typeof directionsXy)[number];
 
-export const directionAxis = (direction: Direction): AxisXy =>
+export const directionAxis = (direction: DirectionXy): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
-export const oppositeDirection = (direction: Direction): Direction =>
+export const oppositeDirection = (direction: DirectionXy): DirectionXy =>
   direction === "away" ? "towards"
   : direction === "towards" ? "away"
   : direction === "left" ? "right"
@@ -13,10 +13,13 @@ export const oppositeDirection = (direction: Direction): Direction =>
 /**
  * doors sit along the axis perpendicular to their direction
  */
-export const doorAlongAxis = (doorDirection: Direction): AxisXy =>
+export const doorAlongAxis = (doorDirection: DirectionXy): AxisXy =>
   perpendicularAxisXy(directionAxis(doorDirection));
 
-export const unitVectors: Record<Direction | "down" | "up", Xyz> = {
+export type DirectionZ = "down" | "up";
+export type DirectionXyz = DirectionXy | DirectionZ;
+
+export const unitVectors: Record<DirectionXyz, Xyz> = {
   away: { x: 0, y: 1, z: 0 },
   left: { x: 1, y: 0, z: 0 },
   right: { x: -1, y: 0, z: 0 },
@@ -123,7 +126,9 @@ export type AxisXyz = (typeof axesXyz)[number];
 
 export type Aabb = Xyz;
 
-/** how big is the collision box around an item? */
+/**
+ * dot product - the component of one vector in the direction of another
+ */
 export const dotProductXyz = (a: Xyz, b: Xyz): number => {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 };

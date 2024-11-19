@@ -1,9 +1,9 @@
-import type { Direction } from "../../src/utils/vectors";
+import type { DirectionXy } from "../../src/utils/vectors";
 import type { CompassDirections } from "./readToJson";
 
 export const convertDirection = (
   compassDirection: CompassDirections,
-): Direction => {
+): DirectionXy => {
   // directions other than NESW are guesses and might be wrong - need to look into
   // why we have these.
   switch (compassDirection) {

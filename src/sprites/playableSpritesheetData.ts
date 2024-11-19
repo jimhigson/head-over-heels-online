@@ -2,13 +2,13 @@ import type { SpritesheetData } from "pixi.js";
 import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "@/model/modelTypes";
-import type { Direction } from "@/utils/vectors";
-import { directions } from "@/utils/vectors";
+import type { DirectionXy } from "@/utils/vectors";
+import { directionsXy } from "@/utils/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { zxSpectrumFrameRate } from "@/originalGame";
 
 function walkingFrames<P extends CharacterName>(p: P) {
-  function* walkingFramesGen<P extends CharacterName, D extends Direction>(
+  function* walkingFramesGen<P extends CharacterName, D extends DirectionXy>(
     p: P,
     d: D,
   ): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
@@ -21,15 +21,15 @@ function walkingFrames<P extends CharacterName>(p: P) {
     yield `${p}.walking.${d}.2`;
   }
 
-  return directions.reduce(
+  return directionsXy.reduce(
     (ac, d) => ({
       ...ac,
       [`${p}.walking.${d}`]: [...walkingFramesGen(p, d)],
     }),
     {},
   ) as Record<
-    `${P}.walking.${Direction}`,
-    Array<`${P}.walking.${Direction}.${"1" | "2" | "3"}`>
+    `${P}.walking.${DirectionXy}`,
+    Array<`${P}.walking.${DirectionXy}.${"1" | "2" | "3"}`>
   >;
 }
 

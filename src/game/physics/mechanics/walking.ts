@@ -1,4 +1,4 @@
-import { directions, scaleXyz, unitVectors } from "@/utils/vectors";
+import { directionsXy, scaleXyz, unitVectors } from "@/utils/vectors";
 import { playerWalkSpeedPixPerMs } from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
@@ -18,7 +18,7 @@ export const walking = <RoomId extends string>(
     state: { autoWalkDistance, standingOn, facing, teleporting },
   } = playableItem;
 
-  const directionPressed = directions.find((d) => {
+  const directionPressed = directionsXy.find((d) => {
     return inputState[d] === true;
   });
 

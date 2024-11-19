@@ -1,5 +1,5 @@
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, Direction, Xyz } from "../utils/vectors";
+import type { Aabb, DirectionXy, DirectionXyz, Xyz } from "../utils/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
@@ -20,7 +20,7 @@ type FallingItemState = {
 };
 
 export type CharacterState = FallingItemState & {
-  facing: Direction;
+  facing: DirectionXy;
   action:
     | "moving"
     | "idle"
@@ -77,8 +77,18 @@ export type ItemStateMap = {
   };
 };
 
-type ItemInPlayConfigMap = {
+type ItemInPlayConfigMap<RoomId extends string> = {
   floor: { deadly: boolean };
+  portal: {
+    toRoom: RoomId;
+    /* 
+      when moving through portals, the position of the character relative to this point is
+      taken, and preserved to be relative to the relativePoint of the portal in the new room
+    */
+    relativePoint: Xyz;
+    // the direction this portal has to be hit in to be walked through
+    direction: DirectionXyz;
+  };
 };
 
 // type-fest's EmptyObject was creating issues
@@ -92,7 +102,7 @@ export type ItemInPlayConfig<
   RoomId extends string,
 > =
   // config type explicitly given for this item type:
-  T extends keyof ItemInPlayConfigMap ? ItemInPlayConfigMap[T]
+  T extends keyof ItemInPlayConfigMap<RoomId> ? ItemInPlayConfigMap<RoomId>[T]
   : // fall back to the config from the json types:
   T extends JsonItemType ? JsonItemConfig<T, P, RoomId>
   : EmptyObject;

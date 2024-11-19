@@ -58,12 +58,6 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     const snapToPixelGrid =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
 
-    if (item.type === "heels") {
-      console.log(
-        `item ${item.id} is stationary: ${itemIsStationary} and should snap to pixel grid: ${snapToPixelGrid}`,
-      );
-    }
-
     if (snapToPixelGrid) {
       console.log(`snapping item ${item.id} to pixel grid`);
       item.state.position = roundXyz(item.state.position);

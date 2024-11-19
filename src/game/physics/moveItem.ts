@@ -24,7 +24,7 @@ import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPi
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
+import { handlePlayerTouchingDeadly } from "./handleTouch/handlePlayerTouchingDeadly";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -125,13 +125,17 @@ export const moveItem = <RoomId extends string>(
     };
 
     const firstPortal = portal.at(0);
-    if (
-      firstPortal !== undefined &&
-      // don't use portals if autowalking - otherwise would flip right back to the previous room
-      subjectItem.state.autoWalkDistance === 0
-    ) {
-      handlePlayerTouchingPortal(gameState, subjectItem, firstPortal);
-      return;
+    if (firstPortal !== undefined) {
+      if (
+        handlePlayerTouchingPortal(
+          gameState,
+          subjectItem,
+          firstPortal,
+          xyzDelta,
+        )
+      )
+        // has activated the portal:
+        return;
     }
 
     if (deadly?.length > 0) {

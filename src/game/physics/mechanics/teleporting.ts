@@ -37,10 +37,11 @@ export function teleporting<RoomId extends string>(
   switch (teleporting.phase) {
     case "out":
       if (newTimeRemaining === 0) {
-        changeCharacterRoom(
+        changeCharacterRoom({
           gameState,
-          teleporting.toRoom as RoomId /* TODO: propertly type in state */,
-        );
+          toRoom:
+            teleporting.toRoom as RoomId /* TODO: propertly type in state */,
+        });
         return {
           stateDelta: {
             teleporting: {

@@ -25,6 +25,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         config: {
           toRoom: room.roomBelow,
           relativePoint: floorPosition,
+          direction: "down",
         },
         // the floor's bounding box is extended to be 1 block bigger than the room in
         // all directions - this is because doors extend outside of the box by half a block
@@ -74,6 +75,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         config: {
           toRoom: room.roomAbove,
           relativePoint: subXyz(ceilingPosition, { z: blockSizePx.h }),
+          direction: "up",
         },
         // the floor's bounding box is extended to be 1 block bigger than the room in
         // all directions - this is because doors extend outside of the box by half a block

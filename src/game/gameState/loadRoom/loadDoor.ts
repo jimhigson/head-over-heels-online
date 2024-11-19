@@ -94,6 +94,7 @@ export function* loadDoor<RoomId extends string>(
         ...jsonDoor.config,
         inHiddenWall,
         relativePoint: doorNearPosition,
+        direction,
       },
       renders: false,
       state: {

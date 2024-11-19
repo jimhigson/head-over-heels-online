@@ -70,12 +70,22 @@ export const listenForInput = <RoomId extends string>({
     }
   };
 
+  const handleWindowFocus = (): void => {
+    inputState.windowFocus = true;
+  };
+  const handleWindowBlur = (): void => {
+    inputState.windowFocus = false;
+  };
+
   window.addEventListener("keydown", keyDownHandler, false);
   window.addEventListener("keyup", keyUpHandler, false);
+  window.addEventListener("focus", handleWindowFocus, false);
+  window.addEventListener("blur", handleWindowBlur, false);
 
   return () => {
-    console.log("removing listeners on keys");
     window.removeEventListener("keydown", keyDownHandler, false);
     window.removeEventListener("keyup", keyUpHandler, false);
+    window.removeEventListener("focus", handleWindowFocus, false);
+    window.removeEventListener("blur", handleWindowBlur, false);
   };
 };

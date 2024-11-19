@@ -38,7 +38,7 @@ export const gameMain = async <RoomId extends string>(
       gameDiv.appendChild(app.canvas);
     },
     changeRoom(roomId: RoomId) {
-      changeCharacterRoom(gameState, roomId);
+      changeCharacterRoom({ gameState, toRoom: roomId });
     },
     get currentRoom() {
       return currentRoom(gameState);
