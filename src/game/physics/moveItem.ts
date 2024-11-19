@@ -22,7 +22,7 @@ import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
-import { isPushable, isSolid } from "./isSolid";
+import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
 import { characterFadeInOrOutDuration } from "../render/animationTimings";
 
@@ -61,60 +61,12 @@ export const slideOnDoorFrames = (
       };
 };
 
-/*
-const pushVector = (
-  pusher: AnyItemInPlay,
-  pusherTargetLocation: Xyz,
-  pushee: AnyItemInPlay,
-) => {
-  const m = mtv(
-    pushee.state.position,
-    pushee.aabb,
-    pusherTargetLocation,
-    pusher.aabb,
-  );
-  // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
-  return scaleXyz(m, 0.5);
-};
-*/
-
-const findStandingOn = <RoomId extends string>(
-  subjectItem: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
-  targetPosition: Xyz,
-  solidObstacles: Array<UnknownItemInPlay<RoomId>>,
-): UnknownItemInPlay<RoomId> | null => {
-  // check if still standing on the same item as before:
-  const stillStandingOnTheSame = solidObstacles.find(
-    (obstacle) => obstacle === subjectItem.state.standingOn,
-  );
-  if (stillStandingOnTheSame) {
-    return stillStandingOnTheSame;
-  }
-
-  // TODO: sort by the items with the most overlap so that if we stand on two
-  // simultaneously, it's the one we're most obviously on that we are standing on
-  for (const obstacle of solidObstacles) {
-    // check if we've standing on the collided item:
-    const standingOn =
-      mtv(
-        targetPosition,
-        subjectItem.aabb,
-        obstacle.state.position,
-        obstacle.aabb,
-      ).z > 0;
-    if (standingOn) {
-      return obstacle;
-    }
-  }
-  return null;
-};
-
 /**
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
  */
 export const moveItem = <RoomId extends string>(
-  subjectItem: UnknownItemInPlay<RoomId>,
+  subjectItem: ItemInPlay<FallingItemTypes>,
   xyzDeltaPartial: Partial<Xyz>,
   gameState: GameState<RoomId>,
   /**
@@ -190,34 +142,22 @@ export const moveItem = <RoomId extends string>(
     }
   }
 
-  if (itemFalls(subjectItem)) {
-    subjectItem.state.standingOn = findStandingOn(
-      subjectItem,
-      targetPosition,
-      solidObstacles,
-    );
-  }
-
-  /*
-  for (const obstacle of solidObstacles) {
-    if (isPushable(obstacle) && pusher !== obstacle) {
-      const pV = pushVector(subjectItem, targetPosition, obstacle);
-      xyzDelta = subXyz(xyzDelta, pV);
-      moveItem<RoomId>(obstacle, pV, gameState, subjectItem);
-    }
-  }
-    */
-
-  // right now the only reaction to collisions is to not move as far. This could also be pushing the item,
-  // or dying (if it is deadly), and maybe some others
-  /*const correctedPosition1 = slidingCollisionWithManyItems(
-    subjectItem,
-    xyzDelta,
-    solidObstacles,
-  );*/
+  // standing on is sticky, so if we are still in contact with the item we were previously
+  // standing on, that relationship survives to the next generation, even if there's now
+  // an item we could be better said to be standing on
+  // TODO: this isn't quite right - it should check if they are overlapping or adjacent
+  subjectItem.state.standingOn =
+    solidObstacles.find((obs) => obs === subjectItem.state.standingOn) || null;
 
   const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
 
+  /**
+   * as we apply sliding collision, we need to do some other checks - this is
+   * because these checks can only really be done once earlier obstacles have had a
+   * chance to change the xyxDelta via sliding. Eg, if falling, we need to be able to
+   * unsnag before we look for the standingOn, or we will declare ourselves as standing
+   * on intermediate blocks while sliding down a tower of blocks
+   */
   const correctedPosition1 = iterate(sortedObstacles).reduce<Xyz>(
     (posAc: Xyz, obstacle) => {
       let m = mtv(
@@ -227,12 +167,13 @@ export const moveItem = <RoomId extends string>(
         obstacle.aabb,
       );
 
-      if (isPushable(obstacle) && obstacle !== pusher) {
+      if (itemFalls(obstacle) && obstacle !== pusher) {
         // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
         const pushVector = scaleXyz(m, -0.5);
+
         moveItem<RoomId>(obstacle, pushVector, gameState, subjectItem);
         // scale back how far we want to push:
-        posAc = subXyz(xyzDelta, pushVector);
+        posAc = subXyz(posAc, pushVector);
         // recalculate the mtv for the new pushee position, in case it couldn't move that far and we have to squash against it now:
         m = mtv(
           posAc,
@@ -240,6 +181,10 @@ export const moveItem = <RoomId extends string>(
           obstacle.state.position,
           obstacle.aabb,
         );
+      }
+
+      if (subjectItem.state.standingOn === null && m.z > 0) {
+        subjectItem.state.standingOn = obstacle;
       }
 
       return addXyz(posAc, m);

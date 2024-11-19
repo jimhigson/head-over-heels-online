@@ -9,7 +9,11 @@ yes | ffmpeg -i gfx/sprites.iff -vf "curves=r='0.00/0.00 0.25/0.22 0.50/0.50 0.7
 #
 # make sprite mask colour actually transparent in the png (dpaint uses a normal colour)
 echo "🤖 making transparent"
-magick gfx/sprites.png -transparent \#3a4e4a gfx/sprites.png
+# since the palette is in the first 16 pixels of the image, we can auto-detect the transparency colour:
+transparencyColor=$(magick gfx/sprites.png -format "#%[hex:u.p{13,0}]" info:)
+echo "transparent color detected as \"$transparencyColor\""
+
+magick gfx/sprites.png -transparent $transparencyColor gfx/sprites.png
 
 echo "🤖 reducing palette"
 pngquant -vf --quality 100-100 \

@@ -68,7 +68,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isMovable) {
-    moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
+    moveItem(item, accumulatedMovement, gameState);
   }
 
   if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {

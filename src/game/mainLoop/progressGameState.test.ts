@@ -293,7 +293,7 @@ describe("doors", () => {
 });
 
 describe("conveyors", () => {
-  test.only("items move on conveyors and can push on top of other items", () => {
+  test("items move on conveyors and can push on top of other items", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         portableBlock: {
@@ -387,27 +387,29 @@ describe("renderPositionDirty", () => {
   test("marks only moved items as dirty", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
+        // pickup staring on the floor will not move:
+        pickupOnFloor: {
+          type: "pickup",
+          position: { x: 2, y: 0, z: 0 },
+          config: { gives: "extra-life" },
+        },
+        // pickup falling onto the floor will move
+        pickupFallingOntoPickup: {
+          type: "pickup",
+          position: { x: 3, y: 0, z: 2 },
+          config: { gives: "extra-life" },
+        },
+        // head will fall onto a block
         head: {
           type: "player",
-          position: { x: 0, y: 0, z: 2 },
+          position: { x: 0, y: 2, z: 2 },
           config: {
             which: "head",
           },
         },
-        fallingPickup: {
-          type: "pickup",
-          position: { x: 0, y: 0, z: 2 },
-          config: { gives: "extra-life" },
-        },
-        sittingPickup: {
-          type: "pickup",
-          position: { x: 0, y: 0, z: 0 },
-          config: { gives: "extra-life" },
-        },
         block: {
           type: "block",
-          position: { x: 0, y: 0, z: 0 },
+          position: { x: 0, y: 2, z: 0 },
           config: { style: "organic" },
         },
       },
@@ -423,11 +425,12 @@ describe("renderPositionDirty", () => {
         .map((i) => i.id),
     ];
 
+    console.log(positionDirtyItems);
     // falling items marked as dirty:
     expect(positionDirtyItems.includes("head")).toBeTruthy();
-    expect(positionDirtyItems.includes("fallingPickup")).toBeTruthy();
+    expect(positionDirtyItems.includes("pickupFallingOntoPickup")).toBeTruthy();
     // nothing else is marked as dirty:
-    expect(positionDirtyItems.length).toBe(2);
+    expect(positionDirtyItems).toHaveLength(2);
   });
 });
 

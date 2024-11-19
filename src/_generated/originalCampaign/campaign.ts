@@ -1525,6 +1525,11 @@ export const campaign = {
           position: { x: 5, y: 5, z: 3 },
           config: { gives: 'extra-life' }
         },
+        pickupStartingOnFloor: {
+          type: "pickup",
+          position: { x: 2, y: 0, z: 0 },
+          config: { gives: 'extra-life' }
+        },
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
@@ -1918,16 +1923,6 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "conveyor",
         },
-        "conveyor@0,6,0:24hKaE": {
-          config: { direction: "away" },
-          position: { x: 0, y: 6, z: 0 },
-          type: "conveyor",
-        },
-        "deadly-block@0,7,0:ZWGEjo": {
-          config: { style: "volcano" },
-          position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
-        },
         "door@8,3,0:Z1u78lr": {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
@@ -1935,8 +1930,13 @@ export const campaign = {
         },
         heels: {
           config: { which: "heels" },
-          position: { x: 3.5, y: 3.5, z: 0 },
+          position: { x: 0, y: 3, z: 2 },
           type: "player",
+        },
+        pickup: {
+          config: { style: 'cube' },
+          position: { x: 0, y: 3, z: 8 },
+          type: "portable-block",
         },
         "teleporter@0,0,0:Z1GqgNT": {
           config: { toRoom: "blacktooth24" },

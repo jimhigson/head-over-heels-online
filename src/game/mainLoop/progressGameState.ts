@@ -79,6 +79,7 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     const snapToPixelGrid =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
     if (snapToPixelGrid) {
+      console.log("snapping item to pixel grid", item.id);
       item.state.position = roundXyz(item.state.position);
       item.renderPositionDirty = true;
     }

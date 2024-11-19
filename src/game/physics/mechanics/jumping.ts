@@ -68,7 +68,7 @@ export const jumping = <RoomId extends string>(
     // actually, tPex * 2 doesn't totally work - this value is experimentally
     // decided on. This might be because of the terminal velocity of the falling,
     // but actually probably not
-    740;
+    1000;
 
   return {
     stateDelta: {

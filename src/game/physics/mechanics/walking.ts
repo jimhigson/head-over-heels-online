@@ -39,15 +39,6 @@ export const walking = <RoomId extends string>(
     return {};
   }
 
-  if (type === "heels" && standingOn === null) {
-    console.log(
-      //standingOn?.type,
-      "jumping",
-      jumpEndTime - gameTime,
-      "until jump start",
-    );
-  }
-
   // handle 'walking' while ascending/falling:
   if (standingOn === null) {
     switch (type) {
