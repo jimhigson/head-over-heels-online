@@ -53,8 +53,6 @@ export function* loadItem<RoomId extends string>(
             "push"
           : "nonIntersect",
         id: itemId,
-        renderingDirty: false,
-        renderPositionDirty: false,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
         state: initialState(jsonItem) as any,
         falls,

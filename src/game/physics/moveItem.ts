@@ -201,6 +201,5 @@ export const moveItem = <RoomId extends string>(
 
   if (!xyzEqual(correctedPosition2, previousPosition)) {
     subjectItem.state.position = correctedPosition2;
-    subjectItem.renderPositionDirty = true;
   }
 };

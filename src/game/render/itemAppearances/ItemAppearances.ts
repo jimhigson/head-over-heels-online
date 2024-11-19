@@ -105,10 +105,17 @@ export const itemAppearances: {
     return container;
   },
 
-  spring: () => createSprite("spring.released"),
+  spring: (item, _gameState) =>
+    !item.state.stoodOn && item.lastRenderedState?.stoodOn ?
+      createSprite({
+        frames: spriteSheet.animations["spring.bounce"],
+        playOnce: "and-stop",
+      })
+    : item.state.stoodOn ? createSprite("spring.compressed")
+    : createSprite("spring.released"),
 
   teleporter: (item) =>
-    item.state.flashing ?
+    item.state.stoodOn ?
       createSprite({
         frames: spriteSheet.animations["teleporter.flashing"],
       })
@@ -121,7 +128,7 @@ export const itemAppearances: {
     if (collected) {
       return createSprite({
         frames: spriteSheet.animations["bubbles.pickup"],
-        playOnce: true,
+        playOnce: "and-destroy",
       });
     }
 

@@ -5,7 +5,7 @@ import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
 import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
 import { renderExtent } from "./renderExtent";
-import { moveSpriteToItemProjection, renderItem } from "./renderItems";
+import { moveSpriteToItemProjection, renderItem } from "./renderItem";
 import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";

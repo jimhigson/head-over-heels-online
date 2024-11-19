@@ -10,12 +10,12 @@ import type { GameState } from "@/game/gameState/GameState";
  */
 export const walking = <RoomId extends string>(
   playableItem: PlayableItem<RoomId>,
-  { inputState, gameTime }: GameState<RoomId>,
+  { inputState }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName> => {
   const {
     type,
-    state: { autoWalkDistance, standingOn, facing, jumpEndTime, teleporting },
+    state: { autoWalkDistance, standingOn, facing, teleporting },
   } = playableItem;
 
   const directionPressed = directions.find((d) => {
@@ -70,7 +70,11 @@ export const walking = <RoomId extends string>(
         }
       }
       case "heels":
-        if (jumpEndTime > gameTime) {
+        // we have the option to fall forward, or vertically, but no option
+        // to change direction.
+        // This is different from the original game, where heels fell vertically
+        // or jumped with mandatory forward motion
+        if (directionPressed === facing) {
           return {
             positionDelta: scaleXyz(
               unitVectors[facing],

@@ -9,18 +9,13 @@ import { isPlayableItem, itemFalls } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
-import { objectEntries, objectValues } from "iter-tools";
+import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
-import {
-  isExactIntegerXyz,
-  roundXyz,
-  xyzEqual,
-  type Xyz,
-} from "@/utils/vectors";
+import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors";
 
 //  So, 10ms = 0.01s, at 50px/s gives 0.01 * 50 = 0.5px
 // however, with parabolic jumping (g=0.0002m/s²) the speed at 1block of z gain can be as muc has
@@ -49,39 +44,29 @@ const deleteItemFromRoom = <RoomId extends string>(
   }
 };
 
-const getStatingPositions = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
-) => {
-  return Object.fromEntries(
-    iterate(objectEntries(room.items)).map(
-      ([id, item]) => [id, item.state.position] as [string, Xyz],
-    ),
-  );
-};
-
 /**
  * snap all items that haven't moved to the pixel grid - sub-pixel locations are
  * only allowed while items are moving
  */
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
-  startingPositions: Record<string, Xyz>,
 ) => {
   for (const item of objectValues(room.items)) {
-    if (startingPositions[item.id] === undefined) {
-      // item had no starting position - was introduced during the tick
-      continue;
-    }
-    const itemIsStationary = xyzEqual(
-      startingPositions[item.id],
-      item.state.position,
-    );
+    const previousPosition = item.lastRenderedState!.position;
+
+    const itemIsStationary = xyzEqual(previousPosition, item.state.position);
     const snapToPixelGrid =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
+
+    if (item.type === "heels") {
+      console.log(
+        `item ${item.id} is stationary: ${itemIsStationary} and should snap to pixel grid: ${snapToPixelGrid}`,
+      );
+    }
+
     if (snapToPixelGrid) {
-      console.log("snapping item to pixel grid", item.id);
+      console.log(`snapping item ${item.id} to pixel grid`);
       item.state.position = roundXyz(item.state.position);
-      item.renderPositionDirty = true;
     }
   }
 };
@@ -105,7 +90,9 @@ export const progressGameState = <RoomId extends string>(
 
   const room = currentRoom(gameState);
 
-  const startingPositions = getStatingPositions(room);
+  for (const item of objectValues(room.items)) {
+    item.lastRenderedState = { ...item.state };
+  }
 
   for (let i = 0; i < physicsTickCount; i++) {
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
@@ -125,14 +112,14 @@ export const progressGameState = <RoomId extends string>(
       }
     }
 
-    tickAllItems: for (const item of objectValues(room.items)) {
+    for (const item of objectValues(room.items)) {
       if (currentPlayableItem(gameState).state.action === "death") {
         // all physics is suspended while death animation plays
-        break tickAllItems;
+        break;
       }
       tickItem(item, gameState, physicsTickMs);
     }
   }
 
-  snapStationaryItemsToPixelGrid(room, startingPositions);
+  snapStationaryItemsToPixelGrid(room);
 };

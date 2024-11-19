@@ -35,13 +35,6 @@ export type CharacterState = FallingItemState & {
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
 
-  /**
-   * the time we will finish being in a jump state, for the most recent jump.
-   * This value can be used at any time to say if we are in a jump or not by
-   * comparing with the current game time.
-   */
-  jumpEndTime: number;
-
   teleporting:
     | {
         phase: "out";
@@ -74,10 +67,10 @@ export type ItemStateMap = {
     jumps: number;
     carrying: ItemType | null;
   };
-  teleporter: { flashing: boolean };
+  teleporter: { stoodOn: boolean };
+  spring: FallingItemState & { stoodOn: boolean };
   "portable-block": FallingItemState;
   baddie: FallingItemState;
-  spring: FallingItemState;
   pickup: FallingItemState;
 };
 
@@ -87,7 +80,7 @@ type EmptyObject = {
 };
 
 type BaseItemState = {
-  position: Xyz;
+  position: Readonly<Xyz>;
   /**
    * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
    * set to -1. Otherwise, can set to the duration of an animation that needs to play
@@ -127,6 +120,8 @@ export type ItemInPlay<
 
   readonly id: ID;
   state: ItemState<T>;
+  // shallow copy of the last rendered state of this item, or undefined if never rendered before
+  lastRenderedState?: ItemState<T>;
 
   /**
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
@@ -136,11 +131,6 @@ export type ItemInPlay<
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
 
-  renderPositionDirty: boolean;
-  renderingDirty: boolean;
-
-  /*render: () => void;
-  positionOnScreen: () => void;*/
   positionContainer?: Container;
   renderContainer?: Container;
 

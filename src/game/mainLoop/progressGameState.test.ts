@@ -19,8 +19,6 @@ import {
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { headState, heelsState } from "@/_testUtils/characterState";
-import { iterate } from "@/utils/iterate";
-import { objectValues } from "iter-tools";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -293,7 +291,7 @@ describe("doors", () => {
 });
 
 describe("conveyors", () => {
-  test("items move on conveyors and can push on top of other items", () => {
+  test("items move on conveyors and can slide on top of other items", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         portableBlock: {
@@ -380,57 +378,6 @@ describe("deadly blocks", () => {
     expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
     expect(currentRoom(gameState).id).toBe("secondRoom");
-  });
-});
-
-describe("renderPositionDirty", () => {
-  test("marks only moved items as dirty", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
-      firstRoomItems: {
-        // pickup staring on the floor will not move:
-        pickupOnFloor: {
-          type: "pickup",
-          position: { x: 2, y: 0, z: 0 },
-          config: { gives: "extra-life" },
-        },
-        // pickup falling onto the floor will move
-        pickupFallingOntoPickup: {
-          type: "pickup",
-          position: { x: 3, y: 0, z: 2 },
-          config: { gives: "extra-life" },
-        },
-        // head will fall onto a block
-        head: {
-          type: "player",
-          position: { x: 0, y: 2, z: 2 },
-          config: {
-            which: "head",
-          },
-        },
-        block: {
-          type: "block",
-          position: { x: 0, y: 2, z: 0 },
-          config: { style: "organic" },
-        },
-      },
-    });
-
-    playGameThrough(gameState, {
-      forTime: 10, // 10ms - just run for a short time
-    });
-
-    const positionDirtyItems = [
-      ...iterate(objectValues(currentRoom(gameState).items))
-        .filter((i) => i.renderPositionDirty)
-        .map((i) => i.id),
-    ];
-
-    console.log(positionDirtyItems);
-    // falling items marked as dirty:
-    expect(positionDirtyItems.includes("head")).toBeTruthy();
-    expect(positionDirtyItems.includes("pickupFallingOntoPickup")).toBeTruthy();
-    // nothing else is marked as dirty:
-    expect(positionDirtyItems).toHaveLength(2);
   });
 });
 

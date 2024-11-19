@@ -36,7 +36,7 @@ const getJumpAbility = (characterName: CharacterName, onSpring: boolean) => {
 
 export const jumping = <RoomId extends string>(
   characterItem: PlayableItem,
-  { inputState: { jump: jumpInput }, gameTime }: GameState<RoomId>,
+  { inputState: { jump: jumpInput } }: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<CharacterName> => {
   const { type: characterType } = characterItem;
@@ -51,30 +51,15 @@ export const jumping = <RoomId extends string>(
     return {};
   }
 
-  const { velZ, tApex } = getJumpAbility(
+  const { velZ } = getJumpAbility(
     characterType,
     characterItem.state.standingOn?.type === "spring",
   );
-
-  console.log("starting jump with end time after", tApex * 2);
-
-  const jumpEndTime =
-    gameTime +
-    // heels is considered to be jumping for twice as long, because
-    // head glides from the top of the jump, whereas heels continues
-    // on the parabolic arc. Hover, use *2 for both for simplicity since
-    // it doesn't matter if head thinks he is in a jump or not
-    //tApex * 2;
-    // actually, tPex * 2 doesn't totally work - this value is experimentally
-    // decided on. This might be because of the terminal velocity of the falling,
-    // but actually probably not
-    1000;
 
   return {
     stateDelta: {
       action: "moving",
       standingOn: null,
-      jumpEndTime,
       velZ,
     },
   };

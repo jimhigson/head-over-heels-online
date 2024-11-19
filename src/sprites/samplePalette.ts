@@ -23,26 +23,26 @@ export type palette = [
 ];
 
 export const colourPaletteNames = [
-  "pureBlack",
-  "lightBlack",
-  "shadow",
-  "midGrey",
-  "lightGrey",
-  "white",
-  "metallicBlue",
-  "pink",
+  "pureBlack", // 0
+  "lightBlack", // 1
+  "shadow", // 2
+  "midGrey", // 3
+  "lightGrey", // 4
+  "white", // 5
+  "metallicBlue", // 6
+  "pink", // 7
   //
-  "moss",
-  "redShadow",
-  "midRed",
-  "lightBeige",
-  "highlightBeige",
-  "alpha", // colour was replaced in conversion with transparent
+  "moss", // 8
+  "redShadow", // 9
+  "midRed", // 10
+  "lightBeige", // 11
+  "highlightBeige", // 12
+  "alpha", // 13 colour was replaced in conversion with transparent
   // the replacement colours are in the spritesheet to be replaced with room-specific colours (using
   // the room's colour from the zx spectrum original game). These can be any (unique) colour in dpaint,
   // and we will pick them up here:
-  "replaceLight",
-  "replaceDark",
+  "replaceLight", // 14
+  "replaceDark", // 15
 ] as const;
 export type ColorPaletteName = (typeof colourPaletteNames)[number];
 

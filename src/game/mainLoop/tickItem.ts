@@ -1,7 +1,6 @@
 import type {
   ItemInPlayType,
   ItemInPlay,
-  UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import { isPlayableItem, itemFalls, isItemType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
@@ -10,10 +9,12 @@ import { currentRoom } from "../gameState/GameState";
 import type { MechanicResult } from "../physics/MechanicResult";
 import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
-import { teleporter } from "../physics/mechanics/teleporter";
+import {
+  springStandingOn,
+  teleporterStandingOn,
+} from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
-import { stateChangeNeedsRerender } from "../render/stateChangeNeedsRerender";
 import { addXyz, originXyz } from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
 import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
@@ -24,7 +25,6 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  const originalState = item.state;
   const room = currentRoom(gameState);
 
   let accumulatedMovement = originXyz;
@@ -64,14 +64,17 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isItemType("teleporter")(item)) {
-    accumulateResult(teleporter(item, gameState, room) as MechanicResult<T>);
+    accumulateResult(
+      teleporterStandingOn(item, gameState, room) as MechanicResult<T>,
+    );
+  }
+  if (isItemType("spring")(item)) {
+    accumulateResult(
+      springStandingOn(item, gameState, room) as MechanicResult<T>,
+    );
   }
 
   if (isMovable) {
     moveItem(item, accumulatedMovement, gameState);
-  }
-
-  if (stateChangeNeedsRerender(item as UnknownItemInPlay, originalState)) {
-    item.renderingDirty = true;
   }
 };

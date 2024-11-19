@@ -2,7 +2,7 @@ import type { Application, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { moveSpriteToItemProjection, renderItem } from "../render/renderItems";
+import { moveSpriteToItemProjection, renderItem } from "../render/renderItem";
 import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
 import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
@@ -13,6 +13,8 @@ import { zxSpectrumResolution } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
+import { itemNeedsRerender } from "../render/itemNeedsRerender";
+import { xyzEqual } from "@/utils/vectors";
 
 const updateWorldRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -39,15 +41,27 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
     // the room is already rendered but needs updating
     let itemsHaveMoved = false;
     for (const item of objectValues(curRoom.items)) {
-      if (item.renderPositionDirty) {
-        //console.log("position dirty for item", item.id, item.state.position);
-        moveSpriteToItemProjection(item);
-        item.renderPositionDirty = false;
-        itemsHaveMoved = true;
+      if (!item.renders) {
+        continue;
       }
-      if (item.renderingDirty) {
+
+      if (itemNeedsRerender(item)) {
+        console.log("rerendering item", item.id);
         renderItem(item, gameState);
-        item.renderingDirty = false;
+      }
+      if (
+        item.lastRenderedState === undefined ||
+        !xyzEqual(item.lastRenderedState.position, item.state.position)
+      ) {
+        console.log(
+          "repositioning item",
+          item.id,
+          item.lastRenderedState?.position,
+          "->",
+          item.state.position,
+        );
+        moveSpriteToItemProjection(item);
+        itemsHaveMoved = true;
       }
     }
     if (itemsHaveMoved) {

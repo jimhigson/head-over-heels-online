@@ -23,7 +23,6 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
   >;
   roomPickupCollections[pickup.id] = true;
   pickup.state.expires = gameState.gameTime + characterFadeInOrOutDuration;
-  pickup.renderingDirty = true;
 
   switch (pickup.config.gives) {
     case "extra-life":

@@ -22,7 +22,7 @@ type AnimatedCreateSpriteOptions = {
    * If true, will play once and vanish. Otherwise, (by default) will loop
    * indefinitely
    */
-  playOnce?: boolean;
+  playOnce?: "and-destroy" | "and-stop";
 };
 
 export type CreateSpriteOptions =
@@ -95,11 +95,11 @@ function createAnimatedSprite(options: AnimatedCreateSpriteOptions) {
   animatedSprite.animationSpeed =
     options.animationSpeed || defaultAnimationSpeed;
   animatedSprite.play();
-  if (options.playOnce) {
+  if (options.playOnce !== undefined) {
     animatedSprite.loop = false;
     animatedSprite.onComplete = () => {
       animatedSprite.stop();
-      animatedSprite.visible = false;
+      if (options.playOnce === "and-destroy") animatedSprite.destroy();
     };
   }
   return animatedSprite;

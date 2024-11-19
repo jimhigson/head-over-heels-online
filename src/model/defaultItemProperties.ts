@@ -6,8 +6,6 @@ import type { UnknownItemInPlay } from "./ItemInPlay";
 
 export const defaultItemProperties = {
   renders: true,
-  renderPositionDirty: false,
-  renderingDirty: false,
   falls: false,
   onTouch: "nonIntersect",
 } as const satisfies Partial<UnknownItemInPlay>;

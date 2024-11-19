@@ -314,6 +314,13 @@ const spritesheetData = {
       "bubbles.pickup.2",
       "bubbles.pickup.3",
     ],
+    "spring.bounce": [
+      "spring.released",
+      "spring.compressed",
+      "spring.released",
+      "spring.compressed",
+      "spring.released",
+    ],
     ...playableSpritesheetData.animations,
   },
   meta: { scale: 1 },
