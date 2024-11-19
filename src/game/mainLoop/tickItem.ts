@@ -12,9 +12,10 @@ import {
 } from "../physics/mechanics/teleporter";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
-import { addXyz, originXyz } from "@/utils/vectors";
+import { addXyz, originXyz, xyzEqual } from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
 import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
+import { moveLift } from "../physics/mechanics/moveLift";
 
 /** ticks all items THAT CAN DO THINGS in the world - this may also cause movements in other items */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
@@ -70,8 +71,11 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       springStandingOn(item, gameState, room) as MechanicResult<T>,
     );
   }
+  if (isItemType("lift")(item)) {
+    accumulateResult(moveLift(item, gameState, room) as MechanicResult<T>);
+  }
 
-  if (isMovable) {
+  if (!xyzEqual(accumulatedMovement, originXyz)) {
     moveItem(item, accumulatedMovement, gameState);
   }
 };

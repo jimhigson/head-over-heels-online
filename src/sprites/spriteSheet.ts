@@ -123,7 +123,7 @@ const frames = {
     frame: { x: 193, y: 420, ...largeItemTextureSize },
   },
   toaster: {
-    frame: { x: 101, y: 479, ...largeItemTextureSize },
+    frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
   spikes: {
     frame: { x: 379, y: 414, ...largeItemTextureSize },
@@ -144,7 +144,7 @@ const frames = {
     frame: { x: 367, y: 358, ...smallItemTextureSize },
   },
   hooter: {
-    frame: { x: 286, y: 358, ...smallItemTextureSize },
+    frame: { x: 263, y: 408, ...smallItemTextureSize },
   },
   bag: {
     frame: { x: 263, y: 358, ...smallItemTextureSize },

@@ -24,7 +24,7 @@ import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPi
 import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { characterFadeInOrOutDuration } from "../render/animationTimings";
+import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -135,9 +135,7 @@ export const moveItem = <RoomId extends string>(
     }
 
     if (deadly?.length > 0) {
-      subjectItem.state.action = "death";
-      subjectItem.state.expires =
-        gameState.gameTime + characterFadeInOrOutDuration;
+      handlePlayerTouchingDeadly<RoomId>(gameState, subjectItem);
       return;
     }
     for (const p of pickup) {

@@ -9,7 +9,11 @@ export const playerWalkSpeedPixPerMs = {
   heels: (2 * zxSpectrumFrameRate) / 1_000, // 2px per frame in original game - may also need acceleration
 };
 
-export const conveyorSpeedPixPerMs = zxSpectrumFrameRate / 1_000; // 1px per frame in original game;
+// n px per frame in original game;
+const pxPerFrameSpeed = (pxPerFrame: number = 1) =>
+  (pxPerFrame * zxSpectrumFrameRate) / 1_000;
+
+export const conveyorSpeedPixPerMs = pxPerFrameSpeed();
 
 // original game jumps were 2px per 1/25s frame. Kept things nice and simple and integer-y!
 export const originalGameJumpPxPerFrame = 2;
@@ -31,8 +35,11 @@ export const terminalVelocityPixPerMs = {
   // head glides at height of two blocks per second
   head: -(blockSizePx.h * 2) / 1000,
   // everyone else tops out at 2px/sec in original game
-  //others: -(originalGameJumpPxPerFrame * zxSpectrumFrameRate) / 1_000,
+  //others: pxPerFrameSpeed(-2),
   others: -(blockSizePx.h * 6) / 1000,
 };
+
+// original game lift speed was 1px per frame
+export const liftSpeed = pxPerFrameSpeed();
 
 export const roomHeightBlocks = 8;

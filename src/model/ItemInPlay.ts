@@ -72,6 +72,9 @@ export type ItemStateMap = {
   "portable-block": FallingItemState;
   baddie: FallingItemState;
   pickup: FallingItemState;
+  lift: {
+    direction: "up" | "down";
+  };
 };
 
 type ItemInPlayConfigMap = {
