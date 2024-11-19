@@ -19,6 +19,7 @@ import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
  * it is set to exactly match the door sprite's internal height
  */
 export const doorPortalHeight = blockSizePx.h * 2;
+export const doorPostRenderHeight = blockSizePx.h * 4;
 
 export function* loadDoor<RoomId extends string>(
   jsonDoor: JsonItem<"door", PlanetName, RoomId>,
@@ -44,13 +45,13 @@ export function* loadDoor<RoomId extends string>(
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
+      type: "doorFrame",
       id: `${id}/far`,
       config: {
         ...jsonDoor.config,
         inHiddenWall,
         nearness: "far",
       },
-      type: "doorFrame",
       state: {
         position: blockXyzToFineXyz(
           addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
@@ -58,6 +59,7 @@ export function* loadDoor<RoomId extends string>(
         expires: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
+      renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
     },
   };
   const doorNearPosition = blockXyzToFineXyz(
@@ -67,31 +69,32 @@ export function* loadDoor<RoomId extends string>(
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
+      type: "doorFrame",
       id: `${id}/near`,
       config: {
         ...jsonDoor.config,
         inHiddenWall,
         nearness: "near",
       },
-      type: "doorFrame",
       state: {
         position: doorNearPosition,
         expires: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
+      renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
     },
   };
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
+      type: "portal",
       id: `${id}/portal`,
       config: {
         ...jsonDoor.config,
         inHiddenWall,
         relativePoint: doorNearPosition,
       },
-      type: "portal",
       renders: false,
       state: {
         position: blockXyzToFineXyz(
