@@ -592,6 +592,41 @@ describe("lifts", () => {
         (categories.landing.length + categories.lift.length),
     ).toBeCloseTo(0.5, 1);
   });
+
+  test("player squashed between rising lift and higher block stays in place standing on lift", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 4.5, y: 5, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        lift: {
+          type: "lift",
+          position: { x: 5, y: 5, z: 0 },
+          config: {
+            bottom: 0,
+            top: roomHeightBlocks,
+          },
+        },
+        landing: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 4, y: 5, z: 3 },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 5_000,
+    });
+
+    expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
+    expect(heelsState(gameState).standingOn?.id ?? null).toBe("lift");
+  });
 });
 
 describe("pushing", () => {

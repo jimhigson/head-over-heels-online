@@ -70,9 +70,6 @@ export const moveItem = <RoomId extends string>(
 ) => {
   const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
 
-  const reason = pusher ? `💨 ${pusher.id} pushed it` : "⏱️ tick";
-  console.log(`🏃‍♂️ moving ${subjectItem.id} by`, xyzDelta, reason);
-
   if (xyzEqual(xyzDelta, originXyz)) {
     return;
   }
@@ -107,11 +104,6 @@ export const moveItem = <RoomId extends string>(
 
   const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
 
-  console.log(
-    `${subjectItem.id} colliding with`,
-    solidObstacles.map((o) => o.id),
-  );
-
   for (const obstacle of sortedObstacles) {
     if (!collision1to1(subjectItem, obstacle)) {
       // it is possible there is no longer a collision due to previous sliding - in this case,
@@ -145,8 +137,6 @@ export const moveItem = <RoomId extends string>(
         forwardPushVector,
       );
 
-      console.log(`➡️ recursiving to push ${obstacle.id}`);
-
       // recursively apply push to pushee
       moveItem(obstacle, forwardPushVector, gameState, subjectItem);
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
@@ -160,13 +150,15 @@ export const moveItem = <RoomId extends string>(
           obstacle.aabb,
         ),
       );
+
+      // now the subject has backed off again, the pushee might be standing on it- update that:
+      obstacle.state.standingOn = findStandingOn(
+        obstacle,
+        objectValues(room.items),
+        gameState.pickupsCollected[room.id],
+      );
     } else {
       // back off to slide on the obstacle (we're not pushing it):
-      console.log(
-        `${subjectItem.id} is backing off due to sliding on ${obstacle.id} with mtv`,
-        backingOffMtv,
-      );
-
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         backingOffMtv,
@@ -174,15 +166,15 @@ export const moveItem = <RoomId extends string>(
     }
   }
 
-  if (itemFalls(subjectItem)) {
+  if (
+    itemFalls(subjectItem) &&
+    // for recursive calls, this will be updated by the caller
+    pusher === undefined
+  ) {
     subjectItem.state.standingOn = findStandingOn(
       subjectItem,
       objectValues(room.items),
       gameState.pickupsCollected[room.id],
-    );
-
-    console.log(
-      `${subjectItem.id} now standing on ${subjectItem.state.standingOn?.id ?? null} because ${pusher ? `💨 ${pusher.id} pushed it` : "⏱️ tick"}`,
     );
   }
 
