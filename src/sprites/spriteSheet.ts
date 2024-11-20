@@ -126,7 +126,7 @@ const frames = {
     frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
   spikes: {
-    frame: { x: 379, y: 414, ...largeItemTextureSize },
+    frame: { x: 422, y: 378, ...largeItemTextureSize },
   },
   "conveyor.x": {
     frame: { x: 35, y: 399, ...largeItemTextureSize },
@@ -189,10 +189,10 @@ const frames = {
     frame: { x: 134, y: 478, ...largeItemTextureSize },
   },
   "book.x": {
-    frame: { x: 184, y: 450, ...largeItemTextureSize },
+    frame: { x: 167, y: 478, ...largeItemTextureSize },
   },
   "book.y": {
-    frame: { x: 222, y: 450, ...largeItemTextureSize },
+    frame: { x: 200, y: 478, ...largeItemTextureSize },
   },
   sandwich: {
     frame: { x: 4, y: 356, ...largeItemTextureSize },
@@ -275,16 +275,16 @@ const frames = {
   ),
 
   "hush-puppy": {
-    frame: { x: 163, y: 300, ...largeItemTextureSize },
+    frame: { x: 193, y: 449, ...largeItemTextureSize },
   },
   ball: {
     frame: { x: 84, y: 4, ...smallItemTextureSize },
   },
   puck: {
-    frame: { x: 111, y: 367, ...smallItemTextureSize },
+    frame: { x: 102, y: 428, ...smallItemTextureSize },
   },
   "puck.deadly": {
-    frame: { x: 111, y: 392, ...smallItemTextureSize },
+    frame: { x: 102, y: 453, ...smallItemTextureSize },
   },
   ...playableSpritesheetData.frames,
   ...scenerySpritesheetData.frames,
