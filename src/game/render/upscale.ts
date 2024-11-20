@@ -1,5 +1,5 @@
 import type { Application } from "pixi.js";
-import { zxSpectrumResolution } from "../../originalGame";
+import { amigaLowResPal } from "../../originalGame";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
 export const upscale = (app: Application) => {
@@ -16,8 +16,8 @@ export const upscale = (app: Application) => {
 
       const scaleFactor = Math.floor(
         Math.min(
-          app.renderer.width / zxSpectrumResolution.width,
-          app.renderer.height / zxSpectrumResolution.height,
+          app.renderer.width / amigaLowResPal.width,
+          app.renderer.height / amigaLowResPal.height,
         ),
       );
 

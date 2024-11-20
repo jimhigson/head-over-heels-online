@@ -1,18 +1,15 @@
 import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
-import {
-  type GameState,
-  currentRoom,
-  pickupCollected,
-} from "../../gameState/GameState";
+import { type GameState, currentRoom } from "../../gameState/GameState";
 import { characterFadeInOrOutDuration } from "../../render/animationTimings";
+import type { PlanetName } from "@/sprites/planets";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  player: PlayableItem,
-  pickup: ItemInPlay<"pickup">,
+  player: PlayableItem<RoomId>,
+  pickup: ItemInPlay<"pickup", PlanetName, RoomId>,
 ) => {
   const roomId = currentRoom(gameState).id;
-  if (pickupCollected(gameState, roomId, pickup.id)) {
+  if (gameState.pickupsCollected[roomId][pickup.id] === true) {
     // ignore already picked up items
     return;
   }

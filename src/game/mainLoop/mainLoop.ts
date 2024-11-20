@@ -9,12 +9,14 @@ import type { RoomState } from "@/model/modelTypes";
 import { renderCurrentRoom } from "../render/renderCurrentRoom";
 import type { RenderOptions } from "../RenderOptions";
 import { objectValues } from "iter-tools";
-import { zxSpectrumResolution } from "@/originalGame";
+import { amigaLowResPal } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
 import { itemNeedsRerender } from "../render/itemNeedsRerender";
 import { xyzEqual } from "@/utils/vectors";
+import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
+import { spritesheetPalette } from "@/sprites/samplePalette";
 
 const updateWorldRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -82,15 +84,13 @@ export const mainLoop = <RoomId extends string>(
 
   const worldContainer = new Container();
   worldContainer.label = "world";
-  worldContainer.y = zxSpectrumResolution.height * 0.7;
+  worldContainer.y = amigaLowResPal.height * 0.7;
   app.stage.addChild(worldContainer);
 
   const hudContainer = new Container();
   app.stage.addChild(hudContainer);
 
-  //app.stage.filters = new RevertColouriseFilter(
-  // new Color("rgb(255, 255, 0)"),
-  //);
+  const pauseFilters = [new RevertColouriseFilter(spritesheetPalette().shadow)];
 
   const updateHud = renderHud(hudContainer);
 
@@ -113,6 +113,8 @@ export const mainLoop = <RoomId extends string>(
       lastRenderedRoom = undefined;
       lastRenderOptions = renderOptions;
     }
+
+    app.stage.filters = gameState.inputState.windowFocus ? [] : pauseFilters;
 
     progressGameState(gameState, deltaMS);
 

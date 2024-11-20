@@ -4,8 +4,8 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import type { GameState } from "../gameState/GameState";
-import { currentRoom, pickupCollected } from "../gameState/GameState";
-import type { TestRoomId } from "@/_testUtils/basicRoom";
+import { currentRoom } from "../gameState/GameState";
+import type { BasicGameStateOptions, TestRoomId } from "@/_testUtils/basicRoom";
 import {
   basicGameState,
   firstRoomId,
@@ -18,7 +18,9 @@ import {
 } from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import { headState, heelsState } from "@/_testUtils/characterState";
+import { headState, heelsState, itemState } from "@/_testUtils/characterState";
+import { liftBBShortening } from "../physics/mechanicsConstants";
+import { smallItemAabb } from "../collision/boundingBoxes";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -56,18 +58,16 @@ describe("pickups", () => {
 
     // should have recorded collecting the pickup:
     expect(
-      pickupCollected(gameState, firstRoomId, "pickupTwoSquaresFromHead"),
+      gameState.pickupsCollected[firstRoomId]["pickupTwoSquaresFromHead"],
     ).toBe(true);
     expect(headState(gameState).lives).toBe(10);
 
     // but not this one (included as a control):
     expect(
-      pickupCollected(
-        gameState,
-        firstRoomId,
-        "pickupCharactersWillNotGetInThisTest",
-      ),
-    ).toBe(false);
+      gameState.pickupsCollected[firstRoomId][
+        "pickupCharactersWillNotGetInThisTest"
+      ],
+    ).toBeFalsy();
   });
 
   test("pickup can land on character", () => {
@@ -94,7 +94,7 @@ describe("pickups", () => {
     playGameThrough(gameState);
 
     // should have collected the pickup:
-    expect(pickupCollected(gameState, firstRoomId, "pickupAboveHeels")).toBe(
+    expect(gameState.pickupsCollected[firstRoomId]["pickupAboveHeels"]).toBe(
       true,
     );
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
@@ -410,5 +410,131 @@ describe("snapping stationary items to pixel grid", () => {
         "z": 0,
       }
     `);
+  });
+});
+
+describe("lifts", () => {
+  const liftTop = 3;
+  const playerAndALift: BasicGameStateOptions = {
+    firstRoomItems: {
+      // two items that will fall (and therefore be marked dirty)
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      lift: {
+        type: "lift",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          bottom: 0,
+          top: liftTop,
+        },
+      },
+    },
+  };
+
+  test("player stays stood on a lift", () => {
+    const gameState: GameState<TestRoomId> = basicGameState(playerAndALift);
+
+    playGameThrough(gameState, {
+      frameCallbacks(gameState) {
+        // give a little time to fall onto the lift:
+        if (gameState.gameTime > 100)
+          expect(heelsState(gameState).standingOn?.id).toBe("lift");
+      },
+      forTime: 5_000, // run for quite a long time
+    });
+  });
+
+  test("player reaches lift height", () => {
+    const gameState: GameState<TestRoomId> = basicGameState(playerAndALift);
+
+    let maxHeight = 0;
+
+    playGameThrough(gameState, {
+      frameCallbacks(gameState) {
+        maxHeight = Math.max(maxHeight, heelsState(gameState).position.z);
+      },
+      forTime: 5_000, // run for quite a long time
+    });
+
+    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h - liftBBShortening;
+
+    expect(maxHeight).toBeCloseTo(expectedMaxHeight, 0);
+  });
+});
+
+describe("pushing", () => {
+  const withBlockToPush: BasicGameStateOptions = {
+    firstRoomItems: {
+      // two items that will fall (and therefore be marked dirty)
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          which: "heels",
+        },
+      },
+      somethingToPush: {
+        type: "portable-block",
+        position: { x: 0, y: 1, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+      soothingToPushInto: {
+        type: "block",
+        position: { x: 0, y: 4, z: 0 },
+        config: {
+          style: "organic",
+        },
+      },
+    },
+    inputState: { away: true },
+  };
+
+  test("player pushes a block until reaching an obstruction", () => {
+    const gameState: GameState<TestRoomId> = basicGameState(withBlockToPush);
+
+    playGameThrough(gameState, {
+      forTime: 2_000,
+    });
+
+    expect(itemState(gameState, "somethingToPush").position.y).toBe(
+      // the edge of the block we are pushing into:
+      blockSizePx.w * 3 +
+        // a bit extra because the portable block does not fill up a full tile:
+        (blockSizePx.w - smallItemAabb.x),
+    );
+  });
+
+  test("can push multiple blocks in a row", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      ...withBlockToPush,
+      firstRoomItems: {
+        ...withBlockToPush.firstRoomItems,
+        somethingToPush2: {
+          type: "portable-block",
+          position: { x: 0, y: 2, z: 0 },
+          config: {
+            style: "cube",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 2_000,
+    });
+
+    expect(itemState(gameState, "somethingToPush2").position.y).toBe(
+      // the edge of the block we are pushing into:
+      blockSizePx.w * 3 +
+        // a bit extra because the portable block does not fill up a full tile:
+        (blockSizePx.w - smallItemAabb.x),
+    );
   });
 });

@@ -2,7 +2,7 @@ import type { GameState } from "@/game/gameState/GameState";
 import { playableItem, currentRoom } from "@/game/gameState/GameState";
 import type { Container } from "pixi.js";
 import { Text, Sprite } from "pixi.js";
-import { zxSpectrumResolution } from "@/originalGame";
+import { amigaLowResPal } from "@/originalGame";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { smallItemTextureSize } from "@/sprites/textureSizes";
 import { characterNames, type CharacterName } from "@/model/modelTypes";
@@ -26,8 +26,8 @@ const livesText = (character: CharacterName, doubleHeight: boolean) => {
       fontSize: smallTextSize,
     },
     resolution: 8,
-    x: (zxSpectrumResolution.width >> 1) + sideMultiplier(character) * 24,
-    y: zxSpectrumResolution.height - smallTextSize * scaleFactor,
+    x: (amigaLowResPal.width >> 1) + sideMultiplier(character) * 24,
+    y: amigaLowResPal.height - smallTextSize * scaleFactor,
   });
   headLives.scale = { x: 1, y: scaleFactor };
   return headLives;
@@ -40,10 +40,10 @@ const characterSprite = (character: CharacterName) => {
     ],
   );
   characterSprite.x =
-    (zxSpectrumResolution.width >> 1) +
+    (amigaLowResPal.width >> 1) +
     sideMultiplier(character) * 64 +
     (character === "heels" ? -smallItemTextureSize.w : 0);
-  characterSprite.y = zxSpectrumResolution.height - smallItemTextureSize.h;
+  characterSprite.y = amigaLowResPal.height - smallItemTextureSize.h;
 
   return characterSprite;
 };

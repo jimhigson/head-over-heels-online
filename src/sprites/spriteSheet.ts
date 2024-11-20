@@ -180,7 +180,7 @@ const frames = {
   ),
 
   "headless-base": {
-    frame: { x: 57, y: 4, ...smallItemTextureSize },
+    frame: { x: 93, y: 102, ...smallItemTextureSize },
   },
   joystick: {
     frame: { x: 2, y: 374, ...smallItemTextureSize },

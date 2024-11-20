@@ -1,4 +1,8 @@
-import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
+import type {
+  ItemInPlayType,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { isPlayableItem, itemFalls, isItemType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
@@ -17,7 +21,10 @@ import { moveItem } from "../physics/moveItem";
 import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
 import { moveLift } from "../physics/mechanics/moveLift";
 
-/** ticks all items THAT CAN DO THINGS in the world - this may also cause movements in other items */
+/**
+ * ticks all items THAT CAN DO THINGS in the world
+ * - this may also cause movements in other items (eg pushing)
+ */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
@@ -72,10 +79,10 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     );
   }
   if (isItemType("lift")(item)) {
-    accumulateResult(moveLift(item, gameState, room) as MechanicResult<T>);
+    accumulateResult(moveLift(item, gameState, deltaMS) as MechanicResult<T>);
   }
 
   if (!xyzEqual(accumulatedMovement, originXyz)) {
-    moveItem(item, accumulatedMovement, gameState);
+    moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
   }
 };

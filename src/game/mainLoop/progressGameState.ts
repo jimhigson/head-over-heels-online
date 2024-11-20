@@ -17,10 +17,9 @@ import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
 import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors";
 
-//  So, 10ms = 0.01s, at 50px/s gives 0.01 * 50 = 0.5px
-// however, with parabolic jumping (g=0.0002m/s²) the speed at 1block of z gain can be as muc has
-// 0.085px/ms or 85px/s (!) 2ms/0.002s at 85px/s give 0.17px which (experimentally) seems to be small enough
-const maximumDeltaMS = 2;
+// any frame with more than this deltaMS will be split into multiple physics ticks
+// eg, for getting into smaller gaps
+const maximumDeltaMS = 20;
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,

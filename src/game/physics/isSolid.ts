@@ -3,11 +3,7 @@ import {
   type UnknownItemInPlay,
   isPlayableItem,
 } from "@/model/ItemInPlay";
-import {
-  type GameState,
-  currentRoom,
-  pickupCollected,
-} from "../gameState/GameState";
+import type { RoomPickupsCollected } from "../gameState/GameState";
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
@@ -16,16 +12,14 @@ import {
 export const isSolid = <RoomId extends string>(
   mover: AnyItemInPlay<RoomId>,
   collidedWith: UnknownItemInPlay<RoomId>,
-  gameState: GameState<RoomId>,
+  roomPickupsCollected: RoomPickupsCollected,
 ) => {
-  const room = currentRoom(gameState);
-
   return (
     collidedWith.type !== "portal" &&
     // a collected pickup is just an animation out that should not be interacted with
     !(
       collidedWith.type === "pickup" &&
-      pickupCollected(gameState, room.id, collidedWith.id)
+      roomPickupsCollected[collidedWith.id] === true
     ) &&
     !(collidedWith.type === "pickup" && isPlayableItem(mover)) &&
     !(mover.type === "pickup" && isPlayableItem(collidedWith))

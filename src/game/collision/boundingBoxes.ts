@@ -1,12 +1,14 @@
 import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors";
-import { roomHeightBlocks } from "../physics/mechanicsConstants";
+import {
+  liftBBShortening,
+  roomHeightBlocks,
+} from "../physics/mechanicsConstants";
 
-const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
+export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
 const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
-
 const wallRenderHeight = 50;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
@@ -32,10 +34,13 @@ export const boundingBoxForItem = (
   switch (item.type) {
     case "spring":
     case "portable-block":
-    case "lift":
     case "pickup":
     case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
+    case "lift":
+      return {
+        aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
+      };
 
     // shorter player experiment:
     //return { aabb: addXyz(smallItemAabb, { z: -1 }) };

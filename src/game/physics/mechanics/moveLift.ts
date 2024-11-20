@@ -1,6 +1,5 @@
 import type { GameState } from "@/game/gameState/GameState";
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { UnknownRoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import type { MechanicResult } from "../MechanicResult";
 import { blockSizePx } from "@/sprites/spritePivots";
@@ -21,7 +20,7 @@ export function moveLift<RoomId extends string>(
     },
   }: ItemInPlay<"lift", PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
-  _room: UnknownRoomState,
+  deltaMS: number,
 ): MechanicResult<"lift"> {
   const mewDirection: "up" | "down" =
     z <= bottom * blockHeight ? "up"
@@ -29,7 +28,7 @@ export function moveLift<RoomId extends string>(
     : direction;
 
   return {
-    positionDelta: scaleXyz(unitVectors[mewDirection], liftSpeed),
+    positionDelta: scaleXyz(unitVectors[mewDirection], liftSpeed * deltaMS),
     stateDelta: {
       direction: mewDirection,
     },

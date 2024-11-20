@@ -17,11 +17,13 @@ export const currentRoom = <RoomId extends string>(
   // assuming both players haven't lost all their lives, or this is not reliable!
   gameState.characterRooms[gameState.currentCharacterName]!.room;
 
-export const pickupCollected = <RoomId extends string>(
-  gameState: GameState<RoomId>,
+/*
+  export const pickupCollected = <RoomId extends string>(
+  pickupsCollected: PickupsCollected<RoomId>,
   roomId: RoomId,
   pickupItemId: string,
-): boolean => gameState.pickupsCollected[roomId][pickupItemId] === true;
+): boolean => pickupsCollected[roomId][pickupItemId] === true;
+*/
 
 export const currentPlayableItem = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -40,9 +42,11 @@ export const playableItem = <C extends CharacterName>(
     | undefined;
 };
 
+export type RoomPickupsCollected = Record<string, true>;
+
 export type PickupsCollected<RoomId extends string> = Record<
   RoomId,
-  Record<string, true>
+  RoomPickupsCollected
 >;
 
 type CharacterRooms<RoomId extends string> = {

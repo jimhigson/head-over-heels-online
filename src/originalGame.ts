@@ -9,4 +9,5 @@ export const zxSpectrumRoomColours = [
 export type ZxSpectrumRoomColour = (typeof zxSpectrumRoomColours)[number];
 export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interlaced frames, hoh was at 25fps
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
+export const amigaLowResPal = { width: 320, height: 256 };
 export const zxSpectrumResolution = { width: 256, height: 192 };

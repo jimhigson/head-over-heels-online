@@ -13,11 +13,9 @@ import {
 } from "../../../doorAppearance";
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
-import {
-  currentRoom,
-  pickupCollected,
-  type GameState,
-} from "@/game/gameState/GameState";
+import { currentRoom, type GameState } from "@/game/gameState/GameState";
+import { smallItemTextureSize } from "@/sprites/textureSizes";
+import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -94,13 +92,18 @@ export const itemAppearances: {
   lift() {
     const container = new Container();
 
+    const pivot = {
+      x: smallItemTextureSize.w / 2,
+      y: smallItemTextureSize.h - liftBBShortening,
+    };
     container.addChild(
       createSprite({
         frames: spriteSheet.animations.lift,
+        pivot,
       }),
     );
 
-    container.addChild(createSprite("lift.static"));
+    container.addChild(createSprite({ texture: "lift.static", pivot }));
 
     return container;
   },
@@ -123,7 +126,7 @@ export const itemAppearances: {
 
   pickup({ id: pickupId, config: { gives } }, gameState) {
     const roomId = currentRoom(gameState).id;
-    const collected = pickupCollected(gameState, roomId, pickupId);
+    const collected = gameState.pickupsCollected[roomId][pickupId] === true;
 
     if (collected) {
       return createSprite({

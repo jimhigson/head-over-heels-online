@@ -162,7 +162,9 @@ export type PlayableItem<RoomId extends string = string> =
   | ItemInPlay<"head", PlanetName, RoomId, "head">
   | ItemInPlay<"heels", PlanetName, RoomId, "heels">;
 
-export const isPlayableItem = (item: AnyItemInPlay): item is PlayableItem => {
+export const isPlayableItem = <RoomId extends string = string>(
+  item: AnyItemInPlay<RoomId>,
+): item is PlayableItem<RoomId> => {
   return item.type === "head" || item.type === "heels";
 };
 
@@ -179,6 +181,7 @@ export const fallingItemTypes = [
   "heels",
   "pickup",
   "portable-block",
+  //"movable-block", <- only sometimes - this category needs to be slit up further
   "baddie",
   "spring",
 ] as const satisfies ItemInPlayType[];

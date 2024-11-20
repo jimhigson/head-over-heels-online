@@ -1,9 +1,4 @@
-import type {
-  AnyItemInPlay,
-  FallingItemTypes,
-  ItemInPlay,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem, itemFalls } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors";
 import {
@@ -17,14 +12,13 @@ import {
 import { collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
-import { handlePlayerTouchingPortal } from "./handleTouch/handlePlayerTouchingPortal";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { handlePlayerTouchingDeadly } from "./handleTouch/handlePlayerTouchingDeadly";
+import { handlePlayerTouchingItems } from "./handleTouch/handlePlayerTouchingItems";
+import { findStandingOn } from "../collision/findStandingOn";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -66,7 +60,7 @@ export const slideOnDoorFrames = (
  * @param xyzDelta
  */
 export const moveItem = <RoomId extends string>(
-  subjectItem: ItemInPlay<FallingItemTypes>,
+  subjectItem: UnknownItemInPlay<RoomId>,
   xyzDeltaPartial: Partial<Xyz>,
   gameState: GameState<RoomId>,
   /**
@@ -85,65 +79,16 @@ export const moveItem = <RoomId extends string>(
   const {
     state: { position: previousPosition },
   } = subjectItem;
-  const targetPosition = addXyz(previousPosition, xyzDelta);
+  // strategy is to move to the target position, then back off as needed
+  subjectItem.state.position = addXyz(previousPosition, xyzDelta);
 
-  const collisions = collision1toMany(
-    {
-      aabb: subjectItem.aabb,
-      state: { position: targetPosition },
-      id: subjectItem.id,
-    },
-    objectValues(room.items),
-  );
+  const collisions = collision1toMany(subjectItem, objectValues(room.items));
 
   if (isPlayableItem(subjectItem)) {
-    const {
-      portal = [],
-      deadly = [],
-      pickup = [],
-    } = Object.groupBy(collisions, (item) => {
-      switch (item.type) {
-        case "baddie":
-        case "deadly-block":
-          return "deadly";
-        case "floor":
-          return item.config.deadly ? "deadly" : "other";
-        case "portal":
-          return "portal";
-        case "pickup":
-          return "pickup";
-      }
-      return "other"; // no special behaviour for player colliding with
-    }) as {
-      portal: Array<ItemInPlay<"portal", PlanetName, RoomId>>;
-      deadly: Array<
-        | ItemInPlay<"baddie", PlanetName, RoomId>
-        | ItemInPlay<"deadly-block", PlanetName, RoomId>
-        | ItemInPlay<"floor", PlanetName, RoomId>
-      >;
-      pickup: Array<ItemInPlay<"pickup", PlanetName, RoomId>>;
-    };
-
-    const firstPortal = portal.at(0);
-    if (firstPortal !== undefined) {
-      if (
-        handlePlayerTouchingPortal(
-          gameState,
-          subjectItem,
-          firstPortal,
-          xyzDelta,
-        )
-      )
-        // has activated the portal:
-        return;
-    }
-
-    if (deadly?.length > 0) {
-      handlePlayerTouchingDeadly<RoomId>(gameState, subjectItem);
+    if (
+      handlePlayerTouchingItems(subjectItem, collisions, xyzDelta, gameState)
+    ) {
       return;
-    }
-    for (const p of pickup) {
-      handlePlayerTouchingPickup(gameState, subjectItem, p);
     }
   }
 
@@ -155,67 +100,66 @@ export const moveItem = <RoomId extends string>(
   }
 
   const solidObstacles = collisions.filter((collidedWith) =>
-    isSolid(subjectItem, collidedWith, gameState),
+    isSolid(subjectItem, collidedWith, gameState.pickupsCollected[room.id]),
   );
-
-  // standing on is sticky, so if we are still in contact with the item we were previously
-  // standing on, that relationship survives to the next generation, even if there's now
-  // an item we could be better said to be standing on
-  // TODO: this isn't quite right - it should check if they are overlapping or adjacent
-  subjectItem.state.standingOn =
-    solidObstacles.find((obs) => obs === subjectItem.state.standingOn) || null;
 
   const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
 
-  /**
-   * as we apply sliding collision, we need to do some other checks - this is
-   * because these checks can only really be done once earlier obstacles have had a
-   * chance to change the xyxDelta via sliding. Eg, if falling, we need to be able to
-   * unsnag before we look for the standingOn, or we will declare ourselves as standing
-   * on intermediate blocks while sliding down a tower of blocks
-   */
-  const correctedPosition1 = iterate(sortedObstacles).reduce<Xyz>(
-    (posAc: Xyz, obstacle) => {
-      let m = mtv(
-        posAc,
-        subjectItem.aabb,
-        obstacle.state.position,
-        obstacle.aabb,
+  for (const obstacle of sortedObstacles) {
+    const backingOffMtv = mtv(
+      subjectItem.state.position,
+      subjectItem.aabb,
+      obstacle.state.position,
+      obstacle.aabb,
+    );
+
+    // push falling (pushable) items that we intersect:
+    if (itemFalls(obstacle) && obstacle !== pusher) {
+      // split the difference - the pushee moves half as far forward as our intersection
+      const forwardPushVector = scaleXyz(backingOffMtv, -0.5);
+
+      // we are going slower due to pushing so back off some more:
+      subjectItem.state.position = subXyz(
+        subjectItem.state.position,
+        forwardPushVector,
       );
 
-      if (itemFalls(obstacle) && obstacle !== pusher) {
-        // split the difference - the pushee moves half that far, and the pusher moves less by the same amount
-        const pushVector = scaleXyz(m, -0.5);
-
-        moveItem<RoomId>(obstacle, pushVector, gameState, subjectItem);
-        // scale back how far we want to push:
-        posAc = subXyz(posAc, pushVector);
-        // recalculate the mtv for the new pushee position, in case it couldn't move that far and we have to squash against it now:
-        m = mtv(
-          posAc,
+      // recursively apply push to pushee
+      moveItem<RoomId>(obstacle, forwardPushVector, gameState, subjectItem);
+      // recalculate the subject's mtv given the new pushee position. This will make the pusher
+      // go more slowly, since the pushee
+      subjectItem.state.position = addXyz(
+        subjectItem.state.position,
+        mtv(
+          subjectItem.state.position,
           subjectItem.aabb,
           obstacle.state.position,
           obstacle.aabb,
-        );
-      }
+        ),
+      );
+    } else {
+      // back off to slide on the obstacle (we're not pushing it):
+      subjectItem.state.position = addXyz(
+        subjectItem.state.position,
+        backingOffMtv,
+      );
+    }
+  }
 
-      if (subjectItem.state.standingOn === null && m.z > 0) {
-        subjectItem.state.standingOn = obstacle;
-      }
+  if (itemFalls(subjectItem)) {
+    subjectItem.state.standingOn = findStandingOn(
+      subjectItem,
+      objectValues(room.items),
+      gameState.pickupsCollected[room.id],
+    );
+  }
 
-      return addXyz(posAc, m);
-    },
-    // original target position:
-    addXyz(previousPosition, xyzDelta),
-  );
-
-  const correctedPosition2 =
+  subjectItem.state.position =
     // only players slide on doors:
     isPlayableItem(subjectItem) ?
-      addXyz(correctedPosition1, slideOnDoorFrames(xyzDelta, solidObstacles))
-    : correctedPosition1;
-
-  if (!xyzEqual(correctedPosition2, previousPosition)) {
-    subjectItem.state.position = correctedPosition2;
-  }
+      addXyz(
+        subjectItem.state.position,
+        slideOnDoorFrames(xyzDelta, solidObstacles),
+      )
+    : subjectItem.state.position;
 };

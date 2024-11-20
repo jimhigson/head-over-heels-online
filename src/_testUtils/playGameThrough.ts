@@ -5,7 +5,7 @@ import { noInput } from "@/game/input/InputState";
 
 type FrameCallback = (
   gameState: GameState<TestRoomId>,
-) => GameState<TestRoomId>;
+) => GameState<TestRoomId> | void;
 
 export const playGameThrough = (
   gameState: GameState<TestRoomId>,
@@ -30,10 +30,15 @@ export const playGameThrough = (
   while (gameState.gameTime < forTime) {
     progressGameState(gameState, deltaMS);
 
-    gameState = callbacksArray.reduce(
-      (gameStateAc, frameCallback) => frameCallback(gameStateAc),
-      gameState,
-    );
+    gameState = callbacksArray.reduce((gameStateAc, frameCallback) => {
+      try {
+        return frameCallback(gameStateAc) || gameStateAc;
+      } catch (e) {
+        (e as Error).message =
+          `while playing through @${gameStateAc.gameTime}ms ${(e as Error).message}`;
+        throw e;
+      }
+    }, gameState);
   }
 };
 

@@ -42,4 +42,11 @@ export const terminalVelocityPixPerMs = {
 // original game lift speed was 1px per frame
 export const liftSpeed = pxPerFrameSpeed();
 
-export const roomHeightBlocks = 8;
+export const roomHeightBlocks = 9;
+
+/**
+ * lifts need to go down visually into the ground a bit, or they are too difficult to jump onto
+ * if at the bottom of their cycle they only touch the ground. Their bbs are reduced vertically
+ * by this amount so they fly lower
+ */
+export const liftBBShortening = 2;

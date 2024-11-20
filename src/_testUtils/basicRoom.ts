@@ -72,15 +72,17 @@ const gameStateWithInput = produce(
   },
 );
 
+export type BasicGameStateOptions = {
+  firstRoomItems: ItemsInTestRoomJson;
+  secondRoomItems?: ItemsInTestRoomJson;
+  inputState?: Partial<InputState>;
+};
+
 export const basicGameState = ({
   firstRoomItems,
   secondRoomItems = {},
   inputState,
-}: {
-  firstRoomItems: ItemsInTestRoomJson;
-  secondRoomItems?: ItemsInTestRoomJson;
-  inputState?: Partial<InputState>;
-}) => {
+}: BasicGameStateOptions) => {
   const gameState = initGameState<TestRoomId>(
     {
       rooms: {

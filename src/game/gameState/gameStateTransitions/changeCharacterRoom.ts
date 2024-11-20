@@ -1,7 +1,8 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { isItemType } from "@/model/ItemInPlay";
 import type { GameState } from "../GameState";
-import { findStandingOn, loadRoom } from "../loadRoom/loadRoom";
+import { loadRoom } from "../loadRoom/loadRoom";
+import { findStandingOn } from "../../collision/findStandingOn";
 import type { PlanetName } from "@/sprites/planets";
 import type { DirectionXyz, Xyz } from "@/utils/vectors";
 import { addXyz, directionsXy, originXyz } from "@/utils/vectors";
@@ -87,6 +88,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   character.state.standingOn = findStandingOn(
     character,
     objectValues(destinationRoom.items),
+    gameState.pickupsCollected[toRoom],
   );
 
   // update game state to know which room this character is now in:
