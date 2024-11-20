@@ -1777,6 +1777,7 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
+
         "barrier@4,0,0:Is9Xq": {
           config: { axis: "y" },
           position: { x: 4, y: 0, z: 0 },
@@ -1932,7 +1933,7 @@ export const campaign = {
           position: { x: 0, y: 3, z: 2 },
           type: "player",
         },
-        pickup: {
+        cube: {
           config: { style: "cube" },
           position: { x: 0, y: 3, z: 8 },
           type: "portable-block",
@@ -1955,6 +1956,21 @@ export const campaign = {
         block: {
           config: { style: "organic" },
           position: { x: 3, y: 5, z: 0 },
+          type: "block",
+        },
+        "lift": {
+          config: { bottom: 0, top: 8 },
+          position: { x: 2, y: 0, z: 0 },
+          type: "lift",
+        },
+        liftBlock: {
+          config: { style: "organic" },
+          position: { x: 3, y: 0, z: 0 },
+          type: "block",
+        },
+        liftBlock2: {
+          config: { style: "organic" },
+          position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
       },

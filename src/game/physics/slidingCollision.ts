@@ -40,13 +40,15 @@ export const mtv = (
   const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
   const mtvZ = Math.abs(dz1) < Math.abs(dzT) ? dz1 : -dzT;
 
-  const absoluteMtvZ = Math.abs(mtvZ) * zWeight;
+  const absMtvX = Math.abs(mtvX);
+  const absMtvY = Math.abs(mtvY);
+  const absMtvZ = Math.abs(mtvZ) * zWeight;
 
-  if (Math.abs(mtvX) < Math.abs(mtvY) && Math.abs(mtvX) < absoluteMtvZ) {
+  if (absMtvX < absMtvY && absMtvX < absMtvZ) {
     // x is the smallest
     return { x: mtvX, y: 0, z: 0 }; // Slide along x-axis
   }
-  if (Math.abs(mtvY) < absoluteMtvZ) {
+  if (absMtvY < absMtvZ) {
     // y is the smallest
     return { x: 0, y: mtvY, z: 0 }; // Slide along y-axis
   } else {

@@ -59,7 +59,6 @@ export const jumping = <RoomId extends string>(
   return {
     stateDelta: {
       action: "moving",
-      standingOn: null,
       velZ,
     },
   };

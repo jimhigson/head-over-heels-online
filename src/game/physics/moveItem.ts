@@ -8,7 +8,7 @@ import {
   scaleXyz,
   xyzEqual,
 } from "@/utils/vectors";
-import { collision1toMany } from "../collision/aabbCollision";
+import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { iterate } from "@/utils/iterate";
@@ -70,6 +70,9 @@ export const moveItem = <RoomId extends string>(
 ) => {
   const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
 
+  const reason = pusher ? `💨 ${pusher.id} pushed it` : "⏱️ tick";
+  console.log(`🏃‍♂️ moving ${subjectItem.id} by`, xyzDelta, reason);
+
   if (xyzEqual(xyzDelta, originXyz)) {
     return;
   }
@@ -104,7 +107,18 @@ export const moveItem = <RoomId extends string>(
 
   const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
 
+  console.log(
+    `${subjectItem.id} colliding with`,
+    solidObstacles.map((o) => o.id),
+  );
+
   for (const obstacle of sortedObstacles) {
+    if (!collision1to1(subjectItem, obstacle)) {
+      // it is possible there is no longer a collision due to previous sliding - in this case,
+      // the mtv will be wrong and erratic - skip this obstacle
+      continue;
+    }
+
     const backingOffMtv = mtv(
       subjectItem.state.position,
       subjectItem.aabb,
@@ -131,8 +145,10 @@ export const moveItem = <RoomId extends string>(
         forwardPushVector,
       );
 
+      console.log(`➡️ recursiving to push ${obstacle.id}`);
+
       // recursively apply push to pushee
-      moveItem<RoomId>(obstacle, forwardPushVector, gameState, subjectItem);
+      moveItem(obstacle, forwardPushVector, gameState, subjectItem);
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(
@@ -146,6 +162,11 @@ export const moveItem = <RoomId extends string>(
       );
     } else {
       // back off to slide on the obstacle (we're not pushing it):
+      console.log(
+        `${subjectItem.id} is backing off due to sliding on ${obstacle.id} with mtv`,
+        backingOffMtv,
+      );
+
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         backingOffMtv,
@@ -158,6 +179,10 @@ export const moveItem = <RoomId extends string>(
       subjectItem,
       objectValues(room.items),
       gameState.pickupsCollected[room.id],
+    );
+
+    console.log(
+      `${subjectItem.id} now standing on ${subjectItem.state.standingOn?.id ?? null} because ${pusher ? `💨 ${pusher.id} pushed it` : "⏱️ tick"}`,
     );
   }
 

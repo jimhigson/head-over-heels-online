@@ -541,6 +541,57 @@ describe("lifts", () => {
     // heels is now in the above room and standing on the landing
     expect(heelsState(gameState).standingOn?.id).toBe("landing");
   });
+
+  test("player partially on lift can be deposited and picked up", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 4.5, y: 5, z: 7 },
+          config: {
+            which: "heels",
+          },
+        },
+        lift: {
+          type: "lift",
+          position: { x: 5, y: 5, z: 5 },
+          config: {
+            bottom: 0,
+            top: roomHeightBlocks,
+          },
+        },
+        landing: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 4, y: 5, z: 5.5 },
+        },
+      },
+    });
+
+    const heelsStandingOnIds: (string | null)[] = [];
+
+    playGameThrough(gameState, {
+      forTime: 5_000, // run for quite a long time
+      frameCallbacks(gameState) {
+        heelsStandingOnIds.push(heelsState(gameState).standingOn?.id || null);
+      },
+    });
+
+    const categories = Object.groupBy(
+      heelsStandingOnIds,
+      (id) => id || "null",
+    ) as {
+      lift: string[];
+      landing: string[];
+    };
+
+    // should have spent about half the time on the lift and half on the landing
+    expect(
+      categories.landing.length /
+        (categories.landing.length + categories.lift.length),
+    ).toBeCloseTo(0.5, 1);
+  });
 });
 
 describe("pushing", () => {
