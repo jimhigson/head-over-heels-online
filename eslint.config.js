@@ -22,6 +22,7 @@ export default tseslint.config(
       "unused-imports": unusedImports,
     },
     rules: {
+      "no-console": "warn",
       "no-useless-rename": "error",
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [

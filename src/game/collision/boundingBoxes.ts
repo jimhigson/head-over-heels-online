@@ -9,6 +9,7 @@ import {
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
 const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
+const doubleHeighCharacter: Aabb = { ...smallItemAabb, z: blockSizePx.h * 2 };
 const wallRenderHeight = 50;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
@@ -42,8 +43,8 @@ export const boundingBoxForItem = (
         aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
       };
 
-    // shorter player experiment:
-    //return { aabb: addXyz(smallItemAabb, { z: -1 }) };
+    case "charles":
+      return { aabb: doubleHeighCharacter };
 
     case "ball":
     case "switch":
@@ -65,8 +66,13 @@ export const boundingBoxForItem = (
       switch (item.config.which) {
         case "american-football-head":
         case "bubble-robot":
-          return { aabb: { ...smallItemAabb, z: blockSizePx.h * 2 } };
+        case "cyberman":
+        case "elephant":
+        case "flying-ball":
+        case "computer-bot":
+          return { aabb: doubleHeighCharacter };
         case "helicopter-bug":
+        case "dalek":
           return { aabb: smallItemAabb };
         default:
           return { aabb: largeItemAabb };
