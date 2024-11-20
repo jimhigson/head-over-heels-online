@@ -11,6 +11,9 @@ import type {
   ShowBoundingBoxes,
 } from "./game/RenderOptions.tsx";
 import { isItemType } from "./model/ItemInPlay.ts";
+import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
+import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
+import { LucideSettings } from "lucide-react";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -132,60 +135,69 @@ export const App = <RoomId extends string>({
   return (
     <>
       {gameApi !== undefined && (
-        <div className="absolute bottom-2 right-2 flex flex-col">
-          <RoomSelect gameApi={gameApi} />
-          <div className="flex flex-row items-center gap-x-2 justify-center mb-2 mt-2">
-            <Switch
-              id="airplane-mode"
-              checked={showBBs !== "none"}
-              onCheckedChange={(checked) =>
-                setShowBBs(checked ? "non-wall" : "none")
-              }
-            />
-            <Label htmlFor="airplane-mode">Show BBs</Label>
-            <Switch
-              id="airplane-mode"
-              checked={showBBs === "all"}
-              onCheckedChange={(checked) =>
-                setShowBBs(checked ? "all" : "non-wall")
-              }
-            />
-            <Label htmlFor="airplane-mode">inc walls</Label>
-          </div>
-          <Button
-            onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
-          >
-            Start
-          </Button>
-          <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
-            Test room
-          </Button>
-          <Button onClick={() => gameApi && console.log(gameApi.gameState)}>
-            Game state to console
-          </Button>
-          <Button
-            onClick={() =>
-              gameApi && console.log(campaign.rooms[gameApi.currentRoom.id])
-            }
-          >
-            Room JSON to console
-          </Button>
-          <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
-            Room state to console
-          </Button>
-          <Button
-            onClick={() =>
-              gameApi &&
-              console.log(
-                gameApi.currentRoom.items[
-                  gameApi.gameState.currentCharacterName
-                ],
-              )
-            }
-          >
-            Playable to console
-          </Button>
-        </div>
+        <Collapsible>
+          <CollapsibleTrigger className="absolute bottom-2 right-2 flex flex-col z-3">
+            <LucideSettings color="hsl(183, 28%,30%)" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="absolute bottom-10 right-2 flex flex-col">
+              <RoomSelect gameApi={gameApi} />
+              <div className="flex flex-row items-center gap-x-2 justify-center mb-2 mt-2">
+                <Switch
+                  id="airplane-mode"
+                  checked={showBBs !== "none"}
+                  onCheckedChange={(checked) =>
+                    setShowBBs(checked ? "non-wall" : "none")
+                  }
+                />
+                <Label htmlFor="airplane-mode">Show BBs</Label>
+                <Switch
+                  id="airplane-mode"
+                  checked={showBBs === "all"}
+                  onCheckedChange={(checked) =>
+                    setShowBBs(checked ? "all" : "non-wall")
+                  }
+                />
+                <Label htmlFor="airplane-mode">inc walls</Label>
+              </div>
+              <Button
+                onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
+              >
+                Start
+              </Button>
+              <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
+                Test room
+              </Button>
+              <Button onClick={() => gameApi && console.log(gameApi.gameState)}>
+                Game state to console
+              </Button>
+              <Button
+                onClick={() =>
+                  gameApi && console.log(campaign.rooms[gameApi.currentRoom.id])
+                }
+              >
+                Room JSON to console
+              </Button>
+              <Button
+                onClick={() => gameApi && console.log(gameApi.currentRoom)}
+              >
+                Room state to console
+              </Button>
+              <Button
+                onClick={() =>
+                  gameApi &&
+                  console.log(
+                    gameApi.currentRoom.items[
+                      gameApi.gameState.currentCharacterName
+                    ],
+                  )
+                }
+              >
+                Playable to console
+              </Button>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       )}
       <CampaignGame
         renderOptions={renderOptions}
