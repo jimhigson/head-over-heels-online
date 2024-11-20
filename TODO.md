@@ -63,3 +63,42 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] standing on is not sticky any more - fix and test
 [ ] heels should fall vertically after jump is done  
 [ ] jumpEndTime will be wrong after dying - wil think we already finished the jump since game time has spun on
+
+# Rooms
+
+# blacktooth4 -> 3
+
+[x] lift doesn't correctly take us up
+
+# blacktooth25
+
+[x] lift is too slow when character is on it
+[x] shows falling sprite while on the lift
+[x] can't jump off the lift
+
+# blacktooth26
+
+[x] leaves room as soon as entered - because we appear _inside_ the lift FFS!
+
+# (heels) balcktooth27fish
+
+[x] fish not collectable
+[x] can't push anvil  
+[ ] can't use bag for drum
+
+# (heels) blacktooth28
+
+[ ] can't move charles
+[ ] cyclic rendering order while walking around joystick
+
+# (head) blacktooth6
+
+[ ] donuts not collectable
+[ ] switch doesn't work
+[ ] disappearing block doesn't vanish on touch
+[ ] also doesn't turn off
+[ ] dalek baddie doesn't move
+
+# (head) blacktooth8fish
+
+[ ] legs on far side not rendered correctly

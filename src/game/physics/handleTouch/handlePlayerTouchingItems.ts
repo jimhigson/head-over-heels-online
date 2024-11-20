@@ -34,6 +34,8 @@ export const handlePlayerTouchingItems = <RoomId extends string>(
         return "portal";
       case "pickup":
         return "pickup";
+      case "fish":
+        return item.config.alive ? "pickup" : "deadly";
     }
     return "other"; // no special behaviour for player colliding with
   }) as {

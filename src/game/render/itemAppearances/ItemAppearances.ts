@@ -77,18 +77,6 @@ export const itemAppearances: {
       : "conveyor.y",
     ),
 
-  fish: ({ config: { alive } }) =>
-    createSprite(
-      alive ?
-        {
-          frames: spriteSheet.animations.fish,
-          animationSpeed: 0.25,
-        }
-      : {
-          texture: "fish.1",
-        },
-    ),
-
   lift() {
     const container = new Container();
 
@@ -134,13 +122,6 @@ export const itemAppearances: {
     const roomId = currentRoom(gameState).id;
     const collected = gameState.pickupsCollected[roomId][pickupId] === true;
 
-    if (collected) {
-      return createSprite({
-        frames: spriteSheet.animations["bubbles.pickup"],
-        playOnce: "and-destroy",
-      });
-    }
-
     const pickupIcons: Record<
       ItemConfigMap<PlanetName, string>["pickup"]["gives"],
       TextureId
@@ -154,8 +135,41 @@ export const itemAppearances: {
       hooter: "hooter",
       crown: "crown",
     };
+    const texture = pickupIcons[gives];
 
-    return createSprite(pickupIcons[gives]);
+    if (collected) {
+      return createSprite({
+        frames:
+          texture === "donuts" ?
+            spriteSheet.animations[`bubbles.taupe`]
+          : spriteSheet.animations[`bubbles.white`],
+        playOnce: "and-destroy",
+      });
+    }
+
+    return createSprite(texture);
+  },
+  fish({ id: pickupId, config: { alive } }, gameState) {
+    const roomId = currentRoom(gameState).id;
+    const collected = gameState.pickupsCollected[roomId][pickupId] === true;
+
+    if (collected) {
+      return createSprite({
+        frames: spriteSheet.animations[`bubbles.fish`],
+        playOnce: "and-destroy",
+      });
+    }
+
+    return createSprite(
+      alive ?
+        {
+          frames: spriteSheet.animations.fish,
+          animationSpeed: 0.25,
+        }
+      : {
+          texture: "fish.1",
+        },
+    );
   },
 
   sceneryPlayer: ({ config: { which } }) =>

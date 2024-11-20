@@ -236,9 +236,21 @@ const frames = {
     smallItemTextureSize,
   ),
   ...seriesOfAnimationFrameTextures(
-    "bubbles.pickup",
+    "bubbles.taupe",
+    3,
+    { x: 288, y: 308 },
+    smallItemTextureSize,
+  ),
+  ...seriesOfAnimationFrameTextures(
+    "bubbles.white",
     3,
     { x: 288, y: 333 },
+    smallItemTextureSize,
+  ),
+  ...seriesOfAnimationFrameTextures(
+    "bubbles.fish",
+    3,
+    { x: 288, y: 383 },
     smallItemTextureSize,
   ),
 
@@ -309,11 +321,9 @@ const spritesheetData = {
     ],
     bubbles: ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/],
     "bubbles.cold": ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/],
-    "bubbles.pickup": [
-      "bubbles.pickup.1",
-      "bubbles.pickup.2",
-      "bubbles.pickup.3",
-    ],
+    "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
+    "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],
+    "bubbles.fish": ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"],
     "spring.bounce": [
       "spring.released",
       "spring.compressed",

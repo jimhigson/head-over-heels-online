@@ -70,6 +70,7 @@ export type ItemStateMap = {
   teleporter: { stoodOn: boolean };
   spring: FallingItemState & { stoodOn: boolean };
   "portable-block": FallingItemState;
+  "movable-block": FallingItemState;
   baddie: FallingItemState;
   pickup: FallingItemState;
   lift: {
@@ -181,7 +182,7 @@ export const fallingItemTypes = [
   "heels",
   "pickup",
   "portable-block",
-  //"movable-block", <- only sometimes - this category needs to be slit up further
+  "movable-block",
   "baddie",
   "spring",
 ] as const satisfies ItemInPlayType[];

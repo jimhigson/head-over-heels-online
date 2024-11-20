@@ -15,6 +15,7 @@ export const isSolid = <RoomId extends string>(
   roomPickupsCollected: RoomPickupsCollected,
 ) => {
   return (
+    collidedWith.type !== "fish" &&
     collidedWith.type !== "portal" &&
     // a collected pickup is just an animation out that should not be interacted with
     !(

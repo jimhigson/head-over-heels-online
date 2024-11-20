@@ -23,6 +23,7 @@ export const itemNeedsRerender = (item: UnknownItemInPlay): boolean => {
       return item.state.stoodOn !== item.lastRenderedState.stoodOn;
     }
 
+    case "fish":
     case "pickup": {
       return item.state.expires !== item.lastRenderedState.expires;
     }
