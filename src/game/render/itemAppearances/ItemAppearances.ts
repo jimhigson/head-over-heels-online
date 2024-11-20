@@ -117,12 +117,18 @@ export const itemAppearances: {
     : item.state.stoodOn ? createSprite("spring.compressed")
     : createSprite("spring.released"),
 
-  teleporter: (item) =>
-    item.state.stoodOn ?
-      createSprite({
-        frames: spriteSheet.animations["teleporter.flashing"],
-      })
-    : createSprite("teleporter"),
+  teleporter(item) {
+    if (item.state.stoodOn) {
+      const container = new Container();
+      container.addChild(createSprite("teleporter"));
+      container.addChild(
+        createSprite({
+          frames: spriteSheet.animations["teleporter.flashing"],
+        }),
+      );
+      return container;
+    } else return createSprite("teleporter");
+  },
 
   pickup({ id: pickupId, config: { gives } }, gameState) {
     const roomId = currentRoom(gameState).id;
