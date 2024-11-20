@@ -40,7 +40,7 @@ export const terminalVelocityPixPerMs = {
 };
 
 // original game lift speed was 1px per frame
-export const liftSpeed = pxPerFrameSpeed();
+export const liftSpeed = pxPerFrameSpeed(2);
 
 export const roomHeightBlocks = 9;
 

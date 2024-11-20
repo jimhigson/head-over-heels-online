@@ -6,7 +6,6 @@ import {
   doorAlongAxis,
   originXyz,
   scaleXyz,
-  subXyz,
   xyzEqual,
 } from "@/utils/vectors";
 import { collision1toMany } from "../collision/aabbCollision";
@@ -115,12 +114,20 @@ export const moveItem = <RoomId extends string>(
 
     // push falling (pushable) items that we intersect:
     if (itemFalls(obstacle) && obstacle !== pusher) {
-      // split the difference - the pushee moves half as far forward as our intersection
-      const forwardPushVector = scaleXyz(backingOffMtv, -0.5);
+      const pushCoefficient =
+        subjectItem.type === "lift" ?
+          // lifts don't slow down when stuff is on them
+          -1
+          // split the difference - the pushee moves half as far forward as our intersection
+        : -0.5;
+
+      // the vector in the direction of the push:
+      const forwardPushVector = scaleXyz(backingOffMtv, pushCoefficient);
 
       // we are going slower due to pushing so back off some more:
-      subjectItem.state.position = subXyz(
+      subjectItem.state.position = addXyz(
         subjectItem.state.position,
+        backingOffMtv,
         forwardPushVector,
       );
 

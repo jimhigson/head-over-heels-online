@@ -74,24 +74,27 @@ const gameStateWithInput = produce(
 
 export type BasicGameStateOptions = {
   firstRoomItems: ItemsInTestRoomJson;
+  firstRoomProps?: Partial<TestRoomJson>;
   secondRoomItems?: ItemsInTestRoomJson;
   inputState?: Partial<InputState>;
 };
 
 export const basicGameState = ({
   firstRoomItems,
+  firstRoomProps = {},
   secondRoomItems = {},
   inputState,
 }: BasicGameStateOptions) => {
-  const gameState = initGameState<TestRoomId>(
-    {
-      rooms: {
-        [firstRoomId]: basicEmptyRoomWithItems(firstRoomId, firstRoomItems),
-        [secondRoomId]: basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
+  const campaign = {
+    rooms: {
+      [firstRoomId]: {
+        ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),
+        ...firstRoomProps,
       },
+      [secondRoomId]: basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
     },
-    basicRenderOptions,
-  );
+  };
+  const gameState = initGameState<TestRoomId>(campaign, basicRenderOptions);
 
   return gameStateWithInput(gameState, inputState);
 };

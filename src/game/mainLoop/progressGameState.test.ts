@@ -19,8 +19,24 @@ import {
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { headState, heelsState, itemState } from "@/_testUtils/characterState";
-import { liftBBShortening } from "../physics/mechanicsConstants";
+import {
+  liftBBShortening,
+  roomHeightBlocks,
+} from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
+
+const testFrameRates = [
+  15, // crazy slow - slower than original
+  25, // original game, PAL
+  29.97, // NTSC real
+  30, // NTSC almost
+  50, // double original (interlaced)
+  50.04, // double original (interlaced, measured)
+  60, // typical default
+  75, // typical/high
+  144, // high update rate
+  500, // highest available currently (2024) and maybe a bit silly!
+];
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -100,19 +116,6 @@ describe("pickups", () => {
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
   });
 });
-
-const testFrameRates = [
-  15, // crazy slow - slower than original
-  25, // original game, PAL
-  29.97, // NTSC real
-  30, // NTSC almost
-  50, // double original (interlaced)
-  50.04, // double original (interlaced, measured)
-  60, // typical default
-  75, // typical/high
-  144, // high update rate
-  500, // highest available currently (2024) and maybe a bit silly!
-];
 
 describe("jumping", () => {
   test.each(testFrameRates)(
@@ -415,7 +418,7 @@ describe("snapping stationary items to pixel grid", () => {
 
 describe("lifts", () => {
   const liftTop = 3;
-  const playerAndALift: BasicGameStateOptions = {
+  const playerOnALift: BasicGameStateOptions = {
     firstRoomItems: {
       // two items that will fall (and therefore be marked dirty)
       heels: {
@@ -436,8 +439,8 @@ describe("lifts", () => {
     },
   };
 
-  test("player stays stood on a lift", () => {
-    const gameState: GameState<TestRoomId> = basicGameState(playerAndALift);
+  test("heels stays stood on a lift", () => {
+    const gameState: GameState<TestRoomId> = basicGameState(playerOnALift);
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
@@ -449,8 +452,8 @@ describe("lifts", () => {
     });
   });
 
-  test("player reaches lift height", () => {
-    const gameState: GameState<TestRoomId> = basicGameState(playerAndALift);
+  test("player on a lift reaches lift height", () => {
+    const gameState: GameState<TestRoomId> = basicGameState(playerOnALift);
 
     let maxHeight = 0;
 
@@ -464,6 +467,79 @@ describe("lifts", () => {
     const expectedMaxHeight = (liftTop + 1) * blockSizePx.h - liftBBShortening;
 
     expect(maxHeight).toBeCloseTo(expectedMaxHeight, 0);
+  });
+
+  test("player under a lift blocks it", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        lift: {
+          type: "lift",
+          position: { x: 0, y: 0, z: 1 },
+          config: {
+            bottom: 0,
+            top: liftTop,
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 5_000, // run for quite a long time
+    });
+
+    // lift is now stuck on top of the player
+    expect(itemState(gameState, "lift").position.z).toBe(12);
+    // player hasn't moved
+    expect(heelsState(gameState).position.z).toBe(0);
+  });
+
+  test("lift can take player to next room vertically", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 5, y: 5, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        lift: {
+          type: "lift",
+          position: { x: 5, y: 5, z: 0 },
+          config: {
+            bottom: 0,
+            top: roomHeightBlocks,
+          },
+        },
+      },
+      firstRoomProps: {
+        roomAbove: "secondRoom",
+      },
+      secondRoomItems: {
+        // a block to stand on when getting to the new room:
+        landing: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 5, y: 5, z: 0 },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 5_000, // run for quite a long time
+    });
+
+    // heels is now in the above room and standing on the landing
+    expect(heelsState(gameState).standingOn?.id).toBe("landing");
   });
 });
 
