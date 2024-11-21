@@ -8,11 +8,12 @@ import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import type { Xyz } from "@/utils/vectors";
 import type { GameState } from "@/game/gameState/GameState";
+import { handlePlayerTouchingDoorFrame } from "./slideOnDoorFrames";
 
 /**
  * @returns true is the physics needs to halt after this handler
  */
-export const handlePlayerTouchingItems = <RoomId extends string>(
+const handlePlayerTouchingItems = <RoomId extends string>(
   playableItem: PlayableItem<RoomId>,
   touchee: UnknownItemInPlay<RoomId>,
   movementVector: Xyz,
@@ -57,12 +58,22 @@ export const handlePlayerTouchingItems = <RoomId extends string>(
         }
       }
       break;
+    case "doorFrame":
+      if (
+        handlePlayerTouchingDoorFrame(playableItem, movementVector, touchee)
+      ) {
+        return true;
+      }
+      break;
   }
 
   return false;
 };
 
-export const handleItemsTouching = <RoomId extends string>({
+/**
+ * some old - Morties touching Morties
+ */
+export const handleItemsTouchingItems = <RoomId extends string>({
   movingItem,
   movementVector,
   touchee,

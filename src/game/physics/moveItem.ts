@@ -1,58 +1,15 @@
 import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import { isItemType, isPlayableItem, itemFalls } from "@/model/ItemInPlay";
+import { itemFalls } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors";
-import {
-  addXyz,
-  doorAlongAxis,
-  originXyz,
-  scaleXyz,
-  subXyz,
-  xyzEqual,
-} from "@/utils/vectors";
+import { addXyz, originXyz, scaleXyz, subXyz, xyzEqual } from "@/utils/vectors";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { handleItemsTouching } from "./handleTouch/handlePlayerTouchingItems";
+import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { findStandingOn } from "../collision/findStandingOn";
-
-/*
- * colliding with doors is a special case - since they are so narrow, the playable character
- * slides sideways into their opening, to make them easier to walk through
- */
-export const slideOnDoorFrames = (
-  xyzDelta: Xyz,
-  obstructions: Iterable<UnknownItemInPlay>,
-): Xyz => {
-  // it is only possible (at least in normal level design) to collide with one door at once
-  // so take the first one:
-  const doorFrame = iterate(obstructions).find(isItemType("doorFrame"));
-
-  if (doorFrame === undefined) {
-    return originXyz;
-  }
-
-  const {
-    config: { direction, nearness },
-  } = doorFrame;
-
-  const axis = doorAlongAxis(direction);
-
-  return nearness === "far" ?
-      {
-        x: axis === "x" ? -Math.abs(xyzDelta.y) : 0,
-        y: axis === "y" ? -Math.abs(xyzDelta.x) : 0,
-        z: 0,
-      }
-    : {
-        x: axis === "x" ? Math.abs(xyzDelta.y) : 0,
-        y: axis === "y" ? Math.abs(xyzDelta.x) : 0,
-        z: 0,
-      };
-};
 
 /**
  * @param subjectItem the item that is wanting to move
@@ -94,7 +51,7 @@ export const moveItem = <RoomId extends string>(
     }
 
     if (
-      handleItemsTouching({
+      handleItemsTouchingItems({
         movingItem: subjectItem,
         touchee: collision,
         movementVector: subXyz(subjectItem.state.position, originalPosition),
@@ -174,13 +131,4 @@ export const moveItem = <RoomId extends string>(
       gameState.pickupsCollected[room.id],
     );
   }
-
-  subjectItem.state.position =
-    // only players slide on doors:
-    isPlayableItem(subjectItem) ?
-      addXyz(
-        subjectItem.state.position,
-        slideOnDoorFrames(xyzDelta, sortedCollisions),
-      )
-    : subjectItem.state.position;
 };
