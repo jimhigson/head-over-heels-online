@@ -6,6 +6,7 @@ import {
   doorAlongAxis,
   originXyz,
   scaleXyz,
+  subXyz,
   xyzEqual,
 } from "@/utils/vectors";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
@@ -13,10 +14,9 @@ import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
-import { handlePlayerTouchingPickup } from "./handleTouch/handlePlayerTouchingPickup";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { handlePlayerTouchingItems } from "./handleTouch/handlePlayerTouchingItems";
+import { handleItemsTouching } from "./handleTouch/handlePlayerTouchingItems";
 import { findStandingOn } from "../collision/findStandingOn";
 
 /*
@@ -76,52 +76,47 @@ export const moveItem = <RoomId extends string>(
 
   const room = currentRoom(gameState);
   const {
-    state: { position: previousPosition },
+    state: { position: originalPosition },
   } = subjectItem;
   // strategy is to move to the target position, then back off as needed
-  subjectItem.state.position = addXyz(previousPosition, xyzDelta);
+  subjectItem.state.position = addXyz(originalPosition, xyzDelta);
 
-  const collisions = collision1toMany(subjectItem, objectValues(room.items));
-
-  if (isPlayableItem(subjectItem)) {
-    for (const collision of collisions) {
-      if (
-        handlePlayerTouchingItems(subjectItem, collision, xyzDelta, gameState)
-      ) {
-        return;
-      }
-    }
-  }
-
-  if (isItemType("pickup")(subjectItem)) {
-    const player = collisions.find(isPlayableItem);
-    if (player !== undefined) {
-      handlePlayerTouchingPickup(gameState, player, subjectItem);
-    }
-  }
-
-  const solidObstacles = collisions.filter((collidedWith) =>
-    isSolid(subjectItem, collidedWith, gameState.pickupsCollected[room.id]),
+  const sortedCollisions = sortObstaclesAboutVector(
+    xyzDelta,
+    collision1toMany(subjectItem, objectValues(room.items)),
   );
 
-  const sortedObstacles = sortObstaclesAboutVector(xyzDelta, solidObstacles);
-
-  for (const obstacle of sortedObstacles) {
-    if (!collision1to1(subjectItem, obstacle)) {
+  for (const collision of sortedCollisions) {
+    if (!collision1to1(subjectItem, collision)) {
       // it is possible there is no longer a collision due to previous sliding - in this case,
       // the mtv will be wrong and erratic - skip this obstacle
+      continue;
+    }
+
+    if (
+      handleItemsTouching({
+        movingItem: subjectItem,
+        touchee: collision,
+        movementVector: subXyz(subjectItem.state.position, originalPosition),
+        gameState,
+      })
+    ) {
+      return;
+    }
+
+    if (!isSolid(subjectItem, collision, gameState.pickupsCollected[room.id])) {
       continue;
     }
 
     const backingOffMtv = mtv(
       subjectItem.state.position,
       subjectItem.aabb,
-      obstacle.state.position,
-      obstacle.aabb,
+      collision.state.position,
+      collision.aabb,
     );
 
     // push falling (pushable) items that we intersect:
-    if (itemFalls(obstacle) && obstacle !== pusher) {
+    if (itemFalls(collision) && collision !== pusher) {
       const pushCoefficient =
         subjectItem.type === "lift" ?
           // lifts don't slow down when stuff is on them
@@ -140,7 +135,7 @@ export const moveItem = <RoomId extends string>(
       );
 
       // recursively apply push to pushee
-      moveItem(obstacle, forwardPushVector, gameState, subjectItem);
+      moveItem(collision, forwardPushVector, gameState, subjectItem);
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(
@@ -148,14 +143,14 @@ export const moveItem = <RoomId extends string>(
         mtv(
           subjectItem.state.position,
           subjectItem.aabb,
-          obstacle.state.position,
-          obstacle.aabb,
+          collision.state.position,
+          collision.aabb,
         ),
       );
 
       // now the subject has backed off again, the pushee might be standing on it- update that:
-      obstacle.state.standingOn = findStandingOn(
-        obstacle,
+      collision.state.standingOn = findStandingOn(
+        collision,
         objectValues(room.items),
         gameState.pickupsCollected[room.id],
       );
@@ -185,7 +180,7 @@ export const moveItem = <RoomId extends string>(
     isPlayableItem(subjectItem) ?
       addXyz(
         subjectItem.state.position,
-        slideOnDoorFrames(xyzDelta, solidObstacles),
+        slideOnDoorFrames(xyzDelta, sortedCollisions),
       )
     : subjectItem.state.position;
 };

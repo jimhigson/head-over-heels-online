@@ -73,6 +73,7 @@ export type ItemStateMap = {
   "movable-block": FallingItemState;
   baddie: FallingItemState;
   pickup: FallingItemState;
+  fish: FallingItemState;
   lift: {
     direction: "up" | "down";
   };
@@ -185,6 +186,7 @@ export const fallingItemTypes = [
   "movable-block",
   "baddie",
   "spring",
+  "fish",
 ] as const satisfies ItemInPlayType[];
 
 export type FallingItemTypes = (typeof fallingItemTypes)[number];
