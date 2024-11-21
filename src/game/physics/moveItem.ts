@@ -84,10 +84,12 @@ export const moveItem = <RoomId extends string>(
   const collisions = collision1toMany(subjectItem, objectValues(room.items));
 
   if (isPlayableItem(subjectItem)) {
-    if (
-      handlePlayerTouchingItems(subjectItem, collisions, xyzDelta, gameState)
-    ) {
-      return;
+    for (const collision of collisions) {
+      if (
+        handlePlayerTouchingItems(subjectItem, collision, xyzDelta, gameState)
+      ) {
+        return;
+      }
     }
   }
 

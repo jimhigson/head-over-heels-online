@@ -6,7 +6,9 @@ import type { PlanetName } from "@/sprites/planets";
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,
   player: PlayableItem<RoomId>,
-  pickup: ItemInPlay<"pickup", PlanetName, RoomId>,
+  pickup:
+    | ItemInPlay<"pickup", PlanetName, RoomId>
+    | ItemInPlay<"fish", PlanetName, RoomId>,
 ) => {
   const roomId = currentRoom(gameState).id;
   if (gameState.pickupsCollected[roomId][pickup.id] === true) {
@@ -21,8 +23,12 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
   roomPickupCollections[pickup.id] = true;
   pickup.state.expires = gameState.gameTime + characterFadeInOrOutDuration;
 
-  switch (pickup.config.gives) {
-    case "extra-life":
-      player.state.lives += 2;
+  if (pickup.type === "fish") {
+    // TODO: handle fish (saving etc)
+  } else {
+    switch (pickup.config.gives) {
+      case "extra-life":
+        player.state.lives += 2;
+    }
   }
 };

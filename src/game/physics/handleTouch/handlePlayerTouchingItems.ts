@@ -1,9 +1,8 @@
-import type {
-  ItemInPlay,
-  PlayableItem,
-  UnknownItemInPlay,
+import {
+  isPlayableItem,
+  type PlayableItem,
+  type UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
@@ -15,58 +14,76 @@ import type { GameState } from "@/game/gameState/GameState";
  */
 export const handlePlayerTouchingItems = <RoomId extends string>(
   playableItem: PlayableItem<RoomId>,
-  collisions: Iterable<UnknownItemInPlay<RoomId>>,
-  xyzDelta: Xyz,
+  touchee: UnknownItemInPlay<RoomId>,
+  movementVector: Xyz,
   gameState: GameState<RoomId>,
 ) => {
-  const {
-    portal = [],
-    deadly = [],
-    pickup = [],
-  } = Object.groupBy(collisions, (item) => {
-    switch (item.type) {
-      case "baddie":
-      case "deadly-block":
-        return "deadly";
-      case "floor":
-        return item.config.deadly ? "deadly" : "other";
-      case "portal":
-        return "portal";
-      case "pickup":
-        return "pickup";
-      case "fish":
-        return item.config.alive ? "pickup" : "deadly";
-    }
-    return "other"; // no special behaviour for player colliding with
-  }) as {
-    portal: Array<ItemInPlay<"portal", PlanetName, RoomId>>;
-    deadly: Array<
-      | ItemInPlay<"baddie", PlanetName, RoomId>
-      | ItemInPlay<"deadly-block", PlanetName, RoomId>
-      | ItemInPlay<"floor", PlanetName, RoomId>
-    >;
-    pickup: Array<ItemInPlay<"pickup", PlanetName, RoomId>>;
-  };
-
-  const firstPortal = portal.at(0);
-
-  if (firstPortal !== undefined) {
-    if (
-      handlePlayerTouchingPortal(gameState, playableItem, firstPortal, xyzDelta)
-    ) {
-      // has activated the portal:
-      return true;
-    }
+  switch (touchee.type) {
+    case "baddie":
+    case "deadly-block":
+      if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
+        return true;
+      }
+      break;
+    case "floor":
+      if (
+        touchee.config.deadly &&
+        handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)
+      )
+        return true;
+      break;
+    case "portal":
+      if (
+        handlePlayerTouchingPortal(
+          gameState,
+          playableItem,
+          touchee,
+          movementVector,
+        )
+      ) {
+        // has activated the portal:
+        return true;
+      }
+      break;
+    case "pickup":
+      handlePlayerTouchingPickup(gameState, playableItem, touchee);
+      break;
+    case "fish":
+      if (touchee.config.alive) {
+        handlePlayerTouchingPickup(gameState, playableItem, touchee);
+      } else {
+        if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
+          return true;
+        }
+      }
+      break;
   }
 
-  if (deadly?.length > 0) {
-    if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
-      return true;
-    }
-  }
-  for (const p of pickup) {
-    handlePlayerTouchingPickup(gameState, playableItem, p);
-  }
+  return false;
+};
+
+export const handleItemsTouching = <RoomId extends string>({
+  movingItem,
+  movementVector,
+  touchee,
+  gameState,
+}: {
+  movingItem: UnknownItemInPlay<RoomId>;
+  movementVector: Xyz;
+  touchee: UnknownItemInPlay<RoomId>;
+  gameState: GameState<RoomId>;
+}): boolean => {
+  if (
+    isPlayableItem(movingItem) &&
+    handlePlayerTouchingItems(movingItem, touchee, movementVector, gameState)
+  )
+    return true;
+
+  if (
+    isPlayableItem(touchee) &&
+    handlePlayerTouchingItems(touchee, movingItem, movementVector, gameState)
+  )
+    return true;
 
   return false;
 };
