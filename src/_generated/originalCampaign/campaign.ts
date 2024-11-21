@@ -379,7 +379,7 @@ export const campaign = {
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth11: {
       color: "yellow",
-      floor: "jail",
+      floor: "market",
       floorSkip: [],
       id: "blacktooth11",
       items: {
@@ -4038,7 +4038,7 @@ export const campaign = {
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth55: {
       color: "yellow",
-      floor: "jail",
+      floor: "market",
       floorSkip: [],
       id: "blacktooth55",
       items: {
@@ -4068,7 +4068,7 @@ export const campaign = {
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth56: {
       color: "white",
-      floor: "jail",
+      floor: "market",
       floorSkip: [],
       id: "blacktooth56",
       items: {
@@ -4137,7 +4137,7 @@ export const campaign = {
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth57: {
       color: "green",
-      floor: "blacktooth",
+      floor: "bookworld",
       floorSkip: [],
       id: "blacktooth57",
       items: {
@@ -4626,7 +4626,7 @@ export const campaign = {
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth59: {
       color: "yellow",
-      floor: "jail",
+      floor: "bookworld",
       floorSkip: [],
       id: "blacktooth59",
       items: {
@@ -4847,7 +4847,7 @@ export const campaign = {
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth60: {
       color: "cyan",
-      floor: "blacktooth",
+      floor: "bookworld",
       floorSkip: [],
       id: "blacktooth60",
       items: {
@@ -5034,7 +5034,7 @@ export const campaign = {
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth61: {
       color: "magenta",
-      floor: "jail",
+      floor: "bookworld",
       floorSkip: [],
       id: "blacktooth61",
       items: {
@@ -5289,7 +5289,7 @@ export const campaign = {
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth63: {
       color: "cyan",
-      floor: "jail",
+      floor: "bookworld",
       floorSkip: [],
       id: "blacktooth63",
       items: {

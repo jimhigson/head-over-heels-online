@@ -66,6 +66,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # Rooms
 
+# blacktooth11
+[x] currently has 238 front/back relationships when rendering - reduce this!
+    * 204 with hexagon-based overlap calcs (- ~15%)
+[ ] has the wrong floor - should be dots!    
+
 # blacktooth4 -> 3
 
 [x] lift doesn't correctly take us up
@@ -88,8 +93,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # (heels) blacktooth28
 
-[ ] can't move charles
-[ ] cyclic rendering order while walking around joystick
+[2] can't move charles
+[1] cyclic rendering order while walking around joystick
+[ ] no hud for bag
 
 # (head) blacktooth6
 

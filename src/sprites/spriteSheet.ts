@@ -33,6 +33,9 @@ const frames = {
   "generic.edge.towards": {
     frame: { x: 527, y: 392, w: 8, h: 9 },
   },
+  "generic.floor.overdraw": {
+    frame: { x: 193, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
+  },
   "generic.wall.overdraw": {
     frame: { x: 210, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
@@ -50,10 +53,10 @@ const frames = {
     frame: { x: 314, y: 48, w: wallTileSize.w, h: 12 },
   },
   "generic.door.front.y": {
-    frame: { x: 227, y: 13, ...doorTextureSize },
+    frame: { x: 227, y: 12, ...doorTextureSize },
   },
   "generic.door.back.y": {
-    frame: { x: 243, y: 5, ...doorTextureSize },
+    frame: { x: 244, y: 5, ...doorTextureSize },
   },
   "generic.door.legs.threshold.y": {
     frame: { x: 331, y: 30, w: wallTileSize.w, h: 18 },
@@ -68,7 +71,7 @@ const frames = {
     frame: { x: 270, y: 144, w: 32, h: 32 },
   },
   "generic.door.front.x": {
-    frame: { x: 286, y: 13, ...doorTextureSize },
+    frame: { x: 287, y: 12, ...doorTextureSize },
   },
   "generic.door.back.x": {
     frame: { x: 270, y: 5, ...doorTextureSize },
@@ -80,13 +83,13 @@ const frames = {
     frame: { x: 235, y: 114, w: 32, h: 28 },
   },
   "moonbase.door.front.y": {
-    frame: { x: 344, y: 161, ...doorTextureSize },
+    frame: { x: 344, y: 160, ...doorTextureSize },
   },
   "moonbase.door.back.y": {
-    frame: { x: 360, y: 153, ...doorTextureSize },
+    frame: { x: 361, y: 153, ...doorTextureSize },
   },
   "moonbase.door.front.x": {
-    frame: { x: 528, y: 161, ...doorTextureSize },
+    frame: { x: 529, y: 160, ...doorTextureSize },
   },
   "moonbase.door.back.x": {
     frame: { x: 512, y: 153, ...doorTextureSize },

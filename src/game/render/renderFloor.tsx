@@ -56,6 +56,40 @@ export const renderFloor = <RoomId extends string>(
       }
     }
 
+    // render the cutting off of the floor tiles along the back
+    // walls. In the original game this was rendered by the walls
+    // themselves, but it breaks our z-ordering if the walls over-render
+    // their bounding boxes by so much
+    for (let ix = 0; ix <= room.size.x; ix++) {
+      if (room.walls.away[ix] === "none") {
+        continue;
+      }
+      tilesContainer.addChild(
+        moveContainerToBlockXyz(
+          { x: ix, y: room.size.y },
+          createSprite({
+            anchor: { x: 0, y: 1 },
+            texture: "generic.floor.overdraw",
+            flipX: true,
+          }),
+        ),
+      );
+    }
+    for (let iy = 0; iy <= room.size.y; iy++) {
+      if (room.walls.left[iy] === "none") {
+        continue;
+      }
+      tilesContainer.addChild(
+        moveContainerToBlockXyz(
+          { x: room.size.x, y: iy },
+          createSprite({
+            anchor: { x: 0, y: 1 },
+            texture: "generic.floor.overdraw",
+          }),
+        ),
+      );
+    }
+
     const tilesMask = new Graphics()
       // Add the rectangular area to show
       .poly([frontSide, rightSide, backSide, leftSide], true)

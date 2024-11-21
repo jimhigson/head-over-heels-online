@@ -1,7 +1,7 @@
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "./projectToScreen";
+import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
 import type { Aabb } from "@/utils/vectors";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
@@ -9,35 +9,35 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
     new Graphics()
       // bottom:
       .poly([
-        projectWorldXyzToScreenXy({}),
-        projectWorldXyzToScreenXy({ x: aabb.x }),
-        projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
-        projectWorldXyzToScreenXy({ y: aabb.y }),
+        projectWorldXyzToScreenXyFloat({}),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x }),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
+        projectWorldXyzToScreenXyFloat({ y: aabb.y }),
       ])
       // right:
       .poly([
-        projectWorldXyzToScreenXy({}),
-        projectWorldXyzToScreenXy({ z: aabb.z }),
-        projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
-        projectWorldXyzToScreenXy({ y: aabb.y }),
+        projectWorldXyzToScreenXyFloat({}),
+        projectWorldXyzToScreenXyFloat({ z: aabb.z }),
+        projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
+        projectWorldXyzToScreenXyFloat({ y: aabb.y }),
       ])
       // left:
       .poly([
-        projectWorldXyzToScreenXy({ x: aabb.x }),
-        projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
-        projectWorldXyzToScreenXy(aabb),
-        projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x }),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
+        projectWorldXyzToScreenXyFloat(aabb),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
       ])
       // top:
       .poly([
-        projectWorldXyzToScreenXy({ z: aabb.z }),
-        projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
-        projectWorldXyzToScreenXy({
+        projectWorldXyzToScreenXyFloat({ z: aabb.z }),
+        projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
+        projectWorldXyzToScreenXyFloat({
           x: aabb.x,
           y: aabb.y,
           z: aabb.z,
         }),
-        projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
+        projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
       ])
       .stroke({
         width: 0.5,

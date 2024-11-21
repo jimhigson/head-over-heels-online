@@ -25,16 +25,34 @@ export const projectWorldXyzToScreenX = ({
 export const projectWorldXyzToScreenXy = (position: Partial<Xyz>): Xy => {
   const coordinatesAreInteger = isIntegerXyzOrCloseTo(position);
 
-  const { x = 0, y = 0, z = 0 } = position;
+  return coordinatesAreInteger ?
+      projectWorldXyzToScreenXyInteger(position)
+    : projectWorldXyzToScreenXyFloat(position);
+};
 
+export const projectWorldXyzToScreenXyInteger = ({
+  x = 0,
+  y = 0,
+  z = 0,
+}: Partial<Xyz>): Xy => {
   return {
     x: y - x,
     y:
-      coordinatesAreInteger ?
-        // >> 1 is /2 but rounded down
-        -((x + y) >> 1) - z
-        // NB: /2, not >>1 because we were given floats so support sub-pixel rendering
-      : -(x + y) / 2 - z,
+      // >> 1 is /2 but rounded down
+      -((x + y) >> 1) - z,
+  };
+};
+
+export const projectWorldXyzToScreenXyFloat = ({
+  x = 0,
+  y = 0,
+  z = 0,
+}: Partial<Xyz>): Xy => {
+  return {
+    x: y - x,
+    y:
+      // >> 1 is /2 but rounded down
+      -(x + y) / 2 - z,
   };
 };
 

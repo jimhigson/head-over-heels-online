@@ -3,7 +3,6 @@ import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { moveSpriteToItemProjection, renderItem } from "../render/renderItem";
-import { sortItemsByDrawOrder } from "../render/sortItemsByDrawOrder";
 import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
 import { renderCurrentRoom } from "../render/renderCurrentRoom";
@@ -17,6 +16,8 @@ import { itemNeedsRerender } from "../render/itemNeedsRerender";
 import { xyzEqual } from "@/utils/vectors";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { spritesheetPalette } from "@/sprites/samplePalette";
+import { colorScheme } from "@/hintColours";
+import { sortByZPairs, zPairs } from "../render/sortZ/sortItemsByDrawOrder";
 
 const updateWorldRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -24,13 +25,13 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
   worldContainer: Container,
   renderOptions: RenderOptions<RoomId>,
 ) => {
-  const curRoom = currentRoom(gameState);
+  const room = currentRoom(gameState);
 
-  if (curRoom !== lastRenderedRoom) {
+  if (room !== lastRenderedRoom) {
     // this fails if the room was already rendered - we don't remove renderings if the other player is still in the other room!
     console.log(
       "will render from scratch",
-      curRoom.id,
+      room.id,
       "since we currently have",
       lastRenderedRoom?.id,
     );
@@ -42,7 +43,7 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
   } else {
     // the room is already rendered but needs updating
     let itemsHaveMoved = false;
-    for (const item of objectValues(curRoom.items)) {
+    for (const item of objectValues(room.items)) {
       if (!item.renders) {
         continue;
       }
@@ -68,7 +69,7 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
     }
     if (itemsHaveMoved) {
       // re-sort the room's items:
-      sortItemsByDrawOrder(objectValues(curRoom.items));
+      sortByZPairs(zPairs(objectValues(room.items)), room.items);
     }
   }
 };
@@ -90,7 +91,7 @@ export const mainLoop = <RoomId extends string>(
   const hudContainer = new Container();
   app.stage.addChild(hudContainer);
 
-  const pauseFilters = [new RevertColouriseFilter(spritesheetPalette().shadow)];
+  const pauseFilter = new RevertColouriseFilter(spritesheetPalette().shadow);
 
   const updateHud = renderHud(hudContainer);
 
@@ -114,17 +115,23 @@ export const mainLoop = <RoomId extends string>(
       lastRenderOptions = renderOptions;
     }
 
-    app.stage.filters = gameState.inputState.windowFocus ? [] : pauseFilters;
+    if (gameState.inputState.windowFocus) {
+      app.stage.filters = [];
+      progressGameState(gameState, deltaMS);
 
-    progressGameState(gameState, deltaMS);
+      updateWorldRenderingToMatchState(
+        gameState,
+        lastRenderedRoom,
+        worldContainer,
+        renderOptions,
+      );
+      updateHud(gameState);
+    } else {
+      app.stage.filters = pauseFilter;
+      pauseFilter.targetColor =
+        colorScheme[currentRoom(gameState).color].main.basic;
+    }
 
-    updateWorldRenderingToMatchState(
-      gameState,
-      lastRenderedRoom,
-      worldContainer,
-      renderOptions,
-    );
-    updateHud(gameState);
     lastRenderedRoom = currentRoom(gameState);
     //console.timeEnd("tick");
   };

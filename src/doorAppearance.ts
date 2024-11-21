@@ -104,6 +104,7 @@ function* doorFrameGenerator(
       });
 
       if (nearness === "far") {
+        // hide the floor behind the door
         yield createSprite({
           anchor: { x: 0, y: 1 },
           flipX: axis === "x",

@@ -7,9 +7,9 @@ export const doorTexturePivot = {
     y: { x: 8, y: 56 },
   },
   far: {
-    x: { x: 8, y: 52 },
-    y: { x: 16, y: 52 },
+    x: { x: 9, y: 51 },
+    y: { x: 15, y: 51 },
   },
 };
 export const doorLegsPivotY = { x: 0, y: 36 };
-export const barrierPivot = { x: { x: 8, y: 24 }, y: { x: 6, y: 22 } };
+export const barrierPivot = { x: { x: 18, y: 22 }, y: { x: 6, y: 22 } };

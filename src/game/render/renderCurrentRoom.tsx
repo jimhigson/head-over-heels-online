@@ -3,7 +3,6 @@ import type { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
-import { sortItemsByDrawOrder } from "./sortItemsByDrawOrder";
 import { renderExtent } from "./renderExtent";
 import { moveSpriteToItemProjection, renderItem } from "./renderItem";
 import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
@@ -13,6 +12,7 @@ import { currentRoom } from "../gameState/GameState";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { shades } from "@/hintColours";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { sortByZPairs, zPairs } from "./sortZ/sortItemsByDrawOrder";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -102,7 +102,7 @@ export const renderCurrentRoom = <RoomId extends string>(
     }
   }
 
-  sortItemsByDrawOrder(objectValues(room.items));
+  sortByZPairs(zPairs(objectValues(room.items)), room.items);
 
   roomContainer.addChild(itemsContainer);
 
