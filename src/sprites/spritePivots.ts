@@ -3,12 +3,12 @@ export const blockSizePx = { w: 16, d: 16, h: 12 }; // doors are position so the
 
 export const doorTexturePivot = {
   near: {
-    x: { x: 16, y: 56 },
-    y: { x: 8, y: 56 },
+    x: { x: 15, y: 57 },
+    y: { x: 8, y: 57 },
   },
   far: {
-    x: { x: 9, y: 51 },
-    y: { x: 15, y: 51 },
+    x: { x: 8, y: 52 },
+    y: { x: 15, y: 52 },
   },
 };
 export const doorLegsPivotY = { x: 0, y: 36 };

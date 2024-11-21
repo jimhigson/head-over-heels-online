@@ -111,7 +111,7 @@ export const renderFloor = <RoomId extends string>(
       moveContainerToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
-          pivot: { x: 7, y: 1 },
+          pivot: { x: 7, y: 0 },
           texture: "generic.edge.towards",
         }),
       ),
@@ -123,7 +123,7 @@ export const renderFloor = <RoomId extends string>(
     rightEdge.addChild(
       moveContainerToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
-        createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
+        createSprite({ pivot: { x: 0, y: 0 }, texture: "generic.edge.right" }),
       ),
     );
   }

@@ -14,7 +14,7 @@ import {
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
 import { currentRoom, type GameState } from "@/game/gameState/GameState";
-import { smallItemTextureSize } from "@/sprites/textureSizes";
+import { doorTextureSize, smallItemTextureSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 
 const bubbles = {
@@ -55,7 +55,14 @@ export const itemAppearances: {
     }
     return createSprite({
       texture: wallTextureId(currentRoom(gameState).planet, style, side),
-      anchor: side === "away" ? { x: 1, y: 1 } : { x: 0, y: 1 },
+      pivot:
+        side === "away" ?
+          {
+            x: doorTextureSize.w,
+            // walls need to be rendered 1px low to match original game:
+            y: doorTextureSize.h - 1,
+          }
+        : { x: 0, y: doorTextureSize.h - 1 },
     });
   },
 

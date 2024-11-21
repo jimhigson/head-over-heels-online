@@ -66,6 +66,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # Rooms
 
+# blacktooth10
+[ ] overdraw on far door not showing - renders floor behind the door
+
 # blacktooth11
 [x] currently has 238 front/back relationships when rendering - reduce this!
     * 204 with hexagon-based overlap calcs (- ~15%)
