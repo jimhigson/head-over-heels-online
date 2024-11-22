@@ -1,4 +1,8 @@
-import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import {
+  isItemType,
+  type ItemInPlayType,
+  type UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
@@ -52,12 +56,26 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   portal: "rgba(255,0,255)",
 };
 
-const renderItemBBs = <T extends ItemInPlayType>(
-  item: Pick<ItemInPlay<T>, "aabb" | "type" | "id" | "renderAabb">,
-): Container => {
+const renderItemBBs = (item: UnknownItemInPlay): Container => {
   const color = bbColors[item.type] ?? "rgba(255,255,255)";
 
   const containerWithBB = new Container();
+
+  if (isItemType("portal")(item)) {
+    const relativePointScreenXy = projectWorldXyzToScreenXyFloat(
+      item.config.relativePoint,
+    );
+    containerWithBB.addChild(
+      new Graphics()
+        .circle(relativePointScreenXy.x, relativePointScreenXy.y, 5)
+        .stroke(color),
+    );
+    containerWithBB.addChild(
+      new Graphics()
+        .circle(relativePointScreenXy.x, relativePointScreenXy.y, 2)
+        .fill(color),
+    );
+  }
 
   containerWithBB.addChild(new Graphics().circle(0, 0, 2).fill(color));
   containerWithBB.addChild(renderBB(item.aabb, color));
@@ -67,10 +85,8 @@ const renderItemBBs = <T extends ItemInPlayType>(
   return containerWithBB;
 };
 
-export const itemRenderingInContainerAlongsideBBRendering = <
-  T extends ItemInPlayType,
->(
-  item: ItemInPlay<T>,
+export const itemRenderingInContainerAlongsideBBRendering = (
+  item: UnknownItemInPlay,
 ): Container => {
   const wrappingContainer = new Container();
   if (item.renderContainer !== undefined) {

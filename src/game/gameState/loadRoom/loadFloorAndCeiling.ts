@@ -5,7 +5,7 @@ import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { addXy, addXyz, subXyz } from "@/utils/vectors";
+import { addXy, addXyz, originXyz } from "@/utils/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,
@@ -24,7 +24,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         id: "floor",
         config: {
           toRoom: room.roomBelow,
-          relativePoint: floorPosition,
+          relativePoint: originXyz,
           direction: "down",
         },
         // the floor's bounding box is extended to be 1 block bigger than the room in
@@ -74,7 +74,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         id: "ceiling",
         config: {
           toRoom: room.roomAbove,
-          relativePoint: subXyz(ceilingPosition, { z: blockSizePx.h }),
+          relativePoint: { x: 0, y: 0, z: blockSizePx.h },
           direction: "up",
         },
         // the floor's bounding box is extended to be 1 block bigger than the room in

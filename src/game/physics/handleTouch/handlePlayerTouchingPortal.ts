@@ -1,7 +1,7 @@
 import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors";
-import { dotProductXyz, subXyz, unitVectors } from "@/utils/vectors";
+import { addXyz, dotProductXyz, subXyz, unitVectors } from "@/utils/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
 
@@ -14,6 +14,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
   player: PlayableItem,
   {
     config: { relativePoint, toRoom, direction: portalDirection },
+    state: { position: portalPosition },
   }: ItemInPlay<"portal", PlanetName, RoomId>,
   /** the movement that caused the player to touch the portal */
   movementDelta: Xyz,
@@ -33,7 +34,11 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
   changeCharacterRoom({
     gameState,
     toRoom,
-    portalRelative: subXyz(player.state.position, relativePoint),
+    portalRelative: subXyz(
+      player.state.position,
+      addXyz(portalPosition, relativePoint),
+    ),
+    changeType: "portal",
   });
 
   return true;

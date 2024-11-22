@@ -4,24 +4,43 @@ import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { findStandingOn } from "../../collision/findStandingOn";
 import type { PlanetName } from "@/sprites/planets";
-import type { DirectionXyz, Xyz } from "@/utils/vectors";
-import { addXyz, directionsXy, originXyz } from "@/utils/vectors";
+import type { DirectionXy, DirectionXyz, Xyz } from "@/utils/vectors";
+import {
+  addXyz,
+  directionsXy,
+  oppositeDirection,
+  originXyz,
+} from "@/utils/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 
+export type ChangeType = "teleport" | "portal" | "level-select";
+
 export const changeCharacterRoom = <RoomId extends string>({
   gameState,
   toRoom,
   portalRelative = originXyz,
-}: {
-  gameState: GameState<RoomId>;
-  toRoom: NoInfer<RoomId>;
-  portalRelative?: Xyz;
-  fromPortal?: ItemInPlay<"portal", PlanetName, RoomId>;
-}) => {
+  changeType,
+}:
+  | {
+      gameState: GameState<RoomId>;
+      toRoom: NoInfer<RoomId>;
+      /* position relative to the portal in the source room */
+      portalRelative: Xyz;
+      /* if true, the position in the source and destimation room will be exactly maintained */
+      changeType: "portal";
+    }
+  | {
+      gameState: GameState<RoomId>;
+      toRoom: NoInfer<RoomId>;
+      /* position relative to the portal in the source room */
+      portalRelative?: undefined;
+      /* if true, the position in the source and destimation room will be exactly maintained */
+      changeType: "teleport" | "level-select";
+    }) => {
   const { currentCharacterName } = gameState;
   const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
 
@@ -50,26 +69,53 @@ export const changeCharacterRoom = <RoomId extends string>({
   // take the character out of the previous room:
   delete leavingRoom.items[currentCharacterName];
 
-  // find the door (etc) in the new room to enter in:
-  const destinationPortal = iterate(objectValues(destinationRoom.items)).find(
-    (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
-      isItemType("portal")(i) && i.config.toRoom === leavingRoom.id,
-  );
+  if (changeType !== "teleport") {
+    const isPortal = isItemType("portal");
+    // find the door (etc) in the new room to enter in:
+    const destinationPortal =
+      iterate(objectValues(destinationRoom.items)).find(
+        (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+          isPortal(i) && i.config.toRoom === leavingRoom.id,
+      ) ||
+      // if we can't find a portal to this room, just use the first portal we find
+      // - this means either the rooms are misconfigured or level select was used to get here
+      iterate(objectValues(destinationRoom.items)).find(isPortal);
 
-  if (destinationPortal !== undefined) {
+    console.log(
+      "putting",
+      currentCharacterName,
+      "into",
+      toRoom,
+      "at portal",
+      destinationPortal,
+    );
+
+    if (destinationPortal === undefined) {
+      throw new Error("trying to enter a room with no portals");
+    }
+
     character.state.position = addXyz(
+      destinationPortal.state.position,
       destinationPortal.config.relativePoint,
       portalRelative,
     );
+
+    console.log("character put down at", character.state.position);
+
     const {
       config: { direction: portalDirection },
     } = destinationPortal;
     if ((directionsXy as Readonly<DirectionXyz[]>).includes(portalDirection)) {
+      const portalDirectionXy = portalDirection as DirectionXy;
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
       // TODO: maybe this should be side-effect free
       character.state.autoWalkDistance = blockSizePx.w * 0.75;
+
+      if (changeType === "level-select") {
+        character.state.facing = oppositeDirection(portalDirectionXy);
+      }
     }
   }
 

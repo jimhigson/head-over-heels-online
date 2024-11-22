@@ -41,6 +41,7 @@ export function teleporting<RoomId extends string>(
           gameState,
           toRoom:
             teleporting.toRoom as RoomId /* TODO: propertly type in state */,
+          changeType: "teleport",
         });
         return {
           stateDelta: {

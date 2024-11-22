@@ -93,7 +93,11 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
-        relativePoint: doorNearPosition,
+        // TODO: make relativePoint relative to the portal's position, not absolute like it is here
+        relativePoint: blockXyzToFineXyz({
+          ...originXyz,
+          [crossAxis]: inHiddenWall ? 0.25 : -0.25,
+        }),
         direction,
       },
       renders: false,

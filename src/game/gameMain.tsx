@@ -38,7 +38,11 @@ export const gameMain = async <RoomId extends string>(
       gameDiv.appendChild(app.canvas);
     },
     changeRoom(roomId: RoomId) {
-      changeCharacterRoom({ gameState, toRoom: roomId });
+      changeCharacterRoom({
+        gameState,
+        toRoom: roomId,
+        changeType: "level-select",
+      });
     },
     get currentRoom() {
       return currentRoom(gameState);
@@ -50,7 +54,7 @@ export const gameMain = async <RoomId extends string>(
       gameState.renderOptions = options;
     },
     stop() {
-      console.log("tearing down game");
+      console.warn("tearing down game");
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
       stopListeningForInput();
