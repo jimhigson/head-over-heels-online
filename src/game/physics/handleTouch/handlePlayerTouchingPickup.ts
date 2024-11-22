@@ -21,7 +21,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     true
   >;
   roomPickupCollections[pickup.id] = true;
-  pickup.state.expires = gameState.gameTime + characterFadeInOrOutDuration;
+  handlePlayerTouchingDisappearing(gameState, player, pickup);
 
   if (pickup.type === "fish") {
     // TODO: handle fish (saving etc)
@@ -31,4 +31,20 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
         player.state.lives += 2;
     }
   }
+};
+
+export const handlePlayerTouchingDisappearing = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  _player: PlayableItem<RoomId>,
+  disappearingItem:
+    | ItemInPlay<"pickup", PlanetName, RoomId>
+    | ItemInPlay<"fish", PlanetName, RoomId>
+    | ItemInPlay<"block", PlanetName, RoomId>
+    | ItemInPlay<"barrier", PlanetName, RoomId>,
+) => {
+  // already disappearing so leave as-is (do not extend the deadline):
+  if (disappearingItem.state.expires !== null) return;
+
+  disappearingItem.state.expires =
+    gameState.gameTime + characterFadeInOrOutDuration;
 };

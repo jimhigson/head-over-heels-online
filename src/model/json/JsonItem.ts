@@ -88,9 +88,11 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   barrier: {
     // the axis the barrier runs along
     axis: AxisXy;
+    disappearing: boolean;
   };
   block: {
     style: "organic" | "artificial" | "tower";
+    disappearing: boolean;
   };
   "deadly-block": {
     style: "volcano" | "toaster" | "spikes" | "puck";

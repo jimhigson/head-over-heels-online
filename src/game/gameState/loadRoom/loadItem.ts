@@ -60,6 +60,7 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
   const falls = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
+    expires: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(falls ? { standingOn: null, velZ: 0 } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),

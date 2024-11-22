@@ -1,9 +1,15 @@
 import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
 
+// just the behavio(u)rs that we care to parse
+type Behavior =
+  | "behavior of disappearance on jump into"
+  | "behavior of disappearance on touch";
+
 export type Xml2JsonItem = {
   x: string;
   y: string;
   z: string;
+  behavior?: Behavior;
 } & (
   | {
       kind: `${string}-door-${CompassDirectionsNESW}`;

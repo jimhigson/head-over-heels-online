@@ -4,7 +4,10 @@ import {
   type UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
-import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
+import {
+  handlePlayerTouchingDisappearing,
+  handlePlayerTouchingPickup,
+} from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import type { Xyz } from "@/utils/vectors";
 import type { GameState } from "@/game/gameState/GameState";
@@ -63,6 +66,12 @@ const handlePlayerTouchingItems = <RoomId extends string>(
         handlePlayerTouchingDoorFrame(playableItem, movementVector, touchee)
       ) {
         return true;
+      }
+      break;
+    case "block":
+    case "barrier":
+      if (touchee.config.disappearing) {
+        handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
       }
       break;
   }

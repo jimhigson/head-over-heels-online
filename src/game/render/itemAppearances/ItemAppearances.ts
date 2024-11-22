@@ -14,7 +14,7 @@ import {
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
 import { currentRoom, type GameState } from "@/game/gameState/GameState";
-import { doorTextureSize, smallItemTextureSize } from "@/sprites/textureSizes";
+import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 
 const bubbles = {
@@ -58,24 +58,43 @@ export const itemAppearances: {
       pivot:
         side === "away" ?
           {
-            x: doorTextureSize.w,
+            x: wallTileSize.w,
             // walls need to be rendered 1px low to match original game:
-            y: doorTextureSize.h - 1,
+            y: wallTileSize.h - 1,
           }
-        : { x: 0, y: doorTextureSize.h - 1 },
+        : { x: 0, y: wallTileSize.h - 1 },
     });
   },
 
-  barrier: ({ config: { axis } }) =>
-    createSprite({
-      texture: `barrier.${axis}`,
-      pivot: barrierPivot[axis],
-    }),
+  barrier({ config: { axis }, state: { expires } }) {
+    if (expires !== null)
+      return createSprite({
+        frames: spriteSheet.animations["bubbles.taupe"],
+        playOnce: "and-destroy",
+        pivot: barrierPivot[axis],
+        //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
+      });
+    else
+      return createSprite({
+        texture: `barrier.${axis}`,
+        pivot: barrierPivot[axis],
+      });
+  },
 
   "deadly-block": ({ config: { style } }) =>
     createSprite(style === "puck" ? "puck.deadly" : style),
 
-  block: ({ config: { style } }) => createSprite(`block.${style}`),
+  block({ config: { style, disappearing }, state: { expires } }) {
+    if (expires !== null)
+      return createSprite({
+        frames: spriteSheet.animations["bubbles.taupe"],
+        playOnce: "and-destroy",
+      });
+    else
+      return createSprite(
+        `block.${style}${disappearing ? ".disappearing" : ""}`,
+      );
+  },
 
   conveyor: ({ config: { direction } }) =>
     createSprite(

@@ -23,6 +23,9 @@ export const itemNeedsRerender = (item: UnknownItemInPlay): boolean => {
       return item.state.stoodOn !== item.lastRenderedState.stoodOn;
     }
 
+    // disappearing items need to re-render when they are marked as expired
+    case "block":
+    case "barrier":
     case "fish":
     case "pickup": {
       return item.state.expires !== item.lastRenderedState.expires;

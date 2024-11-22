@@ -24,6 +24,8 @@ export const standingOnConveyor = <RoomId extends string>(
   _gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FallingItemTypes> => {
+  // TODO: change to a touch handler!
+
   if (
     item.state.standingOn === null ||
     item.state.standingOn.type !== "conveyor"

@@ -383,243 +383,243 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth11",
       items: {
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 1 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@2,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 1 },
           type: "block",
         },
-        "block@2,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 1 },
           type: "block",
         },
-        "block@2,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 0 },
           type: "block",
         },
-        "block@2,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 1 },
           type: "block",
         },
-        "block@2,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 0 },
           type: "block",
         },
-        "block@2,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 1 },
           type: "block",
         },
-        "block@2,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 1 },
           type: "block",
         },
-        "block@2,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 6, z: 0 },
           type: "block",
         },
-        "block@2,6,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,6,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 6, z: 1 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 1 },
           type: "block",
         },
-        "block@3,0,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 2 },
           type: "block",
         },
-        "block@3,1,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 2 },
           type: "block",
         },
-        "block@3,2,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 2 },
           type: "block",
         },
-        "block@3,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 2 },
           type: "block",
         },
-        "block@3,4,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 2 },
           type: "block",
         },
-        "block@3,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 2 },
           type: "block",
         },
-        "block@3,6,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,6,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 6, z: 2 },
           type: "block",
         },
-        "block@3,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 2 },
           type: "block",
         },
-        "block@4,0,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 2 },
           type: "block",
         },
-        "block@4,1,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 2 },
           type: "block",
         },
-        "block@4,2,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 2 },
           type: "block",
         },
-        "block@4,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 2 },
           type: "block",
         },
-        "block@4,4,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 2 },
           type: "block",
         },
-        "block@4,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 2 },
           type: "block",
         },
-        "block@4,6,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 2 },
           type: "block",
         },
-        "block@4,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 2 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 1 },
           type: "block",
         },
-        "block@5,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "block@5,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 1 },
           type: "block",
         },
-        "block@5,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 0 },
           type: "block",
         },
-        "block@5,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 1 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "block@5,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 1 },
           type: "block",
         },
-        "block@5,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 4, z: 0 },
           type: "block",
         },
-        "block@5,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 4, z: 1 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 1 },
           type: "block",
         },
-        "block@5,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 6, z: 0 },
           type: "block",
         },
-        "block@5,6,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,6,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 6, z: 1 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
@@ -657,33 +657,33 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth12",
       items: {
-        "block@0,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 3 },
           type: "block",
         },
-        "block@0,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,3:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 1, z: 3 },
           type: "block",
         },
-        "block@7,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 3 },
           type: "block",
         },
-        "block@7,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
@@ -794,93 +794,93 @@ export const campaign = {
           position: { x: 7, y: 2, z: 0 },
           type: "baddie",
         },
-        "barrier@4,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:FtFCK": {
+          config: { axis: "y", disappearing: true },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@4,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@4,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@4,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@4,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@4,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
@@ -1345,53 +1345,53 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth19",
       items: {
-        "block@2,2,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@2,2,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 2, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,2,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@2,2,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 2, y: 2, z: 1 },
           type: "block",
         },
-        "block@2,2,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@2,2,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 2, y: 2, z: 2 },
           type: "block",
         },
-        "block@2,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 3 },
           type: "block",
         },
-        "block@3,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 3 },
           type: "block",
         },
-        "block@4,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 3 },
           type: "block",
         },
-        "block@5,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 3 },
           type: "block",
         },
-        "block@6,2,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,2,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 2, z: 0 },
           type: "block",
         },
-        "block@6,2,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,2,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 2, z: 1 },
           type: "block",
         },
-        "block@6,2,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,2,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 2, z: 2 },
           type: "block",
         },
@@ -1462,23 +1462,23 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth1head",
       items: {
-        "barrier@5,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@5,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 5, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@5,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@5,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 5, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@5,0,4:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@5,0,4:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 5, y: 0, z: 4 },
           type: "barrier",
         },
-        "barrier@5,0,6:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@5,0,6:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 5, y: 0, z: 6 },
           type: "barrier",
         },
@@ -1488,50 +1488,48 @@ export const campaign = {
           type: "door",
         },
         head: {
-          type: "player",
+          config: { which: "head" },
           position: { x: 0, y: 1, z: 0 },
-          config: {
-            which: "head",
-          },
-        },
-        lowBlock: {
-          type: "block",
-          position: { x: 0, y: 0, z: 0 },
-          config: { style: "organic" },
-        },
-        midBlock: {
-          type: "block",
-          position: { x: 0, y: 0, z: 1 },
-          config: { style: "organic" },
+          type: "player",
         },
         highBlock: {
-          type: "block",
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 2 },
-          config: { style: "organic" },
+          type: "block",
         },
-        pickupTemp: {
-          type: "pickup",
-          position: { x: 0, y: 0, z: 5 },
-          config: { gives: "extra-life" },
+        lowBlock: {
+          config: { disappearing: false, style: "organic" },
+          position: { x: 0, y: 0, z: 0 },
+          type: "block",
         },
-        pickupTemp2: {
-          type: "pickup",
-          position: { x: 5, y: 5, z: 5 },
-          config: { gives: "extra-life" },
-        },
-        pickupTemp3: {
-          type: "pickup",
-          position: { x: 5, y: 5, z: 3 },
-          config: { gives: "extra-life" },
-        },
-        pickupStartingOnFloor: {
-          type: "pickup",
-          position: { x: 2, y: 0, z: 0 },
-          config: { gives: "extra-life" },
+        midBlock: {
+          config: { disappearing: false, style: "organic" },
+          position: { x: 0, y: 0, z: 1 },
+          type: "block",
         },
         "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
+          type: "pickup",
+        },
+        pickupStartingOnFloor: {
+          config: { gives: "extra-life" },
+          position: { x: 2, y: 0, z: 0 },
+          type: "pickup",
+        },
+        pickupTemp: {
+          config: { gives: "extra-life" },
+          position: { x: 0, y: 0, z: 5 },
+          type: "pickup",
+        },
+        pickupTemp2: {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 5, z: 5 },
+          type: "pickup",
+        },
+        pickupTemp3: {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 5, z: 3 },
           type: "pickup",
         },
         "teleporter@5,7,0:Z12mRwL": {
@@ -1615,88 +1613,88 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth21fish",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 6, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,4,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@7,4,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,4,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@7,4,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 7, y: 4, z: 1 },
           type: "block",
         },
-        "block@7,4,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@7,4,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 7, y: 4, z: 2 },
           type: "block",
         },
@@ -1747,13 +1745,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth22",
       items: {
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
@@ -1777,125 +1775,160 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
-        "barrier@4,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@4,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@4,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@4,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@4,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@4,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
-        "barrier@4,6,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 0 },
           type: "barrier",
         },
-        "barrier@4,6,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 1 },
           type: "barrier",
         },
-        "barrier@4,6,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 2 },
           type: "barrier",
         },
-        "barrier@4,7,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 0 },
           type: "barrier",
         },
-        "barrier@4,7,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 1 },
           type: "barrier",
         },
-        "barrier@4,7,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 2 },
           type: "barrier",
+        },
+        block: {
+          config: { disappearing: false, style: "organic" },
+          position: { x: 3, y: 5, z: 0 },
+          type: "block",
+        },
+        "block@1,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 1, y: 3, z: 0 },
+          type: "block",
+        },
+        "block@1,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 1, y: 4, z: 0 },
+          type: "block",
+        },
+        "block@2,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 2, y: 3, z: 0 },
+          type: "block",
+        },
+        "block@2,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 2, y: 4, z: 0 },
+          type: "block",
+        },
+        "block@3,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 3, y: 3, z: 0 },
+          type: "block",
+        },
+        "block@3,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
+          position: { x: 3, y: 4, z: 0 },
+          type: "block",
         },
         "conveyor@0,1,0:24hKaE": {
           config: { direction: "away" },
@@ -1922,6 +1955,11 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "conveyor",
         },
+        cube: {
+          config: { style: "cube" },
+          position: { x: 0, y: 3, z: 8 },
+          type: "portable-block",
+        },
         "door@8,3,0:Z1u78lr": {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
@@ -1932,15 +1970,20 @@ export const campaign = {
           position: { x: 2.5, y: 0, z: 6 },
           type: "player",
         },
-        cube: {
-          config: { style: "cube" },
-          position: { x: 0, y: 3, z: 8 },
-          type: "portable-block",
+        lift: {
+          config: { bottom: 0, top: 8 },
+          position: { x: 2, y: 0, z: 0 },
+          type: "lift",
         },
-        "teleporter@0,0,0:Z1GqgNT": {
-          config: { toRoom: "blacktooth24" },
-          position: { x: 0, y: 0, z: 0 },
-          type: "teleporter",
+        liftBlock: {
+          config: { disappearing: false, style: "organic" },
+          position: { x: 3, y: 0, z: 0 },
+          type: "block",
+        },
+        liftBlock2: {
+          config: { disappearing: false, style: "organic" },
+          position: { x: 3, y: 0, z: 4 },
+          type: "block",
         },
         teleporter2: {
           config: { toRoom: "blacktooth24" },
@@ -1952,25 +1995,10 @@ export const campaign = {
           position: { x: 1, y: 1, z: 0 },
           type: "teleporter",
         },
-        block: {
-          config: { style: "organic" },
-          position: { x: 3, y: 5, z: 0 },
-          type: "block",
-        },
-        lift: {
-          config: { bottom: 0, top: 8 },
-          position: { x: 2, y: 0, z: 0 },
-          type: "lift",
-        },
-        liftBlock: {
-          config: { style: "organic" },
-          position: { x: 3, y: 0, z: 0 },
-          type: "block",
-        },
-        liftBlock2: {
-          config: { style: "organic" },
-          position: { x: 3, y: 0, z: 4 },
-          type: "block",
+        "teleporter@0,0,0:Z1GqgNT": {
+          config: { toRoom: "blacktooth24" },
+          position: { x: 0, y: 0, z: 0 },
+          type: "teleporter",
         },
       },
       planet: "jail",
@@ -2181,73 +2209,73 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth28",
       items: {
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "block@5,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -2362,13 +2390,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth3",
       items: {
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
@@ -2392,43 +2420,43 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth30",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
@@ -2452,18 +2480,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth31",
       items: {
-        "block@5,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 0 },
           type: "block",
         },
-        "block@5,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 1 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
@@ -2685,13 +2713,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth34",
       items: {
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
@@ -2720,38 +2748,38 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth35",
       items: {
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,10,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 10, z: 0 },
           type: "block",
         },
-        "block@1,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,12,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 12, z: 0 },
           type: "block",
         },
-        "block@1,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 8, z: 0 },
           type: "block",
         },
-        "block@3,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,12,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 12, z: 0 },
           type: "block",
         },
@@ -2888,13 +2916,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth38",
       items: {
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
@@ -3007,28 +3035,28 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth40fish",
       items: {
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 15, z: 0 },
           type: "block",
         },
-        "block@4,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 15, z: 0 },
           type: "block",
         },
-        "block@5,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 15, z: 0 },
           type: "block",
         },
@@ -3257,13 +3285,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth43",
       items: {
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
@@ -3321,33 +3349,33 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth45market",
       items: {
-        "block@0,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
@@ -3447,73 +3475,73 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth47market",
       items: {
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 6, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 5, z: 0 },
           type: "block",
         },
-        "block@6,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
@@ -4012,13 +4040,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth54",
       items: {
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
@@ -4072,38 +4100,38 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth56",
       items: {
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 1 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@3,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 1 },
           type: "block",
         },
-        "block@3,1,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 2 },
           type: "block",
         },
-        "block@3,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 3 },
           type: "block",
         },
@@ -4271,158 +4299,158 @@ export const campaign = {
           position: { x: 7, y: 3, z: 1 },
           type: "baddie",
         },
-        "block@0,11,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,11,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 11, z: 0 },
           type: "block",
         },
-        "block@0,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 13, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 13, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@10,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 0, z: 0 },
           type: "block",
         },
-        "block@10,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 5, z: 0 },
           type: "block",
         },
-        "block@11,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 0, z: 0 },
           type: "block",
         },
-        "block@11,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 5, z: 0 },
           type: "block",
         },
-        "block@12,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@12,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 12, y: 0, z: 0 },
           type: "block",
         },
-        "block@12,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@12,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 12, y: 5, z: 0 },
           type: "block",
         },
-        "block@13,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@13,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 13, y: 0, z: 0 },
           type: "block",
         },
-        "block@13,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@13,3,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 13, y: 3, z: 0 },
           type: "block",
         },
-        "block@13,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@13,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 13, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 13, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 13, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 13, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 13, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@8,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@8,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 8, y: 0, z: 0 },
           type: "block",
         },
-        "block@8,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@8,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 8, y: 5, z: 0 },
           type: "block",
         },
-        "block@9,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@9,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 9, y: 0, z: 0 },
           type: "block",
         },
-        "block@9,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@9,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 9, y: 5, z: 0 },
           type: "block",
         },
@@ -4630,33 +4658,33 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth59",
       items: {
-        "block@1,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 3 },
           type: "block",
         },
-        "block@2,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 3 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@5,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 3 },
           type: "block",
         },
-        "block@6,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 3 },
           type: "block",
         },
@@ -4764,43 +4792,43 @@ export const campaign = {
           position: { x: 3, y: 0, z: 1 },
           type: "baddie",
         },
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -4851,108 +4879,108 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth60",
       items: {
-        "barrier@0,3,0:Is9HF": {
-          config: { axis: "x" },
+        "barrier@0,3,0:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 0, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@0,3,1:Is9HF": {
-          config: { axis: "x" },
+        "barrier@0,3,1:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 0, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@0,3,2:Is9HF": {
-          config: { axis: "x" },
+        "barrier@0,3,2:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 0, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@1,3,0:Is9HF": {
-          config: { axis: "x" },
+        "barrier@1,3,0:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 1, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@1,3,1:Is9HF": {
-          config: { axis: "x" },
+        "barrier@1,3,1:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 1, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@1,3,2:Is9HF": {
-          config: { axis: "x" },
+        "barrier@1,3,2:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 1, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@2,3,0:Is9HF": {
-          config: { axis: "x" },
+        "barrier@2,3,0:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 2, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@2,3,1:Is9HF": {
-          config: { axis: "x" },
+        "barrier@2,3,1:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 2, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@2,3,2:Is9HF": {
-          config: { axis: "x" },
+        "barrier@2,3,2:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 2, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@3,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@3,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@3,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@3,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@3,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@3,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 5, z: 2 },
           type: "barrier",
         },
-        "barrier@3,6,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,6,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 6, z: 0 },
           type: "barrier",
         },
-        "barrier@3,6,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,6,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 6, z: 1 },
           type: "barrier",
         },
-        "barrier@3,6,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,6,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 6, z: 2 },
           type: "barrier",
         },
-        "barrier@3,7,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,7,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 7, z: 0 },
           type: "barrier",
         },
-        "barrier@3,7,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,7,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 7, z: 1 },
           type: "barrier",
         },
-        "barrier@3,7,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,7,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 7, z: 2 },
           type: "barrier",
         },
@@ -5102,98 +5130,98 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth62fish",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,10,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 10, z: 0 },
           type: "block",
         },
-        "block@0,11,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,11,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 11, z: 0 },
           type: "block",
         },
-        "block@0,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,12,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 12, z: 0 },
           type: "block",
         },
-        "block@0,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 13, z: 0 },
           type: "block",
         },
-        "block@0,14,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,14,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 14, z: 0 },
           type: "block",
         },
-        "block@0,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 15, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@0,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 8, z: 0 },
           type: "block",
         },
-        "block@0,9,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,9,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 9, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,12,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 12, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,10,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 10, z: 0 },
           type: "block",
         },
-        "block@5,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 15, z: 0 },
           type: "block",
         },
-        "block@5,9,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,9,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 9, z: 0 },
           type: "block",
         },
@@ -5298,23 +5326,23 @@ export const campaign = {
           position: { x: 4, y: 1, z: 0 },
           type: "baddie",
         },
-        "block@6,0,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,0,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 0, z: 3 },
           type: "block",
         },
-        "block@6,1,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,1,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 1, z: 3 },
           type: "block",
         },
-        "block@7,0,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,0,3:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 7, y: 0, z: 3 },
           type: "block",
         },
-        "block@7,1,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,1,3:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
@@ -5492,73 +5520,73 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth67",
       items: {
-        "block@0,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 4 },
           type: "block",
         },
-        "block@0,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 4 },
           type: "block",
         },
-        "block@0,2,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 4 },
           type: "block",
         },
-        "block@0,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 4 },
           type: "block",
         },
-        "block@0,4,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 4 },
           type: "block",
         },
-        "block@0,5,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 4 },
           type: "block",
         },
-        "block@0,6,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 4 },
           type: "block",
         },
-        "block@0,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
-        "block@6,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 1 },
           type: "block",
         },
-        "block@7,4,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 2 },
           type: "block",
         },
@@ -5614,78 +5642,78 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth68",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        "block@0,0,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 0, z: 2 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 5, z: 1 },
           type: "block",
         },
-        "block@0,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 5, z: 2 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 2, y: 7, z: 1 },
           type: "block",
         },
-        "block@2,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 2, y: 7, z: 2 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@7,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
-        "block@7,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 7, z: 2 },
           type: "block",
         },
@@ -5808,43 +5836,43 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth70",
       items: {
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 1 },
           type: "block",
         },
-        "block@0,6,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 1 },
           type: "block",
         },
-        "block@0,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 1 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 1 },
           type: "block",
         },
-        "block@1,6,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 1 },
           type: "block",
         },
@@ -5906,13 +5934,13 @@ export const campaign = {
           position: { x: 2, y: 3, z: 0 },
           type: "baddie",
         },
-        "block@0,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 3 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
@@ -5999,18 +6027,18 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "baddie",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "block@7,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 1 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
@@ -6052,73 +6080,73 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth73",
       items: {
-        "block@0,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 3 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 1 },
           type: "block",
         },
-        "block@3,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 2 },
           type: "block",
         },
-        "block@3,5,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 4 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@6,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
@@ -6200,38 +6228,38 @@ export const campaign = {
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
-        "block@0,2,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 4 },
           type: "block",
         },
-        "block@0,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 4 },
           type: "block",
         },
-        "block@1,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 3, z: 4 },
           type: "block",
         },
-        "block@2,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 4 },
           type: "block",
         },
-        "block@3,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 4 },
           type: "block",
         },
-        "block@4,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 4 },
           type: "block",
         },
-        "block@5,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 4 },
           type: "block",
         },
@@ -6509,118 +6537,118 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth77",
       items: {
-        "barrier@4,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,0,3:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,3:FtFCK": {
+          config: { axis: "y", disappearing: true },
           position: { x: 4, y: 0, z: 3 },
           type: "barrier",
         },
-        "barrier@4,0,4:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,4:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 4 },
           type: "barrier",
         },
-        "barrier@4,0,5:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,5:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 5 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,3:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,3:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 3 },
           type: "barrier",
         },
-        "barrier@4,1,5:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,5:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 5 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,3:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,3:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 3 },
           type: "barrier",
         },
-        "barrier@4,2,4:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,4:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 4 },
           type: "barrier",
         },
-        "barrier@4,2,5:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,5:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 5 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,3:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,3:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 3 },
           type: "barrier",
         },
-        "barrier@4,3,4:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,4:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 4 },
           type: "barrier",
         },
-        "barrier@4,3,5:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,5:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 5 },
           type: "barrier",
         },
@@ -6677,28 +6705,28 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 3 },
           type: "block",
         },
-        "block@4,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
@@ -6790,53 +6818,53 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth79fish",
       items: {
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 2, z: 0 },
           type: "block",
         },
-        "block@1,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
@@ -6974,48 +7002,48 @@ export const campaign = {
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "block@0,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 2 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -7200,88 +7228,88 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth83tofreedom",
       items: {
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@0,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 1 },
           type: "block",
         },
-        "block@0,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 3 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "block@5,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 3, z: 1 },
           type: "block",
         },
-        "block@5,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 3, z: 2 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
-        "block@5,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 7, z: 2 },
           type: "block",
         },
-        "block@6,2,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,2,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 2, z: 2 },
           type: "block",
         },
-        "block@7,1,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,1,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 1, z: 2 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
@@ -7352,43 +7380,43 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth84",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@0,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 3 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -7444,38 +7472,38 @@ export const campaign = {
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "block@3,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 1 },
           type: "block",
         },
-        "block@3,4,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@3,4,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 3, y: 4, z: 2 },
           type: "block",
         },
-        "block@3,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 3 },
           type: "block",
         },
-        "block@3,4,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 4 },
           type: "block",
         },
-        "block@4,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 4 },
           type: "block",
         },
@@ -7676,18 +7704,18 @@ export const campaign = {
           position: { x: 3, y: 3, z: 1 },
           type: "baddie",
         },
-        "block@3,0,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@3,0,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@3,0,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 3, y: 0, z: 1 },
           type: "block",
         },
-        "block@3,0,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@3,0,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 3, y: 0, z: 2 },
           type: "block",
         },
@@ -7734,98 +7762,98 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth9",
       items: {
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 1 },
           type: "block",
         },
-        "block@0,4,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 2 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 4, z: 1 },
           type: "block",
         },
-        "block@3,4,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 4, z: 2 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 7, z: 1 },
           type: "block",
         },
-        "block@3,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 7, z: 2 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
-        "block@7,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 2 },
           type: "block",
         },
@@ -8150,78 +8178,78 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "barrier@6,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@6,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@6,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@6,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@6,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@6,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@6,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@6,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@6,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 5, z: 2 },
           type: "barrier",
         },
-        "barrier@6,6,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,6,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 6, z: 0 },
           type: "barrier",
         },
-        "barrier@6,6,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,6,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 6, z: 1 },
           type: "barrier",
         },
-        "barrier@6,6,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@6,6,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 6, y: 6, z: 2 },
           type: "barrier",
         },
-        "barrier@7,2,0:Is9HF": {
-          config: { axis: "x" },
+        "barrier@7,2,0:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 7, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@7,2,1:Is9HF": {
-          config: { axis: "x" },
+        "barrier@7,2,1:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 7, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@7,2,2:Is9HF": {
-          config: { axis: "x" },
+        "barrier@7,2,2:k1F7u": {
+          config: { axis: "x", disappearing: false },
           position: { x: 7, y: 2, z: 2 },
           type: "barrier",
         },
@@ -9196,183 +9224,183 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld28",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,10,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 10, z: 0 },
           type: "block",
         },
-        "block@4,11,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,11,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 11, z: 0 },
           type: "block",
         },
-        "block@4,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,12,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 12, z: 0 },
           type: "block",
         },
-        "block@4,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,13,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 13, z: 0 },
           type: "block",
         },
-        "block@4,14,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,14,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 14, z: 0 },
           type: "block",
         },
-        "block@4,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 15, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 8, z: 0 },
           type: "block",
         },
-        "block@4,9,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,9,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 9, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -9467,143 +9495,143 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld29",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -10149,28 +10177,28 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld35",
       items: {
-        "block@5,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
@@ -10615,8 +10643,8 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "barrier@3,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@3,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 3, y: 4, z: 0 },
           type: "barrier",
         },
@@ -11019,28 +11047,28 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus10",
       items: {
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 1 },
           type: "block",
         },
-        "block@7,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 3 },
           type: "block",
         },
-        "block@7,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
-        "block@7,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
@@ -11144,28 +11172,28 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus12",
       items: {
-        "block@2,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 0 },
           type: "block",
         },
-        "block@3,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
@@ -11291,38 +11319,38 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus13",
       items: {
-        "block@2,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 4 },
           type: "block",
         },
-        "block@3,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
-        "block@4,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 4 },
           type: "block",
         },
-        "block@5,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 4 },
           type: "block",
         },
-        "block@6,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 4 },
           type: "block",
         },
-        "block@7,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 4 },
           type: "block",
         },
-        "block@7,0,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,6:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 6 },
           type: "block",
         },
@@ -11384,43 +11412,43 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus14",
       items: {
-        "block@2,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 1 },
           type: "block",
         },
-        "block@3,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 1 },
           type: "block",
         },
-        "block@4,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 1 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 4 },
           type: "block",
         },
-        "block@7,0,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,6:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 6 },
           type: "block",
         },
-        "block@7,1,7:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,7:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 7 },
           type: "block",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
@@ -11468,43 +11496,43 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus15",
       items: {
-        "block@0,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 2 },
           type: "block",
         },
-        "block@0,5,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,6:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 6 },
           type: "block",
         },
-        "block@1,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 1 },
           type: "block",
         },
-        "block@1,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 5 },
           type: "block",
         },
-        "block@2,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 3 },
           type: "block",
         },
-        "block@3,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 1 },
           type: "block",
         },
-        "block@3,5,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 4 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
@@ -11552,33 +11580,33 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus16",
       items: {
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
@@ -11621,108 +11649,108 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "baddie",
         },
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@10,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 5, z: 0 },
           type: "block",
         },
-        "block@11,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 2, z: 0 },
           type: "block",
         },
-        "block@11,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 3, z: 0 },
           type: "block",
         },
-        "block@11,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@8,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@8,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 8, y: 5, z: 0 },
           type: "block",
         },
-        "block@9,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@9,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 9, y: 5, z: 0 },
           type: "block",
         },
@@ -11818,43 +11846,43 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus19",
       items: {
-        "barrier@7,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@7,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 7, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@7,3,4:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@7,3,4:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 7, y: 3, z: 4 },
           type: "barrier",
         },
-        "barrier@7,3,6:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@7,3,6:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 7, y: 3, z: 6 },
           type: "barrier",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 1 },
           type: "block",
         },
-        "block@4,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 2 },
           type: "block",
         },
-        "block@7,0,7:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,7:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 7 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
@@ -11907,33 +11935,33 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "block@0,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@6,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 3, z: 3 },
           type: "block",
         },
-        "block@6,4,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,4,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 4, z: 3 },
           type: "block",
         },
-        "block@7,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
-        "block@7,4,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,4,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
@@ -11999,33 +12027,33 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus20",
       items: {
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -12110,63 +12138,63 @@ export const campaign = {
           position: { x: 4, y: 2, z: 0 },
           type: "baddie",
         },
-        "barrier@2,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@2,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@2,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@2,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@2,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@2,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@2,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@2,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@2,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@2,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@2,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@2,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@2,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 2, y: 5, z: 2 },
           type: "barrier",
         },
@@ -12210,73 +12238,73 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus23",
       items: {
-        "block@0,3,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 5 },
           type: "block",
         },
-        "block@0,4,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,5:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 0, y: 4, z: 5 },
           type: "block",
         },
-        "block@0,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 5 },
           type: "block",
         },
-        "block@1,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 5 },
           type: "block",
         },
-        "block@2,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 5 },
           type: "block",
         },
-        "block@3,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 5 },
           type: "block",
         },
-        "block@4,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 5 },
           type: "block",
         },
-        "block@5,5,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 5 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 1 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,5,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 5, z: 1 },
           type: "block",
         },
-        "block@7,5,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 5, z: 2 },
           type: "block",
         },
-        "block@7,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,3:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 7, y: 5, z: 3 },
           type: "block",
         },
@@ -12681,78 +12709,78 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus27",
       items: {
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -12853,18 +12881,18 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus29",
       items: {
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "block@5,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 4, z: 0 },
           type: "block",
         },
@@ -13025,13 +13053,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus32",
       items: {
-        "block@7,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 3 },
           type: "block",
         },
-        "block@7,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
@@ -13103,43 +13131,43 @@ export const campaign = {
           position: { x: 0, y: 2, z: 1 },
           type: "ball",
         },
-        "block@0,2,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,2,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,6,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,6,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@0,7,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 1 },
           type: "block",
         },
-        "block@0,7,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
           type: "block",
         },
-        "block@0,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
           type: "block",
         },
-        "block@0,7,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
@@ -13188,33 +13216,33 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus35",
       items: {
-        "block@1,2,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,2,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 2, z: 4 },
           type: "block",
         },
-        "block@1,3,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,3,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 3, z: 4 },
           type: "block",
         },
-        "block@1,4,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,4,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 4, z: 3 },
           type: "block",
         },
-        "block@1,5,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,5,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 5, z: 2 },
           type: "block",
         },
-        "block@1,6,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,6,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
@@ -13277,43 +13305,43 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus36",
       items: {
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 2, z: 0 },
           type: "block",
         },
-        "block@1,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
@@ -13347,18 +13375,18 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus37",
       items: {
-        "block@0,0,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,0:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,3,0:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 1, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,4,0:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
@@ -13411,63 +13439,63 @@ export const campaign = {
           position: { x: 6, y: 6, z: 3 },
           type: "ball",
         },
-        "block@1,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 1 },
           type: "block",
         },
-        "block@1,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 2 },
           type: "block",
         },
-        "block@1,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 2 },
           type: "block",
         },
-        "block@6,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 1 },
           type: "block",
         },
-        "block@6,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 2 },
           type: "block",
         },
-        "block@6,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 1 },
           type: "block",
         },
-        "block@6,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
@@ -13543,53 +13571,53 @@ export const campaign = {
           position: { x: 3, y: 7, z: 0 },
           type: "baddie",
         },
-        "block@3,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,3,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,3,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 3, z: 1 },
           type: "block",
         },
-        "block@3,3,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,3,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 3, z: 2 },
           type: "block",
         },
-        "block@4,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,3,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 1 },
           type: "block",
         },
-        "block@4,3,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 2 },
           type: "block",
         },
-        "block@4,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,3,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 4 },
           type: "block",
         },
-        "block@4,3,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,5:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 5 },
           type: "block",
         },
-        "block@4,3,6:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,6:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 6 },
           type: "block",
         },
@@ -13660,83 +13688,83 @@ export const campaign = {
           position: { x: 6, y: 6, z: 3 },
           type: "ball",
         },
-        "block@1,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 1 },
           type: "block",
         },
-        "block@1,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 2 },
           type: "block",
         },
-        "block@1,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 2 },
           type: "block",
         },
-        "block@3,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 0 },
           type: "block",
         },
-        "block@6,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 1 },
           type: "block",
         },
-        "block@6,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 2 },
           type: "block",
         },
-        "block@6,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 1 },
           type: "block",
         },
-        "block@6,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
@@ -13865,18 +13893,18 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus6",
       items: {
-        "block@4,3,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@4,3,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,3,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@4,3,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 4, y: 3, z: 1 },
           type: "block",
         },
-        "block@4,3,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@4,3,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 4, y: 3, z: 2 },
           type: "block",
         },
@@ -13937,48 +13965,48 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus7",
       items: {
-        "block@0,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 3 },
           type: "block",
         },
-        "block@0,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 3 },
           type: "block",
         },
-        "block@0,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 3 },
           type: "block",
         },
-        "block@2,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 3 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@7,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
-        "block@7,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "block@7,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 3 },
           type: "block",
         },
@@ -14054,63 +14082,63 @@ export const campaign = {
           position: { x: 6, y: 6, z: 3 },
           type: "ball",
         },
-        "block@1,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 1 },
           type: "block",
         },
-        "block@1,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 2 },
           type: "block",
         },
-        "block@1,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 2 },
           type: "block",
         },
-        "block@6,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 1 },
           type: "block",
         },
-        "block@6,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 2 },
           type: "block",
         },
-        "block@6,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 1 },
           type: "block",
         },
-        "block@6,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
@@ -14161,48 +14189,48 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus9fish",
       items: {
-        "block@2,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 4 },
           type: "block",
         },
-        "block@3,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
-        "block@3,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 4 },
           type: "block",
         },
-        "block@3,2,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 4 },
           type: "block",
         },
-        "block@3,3,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 4 },
           type: "block",
         },
-        "block@3,4,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 4 },
           type: "block",
         },
-        "block@3,5,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 4 },
           type: "block",
         },
-        "block@3,6,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,6,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 6, z: 4 },
           type: "block",
         },
-        "block@3,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 4 },
           type: "block",
         },
@@ -14254,73 +14282,73 @@ export const campaign = {
       floorSkip: [],
       id: "finalroom",
       items: {
-        "block@0,2,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,2,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 2, z: 1 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,2,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,2,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 2, z: 1 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 1 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -14562,23 +14590,23 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase10",
       items: {
-        "block@0,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@0,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
           type: "block",
         },
-        "block@0,7,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,5:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 5 },
           type: "block",
         },
-        "block@4,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
@@ -14667,48 +14695,48 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase12",
       items: {
-        "block@0,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 3 },
           type: "block",
         },
-        "block@0,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 3 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@0,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 3 },
           type: "block",
         },
-        "block@1,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 3 },
           type: "block",
         },
-        "block@2,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 3 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@5,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 3 },
           type: "block",
         },
@@ -16578,43 +16606,43 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase3",
       items: {
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@2,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
@@ -17806,48 +17834,48 @@ export const campaign = {
           position: { x: 5, y: 2, z: 0 },
           type: "baddie",
         },
-        "block@1,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,7,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,7,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 7, z: 1 },
           type: "block",
         },
-        "block@1,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 7, z: 3 },
           type: "block",
         },
-        "block@2,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@2,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 2, y: 7, z: 3 },
           type: "block",
         },
-        "block@3,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 7, z: 3 },
           type: "block",
         },
-        "block@7,0,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,0,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,1,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 1, z: 1 },
           type: "block",
         },
-        "block@7,2,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,2,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 2, z: 2 },
           type: "block",
         },
-        "block@7,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
@@ -18167,23 +18195,23 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,0,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 1 },
           type: "block",
         },
-        "block@2,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 3 },
           type: "block",
         },
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
@@ -18488,18 +18516,18 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary10",
       items: {
-        "block@0,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
@@ -18532,18 +18560,18 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary11",
       items: {
-        "block@5,5,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,5,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 1 },
           type: "block",
         },
-        "block@5,5,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
           type: "block",
         },
@@ -18576,33 +18604,33 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary12",
       items: {
-        "block@0,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 3 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@0,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 3 },
           type: "block",
         },
-        "block@7,0,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,0,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,0,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,0,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 0, z: 1 },
           type: "block",
         },
-        "block@7,0,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,0,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 0, z: 2 },
           type: "block",
         },
@@ -18678,48 +18706,48 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary13",
       items: {
-        "block@0,3,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,5:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 5 },
           type: "block",
         },
-        "block@1,0,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,0,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 0, z: 1 },
           type: "block",
         },
-        "block@1,3,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,3,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 3, z: 4 },
           type: "block",
         },
-        "block@2,0,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@2,0,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 2, y: 0, z: 1 },
           type: "block",
         },
-        "block@2,3,6:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@2,3,6:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 2, y: 3, z: 6 },
           type: "block",
         },
-        "block@3,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,3,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,3,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 3, z: 2 },
           type: "block",
         },
-        "block@5,3,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,3,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
@@ -18772,88 +18800,88 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary14",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 0 },
           type: "block",
         },
-        "block@2,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
@@ -18902,193 +18930,193 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 1 },
           type: "block",
         },
-        "block@1,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 2, z: 1 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,0,7:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,7:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 7 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,1,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,6:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 6 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,2,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 5 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,5:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 5 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,4,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 4 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,5,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 4 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,6,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 4 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 3 },
           type: "block",
         },
@@ -19136,43 +19164,43 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary16",
       items: {
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -19230,83 +19258,83 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary17",
       items: {
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 0 },
           type: "block",
         },
-        "block@3,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 6, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 0 },
           type: "block",
         },
-        "block@4,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 0 },
           type: "block",
         },
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
@@ -19348,83 +19376,83 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary18fish",
       items: {
-        "block@0,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 3 },
           type: "block",
         },
-        "block@1,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 4, z: 3 },
           type: "block",
         },
-        "block@10,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 4, z: 3 },
           type: "block",
         },
-        "block@11,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 4, z: 3 },
           type: "block",
         },
-        "block@12,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@12,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 12, y: 4, z: 3 },
           type: "block",
         },
-        "block@13,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@13,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 13, y: 4, z: 3 },
           type: "block",
         },
-        "block@14,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@14,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 14, y: 4, z: 3 },
           type: "block",
         },
-        "block@15,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@15,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 15, y: 4, z: 3 },
           type: "block",
         },
-        "block@2,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 3 },
           type: "block",
         },
-        "block@3,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 3 },
           type: "block",
         },
-        "block@4,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 3 },
           type: "block",
         },
-        "block@5,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 4, z: 3 },
           type: "block",
         },
-        "block@6,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 4, z: 3 },
           type: "block",
         },
-        "block@7,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
-        "block@8,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@8,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 8, y: 4, z: 3 },
           type: "block",
         },
-        "block@9,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@9,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 9, y: 4, z: 3 },
           type: "block",
         },
@@ -19542,53 +19570,53 @@ export const campaign = {
           position: { x: 6, y: 3, z: 2 },
           type: "baddie",
         },
-        "block@0,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@1,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
-        "block@6,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 3, z: 0 },
           type: "block",
         },
-        "block@6,3,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,3,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 3, z: 1 },
           type: "block",
         },
-        "block@6,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@6,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 6, y: 3, z: 3 },
           type: "block",
         },
-        "block@7,3,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
-        "block@7,4,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,4,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 4, z: 3 },
           type: "block",
         },
@@ -19719,193 +19747,193 @@ export const campaign = {
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@0,7,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,6:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 6 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 4 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 4 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 2 },
           type: "block",
         },
-        "block@3,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 3 },
           type: "block",
         },
-        "block@3,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 4 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 3 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,2,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 2 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -19953,183 +19981,183 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary22",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,4,7:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,7:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 7 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,4,6:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,4,6:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 4, z: 6 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,4,5:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,5:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 2, y: 4, z: 5 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,4,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@3,4,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 4, z: 4 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,1,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,1:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 1, z: 1 },
           type: "block",
         },
-        "block@4,2,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,2:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 2, z: 2 },
           type: "block",
         },
-        "block@4,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,3:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,4,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,4,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 4, z: 4 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -20172,158 +20200,158 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary23",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@0,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 6, z: 0 },
           type: "block",
         },
-        "block@4,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -20442,13 +20470,13 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary26",
       items: {
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
@@ -20514,13 +20542,13 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary27",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
@@ -20577,18 +20605,18 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary28",
       items: {
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 1 },
           type: "block",
         },
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
@@ -20654,63 +20682,63 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary29",
       items: {
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 0 },
           type: "block",
         },
-        "block@6,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
@@ -20753,28 +20781,28 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary3",
       items: {
-        "block@0,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 7, z: 0 },
           type: "block",
         },
-        "block@7,3,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -20845,33 +20873,33 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary30",
       items: {
-        "block@0,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "block@1,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 3, z: 3 },
           type: "block",
         },
-        "block@2,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 3 },
           type: "block",
         },
-        "block@3,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 3 },
           type: "block",
         },
-        "block@5,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 3 },
           type: "block",
         },
@@ -20923,63 +20951,63 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary31",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 0 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 0 },
           type: "block",
         },
-        "block@5,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
@@ -21038,63 +21066,63 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
           type: "baddie",
         },
-        "block@2,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 4 },
           type: "block",
         },
-        "block@2,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 1, z: 4 },
           type: "block",
         },
-        "block@3,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
-        "block@3,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 4 },
           type: "block",
         },
-        "block@4,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 4 },
           type: "block",
         },
-        "block@4,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 4 },
           type: "block",
         },
-        "block@5,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 0, z: 4 },
           type: "block",
         },
-        "block@5,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 1, z: 4 },
           type: "block",
         },
-        "block@6,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 0, z: 4 },
           type: "block",
         },
-        "block@6,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 1, z: 4 },
           type: "block",
         },
-        "block@7,0,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 4 },
           type: "block",
         },
-        "block@7,1,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,1,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 1, z: 4 },
           type: "block",
         },
@@ -21157,63 +21185,63 @@ export const campaign = {
           position: { x: 6, y: 6, z: 3 },
           type: "ball",
         },
-        "block@1,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 0 },
           type: "block",
         },
-        "block@1,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 1 },
           type: "block",
         },
-        "block@1,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 1, z: 2 },
           type: "block",
         },
-        "block@1,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 1 },
           type: "block",
         },
-        "block@1,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@1,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 1, y: 6, z: 2 },
           type: "block",
         },
-        "block@6,1,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 0 },
           type: "block",
         },
-        "block@6,1,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 1 },
           type: "block",
         },
-        "block@6,1,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,1,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 1, z: 2 },
           type: "block",
         },
-        "block@6,6,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,6,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 1 },
           type: "block",
         },
-        "block@6,6,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,6,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 6, z: 2 },
           type: "block",
         },
@@ -21279,53 +21307,53 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary34crown",
       items: {
-        "block@0,0,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,0,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        "block@0,0,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 2 },
           type: "block",
         },
-        "block@0,0,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 3 },
           type: "block",
         },
-        "block@0,0,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 4 },
           type: "block",
         },
-        "block@0,0,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,0,5:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 0, z: 5 },
           type: "block",
         },
-        "block@0,1,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,1,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 1, z: 0 },
           type: "block",
         },
-        "block@0,7,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
           type: "block",
         },
-        "block@7,3,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,3,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 3, z: 4 },
           type: "block",
         },
-        "block@7,4,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@7,4,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 7, y: 4, z: 4 },
           type: "block",
         },
@@ -21386,33 +21414,33 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary4",
       items: {
-        "block@4,5,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,5,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 5, z: 1 },
           type: "block",
         },
-        "block@5,0,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,0,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 0, z: 4 },
           type: "block",
         },
-        "block@5,0,7:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,0,7:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 0, z: 7 },
           type: "block",
         },
-        "block@5,1,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,1,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 1, z: 2 },
           type: "block",
         },
-        "block@5,2,6:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,2,6:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 2, z: 6 },
           type: "block",
         },
-        "block@5,5,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
           type: "block",
         },
@@ -21446,33 +21474,33 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary5",
       items: {
-        "block@0,5,7:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,5,7:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 5, z: 7 },
           type: "block",
         },
-        "block@2,5,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@2,5,5:8iyRr": {
+          config: { disappearing: true, style: "artificial" },
           position: { x: 2, y: 5, z: 5 },
           type: "block",
         },
-        "block@5,0,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,0,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 0, z: 0 },
           type: "block",
         },
-        "block@5,4,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,4,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 4, z: 0 },
           type: "block",
         },
-        "block@5,5,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 2 },
           type: "block",
         },
-        "block@5,5,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@5,5,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 5, y: 5, z: 4 },
           type: "block",
         },
@@ -21492,8 +21520,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary6",
       items: {
-        "block@0,5,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,5,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
@@ -21562,18 +21590,18 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "baddie",
         },
-        "block@4,5,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,5,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,5,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,5,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 5, z: 1 },
           type: "block",
         },
-        "block@4,5,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@4,5,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 4, y: 5, z: 3 },
           type: "block",
         },
@@ -21610,28 +21638,28 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary8",
       items: {
-        "block@0,4,7:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,4,7:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 4, z: 7 },
           type: "block",
         },
-        "block@0,5,6:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,5,6:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 5, z: 6 },
           type: "block",
         },
-        "block@0,6,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,6,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 6, z: 4 },
           type: "block",
         },
-        "block@0,7,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
-        "block@1,2,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@1,2,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 1, y: 2, z: 2 },
           type: "block",
         },
@@ -21757,93 +21785,93 @@ export const campaign = {
       floorSkip: [],
       id: "safari10",
       items: {
-        "barrier@4,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@4,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@4,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@4,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@4,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@4,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
@@ -21930,88 +21958,88 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "baddie",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@4,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@4,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@4,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@4,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@4,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
@@ -22069,33 +22097,33 @@ export const campaign = {
       floorSkip: [],
       id: "safari13",
       items: {
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@3,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
@@ -22133,23 +22161,23 @@ export const campaign = {
       floorSkip: [],
       id: "safari14",
       items: {
-        "block@3,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 1 },
           type: "block",
         },
-        "block@4,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 0 },
           type: "block",
         },
-        "block@4,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 1 },
           type: "block",
         },
-        "block@5,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
@@ -22427,83 +22455,83 @@ export const campaign = {
       floorSkip: [],
       id: "safari17fish",
       items: {
-        "block@3,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "block@3,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 1, z: 3 },
           type: "block",
         },
-        "block@3,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 3 },
           type: "block",
         },
-        "block@3,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 3 },
           type: "block",
         },
-        "block@3,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 3 },
           type: "block",
         },
-        "block@3,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,5,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 3 },
           type: "block",
         },
-        "block@3,6,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,6,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 6, z: 3 },
           type: "block",
         },
-        "block@3,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 3 },
           type: "block",
         },
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 3 },
           type: "block",
         },
-        "block@4,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 3 },
           type: "block",
         },
-        "block@4,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 3 },
           type: "block",
         },
-        "block@4,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 3 },
           type: "block",
         },
-        "block@4,6,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 3 },
           type: "block",
         },
-        "block@4,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
@@ -22574,78 +22602,78 @@ export const campaign = {
       floorSkip: [],
       id: "safari18",
       items: {
-        "block@0,0,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 2 },
           type: "block",
         },
-        "block@0,1,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,1,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 1, z: 2 },
           type: "block",
         },
-        "block@0,2,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 2 },
           type: "block",
         },
-        "block@0,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 2 },
           type: "block",
         },
-        "block@1,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,10,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 10, z: 0 },
           type: "block",
         },
-        "block@1,11,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,11,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 11, z: 0 },
           type: "block",
         },
-        "block@1,12,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,12,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 12, z: 0 },
           type: "block",
         },
-        "block@1,13,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,13,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 13, z: 0 },
           type: "block",
         },
-        "block@1,14,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,14,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 14, z: 0 },
           type: "block",
         },
-        "block@1,15,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,15,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 15, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@1,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 8, z: 0 },
           type: "block",
         },
-        "block@1,9,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,9,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 9, z: 0 },
           type: "block",
         },
@@ -22745,108 +22773,108 @@ export const campaign = {
           position: { x: 12, y: 0, z: 0 },
           type: "baddie",
         },
-        "barrier@13,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@13,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@13,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@13,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@13,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@13,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@13,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@13,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@13,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@13,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@13,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@13,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@13,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 13, y: 3, z: 2 },
           type: "barrier",
         },
-        "block@0,9,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 0 },
           type: "block",
         },
-        "block@0,9,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 1 },
           type: "block",
         },
-        "block@0,9,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 2 },
           type: "block",
         },
-        "block@0,9,3:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,3:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 3 },
           type: "block",
         },
-        "block@0,9,4:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,4:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 4 },
           type: "block",
         },
-        "block@0,9,5:Z1qu960": {
-          config: { style: "tower" },
+        "block@0,9,5:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 0, y: 9, z: 5 },
           type: "block",
         },
-        "block@6,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 6, z: 0 },
           type: "block",
         },
-        "block@6,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 7, z: 0 },
           type: "block",
         },
-        "block@6,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 8, z: 0 },
           type: "block",
         },
@@ -23002,28 +23030,28 @@ export const campaign = {
       floorSkip: [],
       id: "safari2",
       items: {
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 1 },
           type: "block",
         },
-        "block@4,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "block@4,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 1 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -23177,23 +23205,23 @@ export const campaign = {
           position: { x: 5, y: 4, z: 0 },
           type: "baddie",
         },
-        "block@0,7,4:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,7,4:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
-        "block@1,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,3:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 7, z: 3 },
           type: "block",
         },
-        "block@4,7,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 2 },
           type: "block",
         },
-        "block@7,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
@@ -23396,13 +23424,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari24",
       items: {
-        "block@1,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,2,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 1 },
           type: "block",
         },
@@ -23474,18 +23502,18 @@ export const campaign = {
       floorSkip: [],
       id: "safari25",
       items: {
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -23536,188 +23564,188 @@ export const campaign = {
           position: { x: 1, y: 10, z: 0 },
           type: "ball",
         },
-        "barrier@4,0,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
           type: "barrier",
         },
-        "barrier@4,0,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 1 },
           type: "barrier",
         },
-        "barrier@4,0,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,0,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 2 },
           type: "barrier",
         },
-        "barrier@4,1,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 0 },
           type: "barrier",
         },
-        "barrier@4,1,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 1 },
           type: "barrier",
         },
-        "barrier@4,1,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,1,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 1, z: 2 },
           type: "barrier",
         },
-        "barrier@4,10,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,10,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 10, z: 0 },
           type: "barrier",
         },
-        "barrier@4,10,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,10,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 10, z: 1 },
           type: "barrier",
         },
-        "barrier@4,10,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,10,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 10, z: 2 },
           type: "barrier",
         },
-        "barrier@4,11,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,11,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 11, z: 0 },
           type: "barrier",
         },
-        "barrier@4,11,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,11,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 11, z: 1 },
           type: "barrier",
         },
-        "barrier@4,11,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,11,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 11, z: 2 },
           type: "barrier",
         },
-        "barrier@4,2,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 0 },
           type: "barrier",
         },
-        "barrier@4,2,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 1 },
           type: "barrier",
         },
-        "barrier@4,2,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,2,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 2, z: 2 },
           type: "barrier",
         },
-        "barrier@4,3,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 0 },
           type: "barrier",
         },
-        "barrier@4,3,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
-        "barrier@4,3,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,3,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
           type: "barrier",
         },
-        "barrier@4,4,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 0 },
           type: "barrier",
         },
-        "barrier@4,4,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 1 },
           type: "barrier",
         },
-        "barrier@4,4,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,4,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 4, z: 2 },
           type: "barrier",
         },
-        "barrier@4,5,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 0 },
           type: "barrier",
         },
-        "barrier@4,5,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 1 },
           type: "barrier",
         },
-        "barrier@4,5,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,5,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
-        "barrier@4,6,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 0 },
           type: "barrier",
         },
-        "barrier@4,6,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 1 },
           type: "barrier",
         },
-        "barrier@4,6,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,6,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 6, z: 2 },
           type: "barrier",
         },
-        "barrier@4,7,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 0 },
           type: "barrier",
         },
-        "barrier@4,7,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 1 },
           type: "barrier",
         },
-        "barrier@4,7,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,7,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 2 },
           type: "barrier",
         },
-        "barrier@4,8,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,8,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 8, z: 0 },
           type: "barrier",
         },
-        "barrier@4,8,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,8,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 8, z: 1 },
           type: "barrier",
         },
-        "barrier@4,8,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,8,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 8, z: 2 },
           type: "barrier",
         },
-        "barrier@4,9,0:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,9,0:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 9, z: 0 },
           type: "barrier",
         },
-        "barrier@4,9,1:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,9,1:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 9, z: 1 },
           type: "barrier",
         },
-        "barrier@4,9,2:Is9Xq": {
-          config: { axis: "y" },
+        "barrier@4,9,2:fbso8": {
+          config: { axis: "y", disappearing: false },
           position: { x: 4, y: 9, z: 2 },
           type: "barrier",
         },
-        "block@7,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 3 },
           type: "block",
         },
@@ -23979,23 +24007,23 @@ export const campaign = {
       floorSkip: [],
       id: "safari3",
       items: {
-        "block@1,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 0, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 7, z: 0 },
           type: "block",
         },
@@ -24070,53 +24098,53 @@ export const campaign = {
       floorSkip: [],
       id: "safari31",
       items: {
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "block@0,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 5, z: 0 },
           type: "block",
         },
-        "block@1,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 6, z: 0 },
           type: "block",
         },
-        "block@1,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "block@2,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 6, z: 0 },
           type: "block",
         },
-        "block@7,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,4,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 1 },
           type: "block",
         },
@@ -24300,18 +24328,18 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
@@ -24368,43 +24396,43 @@ export const campaign = {
       floorSkip: [],
       id: "safari34",
       items: {
-        "block@4,0,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,0,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 0, z: 3 },
           type: "block",
         },
-        "block@4,1,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,1,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 1, z: 3 },
           type: "block",
         },
-        "block@4,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 3 },
           type: "block",
         },
-        "block@4,3,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 3 },
           type: "block",
         },
-        "block@4,4,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 3 },
           type: "block",
         },
-        "block@4,5,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 5, z: 3 },
           type: "block",
         },
-        "block@4,6,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 3 },
           type: "block",
         },
-        "block@4,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
@@ -24506,13 +24534,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari35",
       items: {
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
@@ -24599,43 +24627,43 @@ export const campaign = {
       floorSkip: [],
       id: "safari36",
       items: {
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 4, y: 5, z: 0 },
           type: "block",
         },
-        "block@4,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 6, z: 0 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "block@6,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,3,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 6, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -24687,133 +24715,133 @@ export const campaign = {
           position: { x: 7, y: 2, z: 1 },
           type: "baddie",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 4, z: 0 },
           type: "block",
         },
-        "block@0,7,0:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,0:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 0 },
           type: "block",
         },
-        "block@0,7,1:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,1:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 1 },
           type: "block",
         },
-        "block@0,7,2:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,2:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 2 },
           type: "block",
         },
-        "block@0,7,3:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,3:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 3 },
           type: "block",
         },
-        "block@0,7,4:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,4:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 4 },
           type: "block",
         },
-        "block@0,7,5:Z1bIU4r": {
-          config: { style: "artificial" },
+        "block@0,7,5:20S0Rw": {
+          config: { disappearing: false, style: "artificial" },
           position: { x: 0, y: 7, z: 5 },
           type: "block",
         },
-        "block@1,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 2, z: 0 },
           type: "block",
         },
-        "block@1,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,4,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 1, y: 4, z: 0 },
           type: "block",
         },
-        "block@2,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 4, z: 0 },
           type: "block",
         },
-        "block@3,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 2, z: 0 },
           type: "block",
         },
-        "block@3,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
         },
-        "block@4,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 2, z: 0 },
           type: "block",
         },
-        "block@4,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 4, z: 0 },
           type: "block",
         },
-        "block@5,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 0 },
           type: "block",
         },
-        "block@5,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 4, z: 0 },
           type: "block",
         },
-        "block@6,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 2, z: 0 },
           type: "block",
         },
-        "block@6,3,0:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,3,0:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 3, z: 0 },
           type: "block",
         },
-        "block@6,3,1:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,3,1:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 3, z: 1 },
           type: "block",
         },
-        "block@6,3,2:Z1qu960": {
-          config: { style: "tower" },
+        "block@6,3,2:Z1V7JSA": {
+          config: { disappearing: false, style: "tower" },
           position: { x: 6, y: 3, z: 2 },
           type: "block",
         },
-        "block@6,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 4, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -24879,38 +24907,38 @@ export const campaign = {
           position: { x: 7, y: 4, z: 1 },
           type: "baddie",
         },
-        "block@3,7,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 0 },
           type: "block",
         },
-        "block@3,7,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 1 },
           type: "block",
         },
-        "block@3,7,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,7,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 7, z: 3 },
           type: "block",
         },
-        "block@7,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "block@7,3,1:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,1:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 1 },
           type: "block",
         },
-        "block@7,3,2:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,3,2:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "block@7,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
@@ -25064,128 +25092,128 @@ export const campaign = {
       ],
       id: "safari6triple",
       items: {
-        "block@0,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 0 },
           type: "block",
         },
-        "block@0,11,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,11,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 11, z: 0 },
           type: "block",
         },
-        "block@0,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 0 },
           type: "block",
         },
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,10,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,10,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 10, z: 0 },
           type: "block",
         },
-        "block@1,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 8, z: 0 },
           type: "block",
         },
-        "block@10,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 2, z: 0 },
           type: "block",
         },
-        "block@10,4,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,4,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 4, z: 0 },
           type: "block",
         },
-        "block@10,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@10,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 10, y: 5, z: 0 },
           type: "block",
         },
-        "block@11,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 0, z: 0 },
           type: "block",
         },
-        "block@11,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@11,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 11, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 0, z: 0 },
           type: "block",
         },
-        "block@3,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,2,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 2, z: 0 },
           type: "block",
         },
-        "block@3,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,8,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 3, y: 8, z: 0 },
           type: "block",
         },
-        "block@5,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 2, z: 0 },
           type: "block",
         },
-        "block@5,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "block@5,6,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,6,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 6, z: 0 },
           type: "block",
         },
-        "block@5,8,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,8,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 8, z: 0 },
           type: "block",
         },
-        "block@6,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 2, z: 0 },
           type: "block",
         },
-        "block@6,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@6,5,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 6, y: 5, z: 0 },
           type: "block",
         },
-        "block@7,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "block@7,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 0 },
           type: "block",
         },
-        "block@8,5,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@8,5,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 8, y: 5, z: 0 },
           type: "block",
         },
-        "block@9,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@9,0,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 9, y: 0, z: 0 },
           type: "block",
         },
@@ -25291,48 +25319,48 @@ export const campaign = {
       floorSkip: [],
       id: "safari7",
       items: {
-        "block@0,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 3, z: 0 },
           type: "block",
         },
-        "block@1,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@1,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 1, y: 3, z: 0 },
           type: "block",
         },
-        "block@2,0,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,0,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 0, z: 0 },
           type: "block",
         },
-        "block@2,1,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,1,0:Z1AdJxh": {
+          config: { disappearing: true, style: "organic" },
           position: { x: 2, y: 1, z: 0 },
           type: "block",
         },
-        "block@2,2,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,2,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 2, z: 0 },
           type: "block",
         },
-        "block@2,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@2,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 2, y: 3, z: 0 },
           type: "block",
         },
-        "block@3,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@3,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 3, z: 0 },
           type: "block",
         },
-        "block@4,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@4,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 4, y: 3, z: 0 },
           type: "block",
         },
-        "block@5,3,0:ZlEwyj": {
-          config: { style: "organic" },
+        "block@5,3,0:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
@@ -25398,13 +25426,13 @@ export const campaign = {
       floorSkip: [],
       id: "safari9",
       items: {
-        "block@0,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@0,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 2, z: 3 },
           type: "block",
         },
-        "block@7,2,3:ZlEwyj": {
-          config: { style: "organic" },
+        "block@7,2,3:95uHj": {
+          config: { disappearing: false, style: "organic" },
           position: { x: 7, y: 2, z: 3 },
           type: "block",
         },

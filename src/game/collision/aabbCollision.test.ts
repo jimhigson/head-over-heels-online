@@ -64,7 +64,7 @@ describe("collision1toMany", () => {
       ...defaultItemProperties,
       id: "subject",
       type: "block",
-      config: { style: "artificial" },
+      config: { style: "artificial", disappearing: false },
       state: { position: { x: 0, y: 0, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
@@ -73,7 +73,7 @@ describe("collision1toMany", () => {
       ...defaultItemProperties,
       id: "colliding1",
       type: "block",
-      config: { style: "artificial" },
+      config: { style: "artificial", disappearing: false },
       state: { position: { x: 1.9, y: 0, z: 0 }, expires: null },
       aabb: { x: 1, y: 1, z: 1 },
     };
@@ -81,7 +81,7 @@ describe("collision1toMany", () => {
       ...defaultItemProperties,
       id: "colliding2",
       type: "block",
-      config: { style: "artificial" },
+      config: { style: "artificial", disappearing: false },
       state: { position: { x: 0, y: 0.9, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
@@ -90,7 +90,7 @@ describe("collision1toMany", () => {
       ...defaultItemProperties,
       id: "nonColliding1",
       type: "block",
-      config: { style: "artificial" },
+      config: { style: "artificial", disappearing: false },
       state: { position: { x: 0, y: 0, z: 1 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };
@@ -99,7 +99,7 @@ describe("collision1toMany", () => {
       ...defaultItemProperties,
       id: "nonColliding2",
       type: "block",
-      config: { style: "artificial" },
+      config: { style: "artificial", disappearing: false },
       state: { position: { x: 2, y: 0, z: 0 }, expires: null },
       aabb: { x: 2, y: 1, z: 1 },
     };

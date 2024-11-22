@@ -56,7 +56,7 @@ const colourRooms = () => {
     },
     {
       type: "block",
-      config: { style: "organic" },
+      config: { style: "organic", disappearing: false },
       position: { x: 4, y: 6, z: 0 },
     },
     {
@@ -228,101 +228,101 @@ const rooms = {
       // this block should be behind...
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 5, z: 0 },
       },
       // ...this block (because this one is on top (only just) even though it is further back)
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5.8, y: 5.8, z: 1 },
       },
 
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 9 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 8 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 7 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 6 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 5 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 4 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 2 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 1 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 0 },
       },
 
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 5 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 4 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 2 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 1 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 10, y: 6, z: 0 },
       },
 
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 2, y: 4, z: 0 },
       },
       {
@@ -332,7 +332,7 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 0, y: 4, z: 0 },
       },
       {
@@ -343,49 +343,49 @@ const rooms = {
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 1, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 2, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 2, z: 1 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 2, z: 0 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 3, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 4, z: 3 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 3, z: 2 },
       },
       {
         // comes after in the list but should be drawn behind in terms of z-index:
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 1, y: 4, z: 2 },
       },
       {
@@ -457,7 +457,7 @@ const rooms = {
     items: keyItems([
       {
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 0, y: 0, z: 0 },
       },
       /*{
@@ -594,7 +594,7 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "artificial" },
+        config: { style: "artificial", disappearing: false },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -609,17 +609,17 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "organic", disappearing: false },
         position: { x: 5, y: 5, z: 0 },
       },
       {
         type: "block",
-        config: { style: "tower" },
+        config: { style: "tower", disappearing: false },
         position: { x: 7, y: 7, z: 0 },
       },
       {
         type: "block",
-        config: { style: "tower" },
+        config: { style: "tower", disappearing: false },
         position: { x: 7, y: 7, z: 1 },
       },
       {
@@ -714,12 +714,12 @@ const rooms = {
       },
       {
         type: "barrier",
-        config: { axis: "y" },
+        config: { axis: "y", disappearing: false },
         position: { x: 6, y: 1, z: 0 },
       },
       {
         type: "barrier",
-        config: { axis: "x" },
+        config: { axis: "x", disappearing: false },
         position: { x: 8, y: 1, z: 0 },
       },
       {

@@ -133,12 +133,12 @@ describe("jumping", () => {
           lowerBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
           upperBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 2 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
         },
         inputState: { towards: true, jump: true },
@@ -173,12 +173,12 @@ describe("jumping", () => {
           lowBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
           highBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 1 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
         },
         inputState: { towards: true, jump: true },
@@ -210,17 +210,17 @@ describe("jumping", () => {
           lowBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
           mediumBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 1 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
           highBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 2 },
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: false },
           },
         },
         inputState: { towards: true },
@@ -528,7 +528,7 @@ describe("lifts", () => {
         // a block to stand on when getting to the new room:
         landing: {
           type: "block",
-          config: { style: "organic" },
+          config: { style: "organic", disappearing: false },
           position: { x: 5, y: 5, z: 0 },
         },
       },
@@ -563,7 +563,7 @@ describe("lifts", () => {
         },
         landing: {
           type: "block",
-          config: { style: "organic" },
+          config: { style: "organic", disappearing: false },
           position: { x: 4, y: 5, z: 5.5 },
         },
       },
@@ -614,7 +614,7 @@ describe("lifts", () => {
         },
         landing: {
           type: "block",
-          config: { style: "organic" },
+          config: { style: "organic", disappearing: false },
           position: { x: 4, y: 5, z: 3 },
         },
       },
@@ -652,6 +652,7 @@ describe("pushing", () => {
         position: { x: 0, y: 4, z: 0 },
         config: {
           style: "organic",
+          disappearing: false,
         },
       },
     },

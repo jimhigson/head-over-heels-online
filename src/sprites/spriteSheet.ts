@@ -113,13 +113,19 @@ const frames = {
   "block.organic": {
     frame: { x: 160, y: 449, ...largeItemTextureSize },
   },
-  "block.organic.weak": {
+  "block.organic.disappearing": {
     frame: { x: 160, y: 420, ...largeItemTextureSize },
   },
   "block.artificial": {
     frame: { x: 127, y: 449, ...largeItemTextureSize },
   },
+  "block.artificial.disappearing": {
+    frame: { x: 127, y: 449, ...largeItemTextureSize },
+  },
   "block.tower": {
+    frame: { x: 27, y: 374, ...smallItemTextureSize },
+  },
+  "block.tower.disappearing": {
     frame: { x: 27, y: 374, ...smallItemTextureSize },
   },
   volcano: {
@@ -201,7 +207,7 @@ const frames = {
     frame: { x: 4, y: 356, ...largeItemTextureSize },
   },
   sticks: {
-    frame: { x: 4, y: 391, ...smallItemTextureSize },
+    frame: { x: 2, y: 428, ...smallItemTextureSize },
   },
   cube: {
     frame: { x: 27, y: 428, ...smallItemTextureSize },

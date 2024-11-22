@@ -118,6 +118,8 @@ const convertItemsArray = (
             type: "barrier",
             config: {
               axis: item.kind === "bars-ns" ? "y" : "x",
+              disappearing:
+                item.behavior === "behavior of disappearance on touch",
             },
             position,
           };
@@ -138,6 +140,8 @@ const convertItemsArray = (
             type: "block",
             config: {
               style: styleConversion[item.kind],
+              disappearing:
+                item.behavior === "behavior of disappearance on jump into",
             },
             position,
           };
