@@ -112,6 +112,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       //  - only doors)
       // TODO: maybe this should be side-effect free
       character.state.autoWalkDistance = blockSizePx.w * 0.75;
+      if (character.state.action === "idle") character.state.action = "moving";
 
       if (changeType === "level-select") {
         character.state.facing = oppositeDirection(portalDirectionXy);
