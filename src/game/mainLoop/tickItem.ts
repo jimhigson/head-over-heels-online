@@ -18,7 +18,6 @@ import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { addXyz, originXyz, xyzEqual } from "@/utils/vectors";
 import { moveItem } from "../physics/moveItem";
-import { standingOnConveyor } from "../physics/mechanics/standingOnConveyor";
 import { moveLift } from "../physics/mechanics/moveLift";
 
 /**
@@ -63,9 +62,9 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   if (isMovable) {
     //accumulateResult(steppedOff(item) as MechanicResult<T>);
     accumulateResult(gravity(item, gameState, deltaMS) as MechanicResult<T>);
-    accumulateResult(
+    /*accumulateResult(
       standingOnConveyor(item, gameState, deltaMS) as MechanicResult<T>,
-    );
+    );*/
   }
 
   if (isItemType("teleporter")(item)) {
@@ -83,6 +82,11 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (!xyzEqual(accumulatedMovement, originXyz)) {
-    moveItem(item as UnknownItemInPlay<RoomId>, accumulatedMovement, gameState);
+    moveItem({
+      subjectItem: item as UnknownItemInPlay<RoomId>,
+      xyzDeltaPartial: accumulatedMovement,
+      gameState,
+      deltaMS,
+    });
   }
 };

@@ -16,28 +16,32 @@ import { iterate } from "@/utils/iterate";
 import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
+import { collision1toMany } from "@/game/collision/aabbCollision";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
 export const changeCharacterRoom = <RoomId extends string>({
   gameState,
   toRoom,
-  portalRelative = originXyz,
+  positionRelativeToSourcePortal = originXyz,
   changeType,
+  sourcePortal,
 }:
   | {
       gameState: GameState<RoomId>;
       toRoom: NoInfer<RoomId>;
       /* position relative to the portal in the source room */
-      portalRelative: Xyz;
+      sourcePortal: ItemInPlay<"portal", PlanetName, RoomId>;
+      positionRelativeToSourcePortal: Xyz;
       /* if true, the position in the source and destimation room will be exactly maintained */
       changeType: "portal";
     }
   | {
       gameState: GameState<RoomId>;
       toRoom: NoInfer<RoomId>;
+      sourcePortal?: undefined;
       /* position relative to the portal in the source room */
-      portalRelative?: undefined;
+      positionRelativeToSourcePortal?: undefined;
       /* if true, the position in the source and destimation room will be exactly maintained */
       changeType: "teleport" | "level-select";
     }) => {
@@ -78,8 +82,18 @@ export const changeCharacterRoom = <RoomId extends string>({
           isPortal(i) && i.config.toRoom === leavingRoom.id,
       ) ||
       // if we can't find a portal to this room, just use the first portal we find
-      // - this means either the rooms are misconfigured or level select was used to get here
-      iterate(objectValues(destinationRoom.items)).find(isPortal);
+      // - this is only valid if level select was used. Preferentially choose doors:
+      (changeType === "level-select" ?
+        iterate(objectValues(destinationRoom.items)).find(
+          (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+            isPortal(i) &&
+            (directionsXy as Readonly<DirectionXyz[]>).includes(
+              i.config.direction,
+            ),
+        ) ||
+        // if no doors, any portal (but could be a ceiling):
+        iterate(objectValues(destinationRoom.items)).find(isPortal)
+      : undefined);
 
     console.log(
       "putting",
@@ -91,16 +105,29 @@ export const changeCharacterRoom = <RoomId extends string>({
     );
 
     if (destinationPortal === undefined) {
-      throw new Error("trying to enter a room with no portals");
+      throw new Error(`trying to enter room id=${toRoom} with no portals`);
     }
 
     character.state.position = addXyz(
       destinationPortal.state.position,
       destinationPortal.config.relativePoint,
-      portalRelative,
+      positionRelativeToSourcePortal,
+      // an extra boost of one block when travelling up - this is because the room above won't have a floor
+      // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
+      changeType === "portal" && sourcePortal.config.direction === "up" ?
+        { z: blockSizePx.h }
+      : {},
     );
 
-    console.log("character put down at", character.state.position);
+    console.log(
+      "character put down at",
+      character.state.position,
+      "which is relative to",
+      "destination portal position",
+      destinationPortal.state.position,
+      destinationPortal.config.relativePoint,
+      positionRelativeToSourcePortal,
+    );
 
     const {
       config: { direction: portalDirection },
@@ -128,6 +155,21 @@ export const changeCharacterRoom = <RoomId extends string>({
   // but the character into the (probably newly loaded) room:
   (destinationRoom.items[currentCharacterName] as typeof character) = character;
 
+  const collisionsInDestinationRoom = collision1toMany(
+    character,
+    objectValues(destinationRoom.items),
+  );
+  if (collisionsInDestinationRoom.length > 0) {
+    console.warn(
+      "on entering room",
+      toRoom,
+      "character",
+      currentCharacterName,
+      "collides with",
+      collisionsInDestinationRoom,
+    );
+  }
+
   // when we put the character in their new room, they won't be standing on anything yet (or will
   // still have their standing on set to an item in the previous room) - for example, they might
   // be already on the floor or a teleporter in the new room. Init this properly so the teleporter
@@ -139,7 +181,6 @@ export const changeCharacterRoom = <RoomId extends string>({
   );
 
   // update game state to know which room this character is now in:
-  console.log("destinationRoom", destinationRoom.id);
   gameState.characterRooms[currentCharacterName] = {
     room: destinationRoom,
     entryState: entryState(character),

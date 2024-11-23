@@ -74,7 +74,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         id: "ceiling",
         config: {
           toRoom: room.roomAbove,
-          relativePoint: { x: 0, y: 0, z: blockSizePx.h },
+          relativePoint: { x: 0, y: 0, z: -blockSizePx.h },
           direction: "up",
         },
         // the floor's bounding box is extended to be 1 block bigger than the room in

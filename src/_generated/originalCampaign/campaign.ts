@@ -1915,11 +1915,6 @@ export const campaign = {
           position: { x: 2, y: 3, z: 0 },
           type: "block",
         },
-        "block@2,4,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 2, y: 4, z: 0 },
-          type: "block",
-        },
         "block@3,3,0:20S0Rw": {
           config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 3, z: 0 },
@@ -1929,6 +1924,11 @@ export const campaign = {
           config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
+        },
+        "conveyorU": {
+          config: { direction: "towards" },
+          position: { x: 2, y: 6, z: 0 },
+          type: "conveyor",
         },
         "conveyor@0,1,0:24hKaE": {
           config: { direction: "away" },
@@ -1955,6 +1955,16 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "conveyor",
         },
+        "conveyor@0,6,0:24hKaE": {
+          config: { direction: "left" },
+          position: { x: 0, y: 6, z: 0 },
+          type: "conveyor",
+        },
+        "conveyor@1,6,0:24hKaE": {
+          config: { direction: "left" },
+          position: { x: 1, y: 6, z: 0 },
+          type: "conveyor",
+        },
         cube: {
           config: { style: "cube" },
           position: { x: 0, y: 3, z: 8 },
@@ -1967,7 +1977,7 @@ export const campaign = {
         },
         heels: {
           config: { which: "heels" },
-          position: { x: 2.5, y: 0, z: 6 },
+          position: { x: 0, y: 1, z: 6 },
           type: "player",
         },
         lift: {
@@ -2719,7 +2729,7 @@ export const campaign = {
           type: "block",
         },
         "block@5,7,0:95uHj": {
-          config: { disappearing: false, style: "organic" },
+          config: { disappearing: true, style: "organic" },
           position: { x: 5, y: 7, z: 0 },
           type: "block",
         },

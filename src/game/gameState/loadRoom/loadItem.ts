@@ -34,11 +34,22 @@ export function* loadItem<RoomId extends string>(
       return;
     }
 
+    case "conveyor": {
+      yield {
+        ...jsonItem,
+        ...defaultItemProperties,
+        ...boundingBoxForItem(jsonItem),
+        id: itemId,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        config: { ...jsonItem.config, count: 1 } as any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
+        state: initialState(jsonItem) as any,
+      };
+      return;
+    }
+
     // catch-all for all items that don't need special handling:
     default: {
-      const falls = (fallingItemTypes as JsonItemType[]).includes(
-        jsonItem.type,
-      );
       yield {
         ...jsonItem,
         ...defaultItemProperties,
@@ -48,7 +59,6 @@ export function* loadItem<RoomId extends string>(
         config: jsonItem.config as any,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
         state: initialState(jsonItem) as any,
-        falls,
       };
     }
   }

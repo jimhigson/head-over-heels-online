@@ -91,6 +91,10 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     // the direction this portal has to be hit in to be walked through
     direction: DirectionXyz;
   };
+  conveyor: {
+    direction: DirectionXy;
+    count: number; // how many conveyors blocks in this run of conveyors?
+  };
 };
 
 // type-fest's EmptyObject was creating issues
@@ -144,7 +148,7 @@ export type ItemInPlay<
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
    * are no non-collideable items
    */
-  readonly aabb: Aabb;
+  aabb: Aabb;
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
 
@@ -152,12 +156,6 @@ export type ItemInPlay<
   renderContainer?: Container;
 
   renders: boolean;
-
-  /**
-   * true if this object should fall whenever it is not supported. Otherwise,
-   * it can float unsupported in free-space
-   */
-  falls: boolean;
 };
 
 export type PlayableItem<RoomId extends string = string> =
@@ -197,7 +195,7 @@ export function itemFalls<
 >(
   item: ItemInPlay<ItemInPlayType, P, RoomId>,
 ): item is ItemInPlay<FallingItemTypes, P, RoomId> {
-  return item.falls;
+  return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
 }
 
 export function assertItemHasRenderContainer<T extends ItemInPlayType>(

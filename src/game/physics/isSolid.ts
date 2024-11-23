@@ -11,6 +11,7 @@ export const isNonSolid = <RoomId extends string>(
   roomPickupsCollected: RoomPickupsCollected,
 ) => {
   return (
+    (collidedWith.type === "block" && collidedWith.state.expires !== null) ||
     collidedWith.type === "fish" ||
     collidedWith.type === "portal" ||
     (collidedWith.type === "barrier" &&

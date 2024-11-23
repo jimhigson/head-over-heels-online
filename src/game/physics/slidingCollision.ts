@@ -1,4 +1,4 @@
-import { addXyz, type Xyz } from "@/utils/vectors";
+import { type Xyz } from "@/utils/vectors";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
 import { dotProductXyz } from "@/utils/vectors";
@@ -92,46 +92,19 @@ export const obstaclePointEarliestPointInVector = (
 export const sortObstaclesAboutVector = <I extends Obstacle>(
   vector: Xyz,
   obstacles: Iterable<I>,
-): Array<I> => {
-  return [...obstacles].sort((a, b) => {
-    const aProjectedAlongVector = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, a),
-    );
-    const bProjectedAlongVector = dotProductXyz(
-      vector,
-      obstaclePointEarliestPointInVector(vector, b),
-    );
-    return aProjectedAlongVector - bProjectedAlongVector;
-  });
-};
-
-export const slidingCollisionWithManyItems = (
-  subjectItem: UnknownItemInPlay,
-  xyzDelta: Xyz,
-  obstacles: Iterable<Obstacle>,
-): Xyz => {
-  const {
-    state: { position: previousPosition },
-  } = subjectItem;
-
-  const sortedObstacles = sortObstaclesAboutVector(xyzDelta, obstacles);
-
-  //const foundStandingOn = iterate(sortedObstacles).find();
-
-  return iterate(sortedObstacles).reduce<Xyz>(
-    (posAc: Xyz, collisionItem: Obstacle) => {
-      return addXyz(
-        posAc,
-        mtv(
-          posAc,
-          subjectItem.aabb,
-          collisionItem.state.position,
-          collisionItem.aabb,
+): Array<[dist: number, obstacle: I]> => {
+  const withDistances = iterate(obstacles).map(
+    (obstacle) =>
+      [
+        dotProductXyz(
+          vector,
+          obstaclePointEarliestPointInVector(vector, obstacle),
         ),
-      );
-    },
-    // original target position:
-    addXyz(previousPosition, xyzDelta),
+        obstacle,
+      ] as [number, I],
   );
+
+  return [...withDistances].sort(([distA, _obsA], [distB, _obsB]) => {
+    return distA - distB;
+  });
 };

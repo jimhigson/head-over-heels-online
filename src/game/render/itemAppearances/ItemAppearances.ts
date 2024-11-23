@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/JsonItem";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
-import { barrierPivot } from "@/sprites/spritePivots";
+import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
@@ -16,6 +16,10 @@ import { playableAppearance } from "./playableAppearance";
 import { currentRoom, type GameState } from "@/game/gameState/GameState";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
+import { range } from "iter-tools";
+import { iterate } from "@/utils/iterate";
+import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
+import { directionAxis } from "@/utils/vectors";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -96,12 +100,23 @@ export const itemAppearances: {
       );
   },
 
-  conveyor: ({ config: { direction } }) =>
-    createSprite(
-      direction === "left" || direction === "right" ?
-        "conveyor.x"
-      : "conveyor.y",
-    ),
+  conveyor({ config: { direction, count } }) {
+    const container = new Container();
+
+    const axis = directionAxis(direction);
+    container.addChild(
+      ...iterate(range(count, 0, -1)).map((i) =>
+        createSprite({
+          texture: `conveyor.${axis}`,
+          ...projectWorldXyzToScreenXyInteger({
+            [axis]: (i - 1) * blockSizePx.w,
+          }),
+        }),
+      ),
+    );
+
+    return container;
+  },
 
   lift() {
     const container = new Container();

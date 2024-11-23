@@ -343,6 +343,57 @@ describe("conveyors", () => {
       z: blockSizePx.h,
     });
   });
+
+  test("conveyors can take item around corners (see blacktooth26)", () => {
+    const gameState: GameState<TestRoomId> = basicGameState({
+      firstRoomItems: {
+        portableBlock: {
+          type: "portable-block",
+          position: { x: 0, y: 0, z: 4 },
+          config: {
+            style: "cube",
+          },
+        },
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 2 },
+          config: {
+            which: "heels",
+          },
+        },
+        // passing this requires only using the conveyor standingOn is set to when vertically on two of them
+        conveyor1: {
+          type: "conveyor",
+          position: { x: 0, y: 0, z: 0 },
+          config: { direction: "away" },
+        },
+        // note: different direction
+        conveyor2: {
+          type: "conveyor",
+          position: { x: 0, y: 1, z: 0 },
+          config: { direction: "left" },
+        },
+        // note: direction change again
+        conveyor3: {
+          type: "conveyor",
+          position: { x: 1, y: 1, z: 0 },
+          config: { direction: "away" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      forTime: 3_000,
+    });
+
+    expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+      {
+        "x": 4,
+        "y": 43,
+        "z": 0,
+      }
+    `);
+  });
 });
 
 describe("deadly blocks", () => {
@@ -531,6 +582,10 @@ describe("lifts", () => {
           config: { style: "organic", disappearing: false },
           position: { x: 5, y: 5, z: 0 },
         },
+      },
+      secondRoomProps: {
+        roomBelow: "firstRoom",
+        floor: "none",
       },
     });
 

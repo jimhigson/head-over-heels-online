@@ -12,13 +12,14 @@ import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/chang
 export const handlePlayerTouchingPortal = <RoomId extends string>(
   gameState: GameState<RoomId>,
   player: PlayableItem,
-  {
-    config: { relativePoint, toRoom, direction: portalDirection },
-    state: { position: portalPosition },
-  }: ItemInPlay<"portal", PlanetName, RoomId>,
+  portalItem: ItemInPlay<"portal", PlanetName, RoomId>,
   /** the movement that caused the player to touch the portal */
   movementDelta: Xyz,
 ): boolean => {
+  const {
+    config: { relativePoint, toRoom, direction: portalDirection },
+    state: { position: portalPosition },
+  } = portalItem;
   const doorDirectionVector = unitVectors[portalDirection];
   const movementComponentInDoorDirection = dotProductXyz(
     doorDirectionVector,
@@ -34,10 +35,11 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
   changeCharacterRoom({
     gameState,
     toRoom,
-    portalRelative: subXyz(
+    positionRelativeToSourcePortal: subXyz(
       player.state.position,
       addXyz(portalPosition, relativePoint),
     ),
+    sourcePortal: portalItem,
     changeType: "portal",
   });
 

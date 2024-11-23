@@ -76,6 +76,7 @@ export type BasicGameStateOptions = {
   firstRoomItems: ItemsInTestRoomJson;
   firstRoomProps?: Partial<TestRoomJson>;
   secondRoomItems?: ItemsInTestRoomJson;
+  secondRoomProps?: Partial<TestRoomJson>;
   inputState?: Partial<InputState>;
 };
 
@@ -83,6 +84,7 @@ export const basicGameState = ({
   firstRoomItems,
   firstRoomProps = {},
   secondRoomItems = {},
+  secondRoomProps = {},
   inputState,
 }: BasicGameStateOptions) => {
   const campaign = {
@@ -91,7 +93,10 @@ export const basicGameState = ({
         ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),
         ...firstRoomProps,
       },
-      [secondRoomId]: basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
+      [secondRoomId]: {
+        ...basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
+        ...secondRoomProps,
+      },
     },
   };
   const gameState = initGameState<TestRoomId>(campaign, basicRenderOptions);

@@ -6,7 +6,7 @@ import type {
 import { itemFalls } from "@/model/ItemInPlay";
 import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { entries } from "@/utils/entries";
+import { entries, objectEntriesIter } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItem } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
@@ -15,6 +15,79 @@ import { objectValues } from "iter-tools";
 import type { PickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import { findStandingOn } from "../../collision/findStandingOn";
+import type { DirectionXy } from "@/utils/vectors";
+import { directionAxis, perpendicularAxisXy } from "@/utils/vectors";
+import { blockSizePx } from "@/sprites/spritePivots";
+
+function* gatherConveyors<RoomId extends string>(
+  sorted: Iterable<UnknownItemInPlay<RoomId>>,
+): Generator<UnknownItemInPlay<RoomId>> {
+  const { conveyors = [], others = [] } = Object.groupBy(sorted, (item) =>
+    item.type === "conveyor" ? "conveyors" : "others",
+  ) as {
+    conveyors: ItemInPlay<"conveyor">[] | undefined;
+    others: UnknownItemInPlay<RoomId>[] | undefined;
+  };
+
+  // group conveyors by their direction:
+  const conveyorsByDirection = Object.groupBy(
+    conveyors,
+    (conveyor) => conveyor.config.direction,
+  );
+
+  yield* others;
+
+  for (const [d, directionConveyors] of objectEntriesIter(
+    conveyorsByDirection,
+  )) {
+    const axisOfConveyorTravel = directionAxis(d as DirectionXy);
+    const axisCrossingConveyorTravel =
+      perpendicularAxisXy(axisOfConveyorTravel);
+    const byOrdinal = Object.groupBy(
+      directionConveyors,
+      (conveyor) => conveyor.state.position[axisCrossingConveyorTravel],
+    );
+
+    for (const conveyorsInline of objectValues(byOrdinal)) {
+      if (conveyorsInline === undefined) {
+        continue;
+      }
+
+      const conveyorPosition = (c: ItemInPlay<"conveyor">) =>
+        c.state.position[axisOfConveyorTravel];
+
+      const sortedConveyorsInLine = conveyorsInline.sort(
+        (a, b) => conveyorPosition(a) - conveyorPosition(b),
+      );
+
+      const conveyorBlocks: ItemInPlay<"conveyor">[] = [];
+      for (const c of sortedConveyorsInLine) {
+        const currentBlock = conveyorBlocks.at(-1);
+
+        if (
+          currentBlock === undefined ||
+          conveyorPosition(currentBlock) +
+            currentBlock.aabb[axisOfConveyorTravel] !==
+            conveyorPosition(c)
+        ) {
+          conveyorBlocks.push(c);
+        } else {
+          // expand the current block:
+          currentBlock.aabb = {
+            ...currentBlock.aabb,
+            [axisOfConveyorTravel]:
+              currentBlock.aabb[axisOfConveyorTravel] + blockSizePx.w,
+          };
+          currentBlock.config.count = (currentBlock.config.count ?? 1) + 1;
+        }
+      }
+
+      console.log(conveyorBlocks);
+
+      yield* conveyorBlocks;
+    }
+  }
+}
 
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
@@ -50,7 +123,7 @@ const itemsInItemObjectMap = <
   ItemId extends string,
 >(
   items: Iterable<UnknownItemInPlay<RoomId>>,
-) => {
+): RoomStateItems<P, RoomId, ItemId> => {
   return iterate(items).reduce(
     (ac, cur) => {
       return {
@@ -72,7 +145,9 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(loadWalls(roomJson)),
-    ...itemsInItemObjectMap(loadItems(roomJson, pickupsCollected)),
+    ...itemsInItemObjectMap(
+      gatherConveyors(loadItems(roomJson, pickupsCollected)),
+    ),
   };
 
   // the physics will go nuts if things are overlapping, so check and reject
@@ -81,7 +156,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     const collisions = collision1toMany(loadedItem, objectValues(loadedItems));
     if (collisions.length > 0) {
       throw new Error(
-        `item ${loadedItem.id} is colliding with ${collisions.map((c) => c.id)}`,
+        `error while loading room ${roomJson.id}: item id=${loadedItem.id} is colliding with ${collisions.map((c) => `id=${c.id}`)}`,
       );
     }
   }

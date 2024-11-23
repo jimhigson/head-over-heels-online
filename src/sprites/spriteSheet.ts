@@ -204,7 +204,7 @@ const frames = {
     frame: { x: 200, y: 478, ...largeItemTextureSize },
   },
   sandwich: {
-    frame: { x: 4, y: 356, ...largeItemTextureSize },
+    frame: { x: 2, y: 399, ...largeItemTextureSize },
   },
   sticks: {
     frame: { x: 2, y: 428, ...smallItemTextureSize },

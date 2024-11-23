@@ -124,7 +124,7 @@ export type AxisXy = "x" | "y";
 export const axesXyz = ["x", "y", "z"] as const;
 export type AxisXyz = (typeof axesXyz)[number];
 
-export type Aabb = Xyz;
+export type Aabb = Readonly<Xyz>;
 
 /**
  * dot product - the component of one vector in the direction of another

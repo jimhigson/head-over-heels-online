@@ -15,16 +15,22 @@ import { findStandingOn } from "../collision/findStandingOn";
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
  */
-export const moveItem = <RoomId extends string>(
-  subjectItem: UnknownItemInPlay<RoomId>,
-  xyzDeltaPartial: Partial<Xyz>,
-  gameState: GameState<RoomId>,
-  /**
+export const moveItem = <RoomId extends string>({
+  subjectItem,
+  xyzDeltaPartial,
+  gameState,
+  pusher,
+  deltaMS,
+}: {
+  subjectItem: UnknownItemInPlay<RoomId>;
+  xyzDeltaPartial: Partial<Xyz>;
+  gameState: GameState<RoomId> /**
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
-   */
-  pusher?: AnyItemInPlay,
-) => {
+   */;
+  pusher?: AnyItemInPlay;
+  deltaMS: number;
+}) => {
   const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
 
   if (xyzEqual(xyzDelta, originXyz)) {
@@ -43,19 +49,32 @@ export const moveItem = <RoomId extends string>(
     collision1toMany(subjectItem, objectValues(room.items)),
   );
 
-  for (const collision of sortedCollisions) {
-    if (!collision1to1(subjectItem, collision)) {
+  let lastProcessedDistance = -Infinity;
+  for (const [dist, collision] of sortedCollisions) {
+    if (
+      dist - 0.001 > lastProcessedDistance &&
+      !collision1to1(subjectItem, collision)
+    ) {
       // it is possible there is no longer a collision due to previous sliding - in this case,
       // the mtv will be wrong and erratic - skip this obstacle
+
+      // HERE: we want to only continue if the sorting didn't give an equal score to this
+      // and the previous item. Otherwise, for example, if gravity is pushing us down onto two items,
+      // we miss the chance to interact with them both (eg, on the boundary of two conveyors - we want to
+      // use the direction from both. Otherwise, we are sensitive to the order items appeared in the world as
+      // since the sort will not have changed this
       continue;
     }
+    lastProcessedDistance = dist;
 
     if (
+      pusher !== collision &&
       handleItemsTouchingItems({
         movingItem: subjectItem,
         touchee: collision,
         movementVector: subXyz(subjectItem.state.position, originalPosition),
         gameState,
+        deltaMS,
       })
     ) {
       return;
@@ -92,7 +111,13 @@ export const moveItem = <RoomId extends string>(
       );
 
       // recursively apply push to pushee
-      moveItem(collision, forwardPushVector, gameState, subjectItem);
+      moveItem({
+        subjectItem: collision,
+        xyzDeltaPartial: forwardPushVector,
+        gameState,
+        pusher: subjectItem,
+        deltaMS,
+      });
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(

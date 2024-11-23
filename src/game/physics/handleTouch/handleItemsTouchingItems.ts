@@ -1,80 +1,64 @@
+import type { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
 import {
+  isItemType,
   isPlayableItem,
-  type PlayableItem,
+  itemFalls,
   type UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import {
-  handlePlayerTouchingDisappearing,
-  handlePlayerTouchingPickup,
-} from "./handlePlayerTouchingPickup";
-import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
-import type { Xyz } from "@/utils/vectors";
+  oppositeDirection,
+  scaleXyz,
+  unitVectors,
+  type Xyz,
+} from "@/utils/vectors";
 import type { GameState } from "@/game/gameState/GameState";
-import { handlePlayerTouchingDoorFrame } from "./slideOnDoorFrames";
+import { handlePlayerTouchingItems } from "./handlePlayerTouchingItems";
+import type { PlanetName } from "@/sprites/planets";
+import {
+  playerWalkSpeedPixPerMs,
+  conveyorSpeedPixPerMs,
+} from "../mechanicsConstants";
+import { moveItem } from "../moveItem";
 
-/**
- * @returns true is the physics needs to halt after this handler
- */
-const handlePlayerTouchingItems = <RoomId extends string>(
-  playableItem: PlayableItem<RoomId>,
-  touchee: UnknownItemInPlay<RoomId>,
-  movementVector: Xyz,
+const handleItemOnConveyor = <RoomId extends string>(
+  item: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  conveyor: ItemInPlay<"conveyor", PlanetName, RoomId>,
+  _movementVector: Xyz,
   gameState: GameState<RoomId>,
-) => {
-  switch (touchee.type) {
-    case "baddie":
-    case "deadly-block":
-      if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
-        return true;
-      }
-      break;
-    case "floor":
-      if (
-        touchee.config.deadly &&
-        handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)
-      )
-        return true;
-      break;
-    case "portal":
-      if (
-        handlePlayerTouchingPortal(
-          gameState,
-          playableItem,
-          touchee,
-          movementVector,
-        )
-      ) {
-        // has activated the portal:
-        return true;
-      }
-      break;
-    case "pickup":
-      handlePlayerTouchingPickup(gameState, playableItem, touchee);
-      break;
-    case "fish":
-      if (touchee.config.alive) {
-        handlePlayerTouchingPickup(gameState, playableItem, touchee);
-      } else {
-        if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
-          return true;
-        }
-      }
-      break;
-    case "doorFrame":
-      if (
-        handlePlayerTouchingDoorFrame(playableItem, movementVector, touchee)
-      ) {
-        return true;
-      }
-      break;
-    case "block":
-    case "barrier":
-      if (touchee.config.disappearing) {
-        handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
-      }
-      break;
-  }
+  deltaMS: number,
+): boolean => {
+  //if (item.state.standingOn !== conveyor) return false;
+
+  const {
+    config: { direction },
+  } = conveyor;
+
+  /**
+   * conveyors magically move quicker when heels is fighting against them, so that all
+   * characters can only just stay still when walking against them, regardless of how
+   * fast the character walks
+   */
+  const heelsWalkingAgainst =
+    isItemType("heels")(item) &&
+    item.state.action === "moving" &&
+    item.state.facing === oppositeDirection(direction);
+
+  const conveyorSpeed =
+    heelsWalkingAgainst ? playerWalkSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
+
+  const conveyorMoveDistance = conveyorSpeed * deltaMS;
+  const conveyorMovementVector = scaleXyz(
+    unitVectors[direction],
+    conveyorMoveDistance,
+  );
+
+  moveItem({
+    deltaMS,
+    gameState,
+    xyzDeltaPartial: conveyorMovementVector,
+    subjectItem: item as UnknownItemInPlay<RoomId>,
+    pusher: conveyor,
+  });
 
   return false;
 };
@@ -87,11 +71,13 @@ export const handleItemsTouchingItems = <RoomId extends string>({
   movementVector,
   touchee,
   gameState,
+  deltaMS,
 }: {
   movingItem: UnknownItemInPlay<RoomId>;
   movementVector: Xyz;
   touchee: UnknownItemInPlay<RoomId>;
   gameState: GameState<RoomId>;
+  deltaMS: number;
 }): boolean => {
   if (
     isPlayableItem(movingItem) &&
@@ -104,6 +90,16 @@ export const handleItemsTouchingItems = <RoomId extends string>({
     handlePlayerTouchingItems(touchee, movingItem, movementVector, gameState)
   )
     return true;
+
+  if (touchee.type === "conveyor" && itemFalls(movingItem)) {
+    handleItemOnConveyor(
+      movingItem,
+      touchee,
+      movementVector,
+      gameState,
+      deltaMS,
+    );
+  }
 
   return false;
 };
