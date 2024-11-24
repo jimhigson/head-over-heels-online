@@ -1,5 +1,5 @@
 import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
-import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors";
+import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character

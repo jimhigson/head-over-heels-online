@@ -10,12 +10,12 @@ import {
   scaleXyz,
   unitVectors,
   type Xyz,
-} from "@/utils/vectors";
+} from "@/utils/vectors/vectors";
 import type { GameState } from "@/game/gameState/GameState";
 import { handlePlayerTouchingItems } from "./handlePlayerTouchingItems";
 import type { PlanetName } from "@/sprites/planets";
 import {
-  playerWalkSpeedPixPerMs,
+  playerWalkTerminalSpeedPixPerMs,
   conveyorSpeedPixPerMs,
 } from "../mechanicsConstants";
 import { moveItem } from "../moveItem";
@@ -44,7 +44,7 @@ const handleItemOnConveyor = <RoomId extends string>(
     item.state.facing === oppositeDirection(direction);
 
   const conveyorSpeed =
-    heelsWalkingAgainst ? playerWalkSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
+    heelsWalkingAgainst ? playerWalkTerminalSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
 
   const conveyorMoveDistance = conveyorSpeed * deltaMS;
   const conveyorMovementVector = scaleXyz(

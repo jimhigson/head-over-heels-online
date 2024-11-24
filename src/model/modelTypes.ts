@@ -4,7 +4,7 @@ import type { UnknownJsonItem } from "./json/JsonItem";
 import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
 import type { PlanetName, Wall } from "../sprites/planets";
-import type { Xy } from "../utils/vectors";
+import type { Xy } from "../utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 export const characterNames = ["head", "heels"] as const;

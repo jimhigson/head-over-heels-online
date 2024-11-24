@@ -6,7 +6,7 @@ import {
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
-import type { Aabb } from "@/utils/vectors";
+import type { Aabb } from "@/utils/vectors/vectors";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
   return (

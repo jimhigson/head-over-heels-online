@@ -1,9 +1,27 @@
-import { directionsXy, scaleXyz, unitVectors } from "@/utils/vectors";
-import { playerWalkSpeedPixPerMs } from "../mechanicsConstants";
+import {
+  addXyz,
+  directionsXy,
+  multiplyMatrixVector,
+  perpendicularXyz,
+  unitVectors,
+  xyOnlyMatrix,
+} from "@/utils/vectors/vectors";
+import {
+  headsGlideAcel,
+  heelsJumpForwardDecel,
+  playerWalkAcceldPixPerMsSq,
+  playerWalkStopAccelPixPerMsSq,
+  playerWalkTerminalSpeedPixPerMs,
+} from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
+import {
+  accelerateToSpeed,
+  instantAccelToSpeed,
+} from "../../../utils/vectors/accelerateUpToSpeed";
+import { fadeSpeedInDirection } from "../../../utils/vectors/fadeSpeedInDirection";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -15,24 +33,17 @@ export const walking = <RoomId extends string>(
 ): MechanicResult<CharacterName> => {
   const {
     type,
-    state: { autoWalkDistance, standingOn, facing, teleporting },
+    state: { autoWalkDistance, standingOn, facing, teleporting, vel },
   } = playableItem;
 
-  const directionPressed = directionsXy.find((d) => {
-    return inputState[d] === true;
-  });
+  const directionOfWalk =
+    autoWalkDistance > 0 ? facing : (
+      directionsXy.find((d) => {
+        return inputState[d] === true;
+      })
+    );
 
-  const walkDistance = playerWalkSpeedPixPerMs[type] * deltaMS;
-
-  // just entered a room and autowalking through the door
-  if (autoWalkDistance > 0) {
-    return {
-      positionDelta: scaleXyz(unitVectors[facing], walkDistance),
-      stateDelta: {
-        autoWalkDistance: Math.max(autoWalkDistance - walkDistance, 0),
-      },
-    };
-  }
+  const maxWalkSpeed = playerWalkTerminalSpeedPixPerMs[type];
 
   if (teleporting !== null) {
     // do no walking while teleporting
@@ -40,68 +51,80 @@ export const walking = <RoomId extends string>(
   }
 
   // handle 'walking' while ascending/falling:
-  if (standingOn === null) {
-    switch (type) {
-      case "head": {
-        const ascending = playableItem.state.velZ > 0;
-        const action = ascending ? "moving" : "falling";
-
-        if (directionPressed === undefined) {
-          // I vary from the original game in that head ca jump straight up (original
-          // allowed change of direction while jumping but not no direction) - the original
-          // allowed falling straight down (like I do)
-          return {
-            stateDelta: {
-              action,
-            },
-          };
-        } else {
-          // head can always change direction mid-air, and can fall vertically from a jump
-          return {
-            positionDelta: scaleXyz(
-              unitVectors[directionPressed],
-              walkDistance,
-            ),
-            stateDelta: {
-              facing: directionPressed,
-              action,
-            },
-          };
-        }
+  if (type === "heels") {
+    if (standingOn === null) {
+      // heels has mandatory forward motion while jumping, but decelerates:
+      return {
+        accel: fadeSpeedInDirection({
+          vel,
+          travelDirection: unitVectors[facing],
+          deceleration: heelsJumpForwardDecel,
+          deltaMS,
+        }),
+      };
+    } else {
+      if (inputState.jump) {
+        return {
+          accel: instantAccelToSpeed({
+            vel,
+            speed: maxWalkSpeed,
+            unitD: unitVectors[facing],
+            deltaMS,
+          }),
+        };
       }
-      case "heels":
-        // we have the option to fall forward, or vertically, but no option
-        // to change direction.
-        // This is different from the original game, where heels fell vertically
-        // or jumped with mandatory forward motion
-        if (directionPressed === facing) {
-          return {
-            positionDelta: scaleXyz(
-              unitVectors[facing],
-              walkDistance *
-                // heel's forward movement is reduced when not on the ground - in the original game this is
-                // really only while descending, but this value keeps the overall jump distance the same
-                0.6,
-            ),
-          };
-        } else {
-          return unitMechanicalResult;
-        }
     }
   }
 
+  const action =
+    standingOn === null && vel.z < 0 ? "falling"
+    : directionOfWalk === undefined ? "idle"
+    : "moving";
+
+  const isGliding = vel.z < 0 && type === "head";
+  const acc = isGliding ? headsGlideAcel : playerWalkAcceldPixPerMsSq[type];
+  const deacc =
+    isGliding ? -headsGlideAcel : playerWalkStopAccelPixPerMsSq[type];
+
   // normal walking
-  if (directionPressed !== undefined) {
+  if (directionOfWalk !== undefined) {
+    const directionPressedUnitVector = unitVectors[directionOfWalk];
+
     return {
-      positionDelta: scaleXyz(unitVectors[directionPressed], walkDistance),
+      accel: addXyz(
+        accelerateToSpeed({
+          vel,
+          acc,
+          unitD: directionPressedUnitVector,
+          maxSpeed: maxWalkSpeed,
+          deltaMS,
+        }),
+        fadeSpeedInDirection({
+          vel: playableItem.state.vel,
+          travelDirection: perpendicularXyz(directionPressedUnitVector),
+          deceleration: deacc,
+          deltaMS,
+        }),
+      ),
       stateDelta: {
-        facing: directionPressed,
-        action: "moving",
+        facing: directionOfWalk,
+        action,
+        // TODO: update autowalkdistance
       },
     };
   }
 
-  // whenever we're idle, the walking rounding error resets so the character sits on their 'true'
-  // pixel again for the sake of the next walk movement
-  return { stateDelta: { action: "idle" } };
+  // no direction pressed - we are idle and decelerate in whatever direction we're already headed:
+  return {
+    stateDelta: { action },
+    accel: fadeSpeedInDirection({
+      vel: playableItem.state.vel,
+      travelDirection: multiplyMatrixVector(
+        xyOnlyMatrix,
+        playableItem.state.vel,
+      ),
+      deceleration: deacc,
+      deltaMS,
+    }),
+  };
 };

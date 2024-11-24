@@ -1489,7 +1489,12 @@ export const campaign = {
         },
         head: {
           config: { which: "head" },
-          position: { x: 0, y: 1, z: 0 },
+          position: { x: 5, y: 1, z: 0 },
+          type: "player",
+        },
+        heels: {
+          config: { which: "heels" },
+          position: { x: 0, y: 3, z: 0 },
           type: "player",
         },
         highBlock: {
@@ -1507,7 +1512,7 @@ export const campaign = {
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        "pickup@5,0,7:1MkQY2": {
+        /*"pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
           type: "pickup",
@@ -1531,7 +1536,7 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 5, y: 5, z: 3 },
           type: "pickup",
-        },
+        },*/
         "teleporter@5,7,0:Z12mRwL": {
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },
@@ -1974,11 +1979,6 @@ export const campaign = {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
-        },
-        heels: {
-          config: { which: "heels" },
-          position: { x: 0, y: 1, z: 6 },
-          type: "player",
         },
         lift: {
           config: { bottom: 0, top: 8 },

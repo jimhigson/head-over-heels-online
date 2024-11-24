@@ -1,6 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlayableItem, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { Xyz } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import {
   handlePlayerTouchingPickup,

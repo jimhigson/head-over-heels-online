@@ -1,7 +1,7 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
-import type { Xyz } from "@/utils/vectors";
-import { axesXyz } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
+import { axesXyz } from "@/utils/vectors/vectors";
 
 export type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };

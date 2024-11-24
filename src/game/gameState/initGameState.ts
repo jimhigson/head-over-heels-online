@@ -54,7 +54,9 @@ export const initGameState = <RoomId extends string>(
   const headRoom =
     starts.head && loadRoom(campaign.rooms[starts.head], pickupsCollected);
   const heelsRoom =
-    starts.heels && loadRoom(campaign.rooms[starts.heels], pickupsCollected);
+    starts.heels === starts.head ?
+      headRoom
+    : starts.heels && loadRoom(campaign.rooms[starts.heels], pickupsCollected);
 
   return {
     keyAssignment: defaultKeyAssignments,

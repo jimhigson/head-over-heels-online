@@ -37,7 +37,7 @@ const getJumpAbility = (characterName: CharacterName, onSpring: boolean) => {
 export const jumping = <RoomId extends string>(
   characterItem: PlayableItem,
   { inputState: { jump: jumpInput } }: GameState<RoomId>,
-  _deltaMS: number,
+  deltaMS: number,
 ): MechanicResult<CharacterName> => {
   const { type: characterType } = characterItem;
 
@@ -57,9 +57,10 @@ export const jumping = <RoomId extends string>(
   );
 
   return {
+    // instantaneously accel up to velicity at start of the jump (accel is added to vel in this frame)
+    accel: { z: velZ / deltaMS },
     stateDelta: {
       action: "moving",
-      velZ,
     },
   };
 };

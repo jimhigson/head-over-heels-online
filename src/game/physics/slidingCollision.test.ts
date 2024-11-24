@@ -1,4 +1,4 @@
-import { unitVectors } from "@/utils/vectors";
+import { unitVectors } from "@/utils/vectors/vectors";
 import { sortObstaclesAboutVector } from "./slidingCollision";
 import { describe, expect, test } from "vitest";
 
@@ -24,7 +24,7 @@ describe("sortObstaclesAboutVector", () => {
   test("can sort obstacles about downwards vector", () => {
     const result = sortObstaclesAboutVector(unitVectors.down, blockTower);
 
-    expect(result.map((o) => o.id)).toEqual([
+    expect(result.map((o) => o[1].id)).toEqual([
       "topBlock",
       "midBlock",
       "lowBlock",
@@ -38,7 +38,7 @@ describe("sortObstaclesAboutVector", () => {
       blockTower.toReversed(),
     );
 
-    expect(result.map((o) => o.id)).toEqual([
+    expect(result.map((o) => o[1].id)).toEqual([
       "topBlock",
       "midBlock",
       "lowBlock",
@@ -48,7 +48,7 @@ describe("sortObstaclesAboutVector", () => {
   test("can sort obstacles about downwards vector", () => {
     const result = sortObstaclesAboutVector(unitVectors.up, blockTower);
 
-    expect(result.map((o) => o.id)).toEqual([
+    expect(result.map((o) => o[1].id)).toEqual([
       "lowBlock",
       "midBlock",
       "topBlock",
@@ -61,7 +61,7 @@ describe("sortObstaclesAboutVector", () => {
       // if sort is working properly, reversing the input should not matter
       blockTower.toReversed(),
     );
-    expect(result.map((o) => o.id)).toEqual([
+    expect(result.map((o) => o[1].id)).toEqual([
       "lowBlock",
       "midBlock",
       "topBlock",

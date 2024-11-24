@@ -4,13 +4,13 @@ import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { PlanetName } from "@/sprites/planets";
-import type { Xyz } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
 import {
   originXyz,
   addXyz,
   perpendicularAxisXy,
   doorAlongAxis,
-} from "@/utils/vectors";
+} from "@/utils/vectors/vectors";
 import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 
 /**

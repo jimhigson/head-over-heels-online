@@ -19,7 +19,7 @@ import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
-import { directionAxis } from "@/utils/vectors";
+import { directionAxis } from "@/utils/vectors/vectors";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],

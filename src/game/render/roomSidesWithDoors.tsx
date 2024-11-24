@@ -2,7 +2,7 @@ import type { UnknownRoomState } from "@/model/modelTypes";
 import type { SidesWithDoors } from "./renderFloor";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isItemType } from "@/model/ItemInPlay";
-import { doorAlongAxis } from "@/utils/vectors";
+import { doorAlongAxis } from "@/utils/vectors/vectors";
 
 export const roomSidesWithDoors = (room: UnknownRoomState): SidesWithDoors => {
   const result: SidesWithDoors = {};

@@ -1,5 +1,5 @@
-import type { Xyz } from "@/utils/vectors";
-import { addXyz, axesXyz } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
+import { addXyz, axesXyz } from "@/utils/vectors/vectors";
 import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
 
 export type DrawOrderComparable = {

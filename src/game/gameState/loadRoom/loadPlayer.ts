@@ -4,6 +4,7 @@ import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { PlanetName } from "@/sprites/planets";
 import type { PlayableItem } from "@/model/ItemInPlay";
+import { originXyz } from "@/utils/vectors/vectors";
 
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", PlanetName, RoomId>,
@@ -24,7 +25,7 @@ export const loadPlayer = <RoomId extends string>(
           fast: 0,
           shield: 0,
           standingOn: null,
-          velZ: 0,
+          vel: originXyz,
           lives: 8,
           donuts: 0,
           autoWalkDistance: 0,
@@ -51,7 +52,7 @@ export const loadPlayer = <RoomId extends string>(
           jumps: 0,
           shield: 0,
           standingOn: null,
-          velZ: 0,
+          vel: originXyz,
           lives: 8,
           autoWalkDistance: 0,
           jumpEndTime: -1, // jump has already finished - ie, we are not jumping

@@ -1,5 +1,5 @@
 import type { SpriteSize } from "@/model/modelTypes";
-import type { DirectionXy, Xy } from "@/utils/vectors";
+import type { DirectionXy, Xy } from "@/utils/vectors/vectors";
 import type { SpritesheetFrameData } from "pixi.js";
 
 type DirectionalTexture<TName extends string> = `${TName}.${DirectionXy}`;

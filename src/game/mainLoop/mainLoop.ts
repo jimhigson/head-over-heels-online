@@ -13,7 +13,7 @@ import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
 import { itemNeedsRerender } from "../render/itemNeedsRerender";
-import { xyzEqual } from "@/utils/vectors";
+import { xyzEqual } from "@/utils/vectors/vectors";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { spritesheetPalette } from "@/sprites/samplePalette";
 import { colorScheme } from "@/hintColours";

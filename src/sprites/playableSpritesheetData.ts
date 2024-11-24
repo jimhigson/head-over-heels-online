@@ -2,8 +2,8 @@ import type { SpritesheetData } from "pixi.js";
 import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "@/model/modelTypes";
-import type { DirectionXy } from "@/utils/vectors";
-import { directionsXy } from "@/utils/vectors";
+import type { DirectionXy } from "@/utils/vectors/vectors";
+import { directionsXy } from "@/utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { zxSpectrumFrameRate } from "@/originalGame";
 

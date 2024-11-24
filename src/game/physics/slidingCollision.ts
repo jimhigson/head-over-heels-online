@@ -1,7 +1,7 @@
-import { type Xyz } from "@/utils/vectors";
+import { type Xyz } from "@/utils/vectors/vectors";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
-import { dotProductXyz } from "@/utils/vectors";
+import { dotProductXyz } from "@/utils/vectors/vectors";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.

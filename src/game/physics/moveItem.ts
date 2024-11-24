@@ -1,15 +1,21 @@
-import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import { itemFalls } from "@/model/ItemInPlay";
-import type { Xyz } from "@/utils/vectors";
-import { addXyz, originXyz, scaleXyz, subXyz, xyzEqual } from "@/utils/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
+import {
+  addXyz,
+  originXyz,
+  scaleXyz,
+  subXyz,
+  xyzEqual,
+} from "@/utils/vectors/vectors";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { objectValues } from "iter-tools";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { findStandingOn } from "../collision/findStandingOn";
+import type { PlanetName } from "@/sprites/planets";
 
 /**
  * @param subjectItem the item that is wanting to move
@@ -17,13 +23,13 @@ import { findStandingOn } from "../collision/findStandingOn";
  */
 export const moveItem = <RoomId extends string>({
   subjectItem,
-  xyzDeltaPartial,
+  force,
   gameState,
   pusher,
   deltaMS,
 }: {
-  subjectItem: UnknownItemInPlay<RoomId>;
-  xyzDeltaPartial: Partial<Xyz>;
+  subjectItem: ItemInPlay<"head", PlanetName, RoomId>; // UnknownItemInPlay<RoomId>;
+  force: Xyz;
   gameState: GameState<RoomId> /**
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
@@ -31,9 +37,12 @@ export const moveItem = <RoomId extends string>({
   pusher?: AnyItemInPlay;
   deltaMS: number;
 }) => {
-  const xyzDelta = addXyz(originXyz, xyzDeltaPartial);
+  //const mass = 1;
+  const accel = force; // f=ma => a=f/m, assume mass is constant at 1
+  const vel = addXyz(subjectItem.state.vel, scaleXyz(accel, deltaMS));
+  const posDelta = scaleXyz(vel, deltaMS);
 
-  if (xyzEqual(xyzDelta, originXyz)) {
+  if (xyzEqual(posDelta, originXyz)) {
     return;
   }
 
@@ -41,11 +50,13 @@ export const moveItem = <RoomId extends string>({
   const {
     state: { position: originalPosition },
   } = subjectItem;
+
   // strategy is to move to the target position, then back off as needed
-  subjectItem.state.position = addXyz(originalPosition, xyzDelta);
+  subjectItem.state.vel = vel;
+  subjectItem.state.position = addXyz(originalPosition, posDelta);
 
   const sortedCollisions = sortObstaclesAboutVector(
-    xyzDelta,
+    posDelta,
     collision1toMany(subjectItem, objectValues(room.items)),
   );
 
@@ -67,6 +78,9 @@ export const moveItem = <RoomId extends string>({
     }
     lastProcessedDistance = dist;
 
+    /*
+    !!!!!!!!!!!!!
+    NOTE: handling pf special touching behaviour is disabled while I get vel working
     if (
       pusher !== collision &&
       handleItemsTouchingItems({
@@ -79,6 +93,8 @@ export const moveItem = <RoomId extends string>({
     ) {
       return;
     }
+
+    */
 
     if (!isSolid(subjectItem, collision, gameState.pickupsCollected[room.id])) {
       continue;
@@ -93,6 +109,12 @@ export const moveItem = <RoomId extends string>({
 
     // push falling (pushable) items that we intersect:
     if (itemFalls(collision) && collision !== pusher) {
+      throw new Error("not doing that right now");
+      /*
+
+      !!!!!!!!!!!!!
+      NOTE: handling of pushing behaviour is disabled while I get vel working
+
       const pushCoefficient =
         subjectItem.type === "lift" ?
           // lifts don't slow down when stuff is on them
@@ -134,13 +156,25 @@ export const moveItem = <RoomId extends string>({
       collision.state.standingOn = findStandingOn(
         collision,
         objectValues(room.items),
-        gameState.pickupsCollected[room.id],
+        gameState.pickupsCollected[room.id],        
       );
+      */
     } else {
       // back off to slide on the obstacle (we're not pushing it):
-      subjectItem.state.position = addXyz(
-        subjectItem.state.position,
+      const pos = addXyz(subjectItem.state.position, backingOffMtv);
+      subjectItem.state.position = pos;
+      subjectItem.state.vel = scaleXyz(
+        subXyz(pos, originalPosition),
+        1 / deltaMS,
+      );
+
+      console.log(
+        `after backing against col with ${collision.id} with mtv`,
         backingOffMtv,
+        "new position",
+        pos,
+        "new vel",
+        subjectItem.state.vel,
       );
     }
   }

@@ -1,6 +1,6 @@
 import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { type Aabb } from "@/utils/vectors";
+import { type Aabb } from "@/utils/vectors/vectors";
 import {
   liftBBShortening,
   roomHeightBlocks,

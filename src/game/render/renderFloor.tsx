@@ -8,7 +8,7 @@ import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import type { PlanetName } from "@/sprites/planets";
-import type { DirectionXy } from "@/utils/vectors";
+import type { DirectionXy } from "@/utils/vectors/vectors";
 
 export type SidesWithDoors = Partial<Record<DirectionXy, true>>;
 

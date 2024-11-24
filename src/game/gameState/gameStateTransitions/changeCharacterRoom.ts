@@ -4,13 +4,13 @@ import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { findStandingOn } from "../../collision/findStandingOn";
 import type { PlanetName } from "@/sprites/planets";
-import type { DirectionXy, DirectionXyz, Xyz } from "@/utils/vectors";
+import type { DirectionXy, DirectionXyz, Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
   directionsXy,
   oppositeDirection,
   originXyz,
-} from "@/utils/vectors";
+} from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../EntryState";

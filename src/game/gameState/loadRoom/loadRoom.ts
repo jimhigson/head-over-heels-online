@@ -15,8 +15,8 @@ import { objectValues } from "iter-tools";
 import type { PickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import { findStandingOn } from "../../collision/findStandingOn";
-import type { DirectionXy } from "@/utils/vectors";
-import { directionAxis, perpendicularAxisXy } from "@/utils/vectors";
+import type { DirectionXy } from "@/utils/vectors/vectors";
+import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 function* gatherConveyors<RoomId extends string>(

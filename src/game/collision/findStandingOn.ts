@@ -6,7 +6,7 @@ import type {
 } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
-import { addXyz } from "@/utils/vectors";
+import { addXyz } from "@/utils/vectors/vectors";
 import type { RoomPickupsCollected } from "../gameState/GameState";
 import { isSolid } from "../physics/isSolid";
 

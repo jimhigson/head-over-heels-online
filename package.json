@@ -17,7 +17,7 @@
     "test": "vitest",
     "worldJson": "tsx scripts/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
     "makeWorldJsonPatch": "tsx scripts/campaignXml2Json/makeCampaignDiff.ts > src/_generated/originalCampaign/patch.json && prettier src/_generated/originalCampaign/patch.json --write",
-    "predeploy": "pnpm run check:lint && pnpm run check:type && pnpm run check:format && pnpm run build",
+    "predeploy": "pnpm run check:all && pnpm run build",
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\""

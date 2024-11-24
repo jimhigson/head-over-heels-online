@@ -6,13 +6,13 @@ import type { UnknownRoomState } from "./model/modelTypes";
 import { doorTexturePivot } from "./sprites/spritePivots";
 import { blockSizePx } from "./sprites/spritePivots";
 import { edgePaletteSwapFilters } from "./game/render/filters/paletteSwapFilters";
-import type { Xy } from "./utils/vectors";
+import type { Xy } from "./utils/vectors/vectors";
 import {
   perpendicularAxisXy,
   doorAlongAxis,
   originXy,
   addXy,
-} from "./utils/vectors";
+} from "./utils/vectors/vectors";
 import type { ItemInPlay } from "./model/ItemInPlay";
 import { iterateToContainer } from "./game/iterateToContainer";
 import type { GameState } from "./game/gameState/GameState";

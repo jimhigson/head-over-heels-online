@@ -1,5 +1,5 @@
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, DirectionXy, DirectionXyz, Xyz } from "../utils/vectors";
+import type { Aabb, DirectionXy, DirectionXyz, Xyz } from "../utils/vectors/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
@@ -16,7 +16,7 @@ type FallingItemState = {
   /* null meaning we know item is not standing on anything (ie, should fall) */
   standingOn: UnknownItemInPlay | null;
   /** vertical velocity - needed for parabolic jumping and falling */
-  velZ: number;
+  vel: Xyz;
 };
 
 export type CharacterState = FallingItemState & {

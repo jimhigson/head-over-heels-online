@@ -1,7 +1,7 @@
 import type { EmptyObject } from "type-fest";
 import type { CharacterName } from "../modelTypes";
 import type { PlanetName, Wall } from "../../sprites/planets";
-import type { AxisXy, DirectionXy, Xyz } from "../../utils/vectors";
+import type { AxisXy, DirectionXy, Xyz } from "../../utils/vectors/vectors";
 
 export type JsonItemType =
   | "door"

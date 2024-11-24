@@ -5,7 +5,7 @@ import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { addXy, addXyz, originXyz } from "@/utils/vectors";
+import { addXy, addXyz, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,

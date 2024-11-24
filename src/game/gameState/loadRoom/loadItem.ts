@@ -13,6 +13,7 @@ import { loadPlayer } from "./loadPlayer";
 import type { PickupsCollected } from "../GameState";
 import type { RoomJson } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
+import { originXyz } from "@/utils/vectors/vectors";
 
 export function* loadItem<RoomId extends string>(
   itemId: string,
@@ -72,7 +73,7 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
   return {
     expires: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: null, velZ: 0 } : {}),
+    ...(falls ? { standingOn: null, vel: originXyz } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
     ...(jsonItem.type === "lift" ? { direction: "up" } : {}),

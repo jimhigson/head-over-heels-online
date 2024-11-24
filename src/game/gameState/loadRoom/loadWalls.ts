@@ -9,7 +9,7 @@ import {
   yAxisWallAabb,
   yAxisWallRenderAabb,
 } from "../../collision/boundingBoxes";
-import { doorAlongAxis } from "@/utils/vectors";
+import { doorAlongAxis } from "@/utils/vectors/vectors";
 
 /**
  * convert a room's walls into normal items (that can be collided with as with any other item)

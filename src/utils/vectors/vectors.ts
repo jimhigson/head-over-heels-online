@@ -1,6 +1,13 @@
 export const directionsXy = ["away", "towards", "left", "right"] as const;
 export type DirectionXy = (typeof directionsXy)[number];
 
+// prettier-ignore
+type Matrix3x3 = [
+  number, number, number, // Row 1
+  number, number, number, // Row 2
+  number, number, number, // Row 3
+];
+
 export const directionAxis = (direction: DirectionXy): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
@@ -58,6 +65,21 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   x: xy.x * scale,
   y: xy.y * scale,
   z: xy.z * scale,
+});
+
+export const xyzMagnitude = ({ x, y, z }: Xyz) =>
+  Math.sqrt(x * x + y * y + z * z);
+
+export const unitVector = (xyz: Xyz): Xyz =>
+  scaleXyz(xyz, 1 / xyzMagnitude(xyz));
+
+/**
+ * clockwise rotation of the xy component
+ */
+export const perpendicularXyz = ({ x, y, z }: Xyz): Xyz => ({
+  x: y,
+  y: -x,
+  z,
 });
 
 export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
@@ -132,3 +154,20 @@ export type Aabb = Readonly<Xyz>;
 export const dotProductXyz = (a: Xyz, b: Xyz): number => {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 };
+
+export const multiplyMatrixVector = (
+  matrix: Matrix3x3,
+  { x, y, z }: Xyz,
+): Xyz => ({
+  x: matrix[0] * x + matrix[1] * y + matrix[2] * z,
+  y: matrix[3] * x + matrix[4] * y + matrix[5] * z,
+  z: matrix[6] * x + matrix[7] * y + matrix[8] * z,
+});
+
+// prettier-ignore
+/** matrix to multiply against to discard the z component of a vector */
+export const xyOnlyMatrix : Matrix3x3 = [
+  1, 0, 0, // Row 1
+  0, 1, 0, // Row 2
+  0, 0, 0, // Row 3
+];

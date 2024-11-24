@@ -15,7 +15,7 @@ import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
-import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors";
+import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors/vectors";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -68,6 +68,8 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
+  console.log("----frame");
+
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
 

@@ -6,7 +6,7 @@ import type { ZxSpectrumRoomColour } from "./originalGame.ts";
 import { zxSpectrumRoomColours } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
-import type { AxisXy, Xy } from "./utils/vectors.ts";
+import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
 
 const generateWalls = <P extends PlanetName>(
   roomSize: Xy,

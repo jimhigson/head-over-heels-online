@@ -1,7 +1,7 @@
 import type { Container } from "pixi.js";
-import { isIntegerXyzOrCloseTo, type XyMaybeZ } from "@/utils/vectors";
+import { isIntegerXyzOrCloseTo, type XyMaybeZ } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { Xy, Xyz } from "@/utils/vectors";
+import type { Xy, Xyz } from "@/utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (
   blockXyz: XyMaybeZ,
