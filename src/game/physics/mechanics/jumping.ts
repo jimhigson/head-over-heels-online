@@ -1,5 +1,5 @@
 import type { PlayableItem } from "@/model/ItemInPlay";
-import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { originalGameFrameDuration } from "@/originalGame";
@@ -35,32 +35,34 @@ const getJumpAbility = (characterName: CharacterName, onSpring: boolean) => {
 };
 
 export const jumping = <RoomId extends string>(
-  characterItem: PlayableItem,
+  { type, state: { standingOn } }: PlayableItem,
   { inputState: { jump: jumpInput } }: GameState<RoomId>,
-  deltaMS: number,
+  _deltaMS: number,
 ): MechanicResult<CharacterName> => {
-  const { type: characterType } = characterItem;
-
-  if (
-    !jumpInput ||
+  const startingAJump =
+    jumpInput &&
     // can't jump if not standing on anything!
-    characterItem.state.standingOn === null ||
+    standingOn !== null &&
     // you can't jump from a teleporter!
-    characterItem.state.standingOn?.type === "teleporter"
-  ) {
-    return {};
-  }
+    standingOn?.type !== "teleporter";
 
-  const { velZ } = getJumpAbility(
-    characterType,
-    characterItem.state.standingOn?.type === "spring",
-  );
+  if (!startingAJump) {
+    if (standingOn !== null) {
+      return {
+        stateDelta: {
+          jumped: false,
+        },
+      };
+    }
+    return unitMechanicalResult;
+  }
+  const { velZ } = getJumpAbility(type, standingOn?.type === "spring");
 
   return {
-    // instantaneously accel up to velicity at start of the jump (accel is added to vel in this frame)
-    accel: { z: velZ / deltaMS },
+    vels: { gravity: { z: velZ } },
     stateDelta: {
       action: "moving",
+      jumped: true,
     },
   };
 };

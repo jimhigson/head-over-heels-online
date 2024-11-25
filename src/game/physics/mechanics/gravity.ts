@@ -1,10 +1,8 @@
-import { type FallingItemTypes, type ItemInPlay } from "@/model/ItemInPlay";
+import { type FreeItemTypes, type ItemInPlay } from "@/model/ItemInPlay";
 import type { MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { accelerateToSpeed } from "@/utils/vectors/accelerateUpToSpeed";
-import { unitVectors } from "@/utils/vectors/vectors";
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -13,17 +11,32 @@ import { unitVectors } from "@/utils/vectors/vectors";
  * The item can be anything - a player, a pickup etc
  */
 export const gravity = <RoomId extends string>(
-  { type, state: { vel } }: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  {
+    type,
+    state: {
+      vels: {
+        gravity: { z: previousVelZ },
+      },
+      standingOn,
+    },
+  }: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<FallingItemTypes> => {
+): MechanicResult<FreeItemTypes> => {
+  const terminalZ =
+    terminalVelocityPixPerMs[type === "head" ? "head" : "others"];
+
   return {
-    accel: accelerateToSpeed({
-      vel,
-      acc: fallG,
-      unitD: unitVectors.down,
-      maxSpeed: terminalVelocityPixPerMs[type === "head" ? "head" : "others"],
-      deltaMS,
-    }),
+    vels: {
+      gravity: {
+        z: Math.max(
+          // if we are standing on something, the v due to gravity stays constant at zero plus one frame:
+          // - this prevents the velocity accumulating up to max value, but keeps the item touching
+          // its standingon. This would be more accurately represented by forces
+          (standingOn ? 0 : previousVelZ) - fallG * deltaMS,
+          -terminalZ,
+        ),
+      },
+    },
   };
 };

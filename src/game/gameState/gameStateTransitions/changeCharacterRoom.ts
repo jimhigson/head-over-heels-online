@@ -102,6 +102,10 @@ export const changeCharacterRoom = <RoomId extends string>({
       toRoom,
       "at portal",
       destinationPortal,
+      "because",
+      changeType,
+      "sourceportal",
+      sourcePortal,
     );
 
     if (destinationPortal === undefined) {

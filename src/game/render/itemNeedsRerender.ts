@@ -18,7 +18,6 @@ export const itemNeedsRerender = (item: UnknownItemInPlay): boolean => {
           item.lastRenderedState.teleporting?.phase
       );
 
-    case "teleporter":
     case "spring": {
       return item.state.stoodOn !== item.lastRenderedState.stoodOn;
     }

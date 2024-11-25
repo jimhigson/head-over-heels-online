@@ -1492,10 +1492,10 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "player",
         },
-        heels: {
-          config: { which: "heels" },
-          position: { x: 0, y: 3, z: 0 },
-          type: "player",
+        spring: {
+          config: {},
+          position: { x: 0, y: 3, z: 5 },
+          type: "spring",
         },
         highBlock: {
           config: { disappearing: false, style: "organic" },
@@ -1512,11 +1512,13 @@ export const campaign = {
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        /*"pickup@5,0,7:1MkQY2": {
+        /*
+        "pickup@5,0,7:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 5, y: 0, z: 7 },
           type: "pickup",
         },
+        /*
         pickupStartingOnFloor: {
           config: { gives: "extra-life" },
           position: { x: 2, y: 0, z: 0 },
@@ -1526,7 +1528,7 @@ export const campaign = {
           config: { gives: "extra-life" },
           position: { x: 0, y: 0, z: 5 },
           type: "pickup",
-        },
+        },/*
         pickupTemp2: {
           config: { gives: "extra-life" },
           position: { x: 5, y: 5, z: 5 },
@@ -1899,6 +1901,11 @@ export const campaign = {
           config: { axis: "y", disappearing: false },
           position: { x: 4, y: 7, z: 2 },
           type: "barrier",
+        },
+        heels: {
+          config: { which: "heels" },
+          position: { x: 0, y: 3, z: 9 },
+          type: "player",
         },
         block: {
           config: { disappearing: false, style: "organic" },

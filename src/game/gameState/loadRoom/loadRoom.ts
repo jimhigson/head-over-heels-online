@@ -1,9 +1,9 @@
 import type {
-  FallingItemTypes,
+  FreeItemTypes,
   ItemInPlay,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { itemFalls } from "@/model/ItemInPlay";
+import { isFreeItem } from "@/model/ItemInPlay";
 import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { entries, objectEntriesIter } from "@/utils/entries";
@@ -82,8 +82,6 @@ function* gatherConveyors<RoomId extends string>(
         }
       }
 
-      console.log(conveyorBlocks);
-
       yield* conveyorBlocks;
     }
   }
@@ -100,7 +98,7 @@ function* loadItems<RoomId extends string>(
 }
 
 export const initStandingOnForItem = (
-  item: ItemInPlay<FallingItemTypes, PlanetName, string>,
+  item: ItemInPlay<FreeItemTypes, PlanetName, string>,
   items: RoomStateItems<PlanetName, string>,
 ) => {
   item.state.standingOn = findStandingOn(item, objectValues(items), {});
@@ -108,7 +106,7 @@ export const initStandingOnForItem = (
 
 const initStandingOnForItems = (items: RoomStateItems<PlanetName, string>) => {
   for (const item of objectValues(items)) {
-    if (itemFalls(item)) {
+    if (isFreeItem(item)) {
       initStandingOnForItem(item, items);
     }
   }

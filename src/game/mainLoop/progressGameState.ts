@@ -5,7 +5,7 @@
 // can be guaranteed to take up every half-pixel position.
 
 import type { UnknownItemInPlay, AnyItemInPlay } from "@/model/ItemInPlay";
-import { isPlayableItem, itemFalls } from "@/model/ItemInPlay";
+import { isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
@@ -37,7 +37,7 @@ const deleteItemFromRoom = <RoomId extends string>(
 
   // check if anything was standing on this item:
   for (const item of iterate(objectValues(room.items))) {
-    if (itemFalls(item) && item.state.standingOn === itemToDelete) {
+    if (isFreeItem(item) && item.state.standingOn === itemToDelete) {
       item.state.standingOn = null;
     }
   }
@@ -68,8 +68,6 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  console.log("----frame");
-
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
 
@@ -112,6 +110,7 @@ export const progressGameState = <RoomId extends string>(
         // all physics is suspended while death animation plays
         break;
       }
+
       tickItem(item, gameState, physicsTickMs);
     }
   }

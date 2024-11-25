@@ -1,8 +1,8 @@
-import type { FallingItemTypes, ItemInPlay } from "@/model/ItemInPlay";
+import type { FreeItemTypes, ItemInPlay } from "@/model/ItemInPlay";
 import {
   isItemType,
   isPlayableItem,
-  itemFalls,
+  isFreeItem,
   type UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import {
@@ -21,7 +21,7 @@ import {
 import { moveItem } from "../moveItem";
 
 const handleItemOnConveyor = <RoomId extends string>(
-  item: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   conveyor: ItemInPlay<"conveyor", PlanetName, RoomId>,
   _movementVector: Xyz,
   gameState: GameState<RoomId>,
@@ -44,10 +44,12 @@ const handleItemOnConveyor = <RoomId extends string>(
     item.state.facing === oppositeDirection(direction);
 
   const conveyorSpeed =
-    heelsWalkingAgainst ? playerWalkTerminalSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
+    heelsWalkingAgainst ?
+      playerWalkTerminalSpeedPixPerMs.heels
+    : conveyorSpeedPixPerMs;
 
   const conveyorMoveDistance = conveyorSpeed * deltaMS;
-  const conveyorMovementVector = scaleXyz(
+  const conveyorPosDelta = scaleXyz(
     unitVectors[direction],
     conveyorMoveDistance,
   );
@@ -55,7 +57,7 @@ const handleItemOnConveyor = <RoomId extends string>(
   moveItem({
     deltaMS,
     gameState,
-    xyzDeltaPartial: conveyorMovementVector,
+    posDelta: conveyorPosDelta,
     subjectItem: item as UnknownItemInPlay<RoomId>,
     pusher: conveyor,
   });
@@ -91,7 +93,7 @@ export const handleItemsTouchingItems = <RoomId extends string>({
   )
     return true;
 
-  if (touchee.type === "conveyor" && itemFalls(movingItem)) {
+  if (touchee.type === "conveyor" && isFreeItem(movingItem)) {
     handleItemOnConveyor(
       movingItem,
       touchee,

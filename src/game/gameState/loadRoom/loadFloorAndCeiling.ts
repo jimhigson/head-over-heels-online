@@ -5,16 +5,16 @@ import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { addXy, addXyz, originXyz } from "@/utils/vectors/vectors";
+import { addXy, addXyz, originXyz, subXy } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   room: RoomJson<PlanetName, RoomId>,
 ): Generator<UnknownItemInPlay<RoomId>> {
-  const aabb = {
-    ...blockXyzToFineXyz(addXy(room.size, { x: 2, y: 2 })),
+  const floorCeilingAabb = {
+    ...blockXyzToFineXyz(addXy(room.size)),
     z: 0,
   };
-  const floorPosition = blockXyzToFineXyz({ x: -1, y: -1, z: 0 });
+  const floorPosition = blockXyzToFineXyz(subXy(originXyz));
 
   if (room.floor === "none" && room.roomBelow !== undefined)
     yield {
@@ -32,7 +32,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         // on the towards/left sides. Since the floor doesn't render, it doesn't matter
         // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
         // safeguards against falling 'off the edge of the world'
-        aabb,
+        aabb: floorCeilingAabb,
         state: {
           position: floorPosition,
           expires: null,
@@ -54,7 +54,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         // on the towards/left sides. Since the floor doesn't render, it doesn't matter
         // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
         // safeguards against falling 'off the edge of the world'
-        aabb,
+        aabb: floorCeilingAabb,
         state: {
           position: floorPosition,
           expires: null,
@@ -82,7 +82,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         // on the towards/left sides. Since the floor doesn't render, it doesn't matter
         // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
         // safeguards against falling 'off the edge of the world'
-        aabb,
+        aabb: floorCeilingAabb,
         state: {
           position: ceilingPosition,
           expires: null,

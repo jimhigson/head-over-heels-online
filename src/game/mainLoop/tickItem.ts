@@ -1,62 +1,70 @@
-import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
-import { isPlayableItem, itemFalls } from "@/model/ItemInPlay";
+import type {
+  ItemInPlay,
+  UnknownItemInPlay,
+  FreeItemTypes,
+} from "@/model/ItemInPlay";
+import { isItemType, isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
 import type { MechanicResult } from "../physics/MechanicResult";
 import { gravity } from "../physics/mechanics/gravity";
 
-import { addXyz, originXyz, xyzEqual } from "@/utils/vectors/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
+import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { jumping } from "../physics/mechanics/jumping";
 import { walking } from "../physics/mechanics/walking";
+import { moveLift } from "../physics/mechanics/moveLift";
+import { objectEntriesIter } from "@/utils/entries";
+import { springStandingOn } from "../physics/mechanics/springStandingOn";
 
 /**
  * ticks all items THAT CAN DO THINGS in the world
  * - this may also cause movements in other items (eg pushing)
  */
-export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
+export const tickItem = <RoomId extends string, T extends FreeItemTypes>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  const room = currentRoom(gameState);
-
   let accumulatedMovement = originXyz;
-  let accumulatedAccel = originXyz;
-
-  const isMovable = itemFalls(item);
+  const mechanicsResults: MechanicResult<T>[] = [];
 
   /*
    * each mechanic sees the item in the state given it it by the previous ones
    * ie, the overall mechanic is the result of functional composition of the
    * individual mechanics
    */
-  const accumulateResult = ({
-    positionDelta,
-    accel,
-    stateDelta,
-  }: MechanicResult<T>) => {
-    if (positionDelta !== undefined) {
-      accumulatedMovement = addXyz(accumulatedMovement, positionDelta);
-    }
-    if (accel !== undefined) {
-      accumulatedAccel = addXyz(accumulatedAccel, accel);
-    }
+  const accumulateResult = (mr: MechanicResult<T>) => {
+    mechanicsResults.push(mr);
+    const { vels, stateDelta } = mr;
+
+    if (vels !== undefined)
+      for (const [mechanic, velPartial] of objectEntriesIter(vels)) {
+        const vel: Xyz = { ...originXyz, ...velPartial };
+        accumulatedMovement = addXyz(
+          accumulatedMovement,
+          scaleXyz(vel, deltaMS),
+        );
+        (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
+      }
+
     if (stateDelta !== undefined) {
       item.state = { ...item.state, ...stateDelta };
     }
   };
+
+  if (isFreeItem(item)) {
+    accumulateResult(gravity(item, gameState, deltaMS) as MechanicResult<T>);
+  }
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
     /*accumulateResult(
       teleporting(item, gameState, deltaMS) as MechanicResult<T>,
     );*/
     accumulateResult(walking(item, gameState, deltaMS) as MechanicResult<T>);
-    accumulateResult(jumping(item, gameState, deltaMS) as MechanicResult<T>);
-  }
-  if (isMovable) {
-    accumulateResult(gravity(item, gameState, deltaMS) as MechanicResult<T>);
+    const jumpMechanic = jumping(item, gameState, deltaMS);
+    accumulateResult(jumpMechanic as MechanicResult<T>);
   }
 
   /*
@@ -64,42 +72,20 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     accumulateResult(
       teleporterStandingOn(item, gameState, room) as MechanicResult<T>,
     );
-  }
+  }*/
   if (isItemType("spring")(item)) {
-    accumulateResult(
-      springStandingOn(item, gameState, room) as MechanicResult<T>,
-    );
+    accumulateResult(springStandingOn(item, gameState) as MechanicResult<T>);
   }
   if (isItemType("lift")(item)) {
     accumulateResult(moveLift(item, gameState, deltaMS) as MechanicResult<T>);
   }
-  */
 
-  if (
-    //!xyzEqual(accumulatedMovement, originXyz) ||
-    isPlayableItem(item) &&
-    !(
-      // skip if both the velocity and accel are zero - no movement!
-      (
-        xyzEqual(accumulatedAccel, originXyz) &&
-        xyzEqual(accumulatedAccel, item.state.vel)
-      )
-    )
-  ) {
-    if (itemFalls(item)) {
-      /*
-      const vel = (item.state.vel = addXyz(
-        item.state.vel,
-        scaleXyz(accumulatedAccel, deltaMS),
-      ));
-      */
-
-      moveItem({
-        subjectItem: item,
-        force: accumulatedAccel,
-        gameState,
-        deltaMS,
-      });
-    }
-  }
+  //if (isFreeItem(item)) {
+  moveItem({
+    subjectItem: item as UnknownItemInPlay<RoomId>,
+    posDelta: accumulatedMovement,
+    gameState,
+    deltaMS,
+  });
+  //}
 };

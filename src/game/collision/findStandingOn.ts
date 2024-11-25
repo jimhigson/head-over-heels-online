@@ -1,7 +1,7 @@
 import { collision1toMany } from "@/game/collision/aabbCollision";
 import type {
   ItemInPlay,
-  FallingItemTypes,
+  FreeItemTypes,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
@@ -13,7 +13,7 @@ import { isSolid } from "../physics/isSolid";
 const standingTolerance = 0.001;
 
 export const findStandingOn = <RoomId extends string>(
-  standee: ItemInPlay<FallingItemTypes, PlanetName, RoomId>,
+  standee: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   items: Iterable<UnknownItemInPlay<RoomId>>,
   roomPickupsCollected: RoomPickupsCollected,
 ): UnknownItemInPlay<RoomId> | null => {

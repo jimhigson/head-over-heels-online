@@ -11,7 +11,7 @@ import {
   doorFrameAppearance,
   doorLegsAppearance,
 } from "../../../doorAppearance";
-import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import { type ItemInPlay, type ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
 import { currentRoom, type GameState } from "@/game/gameState/GameState";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
@@ -137,17 +137,34 @@ export const itemAppearances: {
     return container;
   },
 
-  spring: (item, _gameState) =>
-    !item.state.stoodOn && item.lastRenderedState?.stoodOn ?
-      createSprite({
-        frames: spriteSheet.animations["spring.bounce"],
-        playOnce: "and-stop",
-      })
-    : item.state.stoodOn ? createSprite("spring.compressed")
-    : createSprite("spring.released"),
+  spring(springItem, _gameState) {
+    /*
+    // getting from game state gives no easy way to get the previous state
+    const stoodOn = iterate(objectValues(currentRoom(gameState).items)).some(
+      (i) => itemFalls(i) && i.state.standingOn === springItem,
+    );*/
+    return (
+      !springItem.state.stoodOn && springItem.lastRenderedState?.stoodOn ?
+        createSprite({
+          frames: spriteSheet.animations["spring.bounce"],
+          playOnce: "and-stop",
+        })
+      : springItem.state.stoodOn ? createSprite("spring.compressed")
+      : createSprite("spring.released")
+    );
+  },
 
-  teleporter(item) {
-    if (item.state.stoodOn) {
+  teleporter(item, gameState) {
+    // this isn't firing because it doesn't know it needs to be re-rendered.
+    // restructure to combine ItemAppearnce with that test, and return previous rendering here
+    // if it has not changed
+
+    const { items } = currentRoom(gameState);
+    const stoodOn =
+      items.head?.state.standingOn === item ||
+      items.heels?.state.standingOn === item;
+
+    if (stoodOn) {
       const container = new Container();
       container.addChild(createSprite("teleporter"));
       container.addChild(

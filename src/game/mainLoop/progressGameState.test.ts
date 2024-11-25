@@ -756,3 +756,10 @@ describe("pushing", () => {
     );
   });
 });
+
+describe("jumping", () => {
+  test.todo("heels can't jump between a two block gap", () => {
+    //     (h) --> jump    can't land here
+    // (block) (gap) (gap) (block)
+  });
+});

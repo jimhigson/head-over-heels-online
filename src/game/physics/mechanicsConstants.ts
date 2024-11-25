@@ -11,14 +11,20 @@ export const playerWalkAcceldPixPerMsSq = {
 /** deceleration of playables when input stops */
 export const playerWalkStopAccelPixPerMsSq = {
   head: -0.000_15,
-  heels: -0.000_4,
+  heels: -0.000_2,
 };
 
+/**
+ * when heels jumps forwards, instantly gets this fraction of her max speed forward,
+ * so she isn't jumping straight up
+ */
+export const heelsJumpForwardSpeedFraction = 0.8;
 /**
  * when heels jumps, she instantly gets the max walk speed as the forward
  * vector
  */
-export const heelsJumpForwardDecel = -0.000_06;
+export const heelsJumpForwardDecel = 0.001;
+
 /** when head is gliding his ability to change direction mid-air is less */
 export const headsGlideAcel = 0.000_04;
 

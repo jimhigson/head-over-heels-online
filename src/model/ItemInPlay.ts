@@ -1,5 +1,10 @@
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, DirectionXy, DirectionXyz, Xyz } from "../utils/vectors/vectors";
+import type {
+  Aabb,
+  DirectionXy,
+  DirectionXyz,
+  Xyz,
+} from "../utils/vectors/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
@@ -12,14 +17,18 @@ export type ItemInPlayType =
   | "portal"
   | "floor";
 
-type FallingItemState = {
+type FreeItemState = {
   /* null meaning we know item is not standing on anything (ie, should fall) */
   standingOn: UnknownItemInPlay | null;
-  /** vertical velocity - needed for parabolic jumping and falling */
-  vel: Xyz;
+
+  vels: {
+    /** vertical velocity - needed for parabolic jumping and falling */
+    gravity: Xyz;
+    movingFloor: Xyz;
+  };
 };
 
-export type CharacterState = FallingItemState & {
+export type CharacterState = FreeItemState & {
   facing: DirectionXy;
   action:
     | "moving"
@@ -34,6 +43,19 @@ export type CharacterState = FallingItemState & {
   // Number of pixels the player will walk forward regardless of input. This
   // puts players properly inside a room when they enter via a door
   autoWalkDistance: number;
+
+  vels: {
+    gravity: Xyz;
+    /** allows the walking mechanic to keep track of its own velocities */
+    walking: Xyz;
+    movingFloor: Xyz;
+  };
+
+  /**
+   * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
+   * we fall (vertical falling, no forward motion)
+   */
+  jumped: boolean;
 
   teleporting:
     | {
@@ -67,15 +89,18 @@ export type ItemStateMap = {
     jumps: number;
     carrying: JsonItemType | null;
   };
-  teleporter: { stoodOn: boolean };
-  spring: FallingItemState & { stoodOn: boolean };
-  "portable-block": FallingItemState;
-  "movable-block": FallingItemState;
-  baddie: FallingItemState;
-  pickup: FallingItemState;
-  fish: FallingItemState;
+  //teleporter: { stoodOn: boolean };
+  spring: FreeItemState & { stoodOn: boolean };
+  "portable-block": FreeItemState;
+  "movable-block": FreeItemState;
+  baddie: FreeItemState;
+  pickup: FreeItemState;
+  fish: FreeItemState;
   lift: {
     direction: "up" | "down";
+    vels: {
+      lift: Xyz;
+    };
   };
 };
 
@@ -187,14 +212,14 @@ export const fallingItemTypes = [
   "fish",
 ] as const satisfies ItemInPlayType[];
 
-export type FallingItemTypes = (typeof fallingItemTypes)[number];
+export type FreeItemTypes = (typeof fallingItemTypes)[number];
 
-export function itemFalls<
+export function isFreeItem<
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
 >(
   item: ItemInPlay<ItemInPlayType, P, RoomId>,
-): item is ItemInPlay<FallingItemTypes, P, RoomId> {
+): item is ItemInPlay<FreeItemTypes, P, RoomId> {
   return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
 }
 

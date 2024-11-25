@@ -73,9 +73,11 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
   return {
     expires: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: null, vel: originXyz } : {}),
+    ...(falls ? { standingOn: null, vels: { gravity: originXyz } } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
-    ...(jsonItem.type === "lift" ? { direction: "up" } : {}),
+    ...(jsonItem.type === "lift" ?
+      { direction: "up", vels: { lift: originXyz } }
+    : {}),
   };
 };

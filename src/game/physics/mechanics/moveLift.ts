@@ -41,11 +41,13 @@ export function moveLift<RoomId extends string>(
     },
   }: ItemInPlay<"lift", PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
-  deltaMS: number,
+  _deltaMS: number,
 ): MechanicResult<"lift"> {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
   const velocity = velocityAtAltitude(z, direction, lowestZ, highestZ);
+
+  console.log("lift velocity", velocity);
 
   const mewDirection: "up" | "down" =
     z <= lowestZ ? "up"
@@ -53,7 +55,7 @@ export function moveLift<RoomId extends string>(
     : direction;
 
   return {
-    positionDelta: { z: velocity * deltaMS },
+    vels: { lift: { z: velocity } },
     stateDelta: {
       direction: mewDirection,
     },
