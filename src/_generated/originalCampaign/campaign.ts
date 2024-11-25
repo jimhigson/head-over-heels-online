@@ -14602,7 +14602,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase10: {
-      color: "white",
+      color: "yellow",
       floor: "deadly",
       floorSkip: [],
       id: "moonbase10",
@@ -14669,7 +14669,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase11: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase11",
@@ -14707,7 +14707,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase12: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase12",
@@ -14809,7 +14809,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase13: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase13",
@@ -14981,7 +14981,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase15: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase15",
@@ -15044,7 +15044,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase16: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase16",
@@ -15210,7 +15210,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase18: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase18",
@@ -15312,7 +15312,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase2: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase2",
@@ -15421,7 +15421,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase20: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase20",
@@ -15655,7 +15655,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase22topenitentiary: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase22topenitentiary",
@@ -15763,7 +15763,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase23: {
-      color: "white",
+      color: "magenta",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase23",
@@ -15865,7 +15865,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase24toegyptus: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase24toegyptus",
@@ -16267,7 +16267,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase26: {
-      color: "white",
+      color: "green",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase26",
@@ -16335,7 +16335,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase27: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase27",
@@ -16373,7 +16373,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase28: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase28",
@@ -16618,7 +16618,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase3: {
-      color: "white",
+      color: "magenta",
       floor: "deadly",
       floorSkip: [],
       id: "moonbase3",
@@ -16755,7 +16755,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase30: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase30",
@@ -16818,7 +16818,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase32: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase32",
@@ -17701,7 +17701,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase36: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase36",
@@ -17836,7 +17836,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase4: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase4",
@@ -17993,7 +17993,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase5: {
-      color: "white",
+      color: "green",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase5",
@@ -18041,7 +18041,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase6: {
-      color: "white",
+      color: "magenta",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase6",
@@ -18153,7 +18153,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase7: {
-      color: "white",
+      color: "green",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase7",
@@ -18304,7 +18304,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase8: {
-      color: "white",
+      color: "yellow",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase8",
@@ -18441,7 +18441,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase9: {
-      color: "white",
+      color: "cyan",
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase9",
