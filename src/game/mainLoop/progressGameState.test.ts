@@ -762,4 +762,8 @@ describe("jumping", () => {
     //     (h) --> jump    can't land here
     // (block) (gap) (gap) (block)
   });
+  test.todo("characters can jump off a disappearing block", () => {
+    //     (h) --> jump    can't land here
+    // (block) (gap) (gap) (block)
+  });
 });

@@ -44,8 +44,9 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
         projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
       ])
       .stroke({
-        width: 0.5,
+        width: 1,
         color,
+        alpha: 0.5,
       })
   );
 };
@@ -54,6 +55,7 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   head: "rgba(255,184,0)",
   wall: "rgba(128,200,0)",
   portal: "rgba(255,0,255)",
+  stopAutowalk: "rgba(255,128,128)",
 };
 
 const renderItemBBs = (item: UnknownItemInPlay): Container => {

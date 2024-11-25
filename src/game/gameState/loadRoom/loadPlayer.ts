@@ -34,7 +34,7 @@ export const loadPlayer = <RoomId extends string>(
           jumped: false,
           lives: 8,
           donuts: 0,
-          autoWalkDistance: 0,
+          autoWalk: false,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),
           expires: null,
@@ -66,7 +66,7 @@ export const loadPlayer = <RoomId extends string>(
           },
           jumped: false,
           lives: 8,
-          autoWalkDistance: 0,
+          autoWalk: false,
           jumpEndTime: -1, // jump has already finished - ie, we are not jumping
           teleporting: null,
           position: positionCentredInBlock(jsonItem),

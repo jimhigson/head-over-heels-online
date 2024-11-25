@@ -10,8 +10,10 @@ import {
   addXyz,
   perpendicularAxisXy,
   doorAlongAxis,
+  subXyz,
+  scaleXyz,
+  unitVectors,
 } from "@/utils/vectors/vectors";
-import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -143,35 +145,47 @@ export function* loadDoor<RoomId extends string>(
       aabb: blockXyzToFineXyz({
         [axis]: 2,
         [crossAxis]: 0.5,
-        z: roomHeightBlocks - position.z - 2,
+        z: 999,
       }),
     },
   };
-  if (position.z > 0)
-    yield {
-      ...jsonDoor,
-      ...defaultItemProperties,
-      ...{
-        id: `${id}/legs`,
-        config: {
-          ...jsonDoor.config,
-          inHiddenWall,
-          style: "none",
-          side: "away", // TODO: look at typings - this isn't needed for hidden walls
-          height: position.z,
-        },
-        renders: true,
-        type: "doorLegs",
-        state: {
-          position: addXyz({
-            ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
-            z: 0,
-          }),
-          expires: null,
-        },
-        aabb: {
-          ...blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
-        },
+  // note: when z === 0, the door "legs" are just an extra bit of floor
+  // under the doorway that can prevent us from falling off the edge of the world
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      type: "doorLegs",
+      id: `${id}/legs`,
+      config: {
+        ...jsonDoor.config,
+        inHiddenWall,
+        style: "none",
+        side: "away", // TODO: look at typings - this isn't needed for hidden walls
+        height: position.z,
       },
-    };
+      renders: true,
+      state: {
+        position: addXyz({
+          ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          z: 0,
+        }),
+        expires: null,
+      },
+      aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
+    },
+  };
+  yield {
+    type: "stopAutowalk",
+    id: `${id}/stopAutowalk`,
+    renders: false,
+    aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0, z: 2 } as Xyz),
+    config: {},
+    state: {
+      position: blockXyzToFineXyz(
+        subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
+      ),
+      expires: null,
+    },
+  };
 }

@@ -142,7 +142,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
       // TODO: maybe this should be side-effect free
-      character.state.autoWalkDistance = blockSizePx.w * 0.75;
+      character.state.autoWalk = true;
       if (character.state.action === "idle") character.state.action = "moving";
 
       if (changeType === "level-select") {

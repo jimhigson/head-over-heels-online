@@ -12,7 +12,7 @@ import {
   type Xyz,
 } from "@/utils/vectors/vectors";
 import type { GameState } from "@/game/gameState/GameState";
-import { handlePlayerTouchingItems } from "./handlePlayerTouchingItems";
+import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import type { PlanetName } from "@/sprites/planets";
 import {
   playerWalkTerminalSpeedPixPerMs,
@@ -83,13 +83,13 @@ export const handleItemsTouchingItems = <RoomId extends string>({
 }): boolean => {
   if (
     isPlayableItem(movingItem) &&
-    handlePlayerTouchingItems(movingItem, touchee, movementVector, gameState)
+    handlePlayerTouchingItem(movingItem, touchee, movementVector, gameState)
   )
     return true;
 
   if (
     isPlayableItem(touchee) &&
-    handlePlayerTouchingItems(touchee, movingItem, movementVector, gameState)
+    handlePlayerTouchingItem(touchee, movingItem, movementVector, gameState)
   )
     return true;
 

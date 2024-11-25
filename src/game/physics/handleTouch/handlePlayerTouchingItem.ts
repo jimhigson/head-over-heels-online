@@ -8,17 +8,23 @@ import {
 } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
+import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
 
 /**
  * @returns true is the physics needs to halt after this handler
  */
-export const handlePlayerTouchingItems = <RoomId extends string>(
+export const handlePlayerTouchingItem = <RoomId extends string>(
   playableItem: PlayableItem<RoomId>,
   touchee: UnknownItemInPlay<RoomId>,
   movementVector: Xyz,
   gameState: GameState<RoomId>,
 ) => {
   switch (touchee.type) {
+    case "stopAutowalk":
+      if (handlePlayerTouchingStopAutowalk<RoomId>(gameState, playableItem)) {
+        return true;
+      }
+      break;
     case "baddie":
     case "deadly-block":
       if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {

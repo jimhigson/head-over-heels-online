@@ -25,7 +25,7 @@ export const walking = <RoomId extends string>(
   const {
     type,
     state: {
-      autoWalkDistance,
+      autoWalk,
       standingOn,
       facing,
       teleporting,
@@ -34,7 +34,7 @@ export const walking = <RoomId extends string>(
   } = playableItem;
 
   const directionOfWalk =
-    autoWalkDistance > 0 ? facing : (
+    autoWalk ? facing : (
       directionsXy.find((d) => {
         return inputState[d] === true;
       })

@@ -1,7 +1,7 @@
 import type {
   ItemInPlay,
   UnknownItemInPlay,
-  FreeItemTypes,
+  ItemInPlayType,
 } from "@/model/ItemInPlay";
 import { isItemType, isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
@@ -22,7 +22,7 @@ import { springStandingOn } from "../physics/mechanics/springStandingOn";
  * ticks all items THAT CAN DO THINGS in the world
  * - this may also cause movements in other items (eg pushing)
  */
-export const tickItem = <RoomId extends string, T extends FreeItemTypes>(
+export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -46,7 +46,9 @@ export const tickItem = <RoomId extends string, T extends FreeItemTypes>(
           accumulatedMovement,
           scaleXyz(vel, deltaMS),
         );
-        (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
+        if (isFreeItem(item)) {
+          (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
+        }
       }
 
     if (stateDelta !== undefined) {

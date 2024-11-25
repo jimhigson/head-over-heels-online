@@ -8,14 +8,14 @@ import type { CharacterName } from "@/model/modelTypes";
 
 export type EntryState = Pick<
   ItemState<CharacterName>,
-  "position" | "facing" | "autoWalkDistance" | "action"
+  "position" | "facing" | "autoWalk" | "action"
 >;
 
 export const entryState = ({
-  state: { position, facing, autoWalkDistance, action },
+  state: { position, facing, autoWalk, action },
 }: PlayableItem): EntryState => ({
   position,
   facing,
-  autoWalkDistance,
+  autoWalk,
   action,
 });

@@ -49,6 +49,9 @@ export const itemAppearances: {
   doorFrame: doorFrameAppearance,
   doorLegs: doorLegsAppearance,
 
+  stopAutowalk() {
+    throw new Error("these should always be non-rendering");
+  },
   portal() {
     throw new Error("these should always be non-rendering");
   },

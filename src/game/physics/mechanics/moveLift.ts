@@ -47,8 +47,6 @@ export function moveLift<RoomId extends string>(
   const highestZ = top * blockHeight;
   const velocity = velocityAtAltitude(z, direction, lowestZ, highestZ);
 
-  console.log("lift velocity", velocity);
-
   const mewDirection: "up" | "down" =
     z <= lowestZ ? "up"
     : z >= highestZ ? "down"

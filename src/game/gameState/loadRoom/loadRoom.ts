@@ -18,6 +18,7 @@ import { findStandingOn } from "../../collision/findStandingOn";
 import type { DirectionXy } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
+import { isSolid } from "@/game/physics/isSolid";
 
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,
@@ -150,11 +151,16 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
 
   // the physics will go nuts if things are overlapping, so check and reject
   // if they are:
-  for (const loadedItem of objectValues(loadedItems)) {
-    const collisions = collision1toMany(loadedItem, objectValues(loadedItems));
-    if (collisions.length > 0) {
+  for (const i of objectValues(loadedItems)) {
+    const collisions = collision1toMany(i, objectValues(loadedItems));
+    const solidCol = collisions.find(
+      (col) =>
+        isSolid(i, col, pickupsCollected[roomJson.id]) &&
+        isSolid(col, i, pickupsCollected[roomJson.id]),
+    );
+    if (solidCol !== undefined) {
       throw new Error(
-        `error while loading room ${roomJson.id}: item id=${loadedItem.id} is colliding with ${collisions.map((c) => `id=${c.id}`)}`,
+        `item ${i.id} is colliding with (solid item) ${solidCol.id} on loading room ${roomJson.id}`,
       );
     }
   }

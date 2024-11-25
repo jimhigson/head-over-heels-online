@@ -14,6 +14,7 @@ export type ItemInPlayType =
   | "head"
   | "heels"
   | "doorFrame"
+  | "stopAutowalk"
   | "portal"
   | "floor";
 
@@ -42,7 +43,7 @@ export type CharacterState = FreeItemState & {
 
   // Number of pixels the player will walk forward regardless of input. This
   // puts players properly inside a room when they enter via a door
-  autoWalkDistance: number;
+  autoWalk: boolean;
 
   vels: {
     gravity: Xyz;
@@ -102,6 +103,7 @@ export type ItemStateMap = {
       lift: Xyz;
     };
   };
+  stopAutowalk: EmptyObject;
 };
 
 type ItemInPlayConfigMap<RoomId extends string> = {
@@ -120,6 +122,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     direction: DirectionXy;
     count: number; // how many conveyors blocks in this run of conveyors?
   };
+  stopAutowalk: EmptyObject;
 };
 
 // type-fest's EmptyObject was creating issues
