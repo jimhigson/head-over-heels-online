@@ -164,7 +164,7 @@ export function* loadDoor<RoomId extends string>(
         side: "away", // TODO: look at typings - this isn't needed for hidden walls
         height: position.z,
       },
-      renders: true,
+      renders: position.z !== 0,
       state: {
         position: addXyz({
           ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
