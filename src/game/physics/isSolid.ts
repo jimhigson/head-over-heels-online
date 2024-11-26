@@ -40,7 +40,7 @@ export const isSolid = <RoomId extends string>(
 
 export const isPushable = (collisionItem: AnyItemInPlay) => {
   return (
-    collisionItem.type === "portable-block" ||
+    collisionItem.type === "portableBlock" ||
     collisionItem.type === "spring" ||
     isPlayableItem(collisionItem)
   );

@@ -5,10 +5,9 @@
 // can be guaranteed to take up every half-pixel position.
 
 import type { UnknownItemInPlay, AnyItemInPlay } from "@/model/ItemInPlay";
-import { isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
+import { isPlayableItem } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentPlayableItem, currentRoom } from "../gameState/GameState";
@@ -16,6 +15,7 @@ import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
 import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors/vectors";
+import { setStandingOnForAllItemsInRoom } from "../gameState/setStandingOnForAllItemsInRoom";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -36,11 +36,13 @@ const deleteItemFromRoom = <RoomId extends string>(
   delete room.items[itemToDelete.id];
 
   // check if anything was standing on this item:
+  /*
+  just leave these dangling references for now:
   for (const item of iterate(objectValues(room.items))) {
     if (isFreeItem(item) && item.state.standingOn === itemToDelete) {
       item.state.standingOn = null;
     }
-  }
+  }*/
 };
 
 /**
@@ -51,13 +53,17 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
 ) => {
   for (const item of objectValues(room.items)) {
-    const previousPosition = item.lastRenderedState!.position;
+    if (item.stateLastFrame === undefined) {
+      continue;
+    }
+
+    const previousPosition = item.stateLastFrame.position;
 
     const itemIsStationary = xyzEqual(previousPosition, item.state.position);
-    const snapToPixelGrid =
+    const shouldSnap =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
 
-    if (snapToPixelGrid) {
+    if (shouldSnap) {
       console.log(`snapping item ${item.id} to pixel grid`);
       item.state.position = roundXyz(item.state.position);
     }
@@ -68,6 +74,8 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
+  console.log("----progressing game state----");
+
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
 
@@ -84,13 +92,22 @@ export const progressGameState = <RoomId extends string>(
   const room = currentRoom(gameState);
 
   for (const item of objectValues(room.items)) {
-    item.lastRenderedState = { ...item.state };
+    item.stateLastFrame = { ...item.state };
   }
 
   for (let i = 0; i < physicsTickCount; i++) {
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
 
     gameState.gameTime += physicsTickMs;
+
+    /*
+    const sortedItems = Object.values(room.items).sort((a, b) => {
+      const aScore = a.type === "lift" ? -1 : 0;
+      const bScore = b.type === "lift" ? -1 : 0;
+
+      return aScore - bScore;
+    });
+    */
 
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
@@ -113,6 +130,8 @@ export const progressGameState = <RoomId extends string>(
 
       tickItem(item, gameState, physicsTickMs);
     }
+
+    setStandingOnForAllItemsInRoom(room, gameState.pickupsCollected[room.id]);
   }
 
   snapStationaryItemsToPixelGrid(room);

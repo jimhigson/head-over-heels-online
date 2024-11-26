@@ -1,9 +1,4 @@
-import type {
-  FreeItemTypes,
-  ItemInPlay,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import { isFreeItem } from "@/model/ItemInPlay";
+import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { entries, objectEntriesIter } from "@/utils/entries";
@@ -12,13 +7,13 @@ import { loadItem } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
-import type { PickupsCollected } from "../GameState";
+import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import { findStandingOn } from "../../collision/findStandingOn";
 import type { DirectionXy } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/isSolid";
+import { setStandingOnForAllItemsInRoom } from "../setStandingOnForAllItemsInRoom";
 
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,
@@ -90,28 +85,13 @@ function* gatherConveyors<RoomId extends string>(
 
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
-  pickupsCollected: PickupsCollected<RoomId>,
+  roomPickupsCollected: RoomPickupsCollected,
 ): Generator<UnknownItemInPlay<RoomId>> {
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
-    yield* loadItem(id, item, roomJson, pickupsCollected);
+    yield* loadItem(id, item, roomPickupsCollected);
   }
 }
-
-export const initStandingOnForItem = (
-  item: ItemInPlay<FreeItemTypes, PlanetName, string>,
-  items: RoomStateItems<PlanetName, string>,
-) => {
-  item.state.standingOn = findStandingOn(item, objectValues(items), {});
-};
-
-const initStandingOnForItems = (items: RoomStateItems<PlanetName, string>) => {
-  for (const item of objectValues(items)) {
-    if (isFreeItem(item)) {
-      initStandingOnForItem(item, items);
-    }
-  }
-};
 
 /**
  * convert items from a flat list to an object map, key'd by their ids
@@ -139,13 +119,14 @@ const itemsInItemObjectMap = <
  */
 export const loadRoom = <P extends PlanetName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
-  pickupsCollected: PickupsCollected<RoomId>,
+  roomPickupsCollected: RoomPickupsCollected,
+  extraItems: RoomStateItems<P, RoomId> = {},
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(loadWalls(roomJson)),
     ...itemsInItemObjectMap(
-      gatherConveyors(loadItems(roomJson, pickupsCollected)),
+      gatherConveyors(loadItems(roomJson, roomPickupsCollected)),
     ),
   };
 
@@ -155,8 +136,8 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     const collisions = collision1toMany(i, objectValues(loadedItems));
     const solidCol = collisions.find(
       (col) =>
-        isSolid(i, col, pickupsCollected[roomJson.id]) &&
-        isSolid(col, i, pickupsCollected[roomJson.id]),
+        isSolid(i, col, roomPickupsCollected) &&
+        isSolid(col, i, roomPickupsCollected),
     );
     if (solidCol !== undefined) {
       throw new Error(
@@ -165,10 +146,15 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     }
   }
 
-  initStandingOnForItems(loadedItems);
-
-  return {
+  const roomState: RoomState<P, RoomId> = {
     ...roomJson,
-    items: loadedItems,
+    items: {
+      ...loadedItems,
+      ...extraItems,
+    },
   };
+
+  setStandingOnForAllItemsInRoom(roomState, roomPickupsCollected);
+
+  return roomState;
 };

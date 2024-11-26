@@ -15,9 +15,12 @@ import {
 } from "./utils/vectors/vectors";
 import type { ItemInPlay } from "./model/ItemInPlay";
 import { iterateToContainer } from "./game/iterateToContainer";
-import type { GameState } from "./game/gameState/GameState";
 import { currentRoom } from "./game/gameState/GameState";
-import type { PlanetName } from "./sprites/planets";
+import type { ItemAppearance } from "./game/render/itemAppearances/appearanceUtils";
+import {
+  applyAppearance,
+  ifNotRenderedBefore,
+} from "./game/render/itemAppearances/appearanceUtils";
 
 function* doorLegsGenerator(
   { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,
@@ -77,14 +80,15 @@ function* doorLegsGenerator(
   yield* legGenerator(projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }));
   yield* legGenerator(originXy);
 }
-export const doorLegsAppearance = <RoomId extends string>(
-  doorLegsItem: ItemInPlay<"doorLegs", PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
-) => {
-  return iterateToContainer(
-    doorLegsGenerator(doorLegsItem, currentRoom(gameState)),
-  );
-};
+export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
+  ifNotRenderedBefore((doorLegsItem, gameState): undefined => {
+    applyAppearance(
+      doorLegsItem.renderContainer,
+      iterateToContainer(
+        doorLegsGenerator(doorLegsItem, currentRoom(gameState)),
+      ),
+    );
+  });
 
 function* doorFrameGenerator(
   {
@@ -121,11 +125,12 @@ function* doorFrameGenerator(
     pivot: doorTexturePivot[nearness][axis],
   });
 }
-export const doorFrameAppearance = <RoomId extends string>(
-  doorLegsItem: ItemInPlay<"doorFrame", PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
-) => {
-  return iterateToContainer(
-    doorFrameGenerator(doorLegsItem, currentRoom(gameState)),
-  );
-};
+export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
+  ifNotRenderedBefore((doorFrameItem, gameState): undefined => {
+    applyAppearance(
+      doorFrameItem.renderContainer,
+      iterateToContainer(
+        doorFrameGenerator(doorFrameItem, currentRoom(gameState)),
+      ),
+    );
+  });

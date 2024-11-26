@@ -16,7 +16,6 @@ import { jumping } from "../physics/mechanics/jumping";
 import { walking } from "../physics/mechanics/walking";
 import { moveLift } from "../physics/mechanics/moveLift";
 import { objectEntriesIter } from "@/utils/entries";
-import { springStandingOn } from "../physics/mechanics/springStandingOn";
 
 /**
  * ticks all items THAT CAN DO THINGS in the world
@@ -69,15 +68,6 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     accumulateResult(jumpMechanic as MechanicResult<T>);
   }
 
-  /*
-  if (isItemType("teleporter")(item)) {
-    accumulateResult(
-      teleporterStandingOn(item, gameState, room) as MechanicResult<T>,
-    );
-  }*/
-  if (isItemType("spring")(item)) {
-    accumulateResult(springStandingOn(item, gameState) as MechanicResult<T>);
-  }
   if (isItemType("lift")(item)) {
     accumulateResult(moveLift(item, gameState, deltaMS) as MechanicResult<T>);
   }

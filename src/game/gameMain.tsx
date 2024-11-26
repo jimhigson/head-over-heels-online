@@ -40,7 +40,7 @@ export const gameMain = async <RoomId extends string>(
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({
         gameState,
-        toRoom: roomId,
+        toRoomId: roomId,
         changeType: "level-select",
       });
     },

@@ -13,26 +13,24 @@ import type { GameState } from "../gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 
 /** render an item inside the container it was previously assigned */
-export const renderItem = <T extends ItemInPlayType, RoomId extends string>(
+export const renderItemIfNeeded = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
 ) => {
   assertItemHasRenderContainer(item);
 
-  const itemAppearance = itemAppearances[item.type];
+  const updateItemAppearanceIfNeeded = itemAppearances[item.type];
 
-  if (itemAppearance === undefined) {
+  if (updateItemAppearanceIfNeeded === undefined) {
     throw new Error(
       `item type "${item.type}" has no appearance - if it doesn't render, give it the .renders = false`,
     );
   }
-  item.renderContainer.children.forEach((child) =>
-    child.destroy({ children: true, context: true }),
-  );
-  item.renderContainer.removeChildren();
 
-  const sprite = itemAppearance(item, gameState);
-  item.renderContainer.addChild(sprite);
+  updateItemAppearanceIfNeeded(item, gameState);
 };
 
 export const moveSpriteToItemProjection = (item: AnyItemInPlay) => {

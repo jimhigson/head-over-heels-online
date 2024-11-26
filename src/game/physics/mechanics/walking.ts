@@ -49,7 +49,7 @@ export const walking = <RoomId extends string>(
 
   // handle 'walking' while ascending/falling:
   if (type === "heels") {
-    if (standingOn === null) {
+    if (standingOn.length === 0) {
       // heels has mandatory forward motion while jumping, but decelerates:
       if (playableItem.state.jumped) {
         return {
@@ -81,7 +81,7 @@ export const walking = <RoomId extends string>(
   }
 
   const action =
-    standingOn === null && gravityVel.z < 0 ? "falling"
+    standingOn.length === 0 && gravityVel.z < 0 ? "falling"
     : directionOfWalk === undefined ? "idle"
     : "moving";
 

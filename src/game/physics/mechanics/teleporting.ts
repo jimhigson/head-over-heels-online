@@ -1,4 +1,4 @@
-import type { PlayableItem } from "@/model/ItemInPlay";
+import { isItemType, type PlayableItem } from "@/model/ItemInPlay";
 import type { MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
@@ -17,13 +17,17 @@ export function teleporting<RoomId extends string>(
     inputState: { jump: jumpInput },
   } = gameState;
 
+  const teleporter = playableItem.state.standingOn?.find(
+    isItemType("teleporter"),
+  );
+
   if (teleporting === null) {
-    if (jumpInput && playableItem.state.standingOn?.type === "teleporter") {
+    if (jumpInput && teleporter !== undefined) {
       return {
         stateDelta: {
           teleporting: {
             phase: "out",
-            toRoom: playableItem.state.standingOn.config.toRoom,
+            toRoom: teleporter.config.toRoom,
             timeRemaining: characterFadeInOrOutDuration,
           },
         },
@@ -39,7 +43,7 @@ export function teleporting<RoomId extends string>(
       if (newTimeRemaining === 0) {
         changeCharacterRoom({
           gameState,
-          toRoom:
+          toRoomId:
             teleporting.toRoom as RoomId /* TODO: propertly type in state */,
           changeType: "teleport",
         });

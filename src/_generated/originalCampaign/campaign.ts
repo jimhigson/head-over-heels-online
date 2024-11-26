@@ -286,65 +286,65 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth10",
       items: {
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,0,0:ZWGEjo": {
+        "deadlyBlock@8,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,1,0:ZWGEjo": {
+        "deadlyBlock@8,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,2,0:ZWGEjo": {
+        "deadlyBlock@8,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,3,0:ZWGEjo": {
+        "deadlyBlock@8,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,4,0:ZWGEjo": {
+        "deadlyBlock@8,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,5,0:ZWGEjo": {
+        "deadlyBlock@8,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:b00Ew": {
           config: { direction: "right", toRoom: "blacktooth7" },
@@ -720,45 +720,45 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth13",
       items: {
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:uMs8V": {
           config: { direction: "right", toRoom: "blacktooth12" },
@@ -970,15 +970,15 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "baddie",
         },
-        "deadly-block@3,3,0:Z1tM18t": {
+        "deadlyBlock@3,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,4,0:Z1tM18t": {
+        "deadlyBlock@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:Z1V8aSY": {
           config: { direction: "towards", toRoom: "blacktooth15" },
@@ -1059,125 +1059,125 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "baddie",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,8,0:ZWGEjo": {
+        "deadlyBlock@1,8,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 8, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,9,0:ZWGEjo": {
+        "deadlyBlock@1,9,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@10,2,0:ZWGEjo": {
+        "deadlyBlock@10,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 10, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@10,3,0:ZWGEjo": {
+        "deadlyBlock@10,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 10, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,10,0:ZWGEjo": {
+        "deadlyBlock@2,10,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:ZWGEjo": {
+        "deadlyBlock@2,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,10,0:ZWGEjo": {
+        "deadlyBlock@3,10,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,7,0:ZWGEjo": {
+        "deadlyBlock@3,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,8,0:ZWGEjo": {
+        "deadlyBlock@4,8,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 8, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,9,0:ZWGEjo": {
+        "deadlyBlock@4,9,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:ZWGEjo": {
+        "deadlyBlock@7,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:ZWGEjo": {
+        "deadlyBlock@7,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,1,0:ZWGEjo": {
+        "deadlyBlock@8,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@8,4,0:ZWGEjo": {
+        "deadlyBlock@8,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 8, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@9,1,0:ZWGEjo": {
+        "deadlyBlock@9,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 9, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@9,4,0:ZWGEjo": {
+        "deadlyBlock@9,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 9, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:uMtaW": {
           config: { direction: "right", toRoom: "blacktooth16" },
@@ -1317,10 +1317,10 @@ export const campaign = {
           position: { x: 8, y: 2, z: 4 },
           type: "door",
         },
-        "portable-block@3,3,2:Z1UEQTQ": {
+        "portableBlock@3,3,2:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 2 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -1415,20 +1415,20 @@ export const campaign = {
           position: { x: 1, y: 2, z: 0 },
           type: "lift",
         },
-        "movable-block@3,2,4:Z15GVb5": {
+        "movableBlock@3,2,4:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 2, z: 4 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,2,4:Z15GVb5": {
+        "movableBlock@4,2,4:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 4, y: 2, z: 4 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,2,4:Z15GVb5": {
+        "movableBlock@5,2,4:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 5, y: 2, z: 4 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "blacktooth",
@@ -1492,11 +1492,6 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "player",
         },
-        spring: {
-          config: {},
-          position: { x: 0, y: 3, z: 5 },
-          type: "spring",
-        },
         highBlock: {
           config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 2 },
@@ -1511,38 +1506,6 @@ export const campaign = {
           config: { disappearing: false, style: "organic" },
           position: { x: 0, y: 0, z: 1 },
           type: "block",
-        },
-        /*
-        "pickup@5,0,7:1MkQY2": {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 0, z: 7 },
-          type: "pickup",
-        },
-        /*
-        pickupStartingOnFloor: {
-          config: { gives: "extra-life" },
-          position: { x: 2, y: 0, z: 0 },
-          type: "pickup",
-        },
-        pickupTemp: {
-          config: { gives: "extra-life" },
-          position: { x: 0, y: 0, z: 5 },
-          type: "pickup",
-        },/*
-        pickupTemp2: {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 5, z: 5 },
-          type: "pickup",
-        },
-        pickupTemp3: {
-          config: { gives: "extra-life" },
-          position: { x: 5, y: 5, z: 3 },
-          type: "pickup",
-        },*/
-        "teleporter@5,7,0:Z12mRwL": {
-          config: { toRoom: "blacktooth2" },
-          position: { x: 5, y: 7, z: 0 },
-          type: "teleporter",
         },
       },
       planet: "jail",
@@ -1902,11 +1865,6 @@ export const campaign = {
           position: { x: 4, y: 7, z: 2 },
           type: "barrier",
         },
-        heels: {
-          config: { which: "heels" },
-          position: { x: 0, y: 3, z: 9 },
-          type: "player",
-        },
         block: {
           config: { disappearing: false, style: "organic" },
           position: { x: 3, y: 5, z: 0 },
@@ -1936,11 +1894,6 @@ export const campaign = {
           config: { disappearing: false, style: "artificial" },
           position: { x: 3, y: 4, z: 0 },
           type: "block",
-        },
-        "conveyorU": {
-          config: { direction: "towards" },
-          position: { x: 2, y: 6, z: 0 },
-          type: "conveyor",
         },
         "conveyor@0,1,0:24hKaE": {
           config: { direction: "away" },
@@ -1977,19 +1930,29 @@ export const campaign = {
           position: { x: 1, y: 6, z: 0 },
           type: "conveyor",
         },
-        cube: {
-          config: { style: "cube" },
-          position: { x: 0, y: 3, z: 8 },
-          type: "portable-block",
+        conveyorU: {
+          config: { direction: "towards" },
+          position: { x: 2, y: 6, z: 0 },
+          type: "conveyor",
         },
+        // cube: {
+        //   config: { style: "cube" },
+        //   position: { x: 0, y: 3, z: 8 },
+        //   type: "portableBlock",
+        // },
         "door@8,3,0:Z1u78lr": {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
+        heels: {
+          config: { which: "heels" },
+          position: { x: 2, y: 0, z: 8 },
+          type: "player",
+        },
         lift: {
           config: { bottom: 0, top: 8 },
-          position: { x: 2, y: 0, z: 0 },
+          position: { x: 2, y: 0, z: 7 },
           type: "lift",
         },
         liftBlock: {
@@ -2002,7 +1965,7 @@ export const campaign = {
           position: { x: 3, y: 0, z: 4 },
           type: "block",
         },
-        teleporter2: {
+        /*teleporter2: {
           config: { toRoom: "blacktooth24" },
           position: { x: 1, y: 0, z: 0 },
           type: "teleporter",
@@ -2011,7 +1974,7 @@ export const campaign = {
           config: { toRoom: "blacktooth24" },
           position: { x: 1, y: 1, z: 0 },
           type: "teleporter",
-        },
+        },*/
         "teleporter@0,0,0:Z1GqgNT": {
           config: { toRoom: "blacktooth24" },
           position: { x: 0, y: 0, z: 0 },
@@ -2083,10 +2046,10 @@ export const campaign = {
           position: { x: 1, y: 5, z: 1 },
           type: "conveyor",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:uMAEO": {
           config: { direction: "right", toRoom: "blacktooth24" },
@@ -2193,15 +2156,15 @@ export const campaign = {
           position: { x: 2, y: 3, z: 1 },
           type: "fish",
         },
-        "movable-block@2,3,0:Z15GVb5": {
+        "movableBlock@2,3,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 2, y: 3, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "portable-block@0,0,0:Z1SKpmn": {
+        "portableBlock@0,0,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 0, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -2331,10 +2294,10 @@ export const campaign = {
           position: { x: 2, y: 7, z: 7 },
           type: "pickup",
         },
-        "portable-block@1,7,0:Z1UEQTQ": {
+        "portableBlock@1,7,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -2512,85 +2475,85 @@ export const campaign = {
           position: { x: 5, y: 3, z: 0 },
           type: "block",
         },
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,10,0:ZWGEjo": {
+        "deadlyBlock@0,10,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:ZWGEjo": {
+        "deadlyBlock@0,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,11,0:ZWGEjo": {
+        "deadlyBlock@1,11,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,6,0:ZWGEjo": {
+        "deadlyBlock@1,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,11,0:ZWGEjo": {
+        "deadlyBlock@4,11,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,6,0:ZWGEjo": {
+        "deadlyBlock@4,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,10,0:ZWGEjo": {
+        "deadlyBlock@5,10,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:ZWGEjo": {
+        "deadlyBlock@5,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,12,3:xRf8T": {
           config: { direction: "away", toRoom: "blacktooth11" },
@@ -2602,15 +2565,15 @@ export const campaign = {
           position: { x: 6, y: 2, z: 3 },
           type: "door",
         },
-        "portable-block@2,8,0:Z1SKpmn": {
+        "portableBlock@2,8,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 2, y: 8, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,9,0:Z1SKpmn": {
+        "portableBlock@3,9,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 3, y: 9, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -2983,25 +2946,25 @@ export const campaign = {
           position: { x: 2, y: 0, z: 0 },
           type: "lift",
         },
-        "portable-block@1,1,0:Z1UEQTQ": {
+        "portableBlock@1,1,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@1,4,0:Z1UEQTQ": {
+        "portableBlock@1,4,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 4, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,1,0:Z1UEQTQ": {
+        "portableBlock@4,1,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,4,0:Z1UEQTQ": {
+        "portableBlock@4,4,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 4, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -3396,10 +3359,10 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "block",
         },
-        "deadly-block@7,7,0:ZWGEjo": {
+        "deadlyBlock@7,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,0:bfccM": {
           config: { direction: "away", toRoom: "blacktooth46market" },
@@ -3458,10 +3421,10 @@ export const campaign = {
           position: { x: 2, y: 6, z: 3 },
           type: "door",
         },
-        "portable-block@0,0,0:Z1UEQTQ": {
+        "portableBlock@0,0,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "market",
@@ -3682,35 +3645,35 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth49market",
       items: {
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,1:ZWGEjo": {
+        "deadlyBlock@3,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,1:ZWGEjo": {
+        "deadlyBlock@3,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,1:ZWGEjo": {
+        "deadlyBlock@4,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,1,1:ZWGEjo": {
+        "deadlyBlock@4,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:1pRITA": {
           config: { direction: "right", toRoom: "blacktooth48market" },
@@ -3745,15 +3708,15 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth5",
       items: {
-        "deadly-block@0,2,0:2u1uHB": {
+        "deadlyBlock@0,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:2u1uHB": {
+        "deadlyBlock@1,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Z1cQaKM": {
           config: { direction: "towards", toRoom: "blacktooth7" },
@@ -3894,65 +3857,65 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth52market",
       items: {
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:Z21Lr8K": {
           config: { direction: "right", toRoom: "blacktooth50market" },
@@ -3997,25 +3960,25 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "deadly-block@2,1,0:ZaRhUQ": {
+        "deadlyBlock@2,1,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,6,0:ZaRhUQ": {
+        "deadlyBlock@2,6,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 2, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZaRhUQ": {
+        "deadlyBlock@5,3,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZaRhUQ": {
+        "deadlyBlock@5,4,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:Z1eeyaE": {
           config: { direction: "towards", toRoom: "blacktooth52market" },
@@ -4152,15 +4115,15 @@ export const campaign = {
           position: { x: 3, y: 1, z: 3 },
           type: "block",
         },
-        "deadly-block@0,0,0:ZaRhUQ": {
+        "deadlyBlock@0,0,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,1,0:ZaRhUQ": {
+        "deadlyBlock@0,1,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,4:uN0sd": {
           config: { direction: "right", toRoom: "blacktooth57" },
@@ -4486,55 +4449,55 @@ export const campaign = {
           position: { x: 6, y: 5, z: 0 },
           type: "conveyor",
         },
-        "deadly-block@0,9,0:ZaRhUQ": {
+        "deadlyBlock@0,9,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,9,1:ZaRhUQ": {
+        "deadlyBlock@0,9,1:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,8,0:ZaRhUQ": {
+        "deadlyBlock@4,8,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 4, y: 8, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,9,0:ZaRhUQ": {
+        "deadlyBlock@4,9,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 4, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:ZWGEjo": {
+        "deadlyBlock@7,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,0:ZWGEjo": {
+        "deadlyBlock@7,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:ZWGEjo": {
+        "deadlyBlock@7,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:ZWGEjo": {
+        "deadlyBlock@7,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,0:ZWGEjo": {
+        "deadlyBlock@7,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,0:ZWGEjo": {
+        "deadlyBlock@7,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,1:Z1V7DlX": {
           config: { direction: "towards", toRoom: "blacktooth57" },
@@ -4760,20 +4723,20 @@ export const campaign = {
           position: { x: 1, y: 1, z: 5 },
           type: "book",
         },
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,1,6:ZWGEjo": {
+        "deadlyBlock@0,1,6:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 6 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,1,6:ZWGEjo": {
+        "deadlyBlock@1,1,6:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 6 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,4:Z2oK5yS": {
           config: { direction: "towards", toRoom: "blacktooth58triple" },
@@ -5098,40 +5061,40 @@ export const campaign = {
           position: { x: 1, y: 8, z: 5 },
           type: "door",
         },
-        "hush-puppy@0,7,0:13y": {
+        "hushPuppy@0,7,0:13y": {
           config: {},
           position: { x: 0, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,7,0:13y": {
+        "hushPuppy@1,7,0:13y": {
           config: {},
           position: { x: 1, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,7,1:13y": {
+        "hushPuppy@1,7,1:13y": {
           config: {},
           position: { x: 1, y: 7, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,0:13y": {
+        "hushPuppy@2,7,0:13y": {
           config: {},
           position: { x: 2, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,1:13y": {
+        "hushPuppy@2,7,1:13y": {
           config: {},
           position: { x: 2, y: 7, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,2:13y": {
+        "hushPuppy@2,7,2:13y": {
           config: {},
           position: { x: 2, y: 7, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "portable-block@3,7,0:Z1SKpmn": {
+        "portableBlock@3,7,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 3, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "jail",
@@ -5282,15 +5245,15 @@ export const campaign = {
           position: { x: 5, y: 15, z: 1 },
           type: "fish",
         },
-        "portable-block@0,1,0:Z1UEQTQ": {
+        "portableBlock@0,1,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@0,2,0:Z1UEQTQ": {
+        "portableBlock@0,2,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "spring@0,6,0:13y": {
           config: {},
@@ -5373,35 +5336,35 @@ export const campaign = {
           position: { x: 8, y: 0, z: 5 },
           type: "door",
         },
-        "hush-puppy@3,0,0:13y": {
+        "hushPuppy@3,0,0:13y": {
           config: {},
           position: { x: 3, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,1,0:13y": {
+        "hushPuppy@3,1,0:13y": {
           config: {},
           position: { x: 3, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,0,1:13y": {
+        "hushPuppy@4,0,1:13y": {
           config: {},
           position: { x: 4, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,1,1:13y": {
+        "hushPuppy@4,1,1:13y": {
           config: {},
           position: { x: 4, y: 1, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,0,2:13y": {
+        "hushPuppy@5,0,2:13y": {
           config: {},
           position: { x: 5, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,1,2:13y": {
+        "hushPuppy@5,1,2:13y": {
           config: {},
           position: { x: 5, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
         "pickup@5,1,3:Zs6lvR": {
           config: { gives: "jumps" },
@@ -5893,25 +5856,25 @@ export const campaign = {
           position: { x: 1, y: 7, z: 1 },
           type: "block",
         },
-        "deadly-block@0,5,4:ZWGEjo": {
+        "deadlyBlock@0,5,4:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 4 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,2:ZWGEjo": {
+        "deadlyBlock@1,5,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,3:ZWGEjo": {
+        "deadlyBlock@1,5,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,4:ZWGEjo": {
+        "deadlyBlock@1,5,4:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 4 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Z1V7vlA": {
           config: { direction: "towards", toRoom: "blacktooth67" },
@@ -5961,35 +5924,35 @@ export const campaign = {
           position: { x: 0, y: 3, z: 3 },
           type: "block",
         },
-        "deadly-block@2,0,0:ZWGEjo": {
+        "deadlyBlock@2,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,4:uNgsX": {
           config: { direction: "right", toRoom: "blacktooth77" },
@@ -6006,10 +5969,10 @@ export const campaign = {
           position: { x: 3, y: 6, z: 0 },
           type: "door",
         },
-        "portable-block@0,5,0:Z1UEQTQ": {
+        "portableBlock@0,5,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 5, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -6167,20 +6130,20 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "block",
         },
-        "deadly-block@5,5,2:ZWGEjo": {
+        "deadlyBlock@5,5,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,2:ZWGEjo": {
+        "deadlyBlock@6,5,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,3:ZWGEjo": {
+        "deadlyBlock@7,5,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,4:uNfbc": {
           config: { direction: "right", toRoom: "blacktooth72" },
@@ -6192,30 +6155,30 @@ export const campaign = {
           position: { x: 8, y: 2, z: 2 },
           type: "door",
         },
-        "hush-puppy@0,1,2:13y": {
+        "hushPuppy@0,1,2:13y": {
           config: {},
           position: { x: 0, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,1,1:13y": {
+        "hushPuppy@1,1,1:13y": {
           config: {},
           position: { x: 1, y: 1, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,1,0:13y": {
+        "hushPuppy@2,1,0:13y": {
           config: {},
           position: { x: 2, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,1,0:13y": {
+        "hushPuppy@4,1,0:13y": {
           config: {},
           position: { x: 4, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,3,0:13y": {
+        "hushPuppy@4,3,0:13y": {
           config: {},
           position: { x: 4, y: 3, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "blacktooth",
@@ -6295,20 +6258,20 @@ export const campaign = {
           position: { x: 5, y: 3, z: 5 },
           type: "pickup",
         },
-        "portable-block@0,2,0:Z1UEQTQ": {
+        "portableBlock@0,2,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,5,0:Z1UEQTQ": {
+        "portableBlock@4,5,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 5, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@5,0,0:Z1UEQTQ": {
+        "portableBlock@5,0,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 5, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -6334,75 +6297,75 @@ export const campaign = {
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,2,0:ZWGEjo": {
+        "deadlyBlock@0,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,3,0:ZWGEjo": {
+        "deadlyBlock@0,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,6,0:ZWGEjo": {
+        "deadlyBlock@0,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,0:ZWGEjo": {
+        "deadlyBlock@1,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,2,0:ZWGEjo": {
+        "deadlyBlock@5,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZWGEjo": {
+        "deadlyBlock@5,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,6,0:ZWGEjo": {
+        "deadlyBlock@5,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,1:Z1V7nAX": {
           config: { direction: "towards", toRoom: "blacktooth76" },
@@ -6447,70 +6410,70 @@ export const campaign = {
           position: { x: 2, y: 7, z: 0 },
           type: "baddie",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,6,0:ZWGEjo": {
+        "deadlyBlock@2,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,6,1:ZWGEjo": {
+        "deadlyBlock@2,6,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,1:ZWGEjo": {
+        "deadlyBlock@2,7,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,6,0:ZWGEjo": {
+        "deadlyBlock@5,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,0:ZWGEjo": {
+        "deadlyBlock@6,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,1:ZWGEjo": {
+        "deadlyBlock@6,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:ZWGEjo": {
+        "deadlyBlock@6,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,1:ZWGEjo": {
+        "deadlyBlock@7,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:uN8Il": {
           config: { direction: "right", toRoom: "blacktooth68" },
@@ -6679,20 +6642,20 @@ export const campaign = {
           position: { x: 8, y: 1, z: 0 },
           type: "door",
         },
-        "movable-block@3,1,0:Z15GVb5": {
+        "movableBlock@3,1,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 1, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "portable-block@3,3,0:Z1UEQTQ": {
+        "portableBlock@3,3,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,0,6:Z1UEQTQ": {
+        "portableBlock@4,0,6:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 0, z: 6 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -6747,35 +6710,35 @@ export const campaign = {
           position: { x: 7, y: 3, z: 2 },
           type: "block",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,1:ZWGEjo": {
+        "deadlyBlock@1,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,1:ZWGEjo": {
+        "deadlyBlock@1,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,1:ZWGEjo": {
+        "deadlyBlock@2,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,5:xS9UM": {
           config: { direction: "away", toRoom: "blacktooth80" },
@@ -6792,15 +6755,15 @@ export const campaign = {
           position: { x: 1, y: 1, z: 0 },
           type: "lift",
         },
-        "movable-block@0,1,1:Z15GVb5": {
+        "movableBlock@0,1,1:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 0, y: 1, z: 1 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@1,1,1:Z15GVb5": {
+        "movableBlock@1,1,1:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 1, y: 1, z: 1 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "blacktooth",
@@ -6931,55 +6894,55 @@ export const campaign = {
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "deadly-block@0,3,0:ZWGEjo": {
+        "deadlyBlock@0,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,2,0:ZWGEjo": {
+        "deadlyBlock@2,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@1,0,0:Z1V7n5s": {
           config: { direction: "towards", toRoom: "blacktooth78" },
@@ -7099,10 +7062,10 @@ export const campaign = {
           position: { x: 4, y: 5, z: 0 },
           type: "joystick",
         },
-        "movable-block@6,7,0:Z15GVb5": {
+        "movableBlock@6,7,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 6, y: 7, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "blacktooth",
@@ -7152,65 +7115,65 @@ export const campaign = {
           position: { x: 5, y: 3, z: 0 },
           type: "baddie",
         },
-        "deadly-block@2,0,0:ZWGEjo": {
+        "deadlyBlock@2,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,1:ZWGEjo": {
+        "deadlyBlock@2,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,1:ZWGEjo": {
+        "deadlyBlock@5,4,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:uNmUO": {
           config: { direction: "right", toRoom: "blacktooth81" },
@@ -7335,30 +7298,30 @@ export const campaign = {
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "hush-puppy@0,0,0:13y": {
+        "hushPuppy@0,0,0:13y": {
           config: {},
           position: { x: 0, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,0,0:13y": {
+        "hushPuppy@3,0,0:13y": {
           config: {},
           position: { x: 3, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,0,0:13y": {
+        "hushPuppy@6,0,0:13y": {
           config: {},
           position: { x: 6, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,0,0:13y": {
+        "hushPuppy@7,0,0:13y": {
           config: {},
           position: { x: 7, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,0,1:13y": {
+        "hushPuppy@7,0,1:13y": {
           config: {},
           position: { x: 7, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
         "teleporter@7,2,1:XYoHN": {
           config: { toRoom: "finalroom" },
@@ -7447,10 +7410,10 @@ export const campaign = {
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
-        "portable-block@4,7,0:Z1UEQTQ": {
+        "portableBlock@4,7,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -7534,15 +7497,15 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "portable-block@0,7,0:Z1UEQTQ": {
+        "portableBlock@0,7,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 0, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,4,5:Z1UEQTQ": {
+        "portableBlock@3,4,5:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 4, z: 5 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "blacktooth",
@@ -7619,60 +7582,60 @@ export const campaign = {
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
-        "deadly-block@6,1,0:ZWGEjo": {
+        "deadlyBlock@6,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,1:ZWGEjo": {
+        "deadlyBlock@6,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,3,0:ZWGEjo": {
+        "deadlyBlock@6,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,4,1:ZWGEjo": {
+        "deadlyBlock@6,4,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:ZWGEjo": {
+        "deadlyBlock@6,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,0:ZWGEjo": {
+        "deadlyBlock@7,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,1:ZWGEjo": {
+        "deadlyBlock@7,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,1:ZWGEjo": {
+        "deadlyBlock@7,3,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,2:ZWGEjo": {
+        "deadlyBlock@7,3,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,1:ZWGEjo": {
+        "deadlyBlock@7,4,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,0:ZWGEjo": {
+        "deadlyBlock@7,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,1:xSbtj": {
           config: { direction: "away", toRoom: "blacktooth86" },
@@ -8041,20 +8004,20 @@ export const campaign = {
           position: { x: 8, y: 0, z: 4 },
           type: "door",
         },
-        "hush-puppy@5,1,0:13y": {
+        "hushPuppy@5,1,0:13y": {
           config: {},
           position: { x: 5, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,1,1:13y": {
+        "hushPuppy@6,1,1:13y": {
           config: {},
           position: { x: 6, y: 1, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,1,2:13y": {
+        "hushPuppy@7,1,2:13y": {
           config: {},
           position: { x: 7, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "bookworld",
@@ -8119,15 +8082,15 @@ export const campaign = {
           position: { x: 0, y: 7, z: 5 },
           type: "fish",
         },
-        "movable-block@3,4,0:Z15GVb5": {
+        "movableBlock@3,4,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "portable-block@5,7,0:Z1UEQTQ": {
+        "portableBlock@5,7,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 5, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "bookworld",
@@ -8270,15 +8233,15 @@ export const campaign = {
           position: { x: 7, y: 2, z: 2 },
           type: "barrier",
         },
-        "deadly-block@3,4,0:2u1uHB": {
+        "deadlyBlock@3,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:2u1uHB": {
+        "deadlyBlock@4,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:JfaS2": {
           config: { direction: "towards", toRoom: "bookworld15" },
@@ -8551,35 +8514,35 @@ export const campaign = {
           position: { x: 0, y: 6, z: 0 },
           type: "baddie",
         },
-        "deadly-block@1,2,0:2u1uHB": {
+        "deadlyBlock@1,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:2u1uHB": {
+        "deadlyBlock@1,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,1:2u1uHB": {
+        "deadlyBlock@1,3,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,0:2u1uHB": {
+        "deadlyBlock@1,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,1:2u1uHB": {
+        "deadlyBlock@1,4,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:2u1uHB": {
+        "deadlyBlock@1,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:JfhAD": {
           config: { direction: "towards", toRoom: "bookworld20" },
@@ -8724,40 +8687,40 @@ export const campaign = {
           position: { x: 9, y: 5, z: 0 },
           type: "conveyor",
         },
-        "deadly-block@0,0,2:2u1uHB": {
+        "deadlyBlock@0,0,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,4,2:2u1uHB": {
+        "deadlyBlock@11,4,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 4, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,5,2:2u1uHB": {
+        "deadlyBlock@11,5,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,2:2u1uHB": {
+        "deadlyBlock@4,0,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,2:2u1uHB": {
+        "deadlyBlock@5,5,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,2:2u1uHB": {
+        "deadlyBlock@6,5,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,2:2u1uHB": {
+        "deadlyBlock@7,5,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 5, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,3:ocMSF": {
           config: { direction: "right", toRoom: "bookworld3" },
@@ -8811,20 +8774,20 @@ export const campaign = {
           position: { x: 6, y: 2, z: 0 },
           type: "door",
         },
-        "hush-puppy@1,0,0:13y": {
+        "hushPuppy@1,0,0:13y": {
           config: {},
           position: { x: 1, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,0,1:13y": {
+        "hushPuppy@2,0,1:13y": {
           config: {},
           position: { x: 2, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,0,2:13y": {
+        "hushPuppy@3,0,2:13y": {
           config: {},
           position: { x: 3, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "bookworld",
@@ -8947,10 +8910,10 @@ export const campaign = {
           position: { x: 1, y: 1, z: 2 },
           type: "book",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:286tNd": {
           config: { direction: "right", toRoom: "bookworld23" },
@@ -8967,10 +8930,10 @@ export const campaign = {
           position: { x: 1, y: 0, z: 0 },
           type: "pickup",
         },
-        "portable-block@0,5,0:Z14c3Fl": {
+        "portableBlock@0,5,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 5, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "bookworld",
@@ -9034,30 +8997,30 @@ export const campaign = {
           position: { x: 3, y: 2, z: 0 },
           type: "book",
         },
-        "deadly-block@0,0,1:2u1uHB": {
+        "deadlyBlock@0,0,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:2u1uHB": {
+        "deadlyBlock@4,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,1:2u1uHB": {
+        "deadlyBlock@5,5,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,1:2u1uHB": {
+        "deadlyBlock@7,0,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,0:2u1uHB": {
+        "deadlyBlock@7,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,2:286ujI": {
           config: { direction: "right", toRoom: "bookworld25" },
@@ -9069,10 +9032,10 @@ export const campaign = {
           position: { x: 8, y: 2, z: 2 },
           type: "door",
         },
-        "movable-block@7,2,0:1EfFpg": {
+        "movableBlock@7,2,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 7, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "bookworld",
@@ -9421,45 +9384,45 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "deadly-block@2,3,0:2u1uHB": {
+        "deadlyBlock@2,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,1:2u1uHB": {
+        "deadlyBlock@2,3,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:2u1uHB": {
+        "deadlyBlock@3,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,1:2u1uHB": {
+        "deadlyBlock@3,2,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:2u1uHB": {
+        "deadlyBlock@3,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,1:2u1uHB": {
+        "deadlyBlock@3,4,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:2u1uHB": {
+        "deadlyBlock@4,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,1:2u1uHB": {
+        "deadlyBlock@4,3,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,16,3:ZXTRFP": {
           config: { direction: "away", toRoom: "bookworld27" },
@@ -9786,95 +9749,95 @@ export const campaign = {
           position: { x: 11, y: 0, z: 0 },
           type: "baddie",
         },
-        "deadly-block@12,0,0:ZWGEjo": {
+        "deadlyBlock@12,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@12,1,0:ZWGEjo": {
+        "deadlyBlock@12,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@12,2,0:ZWGEjo": {
+        "deadlyBlock@12,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@12,3,0:ZWGEjo": {
+        "deadlyBlock@12,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@12,4,0:ZWGEjo": {
+        "deadlyBlock@12,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@12,5,0:ZWGEjo": {
+        "deadlyBlock@12,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 12, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,2,0:ZWGEjo": {
+        "deadlyBlock@5,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZWGEjo": {
+        "deadlyBlock@5,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:286BxP": {
           config: { direction: "right", toRoom: "bookworld32" },
@@ -9970,20 +9933,20 @@ export const campaign = {
           position: { x: 3, y: 8, z: 4 },
           type: "door",
         },
-        "hush-puppy@1,7,0:13y": {
+        "hushPuppy@1,7,0:13y": {
           config: {},
           position: { x: 1, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,1:13y": {
+        "hushPuppy@2,7,1:13y": {
           config: {},
           position: { x: 2, y: 7, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,7,2:13y": {
+        "hushPuppy@3,7,2:13y": {
           config: {},
           position: { x: 3, y: 7, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "bookworld",
@@ -10341,20 +10304,20 @@ export const campaign = {
           position: { x: 8, y: 2, z: 5 },
           type: "door",
         },
-        "portable-block@1,5,0:Z14c3Fl": {
+        "portableBlock@1,5,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 1, y: 5, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,1,0:Z14c3Fl": {
+        "portableBlock@3,1,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 3, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,3,0:Z14c3Fl": {
+        "portableBlock@4,3,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 4, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "bookworld",
@@ -10379,25 +10342,25 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld37",
       items: {
-        "deadly-block@0,3,0:2u1uHB": {
+        "deadlyBlock@0,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:2u1uHB": {
+        "deadlyBlock@0,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:2u1uHB": {
+        "deadlyBlock@1,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,0:2u1uHB": {
+        "deadlyBlock@1,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Jfr9x": {
           config: { direction: "towards", toRoom: "bookworld36" },
@@ -10705,15 +10668,15 @@ export const campaign = {
           position: { x: 3, y: 4, z: 6 },
           type: "pickup",
         },
-        "portable-block@0,0,0:Z14c3Fl": {
+        "portableBlock@0,0,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@0,7,0:Z14c3Fl": {
+        "portableBlock@0,7,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "bookworld",
@@ -10796,10 +10759,10 @@ export const campaign = {
           position: { x: 1, y: 7, z: 0 },
           type: "book",
         },
-        "deadly-block@3,0,0:2u1uHB": {
+        "deadlyBlock@3,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@1,8,3:Z2k1mMQ": {
           config: { direction: "away", toRoom: "bookworld5" },
@@ -10811,15 +10774,15 @@ export const campaign = {
           position: { x: 4, y: 3, z: 3 },
           type: "door",
         },
-        "movable-block@2,4,0:Z15GVb5": {
+        "movableBlock@2,4,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 2, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@2,5,0:Z15GVb5": {
+        "movableBlock@2,5,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 2, y: 5, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "bookworld",
@@ -10854,20 +10817,20 @@ export const campaign = {
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
-        "hush-puppy@0,0,0:13y": {
+        "hushPuppy@0,0,0:13y": {
           config: {},
           position: { x: 0, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,0,1:13y": {
+        "hushPuppy@1,0,1:13y": {
           config: {},
           position: { x: 1, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,0,2:13y": {
+        "hushPuppy@2,0,2:13y": {
           config: {},
           position: { x: 2, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "bookworld",
@@ -10922,15 +10885,15 @@ export const campaign = {
           position: { x: 3, y: 8, z: 0 },
           type: "door",
         },
-        "portable-block@3,3,0:Z1UEQTQ": {
+        "portableBlock@3,3,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,3,0:Z1UEQTQ": {
+        "portableBlock@4,3,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "bookworld",
@@ -11104,25 +11067,25 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "hush-puppy@1,7,0:13y": {
+        "hushPuppy@1,7,0:13y": {
           config: {},
           position: { x: 1, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,1:13y": {
+        "hushPuppy@2,7,1:13y": {
           config: {},
           position: { x: 2, y: 7, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,7,2:13y": {
+        "hushPuppy@3,7,2:13y": {
           config: {},
           position: { x: 3, y: 7, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,7,3:13y": {
+        "hushPuppy@4,7,3:13y": {
           config: {},
           position: { x: 4, y: 7, z: 3 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "egyptus",
@@ -11219,50 +11182,50 @@ export const campaign = {
           position: { x: 7, y: 2, z: 1 },
           type: "charles",
         },
-        "deadly-block@6,4,3:ZWGEjo": {
+        "deadlyBlock@6,4,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,0:ZWGEjo": {
+        "deadlyBlock@7,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,3:ZWGEjo": {
+        "deadlyBlock@7,1,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:ZWGEjo": {
+        "deadlyBlock@7,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,3:ZWGEjo": {
+        "deadlyBlock@7,2,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,3:ZWGEjo": {
+        "deadlyBlock@7,3,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,3:ZWGEjo": {
+        "deadlyBlock@7,4,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,3:ZWGEjo": {
+        "deadlyBlock@7,5,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,6,3:ZWGEjo": {
+        "deadlyBlock@7,6,3:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 6, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:2rMnv7": {
           config: { direction: "right", toRoom: "egyptus11" },
@@ -11299,10 +11262,10 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "lift",
         },
-        "movable-block@6,4,4:1EfFpg": {
+        "movableBlock@6,4,4:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 6, y: 4, z: 4 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "egyptus",
@@ -11381,10 +11344,10 @@ export const campaign = {
           position: { x: 0, y: 0, z: 2 },
           type: "lift",
         },
-        "movable-block@1,0,0:Z15GVb5": {
+        "movableBlock@1,0,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 1, y: 0, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
         "spring@7,0,7:13y": {
           config: {},
@@ -11553,10 +11516,10 @@ export const campaign = {
           position: { x: 5, y: 5, z: 0 },
           type: "block",
         },
-        "deadly-block@0,5,0:ZaRhUQ": {
+        "deadlyBlock@0,5,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:ZruPBS": {
           config: { direction: "towards", toRoom: "egyptus10" },
@@ -11771,10 +11734,10 @@ export const campaign = {
           position: { x: 9, y: 5, z: 0 },
           type: "block",
         },
-        "deadly-block@4,1,0:ZaRhUQ": {
+        "deadlyBlock@4,1,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 4, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@12,2,2:Z1B0mUW": {
           config: { direction: "left", toRoom: "egyptus18" },
@@ -11786,10 +11749,10 @@ export const campaign = {
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "portable-block@1,0,1:Z14c3Fl": {
+        "portableBlock@1,0,1:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 1, y: 0, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "egyptus",
@@ -11992,20 +11955,20 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "hush-puppy@3,4,0:13y": {
+        "hushPuppy@3,4,0:13y": {
           config: {},
           position: { x: 3, y: 4, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,4,1:13y": {
+        "hushPuppy@4,4,1:13y": {
           config: {},
           position: { x: 4, y: 4, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,4,2:13y": {
+        "hushPuppy@5,4,2:13y": {
           config: {},
           position: { x: 5, y: 4, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
         "spring@6,3,4:13y": {
           config: {},
@@ -12325,105 +12288,105 @@ export const campaign = {
           position: { x: 7, y: 5, z: 3 },
           type: "block",
         },
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,2,0:ZWGEjo": {
+        "deadlyBlock@0,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,3,0:ZWGEjo": {
+        "deadlyBlock@0,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,1,0:ZWGEjo": {
+        "deadlyBlock@1,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,0:ZWGEjo": {
+        "deadlyBlock@1,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:ZWGEjo": {
+        "deadlyBlock@2,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,2,0:ZWGEjo": {
+        "deadlyBlock@2,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,0:ZWGEjo": {
+        "deadlyBlock@2,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:ZaRhUQ": {
+        "deadlyBlock@7,2,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,0:ZaRhUQ": {
+        "deadlyBlock@7,4,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 7, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:ZruH60": {
           config: { direction: "towards", toRoom: "egyptus22" },
@@ -12470,45 +12433,45 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus24",
       items: {
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:2rMwxv": {
           config: { direction: "right", toRoom: "egyptus25" },
@@ -12591,95 +12554,95 @@ export const campaign = {
           position: { x: 7, y: 5, z: 1 },
           type: "baddie",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,2,0:ZWGEjo": {
+        "deadlyBlock@5,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZWGEjo": {
+        "deadlyBlock@5,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:ZWGEjo": {
+        "deadlyBlock@6,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,1,0:ZWGEjo": {
+        "deadlyBlock@6,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,0:ZWGEjo": {
+        "deadlyBlock@6,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,3,0:ZWGEjo": {
+        "deadlyBlock@6,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,4,0:ZWGEjo": {
+        "deadlyBlock@6,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:ZWGEjo": {
+        "deadlyBlock@6,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:ZWGEjo": {
+        "deadlyBlock@7,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,0:ZWGEjo": {
+        "deadlyBlock@7,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:ZWGEjo": {
+        "deadlyBlock@7,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:ZWGEjo": {
+        "deadlyBlock@7,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,0:ZWGEjo": {
+        "deadlyBlock@7,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,0:ZWGEjo": {
+        "deadlyBlock@7,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:2rMxjL": {
           config: { direction: "right", toRoom: "egyptus28" },
@@ -13263,35 +13226,35 @@ export const campaign = {
           position: { x: 1, y: 7, z: 0 },
           type: "block",
         },
-        "deadly-block@0,7,2:2u1uHB": {
+        "deadlyBlock@0,7,2:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,5:2u1uHB": {
+        "deadlyBlock@1,5,5:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 5, z: 5 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,6,4:2u1uHB": {
+        "deadlyBlock@1,6,4:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 6, z: 4 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,3:2u1uHB": {
+        "deadlyBlock@1,7,3:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 3 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Z2qU8NU": {
           config: { direction: "towards", toRoom: "egyptus34fish" },
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "portable-block@0,2,0:Z1SKpmn": {
+        "portableBlock@0,2,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 0, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "spring@1,2,5:13y": {
           config: {},
@@ -13648,10 +13611,10 @@ export const campaign = {
           position: { x: 4, y: 3, z: 7 },
           type: "pickup",
         },
-        "portable-block@3,3,3:Z1UEQTQ": {
+        "portableBlock@3,3,3:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 3 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "egyptus",
@@ -13827,45 +13790,45 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus5",
       items: {
-        "deadly-block@0,1,0:ZWGEjo": {
+        "deadlyBlock@0,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:ZWGEjo": {
+        "deadlyBlock@5,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:97h0D": {
           config: { direction: "towards", toRoom: "egyptus4" },
@@ -13935,20 +13898,20 @@ export const campaign = {
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "movable-block@2,2,0:1EfFpg": {
+        "movableBlock@2,2,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 2, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@2,2,1:1EfFpg": {
+        "movableBlock@2,2,1:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 2, y: 2, z: 1 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,3,3:1EfFpg": {
+        "movableBlock@4,3,3:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 4, y: 3, z: 3 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "egyptus",
@@ -14266,10 +14229,10 @@ export const campaign = {
           position: { x: 3, y: 3, z: 5 },
           type: "fish",
         },
-        "portable-block@0,7,0:Z14c3Fl": {
+        "portableBlock@0,7,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "teleporter@2,0,5:ZPneb4": {
           config: { toRoom: "egyptus13" },
@@ -14369,10 +14332,10 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "movable-block@0,2,0:Z15GVb5": {
+        "movableBlock@0,2,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 0, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "jail",
@@ -14485,65 +14448,65 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:1AqbdE": {
           config: { direction: "right", toRoom: "moonbase4" },
@@ -14627,10 +14590,10 @@ export const campaign = {
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
-        "deadly-block@0,7,6:2u1uHB": {
+        "deadlyBlock@0,7,6:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 6 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,5:1Aqcvq": {
           config: { direction: "right", toRoom: "moonbase9" },
@@ -14767,20 +14730,20 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "hush-puppy@5,0,0:13y": {
+        "hushPuppy@5,0,0:13y": {
           config: {},
           position: { x: 5, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,0,1:13y": {
+        "hushPuppy@6,0,1:13y": {
           config: {},
           position: { x: 6, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,0,2:13y": {
+        "hushPuppy@7,0,2:13y": {
           config: {},
           position: { x: 7, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "moonbase",
@@ -14834,25 +14797,25 @@ export const campaign = {
           position: { x: 0, y: 5, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,2,0:2u1uHB": {
+        "deadlyBlock@0,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,3,0:2u1uHB": {
+        "deadlyBlock@0,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:2u1uHB": {
+        "deadlyBlock@0,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:2u1uHB": {
+        "deadlyBlock@0,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@1,0,0:Z1iR2Tl": {
           config: { direction: "towards", toRoom: "moonbase3" },
@@ -14933,25 +14896,25 @@ export const campaign = {
           position: { x: 5, y: 5, z: 1 },
           type: "baddie",
         },
-        "deadly-block@5,2,0:2u1uHB": {
+        "deadlyBlock@5,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:2u1uHB": {
+        "deadlyBlock@5,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:2u1uHB": {
+        "deadlyBlock@5,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:2u1uHB": {
+        "deadlyBlock@5,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z1kG451": {
           config: { direction: "right", toRoom: "moonbase15" },
@@ -14996,35 +14959,35 @@ export const campaign = {
           position: { x: 8, y: 0, z: 4 },
           type: "door",
         },
-        "hush-puppy@5,0,0:13y": {
+        "hushPuppy@5,0,0:13y": {
           config: {},
           position: { x: 5, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,1,0:13y": {
+        "hushPuppy@5,1,0:13y": {
           config: {},
           position: { x: 5, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,0,1:13y": {
+        "hushPuppy@6,0,1:13y": {
           config: {},
           position: { x: 6, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,1,1:13y": {
+        "hushPuppy@6,1,1:13y": {
           config: {},
           position: { x: 6, y: 1, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,0,2:13y": {
+        "hushPuppy@7,0,2:13y": {
           config: {},
           position: { x: 7, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,1,2:13y": {
+        "hushPuppy@7,1,2:13y": {
           config: {},
           position: { x: 7, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "moonbase",
@@ -15054,65 +15017,65 @@ export const campaign = {
           position: { x: 11, y: 0, z: 0 },
           type: "baddie",
         },
-        "deadly-block@2,0,0:ZWGEjo": {
+        "deadlyBlock@2,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,1:ZWGEjo": {
+        "deadlyBlock@2,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,1:ZWGEjo": {
+        "deadlyBlock@2,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,2,0:ZWGEjo": {
+        "deadlyBlock@2,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,2,1:ZWGEjo": {
+        "deadlyBlock@2,2,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,0:ZWGEjo": {
+        "deadlyBlock@2,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,1:ZWGEjo": {
+        "deadlyBlock@2,3,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,1:ZWGEjo": {
+        "deadlyBlock@2,4,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,1:ZWGEjo": {
+        "deadlyBlock@2,5,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,1:Z1kG4Aw": {
           config: { direction: "right", toRoom: "moonbase13" },
@@ -15129,25 +15092,25 @@ export const campaign = {
           position: { x: 11, y: 5, z: 0 },
           type: "pickup",
         },
-        "portable-block@0,0,0:Z1SKpmn": {
+        "portableBlock@0,0,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 0, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@0,1,0:Z1SKpmn": {
+        "portableBlock@0,1,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 0, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,0,0:Z1SKpmn": {
+        "portableBlock@3,0,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 3, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,0,0:Z1SKpmn": {
+        "portableBlock@4,0,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 4, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "moonbase",
@@ -15269,20 +15232,20 @@ export const campaign = {
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "deadly-block@3,0,0:2u1uHB": {
+        "deadlyBlock@3,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:2u1uHB": {
+        "deadlyBlock@4,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Z1kG572": {
           config: { direction: "right", toRoom: "moonbase11" },
@@ -15358,25 +15321,25 @@ export const campaign = {
           position: { x: 7, y: 4, z: 1 },
           type: "baddie",
         },
-        "deadly-block@7,1,0:2u1uHB": {
+        "deadlyBlock@7,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:2u1uHB": {
+        "deadlyBlock@7,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:2u1uHB": {
+        "deadlyBlock@7,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,0:2u1uHB": {
+        "deadlyBlock@7,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:1Aqaro": {
           config: { direction: "right", toRoom: "moonbase1" },
@@ -15388,20 +15351,20 @@ export const campaign = {
           position: { x: 3, y: 6, z: 4 },
           type: "door",
         },
-        "hush-puppy@2,5,0:13y": {
+        "hushPuppy@2,5,0:13y": {
           config: {},
           position: { x: 2, y: 5, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,5,1:13y": {
+        "hushPuppy@3,5,1:13y": {
           config: {},
           position: { x: 3, y: 5, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,5,2:13y": {
+        "hushPuppy@4,5,2:13y": {
           config: {},
           position: { x: 4, y: 5, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "moonbase",
@@ -15446,55 +15409,55 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "movable-block@1,4,0:Z1tM18t": {
+        "movableBlock@1,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@2,4,0:Z1tM18t": {
+        "movableBlock@2,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@3,4,0:Z1tM18t": {
+        "movableBlock@3,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,2,0:Z1tM18t": {
+        "movableBlock@4,2,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,4,0:Z1tM18t": {
+        "movableBlock@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,6,0:Z1tM18t": {
+        "movableBlock@4,6,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,3,0:Z1tM18t": {
+        "movableBlock@5,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,4,0:Z1tM18t": {
+        "movableBlock@5,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,5,0:Z1tM18t": {
+        "movableBlock@5,5,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@6,4,0:Z1tM18t": {
+        "movableBlock@6,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "moonbase",
@@ -15582,35 +15545,35 @@ export const campaign = {
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,7,0:2u1uHB": {
+        "deadlyBlock@3,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,7,0:2u1uHB": {
+        "deadlyBlock@4,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:5CAiM": {
           config: { direction: "towards", toRoom: "moonbase20" },
@@ -15690,35 +15653,35 @@ export const campaign = {
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,0:2u1uHB": {
+        "deadlyBlock@3,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:2u1uHB": {
+        "deadlyBlock@4,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,8,0:11h0eu": {
           config: { direction: "away", toRoom: "moonbase20" },
@@ -15788,55 +15751,55 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "movable-block@1,4,0:Z1tM18t": {
+        "movableBlock@1,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@2,4,0:Z1tM18t": {
+        "movableBlock@2,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@3,4,0:Z1tM18t": {
+        "movableBlock@3,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,2,0:Z1tM18t": {
+        "movableBlock@4,2,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,4,0:Z1tM18t": {
+        "movableBlock@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@4,6,0:Z1tM18t": {
+        "movableBlock@4,6,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,3,0:Z1tM18t": {
+        "movableBlock@5,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,4,0:Z1tM18t": {
+        "movableBlock@5,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@5,5,0:Z1tM18t": {
+        "movableBlock@5,5,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@6,4,0:Z1tM18t": {
+        "movableBlock@6,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "moonbase",
@@ -15954,65 +15917,65 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:5CB53": {
           config: { direction: "towards", toRoom: "moonbase23" },
@@ -16155,65 +16118,65 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,0:11h10K": {
           config: { direction: "away", toRoom: "moonbase23" },
@@ -16287,25 +16250,25 @@ export const campaign = {
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,0:2u1uHB": {
+        "deadlyBlock@3,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:2u1uHB": {
+        "deadlyBlock@4,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:Z1kFVA9": {
           config: { direction: "right", toRoom: "moonbase23" },
@@ -16393,20 +16356,20 @@ export const campaign = {
           position: { x: 6, y: 2, z: 4 },
           type: "door",
         },
-        "hush-puppy@3,3,0:13y": {
+        "hushPuppy@3,3,0:13y": {
           config: {},
           position: { x: 3, y: 3, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,3,1:13y": {
+        "hushPuppy@4,3,1:13y": {
           config: {},
           position: { x: 4, y: 3, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,3,2:13y": {
+        "hushPuppy@5,3,2:13y": {
           config: {},
           position: { x: 5, y: 3, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "moonbase",
@@ -16506,65 +16469,65 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z1kFUin": {
           config: { direction: "right", toRoom: "moonbase28" },
@@ -16668,25 +16631,25 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "charles",
         },
-        "deadly-block@0,1,0:ZaRhUQ": {
+        "deadlyBlock@0,1,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,1:ZaRhUQ": {
+        "deadlyBlock@1,4,1:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 1, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,1:ZaRhUQ": {
+        "deadlyBlock@2,4,1:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 2, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:ZaRhUQ": {
+        "deadlyBlock@7,7,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,1:Z1iR3a6": {
           config: { direction: "towards", toRoom: "moonbase2" },
@@ -16718,10 +16681,10 @@ export const campaign = {
           position: { x: 3, y: 1, z: 1 },
           type: "joystick",
         },
-        "movable-block@0,7,0:1EfFpg": {
+        "movableBlock@0,7,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 0, y: 7, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
         "spring@4,7,0:13y": {
           config: {},
@@ -16907,65 +16870,65 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,0:Z1Dtosw": {
           config: { direction: "away", toRoom: "moonbase33triple" },
@@ -17238,120 +17201,120 @@ export const campaign = {
           position: { x: 6, y: 5, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,10,0:2u1uHB": {
+        "deadlyBlock@0,10,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,11,0:2u1uHB": {
+        "deadlyBlock@0,11,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,12,0:2u1uHB": {
+        "deadlyBlock@0,12,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 12, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,13,0:2u1uHB": {
+        "deadlyBlock@0,13,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 13, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,1,0:2u1uHB": {
+        "deadlyBlock@11,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,14,0:2u1uHB": {
+        "deadlyBlock@11,14,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 14, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,2,0:2u1uHB": {
+        "deadlyBlock@11,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,3,0:2u1uHB": {
+        "deadlyBlock@11,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,4,0:2u1uHB": {
+        "deadlyBlock@11,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,5,0:2u1uHB": {
+        "deadlyBlock@11,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@11,9,0:2u1uHB": {
+        "deadlyBlock@11,9,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 11, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,10,0:2u1uHB": {
+        "deadlyBlock@5,10,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,11,0:2u1uHB": {
+        "deadlyBlock@5,11,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,12,0:2u1uHB": {
+        "deadlyBlock@5,12,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 12, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,13,0:2u1uHB": {
+        "deadlyBlock@5,13,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 13, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,10,0:2u1uHB": {
+        "deadlyBlock@6,10,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,11,0:2u1uHB": {
+        "deadlyBlock@6,11,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,12,0:2u1uHB": {
+        "deadlyBlock@6,12,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 12, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,13,0:2u1uHB": {
+        "deadlyBlock@6,13,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 13, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,0:2u1uHB": {
+        "deadlyBlock@6,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,3,0:2u1uHB": {
+        "deadlyBlock@6,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,4,0:2u1uHB": {
+        "deadlyBlock@6,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:2u1uHB": {
+        "deadlyBlock@6,5,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@12,11,0:Z8uHEk": {
           config: { direction: "left", toRoom: "moonbase34" },
@@ -17518,25 +17481,25 @@ export const campaign = {
           position: { x: 7, y: 3, z: 1 },
           type: "baddie",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,0:2u1uHB": {
+        "deadlyBlock@7,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,2,0:2u1uHB": {
+        "deadlyBlock@7,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:2u1uHB": {
+        "deadlyBlock@7,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,1,0:1osK28": {
           config: { direction: "right", toRoom: "moonbase33triple" },
@@ -17627,45 +17590,45 @@ export const campaign = {
           position: { x: 5, y: 4, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,1,0:2u1uHB": {
+        "deadlyBlock@0,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,2,0:2u1uHB": {
+        "deadlyBlock@0,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,3,0:2u1uHB": {
+        "deadlyBlock@0,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:2u1uHB": {
+        "deadlyBlock@0,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:2u1uHB": {
+        "deadlyBlock@5,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,2,0:2u1uHB": {
+        "deadlyBlock@5,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:2u1uHB": {
+        "deadlyBlock@5,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:2u1uHB": {
+        "deadlyBlock@5,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:5CJlb": {
           config: { direction: "towards", toRoom: "moonbase34" },
@@ -17762,45 +17725,45 @@ export const campaign = {
           position: { x: 5, y: 4, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,1,0:2u1uHB": {
+        "deadlyBlock@0,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,2,0:2u1uHB": {
+        "deadlyBlock@0,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,3,0:2u1uHB": {
+        "deadlyBlock@0,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,4,0:2u1uHB": {
+        "deadlyBlock@0,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,0:2u1uHB": {
+        "deadlyBlock@5,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,2,0:2u1uHB": {
+        "deadlyBlock@5,2,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:2u1uHB": {
+        "deadlyBlock@5,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:2u1uHB": {
+        "deadlyBlock@5,4,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@2,0,0:2e93sR": {
           config: { direction: "towards", toRoom: "moonbase33triple" },
@@ -17896,65 +17859,65 @@ export const campaign = {
           position: { x: 7, y: 3, z: 3 },
           type: "block",
         },
-        "deadly-block@1,1,0:ZWGEjo": {
+        "deadlyBlock@1,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,6,0:ZWGEjo": {
+        "deadlyBlock@1,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,0:ZWGEjo": {
+        "deadlyBlock@2,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZWGEjo": {
+        "deadlyBlock@5,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,1,0:ZWGEjo": {
+        "deadlyBlock@6,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,6,0:ZWGEjo": {
+        "deadlyBlock@6,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,8,5:Z2q5jjv": {
           config: { direction: "away", toRoom: "moonbase5" },
@@ -18056,60 +18019,60 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "baddie",
         },
-        "deadly-block@0,3,0:ZWGEjo": {
+        "deadlyBlock@0,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:ZWGEjo": {
+        "deadlyBlock@2,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,6,0:ZWGEjo": {
+        "deadlyBlock@4,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,4,0:ZWGEjo": {
+        "deadlyBlock@5,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,6,0:ZWGEjo": {
+        "deadlyBlock@5,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,4,0:ZWGEjo": {
+        "deadlyBlock@7,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:Z1iR2nP": {
           config: { direction: "towards", toRoom: "moonbase5" },
@@ -18232,35 +18195,35 @@ export const campaign = {
           position: { x: 3, y: 0, z: 3 },
           type: "block",
         },
-        "deadly-block@0,7,0:2u1uHB": {
+        "deadlyBlock@0,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,7,0:2u1uHB": {
+        "deadlyBlock@1,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,7,0:2u1uHB": {
+        "deadlyBlock@2,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:2u1uHB": {
+        "deadlyBlock@5,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,7,0:2u1uHB": {
+        "deadlyBlock@6,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,7,0:2u1uHB": {
+        "deadlyBlock@7,7,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:1AqcfF": {
           config: { direction: "right", toRoom: "moonbase8" },
@@ -18339,35 +18302,35 @@ export const campaign = {
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "deadly-block@0,0,0:2u1uHB": {
+        "deadlyBlock@0,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:2u1uHB": {
+        "deadlyBlock@5,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:2u1uHB": {
+        "deadlyBlock@6,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:2u1uHB": {
+        "deadlyBlock@7,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@8,3,0:Z2smAfq": {
           config: { direction: "left", toRoom: "moonbase7" },
@@ -18666,25 +18629,25 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "hush-puppy@0,0,0:13y": {
+        "hushPuppy@0,0,0:13y": {
           config: {},
           position: { x: 0, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@0,1,3:13y": {
+        "hushPuppy@0,1,3:13y": {
           config: {},
           position: { x: 0, y: 1, z: 3 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,0,1:13y": {
+        "hushPuppy@1,0,1:13y": {
           config: {},
           position: { x: 1, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,1,2:13y": {
+        "hushPuppy@1,1,2:13y": {
           config: {},
           position: { x: 1, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
         "pickup@7,0,3:Z2prF0G": {
           config: { gives: "donuts" },
@@ -18768,20 +18731,20 @@ export const campaign = {
           position: { x: 7, y: 3, z: 0 },
           type: "block",
         },
-        "deadly-block@1,0,0:2u1uHB": {
+        "deadlyBlock@1,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:2u1uHB": {
+        "deadlyBlock@2,0,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:2u1uHB": {
+        "deadlyBlock@4,3,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:1sSHQ3": {
           config: { direction: "towards", toRoom: "penitentiary2" },
@@ -18907,15 +18870,15 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
           type: "lift",
         },
-        "portable-block@6,5,1:Z14c3Fl": {
+        "portableBlock@6,5,1:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 6, y: 5, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@7,5,1:Z14c3Fl": {
+        "portableBlock@7,5,1:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 7, y: 5, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -19137,15 +19100,15 @@ export const campaign = {
           position: { x: 7, y: 7, z: 3 },
           type: "block",
         },
-        "portable-block@1,1,2:Z1UEQTQ": {
+        "portableBlock@1,1,2:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 2 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@1,1,3:Z1UEQTQ": {
+        "portableBlock@1,1,3:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 3 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -19226,20 +19189,20 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "lift",
         },
-        "portable-block@7,5,1:Z1UEQTQ": {
+        "portableBlock@7,5,1:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 7, y: 5, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@7,6,1:Z1UEQTQ": {
+        "portableBlock@7,6,1:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 7, y: 6, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@7,7,1:Z1UEQTQ": {
+        "portableBlock@7,7,1:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 7, y: 7, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -19488,10 +19451,10 @@ export const campaign = {
           position: { x: 12, y: 4, z: 4 },
           type: "fish",
         },
-        "portable-block@11,1,0:Z14c3Fl": {
+        "portableBlock@11,1,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 11, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "teleporter@0,4,4:Z2oeKm1": {
           config: { toRoom: "penitentiary30" },
@@ -19554,10 +19517,10 @@ export const campaign = {
           position: { x: 1, y: 8, z: 3 },
           type: "door",
         },
-        "portable-block@2,3,0:Z1SKpmn": {
+        "portableBlock@2,3,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 2, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -19652,20 +19615,20 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "hush-puppy@1,7,0:13y": {
+        "hushPuppy@1,7,0:13y": {
           config: {},
           position: { x: 1, y: 7, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,7,1:13y": {
+        "hushPuppy@2,7,1:13y": {
           config: {},
           position: { x: 2, y: 7, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,7,2:13y": {
+        "hushPuppy@3,7,2:13y": {
           config: {},
           position: { x: 3, y: 7, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "penitentiary",
@@ -19704,40 +19667,40 @@ export const campaign = {
           position: { x: 2, y: 3, z: 1 },
           type: "baddie",
         },
-        "portable-block@1,1,0:Z1UEQTQ": {
+        "portableBlock@1,1,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@1,4,0:Z1UEQTQ": {
+        "portableBlock@1,4,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 1, y: 4, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@2,2,0:Z1UEQTQ": {
+        "portableBlock@2,2,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 2, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@2,3,0:Z1UEQTQ": {
+        "portableBlock@2,3,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 2, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,2,0:Z1UEQTQ": {
+        "portableBlock@3,2,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@3,3,0:Z1UEQTQ": {
+        "portableBlock@3,3,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 3, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@4,1,0:Z1UEQTQ": {
+        "portableBlock@4,1,0:Z1UEQTQ": {
           config: { style: "cube" },
           position: { x: 4, y: 1, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "spring@3,2,1:13y": {
           config: {},
@@ -19959,10 +19922,10 @@ export const campaign = {
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "portable-block@7,7,1:Z1SKpmn": {
+        "portableBlock@7,7,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 7, y: 7, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -20497,20 +20460,20 @@ export const campaign = {
           position: { x: 4, y: 0, z: 0 },
           type: "block",
         },
-        "deadly-block@0,7,1:ZWGEjo": {
+        "deadlyBlock@0,7,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,0:ZWGEjo": {
+        "deadlyBlock@7,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,3,1:ZWGEjo": {
+        "deadlyBlock@7,3,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,1:1QJLWh": {
           config: { direction: "right", toRoom: "penitentiary27" },
@@ -20522,10 +20485,10 @@ export const campaign = {
           position: { x: 3, y: 0, z: 1 },
           type: "door",
         },
-        "movable-block@4,1,0:1EfFpg": {
+        "movableBlock@4,1,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 4, y: 1, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "penitentiary",
@@ -20569,20 +20532,20 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "deadly-block@3,0,1:ZWGEjo": {
+        "deadlyBlock@3,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,1:ZWGEjo": {
+        "deadlyBlock@3,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,1:1QJMd2": {
           config: { direction: "right", toRoom: "penitentiary28" },
@@ -20594,10 +20557,10 @@ export const campaign = {
           position: { x: 8, y: 0, z: 2 },
           type: "door",
         },
-        "movable-block@6,0,0:1EfFpg": {
+        "movableBlock@6,0,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 6, y: 0, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "penitentiary",
@@ -20652,20 +20615,20 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "hush-puppy@2,0,0:13y": {
+        "hushPuppy@2,0,0:13y": {
           config: {},
           position: { x: 2, y: 0, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@3,0,1:13y": {
+        "hushPuppy@3,0,1:13y": {
           config: {},
           position: { x: 3, y: 0, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@4,0,2:13y": {
+        "hushPuppy@4,0,2:13y": {
           config: {},
           position: { x: 4, y: 0, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "penitentiary",
@@ -20759,15 +20722,15 @@ export const campaign = {
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "deadly-block@2,0,1:Z1tM18t": {
+        "deadlyBlock@2,0,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,1:Z1tM18t": {
+        "deadlyBlock@2,1,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@8,0,3:2uC47T": {
           config: { direction: "left", toRoom: "penitentiary28" },
@@ -20823,15 +20786,15 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "deadly-block@7,1,0:2u1uHB": {
+        "deadlyBlock@7,1,0:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,1:2u1uHB": {
+        "deadlyBlock@7,1,1:2u1uHB": {
           config: { style: "toaster" },
           position: { x: 7, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,1:RGM4C": {
           config: { direction: "right", toRoom: "penitentiary2" },
@@ -20843,10 +20806,10 @@ export const campaign = {
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
-        "movable-block@0,1,0:1EfFpg": {
+        "movableBlock@0,1,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 0, y: 1, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
         "switch@0,0,0:13y": {
           config: {},
@@ -20925,20 +20888,20 @@ export const campaign = {
           position: { x: 3, y: 4, z: 0 },
           type: "door",
         },
-        "portable-block@0,3,0:Z14c3Fl": {
+        "portableBlock@0,3,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@7,0,0:Z14c3Fl": {
+        "portableBlock@7,0,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 7, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@7,3,0:Z14c3Fl": {
+        "portableBlock@7,3,0:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 7, y: 3, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "teleporter@0,3,4:2mFPXS": {
           config: { toRoom: "penitentiary18fish" },
@@ -21028,30 +20991,30 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "deadly-block@5,0,1:Z1tM18t": {
+        "deadlyBlock@5,0,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,2:Z1tM18t": {
+        "deadlyBlock@5,0,2:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,1:Z1tM18t": {
+        "deadlyBlock@5,1,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,2:Z1tM18t": {
+        "deadlyBlock@5,1,2:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "portable-block@1,1,1:Z14c3Fl": {
+        "portableBlock@1,1,1:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 1, y: 1, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -21143,15 +21106,15 @@ export const campaign = {
           position: { x: 7, y: 1, z: 4 },
           type: "block",
         },
-        "deadly-block@2,0,5:Z1tM18t": {
+        "deadlyBlock@2,0,5:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 5 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,5:Z1tM18t": {
+        "deadlyBlock@2,1,5:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 5 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,0:Z4XOeS": {
           config: { direction: "towards", toRoom: "penitentiary33" },
@@ -21379,20 +21342,20 @@ export const campaign = {
           position: { x: 3, y: 8, z: 1 },
           type: "door",
         },
-        "movable-block@7,3,5:1EfFpg": {
+        "movableBlock@7,3,5:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 7, y: 3, z: 5 },
-          type: "movable-block",
+          type: "movableBlock",
         },
         "pickup@0,0,6:2fxkqv": {
           config: { gives: "crown" },
           position: { x: 0, y: 0, z: 6 },
           type: "pickup",
         },
-        "portable-block@0,7,3:Z14c3Fl": {
+        "portableBlock@0,7,3:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 0, y: 7, z: 3 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "teleporter@7,5,4:2mFPXS": {
           config: { toRoom: "penitentiary18fish" },
@@ -21461,15 +21424,15 @@ export const campaign = {
           position: { x: 5, y: 5, z: 2 },
           type: "block",
         },
-        "deadly-block@5,2,0:ZaRhUQ": {
+        "deadlyBlock@5,2,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 5, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,3,0:ZaRhUQ": {
+        "deadlyBlock@5,3,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 5, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:RGMkn": {
           config: { direction: "right", toRoom: "penitentiary3" },
@@ -21542,45 +21505,45 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "block",
         },
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@6,2,3:2d0qB5": {
           config: { direction: "left", toRoom: "penitentiary7" },
           position: { x: 6, y: 2, z: 3 },
           type: "door",
         },
-        "movable-block@3,0,1:Z15GVb5": {
+        "movableBlock@3,0,1:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 0, z: 1 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "penitentiary",
@@ -21685,20 +21648,20 @@ export const campaign = {
           position: { x: 0, y: 0, z: 0 },
           type: "door",
         },
-        "portable-block@1,2,0:Z1SKpmn": {
+        "portableBlock@1,2,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@1,2,1:Z1SKpmn": {
+        "portableBlock@1,2,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@1,2,3:Z1SKpmn": {
+        "portableBlock@1,2,3:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 1, y: 2, z: 3 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "penitentiary",
@@ -22060,20 +22023,20 @@ export const campaign = {
           position: { x: 4, y: 5, z: 2 },
           type: "barrier",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:Z1tM18t": {
+        "deadlyBlock@4,0,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:Z2p4JCB": {
           config: { direction: "right", toRoom: "safari11" },
@@ -22085,10 +22048,10 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "lift",
         },
-        "portable-block@3,5,0:Z1SKpmn": {
+        "portableBlock@3,5,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 3, y: 5, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "safari",
@@ -22198,15 +22161,15 @@ export const campaign = {
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
-        "deadly-block@3,7,0:Z1tM18t": {
+        "deadlyBlock@3,7,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,7,0:Z1tM18t": {
+        "deadlyBlock@5,7,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z2wPfzr": {
           config: { direction: "right", toRoom: "safari9" },
@@ -22223,10 +22186,10 @@ export const campaign = {
           position: { x: 4, y: 7, z: 0 },
           type: "pickup",
         },
-        "portable-block@4,7,2:Z1SKpmn": {
+        "portableBlock@4,7,2:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 4, y: 7, z: 2 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "safari",
@@ -22280,55 +22243,55 @@ export const campaign = {
           position: { x: 2, y: 2, z: 0 },
           type: "baddie",
         },
-        "deadly-block@0,13,0:ZaRhUQ": {
+        "deadlyBlock@0,13,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 13, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,9,0:ZaRhUQ": {
+        "deadlyBlock@0,9,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 0, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,11,0:ZaRhUQ": {
+        "deadlyBlock@1,11,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 1, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,12,0:ZaRhUQ": {
+        "deadlyBlock@2,12,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 2, y: 12, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,9,0:ZaRhUQ": {
+        "deadlyBlock@2,9,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 2, y: 9, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,10,0:ZaRhUQ": {
+        "deadlyBlock@3,10,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 3, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,14,0:ZaRhUQ": {
+        "deadlyBlock@3,14,0:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 3, y: 14, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,6,0:ZWGEjo": {
+        "deadlyBlock@3,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@1,0,0:rjqs3": {
           config: { direction: "towards", toRoom: "safari13" },
@@ -22379,65 +22342,65 @@ export const campaign = {
           position: { x: 2, y: 6, z: 0 },
           type: "baddie",
         },
-        "deadly-block@0,4,0:ZWGEjo": {
+        "deadlyBlock@0,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,1,0:ZWGEjo": {
+        "deadlyBlock@1,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,6,0:ZWGEjo": {
+        "deadlyBlock@1,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,2,0:ZWGEjo": {
+        "deadlyBlock@3,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,3,0:ZWGEjo": {
+        "deadlyBlock@3,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,6,0:ZWGEjo": {
+        "deadlyBlock@3,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@1,0,0:rjqXy": {
           config: { direction: "towards", toRoom: "safari15" },
@@ -22572,20 +22535,20 @@ export const campaign = {
           position: { x: 4, y: 7, z: 4 },
           type: "fish",
         },
-        "hush-puppy@0,3,0:13y": {
+        "hushPuppy@0,3,0:13y": {
           config: {},
           position: { x: 0, y: 3, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@1,3,1:13y": {
+        "hushPuppy@1,3,1:13y": {
           config: {},
           position: { x: 1, y: 3, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@2,3,2:13y": {
+        "hushPuppy@2,3,2:13y": {
           config: {},
           position: { x: 2, y: 3, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "safari",
@@ -22915,20 +22878,20 @@ export const campaign = {
           position: { x: 0, y: 9, z: 6 },
           type: "pickup",
         },
-        "portable-block@12,0,1:Z1SKpmn": {
+        "portableBlock@12,0,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 12, y: 0, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@6,6,1:Z1SKpmn": {
+        "portableBlock@6,6,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 6, y: 6, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
-        "portable-block@6,8,1:Z1SKpmn": {
+        "portableBlock@6,8,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 6, y: 8, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "spring@6,7,1:13y": {
           config: {},
@@ -23072,50 +23035,50 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,0,1:ZWGEjo": {
+        "deadlyBlock@0,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,1,1:ZWGEjo": {
+        "deadlyBlock@0,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,7,0:ZWGEjo": {
+        "deadlyBlock@0,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,3,0:ZWGEjo": {
+        "deadlyBlock@2,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,1:ZWGEjo": {
+        "deadlyBlock@6,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:ZWGEjo": {
+        "deadlyBlock@7,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,1:ZWGEjo": {
+        "deadlyBlock@7,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@3,0,1:Zj81MS": {
           config: { direction: "towards", toRoom: "safari1" },
@@ -23127,10 +23090,10 @@ export const campaign = {
           position: { x: 3, y: 8, z: 3 },
           type: "door",
         },
-        "movable-block@7,1,0:1EfFpg": {
+        "movableBlock@7,1,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 7, y: 1, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "safari",
@@ -23289,35 +23252,35 @@ export const campaign = {
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
-        "deadly-block@1,1,0:ZWGEjo": {
+        "deadlyBlock@1,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,4,0:ZWGEjo": {
+        "deadlyBlock@1,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,6,0:ZWGEjo": {
+        "deadlyBlock@1,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,0,0:rjxGa": {
           config: { direction: "towards", toRoom: "safari20" },
@@ -23352,65 +23315,65 @@ export const campaign = {
       floorSkip: [],
       id: "safari23",
       items: {
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,2,0:ZWGEjo": {
+        "deadlyBlock@1,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,3,0:ZWGEjo": {
+        "deadlyBlock@1,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,0:ZWGEjo": {
+        "deadlyBlock@2,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,4,0:ZWGEjo": {
+        "deadlyBlock@2,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,4,0:ZWGEjo": {
+        "deadlyBlock@3,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:Z2p4APX": {
           config: { direction: "right", toRoom: "safari24" },
@@ -23451,35 +23414,35 @@ export const campaign = {
           position: { x: 7, y: 2, z: 1 },
           type: "block",
         },
-        "deadly-block@4,0,1:ZWGEjo": {
+        "deadlyBlock@4,0,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,1,0:ZWGEjo": {
+        "deadlyBlock@4,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,1,1:ZWGEjo": {
+        "deadlyBlock@4,1,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,4,0:ZWGEjo": {
+        "deadlyBlock@4,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,4,1:ZWGEjo": {
+        "deadlyBlock@4,4,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,1:ZWGEjo": {
+        "deadlyBlock@4,5,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,1:Z2p4AAd": {
           config: { direction: "right", toRoom: "safari25" },
@@ -23491,10 +23454,10 @@ export const campaign = {
           position: { x: 8, y: 2, z: 3 },
           type: "door",
         },
-        "movable-block@0,2,0:1EfFpg": {
+        "movableBlock@0,2,0:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 0, y: 2, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "safari",
@@ -23766,45 +23729,45 @@ export const campaign = {
           position: { x: 7, y: 0, z: 3 },
           type: "block",
         },
-        "deadly-block@1,7,0:ZWGEjo": {
+        "deadlyBlock@1,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,10,0:ZWGEjo": {
+        "deadlyBlock@2,10,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 10, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,11,0:ZWGEjo": {
+        "deadlyBlock@2,11,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 11, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,6,0:ZWGEjo": {
+        "deadlyBlock@2,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,8,0:ZWGEjo": {
+        "deadlyBlock@3,8,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,8,1:ZWGEjo": {
+        "deadlyBlock@3,8,1:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,8,2:ZWGEjo": {
+        "deadlyBlock@3,8,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 8, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,0:Z2p4B6I": {
           config: { direction: "right", toRoom: "safari23" },
@@ -23910,10 +23873,10 @@ export const campaign = {
       floorSkip: [],
       id: "safari28",
       items: {
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z2p4A4H": {
           config: { direction: "right", toRoom: "safari27" },
@@ -23967,20 +23930,20 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "baddie",
         },
-        "deadly-block@2,2,0:ZWGEjo": {
+        "deadlyBlock@2,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,0:ZWGEjo": {
+        "deadlyBlock@3,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z2p4zNW": {
           config: { direction: "right", toRoom: "safari28" },
@@ -24170,75 +24133,75 @@ export const campaign = {
           position: { x: 6, y: 6, z: 1 },
           type: "charles",
         },
-        "deadly-block@0,0,0:ZWGEjo": {
+        "deadlyBlock@0,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,0,0:ZWGEjo": {
+        "deadlyBlock@1,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,0,0:ZWGEjo": {
+        "deadlyBlock@2,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,0,0:ZWGEjo": {
+        "deadlyBlock@3,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,0,0:ZWGEjo": {
+        "deadlyBlock@5,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,0,0:ZWGEjo": {
+        "deadlyBlock@6,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,1,0:ZWGEjo": {
+        "deadlyBlock@6,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,2,0:ZWGEjo": {
+        "deadlyBlock@6,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,3,0:ZWGEjo": {
+        "deadlyBlock@6,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,4,0:ZWGEjo": {
+        "deadlyBlock@6,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:ZWGEjo": {
+        "deadlyBlock@6,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,6,0:ZWGEjo": {
+        "deadlyBlock@6,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,0,0:ZWGEjo": {
+        "deadlyBlock@7,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,1:1D93r4": {
           config: { direction: "right", toRoom: "safari17fish" },
@@ -24270,10 +24233,10 @@ export const campaign = {
           position: { x: 2, y: 6, z: 1 },
           type: "joystick",
         },
-        "portable-block@4,0,1:Z1SKpmn": {
+        "portableBlock@4,0,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 4, y: 0, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "safari",
@@ -24375,10 +24338,10 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "movable-block@1,1,0:Z15GVb5": {
+        "movableBlock@1,1,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 1, y: 1, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "safari",
@@ -24453,45 +24416,45 @@ export const campaign = {
           position: { x: 4, y: 7, z: 3 },
           type: "block",
         },
-        "deadly-block@4,0,0:ZWGEjo": {
+        "deadlyBlock@4,0,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 0, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,1,0:ZWGEjo": {
+        "deadlyBlock@4,1,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,2,0:ZWGEjo": {
+        "deadlyBlock@4,2,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 2, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,3,0:ZWGEjo": {
+        "deadlyBlock@4,3,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 3, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,4,0:ZWGEjo": {
+        "deadlyBlock@4,4,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 4, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,6,0:ZWGEjo": {
+        "deadlyBlock@4,6,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 6, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,7,0:ZWGEjo": {
+        "deadlyBlock@4,7,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 7, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,0:Z2p4t6l": {
           config: { direction: "right", toRoom: "safari33" },
@@ -24503,10 +24466,10 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "lift",
         },
-        "portable-block@1,0,0:Z1SKpmn": {
+        "portableBlock@1,0,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 1, y: 0, z: 0 },
-          type: "portable-block",
+          type: "portableBlock",
         },
         "teleporter@3,3,0:1mtSsV": {
           config: { toRoom: "safari1" },
@@ -24561,55 +24524,55 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "block",
         },
-        "deadly-block@0,5,0:ZWGEjo": {
+        "deadlyBlock@0,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,5,0:ZWGEjo": {
+        "deadlyBlock@1,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,5,0:ZWGEjo": {
+        "deadlyBlock@2,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,5,0:ZWGEjo": {
+        "deadlyBlock@3,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,5,0:ZWGEjo": {
+        "deadlyBlock@4,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,5,0:ZWGEjo": {
+        "deadlyBlock@5,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,5,0:ZWGEjo": {
+        "deadlyBlock@6,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,5,0:ZWGEjo": {
+        "deadlyBlock@7,5,0:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 5, z: 0 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,3,1:Z2p4sk5": {
           config: { direction: "right", toRoom: "safari36" },
           position: { x: 0, y: 3, z: 1 },
           type: "door",
         },
-        "movable-block@7,5,1:1EfFpg": {
+        "movableBlock@7,5,1:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 7, y: 5, z: 1 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "safari",
@@ -24684,10 +24647,10 @@ export const campaign = {
           position: { x: 7, y: 4, z: 0 },
           type: "block",
         },
-        "deadly-block@4,3,1:ZaRhUQ": {
+        "deadlyBlock@4,3,1:ZaRhUQ": {
           config: { style: "spikes" },
           position: { x: 4, y: 3, z: 1 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@8,3,2:Z140xtH": {
           config: { direction: "left", toRoom: "safari35" },
@@ -24867,25 +24830,25 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "movable-block@0,7,6:Z15GVb5": {
+        "movableBlock@0,7,6:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 0, y: 7, z: 6 },
-          type: "movable-block",
+          type: "movableBlock",
         },
-        "movable-block@3,5,0:Z15GVb5": {
+        "movableBlock@3,5,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 5, z: 0 },
-          type: "movable-block",
+          type: "movableBlock",
         },
         "pickup@0,7,7:2fxkqv": {
           config: { gives: "crown" },
           position: { x: 0, y: 7, z: 7 },
           type: "pickup",
         },
-        "portable-block@7,3,1:Z1SKpmn": {
+        "portableBlock@7,3,1:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 7, y: 3, z: 1 },
-          type: "portable-block",
+          type: "portableBlock",
         },
       },
       planet: "safari",
@@ -25016,35 +24979,35 @@ export const campaign = {
           position: { x: 8, y: 1, z: 4 },
           type: "door",
         },
-        "hush-puppy@5,1,0:13y": {
+        "hushPuppy@5,1,0:13y": {
           config: {},
           position: { x: 5, y: 1, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@5,2,0:13y": {
+        "hushPuppy@5,2,0:13y": {
           config: {},
           position: { x: 5, y: 2, z: 0 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,1,1:13y": {
+        "hushPuppy@6,1,1:13y": {
           config: {},
           position: { x: 6, y: 1, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@6,2,1:13y": {
+        "hushPuppy@6,2,1:13y": {
           config: {},
           position: { x: 6, y: 2, z: 1 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,1,2:13y": {
+        "hushPuppy@7,1,2:13y": {
           config: {},
           position: { x: 7, y: 1, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
-        "hush-puppy@7,2,2:13y": {
+        "hushPuppy@7,2,2:13y": {
           config: {},
           position: { x: 7, y: 2, z: 2 },
-          type: "hush-puppy",
+          type: "hushPuppy",
         },
       },
       planet: "safari",
@@ -25453,45 +25416,45 @@ export const campaign = {
           position: { x: 7, y: 2, z: 3 },
           type: "block",
         },
-        "deadly-block@0,1,2:ZWGEjo": {
+        "deadlyBlock@0,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 0, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@1,1,2:ZWGEjo": {
+        "deadlyBlock@1,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 1, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@2,1,2:ZWGEjo": {
+        "deadlyBlock@2,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 2, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@3,1,2:ZWGEjo": {
+        "deadlyBlock@3,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 3, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@4,1,2:ZWGEjo": {
+        "deadlyBlock@4,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 4, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@5,1,2:ZWGEjo": {
+        "deadlyBlock@5,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 5, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@6,1,2:ZWGEjo": {
+        "deadlyBlock@6,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 6, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
-        "deadly-block@7,1,2:ZWGEjo": {
+        "deadlyBlock@7,1,2:ZWGEjo": {
           config: { style: "volcano" },
           position: { x: 7, y: 1, z: 2 },
-          type: "deadly-block",
+          type: "deadlyBlock",
         },
         "door@0,2,4:Z2wPfPc": {
           config: { direction: "right", toRoom: "safari8" },
@@ -25503,10 +25466,10 @@ export const campaign = {
           position: { x: 8, y: 2, z: 5 },
           type: "door",
         },
-        "movable-block@0,1,3:1EfFpg": {
+        "movableBlock@0,1,3:1EfFpg": {
           config: { style: "sandwich" },
           position: { x: 0, y: 1, z: 3 },
-          type: "movable-block",
+          type: "movableBlock",
         },
       },
       planet: "safari",

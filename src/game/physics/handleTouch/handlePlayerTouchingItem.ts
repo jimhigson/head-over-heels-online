@@ -26,7 +26,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       }
       break;
     case "baddie":
-    case "deadly-block":
+    case "deadlyBlock":
       if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
         return true;
       }

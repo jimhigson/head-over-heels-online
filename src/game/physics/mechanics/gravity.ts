@@ -26,6 +26,7 @@ export const gravity = <RoomId extends string>(
   const terminalZ =
     terminalVelocityPixPerMs[type === "head" ? "head" : "others"];
 
+  const standingOnSomething = standingOn.length !== 0;
   return {
     vels: {
       gravity: {
@@ -33,7 +34,7 @@ export const gravity = <RoomId extends string>(
           // if we are standing on something, the v due to gravity stays constant at zero plus one frame:
           // - this prevents the velocity accumulating up to max value, but keeps the item touching
           // its standingon. This would be more accurately represented by forces
-          (standingOn ? 0 : previousVelZ) - fallG * deltaMS,
+          (standingOnSomething ? 0 : previousVelZ) - fallG * deltaMS,
           -terminalZ,
         ),
       },

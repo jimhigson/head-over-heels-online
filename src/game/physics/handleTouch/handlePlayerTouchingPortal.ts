@@ -34,7 +34,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
 
   changeCharacterRoom({
     gameState,
-    toRoom,
+    toRoomId: toRoom,
     positionRelativeToSourcePortal: subXyz(
       player.state.position,
       addXyz(portalPosition, relativePoint),

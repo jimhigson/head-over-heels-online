@@ -11,6 +11,8 @@ export const characterNames = ["head", "heels"] as const;
 export type CharacterName = (typeof characterNames)[number];
 export const otherCharacterName = (name: CharacterName) =>
   name === "head" ? "heels" : "head";
+export const isCharacterName = (name: string): name is CharacterName =>
+  name === "head" || name === "heels";
 
 export type Floor = "deadly" | "none" | `${PlanetName}`;
 

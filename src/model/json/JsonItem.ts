@@ -12,11 +12,11 @@ export type JsonItemType =
   | "teleporter"
   | "barrier"
   | "block"
-  | "deadly-block"
+  | "deadlyBlock"
   // something heels can pick up in her bag
-  | "portable-block"
+  | "portableBlock"
   // something that can be pushed or moves on a switch
-  | "movable-block"
+  | "movableBlock"
   | "conveyor"
   | "pickup"
   | "fish"
@@ -28,7 +28,7 @@ export type JsonItemType =
   | "joystick"
   | "charles"
   | "switch"
-  | "hush-puppy"
+  | "hushPuppy"
   | "ball"
   | "book"
   | "wall";
@@ -94,7 +94,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     style: "organic" | "artificial" | "tower";
     disappearing: boolean;
   };
-  "deadly-block": {
+  deadlyBlock: {
     style: "volcano" | "toaster" | "spikes" | "puck";
   };
   conveyor: {
@@ -152,14 +152,14 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
         which: "cyberman";
         charging: false;
       };
-  "portable-block": {
+  portableBlock: {
     style: "drum" | "sticks" | "cube";
   };
-  "movable-block": {
+  movableBlock: {
     style: "anvil" | "sandwich" | "puck";
   };
   book: {
-    // books are like movable-blocks, but have orientation and are only sometimes movable.
+    // books are like movableBlocks, but have orientation and are only sometimes movable.
     // almost all are x-aligned
     slider?: boolean;
   };

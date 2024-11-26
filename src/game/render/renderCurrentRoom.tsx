@@ -4,7 +4,7 @@ import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
 import { renderExtent } from "./renderExtent";
-import { moveSpriteToItemProjection, renderItem } from "./renderItem";
+import { moveSpriteToItemProjection, renderItemIfNeeded } from "./renderItem";
 import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
@@ -72,7 +72,7 @@ export const renderCurrentRoom = <RoomId extends string>(
     if (renders) {
       const renderContainer = new Container();
       item.renderContainer = renderContainer;
-      renderItem(item, gameState);
+      renderItemIfNeeded(item, gameState);
     }
 
     const renderItemBBs =

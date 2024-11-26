@@ -59,6 +59,7 @@ export function* loadDoor<RoomId extends string>(
           addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
         ),
         expires: null,
+        stoodOnBy: [],
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
       renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
@@ -81,6 +82,7 @@ export function* loadDoor<RoomId extends string>(
       state: {
         position: doorNearPosition,
         expires: null,
+        stoodOnBy: [],
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
       renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
@@ -114,6 +116,7 @@ export function* loadDoor<RoomId extends string>(
           ),
         ),
         expires: null,
+        stoodOnBy: [],
       },
       aabb: {
         [axis]: blockSizePx.w,
@@ -141,6 +144,7 @@ export function* loadDoor<RoomId extends string>(
           },
         ),
         expires: null,
+        stoodOnBy: [],
       },
       aabb: blockXyzToFineXyz({
         [axis]: 2,
@@ -171,6 +175,7 @@ export function* loadDoor<RoomId extends string>(
           z: 0,
         }),
         expires: null,
+        stoodOnBy: [],
       },
       aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
     },
@@ -186,6 +191,7 @@ export function* loadDoor<RoomId extends string>(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
       expires: null,
+      stoodOnBy: [],
     },
   };
 }

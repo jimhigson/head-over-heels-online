@@ -1,6 +1,6 @@
 import type { UnknownJsonItem } from "../../src/model/json/JsonItem";
-import type { DirectionXy } from "../../src/utils/vectors";
-import { perpendicularAxisXy, addXy } from "../../src/utils/vectors";
+import type { DirectionXy } from "../../src/utils/vectors/vectors";
+import { perpendicularAxisXy, addXy } from "../../src/utils/vectors/vectors";
 import { autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertRoomId } from "./convertRoomId";

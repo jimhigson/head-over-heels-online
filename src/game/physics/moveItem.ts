@@ -14,8 +14,9 @@ import { currentRoom } from "../gameState/GameState";
 import { objectValues } from "iter-tools";
 import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
-import { findStandingOn } from "../collision/findStandingOn";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
+
+const log = true;
 
 /**
  * @param subjectItem the item that is wanting to move
@@ -48,6 +49,15 @@ export const moveItem = <RoomId extends string>({
 
   // strategy is to move to the target position, then back off as needed
   subjectItem.state.position = addXyz(originalPosition, posDelta);
+
+  if (log)
+    console.log(
+      `moving ${subjectItem.id} @`,
+      subjectItem.state.position,
+      ` by `,
+      posDelta,
+      ` because ${pusher ? `push by ${pusher.id}` : "first cause"}`,
+    );
 
   const sortedCollisions = sortObstaclesAboutVector(
     posDelta,
@@ -96,6 +106,12 @@ export const moveItem = <RoomId extends string>({
       collision.aabb,
     );
 
+    if (log)
+      console.log(
+        `${subjectItem.id} collided 💥 with ${collision.id} to give backing-off mtv`,
+        backingOffMtv,
+      );
+
     // push falling (pushable) items that we intersect:
     if (isFreeItem(collision) && collision !== pusher) {
       const pushCoefficient =
@@ -114,6 +130,11 @@ export const moveItem = <RoomId extends string>({
         backingOffMtv,
         forwardPushVector,
       );
+
+      if (log)
+        console.log(
+          `${subjectItem.id} will recursively push ${collision.id} by ${forwardPushVector}`,
+        );
 
       // recursively apply push to pushee
       moveItem({
@@ -136,29 +157,44 @@ export const moveItem = <RoomId extends string>({
       );
 
       // now the subject has backed off again, the pushee might be standing on it- update that:
-      collision.state.standingOn = findStandingOn(
+      /*collision.state.standingOn = findStandingOnIds(
         collision,
         objectValues(room.items),
         gameState.pickupsCollected[room.id],
-      );
+      );*/
     } else {
       // back off to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         backingOffMtv,
       );
+
+      if (log)
+        console.log(
+          `${subjectItem.id} can't push ${collision.id} so simply backed off to`,
+          subjectItem.state.position,
+        );
     }
   }
 
-  if (
+  /*if (
     isFreeItem(subjectItem) &&
     // for recursive calls, this will be updated by the caller
     pusher === undefined
   ) {
-    subjectItem.state.standingOn = findStandingOn(
+    console.log(
+      `🥾 setting stood on for ${subjectItem.id} to `,
+      findStandingOn2(
+        subjectItem,
+        objectValues(room.items),
+        gameState.pickupsCollected[room.id],
+      ),
+    );
+
+    subjectItem.state.standingOn = findStandingOnIds(
       subjectItem,
       objectValues(room.items),
       gameState.pickupsCollected[room.id],
     );
-  }
+  }*/
 };

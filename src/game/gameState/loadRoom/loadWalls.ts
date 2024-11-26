@@ -31,6 +31,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
             expires: null,
+            stoodOnBy: [],
           },
           aabb: yAxisWallAabb,
           renderAabb: yAxisWallRenderAabb,
@@ -59,6 +60,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
             expires: null,
+            stoodOnBy: [],
           },
           aabb: yAxisWallAabb,
           renders: false,
@@ -81,6 +83,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
             expires: null,
+            stoodOnBy: [],
           },
           aabb: xAxisWallAabb,
           renderAabb: xAxisWallRenderAabb,
@@ -108,6 +111,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
             expires: null,
+            stoodOnBy: [],
           },
           aabb: xAxisWallAabb,
           // invisible walls are never rendered so give no renderAabb

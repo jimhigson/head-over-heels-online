@@ -11,15 +11,18 @@ import {
   doorFrameAppearance,
   doorLegsAppearance,
 } from "../../../doorAppearance";
-import { type ItemInPlay, type ItemInPlayType } from "@/model/ItemInPlay";
+import { isPlayableItem, type ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
-import { currentRoom, type GameState } from "@/game/gameState/GameState";
+import { currentRoom } from "@/game/gameState/GameState";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
 import { directionAxis } from "@/utils/vectors/vectors";
+import type { ItemAppearance } from "./appearanceUtils";
+import { applyAppearance, renderedBefore } from "./appearanceUtils";
+import { ifNotRenderedBefore, staticSpriteAppearance } from "./appearanceUtils";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -38,11 +41,7 @@ const stackedSprites = (
 };
 
 export const itemAppearances: {
-  [T in ItemInPlayType]: <RoomId extends string>(
-    // appearances don't care about the romId generic so give it string
-    item: ItemInPlay<T, PlanetName, RoomId>,
-    gameState: GameState<RoomId>,
-  ) => Container;
+  [T in ItemInPlayType]: ItemAppearance<T>;
 } = {
   head: playableAppearance,
   heels: playableAppearance,
@@ -56,132 +55,198 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall({ config: { side, style } }, gameState) {
-    if (side === "right" || side === "towards") {
-      return new Container();
-    }
-    return createSprite({
-      texture: wallTextureId(currentRoom(gameState).planet, style, side),
-      pivot:
-        side === "away" ?
-          {
-            x: wallTileSize.w,
-            // walls need to be rendered 1px low to match original game:
-            y: wallTileSize.h - 1,
-          }
-        : { x: 0, y: wallTileSize.h - 1 },
-    });
-  },
-
-  barrier({ config: { axis }, state: { expires } }) {
-    if (expires !== null)
-      return createSprite({
-        frames: spriteSheet.animations["bubbles.taupe"],
-        playOnce: "and-destroy",
-        pivot: barrierPivot[axis],
-        //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
-      });
-    else
-      return createSprite({
-        texture: `barrier.${axis}`,
-        pivot: barrierPivot[axis],
-      });
-  },
-
-  "deadly-block": ({ config: { style } }) =>
-    createSprite(style === "puck" ? "puck.deadly" : style),
-
-  block({ config: { style, disappearing }, state: { expires } }) {
-    if (expires !== null)
-      return createSprite({
-        frames: spriteSheet.animations["bubbles.taupe"],
-        playOnce: "and-destroy",
-      });
-    else
-      return createSprite(
-        `block.${style}${disappearing ? ".disappearing" : ""}`,
-      );
-  },
-
-  conveyor({ config: { direction, count } }) {
-    const container = new Container();
-
-    const axis = directionAxis(direction);
-    container.addChild(
-      ...iterate(range(count, 0, -1)).map((i) =>
-        createSprite({
-          texture: `conveyor.${axis}`,
-          ...projectWorldXyzToScreenXyInteger({
-            [axis]: (i - 1) * blockSizePx.w,
+  wall: ifNotRenderedBefore(
+    ({ config: { side, style }, renderContainer }, gameState) => {
+      applyAppearance(
+        renderContainer,
+        side === "right" || side === "towards" ?
+          new Container()
+        : createSprite({
+            texture: wallTextureId(currentRoom(gameState).planet, style, side),
+            pivot:
+              side === "away" ?
+                {
+                  x: wallTileSize.w,
+                  // walls need to be rendered 1px low to match original game:
+                  y: wallTileSize.h - 1,
+                }
+              : { x: 0, y: wallTileSize.h - 1 },
           }),
-        }),
-      ),
-    );
+      );
+    },
+  ),
 
-    return container;
+  barrier({
+    config: { axis },
+    state: { expires },
+    stateLastFrame: lastRenderedState,
+    renderContainer,
+  }) {
+    const bubbles = expires !== null;
+    const wasBubbles =
+      lastRenderedState === undefined ? false : (
+        lastRenderedState.expires !== null
+      );
+
+    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+      return;
+    }
+
+    applyAppearance(
+      renderContainer!,
+      bubbles ?
+        createSprite({
+          frames: spriteSheet.animations["bubbles.taupe"],
+          playOnce: "and-destroy",
+          pivot: barrierPivot[axis],
+          //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
+        })
+      : createSprite({
+          texture: `barrier.${axis}`,
+          pivot: barrierPivot[axis],
+        }),
+    );
   },
 
-  lift() {
-    const container = new Container();
+  deadlyBlock: ifNotRenderedBefore(({ config: { style }, renderContainer }) => {
+    applyAppearance(
+      renderContainer,
+      createSprite(style === "puck" ? "puck.deadly" : style),
+    );
+  }),
+
+  block({
+    config: { style, disappearing },
+    state: { expires },
+    stateLastFrame: lastRenderedState,
+    renderContainer,
+  }) {
+    const bubbles = expires !== null;
+    const wasBubbles =
+      lastRenderedState === undefined ? false : (
+        lastRenderedState.expires !== null
+      );
+
+    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+      return;
+    }
+
+    applyAppearance(
+      renderContainer!,
+      bubbles ?
+        createSprite({
+          frames: spriteSheet.animations["bubbles.taupe"],
+          playOnce: "and-destroy",
+        })
+      : createSprite(`block.${style}${disappearing ? ".disappearing" : ""}`),
+    );
+  },
+
+  conveyor: ifNotRenderedBefore(
+    ({ config: { direction, count }, renderContainer }) => {
+      const rendering = new Container();
+
+      const axis = directionAxis(direction);
+      rendering.addChild(
+        ...iterate(range(count, 0, -1)).map((i) =>
+          createSprite({
+            texture: `conveyor.${axis}`,
+            ...projectWorldXyzToScreenXyInteger({
+              [axis]: (i - 1) * blockSizePx.w,
+            }),
+          }),
+        ),
+      );
+
+      applyAppearance(renderContainer, rendering);
+    },
+  ),
+
+  lift: ifNotRenderedBefore(({ renderContainer }) => {
+    const rendering = new Container();
 
     const pivot = {
       x: smallItemTextureSize.w / 2,
       y: smallItemTextureSize.h - liftBBShortening,
     };
-    container.addChild(
+    rendering.addChild(
       createSprite({
         frames: spriteSheet.animations.lift,
         pivot,
       }),
     );
 
-    container.addChild(createSprite({ texture: "lift.static", pivot }));
+    rendering.addChild(createSprite({ texture: "lift.static", pivot }));
 
-    return container;
-  },
+    applyAppearance(renderContainer, rendering);
+  }),
 
-  spring(springItem, _gameState) {
-    /*
-    // getting from game state gives no easy way to get the previous state
-    const stoodOn = iterate(objectValues(currentRoom(gameState).items)).some(
-      (i) => itemFalls(i) && i.state.standingOn === springItem,
-    );*/
-    return (
-      !springItem.state.stoodOn && springItem.lastRenderedState?.stoodOn ?
-        createSprite({
-          frames: spriteSheet.animations["spring.bounce"],
-          playOnce: "and-stop",
-        })
-      : springItem.state.stoodOn ? createSprite("spring.compressed")
-      : createSprite("spring.released")
+  spring({
+    state: { stoodOnBy },
+    stateLastFrame: lastRenderedState,
+    renderContainer,
+  }) {
+    const stoodOn = stoodOnBy.length > 0;
+    const prevStoodOn = (lastRenderedState?.stoodOnBy.length ?? 0) > 0;
+
+    if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
+      return;
+    }
+
+    applyAppearance(
+      renderContainer!,
+      createSprite(
+        !stoodOn && prevStoodOn ?
+          {
+            frames: spriteSheet.animations["spring.bounce"],
+            playOnce: "and-stop",
+          }
+        : stoodOn ? "spring.compressed"
+        : "spring.released",
+      ),
     );
   },
 
-  teleporter(item, gameState) {
-    // this isn't firing because it doesn't know it needs to be re-rendered.
-    // restructure to combine ItemAppearnce with that test, and return previous rendering here
-    // if it has not changed
+  teleporter({
+    state: { stoodOnBy },
+    stateLastFrame: lastRenderedState,
+    renderContainer,
+  }) {
+    const stoodOn = stoodOnBy.find(isPlayableItem) !== undefined;
+    const prevStoodOn =
+      lastRenderedState?.stoodOnBy.find(isPlayableItem) !== undefined;
 
-    const { items } = currentRoom(gameState);
-    const stoodOn =
-      items.head?.state.standingOn === item ||
-      items.heels?.state.standingOn === item;
+    if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
+      return;
+    }
 
     if (stoodOn) {
-      const container = new Container();
-      container.addChild(createSprite("teleporter"));
-      container.addChild(
+      const rendering = new Container();
+      rendering.addChild(createSprite("teleporter"));
+      rendering.addChild(
         createSprite({
           frames: spriteSheet.animations["teleporter.flashing"],
         }),
       );
-      return container;
-    } else return createSprite("teleporter");
+      applyAppearance(renderContainer!, rendering);
+    } else applyAppearance(renderContainer!, createSprite("teleporter"));
   },
 
-  pickup({ id: pickupId, config: { gives } }, gameState) {
-    const roomId = currentRoom(gameState).id;
-    const collected = gameState.pickupsCollected[roomId][pickupId] === true;
+  pickup({
+    config: { gives },
+    renderContainer,
+    state: { expires },
+    stateLastFrame: lastRenderedState,
+  }) {
+    const bubbles = expires !== null;
+    const wasBubbles =
+      lastRenderedState === undefined ? false : (
+        lastRenderedState.expires !== null
+      );
+
+    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+      return;
+    }
 
     const pickupIcons: Record<
       ItemConfigMap<PlanetName, string>["pickup"]["gives"],
@@ -198,103 +263,168 @@ export const itemAppearances: {
     };
     const texture = pickupIcons[gives];
 
-    if (collected) {
-      return createSprite({
-        frames:
-          texture === "donuts" ?
-            spriteSheet.animations[`bubbles.taupe`]
-          : spriteSheet.animations[`bubbles.white`],
-        playOnce: "and-destroy",
-      });
-    }
-
-    return createSprite(texture);
+    applyAppearance(
+      renderContainer!,
+      createSprite(
+        bubbles ?
+          {
+            frames:
+              texture === "donuts" ?
+                spriteSheet.animations[`bubbles.taupe`]
+              : spriteSheet.animations[`bubbles.white`],
+            playOnce: "and-destroy",
+          }
+        : texture,
+      ),
+    );
   },
-  fish({ id: pickupId, config: { alive } }, gameState) {
-    const roomId = currentRoom(gameState).id;
-    const collected = gameState.pickupsCollected[roomId][pickupId] === true;
+  fish({
+    config: { alive },
+    state: { expires },
+    stateLastFrame: lastRenderedState,
+    renderContainer,
+  }) {
+    const bubbles = expires !== null;
+    const wasBubbles =
+      lastRenderedState === undefined ? false : (
+        lastRenderedState.expires !== null
+      );
 
-    if (collected) {
-      return createSprite({
-        frames: spriteSheet.animations[`bubbles.fish`],
-        playOnce: "and-destroy",
-      });
+    if (renderedBefore(renderContainer!) && bubbles !== wasBubbles) {
+      return;
     }
 
-    return createSprite(
-      alive ?
-        {
-          frames: spriteSheet.animations.fish,
-          animationSpeed: 0.25,
-        }
-      : {
-          texture: "fish.1",
-        },
+    applyAppearance(
+      renderContainer!,
+      createSprite(
+        bubbles ?
+          {
+            frames: spriteSheet.animations[`bubbles.fish`],
+            playOnce: "and-destroy",
+          }
+        : alive ?
+          {
+            frames: spriteSheet.animations.fish,
+            animationSpeed: 0.25,
+          }
+        : {
+            texture: "fish.1",
+          },
+      ),
     );
   },
 
-  sceneryPlayer: ({ config: { which } }) =>
-    createSprite(`${which}.walking.towards.2`),
+  sceneryPlayer: ifNotRenderedBefore(
+    ({ config: { which }, renderContainer }) => {
+      applyAppearance(
+        renderContainer,
+        createSprite(`${which}.walking.towards.2`),
+      );
+    },
+  ),
 
-  baddie({ config }) {
+  baddie: ifNotRenderedBefore(({ config, renderContainer }) => {
     switch (config.which) {
       case "helicopter-bug":
       case "dalek":
         // animated, no directions
-        return createSprite({
-          frames: spriteSheet.animations[config.which],
-          animationSpeed: 0.5,
-        });
+        applyAppearance(
+          renderContainer,
+          createSprite({
+            frames: spriteSheet.animations[config.which],
+            animationSpeed: 0.5,
+          }),
+        );
+        break;
       case "headless-base":
         // no anim, not directional
-        return createSprite({ texture: "headless-base" });
+        applyAppearance(
+          renderContainer,
+          createSprite({ texture: "headless-base" }),
+        );
+        break;
       case "american-football-head":
-        return createSprite({
-          texture: `american-football-head.${config.startDirection}`,
-        });
+        applyAppearance(
+          renderContainer,
+          createSprite({
+            texture: `american-football-head.${config.startDirection}`,
+          }),
+        );
+        break;
       case "turtle":
         // animated, directional:
-        return createSprite({
-          frames: spriteSheet.animations[`turtle.${config.startDirection}`],
-          animationSpeed: 0.25,
-        });
+        applyAppearance(
+          renderContainer,
+          createSprite({
+            frames: spriteSheet.animations[`turtle.${config.startDirection}`],
+            animationSpeed: 0.25,
+          }),
+        );
+        break;
       case "cyberman":
         if (config.charging) {
-          return createSprite(`cyberman.${config.startDirection}`);
+          applyAppearance(
+            renderContainer,
+            createSprite(`cyberman.${config.startDirection}`),
+          );
         } else {
-          return stackedSprites(`cyberman.towards`, bubbles);
+          applyAppearance(
+            renderContainer,
+            stackedSprites(`cyberman.towards`, bubbles),
+          );
         }
+        break;
       case "bubble-robot":
-        return stackedSprites(bubbles);
+        applyAppearance(renderContainer, stackedSprites(bubbles));
+        break;
       case "flying-ball":
         //stacked on bubbles:
-        return stackedSprites(`ball`, bubbles);
+        applyAppearance(renderContainer, stackedSprites(`ball`, bubbles));
+        break;
       case "computer-bot":
       case "elephant":
       case "monkey":
         // stacked on standard base:
-        return stackedSprites(`${config.which}.towards`);
+        applyAppearance(
+          renderContainer,
+          stackedSprites(`${config.which}.towards`),
+        );
+        break;
       case "elephant-head":
-        return createSprite("elephant.right");
+        applyAppearance(renderContainer, createSprite("elephant.right"));
+        break;
       default:
         config satisfies never;
         throw new Error(`unexpected baddie ${config}`);
     }
-  },
+  }),
 
-  joystick: () => createSprite("joystick"),
+  joystick: staticSpriteAppearance("joystick"),
 
-  "movable-block": ({ config: { style } }) => createSprite(style),
+  movableBlock: ifNotRenderedBefore(
+    ({ config: { style }, renderContainer }) => {
+      applyAppearance(renderContainer, createSprite(style));
+    },
+  ),
 
-  book: ({ config: { slider } }) => createSprite(`book.${slider ? "y" : "x"}`),
+  book: ifNotRenderedBefore(({ config: { slider }, renderContainer }) => {
+    applyAppearance(
+      renderContainer,
+      createSprite(`book.${slider ? "y" : "x"}`),
+    );
+  }),
 
-  "portable-block": ({ config: { style } }) => createSprite(style),
+  portableBlock: ifNotRenderedBefore(
+    ({ config: { style }, renderContainer }) => {
+      applyAppearance(renderContainer, createSprite(style));
+    },
+  ),
 
-  charles: () => stackedSprites("charles.towards"),
+  charles: staticSpriteAppearance("charles.towards"),
 
-  switch: () => createSprite("switch.off"),
-  "hush-puppy": () => createSprite("hush-puppy"),
-  ball: () => createSprite("ball"),
+  switch: staticSpriteAppearance("switch.off"),
+  hushPuppy: staticSpriteAppearance("hushPuppy"),
+  ball: staticSpriteAppearance("ball"),
 
   // for now, the floor has special rendering different from the main engine.
   // TODO: standardise

@@ -19,8 +19,8 @@ export type ItemInPlayType =
   | "floor";
 
 type FreeItemState = {
-  /* null meaning we know item is not standing on anything (ie, should fall) */
-  standingOn: UnknownItemInPlay | null;
+  /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
+  standingOn: UnknownItemInPlay[];
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */
@@ -91,9 +91,9 @@ export type ItemStateMap = {
     carrying: JsonItemType | null;
   };
   //teleporter: { stoodOn: boolean };
-  spring: FreeItemState & { stoodOn: boolean };
-  "portable-block": FreeItemState;
-  "movable-block": FreeItemState;
+  spring: FreeItemState;
+  portableBlock: FreeItemState;
+  movableBlock: FreeItemState;
   baddie: FreeItemState;
   pickup: FreeItemState;
   fish: FreeItemState;
@@ -150,6 +150,9 @@ type BaseItemState = {
    * If undefined, the item is not scheduled for removal (the normal case)
    */
   expires: number | null;
+
+  /** what is standing on this item? */
+  stoodOnBy: UnknownItemInPlay[];
 };
 
 export type ItemState<T extends ItemInPlayType> = BaseItemState &
@@ -170,7 +173,7 @@ export type ItemInPlay<
   readonly id: ID;
   state: ItemState<T>;
   // shallow copy of the last rendered state of this item, or undefined if never rendered before
-  lastRenderedState?: ItemState<T>;
+  stateLastFrame?: ItemState<T>;
 
   /**
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
@@ -208,8 +211,8 @@ export const fallingItemTypes = [
   "head",
   "heels",
   "pickup",
-  "portable-block",
-  "movable-block",
+  "portableBlock",
+  "movableBlock",
   "baddie",
   "spring",
   "fish",

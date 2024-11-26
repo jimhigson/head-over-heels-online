@@ -50,7 +50,7 @@ const colourRooms = () => {
 
   const sampleItems: UnknownJsonItem<TestCampaignRoomId>[] = [
     {
-      type: "deadly-block",
+      type: "deadlyBlock",
       config: { style: "volcano" },
       position: { x: 6, y: 6, z: 0 },
     },
@@ -524,12 +524,12 @@ const rooms = {
         position: { x: 6, y: 7, z: 0 },
       },
       {
-        type: "deadly-block",
+        type: "deadlyBlock",
         config: { style: "toaster" },
         position: { x: 4, y: 10, z: 0 },
       },
       {
-        type: "deadly-block",
+        type: "deadlyBlock",
         config: { style: "spikes" },
         position: { x: 2, y: 10, z: 0 },
       },
@@ -623,7 +623,7 @@ const rooms = {
         position: { x: 7, y: 7, z: 1 },
       },
       {
-        type: "movable-block",
+        type: "movableBlock",
         config: { style: "anvil" },
         position: { x: 9, y: 7, z: 0 },
       },
@@ -638,17 +638,17 @@ const rooms = {
         position: { x: 10, y: 4, z: 2 },
       },
       {
-        type: "movable-block",
+        type: "movableBlock",
         config: { style: "sandwich" },
         position: { x: 10, y: 9, z: 0 },
       },
       {
-        type: "movable-block",
+        type: "movableBlock",
         config: { style: "puck" },
         position: { x: 1, y: 0, z: 0 },
       },
       {
-        type: "deadly-block",
+        type: "deadlyBlock",
         config: { style: "puck" },
         position: { x: 7, y: 0, z: 0 },
       },
@@ -688,22 +688,22 @@ const rooms = {
         position: { x: 7, y: 9, z: 0 },
       },
       {
-        type: "portable-block",
+        type: "portableBlock",
         config: { style: "cube" },
         position: { x: 5, y: 9, z: 0 },
       },
       {
-        type: "portable-block",
+        type: "portableBlock",
         config: { style: "cube" },
         position: { x: 5, y: 9, z: 1 },
       },
       {
-        type: "portable-block",
+        type: "portableBlock",
         config: { style: "drum" },
         position: { x: 3, y: 9, z: 0 },
       },
       {
-        type: "portable-block",
+        type: "portableBlock",
         config: { style: "sticks" },
         position: { x: 1, y: 9, z: 0 },
       },

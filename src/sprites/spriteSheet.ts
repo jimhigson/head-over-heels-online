@@ -295,7 +295,7 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "hush-puppy": {
+  "hushPuppy": {
     frame: { x: 193, y: 449, ...largeItemTextureSize },
   },
   ball: {

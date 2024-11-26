@@ -153,7 +153,7 @@ const convertItemsArray = (
         case "vulcano": {
           const styleConversion: Record<
             typeof item.kind,
-            ItemConfigMap<PlanetName, string>["deadly-block"]["style"]
+            ItemConfigMap<PlanetName, string>["deadlyBlock"]["style"]
           > = {
             vulcano: "volcano",
             spikes: "spikes",
@@ -162,7 +162,7 @@ const convertItemsArray = (
           };
 
           return {
-            type: "deadly-block",
+            type: "deadlyBlock",
             config: {
               style: styleConversion[item.kind],
             },
@@ -251,7 +251,7 @@ const convertItemsArray = (
         case "stool": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfigMap<PlanetName, string>["movable-block"]["style"]
+            ItemConfigMap<PlanetName, string>["movableBlock"]["style"]
           > = {
             cap: "puck",
             stool: "anvil",
@@ -259,7 +259,7 @@ const convertItemsArray = (
           };
 
           return {
-            type: "movable-block",
+            type: "movableBlock",
             config: { style: conversions[item.kind] },
             position,
           };
@@ -277,7 +277,7 @@ const convertItemsArray = (
         case "another-portable-brick": {
           const conversions: Record<
             typeof item.kind,
-            ItemConfigMap<PlanetName, string>["portable-block"]["style"]
+            ItemConfigMap<PlanetName, string>["portableBlock"]["style"]
           > = {
             drum: "drum",
             "another-portable-brick": "cube",
@@ -285,7 +285,7 @@ const convertItemsArray = (
           };
 
           return {
-            type: "portable-block",
+            type: "portableBlock",
             config: { style: conversions[item.kind] },
             position,
           };
@@ -359,7 +359,7 @@ const convertItemsArray = (
 
         case "puppy":
           return {
-            type: "hush-puppy",
+            type: "hushPuppy",
             config: {},
             position,
           };

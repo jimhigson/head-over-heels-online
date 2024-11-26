@@ -9,6 +9,7 @@ import { iterate } from "@/utils/iterate";
 import { addXyz } from "@/utils/vectors/vectors";
 import type { RoomPickupsCollected } from "../gameState/GameState";
 import { isSolid } from "../physics/isSolid";
+import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
 const standingTolerance = 0.001;
 
@@ -16,12 +17,22 @@ export const findStandingOn = <RoomId extends string>(
   standee: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   items: Iterable<UnknownItemInPlay<RoomId>>,
   roomPickupsCollected: RoomPickupsCollected,
-): UnknownItemInPlay<RoomId> | null => {
+): Array<UnknownItemInPlay<RoomId>> => {
   const {
-    state: { position, standingOn },
+    state: {
+      position,
+      vels: {
+        gravity: { z: gravityVelZ },
+      },
+    },
     aabb,
     id,
   } = standee;
+
+  if (gravityVelZ > 0) {
+    // we're jumping and can't be standing on anything while travelling upwards
+    return [];
+  }
 
   const positionJustBelowItem = addXyz(position, { z: -standingTolerance });
   const collisions = collision1toMany(
@@ -35,24 +46,30 @@ export const findStandingOn = <RoomId extends string>(
     ),
   );
 
-  // the item we were standing on before is still in the list of things we could potentially be standing on,
-  // so preferentially keep it for sticky-standing:
-  const potentiallyStandingOn = collisions.filter((collisionItem) => {
-    const collisionItemTop =
-      collisionItem.state.position.z + collisionItem.aabb.z;
+  return collisions
+    .filter((collisionItem) => {
+      const collisionItemTop =
+        collisionItem.state.position.z + collisionItem.aabb.z;
 
-    // is the top of the collision item the same z as the bottom of the standee?
-    return collisionItemTop - position.z < standingTolerance * 2;
-  });
+      // is the top of the collision item the same z as the bottom of the standee?
+      return collisionItemTop - position.z < standingTolerance * 2;
+    })
+    .sort((collisionA, collisionB) => {
+      return (
+        itemXyOverlapArea(standee as UnknownItemInPlay<RoomId>, collisionB) -
+        itemXyOverlapArea(standee as UnknownItemInPlay<RoomId>, collisionA)
+      );
+    });
+};
 
-  // the item we were standing on before is still in the list of things we could potentially be standing on,
-  // so preferentially keep it for sticky-standing:
-  return (
-    (standingOn !== null &&
-      potentiallyStandingOn.find((potential) => potential === standingOn)) ||
-    // otherwise, the first item we detected we could be stood on:
-    potentiallyStandingOn.at(0) ||
-    // ... or we're standing on nothing:
-    null
+/*
+export const findStandingOnIds = <RoomId extends string>(
+  standee: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
+  items: Iterable<UnknownItemInPlay<RoomId>>,
+  roomPickupsCollected: RoomPickupsCollected,
+): string[] => {
+  return findStandingOn2(standee, items, roomPickupsCollected).map(
+    (item) => item.id,
   );
 };
+*/

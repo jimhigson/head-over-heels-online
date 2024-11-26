@@ -1,18 +1,13 @@
-// immer is used to set up the game, but the game itself relies on being
-
 import type { GameState } from "@/game/gameState/GameState";
 import { initGameState } from "@/game/gameState/initGameState";
 import type { InputState } from "@/game/input/InputState";
 import type { RenderOptions } from "@/game/RenderOptions";
 import type { RoomJson } from "@/model/modelTypes";
-import { setAutoFreeze, produce } from "immer";
+import { produce } from "immer";
 
 /**
  * Utilities for setting up a basic example room - for testing
  */
-
-// able to directly mutate state:
-setAutoFreeze(false);
 
 export const firstRoomId = "firstRoom" as const;
 // we have a second room to test doors, teleporters etc
@@ -66,11 +61,13 @@ const basicRenderOptions: RenderOptions<TestRoomId> = {
   showBoundingBoxes: "none",
 };
 
-const gameStateWithInput = produce(
-  (draft: GameState<TestRoomId>, inputState?: Partial<InputState>) => {
-    draft.inputState = { ...draft.inputState, ...inputState };
-  },
-);
+const gameStateWithInput = (
+  gameState: GameState<TestRoomId>,
+  inputState?: Partial<InputState>,
+): GameState<TestRoomId> => ({
+  ...gameState,
+  inputState: { ...gameState.inputState, ...inputState },
+});
 
 export type BasicGameStateOptions = {
   firstRoomItems: ItemsInTestRoomJson;

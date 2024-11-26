@@ -10,18 +10,15 @@ import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
-import type { PickupsCollected } from "../GameState";
-import type { RoomJson } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { RoomPickupsCollected } from "../GameState";
 import { originXyz } from "@/utils/vectors/vectors";
 
 export function* loadItem<RoomId extends string>(
   itemId: string,
   jsonItem: UnknownJsonItem<RoomId>,
-  { id: roomId }: RoomJson<PlanetName, RoomId>,
-  pickupsCollected: PickupsCollected<RoomId>,
+  roomPickupsCollected: RoomPickupsCollected,
 ): Generator<UnknownItemInPlay<RoomId>, undefined> {
-  if (jsonItem.type === "pickup" && pickupsCollected[roomId][itemId]) {
+  if (jsonItem.type === "pickup" && roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
     return;
   }
@@ -72,8 +69,9 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
 
   return {
     expires: null,
+    stoodOnBy: [],
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: null, vels: { gravity: originXyz } } : {}),
+    ...(falls ? { standingOn: [], vels: { gravity: originXyz } } : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
     ...(jsonItem.type === "lift" ?

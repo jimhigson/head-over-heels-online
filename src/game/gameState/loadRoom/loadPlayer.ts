@@ -24,7 +24,8 @@ export const loadPlayer = <RoomId extends string>(
           hasHooter: false,
           fast: 0,
           shield: 0,
-          standingOn: null,
+          standingOn: [],
+          stoodOnBy: [],
           vels: {
             walking: originXyz,
             gravity: originXyz,
@@ -57,7 +58,8 @@ export const loadPlayer = <RoomId extends string>(
           hasBag: false,
           jumps: 0,
           shield: 0,
-          standingOn: null,
+          standingOn: [],
+          stoodOnBy: [],
           vels: {
             walking: originXyz,
             gravity: originXyz,

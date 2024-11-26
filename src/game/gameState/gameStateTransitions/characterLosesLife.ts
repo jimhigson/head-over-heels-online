@@ -1,7 +1,6 @@
 import { otherCharacterName } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
-import { initStandingOnForItem, loadRoom } from "../loadRoom/loadRoom";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import { loadRoom } from "../loadRoom/loadRoom";
 
 export const characterLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -22,13 +21,6 @@ export const characterLosesLife = <RoomId extends string>(
     return;
   }
 
-  const reloadedRoom = loadRoom(
-    gameState.campaign.rooms[room.id],
-    gameState.pickupsCollected,
-  );
-
-  gameState.characterRooms[currentCharacterName]!.room = reloadedRoom;
-
   character.state = {
     ...previousState,
     ...entryState,
@@ -36,7 +28,14 @@ export const characterLosesLife = <RoomId extends string>(
     lives: newLives,
   };
 
-  initStandingOnForItem(character, reloadedRoom.items);
+  const reloadedRoom = loadRoom(
+    gameState.campaign.rooms[room.id],
+    gameState.pickupsCollected[room.id],
+    {
+      // put the character into the room as the extraItems:
+      [currentCharacterName]: character,
+    },
+  );
 
-  (reloadedRoom.items[currentCharacterName] as PlayableItem) = character;
+  gameState.characterRooms[currentCharacterName]!.room = reloadedRoom;
 };

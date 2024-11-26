@@ -1,6 +1,6 @@
 import { expect, test, describe } from "vitest";
+import type { Collideable } from "./aabbCollision";
 import { collision1to1, collision1toMany } from "./aabbCollision";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 
 describe("collision1to1", () => {
@@ -60,47 +60,37 @@ describe("collision1toMany", () => {
   console.log(process.version);
 
   test("finds the collision items", () => {
-    const subject: UnknownItemInPlay = {
+    const subject: Collideable = {
       ...defaultItemProperties,
       id: "subject",
-      type: "block",
-      config: { style: "artificial", disappearing: false },
-      state: { position: { x: 0, y: 0, z: 0 }, expires: null },
+      state: { position: { x: 0, y: 0, z: 0 } },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
-    const colliding1: UnknownItemInPlay = {
+    const colliding1: Collideable = {
       ...defaultItemProperties,
       id: "colliding1",
-      type: "block",
-      config: { style: "artificial", disappearing: false },
-      state: { position: { x: 1.9, y: 0, z: 0 }, expires: null },
+      state: { position: { x: 1.9, y: 0, z: 0 } },
       aabb: { x: 1, y: 1, z: 1 },
     };
-    const colliding2: UnknownItemInPlay = {
+    const colliding2: Collideable = {
       ...defaultItemProperties,
       id: "colliding2",
-      type: "block",
-      config: { style: "artificial", disappearing: false },
-      state: { position: { x: 0, y: 0.9, z: 0 }, expires: null },
+      state: { position: { x: 0, y: 0.9, z: 0 } },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
-    const nonColliding1: UnknownItemInPlay = {
+    const nonColliding1: Collideable = {
       ...defaultItemProperties,
       id: "nonColliding1",
-      type: "block",
-      config: { style: "artificial", disappearing: false },
-      state: { position: { x: 0, y: 0, z: 1 }, expires: null },
+      state: { position: { x: 0, y: 0, z: 1 } },
       aabb: { x: 2, y: 1, z: 1 },
     };
 
-    const nonColliding2: UnknownItemInPlay = {
+    const nonColliding2: Collideable = {
       ...defaultItemProperties,
       id: "nonColliding2",
-      type: "block",
-      config: { style: "artificial", disappearing: false },
-      state: { position: { x: 2, y: 0, z: 0 }, expires: null },
+      state: { position: { x: 2, y: 0, z: 0 } },
       aabb: { x: 2, y: 1, z: 1 },
     };
 

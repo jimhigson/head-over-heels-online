@@ -2,7 +2,10 @@ import type { Application, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { moveSpriteToItemProjection, renderItem } from "../render/renderItem";
+import {
+  moveSpriteToItemProjection,
+  renderItemIfNeeded,
+} from "../render/renderItem";
 import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
 import { renderCurrentRoom } from "../render/renderCurrentRoom";
@@ -12,7 +15,6 @@ import { amigaLowResPal } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
-import { itemNeedsRerender } from "../render/itemNeedsRerender";
 import { xyzEqual } from "@/utils/vectors/vectors";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { spritesheetPalette } from "@/sprites/samplePalette";
@@ -48,13 +50,12 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
         continue;
       }
 
-      if (itemNeedsRerender(item)) {
-        //console.log("rerendering item", item.id);
-        renderItem(item, gameState);
-      }
+      // it is up the the item to decide if it will rerender
+      renderItemIfNeeded(item, gameState);
+
       if (
-        item.lastRenderedState === undefined ||
-        !xyzEqual(item.lastRenderedState.position, item.state.position)
+        item.stateLastFrame === undefined ||
+        !xyzEqual(item.stateLastFrame.position, item.state.position)
       ) {
         /*console.log(
           "repositioning item",
@@ -119,6 +120,7 @@ export const mainLoop = <RoomId extends string>(
       app.stage.filters = [];
       progressGameState(gameState, deltaMS);
 
+      //console.log("--- 🎨 rendering ---");
       updateWorldRenderingToMatchState(
         gameState,
         lastRenderedRoom,
