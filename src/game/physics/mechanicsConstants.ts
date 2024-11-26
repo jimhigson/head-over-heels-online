@@ -14,6 +14,24 @@ export const playerWalkStopAccelPixPerMsSq = {
   heels: -0.000_2,
 };
 
+/** 
+  acceleration due to gravity while jumping, in m/s²
+  setting to zero gives the old, linear jump behaviour. Higher figures mean
+  more contrast between initial jump speed and average jump speed
+ */
+export const fallG = 0.0002;
+
+export const terminalVelocityPixPerMs = {
+  // head glides at height of two blocks per second
+  head: (blockSizePx.h * 2) / 1000,
+  // everyone else tops out at 2px/sec in original game
+  //others: pxPerFrameSpeed(-2),
+  others: (blockSizePx.h * 6) / 1000,
+};
+
+export const maxLiftAcc = fallG * 0.5;
+export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.5;
+
 /**
  * when heels jumps forwards, instantly gets this fraction of her max speed forward,
  * so she isn't jumping straight up
@@ -47,21 +65,6 @@ export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
   head: blockSizePx.h * 2.5,
   heels: blockSizePx.h,
-};
-
-/** 
-  acceleration due to gravity while jumping, in m/s²
-  setting to zero gives the old, linear jump behaviour. Higher figures mean
-  more contrast between initial jump speed and average jump speed
- */
-export const fallG = 0.0002;
-
-export const terminalVelocityPixPerMs = {
-  // head glides at height of two blocks per second
-  head: (blockSizePx.h * 2) / 1000,
-  // everyone else tops out at 2px/sec in original game
-  //others: pxPerFrameSpeed(-2),
-  others: (blockSizePx.h * 6) / 1000,
 };
 
 // original game lift speed was 1px per frame

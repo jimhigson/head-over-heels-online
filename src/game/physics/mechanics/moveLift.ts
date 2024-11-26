@@ -3,31 +3,57 @@ import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { MechanicResult } from "../MechanicResult";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { liftSpeed } from "../mechanicsConstants";
+import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.h;
 
-const minimumLiftVelocity = 0.01;
+const epsilonVelocity = 0.001;
 
-function velocityAtAltitude(
-  z: number,
-  direction: "up" | "down",
-  minZ: number = 0,
-  maxZ: number = 1,
-): number {
-  const blocksUntilTurn =
-    (direction === "up" ? maxZ - z : z - minZ) / blockHeight;
-  const blocksAfterTurn =
-    (direction === "up" ? z - minZ : maxZ - z) / blockHeight;
+const calculateVelocity = ({
+  totalDistance,
+  currentAltitude,
+  direction,
+}: {
+  totalDistance: number;
+  currentAltitude: number;
+  direction: "up" | "down";
+}): number => {
+  // Distance needed to accelerate or decelerate
+  const dAccel = maxLiftSpeed ** 2 / (2 * maxLiftAcc);
 
-  const slowDown1 = blocksUntilTurn < 1 ? blocksUntilTurn : 1;
-  const slowDown2 = blocksAfterTurn < 1 ? blocksAfterTurn : 1;
-
-  return (
-    Math.max(liftSpeed * slowDown1 * slowDown2, minimumLiftVelocity) *
-    (direction === "up" ? 1 : -1)
-  );
-}
+  // Determine the phase
+  if (direction === "up") {
+    if (currentAltitude <= dAccel) {
+      // Acceleration phase
+      return Math.max(
+        epsilonVelocity,
+        Math.sqrt(2 * maxLiftAcc * currentAltitude),
+      );
+    } else if (currentAltitude >= totalDistance - dAccel) {
+      // Deceleration phase
+      const dRemaining = Math.max(0, totalDistance - currentAltitude);
+      return Math.max(epsilonVelocity, Math.sqrt(2 * maxLiftAcc * dRemaining));
+    } else {
+      // Constant velocity phase
+      return maxLiftSpeed;
+    }
+  } else {
+    if (currentAltitude >= totalDistance - dAccel) {
+      // Acceleration phase (in reverse) - heading down
+      const dFromTop = Math.max(0, totalDistance - currentAltitude);
+      return Math.min(-epsilonVelocity, -Math.sqrt(2 * maxLiftAcc * dFromTop));
+    } else if (currentAltitude <= dAccel) {
+      // Deceleration phase (in reverse)
+      return Math.min(
+        -epsilonVelocity,
+        -Math.sqrt(2 * maxLiftAcc * currentAltitude),
+      );
+    } else {
+      // Constant velocity phase
+      return -maxLiftSpeed;
+    }
+  }
+};
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -45,12 +71,20 @@ export function moveLift<RoomId extends string>(
 ): MechanicResult<"lift"> {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
-  const velocity = velocityAtAltitude(z, direction, lowestZ, highestZ);
+  const velocity = calculateVelocity({
+    currentAltitude: z,
+    direction,
+    totalDistance: highestZ - lowestZ,
+  });
+
+  if (Number.isNaN(velocity)) throw new Error("velocity is NaN");
 
   const mewDirection: "up" | "down" =
     z <= lowestZ ? "up"
     : z >= highestZ ? "down"
     : direction;
+
+  //const velocity = velocityAtAltitude(z, direction, lowestZ, highestZ);
 
   return {
     vels: { lift: { z: velocity } },
