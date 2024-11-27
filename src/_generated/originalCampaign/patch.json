@@ -1,204 +1,41 @@
 [
+  { "op": "replace", "path": "/rooms/moonbase9/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase8/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase7/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/moonbase6/color/hue", "value": "magenta" },
+  { "op": "replace", "path": "/rooms/moonbase5/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/moonbase4/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase36/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase32/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase30/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase3/color/hue", "value": "magenta" },
+  { "op": "replace", "path": "/rooms/moonbase28/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase27/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase26/color/hue", "value": "green" },
   {
     "op": "replace",
-    "path": "/rooms/moonbase9/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
+    "path": "/rooms/moonbase24toegyptus/color/hue",
+    "value": "cyan"
   },
   {
     "op": "replace",
-    "path": "/rooms/moonbase8/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
+    "path": "/rooms/moonbase23/color/hue",
+    "value": "magenta"
   },
   {
     "op": "replace",
-    "path": "/rooms/moonbase7/color",
-    "value": {
-      "hue": "green",
-      "shade": "basic"
-    }
+    "path": "/rooms/moonbase22topenitentiary/color/hue",
+    "value": "yellow"
   },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase6/color",
-    "value": {
-      "hue": "magenta",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase5/color",
-    "value": {
-      "hue": "green",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase4/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase36/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase32/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase30/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase3/color",
-    "value": {
-      "hue": "magenta",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase28/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase27/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase26/color",
-    "value": {
-      "hue": "green",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase24toegyptus/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase23/color",
-    "value": {
-      "hue": "magenta",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase22topenitentiary/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase20/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase2/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase18/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase16/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase15/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase13/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase12/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase11/color",
-    "value": {
-      "hue": "cyan",
-      "shade": "basic"
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/moonbase10/color",
-    "value": {
-      "hue": "yellow",
-      "shade": "basic"
-    }
-  },
+  { "op": "replace", "path": "/rooms/moonbase20/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase2/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase18/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase16/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase15/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase13/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase12/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/moonbase11/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/moonbase10/color/hue", "value": "yellow" },
   {
     "op": "replace",
     "path": "/rooms/blacktooth63/floor",
@@ -215,6 +52,27 @@
     "value": "bookworld"
   },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/block@3,7,0:Z1AdJxh",
+    "value": {
+      "left": { "disappearing": true },
+      "right": { "disappearing": false }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/block@0,7,0:Z1AdJxh",
+    "value": {
+      "left": { "disappearing": true },
+      "right": { "disappearing": false }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/baddie@3,0,1:Z1w4InY",
+    "value": { "left": { "activated": true }, "right": { "activated": false } }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth59/floor",
     "value": "bookworld"
@@ -224,16 +82,8 @@
     "path": "/rooms/blacktooth57/floor",
     "value": "bookworld"
   },
-  {
-    "op": "replace",
-    "path": "/rooms/blacktooth56/floor",
-    "value": "market"
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/blacktooth55/floor",
-    "value": "market"
-  },
+  { "op": "replace", "path": "/rooms/blacktooth56/floor", "value": "market" },
+  { "op": "replace", "path": "/rooms/blacktooth55/floor", "value": "market" },
   {
     "op": "replace",
     "path": "/rooms/blacktooth34/items/block@5,7,0:95uHj/config/disappearing",
@@ -262,62 +112,28 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth23heels/items/heels",
-    "value": {
-      "config": {
-        "which": "heels"
-      },
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 9
-      },
-      "type": "player"
-    }
-  },
-  {
-    "op": "add",
     "path": "/rooms/blacktooth23heels/items/block",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 3,
-        "y": 5,
-        "z": 0
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 3, "y": 5, "z": 0 },
       "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/conveyorU",
-    "value": {
-      "config": {
-        "direction": "towards"
-      },
-      "position": {
-        "x": 2,
-        "y": 6,
-        "z": 0
-      },
-      "type": "conveyor"
     }
   },
   {
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/conveyor@1,6,0:24hKaE",
     "value": {
-      "config": {
-        "direction": "left"
-      },
-      "position": {
-        "x": 1,
-        "y": 6,
-        "z": 0
-      },
+      "config": { "direction": "left" },
+      "position": { "x": 1, "y": 6, "z": 0 },
+      "type": "conveyor"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/conveyorU",
+    "value": {
+      "config": { "direction": "towards" },
+      "position": { "x": 2, "y": 6, "z": 0 },
       "type": "conveyor"
     }
   },
@@ -325,30 +141,26 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/cube",
     "value": {
-      "config": {
-        "style": "cube"
-      },
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 8
-      },
+      "config": { "style": "cube" },
+      "position": { "x": 0, "y": 3, "z": 8 },
       "type": "portableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/heels",
+    "value": {
+      "config": { "which": "heels" },
+      "position": { "x": 0, "y": 3, "z": 9 },
+      "type": "player"
     }
   },
   {
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/lift",
     "value": {
-      "config": {
-        "bottom": 0,
-        "top": 8
-      },
-      "position": {
-        "x": 2,
-        "y": 0,
-        "z": 0
-      },
+      "config": { "bottom": 0, "top": 8 },
+      "position": { "x": 2, "y": 0, "z": 0 },
       "type": "lift"
     }
   },
@@ -356,15 +168,8 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/liftBlock",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 3, "y": 0, "z": 0 },
       "type": "block"
     }
   },
@@ -372,15 +177,8 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/liftBlock2",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 4
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 3, "y": 0, "z": 4 },
       "type": "block"
     }
   },
@@ -388,14 +186,8 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/teleporter2",
     "value": {
-      "config": {
-        "toRoom": "blacktooth24"
-      },
-      "position": {
-        "x": 1,
-        "y": 0,
-        "z": 0
-      },
+      "config": { "toRoom": "blacktooth24" },
+      "position": { "x": 1, "y": 0, "z": 0 },
       "type": "teleporter"
     }
   },
@@ -403,14 +195,8 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/teleporter3",
     "value": {
-      "config": {
-        "toRoom": "blacktooth24"
-      },
-      "position": {
-        "x": 1,
-        "y": 1,
-        "z": 0
-      },
+      "config": { "toRoom": "blacktooth24" },
+      "position": { "x": 1, "y": 1, "z": 0 },
       "type": "teleporter"
     }
   },
@@ -427,43 +213,17 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/head",
     "value": {
-      "config": {
-        "which": "head"
-      },
-      "position": {
-        "x": 5,
-        "y": 1,
-        "z": 0
-      },
+      "config": { "which": "head" },
+      "position": { "x": 5, "y": 1, "z": 0 },
       "type": "player"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth1head/items/spring",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 5
-      },
-      "type": "spring"
     }
   },
   {
     "op": "add",
     "path": "/rooms/blacktooth1head/items/highBlock",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 2
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 0, "y": 0, "z": 2 },
       "type": "block"
     }
   },
@@ -471,15 +231,8 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/lowBlock",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 0, "y": 0, "z": 0 },
       "type": "block"
     }
   },
@@ -487,21 +240,19 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/midBlock",
     "value": {
-      "config": {
-        "disappearing": false,
-        "style": "organic"
-      },
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 1
-      },
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 0, "y": 0, "z": 1 },
       "type": "block"
     }
   },
   {
-    "op": "replace",
-    "path": "/rooms/blacktooth11/floor",
-    "value": "market"
-  }
+    "op": "add",
+    "path": "/rooms/blacktooth1head/items/spring",
+    "value": {
+      "config": {},
+      "position": { "x": 0, "y": 3, "z": 5 },
+      "type": "spring"
+    }
+  },
+  { "op": "replace", "path": "/rooms/blacktooth11/floor", "value": "market" }
 ]

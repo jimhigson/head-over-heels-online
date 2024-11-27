@@ -7,6 +7,7 @@ import { type Xyz } from "@/utils/vectors/vectors";
 import type { GameState } from "@/game/gameState/GameState";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import { handleBaddieTouchingItem } from "../mechanics/baddieAi";
+import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
 
 /**
  * some old - Morties touching Morties
@@ -41,6 +42,10 @@ export const handleItemsTouchingItems = <RoomId extends string>({
     handleBaddieTouchingItem(movingItem, touchee, movementVector, gameState)
   )
     return true;
+
+  if (isItemType("switch")(touchee)) {
+    handleItemTouchingSwitch(touchee, movingItem, movementVector, gameState);
+  }
 
   return false;
 };

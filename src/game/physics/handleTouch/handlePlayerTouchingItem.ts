@@ -70,9 +70,14 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
         return true;
       }
       break;
-    case "block":
+
     case "barrier":
       if (touchee.config.disappearing) {
+        handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
+      }
+      break;
+    case "block":
+      if (touchee.state.disappearing) {
         handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
       }
       break;

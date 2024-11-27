@@ -80,5 +80,6 @@ export const initGameState = <RoomId extends string>(
     events: mitt<ApiEvents<RoomId>>(),
     pickupsCollected,
     gameTime: 0,
+    progression: 0,
   };
 };

@@ -2568,9 +2568,9 @@
         ]
       },
       "items": {
-        "switch@0,7,0:13y": {
+        "switch@0,7,0:V4krG": {
           "type": "switch",
-          "config": {},
+          "config": { "activates": {} },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
         "baddie@0,5,0:yqEry": {
@@ -4596,9 +4596,9 @@
           "config": { "gives": "donuts" },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "switch@6,0,1:13y": {
+        "switch@6,0,1:V4krG": {
           "type": "switch",
-          "config": {},
+          "config": { "activates": {} },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
         "baddie@3,0,1:Z1w4InY": {
@@ -20889,9 +20889,9 @@
           "config": { "style": "toaster" },
           "position": { "x": 7, "y": 1, "z": 1 }
         },
-        "switch@7,7,0:13y": {
+        "switch@7,7,0:V4krG": {
           "type": "switch",
-          "config": {},
+          "config": { "activates": {} },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
         "movableBlock@0,1,0:1EfFpg": {
@@ -20899,9 +20899,9 @@
           "config": { "style": "sandwich" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "switch@0,0,0:13y": {
+        "switch@0,0,0:V4krG": {
           "type": "switch",
-          "config": {},
+          "config": { "activates": {} },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
         "door@8,3,2:2d0pOO": {

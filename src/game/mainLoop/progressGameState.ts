@@ -127,8 +127,6 @@ export const progressGameState = <RoomId extends string>(
   for (let i = 0; i < physicsTickCount; i++) {
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
 
-    gameState.gameTime += physicsTickMs;
-
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {
@@ -154,6 +152,9 @@ export const progressGameState = <RoomId extends string>(
     }
 
     setStandingOnForAllItemsInRoom(room, gameState.pickupsCollected[room.id]);
+
+    gameState.progression++;
+    gameState.gameTime += physicsTickMs;
   }
 
   snapStationaryItemsToPixelGrid(room);

@@ -118,16 +118,22 @@ export const itemAppearances: {
   }),
 
   block({
-    config: { style, disappearing },
-    state: { expires },
+    config: { style },
+    state: { expires, disappearing },
     stateLastFrame,
     renderContainer,
   }) {
     const bubbles = expires !== null;
     const wasBubbles =
       stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
+    const wasDisappearing =
+      stateLastFrame === undefined ? false : stateLastFrame.disappearing;
 
-    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+    if (
+      renderedBefore(renderContainer!) &&
+      bubbles === wasBubbles &&
+      disappearing === wasDisappearing
+    ) {
       return;
     }
 
@@ -139,6 +145,21 @@ export const itemAppearances: {
           playOnce: "and-destroy",
         })
       : createSprite(`block.${style}${disappearing ? ".disappearing" : ""}`),
+    );
+  },
+
+  switch({ state: { setting }, stateLastFrame, renderContainer }) {
+    const lastSetting =
+      stateLastFrame === undefined ? false : stateLastFrame.setting;
+
+    if (renderedBefore(renderContainer!) && setting === lastSetting) {
+      return;
+    }
+
+    applyAppearance(
+      renderContainer!,
+
+      createSprite(`switch.${setting}`),
     );
   },
 
@@ -442,7 +463,6 @@ export const itemAppearances: {
 
   charles: staticSpriteAppearance("charles.towards"),
 
-  switch: staticSpriteAppearance("switch.off"),
   hushPuppy: staticSpriteAppearance("hushPuppy"),
   ball: staticSpriteAppearance("ball"),
 

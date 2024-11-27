@@ -97,6 +97,7 @@ export type ItemStateMap = {
   portableBlock: FreeItemState;
   movableBlock: FreeItemState;
   baddie: FreeItemState & {
+    activated: boolean;
     vels: {
       walking: Xyz;
     };
@@ -112,6 +113,15 @@ export type ItemStateMap = {
   stopAutowalk: EmptyObject;
   conveyor: {
     moving: boolean;
+  };
+  block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
+  switch: {
+    setting: "left" | "right";
+    /**
+     * the frame this switch was last touched on. Frames only switch if they are touched and weren't
+     * already touched on the previous frame
+     */
+    touchedOnProgression: number;
   };
 };
 
@@ -132,6 +142,8 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;
+  // disappearing can be turned off (blacktooth 6 for donuts) so it is state, not config
+  block: Omit<JsonItemConfig<"block", PlanetName, RoomId>, "disappearing">;
 };
 
 // type-fest's EmptyObject was creating issues

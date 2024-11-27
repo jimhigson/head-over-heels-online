@@ -73,6 +73,11 @@ export type GameState<RoomId extends string> = {
   pickupsCollected: PickupsCollected<RoomId>;
   /** how many ms has this game been played for? */
   gameTime: number;
+  /**
+   * an incrementing number of how many times we have progressed the game engine
+   * each progression having its own unique number
+   */
+  progression: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

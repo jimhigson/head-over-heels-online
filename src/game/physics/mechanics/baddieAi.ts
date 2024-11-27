@@ -1,6 +1,6 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
-import { type MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { walkSpeedPixPerMs } from "../mechanicsConstants";
@@ -24,11 +24,14 @@ export const tickBaddie = <RoomId extends string>(
   {
     state: {
       vels: { walking },
+      activated,
     },
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie"> => {
+  if (!activated) return unitMechanicalResult;
+
   const newWalking =
     Math.random() < deltaMS / 1_000 ?
       scaleXyz(
@@ -57,9 +60,13 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
     state: {
       position,
       vels: { walking },
+      activated,
     },
     aabb,
   } = baddieItem;
+
+  if (!activated) return;
+
   const m = mtv(position, aabb, toucheePosition, toucheeAabb);
 
   if (m.z) return;

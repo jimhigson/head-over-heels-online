@@ -2874,8 +2874,8 @@ export const campaign = {
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
-        "switch@0,7,0:13y": {
-          config: {},
+        "switch@0,7,0:V4krG": {
+          config: { activates: {} },
           position: { x: 0, y: 7, z: 0 },
           type: "switch",
         },
@@ -4828,8 +4828,23 @@ export const campaign = {
           position: { x: 7, y: 7, z: 1 },
           type: "pickup",
         },
-        "switch@6,0,1:13y": {
-          config: {},
+        "switch@6,0,1:V4krG": {
+          config: {
+            activates: {
+              "block@3,7,0:Z1AdJxh": {
+                left: { disappearing: true },
+                right: { disappearing: false }
+              },
+              "block@0,7,0:Z1AdJxh": {
+                left: { disappearing: true },
+                right: { disappearing: false }
+              },
+              "baddie@3,0,1:Z1w4InY": {
+                left: { activated: true },
+                right: { activated: false }
+              }
+            }
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "switch",
         },
@@ -20817,13 +20832,13 @@ export const campaign = {
           position: { x: 0, y: 1, z: 0 },
           type: "movableBlock",
         },
-        "switch@0,0,0:13y": {
-          config: {},
+        "switch@0,0,0:V4krG": {
+          config: { activates: {} },
           position: { x: 0, y: 0, z: 0 },
           type: "switch",
         },
-        "switch@7,7,0:13y": {
-          config: {},
+        "switch@7,7,0:V4krG": {
+          config: { activates: {} },
           position: { x: 7, y: 7, z: 0 },
           type: "switch",
         },

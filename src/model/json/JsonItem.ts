@@ -163,6 +163,16 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     // almost all are x-aligned
     slider?: boolean;
   };
+  switch: {
+    // list of all items (de)activated by this switch
+    activates: {
+      [itemId: string]: {
+        // state deltas for the impacted items
+        left: Record<string, unknown>;
+        right: Record<string, unknown>;
+      };
+    };
+  };
 };
 
 /** config used in both json and in-play items */

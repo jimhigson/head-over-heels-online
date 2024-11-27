@@ -1,9 +1,5 @@
-import type {
-  JsonItemType,
-  JsonItem,
-  UnknownJsonItem,
-} from "@/model/json/JsonItem";
-import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { fallingItemTypes } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
@@ -63,9 +59,7 @@ export function* loadItem<RoomId extends string>(
   }
 }
 
-const initialState = <T extends JsonItemType & ItemInPlayType>(
-  jsonItem: JsonItem<T>,
-) => {
+const initialState = (jsonItem: UnknownJsonItem) => {
   const free = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
@@ -86,9 +80,14 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
           movingFloor: originXyz,
           walking: initBaddieWalk(),
         },
+        activated: true,
       }
     : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
+    ...(jsonItem.type === "switch" ? { setting: "left" } : {}),
+    ...(jsonItem.type === "block" ?
+      { disappearing: jsonItem.config.disappearing }
+    : {}),
     ...(jsonItem.type === "lift" ?
       { direction: "up", vels: { lift: originXyz } }
     : {}),

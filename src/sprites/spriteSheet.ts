@@ -222,10 +222,10 @@ const frames = {
   drum: {
     frame: { x: 52, y: 428, ...smallItemTextureSize },
   },
-  "switch.off": {
+  "switch.left": {
     frame: { x: 52, y: 453, ...smallItemTextureSize },
   },
-  "switch.on": {
+  "switch.right": {
     frame: { x: 77, y: 453, ...smallItemTextureSize },
   },
   ...fourDirections(
