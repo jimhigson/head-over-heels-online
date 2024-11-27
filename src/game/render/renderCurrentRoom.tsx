@@ -91,7 +91,7 @@ export const renderCurrentRoom = <RoomId extends string>(
       options.showBoundingBoxes !== "none" &&
       item.renderContainer !== undefined
     ) {
-      item.renderContainer.alpha = 0.2;
+      item.renderContainer.alpha = 0.8;
     }
 
     assignMouseActions(item, options, room);

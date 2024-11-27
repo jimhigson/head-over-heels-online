@@ -24,6 +24,7 @@ import {
   roomHeightBlocks,
 } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
+import { noInput } from "../input/InputState";
 
 const testFrameRates = [
   15, // crazy slow - slower than original
@@ -817,5 +818,93 @@ describe("jumping", () => {
   test.todo("characters can jump off a disappearing block", () => {
     //     (h) --> jump    can't land here
     // (block) (gap) (gap) (block)
+  });
+});
+
+describe("dissapearing blocks", () => {
+  const gameStateWithDisappearingBlocks: GameState<TestRoomId> = basicGameState(
+    {
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        disappearingBlock0: {
+          type: "block",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            style: "organic",
+            disappearing: true,
+          },
+        },
+        disappearingBlock1: {
+          type: "block",
+          position: { x: 0, y: 1, z: 0 },
+          config: {
+            style: "organic",
+            disappearing: true,
+          },
+        },
+        disappearingBlock2: {
+          type: "block",
+          position: { x: 0, y: 2, z: 0 },
+          config: {
+            style: "organic",
+            disappearing: true,
+          },
+        },
+        disappearingBlock3: {
+          type: "block",
+          position: { x: 0, y: 3, z: 0 },
+          config: {
+            style: "organic",
+            disappearing: true,
+          },
+        },
+        pickup: {
+          type: "pickup",
+          position: { x: 0, y: 4, z: 1 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+      },
+      firstRoomProps: {
+        floor: "deadly",
+      },
+    },
+  );
+
+  test("can jump along a line of disappearing blocks", () => {
+    playGameThrough(
+      {
+        ...gameStateWithDisappearingBlocks,
+        inputState: { ...noInput(), jump: true, away: true },
+      },
+      {
+        until(gameState) {
+          // got two more lives
+          return heelsState(gameState).lives === 10;
+        },
+      },
+    );
+  });
+  test("can not walk along a line of disappearing blocks", () => {
+    playGameThrough(
+      {
+        ...gameStateWithDisappearingBlocks,
+        inputState: { ...noInput(), away: true /* not jumping */ },
+      },
+      {
+        until(gameState) {
+          // lost a life
+          return heelsState(gameState).lives === 7;
+        },
+      },
+    );
   });
 });

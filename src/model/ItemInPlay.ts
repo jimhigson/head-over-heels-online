@@ -171,6 +171,14 @@ type BaseItemState = {
    * If undefined, the item is not scheduled for removal (the normal case)
    */
   expires: number | null;
+  /**
+   * If not null, the item will not be considered solid after this frame. Can be set to:
+   *  * the current frame to make non-solid right away
+   *  * the next frame to give one more frame's chance to jump
+   *  * -1 to be unsolid forever
+   *  * null to be solid (most items will have this value forever)
+   */
+  unsolidAfterProgression: number | null;
 
   /** what is standing on this item? */
   stoodOnBy: UnknownItemInPlay[];

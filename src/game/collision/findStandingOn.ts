@@ -7,7 +7,6 @@ import type {
 import type { PlanetName } from "@/sprites/planets";
 import { iterate } from "@/utils/iterate";
 import { addXyz } from "@/utils/vectors/vectors";
-import type { RoomPickupsCollected } from "../gameState/GameState";
 import { isSolid } from "../physics/isSolid";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
@@ -16,7 +15,7 @@ const standingTolerance = 0.001;
 export const findStandingOn = <RoomId extends string>(
   standee: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   items: Iterable<UnknownItemInPlay<RoomId>>,
-  roomPickupsCollected: RoomPickupsCollected,
+  progression: number,
 ): Array<UnknownItemInPlay<RoomId>> => {
   const {
     state: {
@@ -41,9 +40,7 @@ export const findStandingOn = <RoomId extends string>(
       aabb,
       id,
     },
-    iterate(items).filter((item) =>
-      isSolid(standee, item, roomPickupsCollected),
-    ),
+    iterate(items).filter((item) => isSolid(item, progression)),
   );
 
   return collisions

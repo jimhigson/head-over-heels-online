@@ -47,4 +47,5 @@ export const handlePlayerTouchingDisappearing = <RoomId extends string>(
 
   disappearingItem.state.expires =
     gameState.gameTime + characterFadeInOrOutDuration;
+  disappearingItem.state.unsolidAfterProgression = gameState.progression + 1;
 };

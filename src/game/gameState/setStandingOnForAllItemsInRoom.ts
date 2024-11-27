@@ -3,11 +3,10 @@ import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import { findStandingOn } from "../collision/findStandingOn";
-import type { RoomPickupsCollected } from "./GameState";
 
 export const setStandingOnForAllItemsInRoom = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
-  roomPickupsCollected: RoomPickupsCollected,
+  progression: number,
 ) => {
   for (const item of objectValues(room.items)) {
     // setting conditionally is bad because we do a shallow clone to set the
@@ -21,7 +20,7 @@ export const setStandingOnForAllItemsInRoom = <RoomId extends string>(
       item.state.standingOn = findStandingOn(
         item,
         objectValues(room.items),
-        roomPickupsCollected,
+        progression,
       );
 
       for (const sOn of item.state.standingOn) {

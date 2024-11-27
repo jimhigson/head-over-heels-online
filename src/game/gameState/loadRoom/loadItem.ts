@@ -65,6 +65,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
   return {
     expires: null,
     stoodOnBy: [],
+    unsolidAfterFrame: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(free ?
       {

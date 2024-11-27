@@ -19,7 +19,7 @@ import {
   xyzEqual,
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import { blockSizePx } from "@/sprites/spritePivots";
+import { blockSizePx, blockSizeXyzPx } from "@/sprites/spritePivots";
 
 const resetConveyorStateForItem = {
   vels: {
@@ -45,7 +45,10 @@ const conveyorOrderComparator = (
     scaleXyz(unitVectors[a.config.direction], blockSizePx.w * a.config.count),
   );
 
-  if (xyzEqual(aLeadsTo, b.state.position)) {
+  if (
+    xyzEqual(aLeadsTo, b.state.position) ||
+    xyzEqual(addXyz(aLeadsTo, blockSizeXyzPx), addXyz(b.state.position, b.aabb))
+  ) {
     return -1;
   }
 
@@ -54,7 +57,10 @@ const conveyorOrderComparator = (
     scaleXyz(unitVectors[b.config.direction], blockSizePx.w * b.config.count),
   );
 
-  if (xyzEqual(bLeadsTo, a.state.position)) {
+  if (
+    xyzEqual(bLeadsTo, a.state.position) ||
+    xyzEqual(addXyz(bLeadsTo, blockSizeXyzPx), addXyz(a.state.position, a.aabb))
+  ) {
     return 1;
   }
 
@@ -113,9 +119,7 @@ export const onConveyor = <RoomId extends string>(
     item.state.facing === oppositeDirection(direction);
 
   const conveyorSpeed =
-    heelsWalkingAgainst ?
-      walkSpeedPixPerMs.heels
-    : conveyorSpeedPixPerMs;
+    heelsWalkingAgainst ? walkSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
 
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
 

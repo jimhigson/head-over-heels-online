@@ -151,7 +151,7 @@ export const progressGameState = <RoomId extends string>(
       tickItem(item, gameState, physicsTickMs);
     }
 
-    setStandingOnForAllItemsInRoom(room, gameState.pickupsCollected[room.id]);
+    setStandingOnForAllItemsInRoom(room, gameState.progression);
 
     gameState.progression++;
     gameState.gameTime += physicsTickMs;

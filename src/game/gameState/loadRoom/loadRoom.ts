@@ -134,11 +134,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
   // if they are:
   for (const i of objectValues(loadedItems)) {
     const collisions = collision1toMany(i, objectValues(loadedItems));
-    const solidCol = collisions.find(
-      (col) =>
-        isSolid(i, col, roomPickupsCollected) &&
-        isSolid(col, i, roomPickupsCollected),
-    );
+    const solidCol = collisions.find((col) => isSolid(i, 0) && isSolid(col, 0));
     if (solidCol !== undefined) {
       throw new Error(
         `item ${i.id} is colliding with (solid item) ${solidCol.id} on loading room ${roomJson.id}`,
@@ -154,7 +150,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     },
   };
 
-  setStandingOnForAllItemsInRoom(roomState, roomPickupsCollected);
+  setStandingOnForAllItemsInRoom(roomState, 0);
 
   return roomState;
 };

@@ -95,7 +95,7 @@ export const moveItem = <RoomId extends string>({
       return;
     }
 
-    if (!isSolid(subjectItem, collision, gameState.pickupsCollected[room.id])) {
+    if (!isSolid(collision, gameState.progression)) {
       continue;
     }
 

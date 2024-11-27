@@ -139,7 +139,9 @@ export const changeCharacterRoom = <RoomId extends string>({
     const {
       config: { direction: portalDirection },
     } = destinationPortal;
-    if ((directionsXy4 as Readonly<Direction4Xyz[]>).includes(portalDirection)) {
+    if (
+      (directionsXy4 as Readonly<Direction4Xyz[]>).includes(portalDirection)
+    ) {
       const portalDirectionXy = portalDirection as DirectionXy4;
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
@@ -182,7 +184,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   // be already on the floor or a teleporter in the new room. Init this properly so the teleporter
   // is flashing as soon as they enter:
   // this sets for all items which might be a bit inefficient, but should be fine
-  setStandingOnForAllItemsInRoom(toRoom, gameState.pickupsCollected[toRoomId]);
+  setStandingOnForAllItemsInRoom(toRoom, gameState.progression);
 
   // update game state to know which room this character is now in:
   gameState.characterRooms[currentCharacterName] = {
