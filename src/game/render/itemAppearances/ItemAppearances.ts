@@ -150,7 +150,7 @@ export const itemAppearances: {
       rendering.addChild(
         ...iterate(range(count, 0, -1)).map((i) =>
           createSprite({
-            texture: `conveyor.${axis}`,
+            texture: `conveyor.${axis}.1`,
             ...projectWorldXyzToScreenXyInteger({
               [axis]: (i - 1) * blockSizePx.w,
             }),

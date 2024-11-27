@@ -137,12 +137,18 @@ const frames = {
   spikes: {
     frame: { x: 422, y: 378, ...largeItemTextureSize },
   },
-  "conveyor.x": {
-    frame: { x: 35, y: 399, ...largeItemTextureSize },
-  },
-  "conveyor.y": {
-    frame: { x: 68, y: 399, ...largeItemTextureSize },
-  },
+  ...seriesOfAnimationFrameTextures(
+    "conveyor.x",
+    7,
+    { x: 409, y: 454 },
+    largeItemTextureSize,
+  ),
+  ...seriesOfAnimationFrameTextures(
+    "conveyor.y",
+    7,
+    { x: 409, y: 483 },
+    largeItemTextureSize,
+  ),
   bunny: {
     frame: { x: 263, y: 333, ...smallItemTextureSize },
   },
@@ -295,7 +301,7 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "hushPuppy": {
+  hushPuppy: {
     frame: { x: 193, y: 449, ...largeItemTextureSize },
   },
   ball: {
