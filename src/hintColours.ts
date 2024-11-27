@@ -1,5 +1,9 @@
 import { Color } from "pixi.js";
-import type { ZxSpectrumRoomColour } from "./originalGame";
+import type {
+  Shade,
+  ZxSpectrumRoomColour,
+  ZxSpectrumRoomHue,
+} from "./originalGame";
 import { spritesheetPalette } from "./sprites/samplePalette";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
@@ -58,50 +62,110 @@ type ColorScheme = {
 
 export const colorScheme = {
   white: {
-    main: whiteShades,
-    edges: { towards: cyanShades, right: yellowShades },
-    hud: {
-      lives: yellowShades,
-      dimmed: magentaShades,
-      icons: cyanShades,
+    basic: {
+      main: whiteShades,
+      edges: { towards: cyanShades, right: yellowShades },
+      hud: {
+        lives: yellowShades,
+        dimmed: magentaShades,
+        icons: cyanShades,
+      },
+    },
+    dimmed: {
+      main: whiteShades,
+      edges: { towards: greenShades, right: cyanShades },
+      hud: {
+        // probably wrong
+        lives: yellowShades,
+        dimmed: magentaShades,
+        icons: cyanShades,
+      },
     },
   },
-  // white dimmed edges should be green/cyan
   yellow: {
-    main: yellowShades,
-    edges: { towards: greenShades, right: whiteShades },
-    hud: {
-      lives: cyanShades,
-      dimmed: magentaShades,
-      icons: greenShades,
+    basic: {
+      main: yellowShades,
+      edges: { towards: greenShades, right: whiteShades },
+      hud: {
+        lives: cyanShades,
+        dimmed: magentaShades,
+        icons: greenShades,
+      },
+    },
+    dimmed: {
+      main: yellowShades,
+      edges: { towards: cyanShades, right: cyanShades },
+      hud: {
+        // probably wrong
+        lives: cyanShades,
+        dimmed: magentaShades,
+        icons: greenShades,
+      },
     },
   },
   // yellow dimmed edges should be cyan/cyan
   // yellow dimmed hud is white/magenta/green
   magenta: {
-    main: magentaShades,
-    edges: { towards: greenShades, right: cyanShades },
-    hud: { lives: whiteShades, dimmed: cyanShades, icons: yellowShades },
-  },
-  // magenta dimmed edges is the same
-  cyan: {
-    main: cyanShades,
-    edges: { towards: magentaShades, right: whiteShades },
-    hud: {
-      lives: whiteShades,
-      dimmed: greenShades,
-      icons: yellowShades,
+    basic: {
+      main: magentaShades,
+      edges: { towards: greenShades, right: cyanShades },
+      hud: { lives: whiteShades, dimmed: cyanShades, icons: yellowShades },
+    },
+    dimmed: {
+      main: magentaShades,
+      edges: { towards: greenShades, right: cyanShades },
+      hud: {
+        // maybe wrong
+        lives: whiteShades,
+        dimmed: cyanShades,
+        icons: yellowShades,
+      },
     },
   },
-  // cyan dimmed edges is the same
+  cyan: {
+    basic: {
+      main: cyanShades,
+      edges: { towards: magentaShades, right: whiteShades },
+      hud: {
+        lives: whiteShades,
+        dimmed: greenShades,
+        icons: yellowShades,
+      },
+    },
+    dimmed: {
+      main: cyanShades,
+      edges: { towards: magentaShades, right: whiteShades },
+      hud: {
+        // maybe wrong
+        lives: whiteShades,
+        dimmed: greenShades,
+        icons: yellowShades,
+      },
+    },
+  },
   green: {
-    main: greenShades,
-    edges: { towards: cyanShades, right: yellowShades },
-    hud: {
-      lives: whiteShades,
-      dimmed: magentaShades,
-      icons: cyanShades,
+    basic: {
+      main: greenShades,
+      edges: { towards: cyanShades, right: yellowShades },
+      hud: {
+        lives: whiteShades,
+        dimmed: magentaShades,
+        icons: cyanShades,
+      },
+    },
+    dimmed: {
+      main: greenShades,
+      edges: { towards: cyanShades, right: yellowShades },
+      hud: {
+        // maybe wrong
+        lives: whiteShades,
+        dimmed: magentaShades,
+        icons: cyanShades,
+      },
     },
   },
   // green dimmed edges is the same
-} as const satisfies Record<ZxSpectrumRoomColour, ColorScheme>;
+} as const satisfies Record<ZxSpectrumRoomHue, Record<Shade, ColorScheme>>;
+
+export const getColorScheme = (colour: ZxSpectrumRoomColour) =>
+  colorScheme[colour.hue][colour.shade];

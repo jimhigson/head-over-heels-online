@@ -22,9 +22,10 @@ const paletteSwapFilters = (shades: Shades) => [
 export const edgePaletteSwapFilters = (
   room: UnknownRoomState,
   side: "right" | "towards",
-) => paletteSwapFilters(colorScheme[room.color].edges[side]);
+) =>
+  paletteSwapFilters(colorScheme[room.color.hue][room.color.shade].edges[side]);
 
 export const mainPaletteSwapFilters = (room: UnknownRoomState) =>
-  paletteSwapFilters(colorScheme[room.color].main);
+  paletteSwapFilters(colorScheme[room.color.hue][room.color.shade].main);
 
 export const noFilters: Filter[] = [];

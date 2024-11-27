@@ -2,8 +2,8 @@ import type { Campaign } from "./model/modelTypes.ts";
 import { type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
 import type { PlanetName, Wall } from "./sprites/planets.ts";
 import { planetNames, planets } from "./sprites/planets.ts";
-import type { ZxSpectrumRoomColour } from "./originalGame.ts";
-import { zxSpectrumRoomColours } from "./originalGame.ts";
+import type { ZxSpectrumRoomHue } from "./originalGame.ts";
+import { zxSpectrumRoomHue } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
@@ -30,7 +30,7 @@ const generateWalls = <P extends PlanetName>(
   };
 };
 
-type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomColour}`;
+type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}`;
 
 export type TestCampaignRoomId =
   | "doorsRoom"
@@ -70,13 +70,13 @@ const colourRooms = () => {
     for (let ip = 0; ip < planetNames.length; ip++) {
       const p = planetNames[ip];
       for (let ic = 0; ic < planetNames.length; ic++) {
-        const c = zxSpectrumRoomColours[ic];
+        const c = zxSpectrumRoomHue[ic];
         yield [
           `${p}-${c}`,
           {
             size: { x: 8, y: 8 },
             walls: generateWalls({ x: 8, y: 8 }, p, { x: [4, 5], y: [4, 5] }),
-            color: c,
+            color: { hue: c, shade: "basic" },
             floorSkip: [] as Xy[],
             floor: p,
             planet: p,
@@ -95,7 +95,7 @@ const colourRooms = () => {
                 position: { x: 0, y: 0, z: 3 },
                 config: {
                   direction: "towards",
-                  toRoom: `${p}-${zxSpectrumRoomColours[(zxSpectrumRoomColours.length + ic - 1) % zxSpectrumRoomColours.length]}`,
+                  toRoom: `${p}-${zxSpectrumRoomHue[(zxSpectrumRoomHue.length + ic - 1) % zxSpectrumRoomHue.length]}`,
                 },
               },
               {
@@ -103,7 +103,7 @@ const colourRooms = () => {
                 position: { x: 4, y: 8, z: 3 },
                 config: {
                   direction: "away",
-                  toRoom: `${p}-${zxSpectrumRoomColours[(ic + 1) % zxSpectrumRoomColours.length]}`,
+                  toRoom: `${p}-${zxSpectrumRoomHue[(ic + 1) % zxSpectrumRoomHue.length]}`,
                 },
               },
               {
@@ -131,8 +131,8 @@ const colourRooms = () => {
     }
   }
   return Object.fromEntries(room()) as Record<
-    `${PlanetName}-${ZxSpectrumRoomColour}`,
-    RoomJson<PlanetName, `${PlanetName}-${ZxSpectrumRoomColour}`>
+    `${PlanetName}-${ZxSpectrumRoomHue}`,
+    RoomJson<PlanetName, `${PlanetName}-${ZxSpectrumRoomHue}`>
   >;
 };
 
@@ -175,7 +175,7 @@ const rooms = {
       },
     ]),
     planet: "blacktooth",
-    color: "cyan",
+    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
   zRoom: {
     size: { x: 13, y: 8 },
@@ -413,7 +413,7 @@ const rooms = {
       },
     ]),
     planet: "egyptus",
-    color: "cyan",
+    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
   wide: {
     size: { x: 10, y: 3 },
@@ -429,7 +429,7 @@ const rooms = {
       },
     ]),
     planet: "market",
-    color: "cyan",
+    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"market", TestCampaignRoomId>,
   deep: {
     size: { x: 3, y: 10 },
@@ -446,7 +446,7 @@ const rooms = {
       },
     ]),
     planet: "moonbase",
-    color: "cyan",
+    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"moonbase", TestCampaignRoomId>,
   tiny: {
     size: { x: 3, y: 3 },
@@ -467,7 +467,7 @@ const rooms = {
       },*/
     ]),
     planet: "egyptus",
-    color: "yellow",
+    color: { hue: "yellow", shade: "basic" },
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
   big: {
     size: { x: 11, y: 11 },
@@ -734,7 +734,7 @@ const rooms = {
       },
     ]),
     planet: "bookworld",
-    color: "magenta",
+    color: { hue: "magenta", shade: "basic" },
   },
   ...colourRooms(),
 } as Campaign<TestCampaignRoomId>["rooms"];

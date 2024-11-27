@@ -20,7 +20,7 @@ export type ItemsInTestRoomJson = TestRoomJson["items"];
 const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
   id,
   planet: "blacktooth",
-  color: "cyan",
+  color: { hue: "cyan", shade: "basic" },
   floor: "blacktooth",
   floorSkip: [],
   items: {},

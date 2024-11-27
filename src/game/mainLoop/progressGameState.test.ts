@@ -300,7 +300,7 @@ describe("doors", () => {
 });
 
 describe("teleporter", () => {
-  test.only("can teleport to the next room", () => {
+  test("can teleport to the next room", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         head: {

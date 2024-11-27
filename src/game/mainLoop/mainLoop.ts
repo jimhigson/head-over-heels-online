@@ -18,7 +18,7 @@ import { progressGameState } from "./progressGameState";
 import { xyzEqual } from "@/utils/vectors/vectors";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { spritesheetPalette } from "@/sprites/samplePalette";
-import { colorScheme } from "@/hintColours";
+import { getColorScheme } from "@/hintColours";
 import { sortByZPairs, zPairs } from "../render/sortZ/sortItemsByDrawOrder";
 
 const updateWorldRenderingToMatchState = <RoomId extends string>(
@@ -130,8 +130,8 @@ export const mainLoop = <RoomId extends string>(
       updateHud(gameState);
     } else {
       app.stage.filters = pauseFilter;
-      pauseFilter.targetColor =
-        colorScheme[currentRoom(gameState).color].main.basic;
+      const roomColor = currentRoom(gameState).color;
+      pauseFilter.targetColor = getColorScheme(roomColor).main.basic;
     }
 
     lastRenderedRoom = currentRoom(gameState);

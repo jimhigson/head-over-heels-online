@@ -10,9 +10,9 @@ import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import { shades } from "@/hintColours";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { sortByZPairs, zPairs } from "./sortZ/sortItemsByDrawOrder";
+import { getColorScheme } from "@/hintColours";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -42,7 +42,7 @@ const assignMouseActions = <RoomId extends string>(
 
     item.renderContainer.on("pointerenter", () => {
       item.renderContainer!.filters = new RevertColouriseFilter(
-        shades[room.color].original,
+        getColorScheme(room.color).main.original,
       );
     });
 

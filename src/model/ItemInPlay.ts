@@ -104,6 +104,9 @@ export type ItemStateMap = {
     };
   };
   stopAutowalk: EmptyObject;
+  conveyor: {
+    moving: boolean;
+  };
 };
 
 type ItemInPlayConfigMap<RoomId extends string> = {

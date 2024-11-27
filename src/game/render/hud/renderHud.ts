@@ -6,7 +6,7 @@ import { amigaLowResPal } from "@/originalGame";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { smallItemTextureSize } from "@/sprites/textureSizes";
 import { characterNames, type CharacterName } from "@/model/modelTypes";
-import { colorScheme } from "@/hintColours";
+import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 
@@ -71,7 +71,7 @@ export const renderHud = (hudContainer: Container) => {
     const room = currentRoom(gameState);
     const {
       hud: { dimmed, lives },
-    } = colorScheme[room.color];
+    } = getColorScheme(room.color);
 
     for (const character of characterNames) {
       const isCurrent = gameState.currentCharacterName === character;
