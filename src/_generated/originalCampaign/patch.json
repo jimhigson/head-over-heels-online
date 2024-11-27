@@ -38,6 +38,46 @@
   { "op": "replace", "path": "/rooms/moonbase10/color/hue", "value": "yellow" },
   {
     "op": "replace",
+    "path": "/rooms/egyptus24/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus24/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus23/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus22/color/hue", "value": "magenta" },
+  { "op": "replace", "path": "/rooms/egyptus20/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus20/items/block@7,5,0:95uHj/config/disappearing",
+    "value": true
+  },
+  { "op": "replace", "path": "/rooms/egyptus19/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus18/color/hue", "value": "magenta" },
+  { "op": "replace", "path": "/rooms/egyptus17/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus15/items/block@0,5,2:95uHj/config/disappearing",
+    "value": true
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus15/items/block@3,5,4:95uHj/config/disappearing",
+    "value": true
+  },
+  { "op": "replace", "path": "/rooms/egyptus14/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus13/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus12/color/hue", "value": "green" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus11/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus11/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
     "path": "/rooms/blacktooth63/floor",
     "value": "bookworld"
   },

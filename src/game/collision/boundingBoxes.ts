@@ -45,11 +45,16 @@ export const boundingBoxForItem = (
         aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
       };
 
+    case "switch": {
+      return {
+        aabb: { ...smallItemAabb, z: smallItemAabb.z - 2 },
+      };
+    }
+
     case "charles":
       return { aabb: doubleHeighCharacter };
 
     case "ball":
-    case "switch":
     case "fish":
       return { aabb: mediumItemAabb };
 
