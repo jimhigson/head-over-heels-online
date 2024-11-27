@@ -1,4 +1,4 @@
-import { unitVectors } from "@/utils/vectors/vectors";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 import { sortObstaclesAboutVector } from "./slidingCollision";
 import { describe, expect, test } from "vitest";
 

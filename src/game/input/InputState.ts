@@ -1,9 +1,9 @@
 import { fromAllEntries } from "@/utils/entries";
-import { directionsXy } from "@/utils/vectors/vectors";
+import { directionsXy4 } from "@/utils/vectors/vectors";
 import type { Key } from "./keys";
 
 export const actions = [
-  ...directionsXy,
+  ...directionsXy4,
   "jump",
   "fire",
   "carry",

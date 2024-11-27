@@ -1,13 +1,13 @@
 import {
-  directionsXy,
+  directionsXy4,
   scaleXyz,
   subXyz,
-  unitVectors,
 } from "@/utils/vectors/vectors";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
   heelsJumpForwardDecel,
-  playerWalkTerminalSpeedPixPerMs,
+  walkSpeedPixPerMs,
 } from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
@@ -35,12 +35,12 @@ export const walking = <RoomId extends string>(
 
   const directionOfWalk =
     autoWalk ? facing : (
-      directionsXy.find((d) => {
+      directionsXy4.find((d) => {
         return inputState[d] === true;
       })
     );
 
-  const maxWalkSpeed = playerWalkTerminalSpeedPixPerMs[type];
+  const maxWalkSpeed = walkSpeedPixPerMs[type];
 
   if (teleporting !== null) {
     // do no walking while teleporting

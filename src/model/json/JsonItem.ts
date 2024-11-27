@@ -1,7 +1,7 @@
 import type { EmptyObject } from "type-fest";
 import type { CharacterName } from "../modelTypes";
 import type { PlanetName, Wall } from "../../sprites/planets";
-import type { AxisXy, DirectionXy, Xyz } from "../../utils/vectors/vectors";
+import type { AxisXy, DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 
 export type JsonItemType =
   | "door"
@@ -47,7 +47,7 @@ export const doorIsInHiddenWall = ({
   (direction === "towards" && position.y === 0);
 
 export type DoorFrameConfig<RoomId extends string> = {
-  direction: DirectionXy;
+  direction: DirectionXy4;
   inHiddenWall: boolean;
   toRoom: RoomId;
 
@@ -55,7 +55,7 @@ export type DoorFrameConfig<RoomId extends string> = {
   nearness: "near" | "far";
 };
 export type DoorLegsConfig = {
-  direction: DirectionXy;
+  direction: DirectionXy4;
   inHiddenWall: boolean;
   // equal to the z of the door
   height: number;
@@ -66,7 +66,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
-    direction: DirectionXy;
+    direction: DirectionXy4;
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
@@ -80,7 +80,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   wall: {
     style: Wall<P>;
-    side: DirectionXy;
+    side: DirectionXy4;
   };
   teleporter: {
     toRoom: RoomId;
@@ -98,7 +98,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     style: "volcano" | "toaster" | "spikes" | "puck";
   };
   conveyor: {
-    direction: DirectionXy;
+    direction: DirectionXy4;
   };
   pickup: {
     gives:
@@ -141,11 +141,11 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     | {
         // with a starting direction
         which: "american-football-head" | "turtle";
-        startDirection: DirectionXy;
+        startDirection: DirectionXy4;
       }
     | {
         which: "cyberman";
-        startDirection: DirectionXy;
+        startDirection: DirectionXy4;
         charging: true;
       }
     | {

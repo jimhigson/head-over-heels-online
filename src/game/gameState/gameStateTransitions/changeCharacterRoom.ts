@@ -3,10 +3,10 @@ import { isItemType } from "@/model/ItemInPlay";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
-import type { DirectionXy, DirectionXyz, Xyz } from "@/utils/vectors/vectors";
+import type { DirectionXy4, Direction4Xyz, Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
-  directionsXy,
+  directionsXy4,
   oppositeDirection,
   originXyz,
 } from "@/utils/vectors/vectors";
@@ -90,7 +90,7 @@ export const changeCharacterRoom = <RoomId extends string>({
         iterate(objectValues(toRoom.items)).find(
           (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
             isPortal(i) &&
-            (directionsXy as Readonly<DirectionXyz[]>).includes(
+            (directionsXy4 as Readonly<Direction4Xyz[]>).includes(
               i.config.direction,
             ),
         ) ||
@@ -139,8 +139,8 @@ export const changeCharacterRoom = <RoomId extends string>({
     const {
       config: { direction: portalDirection },
     } = destinationPortal;
-    if ((directionsXy as Readonly<DirectionXyz[]>).includes(portalDirection)) {
-      const portalDirectionXy = portalDirection as DirectionXy;
+    if ((directionsXy4 as Readonly<Direction4Xyz[]>).includes(portalDirection)) {
+      const portalDirectionXy = portalDirection as DirectionXy4;
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)

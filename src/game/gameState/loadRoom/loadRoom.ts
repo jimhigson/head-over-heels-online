@@ -9,7 +9,7 @@ import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import type { DirectionXy } from "@/utils/vectors/vectors";
+import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/isSolid";
@@ -36,7 +36,7 @@ function* gatherConveyors<RoomId extends string>(
   for (const [d, directionConveyors] of objectEntriesIter(
     conveyorsByDirection,
   )) {
-    const axisOfConveyorTravel = directionAxis(d as DirectionXy);
+    const axisOfConveyorTravel = directionAxis(d as DirectionXy4);
     const axisCrossingConveyorTravel =
       perpendicularAxisXy(axisOfConveyorTravel);
     const byOrdinal = Object.groupBy(

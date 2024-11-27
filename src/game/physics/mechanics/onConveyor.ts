@@ -7,7 +7,7 @@ import {
 import { type MechanicResult } from "../MechanicResult";
 import {
   conveyorSpeedPixPerMs,
-  playerWalkTerminalSpeedPixPerMs,
+  walkSpeedPixPerMs,
 } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
@@ -16,9 +16,9 @@ import {
   oppositeDirection,
   originXyz,
   scaleXyz,
-  unitVectors,
   xyzEqual,
 } from "@/utils/vectors/vectors";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 const resetConveyorStateForItem = {
@@ -114,7 +114,7 @@ export const onConveyor = <RoomId extends string>(
 
   const conveyorSpeed =
     heelsWalkingAgainst ?
-      playerWalkTerminalSpeedPixPerMs.heels
+      walkSpeedPixPerMs.heels
     : conveyorSpeedPixPerMs;
 
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);

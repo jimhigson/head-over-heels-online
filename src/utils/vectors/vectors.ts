@@ -1,5 +1,20 @@
-export const directionsXy = ["away", "towards", "left", "right"] as const;
-export type DirectionXy = (typeof directionsXy)[number];
+export const directionsXy4 = ["away", "towards", "left", "right"] as const;
+export type DirectionXy4 = (typeof directionsXy4)[number];
+
+export const directionsXyDiagonal = [
+  "awayRight",
+  "rightTowards",
+  "towardsLeft",
+  "leftAway",
+] as const;
+
+export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
+
+export const directions8Xy = [
+  ...directionsXy4,
+  ...directionsXyDiagonal,
+] as const;
+export type Direction8Xy = (typeof directions8Xy)[number];
 
 // prettier-ignore
 type Matrix3x3 = [
@@ -8,10 +23,10 @@ type Matrix3x3 = [
   number, number, number, // Row 3
 ];
 
-export const directionAxis = (direction: DirectionXy): AxisXy =>
+export const directionAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
-export const oppositeDirection = (direction: DirectionXy): DirectionXy =>
+export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
   direction === "away" ? "towards"
   : direction === "towards" ? "away"
   : direction === "left" ? "right"
@@ -20,20 +35,12 @@ export const oppositeDirection = (direction: DirectionXy): DirectionXy =>
 /**
  * doors sit along the axis perpendicular to their direction
  */
-export const doorAlongAxis = (doorDirection: DirectionXy): AxisXy =>
+export const doorAlongAxis = (doorDirection: DirectionXy4): AxisXy =>
   perpendicularAxisXy(directionAxis(doorDirection));
 
 export type DirectionZ = "down" | "up";
-export type DirectionXyz = DirectionXy | DirectionZ;
-
-export const unitVectors: Record<DirectionXyz, Xyz> = {
-  away: { x: 0, y: 1, z: 0 },
-  left: { x: 1, y: 0, z: 0 },
-  right: { x: -1, y: 0, z: 0 },
-  towards: { x: 0, y: -1, z: 0 },
-  down: { x: 0, y: 0, z: -1 },
-  up: { x: 0, y: 0, z: 1 },
-};
+export type Direction4Xyz = DirectionXy4 | DirectionZ;
+export type Direction8Xyz = Direction8Xy | DirectionZ;
 
 export type Xy = {
   x: number;

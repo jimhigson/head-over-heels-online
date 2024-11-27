@@ -12,6 +12,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { originXyz } from "@/utils/vectors/vectors";
+import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 
 export function* loadItem<RoomId extends string>(
   itemId: string,
@@ -72,9 +73,21 @@ const initialState = <T extends JsonItemType & ItemInPlayType>(
     stoodOnBy: [],
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(free ?
-      { standingOn: [], vels: { gravity: originXyz }, activeConveyor: null }
+      {
+        standingOn: [],
+        vels: { gravity: originXyz, movingFloor: originXyz },
+        activeConveyor: null,
+      }
     : {}),
-    ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
+    ...(jsonItem.type === "baddie" ?
+      {
+        vels: {
+          gravity: originXyz,
+          movingFloor: originXyz,
+          walking: initBaddieWalk(),
+        },
+      }
+    : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
     ...(jsonItem.type === "lift" ?
       { direction: "up", vels: { lift: originXyz } }

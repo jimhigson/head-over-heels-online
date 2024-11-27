@@ -47,9 +47,10 @@ export const heelsJumpForwardDecel = 0.001;
 export const headsGlideAcel = 0.000_04;
 
 // original game timed at 5s to move 8 blocks
-export const playerWalkTerminalSpeedPixPerMs = {
+export const walkSpeedPixPerMs = {
   head: zxSpectrumFrameRate / 1_000, // 1px per frame in original game
   heels: (2 * zxSpectrumFrameRate) / 1_000, // 2px per frame in original game - may also need acceleration
+  dalek: (2 * zxSpectrumFrameRate) / 1_000, // same as heels
 };
 
 // n px per frame in original game;

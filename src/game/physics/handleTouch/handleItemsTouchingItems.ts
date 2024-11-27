@@ -1,7 +1,12 @@
-import { isPlayableItem, type UnknownItemInPlay } from "@/model/ItemInPlay";
+import {
+  isItemType,
+  isPlayableItem,
+  type UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { type Xyz } from "@/utils/vectors/vectors";
 import type { GameState } from "@/game/gameState/GameState";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
+import { handleBaddieTouchingItem } from "../mechanics/baddieAi";
 
 /**
  * some old - Morties touching Morties
@@ -28,6 +33,12 @@ export const handleItemsTouchingItems = <RoomId extends string>({
   if (
     isPlayableItem(touchee) &&
     handlePlayerTouchingItem(touchee, movingItem, movementVector, gameState)
+  )
+    return true;
+
+  if (
+    isItemType("baddie")(movingItem) &&
+    handleBaddieTouchingItem(movingItem, touchee, movementVector, gameState)
   )
     return true;
 

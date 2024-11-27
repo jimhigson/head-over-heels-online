@@ -1,11 +1,11 @@
 import { test } from "vitest";
 import { expectTypeOf } from "vitest";
 import type { ItemInPlay, PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
-import type { DirectionXy } from "@/utils/vectors/vectors";
+import type { DirectionXy4 } from "@/utils/vectors/vectors";
 
 test("heads and heels have the right state", () => {
   expectTypeOf<ItemInPlay<"head">["state"]>().toMatchTypeOf<{
-    facing: DirectionXy;
+    facing: DirectionXy4;
     action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay[];
     stoodOnBy: UnknownItemInPlay[];
@@ -21,7 +21,7 @@ test("heads and heels have the right state", () => {
   }>();
 
   expectTypeOf<PlayableItem["state"]>().toMatchTypeOf<{
-    facing: DirectionXy;
+    facing: DirectionXy4;
     action: "moving" | "idle" | "falling" | "death";
     standingOn: UnknownItemInPlay[];
     stoodOnBy: UnknownItemInPlay[];

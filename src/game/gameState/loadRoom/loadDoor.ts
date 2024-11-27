@@ -12,8 +12,8 @@ import {
   doorAlongAxis,
   subXyz,
   scaleXyz,
-  unitVectors,
 } from "@/utils/vectors/vectors";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually

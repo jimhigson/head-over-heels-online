@@ -1,8 +1,8 @@
 import type { PlanetName } from "../sprites/planets";
 import type {
   Aabb,
-  DirectionXy,
-  DirectionXyz,
+  DirectionXy4,
+  Direction4Xyz,
   Xyz,
 } from "../utils/vectors/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
@@ -32,7 +32,7 @@ type FreeItemState = {
 };
 
 export type CharacterState = FreeItemState & {
-  facing: DirectionXy;
+  facing: DirectionXy4;
   action:
     | "moving"
     | "idle"
@@ -96,7 +96,11 @@ export type ItemStateMap = {
   spring: FreeItemState;
   portableBlock: FreeItemState;
   movableBlock: FreeItemState;
-  baddie: FreeItemState;
+  baddie: FreeItemState & {
+    vels: {
+      walking: Xyz;
+    };
+  };
   pickup: FreeItemState;
   fish: FreeItemState;
   lift: {
@@ -121,10 +125,10 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     */
     relativePoint: Xyz;
     // the direction this portal has to be hit in to be walked through
-    direction: DirectionXyz;
+    direction: Direction4Xyz;
   };
   conveyor: {
-    direction: DirectionXy;
+    direction: DirectionXy4;
     count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;

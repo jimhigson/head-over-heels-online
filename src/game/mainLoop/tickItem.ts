@@ -17,6 +17,7 @@ import { originXyz, addXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
+import { tickBaddie } from "../physics/mechanics/baddieAi";
 
 function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -36,6 +37,10 @@ function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
 
   if (isItemType("lift")(item)) {
     yield moveLift(item, gameState, deltaMS) as MechanicResult<T>;
+  }
+
+  if (isItemType("baddie")(item)) {
+    yield tickBaddie(item, gameState, deltaMS) as MechanicResult<T>;
   }
 }
 
