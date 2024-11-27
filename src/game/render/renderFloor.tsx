@@ -21,7 +21,10 @@ export const renderFloor = <RoomId extends string>(
   const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
     renderExtent(room);
 
-  const { floor: floorType } = room;
+  const {
+    floor: floorType,
+    color: { shade },
+  } = room;
 
   const mainContainer = new Container();
 
@@ -31,7 +34,9 @@ export const renderFloor = <RoomId extends string>(
 
   if (floorType !== "none") {
     const floorTileTexture: TextureId =
-      floorType === "deadly" ? "generic.floor.deadly" : `${floorType}.floor`;
+      floorType === "deadly" ?
+        "generic.floor.deadly"
+      : `${floorType}${shade === "dimmed" ? ".dark" : ""}.floor`;
 
     const tilesContainer = new Container();
 

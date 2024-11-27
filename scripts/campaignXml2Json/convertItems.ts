@@ -302,7 +302,10 @@ const convertItemsArray = (
         case "switch": {
           return {
             type: "switch",
-            config: {},
+            config: {
+              // this doesn't seem to be in the xml - will need to be added via a patch
+              activates: {},
+            },
             position,
           };
         }

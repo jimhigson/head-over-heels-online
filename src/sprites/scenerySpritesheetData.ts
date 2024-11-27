@@ -4,24 +4,35 @@ import type { PlanetName, Wall } from "./planets";
 import { planets } from "./planets";
 import { wallTileSize, floorTileSize } from "./textureSizes";
 
-export type WallTextureId<PS extends PlanetName> = {
-  [P in PS]: `${P}.wall.${Wall<P>}.${"left" | "away"}`;
-}[PS];
+export type WallTextureId<
+  PS extends PlanetName,
+  TDark extends "" | ".dark",
+> = string &
+  {
+    [P in PS]: {
+      [D in TDark]: `${P}${TDark}.wall.${Wall<P>}.${"left" | "away"}`;
+    };
+  }[PS][TDark];
 
-type BackgroundTextureId<TPlanet extends PlanetName> =
-  | WallTextureId<TPlanet>
-  | `${TPlanet}.floor`;
+export type BackgroundTextureId<
+  TPlanet extends PlanetName,
+  TDark extends "" | ".dark",
+> = WallTextureId<TPlanet, TDark> | `${TPlanet}${TDark}.floor`;
 
-const backgroundFrames = <TPlanet extends PlanetName>(
+const backgroundFrames = <
+  TPlanet extends PlanetName,
+  TDark extends "" | ".dark",
+>(
   planet: TPlanet,
   startX: number,
   startY: number,
-): Record<BackgroundTextureId<TPlanet>, SpritesheetFrameData> => {
+  isDark: TDark,
+): Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData> => {
   function* backgroundFramesGenerator<TPlanet extends PlanetName>(
     planet: TPlanet,
     startX: number,
     startY: number,
-  ): Generator<[BackgroundTextureId<TPlanet>, SpritesheetFrameData]> {
+  ): Generator<[BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData]> {
     const { walls } = planets[planet];
 
     const { w, h } = wallTileSize;
@@ -31,13 +42,13 @@ const backgroundFrames = <TPlanet extends PlanetName>(
     let i = 0;
     for (; i < walls.length; i++) {
       yield [
-        `${planet}.wall.${walls[i]}.left`,
+        `${planet}${isDark}.wall.${walls[i]}.left`,
         {
           frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize },
         },
       ];
       yield [
-        `${planet}.wall.${walls[i]}.away`,
+        `${planet}${isDark}.wall.${walls[i]}.away`,
         {
           frame: {
             x: startX + w * ((n << 1) - i - 1),
@@ -50,7 +61,7 @@ const backgroundFrames = <TPlanet extends PlanetName>(
 
     const lastI = i - 1;
     yield [
-      `${planet}.floor`,
+      `${planet}${isDark}.floor`,
       {
         frame: {
           x: startX + lastI * w,
@@ -63,18 +74,26 @@ const backgroundFrames = <TPlanet extends PlanetName>(
 
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
-  ) as Record<BackgroundTextureId<TPlanet>, SpritesheetFrameData>;
+  ) as Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData>;
 };
 
 const frames = {
-  ...backgroundFrames("blacktooth", 487, 335),
-  ...backgroundFrames("bookworld", 356, 23),
-  ...backgroundFrames("egyptus", 435, 23),
-  ...backgroundFrames("jail", 455, 351),
-  ...backgroundFrames("market", 378, 244),
-  ...backgroundFrames("moonbase", 384, 141),
-  ...backgroundFrames("penitentiary", 513, 23),
-  ...backgroundFrames("safari", 482, 244),
+  ...backgroundFrames("blacktooth", 487, 335, ""),
+  ...backgroundFrames("blacktooth", 487, 335, ".dark"), // same really
+  ...backgroundFrames("bookworld", 356, 23, ""),
+  ...backgroundFrames("bookworld", 356, 23, ".dark"), // same really
+  ...backgroundFrames("egyptus", 435, 23, ""),
+  ...backgroundFrames("egyptus", 557, 97, ".dark"), // actually different
+  ...backgroundFrames("jail", 455, 351, ""),
+  ...backgroundFrames("jail", 455, 351, ".dark"), // same really
+  ...backgroundFrames("market", 378, 244, ""),
+  ...backgroundFrames("market", 378, 244, ".dark"), // same really
+  ...backgroundFrames("moonbase", 384, 141, ""),
+  ...backgroundFrames("moonbase", 384, 141, ".dark"), // same really
+  ...backgroundFrames("penitentiary", 513, 23, ""),
+  ...backgroundFrames("penitentiary", 513, 23, ".dark"), // same really
+  ...backgroundFrames("safari", 482, 244, ""),
+  ...backgroundFrames("safari", 482, 244, ".dark"), // same really
 } as const;
 
 export const scenerySpritesheetData = {

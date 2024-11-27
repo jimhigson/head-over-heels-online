@@ -16,6 +16,10 @@ type AnimatedCreateSpriteOptions = {
    */
   animationSpeed?: number;
   frames: Texture[];
+  /*
+   * if true, animation will run backwards
+   */
+  reverse?: boolean;
   x?: number;
   y?: number;
   /**
@@ -85,12 +89,16 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
   }
 };
 function createAnimatedSprite(options: AnimatedCreateSpriteOptions) {
-  const animatedSprite = new AnimatedSprite(
-    options.frames.map((frame) => ({
-      texture: frame,
-      time: originalGameFrameDuration,
-    })),
-  );
+  const frames = options.frames.map((frame) => ({
+    texture: frame,
+    time: originalGameFrameDuration,
+  }));
+
+  if (options.reverse) {
+    frames.reverse();
+  }
+
+  const animatedSprite = new AnimatedSprite(frames);
 
   animatedSprite.animationSpeed =
     options.animationSpeed || defaultAnimationSpeed;

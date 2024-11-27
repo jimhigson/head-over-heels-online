@@ -61,12 +61,18 @@ export const itemAppearances: {
 
   wall: ifNotRenderedBefore(
     ({ config: { side, style }, renderContainer }, gameState) => {
+      const room = currentRoom(gameState);
       applyAppearance(
         renderContainer,
         side === "right" || side === "towards" ?
           new Container()
         : createSprite({
-            texture: wallTextureId(currentRoom(gameState).planet, style, side),
+            texture: wallTextureId(
+              room.planet,
+              style,
+              side,
+              room.color.shade === "dimmed",
+            ),
             pivot:
               side === "away" ?
                 {
@@ -202,7 +208,12 @@ export const itemAppearances: {
 
           return createSprite(
             isActive ?
-              { frames: spriteSheet.animations[`conveyor.${axis}`], ...xy }
+              {
+                frames: spriteSheet.animations[`conveyor.${axis}`],
+                reverse: direction === "away" || direction === "right",
+                animationSpeed: 0.5,
+                ...xy,
+              }
             : {
                 texture: `conveyor.${axis}.6`,
                 ...xy,
@@ -461,7 +472,9 @@ export const itemAppearances: {
     },
   ),
 
-  charles: staticSpriteAppearance("charles.towards"),
+  charles: ifNotRenderedBefore(({ renderContainer }) => {
+    applyAppearance(renderContainer, stackedSprites("charles.towards"));
+  }),
 
   hushPuppy: staticSpriteAppearance("hushPuppy"),
   ball: staticSpriteAppearance("ball"),

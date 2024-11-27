@@ -12565,7 +12565,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus26: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "cyan", shade: "dimmed" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus26",
@@ -12705,7 +12705,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus27: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "deadly",
       floorSkip: [],
       id: "egyptus27",
@@ -12827,7 +12827,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus28: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "white", shade: "dimmed" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus28",
@@ -12877,7 +12877,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus29: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus29",
@@ -12966,7 +12966,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus30: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus30",
@@ -13003,7 +13003,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus31: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus31",
@@ -13049,7 +13049,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus32: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "green", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus32",
@@ -13088,7 +13088,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus33: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "green", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus33",
@@ -13212,7 +13212,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus35: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus35",
@@ -13301,7 +13301,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus36: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus36",
@@ -13371,7 +13371,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus37: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus37",
@@ -13415,7 +13415,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus38: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus38",

@@ -4,7 +4,7 @@ import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
 import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
-import type { DirectionXy } from "../../src/utils/vectors/vectors";
+import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
 import type { AnyRoomJson } from "../../src/model/modelTypes";
 import { convertRoom } from "./convertRoom";
 import type { Shade, ZxSpectrumRoomHue } from "../../src/originalGame";
@@ -19,7 +19,7 @@ const allRoomNames = (await readdir("gamedata-map-xml"))
  * a door map that can be used to just know if there is a door on a side, not necessarily
  * to have the door object
  */
-export type LooseDoorMap = Partial<Record<DirectionXy, true>>;
+export type LooseDoorMap = Partial<Record<DirectionXy4, true>>;
 
 export const convertX = (
   xmlX: number | string,
