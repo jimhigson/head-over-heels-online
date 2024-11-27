@@ -16,7 +16,7 @@ import { isSolid } from "./isSolid";
 import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 
-const log = true;
+const log = false;
 
 /**
  * @param subjectItem the item that is wanting to move

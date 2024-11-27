@@ -551,7 +551,7 @@ describe("lifts", () => {
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
         // give a little time to fall onto the lift:
-        if (gameState.gameTime > 100)
+        if (gameState.gameTime > 200)
           standingOns.push(heelsState(gameState).standingOn);
       },
       forTime: 5_000, // run for quite a long time

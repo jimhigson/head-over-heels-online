@@ -27,7 +27,7 @@ const calculateVelocity = ({
       // Acceleration phase
       return Math.max(
         epsilonVelocity,
-        Math.sqrt(2 * maxLiftAcc * currentAltitude),
+        Math.sqrt(2 * maxLiftAcc * Math.max(currentAltitude, 0)),
       );
     } else if (currentAltitude >= totalDistance - dAccel) {
       // Deceleration phase
@@ -46,7 +46,7 @@ const calculateVelocity = ({
       // Deceleration phase (in reverse)
       return Math.min(
         -epsilonVelocity,
-        -Math.sqrt(2 * maxLiftAcc * currentAltitude),
+        -Math.sqrt(2 * maxLiftAcc * Math.max(currentAltitude, 0)),
       );
     } else {
       // Constant velocity phase

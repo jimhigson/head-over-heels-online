@@ -58,6 +58,27 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 [x] BUG: head can't get into ladders on the way up (only on way down) - except on high refresh rate screens
 
+## Questions
+[ ] do we really need to track stoodOn?
+    * used in original for: 
+        1: if a deadly block is below the player, for standing on a block safetly next to a deadly overlapping it
+            - could reduce height of deadlies by 1px            
+                - but then would impact Charles riding on volcanos
+            [ ] could make bbs more accurately follow the volcano shape
+        2: which conveyor moves the player:
+            - could make conveyors act in proportion to how much overlap
+        3: which teleporter the user uses
+            - could just flash >1 when stood on two, they always go to the same place
+        4: (maybe) getting preference in sliding order when order otherwise equal
+            - could go off amount of overlap
+        5: what heels picks up
+            - overlap
+            - 👍 more intuitive
+    * standingOn could also be an array
+        - sorted in order of amount of overlap
+        - this would only be an optimisation - would also be possible to find on-demand functionally
+
+        
 ## General
 
 [x] standing on is not sticky any more - fix and test
@@ -66,6 +87,17 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # Rooms
 
+# (head) blacktooth6
+
+[ ] donuts don't do anything when collected
+[ ] switch doesn't work
+[ ] disappearing block doesn't vanish on touch
+[ ] also doesn't turn off
+[ ] dalek baddie doesn't move
+
+# (head) blacktooth8fish
+[ ] legs on far side not rendered correctly
+
 # blacktooth10
 [ ] overdraw on far door not showing - renders floor behind the door
 
@@ -73,6 +105,12 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] currently has 238 front/back relationships when rendering - reduce this!
     * 204 with hexagon-based overlap calcs (- ~15%)
 [ ] has the wrong floor - should be dots!    
+
+# blacktooth18
+[ ] block doesn't push on top of head - it slides on it(!)
+
+# blacktooth19
+[ ] pushing bottom block doesn't move the whole stack
 
 # blacktooth4 -> 3
 
@@ -97,17 +135,23 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # (heels) blacktooth28
 
 [2] can't move charles
-[1] cyclic rendering order while walking around joystick
+[x] cyclic rendering order while walking around joystick
 [ ] no hud for bag
 
-# (head) blacktooth6
+# blacktooth61
+[ ] hush pupplies not vanishing
 
-[ ] donuts not collectable
-[ ] switch doesn't work
-[ ] disappearing block doesn't vanish on touch
-[ ] also doesn't turn off
-[ ] dalek baddie doesn't move
 
-# (head) blacktooth8fish
+Problems with force/accel based model:
+* players feel slippery/not true to original, or they feel just the same as before
+* jumping in a small gap is tricky - when you jump, you lose all upwards velocity on hitting the ceiling - fails to reproduce the original games' weird physics.
+    - doesn't 'store' the upwards jump to release when out of the gap
+* very hard to make sliding collision get player into gaps since their x/y velocity sliding up on the barrier is very low, so they're hardy overlapping the barrier in x/y
+* (probably) could store walking velocity in same way as did x/y just for slow startup (but this would also mean
+no getting into gaps) - unless the startup didn't care about bumping into things and was based purely on when the user
+input started (basically, sensitivity)
 
-[ ] legs on far side not rendered correctly
+Pros:
+* jumping, gravity etc are trivial now
+* easy to 'edge up' by single pixels
+* was already tracking zVelocity (for jumping), but not x/y/z - jumping set (redudantly) the zVel and gave a state delta - could have given either/or - is more consistent. Could probably store velocity just for walkin

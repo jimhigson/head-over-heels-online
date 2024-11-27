@@ -3,6 +3,7 @@
     - continuous vs discrete
         - eg, stencil - simple selection from palette in dpaint vs complex ranges and feathering
         - for cutting out, for putting the cutots on the screen with another stencil (eg, making bottom of wall tiles transparent)
+- animation in dpaint for sprite work
 
 - how to work with dpaint in 202x?        
 
@@ -23,3 +24,5 @@
 - rendering the floor
     - why the floor is a chessboard (rendering chequred squares)
     - ... and then overdraw with a mask
+
+    

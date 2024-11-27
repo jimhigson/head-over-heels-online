@@ -4,7 +4,11 @@
 // (jumping: 2px per frame in original game @25fps, so 50px per second)
 // can be guaranteed to take up every half-pixel position.
 
-import type { UnknownItemInPlay, AnyItemInPlay } from "@/model/ItemInPlay";
+import type {
+  UnknownItemInPlay,
+  AnyItemInPlay,
+  ItemInPlayType,
+} from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
@@ -70,11 +74,36 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   }
 };
 
+/**
+ * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
+ * lifts should be processed first so they can push everything else before they can also move and fail
+ * to push the lift
+ */
+const itemTickOrderComparator = (
+  a: UnknownItemInPlay,
+  b: UnknownItemInPlay,
+) => {
+  const scores: Partial<Record<ItemInPlayType, number>> = {
+    lift: -4, // <- highest priority
+    head: -3,
+    heels: -3,
+    baddie: -2,
+    // everything else goes here
+    block: 1, // <- lowest priority
+    deadlyBlock: 1, // <- lowest priority
+  };
+
+  const aScore = scores[a.type] ?? 0;
+  const bScore = scores[b.type] ?? 0;
+
+  return aScore - bScore;
+};
+
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  console.log("----progressing game state----");
+  //console.log("----progressing game state----");
 
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
@@ -100,15 +129,6 @@ export const progressGameState = <RoomId extends string>(
 
     gameState.gameTime += physicsTickMs;
 
-    /*
-    const sortedItems = Object.values(room.items).sort((a, b) => {
-      const aScore = a.type === "lift" ? -1 : 0;
-      const bScore = b.type === "lift" ? -1 : 0;
-
-      return aScore - bScore;
-    });
-    */
-
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {
@@ -122,7 +142,9 @@ export const progressGameState = <RoomId extends string>(
       }
     }
 
-    for (const item of objectValues(room.items)) {
+    for (const item of Object.values(room.items).sort(
+      itemTickOrderComparator,
+    )) {
       if (currentPlayableItem(gameState).state.action === "death") {
         // all physics is suspended while death animation plays
         break;

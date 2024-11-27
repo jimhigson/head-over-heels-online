@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "Aabb",
+    "Autowalk",
     "autowalking",
     "blacktooth",
     "bookworld",
@@ -41,6 +42,7 @@
     "uncollisionable",
     "unsnag",
     "upscaler",
+    "vels",
     "xyzs"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
