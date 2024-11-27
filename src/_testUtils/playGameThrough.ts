@@ -7,27 +7,31 @@ type FrameCallback = (
   gameState: GameState<TestRoomId>,
 ) => GameState<TestRoomId> | void;
 
+type PlayGameThroughOptions = {
+  frameRate?: number;
+  until?: number | ((gameState: GameState<TestRoomId>) => boolean);
+  /**
+   * allows us to change the gamestate after certain frames, for example to change the
+   * joystick input while the simulation is running
+   */
+  frameCallbacks?: FrameCallback | Array<FrameCallback>;
+};
+
 export const playGameThrough = (
   gameState: GameState<TestRoomId>,
   {
     frameRate = 60,
-    forTime = 1000,
+    until = 1000,
     frameCallbacks = [],
-  }: {
-    frameRate?: number;
-    forTime?: number;
-    /**
-     * allows us to change the gamestate after certain frames, for example to change the
-     * joystick input while the simulation is running
-     */
-    frameCallbacks?: FrameCallback | Array<FrameCallback>;
-  } = { frameRate: 60, forTime: 1000 },
+  }: PlayGameThroughOptions = { frameRate: 60, until: 1000 },
 ) => {
   const deltaMS = 1000 / frameRate;
   const callbacksArray =
     Array.isArray(frameCallbacks) ? frameCallbacks : [frameCallbacks];
 
-  while (gameState.gameTime < forTime) {
+  while (
+    typeof until === "number" ? gameState.gameTime < until : !until(gameState)
+  ) {
     progressGameState(gameState, deltaMS);
 
     gameState = callbacksArray.reduce((gameStateAc, frameCallback) => {
@@ -39,6 +43,9 @@ export const playGameThrough = (
         throw e;
       }
     }, gameState);
+    if (gameState.gameTime > 60_000) {
+      throw new Error("test didn't exit after a minute");
+    }
   }
 };
 

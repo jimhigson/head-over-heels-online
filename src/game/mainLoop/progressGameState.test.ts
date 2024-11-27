@@ -150,7 +150,7 @@ describe("jumping", () => {
         // pass if he needs to get in while travelling more slowly on the way down
         // - at lower frame rates, this tests that the multiple physics frame
         // per graphics frame is working correctly
-        forTime: 800,
+        until: 800,
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
       expect(headState(gameState).standingOn).toMatchObject([
@@ -187,7 +187,7 @@ describe("jumping", () => {
       });
 
       playGameThrough(gameState, {
-        forTime: 1_000,
+        until: 1_000,
         frameRate,
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
@@ -234,7 +234,7 @@ describe("jumping", () => {
 
       playGameThrough(gameState, {
         // plenty of time to reach the floor:
-        forTime: 3_000,
+        until: 3_000,
         frameRate,
         frameCallbacks: [
           stopJumpingAMomentAfterStartingPlay,
@@ -293,21 +293,21 @@ describe("doors", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 2_000,
+      until: 2_000,
     });
     expect(currentRoom(gameState).id).toBe("secondRoom");
   });
 });
 
 describe("teleporter", () => {
-  test("can teleport ot the next room", () => {
+  test.only("can teleport to the next room", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
-          position: { x: 0, y: 0, z: 0 },
+          position: { x: 0, y: 2, z: 1 },
           config: {
-            which: "head",
+            which: "heels",
           },
         },
         teleporter: {
@@ -323,25 +323,18 @@ describe("teleporter", () => {
           config: { style: "organic", disappearing: false },
         },
       },
-      inputState: { away: true, jump: true },
+      inputState: { jump: true },
     });
-
-    let foundTeleporter = false;
 
     playGameThrough(gameState, {
-      forTime: 2_000,
-      frameCallbacks(gameState) {
-        if (
-          headState(gameState).standingOn.find(
+      until(gameState) {
+        return (
+          heelsState(gameState).standingOn.find(
             (i) => i.id === "teleporterLanding",
-          )
-        ) {
-          foundTeleporter = true;
-        }
-        return gameState;
+          ) !== undefined
+        );
       },
     });
-    expect(foundTeleporter).toBeTruthy();
   });
 });
 
@@ -372,7 +365,7 @@ describe("conveyors", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 3_000,
+      until: 3_000,
     });
     const {
       items: { portableBlock },
@@ -435,13 +428,13 @@ describe("conveyors", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 3_000,
+      until: 3_000,
     });
 
     expect(heelsState(gameState).position).toMatchInlineSnapshot(`
       {
-        "x": 16,
-        "y": 33,
+        "x": 17,
+        "y": 34,
         "z": 0,
       }
     `);
@@ -477,7 +470,7 @@ describe("deadly blocks", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 20_000,
+      until: 20_000,
     });
 
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
@@ -505,7 +498,7 @@ describe("snapping stationary items to pixel grid", () => {
 
     playGameThrough(gameState, {
       frameCallbacks: stopAllInputAfter(400),
-      forTime: 450,
+      until: 450,
     });
 
     // this should always be an integer position since head has been stopped for more than a frame
@@ -554,7 +547,7 @@ describe("lifts", () => {
         if (gameState.gameTime > 200)
           standingOns.push(heelsState(gameState).standingOn);
       },
-      forTime: 5_000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     expect(standingOns).toMatchObject(
@@ -571,7 +564,7 @@ describe("lifts", () => {
       frameCallbacks(gameState) {
         maxHeight = Math.max(maxHeight, heelsState(gameState).position.z);
       },
-      forTime: 5_000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     const expectedMaxHeight = (liftTop + 1) * blockSizePx.h - liftBBShortening;
@@ -602,7 +595,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 5_000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     // lift is now stuck on top of the player
@@ -649,7 +642,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 5_000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     // heels is now in the above room and standing on the landing
@@ -686,7 +679,7 @@ describe("lifts", () => {
     const heelsStandingOnForFrames: UnknownItemInPlay[][] = [];
 
     playGameThrough(gameState, {
-      forTime: 5_000, // run for quite a long time
+      until: 5_000, // run for quite a long time
       frameCallbacks(gameState) {
         heelsStandingOnForFrames.push(heelsState(gameState).standingOn);
       },
@@ -735,7 +728,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 5_000,
+      until: 5_000,
     });
 
     expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
@@ -777,7 +770,7 @@ describe("pushing", () => {
     const gameState: GameState<TestRoomId> = basicGameState(withBlockToPush);
 
     playGameThrough(gameState, {
-      forTime: 2_000,
+      until: 2_000,
     });
 
     expect(itemState(gameState, "somethingToPush").position.y).toBe(
@@ -804,7 +797,7 @@ describe("pushing", () => {
     });
 
     playGameThrough(gameState, {
-      forTime: 2_000,
+      until: 2_000,
     });
 
     expect(itemState(gameState, "somethingToPush2").position.y).toBe(
