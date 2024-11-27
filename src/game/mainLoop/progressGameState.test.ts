@@ -433,8 +433,8 @@ describe("conveyors", () => {
 
     expect(heelsState(gameState).position).toMatchInlineSnapshot(`
       {
-        "x": 17,
-        "y": 34,
+        "x": 16,
+        "y": 32,
         "z": 0,
       }
     `);

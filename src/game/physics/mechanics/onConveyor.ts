@@ -12,11 +12,14 @@ import {
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import {
+  addXyz,
   oppositeDirection,
   originXyz,
   scaleXyz,
   unitVectors,
+  xyzEqual,
 } from "@/utils/vectors/vectors";
+import { blockSizePx } from "@/sprites/spritePivots";
 
 const resetConveyorStateForItem = {
   vels: {
@@ -26,6 +29,38 @@ const resetConveyorStateForItem = {
     activeConveyor: null,
   },
 };
+
+/**
+ * since conveyors can lead to other conveyors, sort them so that the
+ * active conveyor will always be the first one in the chain when two
+ * are stood on at once. This allows objects to be nicely moved around
+ * conveyor corners (see blacktooth26)
+ */
+const conveyorOrderComparator = (
+  a: ItemInPlay<"conveyor">,
+  b: ItemInPlay<"conveyor">,
+) => {
+  const aLeadsTo = addXyz(
+    a.state.position,
+    scaleXyz(unitVectors[a.config.direction], blockSizePx.w * a.config.count),
+  );
+
+  if (xyzEqual(aLeadsTo, b.state.position)) {
+    return -1;
+  }
+
+  const bLeadsTo = addXyz(
+    b.state.position,
+    scaleXyz(unitVectors[b.config.direction], blockSizePx.w * b.config.count),
+  );
+
+  if (xyzEqual(bLeadsTo, a.state.position)) {
+    return 1;
+  }
+
+  return 0;
+};
+
 /**
  * handle *only* the vertical speed downwards, and recognising
  * when the fall is done
@@ -45,8 +80,19 @@ export const onConveyor = <RoomId extends string>(
     state: { standingOn },
   } = item;
 
-  const standingOnConveyors = standingOn.filter(isItemType("conveyor"));
-  const activeConveyorItem = standingOnConveyors.at(0);
+  const stoodOnConveyors = standingOn.filter(isItemType("conveyor"));
+
+  /*
+  if (
+    standingOn.length > stoodOnConveyors.length &&
+    stoodOnConveyors.every((conv) => itemXyOverlapFraction(item, conv) < 0.5)
+  ) {
+    return resetConveyorStateForItem;
+  }*/
+
+  const activeConveyorItem = stoodOnConveyors
+    .sort(conveyorOrderComparator)
+    .at(0);
 
   if (activeConveyorItem === undefined) {
     return resetConveyorStateForItem;
