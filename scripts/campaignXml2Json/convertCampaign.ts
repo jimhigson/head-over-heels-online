@@ -85,11 +85,11 @@ export const autoZ = (
   }, 0);
 };
 
-export const basicColor = (color: string) => {
+export const convertRoomColour = (color: string) => {
   const match = /([^.]*)(\.reduced)?/.exec(color)!;
   return {
     hue: match[1] as ZxSpectrumRoomHue,
-    shade: (match[2] === "undefined" ? "basic" : "dimmed") as Shade,
+    shade: (match[2] === undefined ? "basic" : "dimmed") as Shade,
   };
 };
 

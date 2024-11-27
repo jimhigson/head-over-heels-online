@@ -21,6 +21,8 @@ export type ItemInPlayType =
 type FreeItemState = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
   standingOn: UnknownItemInPlay[];
+  /* the conveyor currently stood on, if any - taken from the standingOn list */
+  activeConveyor: ItemInPlay<"conveyor"> | null;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */

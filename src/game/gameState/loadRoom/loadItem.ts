@@ -65,13 +65,15 @@ export function* loadItem<RoomId extends string>(
 const initialState = <T extends JsonItemType & ItemInPlayType>(
   jsonItem: JsonItem<T>,
 ) => {
-  const falls = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
+  const free = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     expires: null,
     stoodOnBy: [],
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
-    ...(falls ? { standingOn: [], vels: { gravity: originXyz } } : {}),
+    ...(free ?
+      { standingOn: [], vels: { gravity: originXyz }, activeConveyor: null }
+    : {}),
     ...(jsonItem.type === "teleporter" ? { flashing: false } : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
     ...(jsonItem.type === "lift" ?

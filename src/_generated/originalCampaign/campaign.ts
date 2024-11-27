@@ -378,7 +378,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth11: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "market",
       floorSkip: [],
       id: "blacktooth11",
@@ -652,7 +652,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth12: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth12",
@@ -715,7 +715,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth13: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth13",
@@ -784,7 +784,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth14",
@@ -917,7 +917,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth15: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth15",
@@ -950,7 +950,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth16: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth16",
@@ -1017,7 +1017,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth17triple: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [
         { x: 12, y: 12 },
@@ -1340,7 +1340,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth19: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth19",
@@ -1457,7 +1457,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth1head: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "jail",
       floorSkip: [],
       id: "blacktooth1head",
@@ -1522,7 +1522,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth2: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth2",
@@ -1555,7 +1555,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth20: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth20",
@@ -1746,7 +1746,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth23heels: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "jail",
       floorSkip: [],
       id: "blacktooth23heels",
@@ -1995,7 +1995,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth24: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth24",
@@ -2042,7 +2042,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth25: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth25",
@@ -2077,7 +2077,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth26: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "blacktooth26",
@@ -2371,7 +2371,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth3: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "blacktooth3",
@@ -2461,7 +2461,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth31: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth31",
@@ -2603,7 +2603,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth32: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth32",
@@ -2636,7 +2636,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth33: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth33",
@@ -2694,7 +2694,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth34: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "blacktooth34",
@@ -2839,7 +2839,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth37: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth37",
@@ -2897,7 +2897,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth38: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "blacktooth38",
@@ -2927,7 +2927,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth39: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth39",
@@ -2982,7 +2982,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth4: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth4",
@@ -3016,7 +3016,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth40fish: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth40fish",
@@ -3187,7 +3187,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth41: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth41",
@@ -3220,7 +3220,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth42: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth42",
@@ -3330,7 +3330,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth45market: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "market",
       floorSkip: [],
       id: "blacktooth45market",
@@ -3613,7 +3613,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth48market: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "market",
       floorSkip: [],
       id: "blacktooth48market",
@@ -3646,7 +3646,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth49market: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "market",
       floorSkip: [],
       id: "blacktooth49market",
@@ -3709,7 +3709,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth5: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth5",
@@ -3819,7 +3819,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth51: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "jail",
       floorSkip: [],
       id: "blacktooth51",
@@ -4150,7 +4150,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth57: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "blacktooth57",
@@ -4212,7 +4212,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth58triple: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [
         { x: 13, y: 13 },
@@ -4639,7 +4639,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth59: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "blacktooth59",
@@ -5047,7 +5047,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth61: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "blacktooth61",
@@ -5111,7 +5111,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth62fish: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth62fish",
@@ -5302,7 +5302,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth63: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "blacktooth63",
@@ -5386,7 +5386,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     blacktooth64: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth64",
@@ -5425,7 +5425,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth65: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth65",
@@ -5463,7 +5463,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth66: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth66",
@@ -5501,7 +5501,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth67: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth67",
@@ -5623,7 +5623,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth68: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth68",
@@ -5740,7 +5740,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth69: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth69",
@@ -5817,7 +5817,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth70: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth70",
@@ -5910,7 +5910,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth71: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth71",
@@ -5998,7 +5998,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth72: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth72",
@@ -6061,7 +6061,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth73: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth73",
@@ -6204,7 +6204,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth74: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth74",
@@ -6288,7 +6288,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth75: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth75",
@@ -6401,7 +6401,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth76: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth76",
@@ -6518,7 +6518,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth77: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth77",
@@ -6681,7 +6681,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth78: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth78",
@@ -6799,7 +6799,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth79fish: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "blacktooth79fish",
@@ -6887,7 +6887,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth80: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth80",
@@ -6978,7 +6978,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth81: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth81",
@@ -7100,7 +7100,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth82: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth82",
@@ -7209,7 +7209,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth83tofreedom: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth83tofreedom",
@@ -7361,7 +7361,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth84: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth84",
@@ -7448,7 +7448,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth85: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth85",
@@ -7540,7 +7540,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth86: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth86",
@@ -7578,7 +7578,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth87crown: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth87crown",
@@ -7680,7 +7680,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth8fish: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "blacktooth",
       floorSkip: [],
       id: "blacktooth8fish",
@@ -7743,7 +7743,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     blacktooth9: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "blacktooth9",
@@ -7880,7 +7880,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>,
     bookworld1: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld1",
@@ -7957,7 +7957,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld10: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld10",
@@ -7995,7 +7995,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld11: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld11",
@@ -8043,7 +8043,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld12fish: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld12fish",
@@ -8116,7 +8116,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld13: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld13",
@@ -8149,7 +8149,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld14",
@@ -8286,7 +8286,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld15: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "bookworld15",
@@ -8353,7 +8353,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld16: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld16",
@@ -8391,7 +8391,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld17: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld17",
@@ -8434,7 +8434,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld18: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "bookworld18",
@@ -8507,7 +8507,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld19: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld19",
@@ -8578,7 +8578,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld2: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "bookworld2",
@@ -8760,7 +8760,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld20: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld20",
@@ -8804,7 +8804,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld21: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld21",
@@ -8876,7 +8876,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld22: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld22",
@@ -8959,7 +8959,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld23: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld23",
@@ -8988,7 +8988,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld24: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "bookworld24",
@@ -9061,7 +9061,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld25: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld25",
@@ -9094,7 +9094,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld26: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld26",
@@ -9157,7 +9157,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld27: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld27",
@@ -9205,7 +9205,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld28: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "bookworld28",
@@ -9476,7 +9476,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld29: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "bookworld29",
@@ -9659,7 +9659,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld3: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld3",
@@ -9702,7 +9702,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld30: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld30",
@@ -9745,7 +9745,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld31: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld31",
@@ -9886,7 +9886,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld32: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "bookworld32",
@@ -9924,7 +9924,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld33: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld33",
@@ -9982,7 +9982,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld34: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld34",
@@ -10158,7 +10158,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld35: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld35",
@@ -10275,7 +10275,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld36: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld36",
@@ -10343,7 +10343,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld37: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld37",
@@ -10396,7 +10396,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld38: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "bookworld38",
@@ -10434,7 +10434,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld39: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "bookworld39",
@@ -10523,7 +10523,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld4: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld4",
@@ -10571,7 +10571,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld40: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld40",
@@ -10614,7 +10614,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld41crown: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld41crown",
@@ -10702,7 +10702,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld5: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld5",
@@ -10745,7 +10745,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld6: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld6",
@@ -10808,7 +10808,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld7: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld7",
@@ -10856,7 +10856,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld8: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld8",
@@ -10928,7 +10928,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"bookworld", OriginalCampaignRoomId>,
     bookworld9: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "bookworld",
       floorSkip: [],
       id: "bookworld9",
@@ -11028,7 +11028,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus10: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus10",
@@ -11120,7 +11120,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus11: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus11",
@@ -11153,7 +11153,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus12: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus12",
@@ -11300,7 +11300,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus13: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus13",
@@ -11393,7 +11393,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus14",
@@ -11477,7 +11477,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus15: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus15",
@@ -11561,7 +11561,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus16: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus16",
@@ -11625,7 +11625,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus17: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "egyptus17",
@@ -11789,7 +11789,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus18: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus18",
@@ -11827,7 +11827,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus19: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus19",
@@ -11906,7 +11906,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus2: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus2",
@@ -12008,7 +12008,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus20: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus20",
@@ -12076,7 +12076,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus21: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus21",
@@ -12109,7 +12109,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus22: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus22",
@@ -12219,7 +12219,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus23: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus23",
@@ -12434,7 +12434,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus24: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus24",
@@ -12512,7 +12512,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus25: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus25",
@@ -12550,7 +12550,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus26: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus26",
@@ -12690,7 +12690,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus27: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "egyptus27",
@@ -12812,7 +12812,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus28: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus28",
@@ -12862,7 +12862,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus29: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus29",
@@ -12913,7 +12913,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus3: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus3",
@@ -12951,7 +12951,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus30: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus30",
@@ -12988,7 +12988,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus31: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus31",
@@ -13034,7 +13034,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus32: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus32",
@@ -13073,7 +13073,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus33: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus33",
@@ -13102,7 +13102,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus34fish: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus34fish",
@@ -13197,7 +13197,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus35: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus35",
@@ -13286,7 +13286,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus36: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus36",
@@ -13356,7 +13356,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus37: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "egyptus37",
@@ -13400,7 +13400,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus38: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus38",
@@ -13542,7 +13542,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus39crown: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus39crown",
@@ -13791,7 +13791,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus5: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus5",
@@ -13874,7 +13874,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus6: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus6",
@@ -13946,7 +13946,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus7: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "egyptus7",
@@ -14033,7 +14033,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     egyptus8: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "egyptus",
       floorSkip: [],
       id: "egyptus8",
@@ -14263,7 +14263,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"egyptus", OriginalCampaignRoomId>,
     finalroom: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "jail",
       floorSkip: [],
       id: "finalroom",
@@ -14365,7 +14365,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"jail", OriginalCampaignRoomId>,
     moonbase1: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase1",
@@ -14856,7 +14856,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase14",
@@ -15140,7 +15140,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase17: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase17",
@@ -15218,7 +15218,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase19: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase19",
@@ -15492,7 +15492,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase21tosafari: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase21tosafari",
@@ -16035,7 +16035,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase25tobookworld: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase25tobookworld",
@@ -16386,7 +16386,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase29: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase29",
@@ -16748,7 +16748,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase31: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase31",
@@ -16988,7 +16988,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase33triple: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [
         { x: 5, y: 3 },
@@ -17446,7 +17446,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase34: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase34",
@@ -17535,7 +17535,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase35: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase35",
@@ -18449,7 +18449,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     penitentiary1: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary1",
@@ -18497,7 +18497,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary10: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary10",
@@ -18541,7 +18541,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary11: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary11",
@@ -18585,7 +18585,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary12: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary12",
@@ -18687,7 +18687,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary13: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary13",
@@ -18781,7 +18781,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary14",
@@ -18906,7 +18906,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary15: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary15",
@@ -19145,7 +19145,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary16: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary16",
@@ -19239,7 +19239,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary17: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary17",
@@ -19357,7 +19357,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary18fish: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary18fish",
@@ -19498,7 +19498,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary19: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary19",
@@ -19546,7 +19546,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary2: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary2",
@@ -19663,7 +19663,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary20: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary20",
@@ -19723,7 +19723,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary21: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary21",
@@ -19962,7 +19962,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary22: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary22",
@@ -20181,7 +20181,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary23: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary23",
@@ -20375,7 +20375,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary24: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary24",
@@ -20418,7 +20418,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary25: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary25",
@@ -20451,7 +20451,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary26: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "penitentiary26",
@@ -20523,7 +20523,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary27: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "penitentiary27",
@@ -20586,7 +20586,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary28: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary28",
@@ -20663,7 +20663,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary29: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary29",
@@ -20762,7 +20762,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary3: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "penitentiary3",
@@ -20854,7 +20854,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary30: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary30",
@@ -20932,7 +20932,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary31: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary31",
@@ -21042,7 +21042,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary32: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary32",
@@ -21146,7 +21146,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary33: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary33",
@@ -21288,7 +21288,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary34crown: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary34crown",
@@ -21395,7 +21395,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary4: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary4",
@@ -21455,7 +21455,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary5: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary5",
@@ -21501,7 +21501,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary6: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary6",
@@ -21561,7 +21561,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary7: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary7",
@@ -21619,7 +21619,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary8: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "penitentiary",
       floorSkip: [],
       id: "penitentiary8",
@@ -21688,7 +21688,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>,
     penitentiary9: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "penitentiary9",
@@ -21766,7 +21766,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari10: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari10",
@@ -22142,7 +22142,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari14: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari14",
@@ -22436,7 +22436,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari17fish: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari17fish",
@@ -22583,7 +22583,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari18: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari18",
@@ -22699,7 +22699,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari19triple: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "safari",
       floorSkip: [
         { x: 16, y: 16 },
@@ -23011,7 +23011,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari2: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari2",
@@ -23166,7 +23166,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari21: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari21",
@@ -23405,7 +23405,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari24: {
-      color: { hue: "yellow", shade: "dimmed" },
+      color: { hue: "yellow", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari24",
@@ -23483,7 +23483,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari25: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari25",
@@ -23540,7 +23540,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari26: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari26",
@@ -23988,7 +23988,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari3: {
-      color: { hue: "cyan", shade: "dimmed" },
+      color: { hue: "cyan", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari3",
@@ -24079,7 +24079,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari31: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari31",
@@ -24271,7 +24271,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari32: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari32",
@@ -24691,7 +24691,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari37crown: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari37crown",
@@ -25033,7 +25033,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari6triple: {
-      color: { hue: "white", shade: "dimmed" },
+      color: { hue: "white", shade: "basic" },
       floor: "deadly",
       floorSkip: [
         { x: 12, y: 12 },
@@ -25300,7 +25300,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari7: {
-      color: { hue: "magenta", shade: "dimmed" },
+      color: { hue: "magenta", shade: "basic" },
       floor: "deadly",
       floorSkip: [],
       id: "safari7",
@@ -25374,7 +25374,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari8: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "safari",
       floorSkip: [],
       id: "safari8",
@@ -25407,7 +25407,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"safari", OriginalCampaignRoomId>,
     safari9: {
-      color: { hue: "green", shade: "dimmed" },
+      color: { hue: "green", shade: "basic" },
       floor: "none",
       floorSkip: [],
       id: "safari9",

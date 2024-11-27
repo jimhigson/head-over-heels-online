@@ -11,7 +11,11 @@ import {
   doorFrameAppearance,
   doorLegsAppearance,
 } from "../../../doorAppearance";
-import { isPlayableItem, type ItemInPlayType } from "@/model/ItemInPlay";
+import {
+  isFreeItem,
+  isPlayableItem,
+  type ItemInPlayType,
+} from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
 import { currentRoom } from "@/game/gameState/GameState";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
@@ -79,14 +83,12 @@ export const itemAppearances: {
   barrier({
     config: { axis },
     state: { expires },
-    stateLastFrame: lastRenderedState,
+    stateLastFrame,
     renderContainer,
   }) {
     const bubbles = expires !== null;
     const wasBubbles =
-      lastRenderedState === undefined ? false : (
-        lastRenderedState.expires !== null
-      );
+      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
 
     if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
       return;
@@ -118,14 +120,12 @@ export const itemAppearances: {
   block({
     config: { style, disappearing },
     state: { expires },
-    stateLastFrame: lastRenderedState,
+    stateLastFrame,
     renderContainer,
   }) {
     const bubbles = expires !== null;
     const wasBubbles =
-      lastRenderedState === undefined ? false : (
-        lastRenderedState.expires !== null
-      );
+      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
 
     if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
       return;
@@ -142,25 +142,57 @@ export const itemAppearances: {
     );
   },
 
-  conveyor: ifNotRenderedBefore(
-    ({ config: { direction, count }, renderContainer }) => {
+  conveyor(item) {
+    const {
+      config: { direction, count },
+      state: { stoodOnBy },
+      stateLastFrame,
+      renderContainer,
+    } = item;
+
+    if (renderContainer === undefined) return;
+
+    const isActive =
+      stoodOnBy.find(
+        (i) => isFreeItem(i) && i.state.activeConveyor === item,
+      ) !== undefined;
+    const wasActiveLastFrame =
+      stateLastFrame !== undefined &&
+      stateLastFrame.stoodOnBy.find(
+        (i) =>
+          isFreeItem(i) &&
+          i.stateLastFrame !== undefined &&
+          i.stateLastFrame.activeConveyor === item,
+      ) !== undefined;
+
+    const shouldRender =
+      (renderContainer !== undefined && !renderedBefore(renderContainer)) ||
+      isActive !== wasActiveLastFrame;
+
+    if (shouldRender) {
       const rendering = new Container();
 
       const axis = directionAxis(direction);
       rendering.addChild(
-        ...iterate(range(count, 0, -1)).map((i) =>
-          createSprite({
-            texture: `conveyor.${axis}.1`,
-            ...projectWorldXyzToScreenXyInteger({
-              [axis]: (i - 1) * blockSizePx.w,
-            }),
-          }),
-        ),
+        ...iterate(range(count, 0, -1)).map((i) => {
+          const xy = projectWorldXyzToScreenXyInteger({
+            [axis]: (i - 1) * blockSizePx.w,
+          });
+
+          return createSprite(
+            isActive ?
+              { frames: spriteSheet.animations[`conveyor.${axis}`], ...xy }
+            : {
+                texture: `conveyor.${axis}.6`,
+                ...xy,
+              },
+          );
+        }),
       );
 
       applyAppearance(renderContainer, rendering);
-    },
-  ),
+    }
+  },
 
   lift: ifNotRenderedBefore(({ renderContainer }) => {
     const rendering = new Container();
@@ -181,13 +213,9 @@ export const itemAppearances: {
     applyAppearance(renderContainer, rendering);
   }),
 
-  spring({
-    state: { stoodOnBy },
-    stateLastFrame: lastRenderedState,
-    renderContainer,
-  }) {
+  spring({ state: { stoodOnBy }, stateLastFrame, renderContainer }) {
     const stoodOn = stoodOnBy.length > 0;
-    const prevStoodOn = (lastRenderedState?.stoodOnBy.length ?? 0) > 0;
+    const prevStoodOn = (stateLastFrame?.stoodOnBy.length ?? 0) > 0;
 
     if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
       return;
@@ -207,14 +235,10 @@ export const itemAppearances: {
     );
   },
 
-  teleporter({
-    state: { stoodOnBy },
-    stateLastFrame: lastRenderedState,
-    renderContainer,
-  }) {
+  teleporter({ state: { stoodOnBy }, stateLastFrame, renderContainer }) {
     const stoodOn = stoodOnBy.find(isPlayableItem) !== undefined;
     const prevStoodOn =
-      lastRenderedState?.stoodOnBy.find(isPlayableItem) !== undefined;
+      stateLastFrame?.stoodOnBy.find(isPlayableItem) !== undefined;
 
     if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
       return;
@@ -236,13 +260,11 @@ export const itemAppearances: {
     config: { gives },
     renderContainer,
     state: { expires },
-    stateLastFrame: lastRenderedState,
+    stateLastFrame,
   }) {
     const bubbles = expires !== null;
     const wasBubbles =
-      lastRenderedState === undefined ? false : (
-        lastRenderedState.expires !== null
-      );
+      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
 
     if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
       return;
@@ -281,14 +303,12 @@ export const itemAppearances: {
   fish({
     config: { alive },
     state: { expires },
-    stateLastFrame: lastRenderedState,
+    stateLastFrame,
     renderContainer,
   }) {
     const bubbles = expires !== null;
     const wasBubbles =
-      lastRenderedState === undefined ? false : (
-        lastRenderedState.expires !== null
-      );
+      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
 
     if (renderedBefore(renderContainer!) && bubbles !== wasBubbles) {
       return;

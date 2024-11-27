@@ -26,6 +26,7 @@ export const loadPlayer = <RoomId extends string>(
           shield: 0,
           standingOn: [],
           stoodOnBy: [],
+          activeConveyor: null,
           vels: {
             walking: originXyz,
             gravity: originXyz,
@@ -60,6 +61,7 @@ export const loadPlayer = <RoomId extends string>(
           shield: 0,
           standingOn: [],
           stoodOnBy: [],
+          activeConveyor: null,
           vels: {
             walking: originXyz,
             gravity: originXyz,

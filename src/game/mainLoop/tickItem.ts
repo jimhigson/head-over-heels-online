@@ -16,6 +16,7 @@ import type { Xyz } from "@/utils/vectors/vectors";
 import { originXyz, addXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
+import { onConveyor } from "../physics/mechanics/onConveyor";
 
 function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
@@ -24,6 +25,7 @@ function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
 ): Generator<MechanicResult<T>> {
   if (isFreeItem(item)) {
     yield gravity(item, gameState, deltaMS) as MechanicResult<T>;
+    yield onConveyor(item, gameState, deltaMS) as MechanicResult<T>;
   }
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {

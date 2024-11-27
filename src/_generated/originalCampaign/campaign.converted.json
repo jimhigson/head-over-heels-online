@@ -378,7 +378,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth12": {
       "id": "blacktooth12",
@@ -441,7 +441,7 @@
           "position": { "x": 0, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth13": {
       "id": "blacktooth13",
@@ -510,7 +510,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth14": {
       "id": "blacktooth14",
@@ -643,7 +643,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth15": {
       "id": "blacktooth15",
@@ -676,7 +676,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth16": {
       "id": "blacktooth16",
@@ -743,7 +743,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth17triple": {
       "id": "blacktooth17triple",
@@ -1010,7 +1010,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth18": {
       "id": "blacktooth18",
@@ -1183,7 +1183,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth1head": {
       "id": "blacktooth1head",
@@ -1232,7 +1232,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth2": {
       "id": "blacktooth2",
@@ -1265,7 +1265,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth20": {
       "id": "blacktooth20",
@@ -1294,7 +1294,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth21fish": {
       "id": "blacktooth21fish",
@@ -1684,7 +1684,7 @@
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth24": {
       "id": "blacktooth24",
@@ -1731,7 +1731,7 @@
           "position": { "x": 8, "y": 3, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth25": {
       "id": "blacktooth25",
@@ -1766,7 +1766,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth26": {
       "id": "blacktooth26",
@@ -1826,7 +1826,7 @@
           "position": { "x": 2, "y": 6, "z": 2 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth27fish": {
       "id": "blacktooth27fish",
@@ -2099,7 +2099,7 @@
           "position": { "x": 3, "y": 6, "z": 2 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth30": {
       "id": "blacktooth30",
@@ -2301,7 +2301,7 @@
           "position": { "x": 6, "y": 2, "z": 3 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth32": {
       "id": "blacktooth32",
@@ -2334,7 +2334,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth33": {
       "id": "blacktooth33",
@@ -2392,7 +2392,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth34": {
       "id": "blacktooth34",
@@ -2436,7 +2436,7 @@
           "position": { "x": 3, "y": 8, "z": 2 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth35": {
       "id": "blacktooth35",
@@ -2613,7 +2613,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth38": {
       "id": "blacktooth38",
@@ -2643,7 +2643,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth39": {
       "id": "blacktooth39",
@@ -2698,7 +2698,7 @@
           "position": { "x": 6, "y": 2, "z": 5 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth4": {
       "id": "blacktooth4",
@@ -2732,7 +2732,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth40fish": {
       "id": "blacktooth40fish",
@@ -2903,7 +2903,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth41": {
       "id": "blacktooth41",
@@ -2936,7 +2936,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth42": {
       "id": "blacktooth42",
@@ -2982,7 +2982,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth43": {
       "id": "blacktooth43",
@@ -3128,7 +3128,7 @@
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth46market": {
       "id": "blacktooth46market",
@@ -3362,7 +3362,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth49market": {
       "id": "blacktooth49market",
@@ -3425,7 +3425,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth5": {
       "id": "blacktooth5",
@@ -3473,7 +3473,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth50market": {
       "id": "blacktooth50market",
@@ -3574,7 +3574,7 @@
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth52market": {
       "id": "blacktooth52market",
@@ -3955,7 +3955,7 @@
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth58triple": {
       "id": "blacktooth58triple",
@@ -4382,7 +4382,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth59": {
       "id": "blacktooth59",
@@ -4520,7 +4520,7 @@
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "blacktooth6": {
       "id": "blacktooth6",
@@ -4863,7 +4863,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "blacktooth62fish": {
       "id": "blacktooth62fish",
@@ -5054,7 +5054,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "blacktooth63": {
       "id": "blacktooth63",
@@ -5147,7 +5147,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth64": {
       "id": "blacktooth64",
@@ -5186,7 +5186,7 @@
           "position": { "x": 2, "y": 6, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth65": {
       "id": "blacktooth65",
@@ -5224,7 +5224,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth66": {
       "id": "blacktooth66",
@@ -5262,7 +5262,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth67": {
       "id": "blacktooth67",
@@ -5384,7 +5384,7 @@
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth68": {
       "id": "blacktooth68",
@@ -5501,7 +5501,7 @@
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth69": {
       "id": "blacktooth69",
@@ -5540,7 +5540,7 @@
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth7": {
       "id": "blacktooth7",
@@ -5671,7 +5671,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth71": {
       "id": "blacktooth71",
@@ -5759,7 +5759,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth72": {
       "id": "blacktooth72",
@@ -5822,7 +5822,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth73": {
       "id": "blacktooth73",
@@ -5965,7 +5965,7 @@
           "position": { "x": 0, "y": 2, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth74": {
       "id": "blacktooth74",
@@ -6049,7 +6049,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth75": {
       "id": "blacktooth75",
@@ -6162,7 +6162,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth76": {
       "id": "blacktooth76",
@@ -6282,7 +6282,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth77": {
       "id": "blacktooth77",
@@ -6445,7 +6445,7 @@
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth78": {
       "id": "blacktooth78",
@@ -6563,7 +6563,7 @@
           "position": { "x": 8, "y": 3, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth79fish": {
       "id": "blacktooth79fish",
@@ -6651,7 +6651,7 @@
           "position": { "x": 7, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth80": {
       "id": "blacktooth80",
@@ -6742,7 +6742,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth81": {
       "id": "blacktooth81",
@@ -6864,7 +6864,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth82": {
       "id": "blacktooth82",
@@ -6973,7 +6973,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth83tofreedom": {
       "id": "blacktooth83tofreedom",
@@ -7125,7 +7125,7 @@
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth84": {
       "id": "blacktooth84",
@@ -7212,7 +7212,7 @@
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth85": {
       "id": "blacktooth85",
@@ -7304,7 +7304,7 @@
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth86": {
       "id": "blacktooth86",
@@ -7342,7 +7342,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth87crown": {
       "id": "blacktooth87crown",
@@ -7444,7 +7444,7 @@
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "blacktooth8fish": {
       "id": "blacktooth8fish",
@@ -7507,7 +7507,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "blacktooth9": {
       "id": "blacktooth9",
@@ -7644,7 +7644,7 @@
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "bookworld1": {
       "id": "bookworld1",
@@ -7721,7 +7721,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld10": {
       "id": "bookworld10",
@@ -7759,7 +7759,7 @@
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld11": {
       "id": "bookworld11",
@@ -7807,7 +7807,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld12fish": {
       "id": "bookworld12fish",
@@ -7880,7 +7880,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld13": {
       "id": "bookworld13",
@@ -7913,7 +7913,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld14": {
       "id": "bookworld14",
@@ -8050,7 +8050,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld15": {
       "id": "bookworld15",
@@ -8117,7 +8117,7 @@
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld16": {
       "id": "bookworld16",
@@ -8155,7 +8155,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld17": {
       "id": "bookworld17",
@@ -8198,7 +8198,7 @@
           "position": { "x": 8, "y": 2, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld18": {
       "id": "bookworld18",
@@ -8271,7 +8271,7 @@
           "position": { "x": 2, "y": 0, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld19": {
       "id": "bookworld19",
@@ -8342,7 +8342,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld2": {
       "id": "bookworld2",
@@ -8524,7 +8524,7 @@
           "position": { "x": 0, "y": 2, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld20": {
       "id": "bookworld20",
@@ -8568,7 +8568,7 @@
           "position": { "x": 2, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld21": {
       "id": "bookworld21",
@@ -8640,7 +8640,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld22": {
       "id": "bookworld22",
@@ -8723,7 +8723,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld23": {
       "id": "bookworld23",
@@ -8752,7 +8752,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld24": {
       "id": "bookworld24",
@@ -8825,7 +8825,7 @@
           "position": { "x": 0, "y": 2, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld25": {
       "id": "bookworld25",
@@ -8858,7 +8858,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld26": {
       "id": "bookworld26",
@@ -8921,7 +8921,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld27": {
       "id": "bookworld27",
@@ -8969,7 +8969,7 @@
           "position": { "x": 0, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld28": {
       "id": "bookworld28",
@@ -9240,7 +9240,7 @@
           "position": { "x": 3, "y": 16, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld29": {
       "id": "bookworld29",
@@ -9423,7 +9423,7 @@
           "position": { "x": 0, "y": 3, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld3": {
       "id": "bookworld3",
@@ -9466,7 +9466,7 @@
           "position": { "x": 0, "y": 2, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld30": {
       "id": "bookworld30",
@@ -9509,7 +9509,7 @@
           "position": { "x": 0, "y": 1, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld31": {
       "id": "bookworld31",
@@ -9653,7 +9653,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld32": {
       "id": "bookworld32",
@@ -9691,7 +9691,7 @@
           "position": { "x": 8, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld33": {
       "id": "bookworld33",
@@ -9749,7 +9749,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld34": {
       "id": "bookworld34",
@@ -9925,7 +9925,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld35": {
       "id": "bookworld35",
@@ -10042,7 +10042,7 @@
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld36": {
       "id": "bookworld36",
@@ -10110,7 +10110,7 @@
           "position": { "x": 8, "y": 2, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld37": {
       "id": "bookworld37",
@@ -10163,7 +10163,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld38": {
       "id": "bookworld38",
@@ -10201,7 +10201,7 @@
           "position": { "x": 3, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld39": {
       "id": "bookworld39",
@@ -10290,7 +10290,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld4": {
       "id": "bookworld4",
@@ -10338,7 +10338,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld40": {
       "id": "bookworld40",
@@ -10381,7 +10381,7 @@
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld41crown": {
       "id": "bookworld41crown",
@@ -10469,7 +10469,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld5": {
       "id": "bookworld5",
@@ -10512,7 +10512,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld6": {
       "id": "bookworld6",
@@ -10575,7 +10575,7 @@
           "position": { "x": 4, "y": 3, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld7": {
       "id": "bookworld7",
@@ -10623,7 +10623,7 @@
           "position": { "x": 1, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld8": {
       "id": "bookworld8",
@@ -10695,7 +10695,7 @@
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "bookworld9": {
       "id": "bookworld9",
@@ -10738,7 +10738,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus1": {
       "id": "egyptus1",
@@ -10887,7 +10887,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "egyptus11": {
       "id": "egyptus11",
@@ -10920,7 +10920,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus12": {
       "id": "egyptus12",
@@ -11067,7 +11067,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus13": {
       "id": "egyptus13",
@@ -11160,7 +11160,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus14": {
       "id": "egyptus14",
@@ -11244,7 +11244,7 @@
           "position": { "x": 3, "y": 8, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus15": {
       "id": "egyptus15",
@@ -11328,7 +11328,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus16": {
       "id": "egyptus16",
@@ -11392,7 +11392,7 @@
           "position": { "x": 2, "y": 6, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus17": {
       "id": "egyptus17",
@@ -11556,7 +11556,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus18": {
       "id": "egyptus18",
@@ -11594,7 +11594,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus19": {
       "id": "egyptus19",
@@ -11673,7 +11673,7 @@
           "position": { "x": 7, "y": 3, "z": 6 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus2": {
       "id": "egyptus2",
@@ -11775,7 +11775,7 @@
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus20": {
       "id": "egyptus20",
@@ -11843,7 +11843,7 @@
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus21": {
       "id": "egyptus21",
@@ -11876,7 +11876,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus22": {
       "id": "egyptus22",
@@ -11986,7 +11986,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus23": {
       "id": "egyptus23",
@@ -12201,7 +12201,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus24": {
       "id": "egyptus24",
@@ -12279,7 +12279,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus25": {
       "id": "egyptus25",
@@ -12317,7 +12317,7 @@
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus26": {
       "id": "egyptus26",
@@ -12457,7 +12457,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus27": {
       "id": "egyptus27",
@@ -12579,7 +12579,7 @@
           "position": { "x": 8, "y": 3, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus28": {
       "id": "egyptus28",
@@ -12629,7 +12629,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus29": {
       "id": "egyptus29",
@@ -12680,7 +12680,7 @@
           "position": { "x": 6, "y": 3, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus3": {
       "id": "egyptus3",
@@ -12718,7 +12718,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "egyptus30": {
       "id": "egyptus30",
@@ -12755,7 +12755,7 @@
           "position": { "x": 5, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus31": {
       "id": "egyptus31",
@@ -12801,7 +12801,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus32": {
       "id": "egyptus32",
@@ -12840,7 +12840,7 @@
           "position": { "x": 8, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus33": {
       "id": "egyptus33",
@@ -12869,7 +12869,7 @@
           "position": { "x": 3, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus34fish": {
       "id": "egyptus34fish",
@@ -12964,7 +12964,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus35": {
       "id": "egyptus35",
@@ -13053,7 +13053,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus36": {
       "id": "egyptus36",
@@ -13123,7 +13123,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus37": {
       "id": "egyptus37",
@@ -13167,7 +13167,7 @@
           "position": { "x": 2, "y": 3, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus38": {
       "id": "egyptus38",
@@ -13309,7 +13309,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus39crown": {
       "id": "egyptus39crown",
@@ -13416,7 +13416,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus4": {
       "id": "egyptus4",
@@ -13641,7 +13641,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "egyptus6": {
       "id": "egyptus6",
@@ -13713,7 +13713,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus7": {
       "id": "egyptus7",
@@ -13800,7 +13800,7 @@
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "egyptus8": {
       "id": "egyptus8",
@@ -13937,7 +13937,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "egyptus9fish": {
       "id": "egyptus9fish",
@@ -14132,7 +14132,7 @@
           "position": { "x": 7, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase1": {
       "id": "moonbase1",
@@ -14362,7 +14362,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase10": {
       "id": "moonbase10",
@@ -14429,7 +14429,7 @@
           "position": { "x": 0, "y": 3, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase11": {
       "id": "moonbase11",
@@ -14467,7 +14467,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase12": {
       "id": "moonbase12",
@@ -14569,7 +14569,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase13": {
       "id": "moonbase13",
@@ -14663,7 +14663,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase14": {
       "id": "moonbase14",
@@ -14757,7 +14757,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase15": {
       "id": "moonbase15",
@@ -14820,7 +14820,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase16": {
       "id": "moonbase16",
@@ -14947,7 +14947,7 @@
           "position": { "x": 8, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase17": {
       "id": "moonbase17",
@@ -14986,7 +14986,7 @@
           "position": { "x": 2, "y": 6, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase18": {
       "id": "moonbase18",
@@ -15025,7 +15025,7 @@
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase19": {
       "id": "moonbase19",
@@ -15100,7 +15100,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase2": {
       "id": "moonbase2",
@@ -15209,7 +15209,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase20": {
       "id": "moonbase20",
@@ -15314,7 +15314,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase21tosafari": {
       "id": "moonbase21tosafari",
@@ -15446,7 +15446,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase22topenitentiary": {
       "id": "moonbase22topenitentiary",
@@ -15578,7 +15578,7 @@
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase23": {
       "id": "moonbase23",
@@ -15683,7 +15683,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase24toegyptus": {
       "id": "moonbase24toegyptus",
@@ -15908,7 +15908,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase25tobookworld": {
       "id": "moonbase25tobookworld",
@@ -16133,7 +16133,7 @@
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase26": {
       "id": "moonbase26",
@@ -16213,7 +16213,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase27": {
       "id": "moonbase27",
@@ -16251,7 +16251,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase28": {
       "id": "moonbase28",
@@ -16295,7 +16295,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase29": {
       "id": "moonbase29",
@@ -16520,7 +16520,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase3": {
       "id": "moonbase3",
@@ -16657,7 +16657,7 @@
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase30": {
       "id": "moonbase30",
@@ -16681,7 +16681,7 @@
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase31": {
       "id": "moonbase31",
@@ -16720,7 +16720,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase32": {
       "id": "moonbase32",
@@ -16945,7 +16945,7 @@
           "position": { "x": 3, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase33triple": {
       "id": "moonbase33triple",
@@ -17451,7 +17451,7 @@
           "position": { "x": 8, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase34": {
       "id": "moonbase34",
@@ -17540,7 +17540,7 @@
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase35": {
       "id": "moonbase35",
@@ -17691,7 +17691,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase36": {
       "id": "moonbase36",
@@ -17842,7 +17842,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase4": {
       "id": "moonbase4",
@@ -17999,7 +17999,7 @@
           "position": { "x": 8, "y": 3, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase5": {
       "id": "moonbase5",
@@ -18047,7 +18047,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase6": {
       "id": "moonbase6",
@@ -18159,7 +18159,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase7": {
       "id": "moonbase7",
@@ -18310,7 +18310,7 @@
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase8": {
       "id": "moonbase8",
@@ -18471,7 +18471,7 @@
           "position": { "x": 8, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "moonbase9": {
       "id": "moonbase9",
@@ -18510,7 +18510,7 @@
           "position": { "x": 6, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary1": {
       "id": "penitentiary1",
@@ -18558,7 +18558,7 @@
           "position": { "x": 2, "y": 8, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary10": {
       "id": "penitentiary10",
@@ -18602,7 +18602,7 @@
           "position": { "x": 0, "y": 8, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary11": {
       "id": "penitentiary11",
@@ -18646,7 +18646,7 @@
           "position": { "x": 2, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary12": {
       "id": "penitentiary12",
@@ -18748,7 +18748,7 @@
           "position": { "x": 0, "y": 3, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary13": {
       "id": "penitentiary13",
@@ -18842,7 +18842,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary14": {
       "id": "penitentiary14",
@@ -18967,7 +18967,7 @@
           "position": { "x": 0, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary15": {
       "id": "penitentiary15",
@@ -19206,7 +19206,7 @@
           "position": { "x": 1, "y": 1, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary16": {
       "id": "penitentiary16",
@@ -19300,7 +19300,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary17": {
       "id": "penitentiary17",
@@ -19418,7 +19418,7 @@
           "position": { "x": 3, "y": 8, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary18fish": {
       "id": "penitentiary18fish",
@@ -19559,7 +19559,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary19": {
       "id": "penitentiary19",
@@ -19607,7 +19607,7 @@
           "position": { "x": 1, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary2": {
       "id": "penitentiary2",
@@ -19724,7 +19724,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary20": {
       "id": "penitentiary20",
@@ -19784,7 +19784,7 @@
           "position": { "x": 1, "y": 1, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary21": {
       "id": "penitentiary21",
@@ -20023,7 +20023,7 @@
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary22": {
       "id": "penitentiary22",
@@ -20242,7 +20242,7 @@
           "position": { "x": 4, "y": 4, "z": 5 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary23": {
       "id": "penitentiary23",
@@ -20436,7 +20436,7 @@
           "position": { "x": 4, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary24": {
       "id": "penitentiary24",
@@ -20479,7 +20479,7 @@
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary25": {
       "id": "penitentiary25",
@@ -20512,7 +20512,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary26": {
       "id": "penitentiary26",
@@ -20584,7 +20584,7 @@
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary27": {
       "id": "penitentiary27",
@@ -20647,7 +20647,7 @@
           "position": { "x": 0, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary28": {
       "id": "penitentiary28",
@@ -20724,7 +20724,7 @@
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary29": {
       "id": "penitentiary29",
@@ -20823,7 +20823,7 @@
           "position": { "x": 8, "y": 0, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary3": {
       "id": "penitentiary3",
@@ -20915,7 +20915,7 @@
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary30": {
       "id": "penitentiary30",
@@ -20993,7 +20993,7 @@
           "position": { "x": 3, "y": 4, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary31": {
       "id": "penitentiary31",
@@ -21103,7 +21103,7 @@
           "position": { "x": 5, "y": 0, "z": 2 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary32": {
       "id": "penitentiary32",
@@ -21207,7 +21207,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary33": {
       "id": "penitentiary33",
@@ -21349,7 +21349,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary34crown": {
       "id": "penitentiary34crown",
@@ -21456,7 +21456,7 @@
           "position": { "x": 3, "y": 8, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary4": {
       "id": "penitentiary4",
@@ -21516,7 +21516,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary5": {
       "id": "penitentiary5",
@@ -21562,7 +21562,7 @@
           "position": { "x": 5, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary6": {
       "id": "penitentiary6",
@@ -21622,7 +21622,7 @@
           "position": { "x": 6, "y": 2, "z": 3 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary7": {
       "id": "penitentiary7",
@@ -21680,7 +21680,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary8": {
       "id": "penitentiary8",
@@ -21749,7 +21749,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "penitentiary9": {
       "id": "penitentiary9",
@@ -21779,7 +21779,7 @@
           "position": { "x": 0, "y": 4, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari1": {
       "id": "safari1",
@@ -21951,7 +21951,7 @@
           "position": { "x": 8, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "safari11": {
       "id": "safari11",
@@ -22285,7 +22285,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari15": {
       "id": "safari15",
@@ -22653,7 +22653,7 @@
           "position": { "x": 3, "y": 0, "z": 4 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "safari18": {
       "id": "safari18",
@@ -22769,7 +22769,7 @@
           "position": { "x": 0, "y": 0, "z": 3 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "safari19triple": {
       "id": "safari19triple",
@@ -23081,7 +23081,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari2": {
       "id": "safari2",
@@ -23198,7 +23198,7 @@
           "position": { "x": 3, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari20": {
       "id": "safari20",
@@ -23318,7 +23318,7 @@
           "position": { "x": 0, "y": 3, "z": 0 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "safari22": {
       "id": "safari22",
@@ -23553,7 +23553,7 @@
           "position": { "x": 0, "y": 2, "z": 1 }
         }
       },
-      "color": { "hue": "yellow", "shade": "dimmed" }
+      "color": { "hue": "yellow", "shade": "basic" }
     },
     "safari25": {
       "id": "safari25",
@@ -23610,7 +23610,7 @@
           "position": { "x": 3, "y": 0, "z": 3 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "safari26": {
       "id": "safari26",
@@ -23891,7 +23891,7 @@
           "position": { "x": 0, "y": 2, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari27": {
       "id": "safari27",
@@ -24116,7 +24116,7 @@
           "position": { "x": 1, "y": 0, "z": 5 }
         }
       },
-      "color": { "hue": "cyan", "shade": "dimmed" }
+      "color": { "hue": "cyan", "shade": "basic" }
     },
     "safari30": {
       "id": "safari30",
@@ -24341,7 +24341,7 @@
           "position": { "x": 0, "y": 3, "z": 1 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "safari32": {
       "id": "safari32",
@@ -24374,7 +24374,7 @@
           "position": { "x": 0, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "safari33": {
       "id": "safari33",
@@ -24956,7 +24956,7 @@
           "position": { "x": 3, "y": 0, "z": 0 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari4": {
       "id": "safari4",
@@ -25373,7 +25373,7 @@
           "position": { "x": 0, "y": 2, "z": 1 }
         }
       },
-      "color": { "hue": "white", "shade": "dimmed" }
+      "color": { "hue": "white", "shade": "basic" }
     },
     "safari7": {
       "id": "safari7",
@@ -25447,7 +25447,7 @@
           "position": { "x": 2, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "magenta", "shade": "dimmed" }
+      "color": { "hue": "magenta", "shade": "basic" }
     },
     "safari8": {
       "id": "safari8",
@@ -25480,7 +25480,7 @@
           "position": { "x": 0, "y": 0, "z": 1 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     },
     "safari9": {
       "id": "safari9",
@@ -25569,7 +25569,7 @@
           "position": { "x": 0, "y": 2, "z": 4 }
         }
       },
-      "color": { "hue": "green", "shade": "dimmed" }
+      "color": { "hue": "green", "shade": "basic" }
     }
   }
 }

@@ -2,19 +2,24 @@ import { spriteSheet } from "@/sprites/spriteSheet";
 import { createSprite } from "../createSprite";
 
 import type { CharacterName } from "@/model/modelTypes";
-import { applyAppearance, type ItemAppearance } from "./appearanceUtils";
+import {
+  applyAppearance,
+  renderedBefore,
+  type ItemAppearance,
+} from "./appearanceUtils";
 
 export const playableAppearance: ItemAppearance<CharacterName> = ({
   type,
   state: { action, facing, teleporting },
-  stateLastFrame: lastRenderedState,
+  stateLastFrame,
   renderContainer,
 }): undefined => {
   const shouldRender =
-    lastRenderedState === undefined ||
-    facing !== lastRenderedState.facing ||
-    action !== lastRenderedState.action ||
-    teleporting?.phase !== lastRenderedState.teleporting?.phase;
+    (renderContainer !== undefined && !renderedBefore(renderContainer)) ||
+    stateLastFrame === undefined ||
+    facing !== stateLastFrame.facing ||
+    action !== stateLastFrame.action ||
+    teleporting?.phase !== stateLastFrame.teleporting?.phase;
 
   if (!shouldRender) {
     return;

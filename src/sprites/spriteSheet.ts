@@ -4,6 +4,7 @@ import spritesheetUrl from "../../gfx/sprites.png";
 import {
   seriesOfAnimationFrameTextures,
   fourDirections,
+  seriesOfAnimationFrameTextureIds,
 } from "./spriteGenerators";
 import {
   wallTileSize,
@@ -339,6 +340,8 @@ const spritesheetData = {
     "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
     "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],
     "bubbles.fish": ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"],
+    "conveyor.x": seriesOfAnimationFrameTextureIds("conveyor.x", 7),
+    "conveyor.y": seriesOfAnimationFrameTextureIds("conveyor.y", 7),
     "spring.bounce": [
       "spring.released",
       "spring.compressed",
