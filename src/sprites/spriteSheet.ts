@@ -35,54 +35,53 @@ const frames = {
     frame: { x: 483, y: 381, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
-    frame: { x: 193, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 240, y: 112, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.wall.overdraw": {
-    frame: { x: 210, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
-  },
-  "generic.wall.overdraw.debug": {
-    frame: { x: 210, y: 4, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 257, y: 112, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.floor.deadly": {
     frame: { x: 378, y: 396, ...floorTileSize },
   },
+
   // doors names after the axis they go along: x=towards/away, y=left/right
   "generic.door.legs.base": {
-    frame: { x: 314, y: 60, w: wallTileSize.w, h: 9 },
+    frame: { x: 361, y: 135, w: wallTileSize.w, h: 9 },
   },
   "generic.door.legs.pillar": {
-    frame: { x: 314, y: 48, w: wallTileSize.w, h: 12 },
+    frame: { x: 361, y: 123, w: wallTileSize.w, h: 12 },
   },
   "generic.door.front.y": {
-    frame: { x: 227, y: 12, ...doorTextureSize },
+    frame: { x: 274, y: 87, ...doorTextureSize },
   },
   "generic.door.back.y": {
-    frame: { x: 244, y: 5, ...doorTextureSize },
+    frame: { x: 291, y: 80, ...doorTextureSize },
   },
   "generic.door.legs.threshold.y": {
-    frame: { x: 331, y: 30, w: wallTileSize.w, h: 18 },
+    frame: { x: 378, y: 105, w: wallTileSize.w, h: 18 },
   },
   "generic.door.threshold.x": {
-    frame: { x: 270, y: 70, w: 26, h: 19 },
+    frame: { x: 317, y: 145, w: 26, h: 19 },
   },
   "generic.door.threshold.y": {
-    frame: { x: 241, y: 70, w: 26, h: 19 },
+    frame: { x: 288, y: 145, w: 26, h: 19 },
   },
   "generic.door.platform.towards": {
-    frame: { x: 270, y: 144, w: 32, h: 32 },
+    frame: { x: 317, y: 219, w: 32, h: 32 },
   },
   "generic.door.front.x": {
-    frame: { x: 287, y: 12, ...doorTextureSize },
+    frame: { x: 334, y: 87, ...doorTextureSize },
   },
   "generic.door.back.x": {
-    frame: { x: 270, y: 5, ...doorTextureSize },
+    frame: { x: 317, y: 80, ...doorTextureSize },
   },
   "generic.door.legs.threshold.x": {
-    frame: { x: 314, y: 30, w: wallTileSize.w, h: 18 },
+    frame: { x: 361, y: 105, w: wallTileSize.w, h: 18 },
   },
   "generic.door.platform.left": {
-    frame: { x: 235, y: 114, w: 32, h: 28 },
+    frame: { x: 282, y: 189, w: 32, h: 28 },
   },
+
   "moonbase.door.front.y": {
     frame: { x: 344, y: 160, ...doorTextureSize },
   },

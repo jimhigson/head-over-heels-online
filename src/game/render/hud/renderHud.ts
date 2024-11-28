@@ -8,7 +8,7 @@ import { characterNames, type CharacterName } from "@/model/modelTypes";
 import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import type { Xy } from "@/utils/vectors/vectors";
+import { originXy, type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/model/ItemInPlay";
 
 const smallTextSize = 8;
@@ -42,11 +42,14 @@ const characterSprite = (character: CharacterName) => {
   return characterSprite;
 };
 
+const shieldDisplay = () => {};
+
 export const renderHud = (hudContainer: Container) => {
   const hudElements = {
     head: {
       sprite: characterSprite("head"),
       livesText: livesText(),
+      shield: shieldDisplay(),
     },
     heels: {
       sprite: characterSprite("heels"),
@@ -76,9 +79,11 @@ export const renderHud = (hudContainer: Container) => {
       characterSprite.filters = isCurrent ? noFilters : uncurrentSpriteFilter;
 
       characterSprite.x =
-        (screenSize.x >> 1) +
-        sideMultiplier(characterName) * 64 +
-        (characterName === "heels" ? -smallItemTextureSize.w : 0);
+        (screenSize.x >> 1) + sideMultiplier(characterName) * 64;
+      characterSprite.pivot =
+        characterName === "heels" ?
+          { x: smallItemTextureSize.w, y: 0 }
+        : originXy;
 
       characterSprite.y = screenSize.y - smallItemTextureSize.h;
     };

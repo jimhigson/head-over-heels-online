@@ -131,12 +131,13 @@ export const mainLoop = <RoomId extends string>(
         worldContainer,
         renderOptions,
       );
-      updateHud(gameState, screenEffectiveSize);
     } else {
       app.stage.filters = pauseFilter;
       const roomColor = currentRoom(gameState).color;
       pauseFilter.targetColor = getColorScheme(roomColor).main.basic;
     }
+
+    updateHud(gameState, screenEffectiveSize);
 
     lastRenderedRoom = currentRoom(gameState);
     //console.timeEnd("tick");
