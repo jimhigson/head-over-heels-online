@@ -29,10 +29,10 @@ try {
 
 const frames = {
   "generic.edge.right": {
-    frame: { x: 536, y: 392, w: 8, h: 9 },
+    frame: { x: 492, y: 381, w: 8, h: 9 },
   },
   "generic.edge.towards": {
-    frame: { x: 527, y: 392, w: 8, h: 9 },
+    frame: { x: 483, y: 381, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
     frame: { x: 193, y: 37, w: wallTileSize.w, h: floorTileSize.h * 2 },
@@ -44,7 +44,7 @@ const frames = {
     frame: { x: 210, y: 4, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.floor.deadly": {
-    frame: { x: 422, y: 407, ...floorTileSize },
+    frame: { x: 378, y: 396, ...floorTileSize },
   },
   // doors names after the axis they go along: x=towards/away, y=left/right
   "generic.door.legs.base": {
@@ -151,24 +151,24 @@ const frames = {
     largeItemTextureSize,
   ),
   bunny: {
-    frame: { x: 263, y: 333, ...smallItemTextureSize },
+    frame: { x: 77, y: 349, ...smallItemTextureSize },
   },
   donuts: {
-    frame: { x: 263, y: 308, ...smallItemTextureSize },
+    frame: { x: 77, y: 324, ...smallItemTextureSize },
   },
   crown: {
-    frame: { x: 367, y: 358, ...smallItemTextureSize },
+    frame: { x: 202, y: 374, ...smallItemTextureSize },
   },
   hooter: {
-    frame: { x: 263, y: 408, ...smallItemTextureSize },
+    frame: { x: 202, y: 349, ...smallItemTextureSize },
   },
   bag: {
-    frame: { x: 263, y: 358, ...smallItemTextureSize },
+    frame: { x: 77, y: 374, ...smallItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "fish",
     2,
-    { x: 238, y: 383 },
+    { x: 177, y: 324 },
     smallItemTextureSize,
   ),
   "spring.compressed": {
@@ -254,19 +254,19 @@ const frames = {
   ...seriesOfAnimationFrameTextures(
     "bubbles.taupe",
     3,
-    { x: 288, y: 308 },
+    { x: 102, y: 324 },
     smallItemTextureSize,
   ),
   ...seriesOfAnimationFrameTextures(
     "bubbles.white",
     3,
-    { x: 288, y: 333 },
+    { x: 102, y: 349 },
     smallItemTextureSize,
   ),
   ...seriesOfAnimationFrameTextures(
     "bubbles.fish",
     3,
-    { x: 288, y: 383 },
+    { x: 227, y: 324 },
     smallItemTextureSize,
   ),
 
