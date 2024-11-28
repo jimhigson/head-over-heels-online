@@ -38,6 +38,37 @@
   { "op": "replace", "path": "/rooms/moonbase10/color/hue", "value": "yellow" },
   {
     "op": "replace",
+    "path": "/rooms/egyptus38/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus38/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus37/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus36/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus35/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus33/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/egyptus32/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/egyptus31/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus30/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/rooms/egyptus29/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus28/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus27/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus27/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus26/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/egyptus26/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
     "path": "/rooms/egyptus24/color/shade",
     "value": "dimmed"
   },
