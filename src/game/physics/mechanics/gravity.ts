@@ -3,10 +3,11 @@ import {
   type FreeItemTypes,
   type ItemInPlay,
 } from "@/model/ItemInPlay";
-import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
+import { isSolid } from "../isSolid";
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -15,7 +16,16 @@ import type { PlanetName } from "@/sprites/planets";
  * The item can be anything - a player, a pickup etc
  */
 export const gravity = <RoomId extends string>(
-  {
+  item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+): MechanicResult<FreeItemTypes> => {
+  if (!isSolid(item, gameState.progression)) {
+    // non-solid items do not have gravity - they'd fall through the floor!
+    return unitMechanicalResult;
+  }
+
+  const {
     type,
     state: {
       vels: {
@@ -23,13 +33,12 @@ export const gravity = <RoomId extends string>(
       },
       standingOn,
     },
-  }: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
-  _gameState: GameState<RoomId>,
-  deltaMS: number,
-): MechanicResult<FreeItemTypes> => {
+  } = item;
+
   const terminalZ =
     terminalVelocityPixPerMs[type === "head" ? "head" : "others"];
 
+  /** get the velocity 'before' this frame, that we will accelerate from */
   const startingVelZ = () => {
     const firstStanding = standingOn.at(0);
     if (firstStanding === undefined)

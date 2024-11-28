@@ -103,7 +103,7 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  //console.log("----progressing game state----");
+  //console.log("----➡️ progressing game state----");
 
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;

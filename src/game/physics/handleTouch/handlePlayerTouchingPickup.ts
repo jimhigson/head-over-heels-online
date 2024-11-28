@@ -1,6 +1,6 @@
 import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
 import { type GameState, currentRoom } from "../../gameState/GameState";
-import { characterFadeInOrOutDuration } from "../../render/animationTimings";
+import { fadeInOrOutDuration } from "../../render/animationTimings";
 import type { PlanetName } from "@/sprites/planets";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
@@ -45,7 +45,6 @@ export const handlePlayerTouchingDisappearing = <RoomId extends string>(
   // already disappearing so leave as-is (do not extend the deadline):
   if (disappearingItem.state.expires !== null) return;
 
-  disappearingItem.state.expires =
-    gameState.gameTime + characterFadeInOrOutDuration;
+  disappearingItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
   disappearingItem.state.unsolidAfterProgression = gameState.progression + 1;
 };

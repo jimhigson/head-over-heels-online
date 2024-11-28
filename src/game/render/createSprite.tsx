@@ -1,4 +1,4 @@
-import type { PointData, Texture } from "pixi.js";
+import type { AnimatedSpriteFrames, PointData, Texture } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 import type { TextureId } from "../../sprites/spriteSheet";
 import { spriteSheet } from "../../sprites/spriteSheet";
@@ -88,26 +88,34 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     return sprite;
   }
 };
-function createAnimatedSprite(options: AnimatedCreateSpriteOptions) {
-  const frames = options.frames.map((frame) => ({
+function createAnimatedSprite({
+  frames,
+  animationSpeed,
+  reverse,
+  playOnce,
+}: AnimatedCreateSpriteOptions) {
+  const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
     texture: frame,
     time: originalGameFrameDuration,
   }));
 
-  if (options.reverse) {
-    frames.reverse();
+  if (reverse) {
+    animatedSpriteFrames.reverse();
   }
 
-  const animatedSprite = new AnimatedSprite(frames);
+  const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
-  animatedSprite.animationSpeed =
-    options.animationSpeed || defaultAnimationSpeed;
+  animatedSprite.animationSpeed = animationSpeed || defaultAnimationSpeed;
   animatedSprite.play();
-  if (options.playOnce !== undefined) {
+  if (playOnce !== undefined) {
     animatedSprite.loop = false;
     animatedSprite.onComplete = () => {
       animatedSprite.stop();
-      if (options.playOnce === "and-destroy") animatedSprite.destroy();
+      if (playOnce === "and-destroy") {
+        // we don't actually destroy, or the item appearance will notice the container
+        // is empty and re-render it:
+        animatedSprite.visible = false;
+      }
     };
   }
   return animatedSprite;

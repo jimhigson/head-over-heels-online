@@ -1,25 +1,21 @@
-import {
-  type AnyItemInPlay,
-  type UnknownItemInPlay,
-  isPlayableItem,
-} from "@/model/ItemInPlay";
+import { type AnyItemInPlay, isPlayableItem } from "@/model/ItemInPlay";
 
-export const isUnsolid = <RoomId extends string>(
-  {
-    state: { unsolidAfterProgression: unsolidAfterFrame },
-  }: UnknownItemInPlay<RoomId>,
+export const isUnsolid = (
+  { state: { unsolidAfterProgression } }: AnyItemInPlay,
   // number of the frame we are on
   progression: number,
 ) => {
-  return unsolidAfterFrame !== null && progression > unsolidAfterFrame;
+  return (
+    unsolidAfterProgression !== null && progression > unsolidAfterProgression
+  );
 };
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
  * given @param item as being solid */
 
-export const isSolid = <RoomId extends string>(
-  item: UnknownItemInPlay<RoomId>,
+export const isSolid = (
+  item: AnyItemInPlay,
   // number of the frame we are on
   progression: number,
 ) => {

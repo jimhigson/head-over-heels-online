@@ -56,7 +56,10 @@ export const moveItem = <RoomId extends string>({
       subjectItem.state.position,
       ` by `,
       posDelta,
-      ` because ${pusher ? `push by ${pusher.id}` : "first cause"}`,
+      ` because ${pusher ? `push by ${pusher.id}` : "velocity (first cause)"}`,
+      pusher ? ""
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      : (subjectItem.state as any).vels,
     );
 
   const sortedCollisions = sortObstaclesAboutVector(
@@ -95,7 +98,17 @@ export const moveItem = <RoomId extends string>({
       return;
     }
 
-    if (!isSolid(collision, gameState.progression)) {
+    if (
+      !isSolid(collision, gameState.progression) ||
+      !isSolid(subjectItem, gameState.progression)
+    ) {
+      if (log)
+        console.log(
+          `moving ${subjectItem.id}`,
+          "either mover or ",
+          collision.id,
+          "is not solid so not applying mtv",
+        );
       continue;
     }
 

@@ -210,7 +210,7 @@ export const itemAppearances: {
             isActive ?
               {
                 frames: spriteSheet.animations[`conveyor.${axis}`],
-                reverse: direction === "away" || direction === "right",
+                reverse: direction === "towards" || direction === "right",
                 animationSpeed: 0.5,
                 ...xy,
               }
@@ -342,7 +342,7 @@ export const itemAppearances: {
     const wasBubbles =
       stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
 
-    if (renderedBefore(renderContainer!) && bubbles !== wasBubbles) {
+    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
       return;
     }
 

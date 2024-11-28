@@ -22,6 +22,6 @@ export const animationDuration = (
 export const pickupAnimationDuration = animationDuration(
   spriteSheet.animations["bubbles.white"].length,
 );
-export const characterFadeInOrOutDuration = animationDuration(
+export const fadeInOrOutDuration = animationDuration(
   spriteSheet.animations["head.fadeOut"].length,
 );
