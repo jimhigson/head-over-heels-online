@@ -8,6 +8,7 @@ import type {
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
+import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
@@ -81,7 +82,7 @@ export type ItemStateMap = {
     // by the type system as belonging only to head
     // or heels
     donuts: number;
-    fast: number;
+    fastSteps: number;
   };
   heels: CharacterState & {
     hasBag: boolean;
@@ -89,7 +90,7 @@ export type ItemStateMap = {
     // TODO: these properties should be recognised
     // by the type system as belonging only to head
     // or heels
-    jumps: number;
+    bigJumps: number;
     carrying: JsonItemType | null;
   };
   //teleporter: { stoodOn: boolean };
@@ -218,13 +219,17 @@ export type ItemInPlay<
   renders: boolean;
 };
 
-export type PlayableItem<RoomId extends string = string> =
-  | ItemInPlay<"head", PlanetName, RoomId, "head">
-  | ItemInPlay<"heels", PlanetName, RoomId, "heels">;
+export type PlayableItem<
+  C extends CharacterName = CharacterName,
+  RoomId extends string = string,
+> =
+  C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head">
+  : never | C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
+  : never;
 
 export const isPlayableItem = <RoomId extends string = string>(
   item: AnyItemInPlay<RoomId>,
-): item is PlayableItem<RoomId> => {
+): item is PlayableItem<CharacterName, RoomId> => {
   return item.type === "head" || item.type === "heels";
 };
 

@@ -12,6 +12,7 @@ import {
   doorTextureSize,
   largeItemTextureSize,
   smallItemTextureSize,
+  hudCharTextureSize,
 } from "./textureSizes";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -135,7 +136,7 @@ const frames = {
     frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
   spikes: {
-    frame: { x: 422, y: 378, ...largeItemTextureSize },
+    frame: { x: 378, y: 367, ...largeItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "conveyor.x",
@@ -313,6 +314,17 @@ const frames = {
   "puck.deadly": {
     frame: { x: 102, y: 453, ...smallItemTextureSize },
   },
+
+  "hud.fastSteps": {
+    frame: { x: 569, y: 0, ...hudCharTextureSize },
+  },
+  "hud.shield": {
+    frame: { x: 578, y: 0, ...hudCharTextureSize },
+  },
+  "hud.bigJumps": {
+    frame: { x: 587, y: 0, ...hudCharTextureSize },
+  },
+
   ...playableSpritesheetData.frames,
   ...scenerySpritesheetData.frames,
 };

@@ -22,7 +22,7 @@ export const loadPlayer = <RoomId extends string>(
           action: "idle",
           jumpEndTime: -1, // jump has already finished - ie, we are not jumping
           hasHooter: false,
-          fast: 0,
+          fastSteps: 0,
           shield: 0,
           standingOn: [],
           stoodOnBy: [],
@@ -58,7 +58,7 @@ export const loadPlayer = <RoomId extends string>(
           action: "idle",
           carrying: null,
           hasBag: false,
-          jumps: 0,
+          bigJumps: 0,
           shield: 0,
           standingOn: [],
           stoodOnBy: [],

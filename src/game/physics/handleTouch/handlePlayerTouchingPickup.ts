@@ -27,6 +27,22 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     // TODO: handle fish (saving etc)
   } else {
     switch (pickup.config.gives) {
+      case "hooter": {
+        if (player.type === "head") {
+          player.state.hasHooter = true;
+          break;
+        }
+        break;
+      }
+
+      case "donuts": {
+        if (player.type === "head") {
+          player.state.donuts += 6;
+          break;
+        }
+        break;
+      }
+
       case "extra-life":
         player.state.lives += 2;
     }

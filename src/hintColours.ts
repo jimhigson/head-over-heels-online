@@ -29,8 +29,8 @@ export const magentaShades = {
 export const cyanShades = {
   original: new Color("rgb(0, 255, 255)"),
   basic: new Color("hsl(183, 28%, 50%)"),
-  dimmed: spritesheetPalette().shadow,
-  //dimmed: new Color("hsl(183, 28%,30%)"),
+  //dimmed: spritesheetPalette().shadow,
+  dimmed: new Color("hsl(183, 28%,39%)"), // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
   original: new Color("rgb(0, 255, 0)"),

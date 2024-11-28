@@ -33,12 +33,12 @@ export const currentPlayableItem = <RoomId extends string>(
     gameState.currentCharacterName
   ]!;
 
-export const getPlayableItem = (
+export const getPlayableItem = <C extends CharacterName>(
   gameState: AnyGameState,
-  character: CharacterName,
-): PlayableItem | undefined => {
+  character: C,
+): PlayableItem<C> | undefined => {
   return gameState.characterRooms[character]?.room.items[character] as
-    | PlayableItem
+    | PlayableItem<C>
     | undefined;
 };
 
