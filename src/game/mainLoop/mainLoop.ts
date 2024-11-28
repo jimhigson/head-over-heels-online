@@ -21,6 +21,8 @@ import { spritesheetPalette } from "@/sprites/samplePalette";
 import { getColorScheme } from "@/hintColours";
 import { sortByZPairs, zPairs } from "../render/sortZ/sortItemsByDrawOrder";
 
+const hudBottomMargin = 4;
+
 const updateWorldRenderingToMatchState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   lastRenderedRoom: RoomState<PlanetName, RoomId> | undefined,
@@ -90,6 +92,8 @@ export const mainLoop = <RoomId extends string>(
   app.stage.addChild(worldContainer);
 
   const hudContainer = new Container();
+  // pull the hud up from the bottom of the screen; after this, anything else can render right up to the container's bottom edge
+  hudContainer.y = -hudBottomMargin;
   app.stage.addChild(hudContainer);
 
   const pauseFilter = new RevertColouriseFilter(spritesheetPalette().shadow);
@@ -100,7 +104,7 @@ export const mainLoop = <RoomId extends string>(
   const handleTick = ({ deltaMS }: Ticker) => {
     //console.time("tick");
 
-    upscaler.rescale();
+    const screenEffectiveSize = upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
 
     const { renderOptions } = gameState;
@@ -127,7 +131,7 @@ export const mainLoop = <RoomId extends string>(
         worldContainer,
         renderOptions,
       );
-      updateHud(gameState);
+      updateHud(gameState, screenEffectiveSize);
     } else {
       app.stage.filters = pauseFilter;
       const roomColor = currentRoom(gameState).color;

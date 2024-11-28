@@ -1,5 +1,6 @@
 import type { Application } from "pixi.js";
 import { amigaLowResPal } from "../../originalGame";
+import type { Xy } from "@/utils/vectors/vectors";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
 export const upscale = (app: Application) => {
@@ -9,10 +10,14 @@ export const upscale = (app: Application) => {
     get curUpscale() {
       return curUpscale;
     },
-    rescale() {
+    /* 
+      returns the effective size of the screen (ie, the size to render to, the size before upscaling)
+      or undefined if not yet known
+    */
+    rescale(): Xy {
       if (app.renderer.width === 0 || app.renderer.height === 0)
-        // not ready yet - size not known
-        return;
+        // not ready yet - size not known - this shouldn't happen
+        throw new Error();
 
       const scaleFactor = Math.floor(
         Math.min(
@@ -20,9 +25,13 @@ export const upscale = (app: Application) => {
           app.renderer.height / amigaLowResPal.height,
         ),
       );
+      const effectiveSize = {
+        x: Math.round(app.renderer.width / scaleFactor),
+        y: Math.round(app.renderer.height / scaleFactor),
+      };
 
       if (curUpscale === scaleFactor) {
-        return;
+        return effectiveSize;
       }
       curUpscale = scaleFactor;
       console.log("scale factor changed to:", scaleFactor);
@@ -45,6 +54,7 @@ export const upscale = (app: Application) => {
       ];
       */
       app.stage.scale = scaleFactor;
+      return effectiveSize;
     },
   };
 };

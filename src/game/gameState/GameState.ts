@@ -8,7 +8,7 @@ import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { ApiEvents } from "../GameApi";
-import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "@/model/ItemInPlay";
 import type { EntryState } from "./EntryState";
 
 export const currentRoom = <RoomId extends string>(
@@ -33,12 +33,12 @@ export const currentPlayableItem = <RoomId extends string>(
     gameState.currentCharacterName
   ]!;
 
-export const playableItem = <C extends CharacterName>(
+export const getPlayableItem = (
   gameState: AnyGameState,
   character: CharacterName,
-): ItemInPlay<C> | undefined => {
+): PlayableItem | undefined => {
   return gameState.characterRooms[character]?.room.items[character] as
-    | ItemInPlay<C>
+    | PlayableItem
     | undefined;
 };
 
