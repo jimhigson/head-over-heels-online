@@ -155,6 +155,7 @@
   },
   { "op": "replace", "path": "/rooms/blacktooth56/floor", "value": "market" },
   { "op": "replace", "path": "/rooms/blacktooth55/floor", "value": "market" },
+  { "op": "replace", "path": "/rooms/blacktooth51/floor", "value": "market" },
   {
     "op": "replace",
     "path": "/rooms/blacktooth34/items/block@5,7,0:95uHj/config/disappearing",

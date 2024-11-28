@@ -3820,7 +3820,7 @@ export const campaign = {
     } satisfies RoomJson<"market", OriginalCampaignRoomId>,
     blacktooth51: {
       color: { hue: "yellow", shade: "basic" },
-      floor: "jail",
+      floor: "market",
       floorSkip: [],
       id: "blacktooth51",
       items: {
