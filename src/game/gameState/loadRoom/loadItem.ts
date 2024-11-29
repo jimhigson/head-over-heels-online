@@ -9,6 +9,7 @@ import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { originXyz } from "@/utils/vectors/vectors";
 import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 
 export function* loadItem<RoomId extends string>(
   itemId: string,
@@ -92,5 +93,6 @@ const initialState = (jsonItem: UnknownJsonItem) => {
     ...(jsonItem.type === "lift" ?
       { direction: "up", vels: { lift: originXyz } }
     : {}),
+    ...(jsonItem.type === "charles" ? { facing: unitVectors.towards } : {}),
   };
 };

@@ -2,10 +2,11 @@ import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
 import { type GameState, currentRoom } from "../../gameState/GameState";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import type { PlanetName } from "@/sprites/planets";
+import type { CharacterName } from "@/model/modelTypes";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  player: PlayableItem<RoomId>,
+  player: PlayableItem<CharacterName, RoomId>,
   pickup:
     | ItemInPlay<"pickup", PlanetName, RoomId>
     | ItemInPlay<"fish", PlanetName, RoomId>,
@@ -43,6 +44,33 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
         break;
       }
 
+      case "bag": {
+        if (player.type === "heels") {
+          player.state.hasBag = true;
+          break;
+        }
+        break;
+      }
+
+      case "shield": {
+        player.state.shield = 99;
+        break;
+      }
+
+      case "fast": {
+        if (player.type === "head") {
+          player.state.fastSteps = 99;
+        }
+        break;
+      }
+
+      case "jumps": {
+        if (player.type === "heels") {
+          player.state.bigJumps = 99;
+        }
+        break;
+      }
+
       case "extra-life":
         player.state.lives += 2;
     }
@@ -51,7 +79,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
 
 export const handlePlayerTouchingDisappearing = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  _player: PlayableItem<RoomId>,
+  _player: PlayableItem<CharacterName, RoomId>,
   disappearingItem:
     | ItemInPlay<"pickup", PlanetName, RoomId>
     | ItemInPlay<"fish", PlanetName, RoomId>

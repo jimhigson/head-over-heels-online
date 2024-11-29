@@ -18,18 +18,27 @@ import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
+import { carrying } from "../physics/mechanics/carrying";
 
 function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): Generator<MechanicResult<T>> {
+  if (isItemType("heels")(item)) {
+    // heels can remove items from the game, so process that first since it could
+    // affect other mechanics
+    carrying(item, gameState, deltaMS);
+  }
+
   if (isFreeItem(item)) {
+    // CHARLES and BADIES should also fall (be free items?)
     yield gravity(item, gameState, deltaMS) as MechanicResult<T>;
     yield onConveyor(item, gameState, deltaMS) as MechanicResult<T>;
   }
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
+    // user controls:
     yield teleporting(item, gameState, deltaMS) as MechanicResult<T>;
     yield walking(item, gameState, deltaMS) as MechanicResult<T>;
     yield jumping(item, gameState, deltaMS) as MechanicResult<T>;

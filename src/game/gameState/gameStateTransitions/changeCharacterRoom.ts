@@ -126,6 +126,11 @@ export const changeCharacterRoom = <RoomId extends string>({
       : {},
     );
 
+    if (character.type === "heels") {
+      // can't carry items through rooms
+      character.state.carrying = null;
+    }
+
     console.log(
       "character put down at",
       character.state.position,
@@ -140,6 +145,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       config: { direction: portalDirection },
     } = destinationPortal;
     if (
+      // portal is horizontal - not up or down
       (directionsXy4 as Readonly<Direction4Xyz[]>).includes(portalDirection)
     ) {
       const portalDirectionXy = portalDirection as DirectionXy4;

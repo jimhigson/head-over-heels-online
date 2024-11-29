@@ -109,6 +109,7 @@ export const renderHud = (hudContainer: Container) => {
       shield: iconWithNumber("hud.shield"),
       extraSkill: iconWithNumber("hud.bigJumps"),
       bag: iconWithNumber("bag", true, true),
+      carrying: iconWithNumber("bag", true, true),
     },
   };
 
@@ -121,6 +122,7 @@ export const renderHud = (hudContainer: Container) => {
   hudContainer.addChild(hudElements.head.donuts.container);
   hudContainer.addChild(hudElements.head.hooter.container);
   hudContainer.addChild(hudElements.heels.bag.container);
+  hudContainer.addChild(hudElements.heels.carrying.container);
 
   return <RoomId extends string>(
     gameState: GameState<RoomId>,
@@ -195,10 +197,11 @@ export const renderHud = (hudContainer: Container) => {
     }
     hudElements.head.hooter.container.x = hudElements.head.donuts.container.x =
       (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
-    hudElements.head.donuts.container.y =
-      screenSize.y - smallItemTextureSize.h - 8;
+    hudElements.heels.carrying.container.y =
+      hudElements.head.donuts.container.y =
+        screenSize.y - smallItemTextureSize.h - 8;
 
-    hudElements.heels.bag.container.x =
+    hudElements.heels.carrying.container.x = hudElements.heels.bag.container.x =
       (screenSize.x >> 1) + sideMultiplier("heels") * playersIconsFromCentre;
 
     hudElements.heels.bag.container.y = hudElements.head.hooter.container.y =
@@ -212,5 +215,13 @@ export const renderHud = (hudContainer: Container) => {
     hudElements.head.donuts.icon.filters =
       donuts !== 0 ? noFilters : uncurrentSpriteFilter;
     hudElements.head.donuts.text.text = `${donuts}`;
+
+    const heelsItem = getPlayableItem(gameState, "heels");
+    const hasBag = heelsItem?.state.hasBag ?? false;
+    const carrying = heelsItem?.state.carrying ?? null;
+
+    hudElements.heels.carrying.icon.visible = carrying !== null;
+    hudElements.heels.bag.icon.filters =
+      hasBag ? noFilters : uncurrentSpriteFilter;
   };
 };

@@ -1,5 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlayableItem } from "@/model/ItemInPlay";
+import type { CharacterName } from "@/model/modelTypes";
 
 /**
  *
@@ -7,7 +8,7 @@ import type { PlayableItem } from "@/model/ItemInPlay";
  */
 export function handlePlayerTouchingStopAutowalk<RoomId extends string>(
   _gameState: GameState<RoomId>,
-  subjectItem: PlayableItem<string>,
+  subjectItem: PlayableItem<CharacterName, RoomId>,
 ): boolean {
   subjectItem.state.autoWalk = false;
 

@@ -1,4 +1,5 @@
 import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
+import type { CharacterName } from "@/model/modelTypes";
 import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
 
 /*
@@ -6,7 +7,7 @@ import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
  * slides sideways into their opening, to make them easier to walk through
  */
 export const handlePlayerTouchingDoorFrame = <RoomId extends string>(
-  playableItem: PlayableItem<RoomId>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
   xyzDelta: Xyz,
   doorFrame: ItemInPlay<"doorFrame">,
 ): boolean => {

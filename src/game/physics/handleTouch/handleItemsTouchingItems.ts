@@ -17,7 +17,7 @@ export const handleItemsTouchingItems = <RoomId extends string>({
   movementVector,
   touchee,
   gameState,
-  deltaMS: _deltaMS,
+  deltaMS,
 }: {
   movingItem: UnknownItemInPlay<RoomId>;
   movementVector: Xyz;
@@ -27,13 +27,25 @@ export const handleItemsTouchingItems = <RoomId extends string>({
 }): boolean => {
   if (
     isPlayableItem(movingItem) &&
-    handlePlayerTouchingItem(movingItem, touchee, movementVector, gameState)
+    handlePlayerTouchingItem(
+      movingItem,
+      touchee,
+      movementVector,
+      gameState,
+      deltaMS,
+    )
   )
     return true;
 
   if (
     isPlayableItem(touchee) &&
-    handlePlayerTouchingItem(touchee, movingItem, movementVector, gameState)
+    handlePlayerTouchingItem(
+      touchee,
+      movingItem,
+      movementVector,
+      gameState,
+      deltaMS,
+    )
   )
     return true;
 

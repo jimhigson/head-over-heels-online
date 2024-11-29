@@ -178,3 +178,19 @@ export const xyOnlyMatrix : Matrix3x3 = [
   0, 1, 0, // Row 2
   0, 0, 0, // Row 3
 ];
+
+export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
+  if (y > x) {
+    if (y > -x) {
+      return "away";
+    } else {
+      return "right";
+    }
+  } else {
+    if (y > -x) {
+      return "left";
+    } else {
+      return "towards";
+    }
+  }
+};

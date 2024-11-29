@@ -2010,9 +2010,9 @@
           "config": {},
           "position": { "x": 3, "y": 4, "z": 0 }
         },
-        "joystick@6,1,1:13y": {
+        "joystick@6,1,1:yr4IR": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@3,4,0:13y"] },
           "position": { "x": 6, "y": 1, "z": 1 }
         },
         "door@8,3,2:UNV6q": {
@@ -3273,9 +3273,9 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "joystick@6,7,1:13y": {
+        "joystick@6,7,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
         "charles@0,7,0:13y": {
@@ -3283,39 +3283,39 @@
           "config": {},
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "joystick@7,6,1:13y": {
+        "joystick@7,6,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 7, "y": 6, "z": 1 }
         },
-        "joystick@5,6,1:13y": {
+        "joystick@5,6,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 5, "y": 6, "z": 1 }
         },
-        "joystick@6,5,1:13y": {
+        "joystick@6,5,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 6, "y": 5, "z": 1 }
         },
-        "joystick@1,2,1:13y": {
+        "joystick@1,2,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 1, "y": 2, "z": 1 }
         },
-        "joystick@2,1,1:13y": {
+        "joystick@2,1,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 2, "y": 1, "z": 1 }
         },
-        "joystick@0,1,1:13y": {
+        "joystick@0,1,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
-        "joystick@1,0,1:13y": {
+        "joystick@1,0,1:ZA6jib": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,0:13y"] },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
         "door@3,8,2:YmisE": {
@@ -6833,24 +6833,24 @@
           "config": {},
           "position": { "x": 0, "y": 7, "z": 3 }
         },
-        "joystick@4,5,0:13y": {
+        "joystick@4,5,0:vjcmz": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,3:13y"] },
           "position": { "x": 4, "y": 5, "z": 0 }
         },
-        "joystick@1,5,0:13y": {
+        "joystick@1,5,0:vjcmz": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,3:13y"] },
           "position": { "x": 1, "y": 5, "z": 0 }
         },
-        "joystick@4,2,0:13y": {
+        "joystick@4,2,0:vjcmz": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,3:13y"] },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
-        "joystick@1,2,0:13y": {
+        "joystick@1,2,0:vjcmz": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@0,7,3:13y"] },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
         "door@8,3,5:ZUC9BR": {
@@ -10011,24 +10011,24 @@
           "config": {},
           "position": { "x": 1, "y": 7, "z": 4 }
         },
-        "joystick@6,2,1:13y": {
+        "joystick@6,2,1:jsXbP": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@5,7,5:13y"] },
           "position": { "x": 6, "y": 2, "z": 1 }
         },
-        "joystick@7,1,1:13y": {
+        "joystick@7,1,1:jsXbP": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@5,7,5:13y"] },
           "position": { "x": 7, "y": 1, "z": 1 }
         },
-        "joystick@5,1,1:13y": {
+        "joystick@5,1,1:jsXbP": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@5,7,5:13y"] },
           "position": { "x": 5, "y": 1, "z": 1 }
         },
-        "joystick@6,0,1:13y": {
+        "joystick@6,0,1:jsXbP": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@5,7,5:13y"] },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
         "door@8,3,0:Z1lPE3x": {
@@ -11026,19 +11026,19 @@
           "config": { "style": "sandwich" },
           "position": { "x": 6, "y": 4, "z": 4 }
         },
-        "joystick@3,4,1:13y": {
+        "joystick@3,4,1:Z1ncwev": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,2,1:13y"] },
           "position": { "x": 3, "y": 4, "z": 1 }
         },
-        "joystick@4,3,1:13y": {
+        "joystick@4,3,1:Z1ncwev": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,2,1:13y"] },
           "position": { "x": 4, "y": 3, "z": 1 }
         },
-        "joystick@2,3,1:13y": {
+        "joystick@2,3,1:Z1ncwev": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,2,1:13y"] },
           "position": { "x": 2, "y": 3, "z": 1 }
         },
         "charles@7,2,1:13y": {
@@ -11046,9 +11046,9 @@
           "config": {},
           "position": { "x": 7, "y": 2, "z": 1 }
         },
-        "joystick@3,2,1:13y": {
+        "joystick@3,2,1:Z1ncwev": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,2,1:13y"] },
           "position": { "x": 3, "y": 2, "z": 1 }
         },
         "lift@7,0,0:ZTwqo1": {
@@ -16626,24 +16626,24 @@
           "config": { "style": "sandwich" },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "joystick@2,2,1:13y": {
+        "joystick@2,2,1:2x1Kv5": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,7,1:13y"] },
           "position": { "x": 2, "y": 2, "z": 1 }
         },
-        "joystick@3,1,1:13y": {
+        "joystick@3,1,1:2x1Kv5": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,7,1:13y"] },
           "position": { "x": 3, "y": 1, "z": 1 }
         },
-        "joystick@1,1,1:13y": {
+        "joystick@1,1,1:2x1Kv5": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,7,1:13y"] },
           "position": { "x": 1, "y": 1, "z": 1 }
         },
-        "joystick@2,0,1:13y": {
+        "joystick@2,0,1:2x1Kv5": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@7,7,1:13y"] },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
         "door@3,8,2:11gS0n": {
@@ -24300,9 +24300,9 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "joystick@1,7,1:13y": {
+        "joystick@1,7,1:Z2siiC8": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@6,6,1:13y"] },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
         "charles@6,6,1:13y": {
@@ -24310,19 +24310,19 @@
           "config": {},
           "position": { "x": 6, "y": 6, "z": 1 }
         },
-        "joystick@2,6,1:13y": {
+        "joystick@2,6,1:Z2siiC8": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@6,6,1:13y"] },
           "position": { "x": 2, "y": 6, "z": 1 }
         },
-        "joystick@0,6,1:13y": {
+        "joystick@0,6,1:Z2siiC8": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@6,6,1:13y"] },
           "position": { "x": 0, "y": 6, "z": 1 }
         },
-        "joystick@1,5,1:13y": {
+        "joystick@1,5,1:Z2siiC8": {
           "type": "joystick",
-          "config": {},
+          "config": { "controls": ["charles@6,6,1:13y"] },
           "position": { "x": 1, "y": 5, "z": 1 }
         },
         "portableBlock@4,0,1:Z1SKpmn": {

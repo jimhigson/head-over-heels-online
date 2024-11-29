@@ -682,11 +682,11 @@ const rooms = {
         config: { alive: false },
         position: { x: 5, y: 4, z: 0 },
       },
-      {
-        type: "joystick",
-        config: {},
-        position: { x: 7, y: 9, z: 0 },
-      },
+      // {
+      //   type: "joystick",
+      //   config: {},
+      //   position: { x: 7, y: 9, z: 0 },
+      // },
       {
         type: "portableBlock",
         config: { style: "cube" },

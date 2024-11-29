@@ -23,7 +23,10 @@ import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
-import { directionAxis } from "@/utils/vectors/vectors";
+import {
+  directionAxis,
+  vectorClosestDirectionXy4,
+} from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { applyAppearance, renderedBefore } from "./appearanceUtils";
 import { ifNotRenderedBefore, staticSpriteAppearance } from "./appearanceUtils";
@@ -77,10 +80,11 @@ export const itemAppearances: {
               side === "away" ?
                 {
                   x: wallTileSize.w,
-                  // walls need to be rendered 1px low to match original game:
-                  y: wallTileSize.h - 1,
+                  // walls need to be rendered 1px high to match original game (original puts them 1px low, but
+                  // we already position them 2px low to match original rendering
+                  y: wallTileSize.h + 1,
                 }
-              : { x: 0, y: wallTileSize.h - 1 },
+              : { x: 0, y: wallTileSize.h + 1 },
           }),
       );
     },
@@ -375,6 +379,20 @@ export const itemAppearances: {
     },
   ),
 
+  charles({ state: { facing }, stateLastFrame, renderContainer }) {
+    const facingXy4 = vectorClosestDirectionXy4(facing);
+    const wasFacingXy4 =
+      stateLastFrame === undefined ? undefined : (
+        vectorClosestDirectionXy4(stateLastFrame.facing)
+      );
+
+    if (renderedBefore(renderContainer!) && facingXy4 === wasFacingXy4) {
+      return;
+    }
+
+    applyAppearance(renderContainer!, stackedSprites(`charles.${facingXy4}`));
+  },
+
   baddie: ifNotRenderedBefore(({ config, renderContainer }) => {
     switch (config.which) {
       case "helicopter-bug":
@@ -471,10 +489,6 @@ export const itemAppearances: {
       applyAppearance(renderContainer, createSprite(style));
     },
   ),
-
-  charles: ifNotRenderedBefore(({ renderContainer }) => {
-    applyAppearance(renderContainer, stackedSprites("charles.towards"));
-  }),
 
   hushPuppy: staticSpriteAppearance("hushPuppy"),
   ball: staticSpriteAppearance("ball"),

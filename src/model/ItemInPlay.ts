@@ -4,6 +4,7 @@ import type {
   DirectionXy4,
   Direction4Xyz,
   Xyz,
+  Xy,
 } from "../utils/vectors/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { Container } from "pixi.js";
@@ -22,7 +23,10 @@ export type ItemInPlayType =
 type FreeItemState = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
   standingOn: UnknownItemInPlay[];
-  /* the conveyor currently stood on, if any - taken from the standingOn list */
+  /* 
+    the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
+    to render itself an animating
+  */
   activeConveyor: ItemInPlay<"conveyor"> | null;
 
   vels: {
@@ -91,7 +95,7 @@ export type ItemStateMap = {
     // by the type system as belonging only to head
     // or heels
     bigJumps: number;
-    carrying: JsonItemType | null;
+    carrying: ItemInPlay<"portableBlock" | "spring"> | null;
   };
   //teleporter: { stoodOn: boolean };
   spring: FreeItemState;
@@ -123,6 +127,10 @@ export type ItemStateMap = {
      * already touched on the previous frame
      */
     touchedOnProgression: number;
+  };
+  charles: FreeItemState & {
+    // others will follow this soon - facing is changing to a vector
+    facing: Xy;
   };
 };
 
@@ -248,6 +256,7 @@ export const fallingItemTypes = [
   "portableBlock",
   "movableBlock",
   "baddie",
+  "charles",
   "spring",
   "fish",
 ] as const satisfies ItemInPlayType[];

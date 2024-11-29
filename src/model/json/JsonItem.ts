@@ -173,6 +173,10 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
       };
     };
   };
+  joystick: {
+    // item ids of all the items (probably Charles) that this joystick controls
+    controls: string[];
+  };
 };
 
 /** config used in both json and in-play items */

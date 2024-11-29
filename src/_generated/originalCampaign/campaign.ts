@@ -1806,6 +1806,11 @@ export const campaign = {
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
         },
+        "bag": {
+          config: { gives: "bag" },
+          position: { x: 4, y: 3, z: 8 },
+          type: "pickup",
+        },
         "barrier@4,3,2:fbso8": {
           config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 2 },
@@ -2290,8 +2295,8 @@ export const campaign = {
           position: { x: 8, y: 3, z: 2 },
           type: "door",
         },
-        "joystick@6,1,1:13y": {
-          config: {},
+        "joystick@6,1,1:yr4IR": {
+          config: { controls: ["charles@3,4,0:13y"] },
           position: { x: 6, y: 1, z: 1 },
           type: "joystick",
         },
@@ -3546,43 +3551,43 @@ export const campaign = {
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
-        "joystick@0,1,1:13y": {
-          config: {},
+        "joystick@0,1,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 0, y: 1, z: 1 },
           type: "joystick",
         },
-        "joystick@1,0,1:13y": {
-          config: {},
+        "joystick@1,0,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 1, y: 0, z: 1 },
           type: "joystick",
         },
-        "joystick@1,2,1:13y": {
-          config: {},
+        "joystick@1,2,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 1, y: 2, z: 1 },
           type: "joystick",
         },
-        "joystick@2,1,1:13y": {
-          config: {},
+        "joystick@2,1,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 2, y: 1, z: 1 },
           type: "joystick",
         },
-        "joystick@5,6,1:13y": {
-          config: {},
+        "joystick@5,6,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 5, y: 6, z: 1 },
           type: "joystick",
         },
-        "joystick@6,5,1:13y": {
-          config: {},
+        "joystick@6,5,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 6, y: 5, z: 1 },
           type: "joystick",
         },
-        "joystick@6,7,1:13y": {
-          config: {},
+        "joystick@6,7,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 6, y: 7, z: 1 },
           type: "joystick",
         },
-        "joystick@7,6,1:13y": {
-          config: {},
+        "joystick@7,6,1:ZA6jib": {
+          config: { controls: ["charles@0,7,0:13y"] },
           position: { x: 7, y: 6, z: 1 },
           type: "joystick",
         },
@@ -4831,19 +4836,19 @@ export const campaign = {
         "switch@6,0,1:V4krG": {
           config: {
             activates: {
-              "block@3,7,0:Z1AdJxh": {
-                left: { disappearing: true },
-                right: { disappearing: false }
+              "baddie@3,0,1:Z1w4InY": {
+                left: { activated: true },
+                right: { activated: false },
               },
               "block@0,7,0:Z1AdJxh": {
                 left: { disappearing: true },
-                right: { disappearing: false }
+                right: { disappearing: false },
               },
-              "baddie@3,0,1:Z1w4InY": {
-                left: { activated: true },
-                right: { activated: false }
-              }
-            }
+              "block@3,7,0:Z1AdJxh": {
+                left: { disappearing: true },
+                right: { disappearing: false },
+              },
+            },
           },
           position: { x: 6, y: 0, z: 1 },
           type: "switch",
@@ -7063,23 +7068,23 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "joystick@1,2,0:13y": {
-          config: {},
+        "joystick@1,2,0:vjcmz": {
+          config: { controls: ["charles@0,7,3:13y"] },
           position: { x: 1, y: 2, z: 0 },
           type: "joystick",
         },
-        "joystick@1,5,0:13y": {
-          config: {},
+        "joystick@1,5,0:vjcmz": {
+          config: { controls: ["charles@0,7,3:13y"] },
           position: { x: 1, y: 5, z: 0 },
           type: "joystick",
         },
-        "joystick@4,2,0:13y": {
-          config: {},
+        "joystick@4,2,0:vjcmz": {
+          config: { controls: ["charles@0,7,3:13y"] },
           position: { x: 4, y: 2, z: 0 },
           type: "joystick",
         },
-        "joystick@4,5,0:13y": {
-          config: {},
+        "joystick@4,5,0:vjcmz": {
+          config: { controls: ["charles@0,7,3:13y"] },
           position: { x: 4, y: 5, z: 0 },
           type: "joystick",
         },
@@ -10238,23 +10243,23 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "joystick@5,1,1:13y": {
-          config: {},
+        "joystick@5,1,1:jsXbP": {
+          config: { controls: ["charles@5,7,5:13y"] },
           position: { x: 5, y: 1, z: 1 },
           type: "joystick",
         },
-        "joystick@6,0,1:13y": {
-          config: {},
+        "joystick@6,0,1:jsXbP": {
+          config: { controls: ["charles@5,7,5:13y"] },
           position: { x: 6, y: 0, z: 1 },
           type: "joystick",
         },
-        "joystick@6,2,1:13y": {
-          config: {},
+        "joystick@6,2,1:jsXbP": {
+          config: { controls: ["charles@5,7,5:13y"] },
           position: { x: 6, y: 2, z: 1 },
           type: "joystick",
         },
-        "joystick@7,1,1:13y": {
-          config: {},
+        "joystick@7,1,1:jsXbP": {
+          config: { controls: ["charles@5,7,5:13y"] },
           position: { x: 7, y: 1, z: 1 },
           type: "joystick",
         },
@@ -11258,23 +11263,23 @@ export const campaign = {
           position: { x: 3, y: 8, z: 5 },
           type: "door",
         },
-        "joystick@2,3,1:13y": {
-          config: {},
+        "joystick@2,3,1:Z1ncwev": {
+          config: { controls: ["charles@7,2,1:13y"] },
           position: { x: 2, y: 3, z: 1 },
           type: "joystick",
         },
-        "joystick@3,2,1:13y": {
-          config: {},
+        "joystick@3,2,1:Z1ncwev": {
+          config: { controls: ["charles@7,2,1:13y"] },
           position: { x: 3, y: 2, z: 1 },
           type: "joystick",
         },
-        "joystick@3,4,1:13y": {
-          config: {},
+        "joystick@3,4,1:Z1ncwev": {
+          config: { controls: ["charles@7,2,1:13y"] },
           position: { x: 3, y: 4, z: 1 },
           type: "joystick",
         },
-        "joystick@4,3,1:13y": {
-          config: {},
+        "joystick@4,3,1:Z1ncwev": {
+          config: { controls: ["charles@7,2,1:13y"] },
           position: { x: 4, y: 3, z: 1 },
           type: "joystick",
         },
@@ -16682,23 +16687,23 @@ export const campaign = {
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
-        "joystick@1,1,1:13y": {
-          config: {},
+        "joystick@1,1,1:2x1Kv5": {
+          config: { controls: ["charles@7,7,1:13y"] },
           position: { x: 1, y: 1, z: 1 },
           type: "joystick",
         },
-        "joystick@2,0,1:13y": {
-          config: {},
+        "joystick@2,0,1:2x1Kv5": {
+          config: { controls: ["charles@7,7,1:13y"] },
           position: { x: 2, y: 0, z: 1 },
           type: "joystick",
         },
-        "joystick@2,2,1:13y": {
-          config: {},
+        "joystick@2,2,1:2x1Kv5": {
+          config: { controls: ["charles@7,7,1:13y"] },
           position: { x: 2, y: 2, z: 1 },
           type: "joystick",
         },
-        "joystick@3,1,1:13y": {
-          config: {},
+        "joystick@3,1,1:2x1Kv5": {
+          config: { controls: ["charles@7,7,1:13y"] },
           position: { x: 3, y: 1, z: 1 },
           type: "joystick",
         },
@@ -24234,23 +24239,23 @@ export const campaign = {
           position: { x: 8, y: 3, z: 5 },
           type: "door",
         },
-        "joystick@0,6,1:13y": {
-          config: {},
+        "joystick@0,6,1:Z2siiC8": {
+          config: { controls: ["charles@6,6,1:13y"] },
           position: { x: 0, y: 6, z: 1 },
           type: "joystick",
         },
-        "joystick@1,5,1:13y": {
-          config: {},
+        "joystick@1,5,1:Z2siiC8": {
+          config: { controls: ["charles@6,6,1:13y"] },
           position: { x: 1, y: 5, z: 1 },
           type: "joystick",
         },
-        "joystick@1,7,1:13y": {
-          config: {},
+        "joystick@1,7,1:Z2siiC8": {
+          config: { controls: ["charles@6,6,1:13y"] },
           position: { x: 1, y: 7, z: 1 },
           type: "joystick",
         },
-        "joystick@2,6,1:13y": {
-          config: {},
+        "joystick@2,6,1:Z2siiC8": {
+          config: { controls: ["charles@6,6,1:13y"] },
           position: { x: 2, y: 6, z: 1 },
           type: "joystick",
         },

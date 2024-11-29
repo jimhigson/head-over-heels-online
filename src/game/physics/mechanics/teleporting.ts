@@ -6,7 +6,7 @@ import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/chang
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
 
 export function teleporting<RoomId extends string>(
-  playableItem: PlayableItem<RoomId>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName> {

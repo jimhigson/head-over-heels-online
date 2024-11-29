@@ -1,6 +1,7 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
 import type { PlayableItem } from "@/model/ItemInPlay";
+import type { CharacterName } from "@/model/modelTypes";
 
 /**
  *
@@ -8,7 +9,7 @@ import type { PlayableItem } from "@/model/ItemInPlay";
  */
 export function handlePlayerTouchingDeadly<RoomId extends string>(
   gameState: GameState<RoomId>,
-  subjectItem: PlayableItem<string>,
+  subjectItem: PlayableItem<CharacterName, RoomId>,
 ): boolean {
   subjectItem.state.action = "death";
   subjectItem.state.expires = gameState.gameTime + fadeInOrOutDuration;

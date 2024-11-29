@@ -58,6 +58,9 @@ export const boundingBoxForItem = (
     case "fish":
       return { aabb: mediumItemAabb };
 
+    case "movableBlock":
+      return { aabb: largeItemAabb };
+
     case "block": {
       switch (item.config.style) {
         case "artificial":

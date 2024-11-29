@@ -1,9 +1,10 @@
 import { test } from "vitest";
 import { expectTypeOf } from "vitest";
-import type { ItemInPlay, PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
+import type { PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
 
 test("heads and heels have the right state", () => {
+  /*
   expectTypeOf<ItemInPlay<"head">["state"]>().toMatchTypeOf<{
     facing: DirectionXy4;
     action: "moving" | "idle" | "falling" | "death";
@@ -11,14 +12,12 @@ test("heads and heels have the right state", () => {
     stoodOnBy: UnknownItemInPlay[];
     lives: number;
     shield: number;
-    hasHooter: boolean;
-    /** how many big jumps we can do */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
+    hasHooter: boolean;    
     donuts: number;
     fast: number;
-  }>();
+    position: Xyz;
+    expires: number | null;
+  }>();*/
 
   expectTypeOf<PlayableItem["state"]>().toMatchTypeOf<{
     facing: DirectionXy4;

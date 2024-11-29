@@ -8,11 +8,13 @@ export const keyItems = <R extends string>(
 ): Record<string, UnknownJsonItem<R>> => {
   return Object.fromEntries(
     items.map(
-      (item) =>
-        [
-          `${item.type}@${item.position.x},${item.position.y},${item.position.z}:${shortHash(canonicalize(item.config))}`,
-          item,
-        ] as [string, UnknownJsonItem<R>],
+      (item) => [itemKey<R>(item), item] as [string, UnknownJsonItem<R>],
     ),
   );
+};
+
+export const itemKey = <RoomId extends string>(
+  item: UnknownJsonItem<RoomId>,
+): string => {
+  return `${item.type}@${item.position.x},${item.position.y},${item.position.z}:${shortHash(canonicalize(item.config))}`;
 };

@@ -1,5 +1,5 @@
-import { Direction8Xyz, Xyz, unitVector } from "./vectors";
-
+import type { Direction8Xyz, Xyz } from "./vectors";
+import { unitVector } from "./vectors";
 
 export const unitVectors: Record<Direction8Xyz, Xyz> = {
   away: { x: 0, y: 1, z: 0 },

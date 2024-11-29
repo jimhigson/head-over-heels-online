@@ -1,8 +1,4 @@
-import {
-  directionsXy4,
-  scaleXyz,
-  subXyz,
-} from "@/utils/vectors/vectors";
+import { directionsXy4, scaleXyz, subXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
@@ -18,7 +14,7 @@ import type { GameState } from "@/game/gameState/GameState";
  * walking, but also gliding and changing direction mid-air
  */
 export const walking = <RoomId extends string>(
-  playableItem: PlayableItem<RoomId>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
   { inputState }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName> => {

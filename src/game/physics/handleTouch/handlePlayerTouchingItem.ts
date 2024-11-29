@@ -9,15 +9,18 @@ import {
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
+import type { CharacterName } from "@/model/modelTypes";
+import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
 
 /**
  * @returns true is the physics needs to halt after this handler
  */
 export const handlePlayerTouchingItem = <RoomId extends string>(
-  playableItem: PlayableItem<RoomId>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
   touchee: UnknownItemInPlay<RoomId>,
   movementVector: Xyz,
   gameState: GameState<RoomId>,
+  deltaMS: number,
 ) => {
   switch (touchee.type) {
     case "stopAutowalk":
@@ -80,6 +83,9 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       if (touchee.state.disappearing) {
         handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
       }
+      break;
+    case "joystick":
+      handlePlayerTouchingJoystick(gameState, playableItem, touchee, deltaMS);
       break;
   }
 

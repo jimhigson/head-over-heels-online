@@ -11,6 +11,10 @@ import {
 } from "../../collision/boundingBoxes";
 import { doorAlongAxis } from "@/utils/vectors/vectors";
 
+// walls sink slightly low, to match the rendering of the original game.
+// by rendering them low, the bounding boxes match the (lower) rendering
+const wallPositionZ = -2;
+
 /**
  * convert a room's walls into normal items (that can be collided with as with any other item)
  */
@@ -29,7 +33,10 @@ export function* loadWalls<R extends string>(
           id: `wall-left-${yi}`,
           config: { side: "left", style },
           state: {
-            position: blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
+            position: {
+              ...blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
+              z: wallPositionZ,
+            },
             expires: null,
             stoodOnBy: [],
             unsolidAfterProgression: null,
@@ -83,7 +90,10 @@ export function* loadWalls<R extends string>(
           id: `wall-away-${xi}`,
           config: { side: "away", style },
           state: {
-            position: blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
+            position: {
+              ...blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
+              z: wallPositionZ,
+            },
             expires: null,
             stoodOnBy: [],
             unsolidAfterProgression: null,
