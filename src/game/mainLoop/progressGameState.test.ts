@@ -908,3 +908,7 @@ describe("dissapearing blocks", () => {
     );
   });
 });
+
+describe("touching", () => {
+  test("standing overlapping the edge of a block, a baddie on the floor doesn't kill the player", () => {});
+});

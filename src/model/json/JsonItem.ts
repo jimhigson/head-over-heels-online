@@ -125,7 +125,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     top: number;
     bottom: number;
   };
-  baddie:
+  baddie: { activated: boolean } & (
     | {
         which:
           | "dalek"
@@ -140,18 +140,10 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
       }
     | {
         // with a starting direction
-        which: "american-football-head" | "turtle";
+        which: "american-football-head" | "turtle" | "cyberman";
         startDirection: DirectionXy4;
       }
-    | {
-        which: "cyberman";
-        startDirection: DirectionXy4;
-        charging: true;
-      }
-    | {
-        which: "cyberman";
-        charging: false;
-      };
+  );
   portableBlock: {
     style: "drum" | "sticks" | "cube";
   };

@@ -348,7 +348,8 @@ const convertItem = ({
         type: "baddie",
         config: {
           which: "cyberman",
-          charging: false,
+          startDirection: "towards",
+          activated: true,
         },
         position,
       };
@@ -359,7 +360,8 @@ const convertItem = ({
         config: {
           which: "cyberman",
           startDirection: convertDirection(item.orientation),
-          charging: true,
+          // they are charging:
+          activated: false,
         },
         position,
       };
@@ -377,6 +379,7 @@ const convertItem = ({
         type: "baddie",
         config: {
           which: baddieConversions[item.kind],
+          activated: true,
         },
         position,
       };
@@ -388,6 +391,7 @@ const convertItem = ({
         config: {
           which: baddieConversions[item.kind],
           startDirection: convertDirection(item.orientation),
+          activated: true,
         },
         position,
       };

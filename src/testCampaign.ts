@@ -61,7 +61,7 @@ const colourRooms = () => {
     },
     {
       type: "baddie",
-      config: { which: "cyberman", charging: true, startDirection: "away" },
+      config: { which: "cyberman", activated: false, startDirection: "away" },
       position: { x: 6, y: 0, z: 0 },
     },
   ];
@@ -483,23 +483,28 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { which: "dalek" },
+        config: { activated: true, which: "dalek" },
         position: { x: 1, y: 1, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "bubble-robot" },
+        config: { activated: true, which: "bubble-robot" },
         position: { x: 1, y: 10, z: 0 },
       },
 
       {
         type: "baddie",
-        config: { which: "american-football-head", startDirection: "away" },
+        config: {
+          activated: true,
+          which: "american-football-head",
+          startDirection: "away",
+        },
         position: { x: 1, y: 3, z: 0 },
       },
       {
         type: "baddie",
         config: {
+          activated: true,
           which: "american-football-head",
           startDirection: "right",
         },
@@ -507,12 +512,17 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { which: "american-football-head", startDirection: "left" },
+        config: {
+          activated: true,
+          which: "american-football-head",
+          startDirection: "left",
+        },
         position: { x: 3, y: 5, z: 0 },
       },
       {
         type: "baddie",
         config: {
+          activated: true,
           which: "american-football-head",
           startDirection: "towards",
         },
@@ -520,7 +530,11 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman", charging: false },
+        config: {
+          activated: true,
+          which: "cyberman",
+          startDirection: "towards",
+        },
         position: { x: 6, y: 7, z: 0 },
       },
       {
@@ -536,55 +550,55 @@ const rooms = {
       {
         type: "baddie",
         config: {
+          activated: false,
           which: "cyberman",
           startDirection: "towards",
-          charging: true,
         },
         position: { x: 4, y: 10, z: 1 },
       },
       {
         type: "baddie",
-        config: { which: "turtle", startDirection: "away" },
+        config: { activated: true, which: "turtle", startDirection: "away" },
         position: { x: 0, y: 8, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "turtle", startDirection: "towards" },
+        config: { activated: true, which: "turtle", startDirection: "towards" },
         position: { x: 0, y: 6, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "turtle", startDirection: "left" },
+        config: { activated: true, which: "turtle", startDirection: "left" },
         position: { x: 0, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "helicopter-bug" },
+        config: { activated: true, which: "helicopter-bug" },
         position: { x: 0, y: 1, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "headless-base" },
+        config: { activated: true, which: "headless-base" },
         position: { x: 10, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "monkey" },
+        config: { activated: true, which: "monkey" },
         position: { x: 9, y: 2, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "elephant" },
+        config: { activated: true, which: "elephant" },
         position: { x: 9, y: 10, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "flying-ball" },
+        config: { activated: true, which: "flying-ball" },
         position: { x: 0, y: 10, z: 0 },
       },
       {
         type: "baddie",
-        config: { which: "computer-bot" },
+        config: { activated: true, which: "computer-bot" },
         position: { x: 6, y: 0, z: 0 },
       },
       {

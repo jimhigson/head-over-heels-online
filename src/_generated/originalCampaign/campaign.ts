@@ -789,8 +789,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth14",
       items: {
-        "baddie@7,2,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@7,2,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 7, y: 2, z: 0 },
           type: "baddie",
         },
@@ -955,18 +955,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth16",
       items: {
-        "baddie@0,7,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@0,7,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 0, y: 7, z: 0 },
           type: "baddie",
         },
-        "baddie@7,0,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@7,0,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 7, y: 0, z: 0 },
           type: "baddie",
         },
-        "baddie@7,7,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@7,7,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 7, y: 7, z: 0 },
           type: "baddie",
         },
@@ -1054,8 +1054,8 @@ export const campaign = {
       ],
       id: "blacktooth17triple",
       items: {
-        "baddie@3,0,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@3,0,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 3, y: 0, z: 0 },
           type: "baddie",
         },
@@ -1289,8 +1289,9 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth18",
       items: {
-        "baddie@4,3,0:NUdjE": {
+        "baddie@4,3,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -1751,6 +1752,11 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
+        bag: {
+          config: { gives: "bag" },
+          position: { x: 4, y: 3, z: 8 },
+          type: "pickup",
+        },
         "barrier@4,0,0:fbso8": {
           config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
@@ -1805,11 +1811,6 @@ export const campaign = {
           config: { axis: "y", disappearing: false },
           position: { x: 4, y: 3, z: 1 },
           type: "barrier",
-        },
-        "bag": {
-          config: { gives: "bag" },
-          position: { x: 4, y: 3, z: 8 },
-          type: "pickup",
         },
         "barrier@4,3,2:fbso8": {
           config: { axis: "y", disappearing: false },
@@ -2342,8 +2343,12 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth29",
       items: {
-        "baddie@0,6,0:2wEOE6": {
-          config: { charging: false, which: "cyberman" },
+        "baddie@0,6,0:zoxNb": {
+          config: {
+            activated: true,
+            startDirection: "towards",
+            which: "cyberman",
+          },
           position: { x: 0, y: 6, z: 0 },
           type: "baddie",
         },
@@ -2646,13 +2651,17 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth33",
       items: {
-        "baddie@0,3,0:2wEOE6": {
-          config: { charging: false, which: "cyberman" },
+        "baddie@0,3,0:zoxNb": {
+          config: {
+            activated: true,
+            startDirection: "towards",
+            which: "cyberman",
+          },
           position: { x: 0, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@7,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@7,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 7, y: 4, z: 0 },
           type: "baddie",
         },
@@ -2849,18 +2858,30 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth37",
       items: {
-        "baddie@0,5,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@0,5,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@2,4,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@2,4,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@3,3,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@3,3,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
@@ -2937,8 +2958,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth39",
       items: {
-        "baddie@3,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
@@ -3230,8 +3251,9 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth42",
       items: {
-        "baddie@3,1,0:NUdjE": {
+        "baddie@3,1,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -3767,18 +3789,22 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth50market",
       items: {
-        "baddie@0,0,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@0,0,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 0, y: 0, z: 0 },
           type: "baddie",
         },
-        "baddie@4,7,0:2wEOE6": {
-          config: { charging: false, which: "cyberman" },
+        "baddie@4,7,0:zoxNb": {
+          config: {
+            activated: true,
+            startDirection: "towards",
+            which: "cyberman",
+          },
           position: { x: 4, y: 7, z: 0 },
           type: "baddie",
         },
-        "baddie@7,0,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@7,0,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 7, y: 0, z: 0 },
           type: "baddie",
         },
@@ -3966,8 +3992,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth53market",
       items: {
-        "baddie@2,4,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@2,4,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
@@ -4280,13 +4306,13 @@ export const campaign = {
       ],
       id: "blacktooth58triple",
       items: {
-        "baddie@4,9,1:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@4,9,1:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 4, y: 9, z: 1 },
           type: "baddie",
         },
-        "baddie@7,3,1:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@7,3,1:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 7, y: 3, z: 1 },
           type: "baddie",
         },
@@ -4778,8 +4804,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth6",
       items: {
-        "baddie@3,0,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,0,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 0, z: 1 },
           type: "baddie",
         },
@@ -5072,8 +5098,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth61",
       items: {
-        "baddie@3,7,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,7,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 7, z: 1 },
           type: "baddie",
         },
@@ -5327,8 +5353,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth63",
       items: {
-        "baddie@4,1,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@4,1,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 4, y: 1, z: 0 },
           type: "baddie",
         },
@@ -5450,8 +5476,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth65",
       items: {
-        "baddie@1,4,0:1VXxpH": {
-          config: { startDirection: "right", which: "turtle" },
+        "baddie@1,4,0:Z8uA9O": {
+          config: { activated: true, startDirection: "right", which: "turtle" },
           position: { x: 1, y: 4, z: 0 },
           type: "baddie",
         },
@@ -5935,8 +5961,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth71",
       items: {
-        "baddie@2,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
           type: "baddie",
         },
@@ -6023,13 +6049,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth72",
       items: {
-        "baddie@0,5,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,5,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@7,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@7,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 7, y: 4, z: 0 },
           type: "baddie",
         },
@@ -6229,8 +6255,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth74",
       items: {
-        "baddie@3,3,0:1iWArK": {
-          config: { which: "monkey" },
+        "baddie@3,3,0:Z1ubuHg": {
+          config: { activated: true, which: "monkey" },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
@@ -6313,13 +6339,13 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth75",
       items: {
-        "baddie@1,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@1,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@4,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
@@ -6426,13 +6452,17 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth76",
       items: {
-        "baddie@2,2,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@2,2,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 2, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@2,7,0:1VXxpH": {
-          config: { startDirection: "right", which: "turtle" },
+        "baddie@2,7,0:Z8uA9O": {
+          config: { activated: true, startDirection: "right", which: "turtle" },
           position: { x: 2, y: 7, z: 0 },
           type: "baddie",
         },
@@ -6706,8 +6736,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth78",
       items: {
-        "baddie@4,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
@@ -6912,8 +6942,9 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth80",
       items: {
-        "baddie@2,4,0:NUdjE": {
+        "baddie@2,4,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -7003,8 +7034,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth81",
       items: {
-        "baddie@6,7,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@6,7,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
@@ -7125,16 +7156,18 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth82",
       items: {
-        "baddie@2,2,0:NUdjE": {
+        "baddie@2,2,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
           position: { x: 2, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@5,3,0:NUdjE": {
+        "baddie@5,3,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -7473,8 +7506,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth85",
       items: {
-        "baddie@0,7,1:1iWArK": {
-          config: { which: "monkey" },
+        "baddie@0,7,1:Z1ubuHg": {
+          config: { activated: true, which: "monkey" },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
@@ -7565,8 +7598,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth86",
       items: {
-        "baddie@1,3,0:1hCOJt": {
-          config: { which: "flying-ball" },
+        "baddie@1,3,0:1Sur9": {
+          config: { activated: true, which: "flying-ball" },
           position: { x: 1, y: 3, z: 0 },
           type: "baddie",
         },
@@ -7603,8 +7636,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth87crown",
       items: {
-        "baddie@3,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
@@ -7705,8 +7738,8 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth8fish",
       items: {
-        "baddie@3,3,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,3,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 3, z: 1 },
           type: "baddie",
         },
@@ -7982,8 +8015,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld10",
       items: {
-        "baddie@2,4,0:1iWArK": {
-          config: { which: "monkey" },
+        "baddie@2,4,0:Z1ubuHg": {
+          config: { activated: true, which: "monkey" },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
@@ -8174,13 +8207,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld14",
       items: {
-        "baddie@3,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@4,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
@@ -8416,13 +8449,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld17",
       items: {
-        "baddie@0,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@3,2,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,2,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 2, z: 0 },
           type: "baddie",
         },
@@ -8532,8 +8565,9 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld19",
       items: {
-        "baddie@0,6,0:NUdjE": {
+        "baddie@0,6,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -8829,8 +8863,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld21",
       items: {
-        "baddie@0,4,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@0,4,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
@@ -9119,8 +9153,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld26",
       items: {
-        "baddie@3,7,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,7,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 7, z: 0 },
           type: "baddie",
         },
@@ -9684,13 +9718,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld3",
       items: {
-        "baddie@3,5,0:1iWArK": {
-          config: { which: "monkey" },
+        "baddie@3,5,0:Z1ubuHg": {
+          config: { activated: true, which: "monkey" },
           position: { x: 3, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@4,0,0:1iWArK": {
-          config: { which: "monkey" },
+        "baddie@4,0,0:Z1ubuHg": {
+          config: { activated: true, which: "monkey" },
           position: { x: 4, y: 0, z: 0 },
           type: "baddie",
         },
@@ -9727,13 +9761,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld30",
       items: {
-        "baddie@3,2,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,2,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@4,1,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,1,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 1, z: 0 },
           type: "baddie",
         },
@@ -9770,8 +9804,12 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld31",
       items: {
-        "baddie@11,0,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@11,0,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 11, y: 0, z: 0 },
           type: "baddie",
         },
@@ -10300,8 +10338,8 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld36",
       items: {
-        "baddie@1,0,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@1,0,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 1, y: 0, z: 0 },
           type: "baddie",
         },
@@ -10639,13 +10677,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld41crown",
       items: {
-        "baddie@0,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@4,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
@@ -10727,13 +10765,13 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld5",
       items: {
-        "baddie@1,3,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@1,3,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 1, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@2,4,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@2,4,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
@@ -11650,8 +11688,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus17",
       items: {
-        "baddie@5,1,0:ZDh8Vf": {
-          config: { startDirection: "away", which: "turtle" },
+        "baddie@5,1,0:2eI3Ll": {
+          config: { activated: true, startDirection: "away", which: "turtle" },
           position: { x: 5, y: 1, z: 0 },
           type: "baddie",
         },
@@ -11931,13 +11969,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus2",
       items: {
-        "baddie@2,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@2,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
@@ -12134,13 +12172,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus22",
       items: {
-        "baddie@4,0,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,0,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 0, z: 0 },
           type: "baddie",
         },
-        "baddie@4,2,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@4,2,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 4, y: 2, z: 0 },
           type: "baddie",
         },
@@ -12575,8 +12613,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus26",
       items: {
-        "baddie@7,5,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@7,5,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 7, y: 5, z: 1 },
           type: "baddie",
         },
@@ -13013,8 +13051,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus31",
       items: {
-        "baddie@2,0,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@2,0,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 2, y: 0, z: 0 },
           type: "baddie",
         },
@@ -13127,8 +13165,8 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus34fish",
       items: {
-        "baddie@5,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@5,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 5, y: 4, z: 0 },
           type: "baddie",
         },
@@ -13567,13 +13605,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus39crown",
       items: {
-        "baddie@3,0,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,0,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 0, z: 0 },
           type: "baddie",
         },
-        "baddie@3,7,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@3,7,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 3, y: 7, z: 0 },
           type: "baddie",
         },
@@ -14058,13 +14096,13 @@ export const campaign = {
       floorSkip: [],
       id: "egyptus8",
       items: {
-        "baddie@4,2,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,2,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@4,5,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,5,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 5, z: 0 },
           type: "baddie",
         },
@@ -14390,84 +14428,108 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase1",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -14803,23 +14865,39 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase13",
       items: {
-        "baddie@0,2,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,2,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@0,3,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,3,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@0,4,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,4,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@0,5,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,5,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 5, z: 1 },
           type: "baddie",
         },
@@ -14881,41 +14959,41 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase14",
       items: {
-        "baddie@2,7,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@2,7,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 2, y: 7, z: 0 },
           type: "baddie",
         },
-        "baddie@5,2,1:ZD7ABP": {
+        "baddie@5,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@5,3,1:ZD7ABP": {
+        "baddie@5,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@5,4,1:ZD7ABP": {
+        "baddie@5,4,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@5,5,1:ZD7ABP": {
+        "baddie@5,5,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
@@ -15038,8 +15116,8 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase16",
       items: {
-        "baddie@11,0,0:Z1YJLrs": {
-          config: { which: "computer-bot" },
+        "baddie@11,0,0:ZjbVd9": {
+          config: { activated: true, which: "computer-bot" },
           position: { x: 11, y: 0, z: 0 },
           type: "baddie",
         },
@@ -15243,18 +15321,30 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase19",
       items: {
-        "baddie@3,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@3,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 3, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@4,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@4,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 4, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
@@ -15306,41 +15396,41 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase2",
       items: {
-        "baddie@0,5,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,5,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@7,1,1:ZD7ABP": {
+        "baddie@7,1,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@7,2,1:ZD7ABP": {
+        "baddie@7,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@7,3,1:ZD7ABP": {
+        "baddie@7,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@7,4,1:ZD7ABP": {
+        "baddie@7,4,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
@@ -15517,54 +15607,54 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase21tosafari",
       items: {
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@3,7,1:Q5JXd": {
+        "baddie@3,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 3, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@4,7,1:Q5JXd": {
+        "baddie@4,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 4, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -15649,33 +15739,57 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase22topenitentiary",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@3,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@3,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 3, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@4,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@4,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 4, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
@@ -15859,84 +15973,108 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase24toegyptus",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -16060,84 +16198,108 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase25tobookworld",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -16261,18 +16423,30 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase26",
       items: {
-        "baddie@3,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@3,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 3, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@4,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@4,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 4, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
@@ -16367,8 +16541,12 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase28",
       items: {
-        "baddie@0,5,0:2wEOE6": {
-          config: { charging: false, which: "cyberman" },
+        "baddie@0,5,0:zoxNb": {
+          config: {
+            activated: true,
+            startDirection: "towards",
+            which: "cyberman",
+          },
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
@@ -16411,84 +16589,108 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase29",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -16812,84 +17014,108 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase32",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -17068,162 +17294,210 @@ export const campaign = {
       ],
       id: "moonbase33triple",
       items: {
-        "baddie@0,10,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,10,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 10, z: 1 },
           type: "baddie",
         },
-        "baddie@0,11,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,11,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 11, z: 1 },
           type: "baddie",
         },
-        "baddie@0,12,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,12,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 12, z: 1 },
           type: "baddie",
         },
-        "baddie@0,13,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,13,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 13, z: 1 },
           type: "baddie",
         },
-        "baddie@11,1,1:ZD7ABP": {
+        "baddie@11,1,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@11,14,1:ZD7ABP": {
+        "baddie@11,14,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 14, z: 1 },
           type: "baddie",
         },
-        "baddie@11,2,1:ZD7ABP": {
+        "baddie@11,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@11,3,1:ZD7ABP": {
+        "baddie@11,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@11,4,1:ZD7ABP": {
+        "baddie@11,4,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@11,5,1:ZD7ABP": {
+        "baddie@11,5,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 5, z: 1 },
           type: "baddie",
         },
-        "baddie@11,9,1:ZD7ABP": {
+        "baddie@11,9,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 11, y: 9, z: 1 },
           type: "baddie",
         },
-        "baddie@5,10,1:ZD7ABP": {
+        "baddie@5,10,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 10, z: 1 },
           type: "baddie",
         },
-        "baddie@5,11,1:ZD7ABP": {
+        "baddie@5,11,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 11, z: 1 },
           type: "baddie",
         },
-        "baddie@5,12,1:ZD7ABP": {
+        "baddie@5,12,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 12, z: 1 },
           type: "baddie",
         },
-        "baddie@5,13,1:ZD7ABP": {
+        "baddie@5,13,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 13, z: 1 },
           type: "baddie",
         },
-        "baddie@6,10,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,10,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 10, z: 1 },
           type: "baddie",
         },
-        "baddie@6,11,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,11,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 11, z: 1 },
           type: "baddie",
         },
-        "baddie@6,12,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,12,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 12, z: 1 },
           type: "baddie",
         },
-        "baddie@6,13,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,13,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 13, z: 1 },
           type: "baddie",
         },
-        "baddie@6,2,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,2,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@6,3,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,3,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@6,4,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,4,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@6,5,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@6,5,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 6, y: 5, z: 1 },
           type: "baddie",
         },
@@ -17471,36 +17745,36 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase34",
       items: {
-        "baddie@7,0,1:ZD7ABP": {
+        "baddie@7,0,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,1,1:ZD7ABP": {
+        "baddie@7,1,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@7,2,1:ZD7ABP": {
+        "baddie@7,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 7, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@7,3,1:ZD7ABP": {
+        "baddie@7,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
@@ -17560,56 +17834,72 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase35",
       items: {
-        "baddie@0,1,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,1,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@0,2,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,2,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@0,3,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,3,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@0,4,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,4,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@5,1,1:ZD7ABP": {
+        "baddie@5,1,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@5,2,1:ZD7ABP": {
+        "baddie@5,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@5,3,1:ZD7ABP": {
+        "baddie@5,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@5,4,1:ZD7ABP": {
+        "baddie@5,4,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
@@ -17695,56 +17985,72 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase36",
       items: {
-        "baddie@0,1,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,1,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@0,2,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,2,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@0,3,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,3,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@0,4,1:Z158tvd": {
-          config: { charging: true, startDirection: "left", which: "cyberman" },
+        "baddie@0,4,1:2q6IfP": {
+          config: {
+            activated: false,
+            startDirection: "left",
+            which: "cyberman",
+          },
           position: { x: 0, y: 4, z: 1 },
           type: "baddie",
         },
-        "baddie@5,1,1:ZD7ABP": {
+        "baddie@5,1,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 1, z: 1 },
           type: "baddie",
         },
-        "baddie@5,2,1:ZD7ABP": {
+        "baddie@5,2,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 2, z: 1 },
           type: "baddie",
         },
-        "baddie@5,3,1:ZD7ABP": {
+        "baddie@5,3,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
           position: { x: 5, y: 3, z: 1 },
           type: "baddie",
         },
-        "baddie@5,4,1:ZD7ABP": {
+        "baddie@5,4,1:1rpQ64": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "right",
             which: "cyberman",
           },
@@ -17830,13 +18136,13 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase4",
       items: {
-        "baddie@2,5,0:Z1YJLrs": {
-          config: { which: "computer-bot" },
+        "baddie@2,5,0:ZjbVd9": {
+          config: { activated: true, which: "computer-bot" },
           position: { x: 2, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@5,2,0:Z1YJLrs": {
-          config: { which: "computer-bot" },
+        "baddie@5,2,0:ZjbVd9": {
+          config: { activated: true, which: "computer-bot" },
           position: { x: 5, y: 2, z: 0 },
           type: "baddie",
         },
@@ -17987,18 +18293,18 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase5",
       items: {
-        "baddie@0,4,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@0,4,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@3,2,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@3,2,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@3,6,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@3,6,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 3, y: 6, z: 0 },
           type: "baddie",
         },
@@ -18035,13 +18341,13 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase6",
       items: {
-        "baddie@0,4,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@0,4,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@7,5,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@7,5,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 7, y: 5, z: 0 },
           type: "baddie",
         },
@@ -18147,54 +18453,54 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase7",
       items: {
-        "baddie@0,7,1:Q5JXd": {
+        "baddie@0,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 0, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@1,7,1:Q5JXd": {
+        "baddie@1,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 1, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@2,7,1:Q5JXd": {
+        "baddie@2,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 2, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@5,7,1:Q5JXd": {
+        "baddie@5,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 5, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@6,7,1:Q5JXd": {
+        "baddie@6,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
-        "baddie@7,7,1:Q5JXd": {
+        "baddie@7,7,1:1AulfA": {
           config: {
-            charging: true,
+            activated: false,
             startDirection: "towards",
             which: "cyberman",
           },
@@ -18298,33 +18604,57 @@ export const campaign = {
       floorSkip: [],
       id: "moonbase8",
       items: {
-        "baddie@0,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@0,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 0, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@1,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@1,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 1, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@2,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@2,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 2, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@5,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@5,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 5, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@6,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@6,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 6, y: 0, z: 1 },
           type: "baddie",
         },
-        "baddie@7,0,1:1jRQF": {
-          config: { charging: true, startDirection: "away", which: "cyberman" },
+        "baddie@7,0,1:Z1xC3bd": {
+          config: {
+            activated: false,
+            startDirection: "away",
+            which: "cyberman",
+          },
           position: { x: 7, y: 0, z: 1 },
           type: "baddie",
         },
@@ -18931,8 +19261,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary15",
       items: {
-        "baddie@7,7,1:1VXxpH": {
-          config: { startDirection: "right", which: "turtle" },
+        "baddie@7,7,1:Z8uA9O": {
+          config: { activated: true, startDirection: "right", which: "turtle" },
           position: { x: 7, y: 7, z: 1 },
           type: "baddie",
         },
@@ -19523,13 +19853,13 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary19",
       items: {
-        "baddie@1,3,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@1,3,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 1, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@2,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
@@ -19571,8 +19901,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary2",
       items: {
-        "baddie@6,3,2:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@6,3,2:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 6, y: 3, z: 2 },
           type: "baddie",
         },
@@ -19688,8 +20018,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary20",
       items: {
-        "baddie@2,3,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,3,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 3, z: 1 },
           type: "baddie",
         },
@@ -19748,8 +20078,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary21",
       items: {
-        "baddie@6,7,1:1VXxpH": {
-          config: { startDirection: "right", which: "turtle" },
+        "baddie@6,7,1:Z8uA9O": {
+          config: { activated: true, startDirection: "right", which: "turtle" },
           position: { x: 6, y: 7, z: 1 },
           type: "baddie",
         },
@@ -21067,8 +21397,8 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary32",
       items: {
-        "baddie@0,1,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,1,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 1, z: 0 },
           type: "baddie",
         },
@@ -21586,13 +21916,13 @@ export const campaign = {
       floorSkip: [],
       id: "penitentiary7",
       items: {
-        "baddie@3,5,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@3,5,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 3, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@5,5,0:1qFC6w": {
-          config: { which: "bubble-robot" },
+        "baddie@5,5,0:Z1WWFt6": {
+          config: { activated: true, which: "bubble-robot" },
           position: { x: 5, y: 5, z: 0 },
           type: "baddie",
         },
@@ -21915,23 +22245,23 @@ export const campaign = {
       floorSkip: [],
       id: "safari11",
       items: {
-        "baddie@0,0,0:Z1iri44": {
-          config: { which: "elephant" },
+        "baddie@0,0,0:Z2qiM0z": {
+          config: { activated: true, which: "elephant" },
           position: { x: 0, y: 0, z: 0 },
           type: "baddie",
         },
-        "baddie@2,3,0:ZYC5Tr": {
-          config: { which: "elephant-head" },
+        "baddie@2,3,0:gzuaR": {
+          config: { activated: true, which: "elephant-head" },
           position: { x: 2, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@3,1,0:ZYC5Tr": {
-          config: { which: "elephant-head" },
+        "baddie@3,1,0:gzuaR": {
+          config: { activated: true, which: "elephant-head" },
           position: { x: 3, y: 1, z: 0 },
           type: "baddie",
         },
-        "baddie@3,5,0:ZYC5Tr": {
-          config: { which: "elephant-head" },
+        "baddie@3,5,0:gzuaR": {
+          config: { activated: true, which: "elephant-head" },
           position: { x: 3, y: 5, z: 0 },
           type: "baddie",
         },
@@ -21959,8 +22289,8 @@ export const campaign = {
       floorSkip: [],
       id: "safari12",
       items: {
-        "baddie@5,5,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@5,5,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 5, y: 5, z: 0 },
           type: "baddie",
         },
@@ -22249,23 +22579,35 @@ export const campaign = {
       floorSkip: [],
       id: "safari15",
       items: {
-        "baddie@0,6,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@0,6,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 0, y: 6, z: 0 },
           type: "baddie",
         },
-        "baddie@1,4,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@1,4,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 1, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@2,12,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@2,12,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 2, y: 12, z: 1 },
           type: "baddie",
         },
-        "baddie@2,2,0:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@2,2,0:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 2, y: 2, z: 0 },
           type: "baddie",
         },
@@ -22360,8 +22702,9 @@ export const campaign = {
       floorSkip: [],
       id: "safari16",
       items: {
-        "baddie@2,6,0:NUdjE": {
+        "baddie@2,6,0:OqFB8": {
           config: {
+            activated: true,
             startDirection: "towards",
             which: "american-football-head",
           },
@@ -22774,8 +23117,8 @@ export const campaign = {
       ],
       id: "safari19triple",
       items: {
-        "baddie@12,0,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@12,0,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 12, y: 0, z: 0 },
           type: "baddie",
         },
@@ -23191,23 +23534,23 @@ export const campaign = {
       floorSkip: [],
       id: "safari21",
       items: {
-        "baddie@2,5,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@2,5,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 2, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@3,2,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@3,2,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 3, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@4,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@4,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@5,4,0:VXUBj": {
-          config: { which: "headless-base" },
+        "baddie@5,4,0:2dbvGC": {
+          config: { activated: true, which: "headless-base" },
           position: { x: 5, y: 4, z: 0 },
           type: "baddie",
         },
@@ -23273,8 +23616,8 @@ export const campaign = {
       floorSkip: [],
       id: "safari22",
       items: {
-        "baddie@0,4,0:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@0,4,0:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 0, y: 4, z: 0 },
           type: "baddie",
         },
@@ -23846,18 +24189,18 @@ export const campaign = {
       floorSkip: [],
       id: "safari27",
       items: {
-        "baddie@3,3,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@3,3,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 3, y: 3, z: 0 },
           type: "baddie",
         },
-        "baddie@4,2,0:v0szb": {
-          config: { which: "helicopter-bug" },
+        "baddie@4,2,0:ZVblgD": {
+          config: { activated: true, which: "helicopter-bug" },
           position: { x: 4, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@4,3,0:Z1iri44": {
-          config: { which: "elephant" },
+        "baddie@4,3,0:Z2qiM0z": {
+          config: { activated: true, which: "elephant" },
           position: { x: 4, y: 3, z: 0 },
           type: "baddie",
         },
@@ -23951,8 +24294,12 @@ export const campaign = {
       floorSkip: [],
       id: "safari29",
       items: {
-        "baddie@7,7,0:2wEOE6": {
-          config: { charging: false, which: "cyberman" },
+        "baddie@7,7,0:zoxNb": {
+          config: {
+            activated: true,
+            startDirection: "towards",
+            which: "cyberman",
+          },
           position: { x: 7, y: 7, z: 0 },
           type: "baddie",
         },
@@ -24329,8 +24676,8 @@ export const campaign = {
       floorSkip: [],
       id: "safari33",
       items: {
-        "baddie@4,4,0:Z1iri44": {
-          config: { which: "elephant" },
+        "baddie@4,4,0:Z2qiM0z": {
+          config: { activated: true, which: "elephant" },
           position: { x: 4, y: 4, z: 0 },
           type: "baddie",
         },
@@ -24716,8 +25063,12 @@ export const campaign = {
       floorSkip: [],
       id: "safari37crown",
       items: {
-        "baddie@7,2,1:yqEry": {
-          config: { startDirection: "right", which: "american-football-head" },
+        "baddie@7,2,1:29gHtL": {
+          config: {
+            activated: true,
+            startDirection: "right",
+            which: "american-football-head",
+          },
           position: { x: 7, y: 2, z: 1 },
           type: "baddie",
         },
@@ -24908,8 +25259,8 @@ export const campaign = {
       floorSkip: [],
       id: "safari4",
       items: {
-        "baddie@7,4,1:Z1w4InY": {
-          config: { which: "dalek" },
+        "baddie@7,4,1:Z1rA6U9": {
+          config: { activated: true, which: "dalek" },
           position: { x: 7, y: 4, z: 1 },
           type: "baddie",
         },

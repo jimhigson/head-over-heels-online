@@ -14,6 +14,8 @@ import { isItemType } from "./model/ItemInPlay.ts";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
 import { LucideSettings } from "lucide-react";
+import { changeCharacterRoom } from "./game/gameState/gameStateTransitions/changeCharacterRoom.ts";
+import { currentRoom } from "./game/gameState/GameState.ts";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -163,11 +165,25 @@ export const App = <RoomId extends string>({
               <Button
                 onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
               >
-                Start
+                Room 1
               </Button>
               <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
                 Test room
               </Button>
+              <Button
+                onClick={() => {
+                  const roomId = currentRoom(gameApi.gameState).id;
+                  gameApi.gameState.currentCharacterName = "heels";
+                  changeCharacterRoom({
+                    gameState: gameApi.gameState,
+                    changeType: "level-select",
+                    toRoomId: roomId,
+                  });
+                }}
+              >
+                Add heels
+              </Button>
+
               <Button onClick={() => gameApi && console.log(gameApi.gameState)}>
                 Game state to console
               </Button>

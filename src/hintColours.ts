@@ -36,7 +36,7 @@ export const greenShades = {
   original: new Color("rgb(0, 255, 0)"),
   basic: spritesheetPalette().moss,
   //basic: new Color("hsl(73,35%,48%)"),
-  dimmed: new Color("hsl(73,35%,30%)"),
+  dimmed: new Color("hsl(73,35%,35%)"),
 };
 
 export const shades = {

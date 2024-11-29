@@ -48,11 +48,11 @@ export const changeCharacterRoom = <RoomId extends string>({
   const { currentCharacterName } = gameState;
   const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
 
-  if (toRoomId === leavingRoom.id) {
+  /*if (toRoomId === leavingRoom.id) {
     throw new Error(
       `Can't move to the same room "${toRoomId}" from "${leavingRoom.id}"`,
     );
-  }
+  }*/
 
   const otherName = otherCharacterName(currentCharacterName);
 

@@ -124,11 +124,8 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/block@3,7,0:Z1AdJxh",
-    "value": {
-      "left": { "disappearing": true },
-      "right": { "disappearing": false }
-    }
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/baddie@3,0,1:Z1w4InY",
+    "value": { "left": { "activated": true }, "right": { "activated": false } }
   },
   {
     "op": "add",
@@ -140,8 +137,11 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/baddie@3,0,1:Z1w4InY",
-    "value": { "left": { "activated": true }, "right": { "activated": false } }
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/block@3,7,0:Z1AdJxh",
+    "value": {
+      "left": { "disappearing": true },
+      "right": { "disappearing": false }
+    }
   },
   {
     "op": "replace",
@@ -181,6 +181,15 @@
   {
     "op": "remove",
     "path": "/rooms/blacktooth23heels/items/deadlyBlock@0,7,0:ZWGEjo"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/bag",
+    "value": {
+      "config": { "gives": "bag" },
+      "position": { "x": 4, "y": 3, "z": 8 },
+      "type": "pickup"
+    }
   },
   {
     "op": "add",

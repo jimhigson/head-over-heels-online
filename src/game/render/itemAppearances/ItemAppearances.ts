@@ -432,15 +432,16 @@ export const itemAppearances: {
         );
         break;
       case "cyberman":
-        if (config.charging) {
-          applyAppearance(
-            renderContainer,
-            createSprite(`cyberman.${config.startDirection}`),
-          );
-        } else {
+        if (config.activated) {
           applyAppearance(
             renderContainer,
             stackedSprites(`cyberman.towards`, bubbles),
+          );
+        } else {
+          // charging on a toaster
+          applyAppearance(
+            renderContainer,
+            createSprite(`cyberman.${config.startDirection}`),
           );
         }
         break;

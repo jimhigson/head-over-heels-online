@@ -82,7 +82,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
           movingFloor: originXyz,
           walking: initBaddieWalk(),
         },
-        activated: true,
+        activated: jsonItem.config.activated,
       }
     : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
