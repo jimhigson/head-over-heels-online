@@ -34,12 +34,20 @@ export const carrying = <RoomId extends string>(
 
       pickupableStandingOn.state.unsolidAfterProgression = -1;
       pickupableStandingOn.state.position = { x: -1024, y: -1024, z: -1024 };
+      pickupableStandingOn.renders = false;
 
       heelsItem.state.carrying = pickupableStandingOn;
       inputState.carry = false; // handled this input
     } else {
+      // trying to put down
+      if (heelsItem.state.standingOn.length === 0) {
+        // can't put down mid-air
+        return;
+      }
+
       carrying.state.position = heelsPosition;
       carrying.state.unsolidAfterProgression = null;
+      carrying.renders = true;
       heelsItem.state.position = addXyz(heelsPosition, {
         x: 0,
         y: 0,

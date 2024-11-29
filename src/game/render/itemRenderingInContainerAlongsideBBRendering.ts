@@ -1,7 +1,8 @@
+import type {
+  AnyItemInPlay} from "@/model/ItemInPlay";
 import {
   isItemType,
   type ItemInPlayType,
-  type UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
@@ -58,7 +59,7 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   stopAutowalk: "rgba(255,128,128)",
 };
 
-const renderItemBBs = (item: UnknownItemInPlay): Container => {
+export const renderItemBBs = (item: AnyItemInPlay): Container => {
   const color = bbColors[item.type] ?? "rgba(255,255,255)";
 
   const containerWithBB = new Container();
@@ -87,6 +88,7 @@ const renderItemBBs = (item: UnknownItemInPlay): Container => {
   return containerWithBB;
 };
 
+/*
 export const itemRenderingInContainerAlongsideBBRendering = (
   item: UnknownItemInPlay,
 ): Container => {
@@ -99,3 +101,4 @@ export const itemRenderingInContainerAlongsideBBRendering = (
   wrappingContainer.addChild(renderItemBBs(item));
   return wrappingContainer;
 };
+*/

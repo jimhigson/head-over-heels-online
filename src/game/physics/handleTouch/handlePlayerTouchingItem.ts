@@ -50,7 +50,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
           movementVector,
         )
       ) {
-        // has activated the portal:
+        // has activated the portal - halt all physics:
         return true;
       }
       break;

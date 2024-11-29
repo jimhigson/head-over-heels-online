@@ -11,9 +11,11 @@ import {
   doorFrameAppearance,
   doorLegsAppearance,
 } from "../../../doorAppearance";
+import type { ItemState } from "@/model/ItemInPlay";
 import {
   isFreeItem,
   isPlayableItem,
+  renderContainerState,
   type ItemInPlayType,
 } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
@@ -63,10 +65,11 @@ export const itemAppearances: {
   },
 
   wall: ifNotRenderedBefore(
-    ({ config: { side, style }, renderContainer }, gameState) => {
+    ({ config: { side, style }, state }, gameState, renderTo) => {
       const room = currentRoom(gameState);
       applyAppearance(
-        renderContainer,
+        renderTo,
+        state,
         side === "right" || side === "towards" ?
           new Container()
         : createSprite({
@@ -81,7 +84,8 @@ export const itemAppearances: {
                 {
                   x: wallTileSize.w,
                   // walls need to be rendered 1px high to match original game (original puts them 1px low, but
-                  // we already position them 2px low to match original rendering
+                  // we already position them (in world space) 2px low to match original rendering while keeping
+                  // bounding boxes correct
                   y: wallTileSize.h + 1,
                 }
               : { x: 0, y: wallTileSize.h + 1 },
@@ -90,22 +94,21 @@ export const itemAppearances: {
     },
   ),
 
-  barrier({
-    config: { axis },
-    state: { expires },
-    stateLastFrame,
-    renderContainer,
-  }) {
-    const bubbles = expires !== null;
+  barrier({ config: { axis }, state }, _gameState, renderTo) {
+    const currentlyRenderedState = renderTo[renderContainerState];
+    const bubbles = state.expires !== null;
     const wasBubbles =
-      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.expires !== null
+      );
 
-    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
       return;
     }
 
     applyAppearance(
-      renderContainer!,
+      renderTo,
+      state,
       bubbles ?
         createSprite({
           frames: spriteSheet.animations["bubbles.taupe"],
@@ -120,27 +123,32 @@ export const itemAppearances: {
     );
   },
 
-  deadlyBlock: ifNotRenderedBefore(({ config: { style }, renderContainer }) => {
-    applyAppearance(
-      renderContainer,
-      createSprite(style === "puck" ? "puck.deadly" : style),
-    );
-  }),
+  deadlyBlock: ifNotRenderedBefore(
+    ({ config: { style }, state }, _gameState, renderTo) => {
+      applyAppearance(
+        renderTo,
+        state,
+        createSprite(style === "puck" ? "puck.deadly" : style),
+      );
+    },
+  ),
 
-  block({
-    config: { style },
-    state: { expires, disappearing },
-    stateLastFrame,
-    renderContainer,
-  }) {
+  block({ config: { style }, state }, _gameState, renderTo) {
+    const currentlyRenderedState = renderTo[renderContainerState];
+    const { expires, disappearing } = state;
+
     const bubbles = expires !== null;
     const wasBubbles =
-      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.expires !== null
+      );
     const wasDisappearing =
-      stateLastFrame === undefined ? false : stateLastFrame.disappearing;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.disappearing
+      );
 
     if (
-      renderedBefore(renderContainer!) &&
+      renderedBefore(renderTo) &&
       bubbles === wasBubbles &&
       disappearing === wasDisappearing
     ) {
@@ -148,7 +156,8 @@ export const itemAppearances: {
     }
 
     applyAppearance(
-      renderContainer!,
+      renderTo,
+      state,
       bubbles ?
         createSprite({
           frames: spriteSheet.animations["bubbles.taupe"],
@@ -158,47 +167,51 @@ export const itemAppearances: {
     );
   },
 
-  switch({ state: { setting }, stateLastFrame, renderContainer }) {
+  switch({ state }, _gameState, renderTo) {
+    const { setting } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const lastSetting =
-      stateLastFrame === undefined ? false : stateLastFrame.setting;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.setting
+      );
 
-    if (renderedBefore(renderContainer!) && setting === lastSetting) {
+    if (renderedBefore(renderTo) && setting === lastSetting) {
       return;
     }
 
-    applyAppearance(
-      renderContainer!,
-
-      createSprite(`switch.${setting}`),
-    );
+    applyAppearance(renderTo, state, createSprite(`switch.${setting}`));
   },
 
-  conveyor(item) {
+  conveyor(item, _gameState, renderTo) {
+    const currentlyRenderedState = renderTo[renderContainerState];
     const {
       config: { direction, count },
-      state: { stoodOnBy },
-      stateLastFrame,
-      renderContainer,
+      state,
     } = item;
 
-    if (renderContainer === undefined) return;
-
-    const isActive =
-      stoodOnBy.find(
+    const isActive = (state: ItemState<"conveyor">) =>
+      state.stoodOnBy.find(
         (i) => isFreeItem(i) && i.state.activeConveyor === item,
       ) !== undefined;
-    const wasActiveLastFrame =
-      stateLastFrame !== undefined &&
-      stateLastFrame.stoodOnBy.find(
-        (i) =>
-          isFreeItem(i) &&
-          i.stateLastFrame !== undefined &&
-          i.stateLastFrame.activeConveyor === item,
-      ) !== undefined;
+
+    const activeNow = isActive(state);
+
+    // this isn't quite right since it is looking at the .activeConveyor property for the item that was standing on it
+    // in the current state, not the previous state. Might still be ok. Previous state is now lost.
+    // would need to be able to give custom state on the renderer for this conveyor type only (so far)
+    const wasActiveLastRender = isActive(currentlyRenderedState);
 
     const shouldRender =
-      (renderContainer !== undefined && !renderedBefore(renderContainer)) ||
-      isActive !== wasActiveLastFrame;
+      !renderedBefore(renderTo) || activeNow !== wasActiveLastRender;
+
+    console.log(
+      "now",
+      activeNow,
+      "last",
+      wasActiveLastRender,
+      "shouldRender",
+      shouldRender,
+    );
 
     if (shouldRender) {
       const rendering = new Container();
@@ -211,7 +224,7 @@ export const itemAppearances: {
           });
 
           return createSprite(
-            isActive ?
+            activeNow ?
               {
                 frames: spriteSheet.animations[`conveyor.${axis}`],
                 reverse: direction === "towards" || direction === "right",
@@ -226,11 +239,11 @@ export const itemAppearances: {
         }),
       );
 
-      applyAppearance(renderContainer, rendering);
+      applyAppearance(renderTo, state, rendering);
     }
   },
 
-  lift: ifNotRenderedBefore(({ renderContainer }) => {
+  lift: ifNotRenderedBefore(({ state }, _gameState, renderTo) => {
     const rendering = new Container();
 
     const pivot = {
@@ -246,19 +259,22 @@ export const itemAppearances: {
 
     rendering.addChild(createSprite({ texture: "lift.static", pivot }));
 
-    applyAppearance(renderContainer, rendering);
+    applyAppearance(renderTo, state, rendering);
   }),
 
-  spring({ state: { stoodOnBy }, stateLastFrame, renderContainer }) {
+  spring({ state }, _gameSate, renderTo) {
+    const { stoodOnBy } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const stoodOn = stoodOnBy.length > 0;
-    const prevStoodOn = (stateLastFrame?.stoodOnBy.length ?? 0) > 0;
+    const prevStoodOn = (currentlyRenderedState?.stoodOnBy.length ?? 0) > 0;
 
-    if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
+    if (renderedBefore(renderTo) && stoodOn === prevStoodOn) {
       return;
     }
 
     applyAppearance(
-      renderContainer!,
+      renderTo,
+      state,
       createSprite(
         !stoodOn && prevStoodOn ?
           {
@@ -271,38 +287,44 @@ export const itemAppearances: {
     );
   },
 
-  teleporter({ state: { stoodOnBy }, stateLastFrame, renderContainer }) {
+  teleporter({ state }, _gameSate, renderTo) {
+    const { stoodOnBy } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const stoodOn = stoodOnBy.find(isPlayableItem) !== undefined;
     const prevStoodOn =
-      stateLastFrame?.stoodOnBy.find(isPlayableItem) !== undefined;
+      currentlyRenderedState?.stoodOnBy.find(isPlayableItem) !== undefined;
 
-    if (renderedBefore(renderContainer!) && stoodOn === prevStoodOn) {
+    if (renderedBefore(renderTo) && stoodOn === prevStoodOn) {
       return;
     }
 
-    if (stoodOn) {
-      const rendering = new Container();
-      rendering.addChild(createSprite("teleporter"));
-      rendering.addChild(
-        createSprite({
-          frames: spriteSheet.animations["teleporter.flashing"],
-        }),
-      );
-      applyAppearance(renderContainer!, rendering);
-    } else applyAppearance(renderContainer!, createSprite("teleporter"));
+    const renderFlashing = () =>
+      new Container({
+        children: [
+          createSprite("teleporter"),
+          createSprite({
+            frames: spriteSheet.animations["teleporter.flashing"],
+          }),
+        ],
+      });
+
+    applyAppearance(
+      renderTo,
+      state,
+      stoodOn ? renderFlashing() : createSprite("teleporter"),
+    );
   },
 
-  pickup({
-    config: { gives },
-    renderContainer,
-    state: { expires },
-    stateLastFrame,
-  }) {
+  pickup({ config: { gives }, state }, _gameState, renderTo) {
+    const { expires } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const bubbles = expires !== null;
     const wasBubbles =
-      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.expires !== null
+      );
 
-    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
       return;
     }
 
@@ -322,7 +344,8 @@ export const itemAppearances: {
     const texture = pickupIcons[gives];
 
     applyAppearance(
-      renderContainer!,
+      renderTo,
+      state,
       createSprite(
         bubbles ?
           {
@@ -336,22 +359,22 @@ export const itemAppearances: {
       ),
     );
   },
-  fish({
-    config: { alive },
-    state: { expires },
-    stateLastFrame,
-    renderContainer,
-  }) {
+  fish({ config: { alive }, state }, _gameState, renderTo) {
+    const { expires } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const bubbles = expires !== null;
     const wasBubbles =
-      stateLastFrame === undefined ? false : stateLastFrame.expires !== null;
+      currentlyRenderedState === undefined ? false : (
+        currentlyRenderedState.expires !== null
+      );
 
-    if (renderedBefore(renderContainer!) && bubbles === wasBubbles) {
+    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
       return;
     }
 
     applyAppearance(
-      renderContainer!,
+      renderTo,
+      state,
       createSprite(
         bubbles ?
           {
@@ -371,35 +394,39 @@ export const itemAppearances: {
   },
 
   sceneryPlayer: ifNotRenderedBefore(
-    ({ config: { which }, renderContainer }) => {
+    ({ config: { which }, state }, _gameState, renderTo) => {
       applyAppearance(
-        renderContainer,
+        renderTo,
+        state,
         createSprite(`${which}.walking.towards.2`),
       );
     },
   ),
 
-  charles({ state: { facing }, stateLastFrame, renderContainer }) {
+  charles({ state }, _gameSate, renderTo) {
+    const { facing } = state;
+    const currentlyRenderedState = renderTo[renderContainerState];
     const facingXy4 = vectorClosestDirectionXy4(facing);
     const wasFacingXy4 =
-      stateLastFrame === undefined ? undefined : (
-        vectorClosestDirectionXy4(stateLastFrame.facing)
+      currentlyRenderedState === undefined ? undefined : (
+        vectorClosestDirectionXy4(currentlyRenderedState.facing)
       );
 
-    if (renderedBefore(renderContainer!) && facingXy4 === wasFacingXy4) {
+    if (renderedBefore(renderTo) && facingXy4 === wasFacingXy4) {
       return;
     }
 
-    applyAppearance(renderContainer!, stackedSprites(`charles.${facingXy4}`));
+    applyAppearance(renderTo, state, stackedSprites(`charles.${facingXy4}`));
   },
 
-  baddie: ifNotRenderedBefore(({ config, renderContainer }) => {
+  baddie: ifNotRenderedBefore(({ config, state }, _gameState, renderTo) => {
     switch (config.which) {
       case "helicopter-bug":
       case "dalek":
         // animated, no directions
         applyAppearance(
-          renderContainer,
+          renderTo,
+          state,
           createSprite({
             frames: spriteSheet.animations[config.which],
             animationSpeed: 0.5,
@@ -409,13 +436,15 @@ export const itemAppearances: {
       case "headless-base":
         // no anim, not directional
         applyAppearance(
-          renderContainer,
+          renderTo,
+          state,
           createSprite({ texture: "headless-base" }),
         );
         break;
       case "american-football-head":
         applyAppearance(
-          renderContainer,
+          renderTo,
+          state,
           createSprite({
             texture: `american-football-head.${config.startDirection}`,
           }),
@@ -424,7 +453,8 @@ export const itemAppearances: {
       case "turtle":
         // animated, directional:
         applyAppearance(
-          renderContainer,
+          renderTo,
+          state,
           createSprite({
             frames: spriteSheet.animations[`turtle.${config.startDirection}`],
             animationSpeed: 0.25,
@@ -434,35 +464,38 @@ export const itemAppearances: {
       case "cyberman":
         if (config.activated) {
           applyAppearance(
-            renderContainer,
+            renderTo,
+            state,
             stackedSprites(`cyberman.towards`, bubbles),
           );
         } else {
           // charging on a toaster
           applyAppearance(
-            renderContainer,
+            renderTo,
+            state,
             createSprite(`cyberman.${config.startDirection}`),
           );
         }
         break;
       case "bubble-robot":
-        applyAppearance(renderContainer, stackedSprites(bubbles));
+        applyAppearance(renderTo, state, stackedSprites(bubbles));
         break;
       case "flying-ball":
         //stacked on bubbles:
-        applyAppearance(renderContainer, stackedSprites(`ball`, bubbles));
+        applyAppearance(renderTo, state, stackedSprites(`ball`, bubbles));
         break;
       case "computer-bot":
       case "elephant":
       case "monkey":
         // stacked on standard base:
         applyAppearance(
-          renderContainer,
+          renderTo,
+          state,
           stackedSprites(`${config.which}.towards`),
         );
         break;
       case "elephant-head":
-        applyAppearance(renderContainer, createSprite("elephant.right"));
+        applyAppearance(renderTo, state, createSprite("elephant.right"));
         break;
       default:
         config satisfies never;
@@ -473,21 +506,24 @@ export const itemAppearances: {
   joystick: staticSpriteAppearance("joystick"),
 
   movableBlock: ifNotRenderedBefore(
-    ({ config: { style }, renderContainer }) => {
-      applyAppearance(renderContainer, createSprite(style));
+    ({ config: { style }, state }, _gameState, renderTo) => {
+      applyAppearance(renderTo, state, createSprite(style));
     },
   ),
 
-  book: ifNotRenderedBefore(({ config: { slider }, renderContainer }) => {
-    applyAppearance(
-      renderContainer,
-      createSprite(`book.${slider ? "y" : "x"}`),
-    );
-  }),
+  book: ifNotRenderedBefore(
+    ({ config: { slider }, state }, _gameState, renderTo) => {
+      applyAppearance(
+        renderTo,
+        state,
+        createSprite(`book.${slider ? "y" : "x"}`),
+      );
+    },
+  ),
 
   portableBlock: ifNotRenderedBefore(
-    ({ config: { style }, renderContainer }) => {
-      applyAppearance(renderContainer, createSprite(style));
+    ({ config: { style }, state }, _gameState, renderTo) => {
+      applyAppearance(renderTo, state, createSprite(style));
     },
   ),
 

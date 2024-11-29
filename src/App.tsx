@@ -170,22 +170,40 @@ export const App = <RoomId extends string>({
               <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
                 Test room
               </Button>
+              <div className="flex flex-row items-center gap-x-2">
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    const roomId = currentRoom(gameApi.gameState).id;
+                    gameApi.gameState.currentCharacterName = "heels";
+                    changeCharacterRoom({
+                      gameState: gameApi.gameState,
+                      changeType: "level-select",
+                      toRoomId: roomId,
+                    });
+                  }}
+                >
+                  Add heels
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    gameApi.gameState.characterRooms.heels!.room.items.heels!.state.hasBag =
+                      true;
+                  }}
+                >
+                  give bag
+                </Button>
+              </div>
+
               <Button
                 onClick={() => {
-                  const roomId = currentRoom(gameApi.gameState).id;
-                  gameApi.gameState.currentCharacterName = "heels";
-                  changeCharacterRoom({
-                    gameState: gameApi.gameState,
-                    changeType: "level-select",
-                    toRoomId: roomId,
-                  });
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).gs = gameApi.gameState;
+                  return gameApi && console.log(gameApi.gameState);
                 }}
               >
-                Add heels
-              </Button>
-
-              <Button onClick={() => gameApi && console.log(gameApi.gameState)}>
-                Game state to console
+                Game state to console (and window.gs)
               </Button>
               <Button
                 onClick={() =>

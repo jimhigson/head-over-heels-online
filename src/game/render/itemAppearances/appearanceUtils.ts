@@ -1,7 +1,12 @@
 import type { GameState } from "@/game/gameState/GameState";
-import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
+import {
+  type ItemInPlayType,
+  type ItemInPlay,
+  type ContainerWithItemState,
+  type ItemState,
+  renderContainerState,
+} from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
-import type { SetRequired } from "type-fest";
 import type { Container } from "pixi.js";
 import { createSprite } from "../createSprite";
 import type { TextureId } from "@/sprites/spriteSheet";
@@ -10,37 +15,31 @@ export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>(
   // appearances don't care about the romId generic so give it string
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
+  renderTo: ContainerWithItemState<T>,
 ) => undefined;
 
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;
 };
 
-const hasRenderContainer = <T extends ItemInPlayType, RoomId extends string>(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-): item is SetRequired<
-  ItemInPlay<T, PlanetName, RoomId>,
-  "renderContainer"
-> => {
-  return item.renderContainer !== undefined;
-};
-
 export const ifNotRenderedBefore =
   <T extends ItemInPlayType, RoomId extends string>(
     renderWith: (
       // appearances don't care about the romId generic so give it string
-      item: SetRequired<ItemInPlay<T, PlanetName, RoomId>, "renderContainer">,
+      item: ItemInPlay<T, PlanetName, RoomId>,
       gameState: GameState<RoomId>,
+      renderTo: ContainerWithItemState<T>,
     ) => undefined,
   ): ((
     // appearances don't care about the romId generic so give it string
     item: ItemInPlay<T, PlanetName, RoomId>,
     gameState: GameState<RoomId>,
+    renderTo: ContainerWithItemState<T>,
   ) => undefined) =>
   // inner function - calls renderWith
-  (item, gameState) => {
-    if (hasRenderContainer(item) && !renderedBefore(item.renderContainer)) {
-      renderWith(item, gameState);
+  (item, gameState, renderTo) => {
+    if (!renderedBefore(renderTo)) {
+      renderWith(item, gameState, renderTo);
     }
   };
 
@@ -50,12 +49,13 @@ export const staticSpriteAppearance = <
 >(
   textureId: TextureId,
 ) =>
-  ifNotRenderedBefore<T, RoomId>(({ renderContainer }) => {
-    applyAppearance(renderContainer, createSprite(textureId));
+  ifNotRenderedBefore<T, RoomId>(({ state }, _gameState, renderTo) => {
+    applyAppearance(renderTo, state, createSprite(textureId));
   });
 
-export const applyAppearance = (
-  renderContainer: Container,
+export const applyAppearance = <T extends ItemInPlayType>(
+  renderContainer: ContainerWithItemState<T>,
+  itemState: ItemState<T>,
   newRendering: Container,
 ) => {
   for (const child of renderContainer.children) {
@@ -63,4 +63,5 @@ export const applyAppearance = (
   }
   renderContainer.removeChildren();
   renderContainer.addChild(newRendering);
+  renderContainer[renderContainerState] = { ...itemState };
 };

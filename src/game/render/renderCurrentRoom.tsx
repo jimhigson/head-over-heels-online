@@ -4,15 +4,8 @@ import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
 import { renderFloor } from "./renderFloor";
 import { renderExtent } from "./renderExtent";
-import { moveSpriteToItemProjection, renderItemIfNeeded } from "./renderItem";
-import { itemRenderingInContainerAlongsideBBRendering } from "./itemRenderingInContainerAlongsideBBRendering";
-import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { sortByZPairs, zPairs } from "./sortZ/sortItemsByDrawOrder";
-import { getColorScheme } from "@/hintColours";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -27,34 +20,9 @@ const centreRoomInRendering = (
   container.y = -renderingMedianY;
 };
 
-const assignMouseActions = <RoomId extends string>(
-  item: UnknownItemInPlay<RoomId>,
-  options: RenderOptions<RoomId>,
-  room: UnknownRoomState,
-) => {
-  if (item.renderContainer !== undefined) {
-    if (options.onItemClick && item.renderContainer !== undefined) {
-      item.renderContainer.eventMode = "static";
-      item.renderContainer.on("pointertap", () => {
-        options.onItemClick!(item);
-      });
-    }
-
-    item.renderContainer.on("pointerenter", () => {
-      item.renderContainer!.filters = new RevertColouriseFilter(
-        getColorScheme(room.color).main.original,
-      );
-    });
-
-    item.renderContainer.on("pointerleave", () => {
-      item.renderContainer!.filters = [];
-    });
-  }
-};
-
-export const renderCurrentRoom = <RoomId extends string>(
+export const roomInitialRender = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  options: RenderOptions<RoomId>,
+  _options: RenderOptions<RoomId>,
 ) => {
   const room = currentRoom(gameState);
 
@@ -64,47 +32,7 @@ export const renderCurrentRoom = <RoomId extends string>(
 
   roomContainer.addChild(renderFloor(room));
 
-  const itemsContainer = new Container();
-
-  for (const item of objectValues(room.items)) {
-    const { renders } = item;
-
-    if (renders) {
-      const renderContainer = new Container();
-      item.renderContainer = renderContainer;
-      renderItemIfNeeded(item, gameState);
-    }
-
-    const renderItemBBs =
-      options.showBoundingBoxes === "all" ||
-      (options.showBoundingBoxes === "non-wall" && item.type !== "wall");
-
-    item.positionContainer =
-      renderItemBBs ?
-        // rendering gets wrapped in an additional container that also contains the bb rendering
-        itemRenderingInContainerAlongsideBBRendering(item)
-        // position container and item container are one and the same. Note that for
-        // non-rendering items, this is setting positionContainer to undefined
-      : item.renderContainer;
-
-    if (
-      options.showBoundingBoxes !== "none" &&
-      item.renderContainer !== undefined
-    ) {
-      item.renderContainer.alpha = 0.8;
-    }
-
-    assignMouseActions(item, options, room);
-
-    if (item.positionContainer !== undefined) {
-      moveSpriteToItemProjection(item);
-      itemsContainer.addChild(item.positionContainer);
-    }
-  }
-
-  sortByZPairs(zPairs(objectValues(room.items)), room.items);
-
-  roomContainer.addChild(itemsContainer);
+  // NOTE: items are not rendered here - they will render themselves in the normal tick renderings
 
   roomContainer.filters = mainPaletteSwapFilters(room);
 

@@ -20,7 +20,7 @@ import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
 import { carrying } from "../physics/mechanics/carrying";
 
-function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
+function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -56,15 +56,17 @@ function* itemMechanics<RoomId extends string, T extends ItemInPlayType>(
 /**
  * ticks all items THAT CAN DO THINGS in the world
  * - this may also cause movements in other items (eg pushing)
+ *
+ * @param returns true if the tick should halt
  */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): undefined => {
+): boolean => {
   let accumulatedMovement = originXyz;
 
-  for (const mr of itemMechanics(item, gameState, deltaMS)) {
+  for (const mr of itemMechanicsGen(item, gameState, deltaMS)) {
     const { vels, stateDelta } = mr;
 
     if (vels !== undefined)
@@ -84,7 +86,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     }
   }
 
-  moveItem({
+  return moveItem({
     subjectItem: item as UnknownItemInPlay<RoomId>,
     posDelta: accumulatedMovement,
     gameState,

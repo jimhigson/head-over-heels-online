@@ -83,9 +83,10 @@ function* doorLegsGenerator(
   }
 }
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
-  ifNotRenderedBefore((doorLegsItem, gameState): undefined => {
+  ifNotRenderedBefore((doorLegsItem, gameState, renderTo): undefined => {
     applyAppearance(
-      doorLegsItem.renderContainer,
+      renderTo,
+      doorLegsItem.state,
       iterateToContainer(
         doorLegsGenerator(doorLegsItem, currentRoom(gameState)),
       ),
@@ -128,9 +129,10 @@ function* doorFrameGenerator(
   });
 }
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
-  ifNotRenderedBefore((doorFrameItem, gameState): undefined => {
+  ifNotRenderedBefore((doorFrameItem, gameState, renderTo): undefined => {
     applyAppearance(
-      doorFrameItem.renderContainer,
+      renderTo,
+      doorFrameItem.state,
       iterateToContainer(
         doorFrameGenerator(doorFrameItem, currentRoom(gameState)),
       ),

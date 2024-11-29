@@ -1508,7 +1508,7 @@ export const campaign = {
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        spring: { config: {}, position: { x: 0, y: 3, z: 5 }, type: "spring" },
+        headsSpring: { config: {}, position: { x: 0, y: 3, z: 5 }, type: "spring" },
         "teleporter@5,7,0:Z12mRwL": {
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },
@@ -1752,10 +1752,20 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
+        heels: {
+          config: { which: "heels" },
+          position: { x: 4, y: 3, z: 11 },
+          type: "player",
+        },
         bag: {
           config: { gives: "bag" },
-          position: { x: 4, y: 3, z: 8 },
+          position: { x: 4, y: 3, z: 9 },
           type: "pickup",
+        },
+        spring: {
+          config: {},
+          position: { x: 4, y: 3, z: 8 },
+          type: "spring",
         },
         "barrier@4,0,0:fbso8": {
           config: { axis: "y", disappearing: false },
@@ -1932,6 +1942,7 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "conveyor",
         },
+        /*
         "conveyor@0,6,0:24hKaE": {
           config: { direction: "left" },
           position: { x: 0, y: 6, z: 0 },
@@ -1946,7 +1957,7 @@ export const campaign = {
           config: { direction: "towards" },
           position: { x: 2, y: 6, z: 0 },
           type: "conveyor",
-        },
+        },*/
         cube: {
           config: { style: "cube" },
           position: { x: 0, y: 3, z: 8 },
@@ -1956,11 +1967,6 @@ export const campaign = {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
-        },
-        heels: {
-          config: { which: "heels" },
-          position: { x: 0, y: 3, z: 9 },
-          type: "player",
         },
         lift: {
           config: { bottom: 0, top: 8 },

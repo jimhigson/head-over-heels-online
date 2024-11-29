@@ -17,16 +17,11 @@ import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
 import { setStandingOnForAllItemsInRoom } from "../setStandingOnForAllItemsInRoom";
+import { destroyItemRendering } from "@/game/render/destroyItemRendering";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
-export const changeCharacterRoom = <RoomId extends string>({
-  gameState,
-  toRoomId,
-  positionRelativeToSourcePortal = originXyz,
-  changeType,
-  sourcePortal,
-}:
+type ChangeCharacterRoomOptions<RoomId extends string> =
   | {
       gameState: GameState<RoomId>;
       toRoomId: NoInfer<RoomId>;
@@ -44,7 +39,15 @@ export const changeCharacterRoom = <RoomId extends string>({
       positionRelativeToSourcePortal?: undefined;
       /* if true, the position in the source and destimation room will be exactly maintained */
       changeType: "teleport" | "level-select";
-    }) => {
+    };
+
+export const changeCharacterRoom = <RoomId extends string>({
+  gameState,
+  toRoomId,
+  positionRelativeToSourcePortal = originXyz,
+  changeType,
+  sourcePortal,
+}: ChangeCharacterRoomOptions<RoomId>) => {
   const { currentCharacterName } = gameState;
   const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
 
@@ -75,6 +78,8 @@ export const changeCharacterRoom = <RoomId extends string>({
 
   // take the character out of the previous room:
   delete leavingRoom.items[currentCharacterName];
+  // alternatively, we could just move the character's rendering into the new room's container?
+  destroyItemRendering(character);
 
   if (changeType !== "teleport") {
     const isPortal = isItemType("portal");

@@ -7,19 +7,22 @@ import {
   renderedBefore,
   type ItemAppearance,
 } from "./appearanceUtils";
+import { renderContainerState } from "@/model/ItemInPlay";
 
-export const playableAppearance: ItemAppearance<CharacterName> = ({
-  type,
-  state: { action, facing, teleporting },
-  stateLastFrame,
-  renderContainer,
-}): undefined => {
+export const playableAppearance: ItemAppearance<CharacterName> = (
+  { type, state },
+  _gameState,
+  renderTo,
+): undefined => {
+  const { action, facing, teleporting } = state;
+  const currentlyRenderedState = renderTo[renderContainerState];
+
   const shouldRender =
-    (renderContainer !== undefined && !renderedBefore(renderContainer)) ||
-    stateLastFrame === undefined ||
-    facing !== stateLastFrame.facing ||
-    action !== stateLastFrame.action ||
-    teleporting?.phase !== stateLastFrame.teleporting?.phase;
+    !renderedBefore(renderTo) ||
+    currentlyRenderedState === undefined ||
+    facing !== currentlyRenderedState.facing ||
+    action !== currentlyRenderedState.action ||
+    teleporting?.phase !== currentlyRenderedState.teleporting?.phase;
 
   if (!shouldRender) {
     return;
@@ -65,5 +68,5 @@ export const playableAppearance: ItemAppearance<CharacterName> = ({
     }
   };
 
-  applyAppearance(renderContainer!, render());
+  applyAppearance(renderTo, state, render());
 };

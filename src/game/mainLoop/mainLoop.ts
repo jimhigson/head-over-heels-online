@@ -6,9 +6,10 @@ import {
   moveSpriteToItemProjection,
   renderItemIfNeeded,
 } from "../render/renderItem";
+import { destroyItemRendering } from "../render/destroyItemRendering";
 import type { PlanetName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
-import { renderCurrentRoom } from "../render/renderCurrentRoom";
+import { roomInitialRender } from "../render/renderCurrentRoom";
 import type { RenderOptions } from "../RenderOptions";
 import { objectValues } from "iter-tools";
 import { amigaLowResPal } from "@/originalGame";
@@ -20,18 +21,37 @@ import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFil
 import { spritesheetPalette } from "@/sprites/samplePalette";
 import { getColorScheme } from "@/hintColours";
 import { sortByZPairs, zPairs } from "../render/sortZ/sortItemsByDrawOrder";
+import { positionContainerPosition } from "@/model/ItemInPlay";
+import { iterate } from "@/utils/iterate";
 
 const hudBottomMargin = 4;
 
-const updateWorldRenderingToMatchState = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  lastRenderedRoom: RoomState<PlanetName, RoomId> | undefined,
-  worldContainer: Container,
-  renderOptions: RenderOptions<RoomId>,
-) => {
+/** @returns the room container it rendered into */
+const updateWorldRenderingToMatchGameState = <RoomId extends string>({
+  gameState,
+  lastRenderedRoom,
+  worldContainer,
+  renderOptions,
+  lastRenderOptions,
+  currentRoomContainer,
+}: {
+  gameState: GameState<RoomId>;
+  lastRenderedRoom: RoomState<PlanetName, RoomId> | undefined;
+  worldContainer: Container;
+  renderOptions: RenderOptions<RoomId>;
+  lastRenderOptions: RenderOptions<RoomId> | undefined;
+  currentRoomContainer: Container;
+}): Container => {
   const room = currentRoom(gameState);
 
-  if (room !== lastRenderedRoom) {
+  if (room !== lastRenderedRoom || renderOptions !== lastRenderOptions) {
+    // unrender all items in the last room, if there was one:
+    if (lastRenderedRoom !== undefined) {
+      iterate(objectValues(lastRenderedRoom.items)).forEach(
+        destroyItemRendering,
+      );
+    }
+
     // this fails if the room was already rendered - we don't remove renderings if the other player is still in the other room!
     console.log(
       "will render from scratch",
@@ -40,33 +60,39 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
       lastRenderedRoom?.id,
     );
     // the room is not currently rendered - render from scratch
-    worldContainer.removeChildren();
+    currentRoomContainer?.destroy();
     worldContainer.label = "world";
-    const roomContainer = renderCurrentRoom(gameState, renderOptions);
-    worldContainer.addChild(roomContainer);
+
+    const newRoomContainer = roomInitialRender(gameState, renderOptions);
+    worldContainer.addChild(newRoomContainer);
+    return newRoomContainer;
   } else {
     // the room is already rendered but needs updating
     let itemsHaveMoved = false;
     for (const item of objectValues(room.items)) {
       if (!item.renders) {
+        if (item.positionContainer !== undefined) {
+          destroyItemRendering(item);
+        }
+        if (renderOptions.showBoundingBoxes !== "none") {
+          // even though this item doesn't render, we still need to render something to show the bounding box:
+          moveSpriteToItemProjection(item, currentRoomContainer, renderOptions);
+        }
         continue;
       }
 
       // it is up the the item to decide if it will rerender
-      renderItemIfNeeded(item, gameState);
+      renderItemIfNeeded(item, gameState, renderOptions);
 
+      const { positionContainer } = item;
       if (
-        item.stateLastFrame === undefined ||
-        !xyzEqual(item.stateLastFrame.position, item.state.position)
-      ) {
-        /*console.log(
-          "repositioning item",
-          item.id,
-          item.lastRenderedState?.position,
-          "->",
+        positionContainer === undefined ||
+        !xyzEqual(
+          positionContainer[positionContainerPosition],
           item.state.position,
-        );*/
-        moveSpriteToItemProjection(item);
+        )
+      ) {
+        moveSpriteToItemProjection(item, currentRoomContainer, renderOptions);
         itemsHaveMoved = true;
       }
     }
@@ -74,6 +100,7 @@ const updateWorldRenderingToMatchState = <RoomId extends string>(
       // re-sort the room's items:
       sortByZPairs(zPairs(objectValues(room.items)), room.items);
     }
+    return currentRoomContainer;
   }
 };
 
@@ -90,6 +117,8 @@ export const mainLoop = <RoomId extends string>(
   worldContainer.label = "world";
   worldContainer.y = amigaLowResPal.height * 0.7;
   app.stage.addChild(worldContainer);
+
+  let roomContainer: Container;
 
   const hudContainer = new Container();
   // pull the hud up from the bottom of the screen; after this, anything else can render right up to the container's bottom edge
@@ -109,37 +138,29 @@ export const mainLoop = <RoomId extends string>(
 
     const { renderOptions } = gameState;
 
-    if (lastRenderOptions !== renderOptions) {
-      console.log(
-        `render options changed!          
-          renderOptions: ${lastRenderOptions} -> ${renderOptions}`,
-      );
-
-      // removing the lastRenderedRoom will force a re-render after the physics are done
-      lastRenderedRoom = undefined;
-      lastRenderOptions = renderOptions;
-    }
-
     if (gameState.inputState.windowFocus) {
       app.stage.filters = [];
       progressGameState(gameState, deltaMS);
 
       //console.log("--- 🎨 rendering ---");
-      updateWorldRenderingToMatchState(
+      roomContainer = updateWorldRenderingToMatchGameState({
         gameState,
         lastRenderedRoom,
         worldContainer,
         renderOptions,
-      );
+        lastRenderOptions,
+        currentRoomContainer: roomContainer,
+      });
     } else {
       app.stage.filters = pauseFilter;
       const roomColor = currentRoom(gameState).color;
       pauseFilter.targetColor = getColorScheme(roomColor).main.original;
     }
 
-    updateHud(gameState, screenEffectiveSize);
+    updateHud(gameState, screenEffectiveSize, renderOptions);
 
     lastRenderedRoom = currentRoom(gameState);
+    lastRenderOptions = renderOptions;
     //console.timeEnd("tick");
   };
 

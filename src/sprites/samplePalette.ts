@@ -104,4 +104,9 @@ export const load = async () => {
  *
  * WARNING: If this is called before calling load, it will return an incorrectly typed undefined!
  */
-export const spritesheetPalette = () => loaded;
+export const spritesheetPalette = () => {
+  if (loaded === undefined) {
+    throw new Error("spritesheetPalette called before load");
+  }
+  return loaded;
+};

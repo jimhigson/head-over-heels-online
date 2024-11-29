@@ -70,6 +70,12 @@ export const sortByZPairs = (
     }
   }
   for (let i = 0; i < itemOrder.length; i++) {
-    items[itemOrder[i]].positionContainer!.zIndex = i;
+    const item = items[itemOrder[i]];
+    if (item.positionContainer === undefined) {
+      throw new Error(
+        `Item id=${itemOrder[i]} does not have a position container - cannot assign a z-index - position it before sorting it`,
+      );
+    }
+    item.positionContainer.zIndex = i;
   }
 };

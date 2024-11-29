@@ -13,7 +13,15 @@ import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  PlayableItem,
+} from "@/model/ItemInPlay";
+import { createRenderContainerForItem } from "../renderItem";
+import { itemAppearances } from "../itemAppearances/ItemAppearances";
+import type { PlanetName } from "@/sprites/planets";
+import type { RenderOptions } from "@/game/RenderOptions";
 
 const smallTextSize = 8;
 const livesTextFromCentre = 24;
@@ -109,7 +117,7 @@ export const renderHud = (hudContainer: Container) => {
       shield: iconWithNumber("hud.shield"),
       extraSkill: iconWithNumber("hud.bigJumps"),
       bag: iconWithNumber("bag", true, true),
-      carrying: iconWithNumber("bag", true, true),
+      carrying: { container: new Container() },
     },
   };
 
@@ -127,6 +135,7 @@ export const renderHud = (hudContainer: Container) => {
   return <RoomId extends string>(
     gameState: GameState<RoomId>,
     screenSize: Xy,
+    renderOptions: RenderOptions<RoomId>,
   ) => {
     const room = currentRoom(gameState);
     const {
@@ -182,6 +191,26 @@ export const renderHud = (hudContainer: Container) => {
       text.text = `${lives ?? 0}`;
     };
 
+    const updateCarrying = <T extends ItemInPlayType, RoomId extends string>(
+      carrying: ItemInPlay<T, PlanetName, NoInfer<RoomId>> | null,
+      gameState: GameState<RoomId>,
+    ) => {
+      const carryingContainer = hudElements.heels.carrying.container;
+      if (carrying === null && carryingContainer.children.length > 0) {
+        // were carrying, not now:
+        carryingContainer.children[0].destroy();
+      }
+      if (carrying !== null && carryingContainer.children.length === 0) {
+        const renderContainer = createRenderContainerForItem(
+          carrying,
+          renderOptions,
+        );
+        const itemAppearance = itemAppearances[carrying.type];
+        itemAppearance(carrying, gameState, renderContainer);
+        carryingContainer.addChild(renderContainer);
+      }
+    };
+
     uncurrentSpriteFilter.targetColor = dimmedShade.dimmed;
     textFilter.targetColor = dimmedShade.basic;
     iconFilter.targetColor = iconShade.basic;
@@ -197,9 +226,10 @@ export const renderHud = (hudContainer: Container) => {
     }
     hudElements.head.hooter.container.x = hudElements.head.donuts.container.x =
       (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
+    hudElements.head.donuts.container.y =
+      screenSize.y - smallItemTextureSize.h - 8;
     hudElements.heels.carrying.container.y =
-      hudElements.head.donuts.container.y =
-        screenSize.y - smallItemTextureSize.h - 8;
+      screenSize.y - smallItemTextureSize.h;
 
     hudElements.heels.carrying.container.x = hudElements.heels.bag.container.x =
       (screenSize.x >> 1) + sideMultiplier("heels") * playersIconsFromCentre;
@@ -218,9 +248,18 @@ export const renderHud = (hudContainer: Container) => {
 
     const heelsItem = getPlayableItem(gameState, "heels");
     const hasBag = heelsItem?.state.hasBag ?? false;
-    const carrying = heelsItem?.state.carrying ?? null;
 
-    hudElements.heels.carrying.icon.visible = carrying !== null;
+    updateCarrying(
+      // this case is necessary because state isn't generic on roomid, so state.carrying doesn't have
+      // roomid completed (other than to string)
+      (heelsItem?.state.carrying as ItemInPlay<
+        "spring" | "portableBlock",
+        PlanetName,
+        RoomId
+      >) ?? null,
+      gameState,
+    );
+
     hudElements.heels.bag.icon.filters =
       hasBag ? noFilters : uncurrentSpriteFilter;
   };

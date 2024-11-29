@@ -18,17 +18,7 @@ import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems
 
 const log = false;
 
-/**
- * @param subjectItem the item that is wanting to move
- * @param xyzDelta
- */
-export const moveItem = <RoomId extends string>({
-  subjectItem,
-  posDelta,
-  gameState,
-  pusher,
-  deltaMS,
-}: {
+type MoveItemOptions<RoomId extends string> = {
   subjectItem: UnknownItemInPlay<RoomId>;
   posDelta: Xyz;
   gameState: GameState<RoomId> /**
@@ -37,9 +27,22 @@ export const moveItem = <RoomId extends string>({
    */;
   pusher?: AnyItemInPlay;
   deltaMS: number;
-}) => {
+};
+
+/**
+ * @param subjectItem the item that is wanting to move
+ * @param xyzDelta
+ * @returns true if the tick should halt here
+ */
+export const moveItem = <RoomId extends string>({
+  subjectItem,
+  posDelta,
+  gameState,
+  pusher,
+  deltaMS,
+}: MoveItemOptions<RoomId>): boolean => {
   if (xyzEqual(posDelta, originXyz)) {
-    return;
+    return false;
   }
 
   const room = currentRoom(gameState);
@@ -54,6 +57,8 @@ export const moveItem = <RoomId extends string>({
     console.log(
       `moving ${subjectItem.id} @`,
       subjectItem.state.position,
+      `bb:`,
+      subjectItem.aabb,
       ` by `,
       posDelta,
       ` because ${pusher ? `push by ${pusher.id}` : "velocity (first cause)"}`,
@@ -66,6 +71,15 @@ export const moveItem = <RoomId extends string>({
     posDelta,
     collision1toMany(subjectItem, objectValues(room.items)),
   );
+
+  if (log)
+    console.log(
+      subjectItem.id,
+      "collided with",
+      sortedCollisions,
+      "out of",
+      room.items,
+    );
 
   let lastProcessedDistance = -Infinity;
   for (const [dist, collision] of sortedCollisions) {
@@ -95,7 +109,7 @@ export const moveItem = <RoomId extends string>({
         deltaMS,
       })
     ) {
-      return;
+      return true;
     }
 
     if (
@@ -150,13 +164,18 @@ export const moveItem = <RoomId extends string>({
         );
 
       // recursively apply push to pushee
-      moveItem({
-        subjectItem: collision,
-        posDelta: forwardPushVector,
-        gameState,
-        pusher: subjectItem,
-        deltaMS,
-      });
+      if (
+        moveItem({
+          subjectItem: collision,
+          posDelta: forwardPushVector,
+          gameState,
+          pusher: subjectItem,
+          deltaMS,
+        })
+      ) {
+        // halt if the recursive call halted
+        return true;
+      }
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(
@@ -210,4 +229,6 @@ export const moveItem = <RoomId extends string>({
       gameState.pickupsCollected[room.id],
     );
   }*/
+
+  return false; // no reason to halt, can tick the next item
 };

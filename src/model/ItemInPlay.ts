@@ -196,6 +196,22 @@ type BaseItemState = {
 export type ItemState<T extends ItemInPlayType> = BaseItemState &
   (T extends keyof ItemStateMap ? ItemStateMap[T] : BaseItemState);
 
+export const positionContainerPosition: unique symbol = Symbol("position");
+export const renderContainerState: unique symbol = Symbol("state");
+
+/** container for rendering items into which records the item state it was last rendered with */
+export type ContainerWithItemState<T extends ItemInPlayType> = Container & {
+  /** shallow copy of the state this item was rendered as in this container */
+  [renderContainerState]: ItemState<T>;
+};
+/** container which records the world position it was projected to */
+export type ContainerWithWorldPosition = Container & {
+  /**
+   * the world position this container is projected to
+   */
+  [positionContainerPosition]: Xyz;
+};
+
 export type ItemInPlay<
   T extends ItemInPlayType,
   //S extends ItemState<T> = ItemState<T>,
@@ -210,8 +226,6 @@ export type ItemInPlay<
 
   readonly id: ID;
   state: ItemState<T>;
-  // shallow copy of the last rendered state of this item, or undefined if never rendered before
-  stateLastFrame?: ItemState<T>;
 
   /**
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
@@ -221,8 +235,8 @@ export type ItemInPlay<
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
 
-  positionContainer?: Container;
-  renderContainer?: Container;
+  positionContainer?: ContainerWithWorldPosition;
+  renderContainer?: ContainerWithItemState<T>;
 
   renders: boolean;
 };

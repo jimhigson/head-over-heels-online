@@ -116,6 +116,15 @@ describe("pickups", () => {
     );
     expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
   });
+
+  test.todo(
+    "pickups do not come back after leaving room and coming back",
+    () => {},
+  );
+  test.todo(
+    "fish do not come back after leaving room and coming back",
+    () => {},
+  );
 });
 
 describe("jumping", () => {

@@ -9,7 +9,7 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
 } from "@/model/ItemInPlay";
-import { isPlayableItem } from "@/model/ItemInPlay";
+import { isPlayableItem, positionContainerPosition } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -57,11 +57,11 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
 ) => {
   for (const item of objectValues(room.items)) {
-    if (item.stateLastFrame === undefined) {
+    if (item.positionContainer === undefined) {
       continue;
     }
 
-    const previousPosition = item.stateLastFrame.position;
+    const previousPosition = item.positionContainer[positionContainerPosition];
 
     const itemIsStationary = xyzEqual(previousPosition, item.state.position);
     const shouldSnap =
@@ -103,8 +103,6 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  //console.log("----➡️ progressing game state----");
-
   const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
   const physicsTickMs = deltaMS / physicsTickCount;
 
@@ -118,13 +116,11 @@ export const progressGameState = <RoomId extends string>(
     return;
   }
 
-  const room = currentRoom(gameState);
-
-  for (const item of objectValues(room.items)) {
-    item.stateLastFrame = { ...item.state };
-  }
-
   for (let i = 0; i < physicsTickCount; i++) {
+    const room = currentRoom(gameState);
+
+    //console.log(`----➡️ progressing game one physics tick in ${room.id}----`);
+
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
 
     for (const item of objectValues(room.items)) {
@@ -148,7 +144,13 @@ export const progressGameState = <RoomId extends string>(
         break;
       }
 
-      tickItem(item, gameState, physicsTickMs);
+      if (room.items[item.id] === undefined) {
+        // should never happen, but throw if it does
+        throw new Error(`item ${item.id} is not in room ${room.id}`);
+      }
+      if (tickItem(item, gameState, physicsTickMs)) {
+        return;
+      }
     }
 
     setStandingOnForAllItemsInRoom(room, gameState.progression);
@@ -157,5 +159,5 @@ export const progressGameState = <RoomId extends string>(
     gameState.gameTime += physicsTickMs;
   }
 
-  snapStationaryItemsToPixelGrid(room);
+  snapStationaryItemsToPixelGrid(currentRoom(gameState));
 };
