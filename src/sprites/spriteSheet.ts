@@ -58,13 +58,22 @@ const frames = {
   "generic.door.back.y": {
     frame: { x: 291, y: 80, ...doorTextureSize },
   },
+  "generic.door.legs.threshold.x": {
+    frame: { x: 361, y: 105, w: wallTileSize.w, h: 18 },
+  },
   "generic.door.legs.threshold.y": {
     frame: { x: 378, y: 105, w: wallTileSize.w, h: 18 },
   },
-  "generic.door.threshold.x": {
+  "generic.door.legs.threshold.double.x": {
+    frame: { x: 252, y: 40, w: wallTileSize.w * 2, h: 24 },
+  },
+  "generic.door.legs.threshold.double.y": {
+    frame: { x: 285, y: 40, w: wallTileSize.w * 2, h: 24 },
+  },
+  "generic.door.floatingThreshold.x": {
     frame: { x: 317, y: 145, w: 26, h: 19 },
   },
-  "generic.door.threshold.y": {
+  "generic.door.floatingThreshold.y": {
     frame: { x: 288, y: 145, w: 26, h: 19 },
   },
   "generic.door.platform.towards": {
@@ -76,9 +85,7 @@ const frames = {
   "generic.door.back.x": {
     frame: { x: 317, y: 80, ...doorTextureSize },
   },
-  "generic.door.legs.threshold.x": {
-    frame: { x: 361, y: 105, w: wallTileSize.w, h: 18 },
-  },
+
   "generic.door.platform.left": {
     frame: { x: 282, y: 189, w: 32, h: 28 },
   },

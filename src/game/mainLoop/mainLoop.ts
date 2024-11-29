@@ -134,7 +134,7 @@ export const mainLoop = <RoomId extends string>(
     } else {
       app.stage.filters = pauseFilter;
       const roomColor = currentRoom(gameState).color;
-      pauseFilter.targetColor = getColorScheme(roomColor).main.basic;
+      pauseFilter.targetColor = getColorScheme(roomColor).main.original;
     }
 
     updateHud(gameState, screenEffectiveSize);

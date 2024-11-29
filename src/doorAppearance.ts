@@ -39,7 +39,7 @@ function* doorLegsGenerator(
 
         const sprite = createSprite({
           pivot: { x: pivotX, y: 12 },
-          texture: `generic.door.threshold.${axis}`,
+          texture: `generic.door.floatingThreshold.${axis}`,
           ...addXy(offset, {
             y: -blockSizePx.h * height,
           }),
@@ -68,17 +68,19 @@ function* doorLegsGenerator(
           }),
         });
       }
-
-      yield createSprite({
-        pivot: { x: pivotX, y: blockSizePx.h * height + 15 },
-        texture: `generic.door.legs.threshold.${axis}`,
-        ...offset,
-      });
     }
   }
 
   yield* legGenerator(projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }));
   yield* legGenerator(originXy);
+  if (!inHiddenWall) {
+    // non-floating threshold
+    yield createSprite({
+      pivot: { x: 16, y: blockSizePx.h * height + 13 },
+      texture: `generic.door.legs.threshold.double.${axis}`,
+      ...projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }),
+    });
+  }
 }
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
   ifNotRenderedBefore((doorLegsItem, gameState): undefined => {
