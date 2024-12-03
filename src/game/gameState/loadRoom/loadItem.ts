@@ -81,7 +81,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         vels: {
           gravity: originXyz,
           movingFloor: originXyz,
-          walking: initBaddieWalk(jsonItem.config.which),
+          walking: initBaddieWalk(jsonItem.config),
         },
         activated: jsonItem.config.activated,
       }

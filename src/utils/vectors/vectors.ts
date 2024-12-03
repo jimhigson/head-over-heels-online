@@ -10,11 +10,11 @@ export const directionsXyDiagonal = [
 
 export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
 
-export const directions8Xy = [
+export const directionsXy8 = [
   ...directionsXy4,
   ...directionsXyDiagonal,
 ] as const;
-export type Direction8Xy = (typeof directions8Xy)[number];
+export type DirectionXy8 = (typeof directionsXy8)[number];
 
 // prettier-ignore
 type Matrix3x3 = [
@@ -40,7 +40,7 @@ export const doorAlongAxis = (doorDirection: DirectionXy4): AxisXy =>
 
 export type DirectionZ = "down" | "up";
 export type Direction4Xyz = DirectionXy4 | DirectionZ;
-export type Direction8Xyz = Direction8Xy | DirectionZ;
+export type Direction8Xyz = DirectionXy8 | DirectionZ;
 
 export type Xy = {
   x: number;

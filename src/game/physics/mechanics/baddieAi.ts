@@ -5,8 +5,9 @@ import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { walkSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { DirectionXyDiagonal, Xyz } from "@/utils/vectors/vectors";
+import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
 import {
+  directionsXy8,
   directionsXyDiagonal,
   distanceXySquared,
   originXyz,
@@ -16,16 +17,27 @@ import {
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
-import type { BaddieType } from "@/model/json/JsonItem";
+import type { JsonItemConfig } from "@/model/json/JsonItem";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
-export const initBaddieWalk = (which: BaddieType): Xyz => {
-  if (which === "dalek") {
-    return scaleXyz(unitVectors.towards, walkSpeedPixPerMs[which]);
+export const initBaddieWalk = (
+  config: JsonItemConfig<"baddie", PlanetName, string>,
+): Xyz => {
+  switch (config.which) {
+    case "dalek":
+    case "bubble-robot":
+      return scaleXyz(unitVectors.towards, walkSpeedPixPerMs[config.which]);
+    case "american-football-head":
+      return scaleXyz(
+        unitVectors[config.startDirection],
+        walkSpeedPixPerMs[config.which],
+      );
+
+    default:
+      return originXyz;
   }
-  return originXyz;
 };
 
 export const cybermanAi = <RoomId extends string>(
@@ -86,7 +98,33 @@ export const cybermanAi = <RoomId extends string>(
   };
 };
 
-export const dalekAi = <RoomId extends string>(
+export const randomlyChangeDirection = <RoomId extends string>(
+  {
+    state: {
+      vels: { walking },
+    },
+    config: { which },
+  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  _room: RoomState<PlanetName, RoomId>,
+  _gameState: GameState<RoomId>,
+  deltaMS: number,
+  directions: Readonly<Array<DirectionXy8>>,
+): MechanicResult<"baddie", RoomId> => {
+  const speed = walkSpeedPixPerMs[which];
+  const newWalking =
+    Math.random() < deltaMS / 1_000 ?
+      scaleXyz(unitVectors[randomFromArray(directions)], speed)
+    : walking;
+
+  return {
+    movementType: "vel",
+    vels: {
+      walking: newWalking,
+    },
+  };
+};
+
+export const americanFootballHeadAi = <RoomId extends string>(
   {
     state: {
       vels: { walking },
@@ -94,21 +132,13 @@ export const dalekAi = <RoomId extends string>(
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
-  deltaMS: number,
+  _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  const speed = walkSpeedPixPerMs.dalek;
-  const newWalking =
-    Math.random() < deltaMS / 1_000 ?
-      scaleXyz(
-        unitVectors[randomFromArray<DirectionXyDiagonal>(directionsXyDiagonal)],
-        speed,
-      )
-    : walking;
-
+  // just keep walking as we were:
   return {
     movementType: "vel",
     vels: {
-      walking: newWalking,
+      walking,
     },
   };
 };
@@ -126,24 +156,43 @@ export const tickBaddie = <RoomId extends string>(
 
   switch (item.config.which) {
     case "dalek": {
-      return dalekAi(item, room, gameState, deltaMS);
+      // randomly move in 4 diagonals::
+      return randomlyChangeDirection(
+        item,
+        room,
+        gameState,
+        deltaMS,
+        directionsXyDiagonal,
+      );
+    }
+    case "bubble-robot":
+    case "helicopter-bug": {
+      // randomly move in 8 directions:
+      return randomlyChangeDirection(
+        item,
+        room,
+        gameState,
+        deltaMS,
+        directionsXy8,
+      );
     }
     case "cyberman": {
       return cybermanAi(item, room, gameState, deltaMS);
+    }
+    case "american-football-head": {
+      return americanFootballHeadAi(item, room, gameState, deltaMS);
     }
     default:
       return unitMechanicalResult;
   }
 };
 
-export const handleBaddieTouchingItem = <RoomId extends string>(
+const handleBaddieTouchingItemByTurningAround = <RoomId extends string>(
   baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
   {
     state: { position: toucheePosition },
     aabb: toucheeAabb,
   }: UnknownItemInPlay<RoomId>,
-  _movementVector: Xyz,
-  _gameState: GameState<RoomId>,
 ) => {
   const {
     state: {
@@ -167,4 +216,20 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
   };
 
   baddieItem.state.vels.walking = newWalking;
+};
+
+export const handleBaddieTouchingItem = <RoomId extends string>(
+  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
+  touchee: UnknownItemInPlay<RoomId>,
+  _movementVector: Xyz,
+  _gameState: GameState<RoomId>,
+) => {
+  switch (baddieItem.config.which) {
+    case "dalek":
+    case "helicopter-bug":
+    case "bubble-robot":
+    case "american-football-head": {
+      handleBaddieTouchingItemByTurningAround(baddieItem, touchee);
+    }
+  }
 };

@@ -1490,25 +1490,14 @@ export const campaign = {
         },
         head: {
           config: { which: "head" },
-          position: { x: 5, y: 1, z: 0 },
+          position: { x: 3.5, y: 3.5, z: 0 },
           type: "player",
         },
-        highBlock: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 0, y: 0, z: 2 },
-          type: "block",
+        "pickup@5,0,7:1MkQY2": {
+          config: { gives: "extra-life" },
+          position: { x: 5, y: 0, z: 7 },
+          type: "pickup",
         },
-        lowBlock: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 0, y: 0, z: 0 },
-          type: "block",
-        },
-        midBlock: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 0, y: 0, z: 1 },
-          type: "block",
-        },
-        spring: { config: {}, position: { x: 0, y: 3, z: 5 }, type: "spring" },
         "teleporter@5,7,0:Z12mRwL": {
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },
@@ -1752,11 +1741,6 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
-        bag: {
-          config: { gives: "bag" },
-          position: { x: 4, y: 3, z: 8 },
-          type: "pickup",
-        },
         "barrier@4,0,0:fbso8": {
           config: { axis: "y", disappearing: false },
           position: { x: 4, y: 0, z: 0 },
@@ -1877,36 +1861,6 @@ export const campaign = {
           position: { x: 4, y: 7, z: 2 },
           type: "barrier",
         },
-        block: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 3, y: 5, z: 0 },
-          type: "block",
-        },
-        "block@1,3,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 1, y: 3, z: 0 },
-          type: "block",
-        },
-        "block@1,4,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 1, y: 4, z: 0 },
-          type: "block",
-        },
-        "block@2,3,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 2, y: 3, z: 0 },
-          type: "block",
-        },
-        "block@3,3,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 3, y: 3, z: 0 },
-          type: "block",
-        },
-        "block@3,4,0:20S0Rw": {
-          config: { disappearing: false, style: "artificial" },
-          position: { x: 3, y: 4, z: 0 },
-          type: "block",
-        },
         "conveyor@0,1,0:24hKaE": {
           config: { direction: "away" },
           position: { x: 0, y: 1, z: 0 },
@@ -1933,24 +1887,14 @@ export const campaign = {
           type: "conveyor",
         },
         "conveyor@0,6,0:24hKaE": {
-          config: { direction: "left" },
+          config: { direction: "away" },
           position: { x: 0, y: 6, z: 0 },
           type: "conveyor",
         },
-        "conveyor@1,6,0:24hKaE": {
-          config: { direction: "left" },
-          position: { x: 1, y: 6, z: 0 },
-          type: "conveyor",
-        },
-        conveyorU: {
-          config: { direction: "towards" },
-          position: { x: 2, y: 6, z: 0 },
-          type: "conveyor",
-        },
-        cube: {
-          config: { style: "cube" },
-          position: { x: 0, y: 3, z: 8 },
-          type: "portableBlock",
+        "deadlyBlock@0,7,0:ZWGEjo": {
+          config: { style: "volcano" },
+          position: { x: 0, y: 7, z: 0 },
+          type: "deadlyBlock",
         },
         "door@8,3,0:Z1u78lr": {
           config: { direction: "left", toRoom: "blacktooth1head" },
@@ -1959,33 +1903,8 @@ export const campaign = {
         },
         heels: {
           config: { which: "heels" },
-          position: { x: 0, y: 3, z: 9 },
+          position: { x: 3.5, y: 3.5, z: 0 },
           type: "player",
-        },
-        lift: {
-          config: { bottom: 0, top: 8 },
-          position: { x: 2, y: 0, z: 0 },
-          type: "lift",
-        },
-        liftBlock: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 3, y: 0, z: 0 },
-          type: "block",
-        },
-        liftBlock2: {
-          config: { disappearing: false, style: "organic" },
-          position: { x: 3, y: 0, z: 4 },
-          type: "block",
-        },
-        teleporter2: {
-          config: { toRoom: "blacktooth24" },
-          position: { x: 1, y: 0, z: 0 },
-          type: "teleporter",
-        },
-        teleporter3: {
-          config: { toRoom: "blacktooth24" },
-          position: { x: 1, y: 1, z: 0 },
-          type: "teleporter",
         },
         "teleporter@0,0,0:Z1GqgNT": {
           config: { toRoom: "blacktooth24" },

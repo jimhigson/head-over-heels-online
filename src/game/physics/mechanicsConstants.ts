@@ -1,5 +1,7 @@
 // NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
 
+import type { JsonItemConfig } from "@/model/json/JsonItem";
+import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
 import { blockSizePx } from "@/sprites/spritePivots";
 
@@ -53,8 +55,21 @@ export const walkSpeedPixPerMs = {
   charles: onePxPerFrameInOriginalGamePxPerMs, // 1px per frame in original game
   heels: 2 * onePxPerFrameInOriginalGamePxPerMs, // 2px per frame in original game - may also need acceleration
   dalek: 2 * onePxPerFrameInOriginalGamePxPerMs, // same as heels
-  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs, // same as heels
-};
+  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs, // same as head
+  ["american-football-head"]: onePxPerFrameInOriginalGamePxPerMs, // same as head
+  ["helicopter-bug"]: onePxPerFrameInOriginalGamePxPerMs,
+  ["headless-base"]: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  monkey: onePxPerFrameInOriginalGamePxPerMs,
+  elephant: onePxPerFrameInOriginalGamePxPerMs,
+  "elephant-head": 0,
+  "flying-ball": onePxPerFrameInOriginalGamePxPerMs,
+  ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
+  ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
+  turtle: onePxPerFrameInOriginalGamePxPerMs,
+} satisfies Record<
+  CharacterName | "charles" | JsonItemConfig<"baddie", any, any>["which"],
+  number
+>;
 
 // n px per frame in original game;
 const pxPerFrameSpeed = (pxPerFrame: number = 1) =>

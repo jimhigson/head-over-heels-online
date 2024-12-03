@@ -2,7 +2,7 @@ import type { Key } from "./keys";
 import { isKey } from "./keys";
 import { entries } from "@/utils/entries";
 import type { GameState } from "../gameState/GameState";
-import type { KeyAssignment, Action } from "./InputState";
+import { type KeyAssignment, type Action, actions } from "./InputState";
 
 const originalKeyAssignment: KeyAssignment = {
   right: ["P"],
@@ -75,6 +75,10 @@ export const listenForInput = <RoomId extends string>({
   };
   const handleWindowBlur = (): void => {
     inputState.windowFocus = false;
+    // turn all keys off:
+    for (const action of actions) {
+      inputState[action] = false;
+    }
   };
 
   window.addEventListener("keydown", keyDownHandler, false);

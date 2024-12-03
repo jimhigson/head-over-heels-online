@@ -216,114 +216,35 @@
   },
   {
     "op": "remove",
-    "path": "/rooms/blacktooth23heels/items/block@2,4,0:20S0Rw"
-  },
-  {
-    "op": "replace",
-    "path": "/rooms/blacktooth23heels/items/conveyor@0,6,0:24hKaE/config/direction",
-    "value": "left"
+    "path": "/rooms/blacktooth23heels/items/block@1,3,0:20S0Rw"
   },
   {
     "op": "remove",
-    "path": "/rooms/blacktooth23heels/items/deadlyBlock@0,7,0:ZWGEjo"
+    "path": "/rooms/blacktooth23heels/items/block@2,3,0:20S0Rw"
   },
   {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/bag",
-    "value": {
-      "config": { "gives": "bag" },
-      "position": { "x": 4, "y": 3, "z": 8 },
-      "type": "pickup"
-    }
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/block@3,3,0:20S0Rw"
   },
   {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/block",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 3, "y": 5, "z": 0 },
-      "type": "block"
-    }
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/block@1,4,0:20S0Rw"
   },
   {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/conveyor@1,6,0:24hKaE",
-    "value": {
-      "config": { "direction": "left" },
-      "position": { "x": 1, "y": 6, "z": 0 },
-      "type": "conveyor"
-    }
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/block@2,4,0:20S0Rw"
   },
   {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/conveyorU",
-    "value": {
-      "config": { "direction": "towards" },
-      "position": { "x": 2, "y": 6, "z": 0 },
-      "type": "conveyor"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/cube",
-    "value": {
-      "config": { "style": "cube" },
-      "position": { "x": 0, "y": 3, "z": 8 },
-      "type": "portableBlock"
-    }
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/block@3,4,0:20S0Rw"
   },
   {
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/heels",
     "value": {
       "config": { "which": "heels" },
-      "position": { "x": 0, "y": 3, "z": 9 },
+      "position": { "x": 3.5, "y": 3.5, "z": 0 },
       "type": "player"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/lift",
-    "value": {
-      "config": { "bottom": 0, "top": 8 },
-      "position": { "x": 2, "y": 0, "z": 0 },
-      "type": "lift"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/liftBlock",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 3, "y": 0, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/liftBlock2",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 3, "y": 0, "z": 4 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/teleporter2",
-    "value": {
-      "config": { "toRoom": "blacktooth24" },
-      "position": { "x": 1, "y": 0, "z": 0 },
-      "type": "teleporter"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/teleporter3",
-    "value": {
-      "config": { "toRoom": "blacktooth24" },
-      "position": { "x": 1, "y": 1, "z": 0 },
-      "type": "teleporter"
     }
   },
   {
@@ -332,52 +253,12 @@
     "value": 2
   },
   {
-    "op": "remove",
-    "path": "/rooms/blacktooth1head/items/pickup@5,0,7:1MkQY2"
-  },
-  {
     "op": "add",
     "path": "/rooms/blacktooth1head/items/head",
     "value": {
       "config": { "which": "head" },
-      "position": { "x": 5, "y": 1, "z": 0 },
+      "position": { "x": 3.5, "y": 3.5, "z": 0 },
       "type": "player"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth1head/items/highBlock",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 0, "y": 0, "z": 2 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth1head/items/lowBlock",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 0, "y": 0, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth1head/items/midBlock",
-    "value": {
-      "config": { "disappearing": false, "style": "organic" },
-      "position": { "x": 0, "y": 0, "z": 1 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth1head/items/spring",
-    "value": {
-      "config": {},
-      "position": { "x": 0, "y": 3, "z": 5 },
-      "type": "spring"
     }
   },
   { "op": "replace", "path": "/rooms/blacktooth11/floor", "value": "market" }

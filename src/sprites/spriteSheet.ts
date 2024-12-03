@@ -322,7 +322,7 @@ const frames = {
     frame: { x: 193, y: 449, ...largeItemTextureSize },
   },
   ball: {
-    frame: { x: 84, y: 4, ...smallItemTextureSize },
+    frame: { x: 54, y: 4, ...smallItemTextureSize },
   },
   puck: {
     frame: { x: 102, y: 428, ...smallItemTextureSize },

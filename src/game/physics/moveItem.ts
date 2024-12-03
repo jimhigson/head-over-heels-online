@@ -226,7 +226,11 @@ export const moveItem = <RoomId extends string>({
   if (
     isFreeItem(subjectItem) &&
     subjectItem.state.standingOn !== null &&
-    !checkStandingOn(subjectItem, subjectItem.state.standingOn)
+    !checkStandingOn(
+      subjectItem,
+      subjectItem.state.standingOn,
+      gameState.progression,
+    )
   ) {
     if (log) {
       console.log(
@@ -237,7 +241,7 @@ export const moveItem = <RoomId extends string>({
   }
   // check what is standing on us:
   for (const s of subjectItem.state.stoodOnBy) {
-    if (!checkStandingOn(s, subjectItem)) {
+    if (!checkStandingOn(s, subjectItem, gameState.progression)) {
       removeStandingOn(s);
     } else {
       const finalDelta = subXyz(subjectItem.state.position, originalPosition);

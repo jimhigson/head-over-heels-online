@@ -63,17 +63,6 @@ export type DoorLegsConfig = {
 
 export type DeadlyItemStyle = "volcano" | "toaster" | "spikes";
 
-export type BaddieType =
-  | "dalek"
-  | "helicopter-bug"
-  | "headless-base"
-  | "monkey"
-  | "elephant"
-  | "elephant-head"
-  | "flying-ball"
-  | "bubble-robot"
-  | "computer-bot";
-
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
@@ -143,7 +132,16 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   baddie: { activated: boolean } & (
     | {
-        which: BaddieType;
+        which:
+          | "dalek"
+          | "helicopter-bug"
+          | "headless-base"
+          | "monkey"
+          | "elephant"
+          | "elephant-head"
+          | "flying-ball"
+          | "bubble-robot"
+          | "computer-bot";
       }
     | {
         // with a starting direction
