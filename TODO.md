@@ -63,17 +63,22 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     * used in original for: 
         1: if a deadly block is below the player, for standing on a block safetly next to a deadly overlapping it
             - could reduce height of deadlies by 1px            
-                - but then would impact Charles riding on volcanos
+                - but then would impact Charles riding on volcanos            
             [ ] could make bbs more accurately follow the volcano shape
+            - also a problem if standing on a block to escape a baddie - the block should protect
+                - even if it wasn't first in the sort order!
+                    ❓ collide (and slide with) all blocks first?
+                        - then with baddies etc?
         2: which conveyor moves the player:
             - could make conveyors act in proportion to how much overlap
+            - one conveyor at at time, but work out which is 'first' isn't too hard
         3: which teleporter the user uses
             - could just flash >1 when stood on two, they always go to the same place
         4: (maybe) getting preference in sliding order when order otherwise equal
             - could go off amount of overlap
         5: what heels picks up
-            - overlap
-            - 👍 more intuitive
+            - more overlap
+                - 👍 more intuitive
     * standingOn could also be an array
         - sorted in order of amount of overlap
         - this would only be an optimisation - would also be possible to find on-demand functionally
@@ -92,15 +97,16 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # (head room 5) blacktooth6
 
-[ ] dalek baddie doesn't move
-[ ] donuts don't do anything when collected
-[ ] disappearing block doesn't vanish on touch
-[ ] can't jump on disappearing block for a frame while it vanishes
-[ ] switch doesn't work
-[ ] also doesn't turn off
+[x] dalek baddie doesn't move
+[x] switch doesn't work
+[x] disappearing block doesn't vanish on touch
+[x] can't jump on disappearing block for a frame while it vanishes
+[x] donuts don't do anything when collected - no hud
 
 # (head) blacktooth8fish
 [ ] legs on far side not rendered correctly
+[ ] fish solid after connected
+[ ] baddie can kill player when player on spring
 
 # blacktooth10
 [ ] overdraw on far door not showing - renders floor behind the door
@@ -108,10 +114,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # blacktooth11
 [x] currently has 238 front/back relationships when rendering - reduce this!
     * 204 with hexagon-based overlap calcs (- ~15%)
-[ ] has the wrong floor - should be dots!    
+[x] has the wrong floor - should be dots!    
 
 # blacktooth18
-[ ] block doesn't push on top of head - it slides on it(!)
+[ ] block doesn't push on top of american football head - it slides him(!)
 
 # blacktooth19
 [ ] pushing bottom block doesn't move the whole stack
@@ -128,18 +134,40 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # (heels) balcktooth27fish
 
+[x] legs on right render issue
 [x] fish not collectable
 [x] can't push anvil  
-[ ] can't use bag for drum
+[x] can't use bag for drum
+[ ] fish collected when shouldn't be (standing under it)
+[ ] dum doesn't move when anvil pushed
 
 # (heels) blacktooth28
 
-[2] can't move charles
+[x] can't move charles
 [x] cyclic rendering order while walking around joystick
-[ ] no hud for bag
+[x] no hud for bag
+
+# (heels) blacktooth29
+[ ] cyberman moves like a dalek
+
+# (heels) balcktooth35
+[ ] level overlaps hud
+
+# (heels) balcktooth37
+[ ] football heads don't move right
 
 # blacktooth61
-[ ] hush pupplies not vanishing
+[ ] hush pupplies not vanishing on head enter
+
+# moonbase8
+[ ] charging cyberman not still
+    - rename 'charging' in config to 'activated' and copy direct from config to state
+
+# egyptus12    
+[x] lift doesn't lift charles up
+
+# egyptus13
+[ ] lift is weirdly slow - maybe becuse it doesn't start at zero?
 
 
 Problems with force/accel based model:

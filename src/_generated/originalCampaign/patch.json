@@ -5,10 +5,25 @@
   { "op": "replace", "path": "/rooms/moonbase6/color/hue", "value": "magenta" },
   { "op": "replace", "path": "/rooms/moonbase5/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/moonbase4/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase36/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase36/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase32/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase30/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase3/color/hue", "value": "magenta" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase29/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase28/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase28/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase27/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase26/color/hue", "value": "green" },
@@ -27,12 +42,42 @@
     "path": "/rooms/moonbase22topenitentiary/color/hue",
     "value": "yellow"
   },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase21tosafari/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase20/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase20/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase2/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase19/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase18/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase16/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase15/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase15/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase13/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase13/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/moonbase12/color/shade",
+    "value": "dimmed"
+  },
   { "op": "replace", "path": "/rooms/moonbase12/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase11/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase10/color/hue", "value": "yellow" },

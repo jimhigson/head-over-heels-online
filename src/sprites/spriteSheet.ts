@@ -30,60 +30,57 @@ try {
 
 const frames = {
   "generic.edge.right": {
-    frame: { x: 492, y: 381, w: 8, h: 9 },
+    frame: { x: 241, y: 497, w: 8, h: 9 },
   },
   "generic.edge.towards": {
-    frame: { x: 483, y: 381, w: 8, h: 9 },
+    frame: { x: 232, y: 497, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
-    frame: { x: 240, y: 112, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 180, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.wall.overdraw": {
-    frame: { x: 257, y: 112, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 197, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.floor.deadly": {
-    frame: { x: 378, y: 396, ...floorTileSize },
+    frame: { x: 193, y: 403, ...floorTileSize },
+  },
+  "generic.dark.floor.deadly": {
+    frame: { x: 160, y: 403, ...floorTileSize },
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
-  "generic.door.legs.base": {
-    frame: { x: 361, y: 135, w: wallTileSize.w, h: 9 },
-  },
   "generic.door.legs.pillar": {
-    frame: { x: 361, y: 123, w: wallTileSize.w, h: 12 },
+    frame: { x: 237, y: 92, w: wallTileSize.w, h: 12 },
+  },
+  "generic.door.legs.base": {
+    frame: { x: 237, y: 104, w: wallTileSize.w, h: 9 },
   },
   "generic.door.front.y": {
-    frame: { x: 274, y: 87, ...doorTextureSize },
+    frame: { x: 178, y: 9, ...doorTextureSize },
   },
   "generic.door.back.y": {
-    frame: { x: 291, y: 80, ...doorTextureSize },
-  },
-  "generic.door.legs.threshold.x": {
-    frame: { x: 361, y: 105, w: wallTileSize.w, h: 18 },
-  },
-  "generic.door.legs.threshold.y": {
-    frame: { x: 378, y: 105, w: wallTileSize.w, h: 18 },
+    frame: { x: 195, y: 2, ...doorTextureSize },
   },
   "generic.door.legs.threshold.double.x": {
-    frame: { x: 252, y: 40, w: wallTileSize.w * 2, h: 24 },
+    frame: { x: 221, y: 68, w: wallTileSize.w * 2, h: 24 },
   },
   "generic.door.legs.threshold.double.y": {
-    frame: { x: 285, y: 40, w: wallTileSize.w * 2, h: 24 },
+    frame: { x: 186, y: 68, w: wallTileSize.w * 2, h: 24 },
   },
   "generic.door.floatingThreshold.x": {
-    frame: { x: 317, y: 145, w: 26, h: 19 },
+    frame: { x: 209, y: 93, w: 26, h: 19 },
   },
   "generic.door.floatingThreshold.y": {
-    frame: { x: 288, y: 145, w: 26, h: 19 },
+    frame: { x: 180, y: 93, w: 26, h: 19 },
   },
   "generic.door.platform.towards": {
     frame: { x: 317, y: 219, w: 32, h: 32 },
   },
   "generic.door.front.x": {
-    frame: { x: 334, y: 87, ...doorTextureSize },
+    frame: { x: 238, y: 9, ...doorTextureSize },
   },
   "generic.door.back.x": {
-    frame: { x: 317, y: 80, ...doorTextureSize },
+    frame: { x: 221, y: 2, ...doorTextureSize },
   },
 
   "generic.door.platform.left": {
@@ -91,16 +88,28 @@ const frames = {
   },
 
   "moonbase.door.front.y": {
-    frame: { x: 344, y: 160, ...doorTextureSize },
+    frame: { x: 433 - 1, y: 248, ...doorTextureSize },
   },
   "moonbase.door.back.y": {
-    frame: { x: 361, y: 153, ...doorTextureSize },
+    frame: { x: 450 - 1, y: 241, ...doorTextureSize },
   },
   "moonbase.door.front.x": {
-    frame: { x: 529, y: 160, ...doorTextureSize },
+    frame: { x: 618 - 1, y: 248, ...doorTextureSize },
   },
   "moonbase.door.back.x": {
-    frame: { x: 512, y: 153, ...doorTextureSize },
+    frame: { x: 601 - 1, y: 241, ...doorTextureSize },
+  },
+  "moonbase.dark.door.front.y": {
+    frame: { x: 433 - 1, y: 320, ...doorTextureSize },
+  },
+  "moonbase.dark.door.back.y": {
+    frame: { x: 450 - 1, y: 313, ...doorTextureSize },
+  },
+  "moonbase.dark.door.front.x": {
+    frame: { x: 618 - 1, y: 320, ...doorTextureSize },
+  },
+  "moonbase.dark.door.back.x": {
+    frame: { x: 601 - 1, y: 313, ...doorTextureSize },
   },
   teleporter: {
     frame: { x: 2, y: 478, ...largeItemTextureSize },
@@ -143,7 +152,7 @@ const frames = {
     frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
   spikes: {
-    frame: { x: 378, y: 367, ...largeItemTextureSize },
+    frame: { x: 127, y: 420, ...largeItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "conveyor.x",
@@ -255,7 +264,7 @@ const frames = {
   ...seriesOfAnimationFrameTextures(
     "bubbles.cold",
     2,
-    { x: 109, y: 4 },
+    { x: 79, y: 4 },
     smallItemTextureSize,
   ),
   ...seriesOfAnimationFrameTextures(

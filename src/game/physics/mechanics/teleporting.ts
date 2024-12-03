@@ -9,25 +9,25 @@ export function teleporting<RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName> {
+): MechanicResult<CharacterName, RoomId> {
   const {
-    state: { teleporting },
+    state: { teleporting, standingOn },
   } = playableItem;
   const {
     inputState: { jump: jumpInput },
   } = gameState;
 
-  const teleporter = playableItem.state.standingOn?.find(
-    isItemType("teleporter"),
-  );
-
   if (teleporting === null) {
-    if (jumpInput && teleporter !== undefined) {
+    if (
+      jumpInput &&
+      standingOn !== null &&
+      isItemType("teleporter")(standingOn)
+    ) {
       return {
         stateDelta: {
           teleporting: {
             phase: "out",
-            toRoom: teleporter.config.toRoom,
+            toRoom: standingOn.config.toRoom,
             timeRemaining: fadeInOrOutDuration,
           },
         },

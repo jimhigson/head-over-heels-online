@@ -1,67 +1,70 @@
-import type { GameState } from "@/game/gameState/GameState";
-import {
-  type ItemInPlayType,
-  type ItemInPlay,
-  type ContainerWithItemState,
-  type ItemState,
-  renderContainerState,
-} from "@/model/ItemInPlay";
+import { type ItemInPlayType, type ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { Container } from "pixi.js";
-import { createSprite } from "../createSprite";
 import type { TextureId } from "@/sprites/spriteSheet";
+import type { RoomState } from "@/model/modelTypes";
+import { createSprite } from "../createSprite";
+import type { ItemRenderProps } from "./ItemRenderProps";
 
-export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>(
+export type ItemAppearanceReturn<T extends ItemInPlayType> =
+  | {
+      /** a new rendering, since one is required */
+      container: Container;
+      /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
+      renderProps: ItemRenderProps<T>;
+    }
+  /** returns undefined if no new rendering is required */
+  | undefined;
+
+export type ItemAppearanceOptions<
+  T extends ItemInPlayType,
+  RoomId extends string,
+> = {
   // appearances don't care about the romId generic so give it string
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
-  renderTo: ContainerWithItemState<T>,
-) => undefined;
+  item: ItemInPlay<T, PlanetName, RoomId>;
+  room: RoomState<PlanetName, RoomId>;
+  /**
+   * the render props that the item rendering is currently rendered with; so the appearance can check if
+   * the props have changed, and decline to render if it has not
+   */
+  currentlyRenderedProps: ItemRenderProps<T> | undefined;
+};
+
+export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({
+  item,
+  room,
+  currentlyRenderedProps,
+}: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>;
 
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;
 };
 
-export const ifNotRenderedBefore =
-  <T extends ItemInPlayType, RoomId extends string>(
-    renderWith: (
-      // appearances don't care about the romId generic so give it string
-      item: ItemInPlay<T, PlanetName, RoomId>,
-      gameState: GameState<RoomId>,
-      renderTo: ContainerWithItemState<T>,
-    ) => undefined,
-  ): ((
-    // appearances don't care about the romId generic so give it string
-    item: ItemInPlay<T, PlanetName, RoomId>,
-    gameState: GameState<RoomId>,
-    renderTo: ContainerWithItemState<T>,
-  ) => undefined) =>
-  // inner function - calls renderWith
-  (item, gameState, renderTo) => {
-    if (!renderedBefore(renderTo)) {
-      renderWith(item, gameState, renderTo);
-    }
+export const staticSpriteAppearance =
+  <T extends ItemInPlayType>(textureId: TextureId): ItemAppearance<T> =>
+  () => {
+    return {
+      container: createSprite(textureId),
+      renderProps: {} as ItemRenderProps<T>,
+    };
   };
 
-export const staticSpriteAppearance = <
-  T extends ItemInPlayType,
-  RoomId extends string,
->(
-  textureId: TextureId,
-) =>
-  ifNotRenderedBefore<T, RoomId>(({ state }, _gameState, renderTo) => {
-    applyAppearance(renderTo, state, createSprite(textureId));
-  });
-
-export const applyAppearance = <T extends ItemInPlayType>(
-  renderContainer: ContainerWithItemState<T>,
-  itemState: ItemState<T>,
-  newRendering: Container,
-) => {
-  for (const child of renderContainer.children) {
-    child.destroy({ children: true, context: true });
-  }
-  renderContainer.removeChildren();
-  renderContainer.addChild(newRendering);
-  renderContainer[renderContainerState] = { ...itemState };
-};
+/**
+ * plenty of items never need to be re-rendered and have no render props - convenience for that case
+ * that handles not rendering again after the first render
+ */
+export const renderOnce =
+  <T extends ItemInPlayType, RoomId extends string>(
+    renderWith: (
+      appearance: Omit<
+        ItemAppearanceOptions<T, RoomId>,
+        "currentlyRenderedProps"
+      >,
+    ) => ItemAppearanceReturn<T>,
+  ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
+  // inner function - calls renderWith
+  ({ item, room, currentlyRenderedProps }) => {
+    if (currentlyRenderedProps === undefined) {
+      return renderWith({ item, room });
+    }
+  };

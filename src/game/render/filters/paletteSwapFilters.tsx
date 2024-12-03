@@ -3,6 +3,7 @@ import type { Shades } from "@/hintColours";
 import { colorScheme } from "@/hintColours";
 import type { UnknownRoomState } from "@/model/modelTypes";
 import { spritesheetPalette } from "@/sprites/samplePalette";
+import { emptyArray } from "@/utils/empty";
 import { type Filter } from "pixi.js";
 
 const paletteSwapFilters = (shades: Shades) => [
@@ -28,4 +29,4 @@ export const edgePaletteSwapFilters = (
 export const mainPaletteSwapFilters = (room: UnknownRoomState) =>
   paletteSwapFilters(colorScheme[room.color.hue][room.color.shade].main);
 
-export const noFilters: Filter[] = [];
+export const noFilters: Filter[] = emptyArray;

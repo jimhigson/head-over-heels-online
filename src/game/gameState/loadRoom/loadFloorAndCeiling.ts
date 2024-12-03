@@ -36,7 +36,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         state: {
           position: floorPosition,
           expires: null,
-          stoodOnBy: [],
+          stoodOnBy: new Set(),
           unsolidAfterProgression: -1,
         },
         renders: false,
@@ -60,7 +60,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         state: {
           position: floorPosition,
           expires: null,
-          stoodOnBy: [],
+          stoodOnBy: new Set(),
           unsolidAfterProgression: null,
         },
         renders: false,
@@ -90,7 +90,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         state: {
           position: ceilingPosition,
           expires: null,
-          stoodOnBy: [],
+          stoodOnBy: new Set(),
           unsolidAfterProgression: -1,
         },
         renders: false,

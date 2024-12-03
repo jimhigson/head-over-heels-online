@@ -717,13 +717,13 @@
           "config": { "which": "bubble-robot", "activated": true },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "deadlyBlock@4,4,0:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@4,4,0:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
-        "deadlyBlock@3,3,0:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@3,3,0:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
@@ -1411,9 +1411,9 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 7, "y": 4, "z": 2 }
         },
-        "fish@7,4,3:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@7,4,3:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 7, "y": 4, "z": 3 }
         },
         "door@3,8,1:xRnp2": {
@@ -1854,9 +1854,9 @@
           "config": { "style": "anvil" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "fish@2,3,1:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@2,3,1:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 2, "y": 3, "z": 1 }
         },
         "portableBlock@0,0,0:Z1SKpmn": {
@@ -2894,9 +2894,9 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "fish@5,15,1:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@5,15,1:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 5, "y": 15, "z": 1 }
         },
         "pickup@4,15,1:DHWsf": {
@@ -5030,9 +5030,9 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "fish@5,15,1:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@5,15,1:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 5, "y": 15, "z": 1 }
         },
         "spring@4,15,0:13y": {
@@ -6671,9 +6671,9 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
-        "fish@7,0,1:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@7,0,1:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 7, "y": 0, "z": 1 }
         }
       },
@@ -7520,9 +7520,9 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 3, "y": 0, "z": 2 }
         },
-        "fish@3,0,3:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@3,0,3:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 3, "y": 0, "z": 3 }
         },
         "door@1,8,2:29aKWo": {
@@ -7888,9 +7888,9 @@
           "config": { "style": "cube" },
           "position": { "x": 5, "y": 7, "z": 0 }
         },
-        "fish@0,7,5:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@0,7,5:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 0, "y": 7, "z": 5 }
         },
         "movableBlock@3,4,0:Z15GVb5": {
@@ -12643,9 +12643,9 @@
         ]
       },
       "items": {
-        "fish@4,3,0:2eEoj9": {
-          "type": "fish",
-          "config": { "alive": false },
+        "moveableDeadly@4,3,0:Z1nr7Y3": {
+          "type": "moveableDeadly",
+          "config": { "style": "deadFish" },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
         "door@8,2,0:Z1B0fr5": {
@@ -12973,9 +12973,9 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "fish@0,7,5:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@0,7,5:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 0, "y": 7, "z": 5 }
         },
         "baddie@5,4,0:Z1rA6U9": {
@@ -14049,9 +14049,9 @@
           "config": { "style": "sticks" },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "fish@3,3,5:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@3,3,5:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 3, "y": 3, "z": 5 }
         },
         "door@1,8,0:Z1yI7xy": {
@@ -18669,9 +18669,9 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 5, "y": 5, "z": 2 }
         },
-        "fish@5,5,3:2eEoj9": {
-          "type": "fish",
-          "config": { "alive": false },
+        "moveableDeadly@5,5,3:Z1nr7Y3": {
+          "type": "moveableDeadly",
+          "config": { "style": "deadFish" },
           "position": { "x": 5, "y": 5, "z": 3 }
         },
         "door@0,2,0:1QJCE8": {
@@ -19586,9 +19586,9 @@
           "config": { "style": "sticks" },
           "position": { "x": 11, "y": 1, "z": 0 }
         },
-        "fish@12,4,4:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@12,4,4:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 12, "y": 4, "z": 4 }
         },
         "door@16,2,2:2uBTz0": {
@@ -20854,13 +20854,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "deadlyBlock@2,1,1:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@2,1,1:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 1, "z": 1 }
         },
-        "deadlyBlock@2,0,1:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@2,0,1:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
@@ -21124,13 +21124,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "deadlyBlock@5,1,1:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@5,1,1:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 5, "y": 1, "z": 1 }
         },
-        "deadlyBlock@5,1,2:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@5,1,2:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 5, "y": 1, "z": 2 }
         },
@@ -21139,13 +21139,13 @@
           "config": { "style": "sticks" },
           "position": { "x": 1, "y": 1, "z": 1 }
         },
-        "deadlyBlock@5,0,1:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@5,0,1:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "deadlyBlock@5,0,2:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@5,0,2:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 5, "y": 0, "z": 2 }
         }
@@ -21233,8 +21233,8 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 2, "y": 0, "z": 4 }
         },
-        "deadlyBlock@2,1,5:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@2,1,5:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 1, "z": 5 }
         },
@@ -21243,8 +21243,8 @@
           "config": { "which": "dalek", "activated": true },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "deadlyBlock@2,0,5:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@2,0,5:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 0, "z": 5 }
         },
@@ -22165,8 +22165,8 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 4, "y": 1, "z": 2 }
         },
-        "deadlyBlock@4,0,0:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@4,0,0:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
@@ -22301,8 +22301,8 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 4, "y": 6, "z": 0 }
         },
-        "deadlyBlock@5,7,0:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@5,7,0:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 5, "y": 7, "z": 0 }
         },
@@ -22316,8 +22316,8 @@
           "config": { "style": "drum" },
           "position": { "x": 4, "y": 7, "z": 2 }
         },
-        "deadlyBlock@3,7,0:Z1tM18t": {
-          "type": "deadlyBlock",
+        "moveableDeadly@3,7,0:Z1tM18t": {
+          "type": "moveableDeadly",
           "config": { "style": "puck" },
           "position": { "x": 3, "y": 7, "z": 0 }
         },
@@ -22683,9 +22683,9 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 3, "y": 0, "z": 3 }
         },
-        "fish@4,7,4:ZyDpHa": {
-          "type": "fish",
-          "config": { "alive": true },
+        "pickup@4,7,4:ZPJAGD": {
+          "type": "pickup",
+          "config": { "gives": "reincarnation" },
           "position": { "x": 4, "y": 7, "z": 4 }
         },
         "door@3,8,0:Z2mYcRz": {
@@ -24031,9 +24031,9 @@
           "config": { "style": "volcano" },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "fish@4,3,1:2eEoj9": {
-          "type": "fish",
-          "config": { "alive": false },
+        "moveableDeadly@4,3,1:Z1nr7Y3": {
+          "type": "moveableDeadly",
+          "config": { "style": "deadFish" },
           "position": { "x": 4, "y": 3, "z": 1 }
         },
         "door@8,3,0:Z140Es4": {

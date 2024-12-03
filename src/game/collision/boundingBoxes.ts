@@ -37,6 +37,7 @@ export const boundingBoxForItem = (
   switch (item.type) {
     case "spring":
     case "portableBlock":
+    case "moveableDeadly":
     case "pickup":
     case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
@@ -55,8 +56,6 @@ export const boundingBoxForItem = (
       return { aabb: doubleHeighCharacter };
 
     case "ball":
-    case "fish":
-      return { aabb: mediumItemAabb };
 
     case "movableBlock":
       return { aabb: largeItemAabb };
@@ -88,12 +87,8 @@ export const boundingBoxForItem = (
           return { aabb: largeItemAabb };
       }
     case "deadlyBlock":
-      switch (item.config.style) {
-        case "puck":
-          return { aabb: smallItemAabb };
-        default:
-          return { aabb: largeItemAabb };
-      }
+      return { aabb: largeItemAabb };
+
     case "book":
     case "conveyor":
     case "hushPuppy":

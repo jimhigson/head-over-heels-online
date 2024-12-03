@@ -12,14 +12,11 @@ import {
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import {
-  addXyz,
   oppositeDirection,
   originXyz,
   scaleXyz,
-  xyzEqual,
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import { blockSizePx, blockSizeXyzPx } from "@/sprites/spritePivots";
 
 const resetConveyorStateForItem = {
   vels: {
@@ -28,43 +25,6 @@ const resetConveyorStateForItem = {
   stateDelta: {
     activeConveyor: null,
   },
-};
-
-/**
- * since conveyors can lead to other conveyors, sort them so that the
- * active conveyor will always be the first one in the chain when two
- * are stood on at once. This allows objects to be nicely moved around
- * conveyor corners (see blacktooth26)
- */
-const conveyorOrderComparator = (
-  a: ItemInPlay<"conveyor">,
-  b: ItemInPlay<"conveyor">,
-) => {
-  const aLeadsTo = addXyz(
-    a.state.position,
-    scaleXyz(unitVectors[a.config.direction], blockSizePx.w * a.config.count),
-  );
-
-  if (
-    xyzEqual(aLeadsTo, b.state.position) ||
-    xyzEqual(addXyz(aLeadsTo, blockSizeXyzPx), addXyz(b.state.position, b.aabb))
-  ) {
-    return -1;
-  }
-
-  const bLeadsTo = addXyz(
-    b.state.position,
-    scaleXyz(unitVectors[b.config.direction], blockSizePx.w * b.config.count),
-  );
-
-  if (
-    xyzEqual(bLeadsTo, a.state.position) ||
-    xyzEqual(addXyz(bLeadsTo, blockSizeXyzPx), addXyz(a.state.position, a.aabb))
-  ) {
-    return 1;
-  }
-
-  return 0;
 };
 
 /**
@@ -77,7 +37,7 @@ export const onConveyor = <RoomId extends string>(
   item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<FreeItemTypes> => {
+): MechanicResult<FreeItemTypes, RoomId> => {
   if (isPlayableItem(item) && item.state.teleporting !== null) {
     return resetConveyorStateForItem;
   }
@@ -86,27 +46,13 @@ export const onConveyor = <RoomId extends string>(
     state: { standingOn },
   } = item;
 
-  const stoodOnConveyors = standingOn.filter(isItemType("conveyor"));
-
-  /*
-  if (
-    standingOn.length > stoodOnConveyors.length &&
-    stoodOnConveyors.every((conv) => itemXyOverlapFraction(item, conv) < 0.5)
-  ) {
-    return resetConveyorStateForItem;
-  }*/
-
-  const activeConveyorItem = stoodOnConveyors
-    .sort(conveyorOrderComparator)
-    .at(0);
-
-  if (activeConveyorItem === undefined) {
+  if (standingOn === null || !isItemType("conveyor")(standingOn)) {
     return resetConveyorStateForItem;
   }
 
   const {
     config: { direction },
-  } = activeConveyorItem;
+  } = standingOn;
 
   /**
    * conveyors magically move quicker when heels is fighting against them, so that all
@@ -128,7 +74,7 @@ export const onConveyor = <RoomId extends string>(
       movingFloor: conveyorVelocity,
     },
     stateDelta: {
-      activeConveyor: activeConveyorItem,
+      activeConveyor: standingOn,
     },
   };
 };

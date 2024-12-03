@@ -13,7 +13,6 @@ import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/isSolid";
-import { setStandingOnForAllItemsInRoom } from "../setStandingOnForAllItemsInRoom";
 
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,
@@ -21,7 +20,7 @@ function* gatherConveyors<RoomId extends string>(
   const { conveyors = [], others = [] } = Object.groupBy(sorted, (item) =>
     item.type === "conveyor" ? "conveyors" : "others",
   ) as {
-    conveyors: ItemInPlay<"conveyor">[] | undefined;
+    conveyors: ItemInPlay<"conveyor", PlanetName, RoomId>[] | undefined;
     others: UnknownItemInPlay<RoomId>[] | undefined;
   };
 
@@ -56,7 +55,7 @@ function* gatherConveyors<RoomId extends string>(
         (a, b) => conveyorPosition(a) - conveyorPosition(b),
       );
 
-      const conveyorBlocks: ItemInPlay<"conveyor">[] = [];
+      const conveyorBlocks: ItemInPlay<"conveyor", PlanetName, RoomId>[] = [];
       for (const c of sortedConveyorsInLine) {
         const currentBlock = conveyorBlocks.at(-1);
 
@@ -150,7 +149,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     },
   };
 
-  setStandingOnForAllItemsInRoom(roomState, 0);
+  //setStandingOnForAllItemsInRoom(roomState, 0);
 
   return roomState;
 };

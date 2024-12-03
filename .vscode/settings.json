@@ -13,6 +13,7 @@
     "cyberman",
     "dalek",
     "daleks",
+    "dissapearing",
     "Drummand",
     "eastsouth",
     "egyptus",
@@ -23,6 +24,7 @@
     "immer",
     "moonbase",
     "Morties",
+    "pickupable",
     "pixi",
     "pointertap",
     "Precompute",
@@ -41,6 +43,7 @@
     "Typesafe",
     "uncollisionable",
     "unsnag",
+    "unsolid",
     "upscaler",
     "vels",
     "xyzs"

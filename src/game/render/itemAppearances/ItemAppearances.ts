@@ -1,37 +1,29 @@
 import { Container } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/JsonItem";
-import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
-import {
-  doorFrameAppearance,
-  doorLegsAppearance,
-} from "../../../doorAppearance";
-import type { ItemState } from "@/model/ItemInPlay";
-import {
-  isFreeItem,
-  isPlayableItem,
-  renderContainerState,
-  type ItemInPlayType,
-} from "@/model/ItemInPlay";
+import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
+import { isPlayableItem, type ItemInPlayType } from "@/model/ItemInPlay";
 import { playableAppearance } from "./playableAppearance";
-import { currentRoom } from "@/game/gameState/GameState";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
+import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import {
   directionAxis,
+  originXy,
   vectorClosestDirectionXy4,
+  xyEqual,
 } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
-import { applyAppearance, renderedBefore } from "./appearanceUtils";
-import { ifNotRenderedBefore, staticSpriteAppearance } from "./appearanceUtils";
+import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
+import { emptyObject } from "@/utils/empty";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -64,186 +56,187 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall: ifNotRenderedBefore(
-    ({ config: { side, style }, state }, gameState, renderTo) => {
-      const room = currentRoom(gameState);
-      applyAppearance(
-        renderTo,
-        state,
-        side === "right" || side === "towards" ?
-          new Container()
-        : createSprite({
-            texture: wallTextureId(
-              room.planet,
-              style,
-              side,
-              room.color.shade === "dimmed",
-            ),
-            pivot:
-              side === "away" ?
-                {
-                  x: wallTileSize.w,
-                  // walls need to be rendered 1px high to match original game (original puts them 1px low, but
-                  // we already position them (in world space) 2px low to match original rendering while keeping
-                  // bounding boxes correct
-                  y: wallTileSize.h + 1,
-                }
-              : { x: 0, y: wallTileSize.h + 1 },
-          }),
-      );
-    },
-  ),
+  wall: renderOnce(
+    ({
+      item: {
+        config: { side, style },
+      },
+      room,
+    }) => {
+      if (side === "right" || side === "towards") {
+        throw new Error("this wall should be non-rendering");
+      }
 
-  barrier({ config: { axis }, state }, _gameState, renderTo) {
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const bubbles = state.expires !== null;
-    const wasBubbles =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.expires !== null
-      );
-
-    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
-      return;
-    }
-
-    applyAppearance(
-      renderTo,
-      state,
-      bubbles ?
-        createSprite({
-          frames: spriteSheet.animations["bubbles.taupe"],
-          playOnce: "and-destroy",
-          pivot: barrierPivot[axis],
-          //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
-        })
-      : createSprite({
-          texture: `barrier.${axis}`,
-          pivot: barrierPivot[axis],
-        }),
-    );
-  },
-
-  deadlyBlock: ifNotRenderedBefore(
-    ({ config: { style }, state }, _gameState, renderTo) => {
-      applyAppearance(
-        renderTo,
-        state,
-        createSprite(style === "puck" ? "puck.deadly" : style),
-      );
-    },
-  ),
-
-  block({ config: { style }, state }, _gameState, renderTo) {
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const { expires, disappearing } = state;
-
-    const bubbles = expires !== null;
-    const wasBubbles =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.expires !== null
-      );
-    const wasDisappearing =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.disappearing
-      );
-
-    if (
-      renderedBefore(renderTo) &&
-      bubbles === wasBubbles &&
-      disappearing === wasDisappearing
-    ) {
-      return;
-    }
-
-    applyAppearance(
-      renderTo,
-      state,
-      bubbles ?
-        createSprite({
-          frames: spriteSheet.animations["bubbles.taupe"],
-          playOnce: "and-destroy",
-        })
-      : createSprite(`block.${style}${disappearing ? ".disappearing" : ""}`),
-    );
-  },
-
-  switch({ state }, _gameState, renderTo) {
-    const { setting } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const lastSetting =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.setting
-      );
-
-    if (renderedBefore(renderTo) && setting === lastSetting) {
-      return;
-    }
-
-    applyAppearance(renderTo, state, createSprite(`switch.${setting}`));
-  },
-
-  conveyor(item, _gameState, renderTo) {
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const {
-      config: { direction, count },
-      state,
-    } = item;
-
-    const isActive = (state: ItemState<"conveyor">) =>
-      state.stoodOnBy.find(
-        (i) => isFreeItem(i) && i.state.activeConveyor === item,
-      ) !== undefined;
-
-    const activeNow = isActive(state);
-
-    // this isn't quite right since it is looking at the .activeConveyor property for the item that was standing on it
-    // in the current state, not the previous state. Might still be ok. Previous state is now lost.
-    // would need to be able to give custom state on the renderer for this conveyor type only (so far)
-    const wasActiveLastRender = isActive(currentlyRenderedState);
-
-    const shouldRender =
-      !renderedBefore(renderTo) || activeNow !== wasActiveLastRender;
-
-    console.log(
-      "now",
-      activeNow,
-      "last",
-      wasActiveLastRender,
-      "shouldRender",
-      shouldRender,
-    );
-
-    if (shouldRender) {
-      const rendering = new Container();
-
-      const axis = directionAxis(direction);
-      rendering.addChild(
-        ...iterate(range(count, 0, -1)).map((i) => {
-          const xy = projectWorldXyzToScreenXyInteger({
-            [axis]: (i - 1) * blockSizePx.w,
-          });
-
-          return createSprite(
-            activeNow ?
+      return {
+        container: createSprite({
+          texture: wallTextureId(
+            room.planet,
+            style,
+            side,
+            room.color.shade === "dimmed",
+          ),
+          pivot:
+            side === "away" ?
               {
-                frames: spriteSheet.animations[`conveyor.${axis}`],
-                reverse: direction === "towards" || direction === "right",
-                animationSpeed: 0.5,
-                ...xy,
+                x: wallTileSize.w,
+                // walls need to be rendered 1px high to match original game (original puts them 1px low, but
+                // we already position them (in world space) 2px low to match original rendering while keeping
+                // bounding boxes correct
+                y: wallTileSize.h + 1,
               }
-            : {
-                texture: `conveyor.${axis}.6`,
-                ...xy,
-              },
-          );
+            : { x: 0, y: wallTileSize.h + 1 },
         }),
-      );
+        renderProps: {},
+      };
+    },
+  ),
 
-      applyAppearance(renderTo, state, rendering);
+  barrier({
+    item: {
+      config: { axis },
+      state: { expires },
+    },
+    currentlyRenderedProps,
+  }) {
+    const bubbles = expires !== null;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      bubbles !== currentlyRenderedProps.bubbles;
+
+    if (!render) {
+      return;
     }
+
+    return {
+      container:
+        bubbles ?
+          createSprite({
+            frames: spriteSheet.animations["bubbles.taupe"],
+            playOnce: "and-destroy",
+            pivot: barrierPivot[axis],
+            //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
+          })
+        : createSprite({
+            texture: `barrier.${axis}`,
+            pivot: barrierPivot[axis],
+          }),
+      renderProps: { bubbles },
+    };
   },
 
-  lift: ifNotRenderedBefore(({ state }, _gameState, renderTo) => {
+  deadlyBlock: renderOnce(
+    ({
+      item: {
+        config: { style },
+      },
+    }) => {
+      return {
+        container: createSprite(style),
+        renderProps: {},
+      };
+    },
+  ),
+
+  block({
+    item: {
+      config: { style },
+      state: { expires, disappearing },
+    },
+    currentlyRenderedProps,
+  }) {
+    const bubbles = expires !== null;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      currentlyRenderedProps.bubbles !== bubbles ||
+      currentlyRenderedProps.disappearing !== disappearing;
+
+    if (!render) {
+      return;
+    }
+
+    return {
+      container:
+        bubbles ?
+          createSprite({
+            frames: spriteSheet.animations["bubbles.taupe"],
+            playOnce: "and-destroy",
+          })
+        : createSprite(`block.${style}${disappearing ? ".disappearing" : ""}`),
+      renderProps: { bubbles, disappearing },
+    };
+  },
+
+  switch({
+    item: {
+      state: { setting },
+    },
+    currentlyRenderedProps,
+  }) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      setting !== currentlyRenderedProps.setting;
+
+    if (!render) {
+      return;
+    }
+
+    return {
+      container: createSprite(`switch.${setting}`),
+      renderProps: { setting },
+    };
+  },
+
+  conveyor({
+    item: {
+      config: { direction, count },
+      state: { stoodOnBy },
+    },
+    currentlyRenderedProps,
+  }) {
+    const moving = stoodOnBy.size > 0;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      currentlyRenderedProps.moving !== moving;
+
+    if (!render) {
+      return;
+    }
+
+    const rendering = new Container();
+
+    const axis = directionAxis(direction);
+    rendering.addChild(
+      ...iterate(range(count, 0, -1)).map((i) => {
+        const xy = projectWorldXyzToScreenXyInteger({
+          [axis]: (i - 1) * blockSizePx.w,
+        });
+
+        return createSprite(
+          moving ?
+            {
+              frames: spriteSheet.animations[`conveyor.${axis}`],
+              reverse: direction === "towards" || direction === "right",
+              animationSpeed: 0.5,
+              ...xy,
+            }
+          : {
+              texture: `conveyor.${axis}.6`,
+              ...xy,
+            },
+        );
+      }),
+    );
+
+    return {
+      container: rendering,
+      renderProps: { moving },
+    };
+  },
+
+  lift: renderOnce(() => {
     const rendering = new Container();
 
     const pivot = {
@@ -259,42 +252,58 @@ export const itemAppearances: {
 
     rendering.addChild(createSprite({ texture: "lift.static", pivot }));
 
-    applyAppearance(renderTo, state, rendering);
+    return {
+      container: rendering,
+      renderProps: {},
+    };
   }),
 
-  spring({ state }, _gameSate, renderTo) {
-    const { stoodOnBy } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const stoodOn = stoodOnBy.length > 0;
-    const prevStoodOn = (currentlyRenderedState?.stoodOnBy.length ?? 0) > 0;
+  spring({
+    item: {
+      state: { stoodOnBy },
+    },
+    currentlyRenderedProps,
+  }) {
+    const compressed = stoodOnBy.size > 0;
 
-    if (renderedBefore(renderTo) && stoodOn === prevStoodOn) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      compressed !== currentlyRenderedProps.compressed;
+
+    if (!render) {
       return;
     }
 
-    applyAppearance(
-      renderTo,
-      state,
-      createSprite(
-        !stoodOn && prevStoodOn ?
+    const currentlyRenderedCompressed =
+      currentlyRenderedProps?.compressed ?? false;
+
+    return {
+      container: createSprite(
+        !compressed && currentlyRenderedCompressed ?
           {
             frames: spriteSheet.animations["spring.bounce"],
             playOnce: "and-stop",
           }
-        : stoodOn ? "spring.compressed"
+        : compressed ? "spring.compressed"
         : "spring.released",
       ),
-    );
+      renderProps: { compressed },
+    };
   },
 
-  teleporter({ state }, _gameSate, renderTo) {
-    const { stoodOnBy } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const stoodOn = stoodOnBy.find(isPlayableItem) !== undefined;
-    const prevStoodOn =
-      currentlyRenderedState?.stoodOnBy.find(isPlayableItem) !== undefined;
+  teleporter({
+    item: {
+      state: { stoodOnBy },
+    },
+    currentlyRenderedProps,
+  }) {
+    const flashing = iterate(stoodOnBy).find(isPlayableItem) !== undefined;
 
-    if (renderedBefore(renderTo) && stoodOn === prevStoodOn) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      flashing !== currentlyRenderedProps.flashing;
+
+    if (!render) {
       return;
     }
 
@@ -308,29 +317,32 @@ export const itemAppearances: {
         ],
       });
 
-    applyAppearance(
-      renderTo,
-      state,
-      stoodOn ? renderFlashing() : createSprite("teleporter"),
-    );
+    return {
+      container: flashing ? renderFlashing() : createSprite("teleporter"),
+      renderProps: { flashing },
+    };
   },
 
-  pickup({ config: { gives }, state }, _gameState, renderTo) {
-    const { expires } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
+  pickup({
+    item: {
+      config: { gives },
+      state: { expires },
+    },
+    currentlyRenderedProps,
+  }) {
     const bubbles = expires !== null;
-    const wasBubbles =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.expires !== null
-      );
 
-    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      currentlyRenderedProps.bubbles !== bubbles;
+
+    if (!render) {
       return;
     }
 
     const pickupIcons: Record<
       ItemConfigMap<PlanetName, string>["pickup"]["gives"],
-      TextureId
+      CreateSpriteOptions
     > = {
       shield: "bunny",
       jumps: "bunny",
@@ -340,13 +352,15 @@ export const itemAppearances: {
       donuts: "donuts",
       hooter: "hooter",
       crown: "crown",
+      reincarnation: {
+        frames: spriteSheet.animations["fish"],
+        animationSpeed: 0.25,
+      },
     };
     const texture = pickupIcons[gives];
 
-    applyAppearance(
-      renderTo,
-      state,
-      createSprite(
+    return {
+      container: createSprite(
         bubbles ?
           {
             frames:
@@ -357,173 +371,240 @@ export const itemAppearances: {
           }
         : texture,
       ),
-    );
-  },
-  fish({ config: { alive }, state }, _gameState, renderTo) {
-    const { expires } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const bubbles = expires !== null;
-    const wasBubbles =
-      currentlyRenderedState === undefined ? false : (
-        currentlyRenderedState.expires !== null
-      );
-
-    if (renderedBefore(renderTo) && bubbles === wasBubbles) {
-      return;
-    }
-
-    applyAppearance(
-      renderTo,
-      state,
-      createSprite(
-        bubbles ?
-          {
-            frames: spriteSheet.animations[`bubbles.fish`],
-            playOnce: "and-destroy",
-          }
-        : alive ?
-          {
-            frames: spriteSheet.animations.fish,
-            animationSpeed: 0.25,
-          }
-        : {
-            texture: "fish.1",
-          },
-      ),
-    );
+      renderProps: { bubbles },
+    };
   },
 
-  sceneryPlayer: ifNotRenderedBefore(
-    ({ config: { which }, state }, _gameState, renderTo) => {
-      applyAppearance(
-        renderTo,
-        state,
-        createSprite(`${which}.walking.towards.2`),
-      );
+  moveableDeadly: renderOnce(
+    ({
+      item: {
+        config: { style },
+      },
+    }) => {
+      return {
+        container: createSprite(
+          style === "deadFish" ? "fish.1" : "puck.deadly",
+        ),
+        renderProps: {},
+      };
     },
   ),
 
-  charles({ state }, _gameSate, renderTo) {
-    const { facing } = state;
-    const currentlyRenderedState = renderTo[renderContainerState];
-    const facingXy4 = vectorClosestDirectionXy4(facing);
-    const wasFacingXy4 =
-      currentlyRenderedState === undefined ? undefined : (
-        vectorClosestDirectionXy4(currentlyRenderedState.facing)
-      );
+  sceneryPlayer: renderOnce(
+    ({
+      item: {
+        config: { which },
+      },
+    }) => {
+      return {
+        container: createSprite(`${which}.walking.towards.2`),
+        renderProps: {},
+      };
+    },
+  ),
 
-    if (renderedBefore(renderTo) && facingXy4 === wasFacingXy4) {
+  charles({
+    item: {
+      state: { facing },
+    },
+    currentlyRenderedProps,
+  }) {
+    const facingXy4 = vectorClosestDirectionXy4(facing);
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      facingXy4 !== currentlyRenderedProps.facingXy4;
+
+    if (!render) {
       return;
     }
-
-    applyAppearance(renderTo, state, stackedSprites(`charles.${facingXy4}`));
+    return {
+      container: stackedSprites(`charles.${facingXy4}`),
+      renderProps: { facingXy4 },
+    };
   },
 
-  baddie: ifNotRenderedBefore(({ config, state }, _gameState, renderTo) => {
+  baddie({ item: { config, state }, currentlyRenderedProps }) {
+    let startingDirection: DirectionXy4 | undefined = undefined;
+
     switch (config.which) {
-      case "helicopter-bug":
-      case "dalek":
-        // animated, no directions
-        applyAppearance(
-          renderTo,
-          state,
-          createSprite({
-            frames: spriteSheet.animations[config.which],
-            animationSpeed: 0.5,
-          }),
-        );
-        break;
-      case "headless-base":
-        // no anim, not directional
-        applyAppearance(
-          renderTo,
-          state,
-          createSprite({ texture: "headless-base" }),
-        );
-        break;
       case "american-football-head":
-        applyAppearance(
-          renderTo,
-          state,
-          createSprite({
-            texture: `american-football-head.${config.startDirection}`,
-          }),
-        );
-        break;
       case "turtle":
-        // animated, directional:
-        applyAppearance(
-          renderTo,
-          state,
-          createSprite({
-            frames: spriteSheet.animations[`turtle.${config.startDirection}`],
-            animationSpeed: 0.25,
-          }),
-        );
-        break;
       case "cyberman":
-        if (config.activated) {
-          applyAppearance(
-            renderTo,
-            state,
-            stackedSprites(`cyberman.towards`, bubbles),
-          );
-        } else {
-          // charging on a toaster
-          applyAppearance(
-            renderTo,
-            state,
-            createSprite(`cyberman.${config.startDirection}`),
-          );
-        }
-        break;
-      case "bubble-robot":
-        applyAppearance(renderTo, state, stackedSprites(bubbles));
-        break;
-      case "flying-ball":
-        //stacked on bubbles:
-        applyAppearance(renderTo, state, stackedSprites(`ball`, bubbles));
-        break;
+        // have a starting direction
+        startingDirection = config.startDirection;
+      // eslint-disable-next-line no-fallthrough
       case "computer-bot":
       case "elephant":
-      case "monkey":
-        // stacked on standard base:
-        applyAppearance(
-          renderTo,
-          state,
-          stackedSprites(`${config.which}.towards`),
-        );
+      case "monkey": {
+        const facingXy4 =
+          xyEqual(state.vels.walking, originXy) ?
+            (startingDirection ?? "towards")
+          : vectorClosestDirectionXy4(state.vels.walking);
+
+        const render =
+          currentlyRenderedProps === undefined ||
+          facingXy4 !== currentlyRenderedProps.facingXy4;
+
+        if (!render) {
+          return;
+        }
+        const renderProps = { facingXy4 };
+
+        // rendering is directional (xy4)
+        switch (config.which) {
+          case "american-football-head":
+            // directional, no anim
+            return {
+              container: createSprite({
+                texture: `${config.which}.${facingXy4}`,
+              }),
+              renderProps,
+            };
+          case "turtle":
+            // directional, anim:
+            return {
+              container: createSprite({
+                frames: spriteSheet.animations[`${config.which}.${facingXy4}`],
+                animationSpeed: 0.25,
+              }),
+              renderProps,
+            };
+          case "cyberman":
+            // directional, animated, stacked (bubbles):
+            return {
+              container:
+                state.activated ?
+                  stackedSprites(`${config.which}.${facingXy4}`, bubbles)
+                  // charging on a toaster
+                : createSprite(`${config.which}.${facingXy4}`),
+              renderProps,
+            };
+          case "computer-bot":
+          case "elephant":
+          case "monkey":
+            // directional, not animated, stacked (base)
+            return {
+              container: stackedSprites(`${config.which}.${facingXy4}`),
+              renderProps,
+            };
+        }
         break;
+      }
+
+      case "helicopter-bug":
+      case "dalek":
+      case "headless-base":
       case "elephant-head":
-        applyAppearance(renderTo, state, createSprite("elephant.right"));
+      case "bubble-robot":
+      case "flying-ball": {
+        // these baddies never re-render since they are not directional
+        const render = currentlyRenderedProps === undefined;
+
+        if (!render) {
+          return;
+        }
+
+        const renderProps = emptyObject;
+
+        // rendering is uni-directional
+        switch (config.which) {
+          case "helicopter-bug":
+          case "dalek":
+            // not directional, animated
+            return {
+              container: createSprite({
+                frames: spriteSheet.animations[config.which],
+                animationSpeed: 0.5,
+              }),
+              renderProps,
+            };
+          case "headless-base":
+            // not directional, not animated
+            return {
+              container: createSprite(config.which),
+              renderProps,
+            };
+          case "elephant-head":
+            // not directional, not animated
+            return {
+              container: createSprite("elephant.towards"),
+              renderProps,
+            };
+
+          case "bubble-robot":
+            //not directional, animated, stacked (base):
+            return {
+              container: stackedSprites(bubbles),
+              renderProps,
+            };
+
+          case "flying-ball":
+            //not directional, stacked (bubbles):
+            return {
+              container: stackedSprites(`ball`, bubbles),
+              renderProps,
+            };
+        }
         break;
+      }
+
       default:
         config satisfies never;
         throw new Error(`unexpected baddie ${config}`);
     }
-  }),
+  },
 
   joystick: staticSpriteAppearance("joystick"),
 
-  movableBlock: ifNotRenderedBefore(
-    ({ config: { style }, state }, _gameState, renderTo) => {
-      applyAppearance(renderTo, state, createSprite(style));
+  movableBlock: renderOnce(
+    ({
+      item: {
+        config: { style },
+      },
+    }) => {
+      return {
+        container: createSprite(style),
+        renderProps: {},
+      };
     },
   ),
 
-  book: ifNotRenderedBefore(
-    ({ config: { slider }, state }, _gameState, renderTo) => {
-      applyAppearance(
-        renderTo,
-        state,
-        createSprite(`book.${slider ? "y" : "x"}`),
-      );
+  portableBlock({
+    item: {
+      id,
+      config: { style },
     },
-  ),
+    room,
+    currentlyRenderedProps,
+  }) {
+    const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
+    const carried = heelsCarrying === id;
 
-  portableBlock: ifNotRenderedBefore(
-    ({ config: { style }, state }, _gameState, renderTo) => {
-      applyAppearance(renderTo, state, createSprite(style));
+    const render =
+      currentlyRenderedProps === undefined ||
+      carried !== currentlyRenderedProps.carried;
+
+    if (!render) {
+      return;
+    }
+
+    return {
+      container: carried ? new Container() : createSprite(style),
+      renderProps: { carried },
+    };
+  },
+
+  book: renderOnce(
+    ({
+      item: {
+        config: { slider },
+      },
+    }) => {
+      return {
+        container: createSprite(`book.${slider ? "y" : "x"}`),
+        renderProps: {},
+      };
     },
   ),
 

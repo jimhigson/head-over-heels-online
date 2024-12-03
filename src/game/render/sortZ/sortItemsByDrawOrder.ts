@@ -41,14 +41,13 @@ export const zPairs = <TItem extends DrawOrderComparable>(
   return pairs;
 };
 
-/** sorts sprites in z by the z-pairs given in zPairs function */
+/** sorts sprites in z by the z-pairs given in zPairs function - returns an order as a sorted list of item ids */
 export const sortByZPairs = (
   pairs: ZPairs,
   items: Record<string, UnknownItemInPlay>,
-) => {
-  let itemOrder: string[];
+): string[] => {
   try {
-    itemOrder = toposort(pairs);
+    return toposort(pairs);
   } catch (e) {
     if (e instanceof CyclicDependencyError) {
       const cyclicItems = e.cyclicDependency as Array<string>;
@@ -68,14 +67,5 @@ export const sortByZPairs = (
     } else {
       throw e;
     }
-  }
-  for (let i = 0; i < itemOrder.length; i++) {
-    const item = items[itemOrder[i]];
-    if (item.positionContainer === undefined) {
-      throw new Error(
-        `Item id=${itemOrder[i]} does not have a position container - cannot assign a z-index - position it before sorting it`,
-      );
-    }
-    item.positionContainer.zIndex = i;
   }
 };

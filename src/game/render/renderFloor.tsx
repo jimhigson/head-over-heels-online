@@ -26,7 +26,7 @@ export const renderFloor = <RoomId extends string>(
     color: { shade },
   } = room;
 
-  const mainContainer = new Container();
+  const mainContainer = new Container({ label: `floor(${room.id})` });
 
   const floorSkipMap = Object.fromEntries(
     room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
@@ -35,7 +35,7 @@ export const renderFloor = <RoomId extends string>(
   if (floorType !== "none") {
     const floorTileTexture: TextureId =
       floorType === "deadly" ?
-        "generic.floor.deadly"
+        `generic${shade === "dimmed" ? ".dark" : ""}.floor.deadly`
       : `${floorType}${shade === "dimmed" ? ".dark" : ""}.floor`;
 
     const tilesContainer = new Container();

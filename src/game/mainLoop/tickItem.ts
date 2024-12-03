@@ -19,12 +19,14 @@ import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
 import { carrying } from "../physics/mechanics/carrying";
+import type { RoomState } from "@/model/modelTypes";
 
 function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): Generator<MechanicResult<T>> {
+): Generator<MechanicResult<T, RoomId>> {
   if (isItemType("heels")(item)) {
     // heels can remove items from the game, so process that first since it could
     // affect other mechanics
@@ -33,23 +35,26 @@ function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
 
   if (isFreeItem(item)) {
     // CHARLES and BADIES should also fall (be free items?)
-    yield gravity(item, gameState, deltaMS) as MechanicResult<T>;
-    yield onConveyor(item, gameState, deltaMS) as MechanicResult<T>;
+    yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
   }
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
     // user controls:
-    yield teleporting(item, gameState, deltaMS) as MechanicResult<T>;
-    yield walking(item, gameState, deltaMS) as MechanicResult<T>;
-    yield jumping(item, gameState, deltaMS) as MechanicResult<T>;
+    yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
   }
 
   if (isItemType("lift")(item)) {
-    yield moveLift(item, gameState, deltaMS) as MechanicResult<T>;
+    yield moveLift(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
   }
 
   if (isItemType("baddie")(item)) {
-    yield tickBaddie(item, gameState, deltaMS) as MechanicResult<T>;
+    yield tickBaddie(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId
+    >;
   }
 }
 
@@ -61,12 +66,13 @@ function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
  */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): boolean => {
   let accumulatedMovement = originXyz;
 
-  for (const mr of itemMechanicsGen(item, gameState, deltaMS)) {
+  for (const mr of itemMechanicsGen(item, room, gameState, deltaMS)) {
     const { vels, stateDelta } = mr;
 
     if (vels !== undefined)

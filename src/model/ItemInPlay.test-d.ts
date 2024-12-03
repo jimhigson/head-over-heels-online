@@ -22,8 +22,8 @@ test("heads and heels have the right state", () => {
   expectTypeOf<PlayableItem["state"]>().toMatchTypeOf<{
     facing: DirectionXy4;
     action: "moving" | "idle" | "falling" | "death";
-    standingOn: UnknownItemInPlay[];
-    stoodOnBy: UnknownItemInPlay[];
+    standingOn: UnknownItemInPlay | null;
+    stoodOnBy: Set<UnknownItemInPlay>;
     lives: number;
     shield: number;
   }>();

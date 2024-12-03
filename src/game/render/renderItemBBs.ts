@@ -1,9 +1,5 @@
-import type {
-  AnyItemInPlay} from "@/model/ItemInPlay";
-import {
-  isItemType,
-  type ItemInPlayType,
-} from "@/model/ItemInPlay";
+import type { AnyItemInPlay } from "@/model/ItemInPlay";
+import { isItemType, type ItemInPlayType } from "@/model/ItemInPlay";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
@@ -87,18 +83,3 @@ export const renderItemBBs = (item: AnyItemInPlay): Container => {
   }
   return containerWithBB;
 };
-
-/*
-export const itemRenderingInContainerAlongsideBBRendering = (
-  item: UnknownItemInPlay,
-): Container => {
-  const wrappingContainer = new Container();
-  if (item.renderContainer !== undefined) {
-    // it is ok for a non-rendering item to have its BB illustrated,
-    // but in this case there's nothing to add to the wrapping container
-    wrappingContainer.addChild(item.renderContainer);
-  }
-  wrappingContainer.addChild(renderItemBBs(item));
-  return wrappingContainer;
-};
-*/

@@ -14,6 +14,7 @@ import {
   scaleXyz,
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
+import { emptySet } from "@/utils/empty";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -59,7 +60,7 @@ export function* loadDoor<RoomId extends string>(
           addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
         ),
         expires: null,
-        stoodOnBy: [],
+        stoodOnBy: emptySet,
         unsolidAfterProgression: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
@@ -83,7 +84,7 @@ export function* loadDoor<RoomId extends string>(
       state: {
         position: doorNearPosition,
         expires: null,
-        stoodOnBy: [],
+        stoodOnBy: emptySet,
         unsolidAfterProgression: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
@@ -118,7 +119,7 @@ export function* loadDoor<RoomId extends string>(
           ),
         ),
         expires: null,
-        stoodOnBy: [],
+        stoodOnBy: emptySet,
         unsolidAfterProgression: -1,
       },
       aabb: {
@@ -147,7 +148,7 @@ export function* loadDoor<RoomId extends string>(
           },
         ),
         expires: null,
-        stoodOnBy: [],
+        stoodOnBy: emptySet,
         unsolidAfterProgression: null,
       },
       aabb: blockXyzToFineXyz({
@@ -179,7 +180,7 @@ export function* loadDoor<RoomId extends string>(
           z: 0,
         }),
         expires: null,
-        stoodOnBy: [],
+        stoodOnBy: new Set(),
         unsolidAfterProgression: null,
       },
       aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
@@ -196,7 +197,7 @@ export function* loadDoor<RoomId extends string>(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
       expires: null,
-      stoodOnBy: [],
+      stoodOnBy: emptySet,
       unsolidAfterProgression: -1, // never solid
     },
   };

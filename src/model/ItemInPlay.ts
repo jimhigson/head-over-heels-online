@@ -7,8 +7,6 @@ import type {
   Xy,
 } from "../utils/vectors/vectors";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { Container } from "pixi.js";
-import type { SetRequired } from "type-fest";
 import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
@@ -20,14 +18,14 @@ export type ItemInPlayType =
   | "portal"
   | "floor";
 
-type FreeItemState = {
+type FreeItemState<RoomId extends string> = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
-  standingOn: UnknownItemInPlay[];
+  standingOn: UnknownItemInPlay<RoomId> | null;
   /* 
     the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
     to render itself an animating
   */
-  activeConveyor: ItemInPlay<"conveyor"> | null;
+  activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */
@@ -36,50 +34,55 @@ type FreeItemState = {
   };
 };
 
-export type CharacterState = FreeItemState & {
-  facing: DirectionXy4;
-  action:
-    | "moving"
-    | "idle"
-    | "falling"
-    /** death animation is playing - character will have had expired set  */
-    | "death";
+export type PlayableActionState =
+  | "moving"
+  | "idle"
+  | "falling"
+  /** death animation is playing - character will have had expired set  */
+  | "death";
 
-  lives: number;
-  shield: number;
+export type EitherPlayableState<RoomId extends string> =
+  FreeItemState<RoomId> & {
+    facing: DirectionXy4;
+    action: PlayableActionState;
 
-  // Number of pixels the player will walk forward regardless of input. This
-  // puts players properly inside a room when they enter via a door
-  autoWalk: boolean;
+    lives: number;
+    shield: number;
 
-  vels: {
-    gravity: Xyz;
-    /** allows the walking mechanic to keep track of its own velocities */
-    walking: Xyz;
-    movingFloor: Xyz;
+    // Number of pixels the player will walk forward regardless of input. This
+    // puts players properly inside a room when they enter via a door
+    autoWalk: boolean;
+
+    vels: {
+      gravity: Xyz;
+      /** allows the walking mechanic to keep track of its own velocities */
+      walking: Xyz;
+      movingFloor: Xyz;
+    };
+
+    /**
+     * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
+     * we fall (vertical falling, no forward motion)
+     */
+    jumped: boolean;
+
+    teleporting:
+      | {
+          phase: "out";
+          timeRemaining: number;
+          toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
+        }
+      | {
+          phase: "in";
+          timeRemaining: number;
+        }
+      | null;
   };
 
-  /**
-   * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
-   * we fall (vertical falling, no forward motion)
-   */
-  jumped: boolean;
+export type SwitchSetting = "left" | "right";
 
-  teleporting:
-    | {
-        phase: "out";
-        timeRemaining: number;
-        toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
-      }
-    | {
-        phase: "in";
-        timeRemaining: number;
-      }
-    | null;
-};
-
-export type ItemStateMap = {
-  head: CharacterState & {
+export type ItemStateMap<RoomId extends string> = {
+  head: EitherPlayableState<RoomId> & {
     hasHooter: boolean;
     /** how many big jumps we can do */
     // TODO: these properties should be recognised
@@ -88,27 +91,30 @@ export type ItemStateMap = {
     donuts: number;
     fastSteps: number;
   };
-  heels: CharacterState & {
+  heels: EitherPlayableState<RoomId> & {
     hasBag: boolean;
     /** how many big jumps we can do (from picking up a bunny) */
     // TODO: these properties should be recognised
     // by the type system as belonging only to head
     // or heels
     bigJumps: number;
-    carrying: ItemInPlay<"portableBlock" | "spring"> | null;
+    carrying:
+      | ItemInPlay<"portableBlock", PlanetName, RoomId>
+      | ItemInPlay<"spring", PlanetName, RoomId>
+      | null;
   };
   //teleporter: { stoodOn: boolean };
-  spring: FreeItemState;
-  portableBlock: FreeItemState;
-  movableBlock: FreeItemState;
-  baddie: FreeItemState & {
+  spring: FreeItemState<RoomId>;
+  portableBlock: FreeItemState<RoomId>;
+  movableBlock: FreeItemState<RoomId>;
+  baddie: FreeItemState<RoomId> & {
     activated: boolean;
     vels: {
       walking: Xyz;
     };
   };
-  pickup: FreeItemState;
-  fish: FreeItemState;
+  pickup: FreeItemState<RoomId>;
+  aliveFish: FreeItemState<RoomId>;
   lift: {
     direction: "up" | "down";
     vels: {
@@ -121,14 +127,14 @@ export type ItemStateMap = {
   };
   block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
   switch: {
-    setting: "left" | "right";
+    setting: SwitchSetting;
     /**
      * the frame this switch was last touched on. Frames only switch if they are touched and weren't
      * already touched on the previous frame
      */
     touchedOnProgression: number;
   };
-  charles: FreeItemState & {
+  charles: FreeItemState<RoomId> & {
     // others will follow this soon - facing is changing to a vector
     facing: Xy;
   };
@@ -171,7 +177,7 @@ export type ItemInPlayConfig<
   T extends JsonItemType ? JsonItemConfig<T, P, RoomId>
   : EmptyObject;
 
-type BaseItemState = {
+type BaseItemState<RoomId extends string> = {
   position: Readonly<Xyz>;
   /**
    * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
@@ -190,27 +196,13 @@ type BaseItemState = {
   unsolidAfterProgression: number | null;
 
   /** what is standing on this item? */
-  stoodOnBy: UnknownItemInPlay[];
+  stoodOnBy: Set<FreeItem<PlanetName, RoomId>>;
 };
 
-export type ItemState<T extends ItemInPlayType> = BaseItemState &
-  (T extends keyof ItemStateMap ? ItemStateMap[T] : BaseItemState);
-
-export const positionContainerPosition: unique symbol = Symbol("position");
-export const renderContainerState: unique symbol = Symbol("state");
-
-/** container for rendering items into which records the item state it was last rendered with */
-export type ContainerWithItemState<T extends ItemInPlayType> = Container & {
-  /** shallow copy of the state this item was rendered as in this container */
-  [renderContainerState]: ItemState<T>;
-};
-/** container which records the world position it was projected to */
-export type ContainerWithWorldPosition = Container & {
-  /**
-   * the world position this container is projected to
-   */
-  [positionContainerPosition]: Xyz;
-};
+export type ItemState<T extends ItemInPlayType, RoomId extends string> =
+  T extends keyof ItemStateMap<RoomId> ?
+    BaseItemState<RoomId> & ItemStateMap<RoomId>[T]
+  : BaseItemState<RoomId>;
 
 export type ItemInPlay<
   T extends ItemInPlayType,
@@ -225,7 +217,7 @@ export type ItemInPlay<
   config: ItemInPlayConfig<T, P, RoomId>;
 
   readonly id: ID;
-  state: ItemState<T>;
+  state: ItemState<T, RoomId>;
 
   /**
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
@@ -234,9 +226,6 @@ export type ItemInPlay<
   aabb: Aabb;
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
-
-  positionContainer?: ContainerWithWorldPosition;
-  renderContainer?: ContainerWithItemState<T>;
 
   renders: boolean;
 };
@@ -272,34 +261,21 @@ export const fallingItemTypes = [
   "baddie",
   "charles",
   "spring",
-  "fish",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof fallingItemTypes)[number];
 
+export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
+  "spring",
+  P,
+  RoomId
+>;
+
 export function isFreeItem<
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
->(
-  item: ItemInPlay<ItemInPlayType, P, RoomId>,
-): item is ItemInPlay<FreeItemTypes, P, RoomId> {
+>(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
   return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
-}
-
-export function assertItemHasRenderContainer<T extends ItemInPlayType>(
-  item: ItemInPlay<T>,
-): asserts item is SetRequired<ItemInPlay<T>, "renderContainer"> {
-  if (item.renderContainer === undefined) {
-    throw new Error("Item does not have a render container");
-  }
-}
-
-export function assertItemHasPositionContainer<T extends ItemInPlayType>(
-  item: ItemInPlay<T>,
-): asserts item is SetRequired<ItemInPlay<T>, "positionContainer"> {
-  if (item.positionContainer === undefined) {
-    throw new Error("Item does not have a position container");
-  }
 }
 
 /**

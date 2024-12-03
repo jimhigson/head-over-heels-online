@@ -970,16 +970,6 @@ export const campaign = {
           position: { x: 7, y: 7, z: 0 },
           type: "baddie",
         },
-        "deadlyBlock@3,3,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 3, y: 3, z: 0 },
-          type: "deadlyBlock",
-        },
-        "deadlyBlock@4,4,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 4, y: 4, z: 0 },
-          type: "deadlyBlock",
-        },
         "door@3,0,0:Z1V8aSY": {
           config: { direction: "towards", toRoom: "blacktooth15" },
           position: { x: 3, y: 0, z: 0 },
@@ -989,6 +979,16 @@ export const campaign = {
           config: { direction: "left", toRoom: "blacktooth17triple" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
+        },
+        "moveableDeadly@3,3,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 3, y: 3, z: 0 },
+          type: "moveableDeadly",
+        },
+        "moveableDeadly@4,4,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 4, y: 4, z: 0 },
+          type: "moveableDeadly",
         },
       },
       planet: "blacktooth",
@@ -1508,7 +1508,7 @@ export const campaign = {
           position: { x: 0, y: 0, z: 1 },
           type: "block",
         },
-        headsSpring: { config: {}, position: { x: 0, y: 3, z: 5 }, type: "spring" },
+        spring: { config: {}, position: { x: 0, y: 3, z: 5 }, type: "spring" },
         "teleporter@5,7,0:Z12mRwL": {
           config: { toRoom: "blacktooth2" },
           position: { x: 5, y: 7, z: 0 },
@@ -1685,10 +1685,10 @@ export const campaign = {
           position: { x: 3, y: 8, z: 2 },
           type: "door",
         },
-        "fish@7,4,3:ZyDpHa": {
-          config: { alive: true },
+        "pickup@7,4,3:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 7, y: 4, z: 3 },
-          type: "fish",
+          type: "pickup",
         },
       },
       planet: "blacktooth",
@@ -1752,20 +1752,10 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth23heels",
       items: {
-        heels: {
-          config: { which: "heels" },
-          position: { x: 4, y: 3, z: 11 },
-          type: "player",
-        },
         bag: {
           config: { gives: "bag" },
-          position: { x: 4, y: 3, z: 9 },
-          type: "pickup",
-        },
-        spring: {
-          config: {},
           position: { x: 4, y: 3, z: 8 },
-          type: "spring",
+          type: "pickup",
         },
         "barrier@4,0,0:fbso8": {
           config: { axis: "y", disappearing: false },
@@ -1942,7 +1932,6 @@ export const campaign = {
           position: { x: 0, y: 5, z: 0 },
           type: "conveyor",
         },
-        /*
         "conveyor@0,6,0:24hKaE": {
           config: { direction: "left" },
           position: { x: 0, y: 6, z: 0 },
@@ -1957,7 +1946,7 @@ export const campaign = {
           config: { direction: "towards" },
           position: { x: 2, y: 6, z: 0 },
           type: "conveyor",
-        },*/
+        },
         cube: {
           config: { style: "cube" },
           position: { x: 0, y: 3, z: 8 },
@@ -1967,6 +1956,11 @@ export const campaign = {
           config: { direction: "left", toRoom: "blacktooth1head" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
+        },
+        heels: {
+          config: { which: "heels" },
+          position: { x: 0, y: 3, z: 9 },
+          type: "player",
         },
         lift: {
           config: { bottom: 0, top: 8 },
@@ -2169,15 +2163,15 @@ export const campaign = {
           position: { x: 1, y: 8, z: 3 },
           type: "door",
         },
-        "fish@2,3,1:ZyDpHa": {
-          config: { alive: true },
-          position: { x: 2, y: 3, z: 1 },
-          type: "fish",
-        },
         "movableBlock@2,3,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 2, y: 3, z: 0 },
           type: "movableBlock",
+        },
+        "pickup@2,3,1:ZPJAGD": {
+          config: { gives: "reincarnation" },
+          position: { x: 2, y: 3, z: 1 },
+          type: "pickup",
         },
         "portableBlock@0,0,0:Z1SKpmn": {
           config: { style: "drum" },
@@ -3178,11 +3172,6 @@ export const campaign = {
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "fish@5,15,1:ZyDpHa": {
-          config: { alive: true },
-          position: { x: 5, y: 15, z: 1 },
-          type: "fish",
-        },
         "pickup@3,15,1:1MkQY2": {
           config: { gives: "extra-life" },
           position: { x: 3, y: 15, z: 1 },
@@ -3191,6 +3180,11 @@ export const campaign = {
         "pickup@4,15,1:DHWsf": {
           config: { gives: "shield" },
           position: { x: 4, y: 15, z: 1 },
+          type: "pickup",
+        },
+        "pickup@5,15,1:ZPJAGD": {
+          config: { gives: "reincarnation" },
+          position: { x: 5, y: 15, z: 1 },
           type: "pickup",
         },
       },
@@ -5298,10 +5292,10 @@ export const campaign = {
           position: { x: 2, y: 0, z: 1 },
           type: "door",
         },
-        "fish@5,15,1:ZyDpHa": {
-          config: { alive: true },
+        "pickup@5,15,1:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 5, y: 15, z: 1 },
-          type: "fish",
+          type: "pickup",
         },
         "portableBlock@0,1,0:Z1UEQTQ": {
           config: { style: "cube" },
@@ -6910,10 +6904,10 @@ export const campaign = {
           position: { x: 7, y: 0, z: 0 },
           type: "block",
         },
-        "fish@7,0,1:ZyDpHa": {
-          config: { alive: true },
+        "pickup@7,0,1:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 7, y: 0, z: 1 },
-          type: "fish",
+          type: "pickup",
         },
       },
       planet: "blacktooth",
@@ -7774,10 +7768,10 @@ export const campaign = {
           position: { x: 1, y: 8, z: 2 },
           type: "door",
         },
-        "fish@3,0,3:ZyDpHa": {
-          config: { alive: true },
+        "pickup@3,0,3:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 3, y: 0, z: 3 },
-          type: "fish",
+          type: "pickup",
         },
         "spring@3,3,0:13y": {
           config: {},
@@ -8142,15 +8136,15 @@ export const campaign = {
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "fish@0,7,5:ZyDpHa": {
-          config: { alive: true },
-          position: { x: 0, y: 7, z: 5 },
-          type: "fish",
-        },
         "movableBlock@3,4,0:Z15GVb5": {
           config: { style: "anvil" },
           position: { x: 3, y: 4, z: 0 },
           type: "movableBlock",
+        },
+        "pickup@0,7,5:ZPJAGD": {
+          config: { gives: "reincarnation" },
+          position: { x: 0, y: 7, z: 5 },
+          type: "pickup",
         },
         "portableBlock@5,7,0:Z1UEQTQ": {
           config: { style: "cube" },
@@ -12896,10 +12890,10 @@ export const campaign = {
           position: { x: 8, y: 2, z: 0 },
           type: "door",
         },
-        "fish@4,3,0:2eEoj9": {
-          config: { alive: false },
+        "moveableDeadly@4,3,0:Z1nr7Y3": {
+          config: { style: "deadFish" },
           position: { x: 4, y: 3, z: 0 },
-          type: "fish",
+          type: "moveableDeadly",
         },
       },
       planet: "egyptus",
@@ -13231,10 +13225,10 @@ export const campaign = {
           position: { x: 2, y: 8, z: 0 },
           type: "door",
         },
-        "fish@0,7,5:ZyDpHa": {
-          config: { alive: true },
+        "pickup@0,7,5:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 0, y: 7, z: 5 },
-          type: "fish",
+          type: "pickup",
         },
       },
       planet: "egyptus",
@@ -14294,10 +14288,10 @@ export const campaign = {
           position: { x: 1, y: 8, z: 0 },
           type: "door",
         },
-        "fish@3,3,5:ZyDpHa": {
-          config: { alive: true },
+        "pickup@3,3,5:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 3, y: 3, z: 5 },
-          type: "fish",
+          type: "pickup",
         },
         "portableBlock@0,7,0:Z14c3Fl": {
           config: { style: "sticks" },
@@ -14764,7 +14758,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase12: {
-      color: { hue: "yellow", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase12",
@@ -14866,7 +14860,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase13: {
-      color: { hue: "cyan", shade: "basic" },
+      color: { hue: "cyan", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase13",
@@ -15054,7 +15048,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase15: {
-      color: { hue: "yellow", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase15",
@@ -15322,7 +15316,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase19: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "white", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase19",
@@ -15506,7 +15500,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase20: {
-      color: { hue: "cyan", shade: "basic" },
+      color: { hue: "cyan", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase20",
@@ -15608,7 +15602,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase21tosafari: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "white", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase21tosafari",
@@ -16542,7 +16536,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase28: {
-      color: { hue: "yellow", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase28",
@@ -16590,7 +16584,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase29: {
-      color: { hue: "white", shade: "basic" },
+      color: { hue: "white", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase29",
@@ -17986,7 +17980,7 @@ export const campaign = {
       },
     } satisfies RoomJson<"moonbase", OriginalCampaignRoomId>,
     moonbase36: {
-      color: { hue: "yellow", shade: "basic" },
+      color: { hue: "yellow", shade: "dimmed" },
       floor: "moonbase",
       floorSkip: [],
       id: "moonbase36",
@@ -18927,10 +18921,10 @@ export const campaign = {
           position: { x: 2, y: 0, z: 0 },
           type: "door",
         },
-        "fish@5,5,3:2eEoj9": {
-          config: { alive: false },
+        "moveableDeadly@5,5,3:Z1nr7Y3": {
+          config: { style: "deadFish" },
           position: { x: 5, y: 5, z: 3 },
-          type: "fish",
+          type: "moveableDeadly",
         },
       },
       planet: "penitentiary",
@@ -19808,10 +19802,10 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "fish@12,4,4:ZyDpHa": {
-          config: { alive: true },
+        "pickup@12,4,4:ZPJAGD": {
+          config: { gives: "reincarnation" },
           position: { x: 12, y: 4, z: 4 },
-          type: "fish",
+          type: "pickup",
         },
         "portableBlock@11,1,0:Z14c3Fl": {
           config: { style: "sticks" },
@@ -21084,20 +21078,20 @@ export const campaign = {
           position: { x: 7, y: 1, z: 0 },
           type: "block",
         },
-        "deadlyBlock@2,0,1:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 2, y: 0, z: 1 },
-          type: "deadlyBlock",
-        },
-        "deadlyBlock@2,1,1:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 2, y: 1, z: 1 },
-          type: "deadlyBlock",
-        },
         "door@8,0,3:2uC47T": {
           config: { direction: "left", toRoom: "penitentiary28" },
           position: { x: 8, y: 0, z: 3 },
           type: "door",
+        },
+        "moveableDeadly@2,0,1:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 2, y: 0, z: 1 },
+          type: "moveableDeadly",
+        },
+        "moveableDeadly@2,1,1:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 2, y: 1, z: 1 },
+          type: "moveableDeadly",
         },
       },
       planet: "penitentiary",
@@ -21353,25 +21347,25 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "deadlyBlock@5,0,1:Z1tM18t": {
+        "moveableDeadly@5,0,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 1 },
-          type: "deadlyBlock",
+          type: "moveableDeadly",
         },
-        "deadlyBlock@5,0,2:Z1tM18t": {
+        "moveableDeadly@5,0,2:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 0, z: 2 },
-          type: "deadlyBlock",
+          type: "moveableDeadly",
         },
-        "deadlyBlock@5,1,1:Z1tM18t": {
+        "moveableDeadly@5,1,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 1 },
-          type: "deadlyBlock",
+          type: "moveableDeadly",
         },
-        "deadlyBlock@5,1,2:Z1tM18t": {
+        "moveableDeadly@5,1,2:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 1, z: 2 },
-          type: "deadlyBlock",
+          type: "moveableDeadly",
         },
         "portableBlock@1,1,1:Z14c3Fl": {
           config: { style: "sticks" },
@@ -21468,20 +21462,20 @@ export const campaign = {
           position: { x: 7, y: 1, z: 4 },
           type: "block",
         },
-        "deadlyBlock@2,0,5:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 2, y: 0, z: 5 },
-          type: "deadlyBlock",
-        },
-        "deadlyBlock@2,1,5:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 2, y: 1, z: 5 },
-          type: "deadlyBlock",
-        },
         "door@3,0,0:Z4XOeS": {
           config: { direction: "towards", toRoom: "penitentiary33" },
           position: { x: 3, y: 0, z: 0 },
           type: "door",
+        },
+        "moveableDeadly@2,0,5:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 2, y: 0, z: 5 },
+          type: "moveableDeadly",
+        },
+        "moveableDeadly@2,1,5:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 2, y: 1, z: 5 },
+          type: "moveableDeadly",
         },
       },
       planet: "penitentiary",
@@ -22395,11 +22389,6 @@ export const campaign = {
           position: { x: 3, y: 1, z: 0 },
           type: "deadlyBlock",
         },
-        "deadlyBlock@4,0,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 4, y: 0, z: 0 },
-          type: "deadlyBlock",
-        },
         "door@0,2,0:Z2p4JCB": {
           config: { direction: "right", toRoom: "safari11" },
           position: { x: 0, y: 2, z: 0 },
@@ -22409,6 +22398,11 @@ export const campaign = {
           config: { bottom: 0, top: 9 },
           position: { x: 7, y: 5, z: 0 },
           type: "lift",
+        },
+        "moveableDeadly@4,0,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 4, y: 0, z: 0 },
+          type: "moveableDeadly",
         },
         "portableBlock@3,5,0:Z1SKpmn": {
           config: { style: "drum" },
@@ -22523,16 +22517,6 @@ export const campaign = {
           position: { x: 5, y: 7, z: 1 },
           type: "block",
         },
-        "deadlyBlock@3,7,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 3, y: 7, z: 0 },
-          type: "deadlyBlock",
-        },
-        "deadlyBlock@5,7,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 7, z: 0 },
-          type: "deadlyBlock",
-        },
         "door@0,3,0:Z2wPfzr": {
           config: { direction: "right", toRoom: "safari9" },
           position: { x: 0, y: 3, z: 0 },
@@ -22542,6 +22526,16 @@ export const campaign = {
           config: { direction: "left", toRoom: "safari13" },
           position: { x: 8, y: 3, z: 0 },
           type: "door",
+        },
+        "moveableDeadly@3,7,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 3, y: 7, z: 0 },
+          type: "moveableDeadly",
+        },
+        "moveableDeadly@5,7,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 7, z: 0 },
+          type: "moveableDeadly",
         },
         "pickup@4,7,0:Zs6lvR": {
           config: { gives: "jumps" },
@@ -22905,11 +22899,6 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "fish@4,7,4:ZyDpHa": {
-          config: { alive: true },
-          position: { x: 4, y: 7, z: 4 },
-          type: "fish",
-        },
         "hushPuppy@0,3,0:13y": {
           config: {},
           position: { x: 0, y: 3, z: 0 },
@@ -22924,6 +22913,11 @@ export const campaign = {
           config: {},
           position: { x: 2, y: 3, z: 2 },
           type: "hushPuppy",
+        },
+        "pickup@4,7,4:ZPJAGD": {
+          config: { gives: "reincarnation" },
+          position: { x: 4, y: 7, z: 4 },
+          type: "pickup",
         },
       },
       planet: "safari",
@@ -24263,10 +24257,10 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "fish@4,3,1:2eEoj9": {
-          config: { alive: false },
+        "moveableDeadly@4,3,1:Z1nr7Y3": {
+          config: { style: "deadFish" },
           position: { x: 4, y: 3, z: 1 },
-          type: "fish",
+          type: "moveableDeadly",
         },
       },
       planet: "safari",

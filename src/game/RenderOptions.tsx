@@ -1,4 +1,5 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
+import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 export const hasItemClick = <RoomId extends string>(
@@ -10,6 +11,6 @@ export const hasItemClick = <RoomId extends string>(
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
 export type RenderOptions<RoomId extends string> = {
-  onItemClick?: (item: AnyItemInPlay<RoomId>) => void;
+  onItemClick?: (item: AnyItemInPlay<RoomId>, container: Container) => void;
   showBoundingBoxes: ShowBoundingBoxes;
 };

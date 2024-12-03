@@ -78,22 +78,22 @@ const backgroundFrames = <
 };
 
 const frames = {
-  ...backgroundFrames("blacktooth", 443, 324, ""),
-  ...backgroundFrames("blacktooth", 541, 324, ".dark"), // same really
-  ...backgroundFrames("bookworld", 356, 23, ""),
-  ...backgroundFrames("bookworld", 356, 23, ".dark"), // same really
-  ...backgroundFrames("egyptus", 435, 23, ""),
-  ...backgroundFrames("egyptus", 557, 97, ".dark"), // actually different
-  ...backgroundFrames("jail", 411, 340, ""),
-  ...backgroundFrames("jail", 411, 340, ".dark"), // same really
-  ...backgroundFrames("market", 378, 244, ""),
-  ...backgroundFrames("market", 378, 244, ".dark"), // same really
-  ...backgroundFrames("moonbase", 384, 141, ""),
-  ...backgroundFrames("moonbase", 384, 141, ".dark"), // same really
-  ...backgroundFrames("penitentiary", 513, 23, ""),
-  ...backgroundFrames("penitentiary", 513, 23, ".dark"), // same really
-  ...backgroundFrames("safari", 482, 244, ""),
-  ...backgroundFrames("safari", 482, 244, ".dark"), // same really
+  ...backgroundFrames("blacktooth", 544, 148, ".dark"), // same really
+  ...backgroundFrames("blacktooth", 544, 76, ""),
+  ...backgroundFrames("bookworld", 382, 16, ".dark"), // same really
+  ...backgroundFrames("bookworld", 382, 16, ""),
+  ...backgroundFrames("egyptus", 447, 16, ""),
+  ...backgroundFrames("egyptus", 447, 89, ".dark"), // actually different
+  ...backgroundFrames("jail", 512, 76, ".dark"), // same really
+  ...backgroundFrames("jail", 512, 76, ""),
+  ...backgroundFrames("market", 440, 386, ".dark"), // same really
+  ...backgroundFrames("market", 440, 386, ""),
+  ...backgroundFrames("moonbase", 472, 301, ".dark"), // actually different
+  ...backgroundFrames("moonbase", 472, 229, ""),
+  ...backgroundFrames("penitentiary", 382, 389, ".dark"), // same really
+  ...backgroundFrames("penitentiary", 382, 389, ""),
+  ...backgroundFrames("safari", 544, 386, ".dark"), // same really
+  ...backgroundFrames("safari", 544, 386, ""),
 } as const;
 
 export const scenerySpritesheetData = {

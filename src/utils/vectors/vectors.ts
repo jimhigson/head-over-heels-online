@@ -115,6 +115,9 @@ export const xyzEqual = (
 ) => {
   return ax === bx && ay === by && az === bz;
 };
+export const xyEqual = ({ x: ax, y: ay }: Xy, { x: bx, y: by }: Xy) => {
+  return ax === bx && ay === by;
+};
 
 /**
  * because of floating point error, after processing mtv it is possible to get
@@ -193,4 +196,11 @@ export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
       return "towards";
     }
   }
+};
+
+export const distanceXySquared = (
+  { x: x1, y: y1 }: Xyz,
+  { x: x2, y: y2 }: Xyz,
+) => {
+  return Math.abs(x2 - x1) ** 2 + Math.abs(y2 - y1) ** 2;
 };

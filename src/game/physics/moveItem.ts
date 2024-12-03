@@ -1,4 +1,8 @@
-import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type {
+  AnyItemInPlay,
+  FreeItem,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { isFreeItem } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
@@ -11,10 +15,13 @@ import {
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { objectValues } from "iter-tools";
 import { isSolid } from "./isSolid";
-import { mtv, sortObstaclesAboutVector } from "./slidingCollision";
+import { mtv } from "./slidingCollision";
+import { sortObstaclesAboutVector } from "./collisionsOrder";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
+import { objectValues } from "iter-tools";
+import type { PlanetName } from "@/sprites/planets";
+import { checkStandingOn } from "../collision/findStandingOn";
 
 const log = false;
 
@@ -63,7 +70,7 @@ export const moveItem = <RoomId extends string>({
       posDelta,
       ` because ${pusher ? `push by ${pusher.id}` : "velocity (first cause)"}`,
       pusher ? ""
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
       : (subjectItem.state as any).vels,
     );
 
@@ -75,29 +82,28 @@ export const moveItem = <RoomId extends string>({
   if (log)
     console.log(
       subjectItem.id,
-      "collided with",
+      "collided with:",
       sortedCollisions,
-      "out of",
+      "from room items:",
       room.items,
     );
 
-  let lastProcessedDistance = -Infinity;
-  for (const [dist, collision] of sortedCollisions) {
+  for (const collision of sortedCollisions) {
     if (
-      dist - 0.001 > lastProcessedDistance &&
+      //dist - 0.001 > lastProcessedDistance &&
       !collision1to1(subjectItem, collision)
     ) {
       // it is possible there is no longer a collision due to previous sliding - in this case,
       // the mtv will be wrong and erratic - skip this obstacle
 
       // HERE: we want to only continue if the sorting didn't give an equal score to this
-      // and the previous item. Otherwise, for example, if gravity is pushing us down onto two items,
+      // and the previous item (ie, the current item is further away).
+      // Otherwise, for example, if gravity is pushing us down onto two items,
       // we miss the chance to interact with them both (eg, on the boundary of two conveyors - we want to
       // use the direction from both. Otherwise, we are sensitive to the order items appeared in the world as
       // since the sort will not have changed this
       continue;
     }
-    lastProcessedDistance = dist;
 
     if (
       pusher !== collision &&
@@ -187,13 +193,6 @@ export const moveItem = <RoomId extends string>({
           collision.aabb,
         ),
       );
-
-      // now the subject has backed off again, the pushee might be standing on it- update that:
-      /*collision.state.standingOn = findStandingOnIds(
-        collision,
-        objectValues(room.items),
-        gameState.pickupsCollected[room.id],
-      );*/
     } else {
       // back off to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
@@ -207,28 +206,53 @@ export const moveItem = <RoomId extends string>({
           subjectItem.state.position,
         );
     }
+
+    // check if we are standing on the item:
+    if (isFreeItem(subjectItem) && backingOffMtv.z > 0) {
+      // moving vertically down onto the item
+      if (
+        subjectItem.state.standingOn === null ||
+        !sortedCollisions.includes(subjectItem.state.standingOn)
+      ) {
+        // not colliding with the thing we were stood on before - take over the slot:
+        removeStandingOn(subjectItem);
+        setStandingOn(subjectItem, collision);
+      }
+    }
   }
 
-  /*if (
+  if (
     isFreeItem(subjectItem) &&
-    // for recursive calls, this will be updated by the caller
-    pusher === undefined
+    subjectItem.state.standingOn !== null &&
+    !checkStandingOn(subjectItem, subjectItem.state.standingOn)
   ) {
-    console.log(
-      `🥾 setting stood on for ${subjectItem.id} to `,
-      findStandingOn2(
-        subjectItem,
-        objectValues(room.items),
-        gameState.pickupsCollected[room.id],
-      ),
-    );
+    if (log) {
+      console.log(
+        `${subjectItem.id} is (spatially) no longer standing on ${subjectItem.state.standingOn.id}`,
+      );
+    }
+    removeStandingOn(subjectItem);
+  }
+  for (const s of subjectItem.state.stoodOnBy) {
+    if (!checkStandingOn(s, subjectItem)) removeStandingOn(s);
+  }
 
-    subjectItem.state.standingOn = findStandingOnIds(
-      subjectItem,
-      objectValues(room.items),
-      gameState.pickupsCollected[room.id],
-    );
-  }*/
+  return false; // no reason found to halt, can tick the next item
+};
 
-  return false; // no reason to halt, can tick the next item
+const removeStandingOn = <RoomId extends string>(
+  item: FreeItem<PlanetName, RoomId>,
+) => {
+  if (item.state.standingOn !== null) {
+    item.state.standingOn.state.stoodOnBy.delete(item);
+  }
+  item.state.standingOn = null;
+};
+
+const setStandingOn = <RoomId extends string>(
+  item: FreeItem<PlanetName, RoomId>,
+  standingOn: UnknownItemInPlay<RoomId>,
+) => {
+  item.state.standingOn = standingOn;
+  standingOn.state.stoodOnBy.add(item);
 };

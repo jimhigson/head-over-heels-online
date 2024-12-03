@@ -19,7 +19,7 @@ export const gravity = <RoomId extends string>(
   item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<FreeItemTypes> => {
+): MechanicResult<FreeItemTypes, RoomId> => {
   if (!isSolid(item, gameState.progression)) {
     // non-solid items do not have gravity - they'd fall through the floor!
     return unitMechanicalResult;
@@ -38,7 +38,37 @@ export const gravity = <RoomId extends string>(
   const terminalZ =
     terminalVelocityPixPerMs[type === "head" ? "head" : "others"];
 
+  if (standingOn !== null) {
+    // standing on something - no gravity will be applied
+    // TODO: special case for lifts going down:
+    if (isItemType("lift")(standingOn)) {
+      const liftVelZ = standingOn.state.vels.lift.z;
+      if (liftVelZ < 0) {
+        // descending on a lift - we need some gravity to keep us on the lift
+        // as it falls - go slightly faster than the lift's downwards speed
+        return {
+          vels: {
+            gravity: {
+              z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
+            },
+          },
+        };
+      }
+    }
+    return unitMechanicalResult;
+  } else {
+    // not standing on anything - allow free fall up to terminal velocity
+    return {
+      vels: {
+        gravity: {
+          z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
+        },
+      },
+    };
+  }
+
   /** get the velocity 'before' this frame, that we will accelerate from */
+  /*
   const startingVelZ = () => {
     const firstStanding = standingOn.at(0);
     if (firstStanding === undefined)
@@ -74,4 +104,5 @@ export const gravity = <RoomId extends string>(
       },
     },
   };
+  */
 };

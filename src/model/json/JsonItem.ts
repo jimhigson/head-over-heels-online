@@ -17,9 +17,9 @@ export type JsonItemType =
   | "portableBlock"
   // something that can be pushed or moves on a switch
   | "movableBlock"
+  | "moveableDeadly"
   | "conveyor"
   | "pickup"
-  | "fish"
   | "spring"
   | "sceneryPlayer"
   | "player"
@@ -61,6 +61,19 @@ export type DoorLegsConfig = {
   height: number;
 };
 
+export type DeadlyItemStyle = "volcano" | "toaster" | "spikes";
+
+export type BaddieType =
+  | "dalek"
+  | "helicopter-bug"
+  | "headless-base"
+  | "monkey"
+  | "elephant"
+  | "elephant-head"
+  | "flying-ball"
+  | "bubble-robot"
+  | "computer-bot";
+
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   door: {
@@ -95,7 +108,12 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     disappearing: boolean;
   };
   deadlyBlock: {
-    style: "volcano" | "toaster" | "spikes" | "puck";
+    // these don't move, and the differences are purely in their rendering:
+    style: DeadlyItemStyle;
+  };
+  moveableDeadly: {
+    // these can move (fall, be pushed etc) and are deadly
+    style: "puck" | "deadFish";
   };
   conveyor: {
     direction: DirectionXy4;
@@ -109,10 +127,8 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
       | "donuts"
       | "bag"
       | "crown"
-      | "hooter";
-  };
-  fish: {
-    alive: boolean;
+      | "hooter"
+      | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
   };
   player: {
     which: CharacterName;
@@ -127,16 +143,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   baddie: { activated: boolean } & (
     | {
-        which:
-          | "dalek"
-          | "helicopter-bug"
-          | "headless-base"
-          | "monkey"
-          | "elephant"
-          | "elephant-head"
-          | "flying-ball"
-          | "bubble-robot"
-          | "computer-bot";
+        which: BaddieType;
       }
     | {
         // with a starting direction

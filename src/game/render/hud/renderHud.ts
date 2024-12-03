@@ -13,15 +13,9 @@ import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  PlayableItem,
-} from "@/model/ItemInPlay";
-import { createRenderContainerForItem } from "../renderItem";
-import { itemAppearances } from "../itemAppearances/ItemAppearances";
-import type { PlanetName } from "@/sprites/planets";
+import type { PlayableItem } from "@/model/ItemInPlay";
 import type { RenderOptions } from "@/game/RenderOptions";
+import { ItemRenderer } from "../ItemRenderer";
 
 const smallTextSize = 8;
 const livesTextFromCentre = 24;
@@ -33,7 +27,7 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-export const renderHud = (hudContainer: Container) => {
+export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
   const uncurrentSpriteFilter = new RevertColouriseFilter();
@@ -117,7 +111,12 @@ export const renderHud = (hudContainer: Container) => {
       shield: iconWithNumber("hud.shield"),
       extraSkill: iconWithNumber("hud.bigJumps"),
       bag: iconWithNumber("bag", true, true),
-      carrying: { container: new Container() },
+      carrying: {
+        container: new Container(),
+        itemRenderer: undefined as
+          | undefined
+          | ItemRenderer<"spring" | "portableBlock", RoomId>,
+      },
     },
   };
 
@@ -132,7 +131,7 @@ export const renderHud = (hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.bag.container);
   hudContainer.addChild(hudElements.heels.carrying.container);
 
-  return <RoomId extends string>(
+  return (
     gameState: GameState<RoomId>,
     screenSize: Xy,
     renderOptions: RenderOptions<RoomId>,
@@ -191,23 +190,24 @@ export const renderHud = (hudContainer: Container) => {
       text.text = `${lives ?? 0}`;
     };
 
-    const updateCarrying = <T extends ItemInPlayType, RoomId extends string>(
-      carrying: ItemInPlay<T, PlanetName, NoInfer<RoomId>> | null,
-      gameState: GameState<RoomId>,
+    const updateCarrying = (
+      carrying: PlayableItem<"heels", RoomId>["state"]["carrying"],
     ) => {
-      const carryingContainer = hudElements.heels.carrying.container;
-      if (carrying === null && carryingContainer.children.length > 0) {
+      const { itemRenderer, container } = hudElements.heels.carrying;
+      if (carrying === null && itemRenderer !== undefined) {
         // were carrying, not now:
-        carryingContainer.children[0].destroy();
+        itemRenderer.destroy();
+        hudElements.heels.carrying.itemRenderer = undefined;
       }
-      if (carrying !== null && carryingContainer.children.length === 0) {
-        const renderContainer = createRenderContainerForItem(
-          carrying,
-          renderOptions,
-        );
-        const itemAppearance = itemAppearances[carrying.type];
-        itemAppearance(carrying, gameState, renderContainer);
-        carryingContainer.addChild(renderContainer);
+      if (carrying !== null && itemRenderer === undefined) {
+        const itemRenderer = (hudElements.heels.carrying.itemRenderer =
+          ItemRenderer<"spring" | "portableBlock", RoomId>(
+            carrying,
+            room,
+            renderOptions,
+          ));
+
+        container.addChild(itemRenderer.container);
       }
     };
 
@@ -252,12 +252,7 @@ export const renderHud = (hudContainer: Container) => {
     updateCarrying(
       // this case is necessary because state isn't generic on roomid, so state.carrying doesn't have
       // roomid completed (other than to string)
-      (heelsItem?.state.carrying as ItemInPlay<
-        "spring" | "portableBlock",
-        PlanetName,
-        RoomId
-      >) ?? null,
-      gameState,
+      heelsItem?.state.carrying ?? null,
     );
 
     hudElements.heels.bag.icon.filters =

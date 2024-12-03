@@ -17,7 +17,7 @@ export const walking = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
   { inputState }: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName> => {
+): MechanicResult<CharacterName, RoomId> => {
   const {
     type,
     state: {
@@ -45,7 +45,7 @@ export const walking = <RoomId extends string>(
 
   // handle 'walking' while ascending/falling:
   if (type === "heels") {
-    if (standingOn.length === 0) {
+    if (standingOn === null) {
       // heels has mandatory forward motion while jumping, but decelerates:
       if (playableItem.state.jumped) {
         return {
@@ -77,7 +77,7 @@ export const walking = <RoomId extends string>(
   }
 
   const action =
-    standingOn.length === 0 && gravityVel.z < 0 ? "falling"
+    standingOn === null && gravityVel.z < 0 ? "falling"
     : directionOfWalk === undefined ? "idle"
     : "moving";
 

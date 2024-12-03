@@ -662,7 +662,7 @@ const rooms = {
         position: { x: 1, y: 0, z: 0 },
       },
       {
-        type: "deadlyBlock",
+        type: "moveableDeadly",
         config: { style: "puck" },
         position: { x: 7, y: 0, z: 0 },
       },
@@ -687,13 +687,13 @@ const rooms = {
         position: { x: 7, y: 5, z: 0 },
       },
       {
-        type: "fish",
-        config: { alive: true },
+        type: "pickup",
+        config: { gives: "reincarnation" },
         position: { x: 7, y: 4, z: 0 },
       },
       {
-        type: "fish",
-        config: { alive: false },
+        type: "moveableDeadly",
+        config: { style: "deadFish" },
         position: { x: 5, y: 4, z: 0 },
       },
       // {

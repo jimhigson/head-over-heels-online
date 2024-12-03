@@ -16,10 +16,7 @@ export function* loadItem<RoomId extends string>(
   jsonItem: UnknownJsonItem<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
 ): Generator<UnknownItemInPlay<RoomId>, undefined> {
-  if (
-    (jsonItem.type === "pickup" || jsonItem.type === "fish") &&
-    roomPickupsCollected[itemId]
-  ) {
+  if (jsonItem.type === "pickup" && roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
     return;
   }
@@ -68,12 +65,12 @@ const initialState = (jsonItem: UnknownJsonItem) => {
 
   return {
     expires: null,
-    stoodOnBy: [],
+    stoodOnBy: new Set(),
     unsolidAfterProgression: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(free ?
       {
-        standingOn: [],
+        standingOn: null,
         vels: { gravity: originXyz, movingFloor: originXyz },
         activeConveyor: null,
       }
@@ -83,7 +80,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         vels: {
           gravity: originXyz,
           movingFloor: originXyz,
-          walking: initBaddieWalk(),
+          walking: initBaddieWalk(jsonItem.config.which),
         },
         activated: jsonItem.config.activated,
       }

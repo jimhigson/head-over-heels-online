@@ -5,10 +5,11 @@ import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { PlanetName } from "@/sprites/planets";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import { originXyz } from "@/utils/vectors/vectors";
+import type { CharacterName } from "@/model/modelTypes";
 
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", PlanetName, RoomId>,
-): PlayableItem => {
+): PlayableItem<CharacterName, RoomId> => {
   if (jsonItem.config.which === "head") {
     return {
       type: "head",
@@ -24,8 +25,8 @@ export const loadPlayer = <RoomId extends string>(
           hasHooter: false,
           fastSteps: 0,
           shield: 0,
-          standingOn: [],
-          stoodOnBy: [],
+          standingOn: null,
+          stoodOnBy: new Set(),
           activeConveyor: null,
           vels: {
             walking: originXyz,
@@ -60,8 +61,8 @@ export const loadPlayer = <RoomId extends string>(
           hasBag: false,
           bigJumps: 0,
           shield: 0,
-          standingOn: [],
-          stoodOnBy: [],
+          standingOn: null,
+          stoodOnBy: new Set(),
           activeConveyor: null,
           vels: {
             walking: originXyz,

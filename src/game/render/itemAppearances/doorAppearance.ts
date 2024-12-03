@@ -1,26 +1,22 @@
 import type { Container } from "pixi.js";
-import { createSprite } from "./game/render/createSprite";
-import { doorTexture } from "./game/render/itemAppearances/doorAppearance";
-import { projectBlockXyzToScreenXy } from "./game/render/projectToScreen";
-import type { UnknownRoomState } from "./model/modelTypes";
-import { doorTexturePivot } from "./sprites/spritePivots";
-import { blockSizePx } from "./sprites/spritePivots";
-import { edgePaletteSwapFilters } from "./game/render/filters/paletteSwapFilters";
-import type { Xy } from "./utils/vectors/vectors";
+import { createSprite } from "../createSprite";
+import { doorTexture } from "./doorTexture";
+import { projectBlockXyzToScreenXy } from "../projectToScreen";
+import type { UnknownRoomState } from "../../../model/modelTypes";
+import { doorTexturePivot } from "../../../sprites/spritePivots";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { edgePaletteSwapFilters } from "../filters/paletteSwapFilters";
+import type { Xy } from "../../../utils/vectors/vectors";
 import {
   perpendicularAxisXy,
   doorAlongAxis,
   originXy,
   addXy,
-} from "./utils/vectors/vectors";
-import type { ItemInPlay } from "./model/ItemInPlay";
-import { iterateToContainer } from "./game/iterateToContainer";
-import { currentRoom } from "./game/gameState/GameState";
-import type { ItemAppearance } from "./game/render/itemAppearances/appearanceUtils";
-import {
-  applyAppearance,
-  ifNotRenderedBefore,
-} from "./game/render/itemAppearances/appearanceUtils";
+} from "../../../utils/vectors/vectors";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { iterateToContainer } from "../../iterateToContainer";
+import type { ItemAppearance } from "./appearanceUtils";
+import { renderOnce } from "./appearanceUtils";
 
 function* doorLegsGenerator(
   { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,
@@ -82,16 +78,14 @@ function* doorLegsGenerator(
     });
   }
 }
-export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
-  ifNotRenderedBefore((doorLegsItem, gameState, renderTo): undefined => {
-    applyAppearance(
-      renderTo,
-      doorLegsItem.state,
-      iterateToContainer(
-        doorLegsGenerator(doorLegsItem, currentRoom(gameState)),
-      ),
-    );
-  });
+export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
+  ({ item: doorLegsItem, room }) => {
+    return {
+      container: iterateToContainer(doorLegsGenerator(doorLegsItem, room)),
+      renderProps: {},
+    };
+  },
+);
 
 function* doorFrameGenerator(
   {
@@ -128,13 +122,11 @@ function* doorFrameGenerator(
     pivot: doorTexturePivot[nearness][axis],
   });
 }
-export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
-  ifNotRenderedBefore((doorFrameItem, gameState, renderTo): undefined => {
-    applyAppearance(
-      renderTo,
-      doorFrameItem.state,
-      iterateToContainer(
-        doorFrameGenerator(doorFrameItem, currentRoom(gameState)),
-      ),
-    );
-  });
+export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
+  ({ item: doorFrameItem, room }) => {
+    return {
+      container: iterateToContainer(doorFrameGenerator(doorFrameItem, room)),
+      renderProps: {},
+    };
+  },
+);

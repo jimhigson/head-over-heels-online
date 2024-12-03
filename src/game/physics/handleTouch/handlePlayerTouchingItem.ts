@@ -30,6 +30,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       break;
     case "baddie":
     case "deadlyBlock":
+    case "moveableDeadly":
       if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
         return true;
       }
@@ -56,15 +57,6 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       break;
     case "pickup":
       handlePlayerTouchingPickup(gameState, playableItem, touchee);
-      break;
-    case "fish":
-      if (touchee.config.alive) {
-        handlePlayerTouchingPickup(gameState, playableItem, touchee);
-      } else {
-        if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
-          return true;
-        }
-      }
       break;
     case "doorFrame":
       if (

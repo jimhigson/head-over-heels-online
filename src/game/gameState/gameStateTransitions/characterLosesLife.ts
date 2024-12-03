@@ -26,6 +26,7 @@ export const characterLosesLife = <RoomId extends string>(
     ...entryState,
     expires: null,
     lives: newLives,
+    standingOn: null,
   };
 
   const reloadedRoom = loadRoom(

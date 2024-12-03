@@ -7,7 +7,7 @@ import type { CharacterName } from "@/model/modelTypes";
  */
 
 export type EntryState = Pick<
-  ItemState<CharacterName>,
+  ItemState<CharacterName, string>,
   "position" | "facing" | "autoWalk" | "action"
 >;
 

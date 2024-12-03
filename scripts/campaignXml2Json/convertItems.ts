@@ -168,7 +168,6 @@ const convertItem = ({
 
     case "toaster":
     case "spikes":
-    case "mortal-cap":
     case "vulcano": {
       const styleConversion: Record<
         typeof item.kind,
@@ -177,7 +176,6 @@ const convertItem = ({
         vulcano: "volcano",
         spikes: "spikes",
         toaster: "toaster",
-        "mortal-cap": "puck",
       };
 
       return {
@@ -206,6 +204,7 @@ const convertItem = ({
     case "donuts":
     case "horn":
     case "shield":
+    case "reincarnation-fish":
     case "handbag": {
       const conversions: Record<
         typeof item.kind,
@@ -218,6 +217,7 @@ const convertItem = ({
         shield: "shield",
         donuts: "donuts",
         "quick-steps": "fast",
+        "reincarnation-fish": "reincarnation",
         crown: "crown",
       };
 
@@ -230,16 +230,22 @@ const convertItem = ({
       };
     }
 
-    case "mortal-fish":
-    case "reincarnation-fish": {
+    case "mortal-cap":
       return {
-        type: "fish",
+        type: "moveableDeadly",
         config: {
-          alive: item.kind === "reincarnation-fish",
+          style: "puck",
         },
         position,
       };
-    }
+    case "mortal-fish":
+      return {
+        type: "moveableDeadly",
+        config: {
+          style: "deadFish",
+        },
+        position,
+      };
 
     case "trampoline": {
       return {

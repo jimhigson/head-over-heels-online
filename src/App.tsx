@@ -13,7 +13,7 @@ import type {
 import { isItemType } from "./model/ItemInPlay.ts";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
-import { LucideSettings } from "lucide-react";
+import { LucideBug } from "lucide-react";
 import { changeCharacterRoom } from "./game/gameState/gameStateTransitions/changeCharacterRoom.ts";
 import { currentRoom } from "./game/gameState/GameState.ts";
 
@@ -101,7 +101,7 @@ export const App = <RoomId extends string>({
 
     return {
       showBoundingBoxes: showBBs,
-      onItemClick(item) {
+      onItemClick(item, container) {
         if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
           gameApi.changeRoom(toRoom);
@@ -123,10 +123,8 @@ export const App = <RoomId extends string>({
           },
           "\nposition",
           `(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
-          "\nitem.positionContainer",
-          item.positionContainer,
-          "\ncontainer xy",
-          `(${item.positionContainer!.x}, ${item.positionContainer!.y})`,
+          "\ncontainer:",
+          container,
         );
       },
     };
@@ -139,7 +137,7 @@ export const App = <RoomId extends string>({
       {gameApi !== undefined && (
         <Collapsible>
           <CollapsibleTrigger className="absolute bottom-2 right-2 flex flex-col z-3">
-            <LucideSettings color="hsl(183, 28%,30%)" />
+            <LucideBug color="hsl(183, 28%,30%)" />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <div className="absolute bottom-10 right-2 flex flex-col">

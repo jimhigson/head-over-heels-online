@@ -2,33 +2,26 @@ import { spriteSheet } from "@/sprites/spriteSheet";
 import { createSprite } from "../createSprite";
 
 import type { CharacterName } from "@/model/modelTypes";
-import {
-  applyAppearance,
-  renderedBefore,
-  type ItemAppearance,
-} from "./appearanceUtils";
-import { renderContainerState } from "@/model/ItemInPlay";
+import type { ItemAppearanceOptions } from "./appearanceUtils";
 
-export const playableAppearance: ItemAppearance<CharacterName> = (
-  { type, state },
-  _gameState,
-  renderTo,
-): undefined => {
-  const { action, facing, teleporting } = state;
-  const currentlyRenderedState = renderTo[renderContainerState];
+export const playableAppearance = <C extends CharacterName>({
+  item: {
+    type,
+    state: { action, facing, teleporting },
+  },
+  currentlyRenderedProps,
+}: ItemAppearanceOptions<C, string>) => {
+  const render =
+    currentlyRenderedProps === undefined ||
+    currentlyRenderedProps.action !== action ||
+    currentlyRenderedProps.facingXy4 !== facing ||
+    currentlyRenderedProps.teleportingPhase !== (teleporting?.phase ?? null);
 
-  const shouldRender =
-    !renderedBefore(renderTo) ||
-    currentlyRenderedState === undefined ||
-    facing !== currentlyRenderedState.facing ||
-    action !== currentlyRenderedState.action ||
-    teleporting?.phase !== currentlyRenderedState.teleporting?.phase;
-
-  if (!shouldRender) {
+  if (!render) {
     return;
   }
 
-  const render = () => {
+  const renderSprite = () => {
     if (action === "death") {
       return createSprite({
         frames: spriteSheet.animations[`${type}.fadeOut`],
@@ -68,5 +61,12 @@ export const playableAppearance: ItemAppearance<CharacterName> = (
     }
   };
 
-  applyAppearance(renderTo, state, render());
+  return {
+    container: renderSprite(),
+    renderProps: {
+      action,
+      facingXy4: facing,
+      teleportingPhase: teleporting?.phase ?? null,
+    },
+  };
 };

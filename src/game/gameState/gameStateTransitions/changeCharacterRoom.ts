@@ -16,8 +16,6 @@ import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
-import { setStandingOnForAllItemsInRoom } from "../setStandingOnForAllItemsInRoom";
-import { destroyItemRendering } from "@/game/render/destroyItemRendering";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -78,8 +76,6 @@ export const changeCharacterRoom = <RoomId extends string>({
 
   // take the character out of the previous room:
   delete leavingRoom.items[currentCharacterName];
-  // alternatively, we could just move the character's rendering into the new room's container?
-  destroyItemRendering(character);
 
   if (changeType !== "teleport") {
     const isPortal = isItemType("portal");
@@ -166,6 +162,11 @@ export const changeCharacterRoom = <RoomId extends string>({
       }
     }
   }
+  // when we put the character in their new room, they won't be standing on anything yet (or will
+  // still have their standing on set to an item in the previous room) - for example, they might
+  // be already on the floor or a teleporter in the new room. By setting this to null, gravity will
+  // apply to them and they will collide with the item below them and get standingOn set:
+  character.state.standingOn = null;
 
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
@@ -189,13 +190,6 @@ export const changeCharacterRoom = <RoomId extends string>({
       collisionsInDestinationRoom,
     );
   }
-
-  // when we put the character in their new room, they won't be standing on anything yet (or will
-  // still have their standing on set to an item in the previous room) - for example, they might
-  // be already on the floor or a teleporter in the new room. Init this properly so the teleporter
-  // is flashing as soon as they enter:
-  // this sets for all items which might be a bit inefficient, but should be fine
-  setStandingOnForAllItemsInRoom(toRoom, gameState.progression);
 
   // update game state to know which room this character is now in:
   gameState.characterRooms[currentCharacterName] = {

@@ -17,7 +17,7 @@ import {
   stopJumpingAMomentAfterStartingPlay,
 } from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
 import { headState, heelsState, itemState } from "@/_testUtils/characterState";
 import {
   liftBBShortening,
@@ -249,9 +249,7 @@ describe("jumping", () => {
         frameCallbacks: [
           stopJumpingAMomentAfterStartingPlay,
           (gameState) => {
-            expect(
-              headState(gameState).standingOn.find((i) => i.id === "block"),
-            ).toBeUndefined();
+            expect(headState(gameState).standingOn?.id).toBe("block");
             return gameState;
           },
         ],
@@ -338,11 +336,7 @@ describe("teleporter", () => {
 
     playGameThrough(gameState, {
       until(gameState) {
-        return (
-          heelsState(gameState).standingOn.find(
-            (i) => i.id === "teleporterLanding",
-          ) !== undefined
-        );
+        return heelsState(gameState).standingOn?.id === "teleporterLanding";
       },
     });
   });
@@ -549,19 +543,21 @@ describe("lifts", () => {
     // this is failing because heels hasn't had enough time to fall fast enough to match the lift's fall speed
 
     const gameState: GameState<TestRoomId> = basicGameState(playerOnALift);
-    const standingOns: UnknownItemInPlay[][] = [];
+    const heelsStandingOnPerFrame: Array<
+      PlayableItem<"heels", TestRoomId>["state"]["standingOn"]
+    > = [];
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
         // give a little time to fall onto the lift:
         if (gameState.gameTime > 200)
-          standingOns.push(heelsState(gameState).standingOn);
+          heelsStandingOnPerFrame.push(heelsState(gameState).standingOn);
       },
       until: 5_000, // run for quite a long time
     });
 
-    expect(standingOns).toMatchObject(
-      new Array(standingOns.length).fill([{ id: "lift" }]),
+    expect(heelsStandingOnPerFrame).toMatchObject(
+      new Array(heelsStandingOnPerFrame.length).fill([{ id: "lift" }]),
     );
   });
 
@@ -686,25 +682,28 @@ describe("lifts", () => {
       },
     });
 
-    const heelsStandingOnForFrames: UnknownItemInPlay[][] = [];
+    const heelsStandingOnPerFrame: Array<
+      PlayableItem<"heels", TestRoomId>["state"]["standingOn"]
+    > = [];
 
     playGameThrough(gameState, {
       until: 5_000, // run for quite a long time
       frameCallbacks(gameState) {
-        heelsStandingOnForFrames.push(heelsState(gameState).standingOn);
+        heelsStandingOnPerFrame.push(heelsState(gameState).standingOn);
       },
     });
 
     const categories = Object.groupBy(
-      heelsStandingOnForFrames.flat(),
-      (item) => item.id,
+      heelsStandingOnPerFrame,
+      (item) => item?.id ?? "null",
     ) as {
       lift?: string[];
       landing?: string[];
+      null?: string[];
     };
 
     const fractionOnLanding =
-      (categories.landing?.length ?? 0) / heelsStandingOnForFrames.length;
+      (categories.landing?.length ?? 0) / heelsStandingOnPerFrame.length;
     // should have spent about half the time on the lift and half on the landing
     expect(fractionOnLanding).toBeLessThan(0.6);
     expect(fractionOnLanding).toBeGreaterThan(0.4);

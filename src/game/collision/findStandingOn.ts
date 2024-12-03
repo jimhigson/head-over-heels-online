@@ -1,17 +1,43 @@
-import { collision1toMany } from "@/game/collision/aabbCollision";
-import type {
-  ItemInPlay,
-  FreeItemTypes,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import { collision1to1 } from "@/game/collision/aabbCollision";
+import type { UnknownItemInPlay, FreeItem } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
-import { iterate } from "@/utils/iterate";
 import { addXyz } from "@/utils/vectors/vectors";
-import { isSolid } from "../physics/isSolid";
-import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
 const standingTolerance = 0.001;
 
+export const checkStandingOn = <RoomId extends string>(
+  item: FreeItem<PlanetName, RoomId>,
+  standingOn: UnknownItemInPlay<RoomId>,
+): boolean => {
+  const {
+    state: {
+      position,
+      vels: {
+        gravity: { z: gravityVelZ },
+      },
+    },
+    aabb,
+    id,
+  } = item;
+
+  if (gravityVelZ > 0) {
+    // we're jumping and can't be standing on anything while travelling upwards
+    return false;
+  }
+
+  const positionJustBelowItem = addXyz(position, { z: -standingTolerance });
+
+  return collision1to1(
+    {
+      state: { position: positionJustBelowItem },
+      aabb,
+      id,
+    },
+    standingOn,
+  );
+};
+
+/*
 export const findStandingOn = <RoomId extends string>(
   standee: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
   items: Iterable<UnknownItemInPlay<RoomId>>,

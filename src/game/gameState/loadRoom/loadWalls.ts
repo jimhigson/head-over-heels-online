@@ -10,6 +10,7 @@ import {
   yAxisWallRenderAabb,
 } from "../../collision/boundingBoxes";
 import { doorAlongAxis } from "@/utils/vectors/vectors";
+import { emptySet } from "@/utils/empty";
 
 // walls sink slightly low, to match the rendering of the original game.
 // by rendering them low, the bounding boxes match the (lower) rendering
@@ -38,7 +39,7 @@ export function* loadWalls<R extends string>(
               z: wallPositionZ,
             },
             expires: null,
-            stoodOnBy: [],
+            stoodOnBy: emptySet,
             unsolidAfterProgression: null,
           },
           aabb: yAxisWallAabb,
@@ -68,7 +69,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
             expires: null,
-            stoodOnBy: [],
+            stoodOnBy: emptySet,
             unsolidAfterProgression: null,
           },
           aabb: yAxisWallAabb,
@@ -95,7 +96,7 @@ export function* loadWalls<R extends string>(
               z: wallPositionZ,
             },
             expires: null,
-            stoodOnBy: [],
+            stoodOnBy: emptySet,
             unsolidAfterProgression: null,
           },
           aabb: xAxisWallAabb,
@@ -124,7 +125,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
             expires: null,
-            stoodOnBy: [],
+            stoodOnBy: emptySet,
             unsolidAfterProgression: null,
           },
           aabb: xAxisWallAabb,

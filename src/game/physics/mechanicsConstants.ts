@@ -46,12 +46,14 @@ export const heelsJumpForwardDecel = 0.001;
 /** when head is gliding his ability to change direction mid-air is less */
 export const headsGlideAcel = 0.000_04;
 
+const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 // original game timed at 5s to move 8 blocks
 export const walkSpeedPixPerMs = {
-  head: zxSpectrumFrameRate / 1_000, // 1px per frame in original game
-  charles: zxSpectrumFrameRate / 1_000, // 1px per frame in original game
-  heels: (2 * zxSpectrumFrameRate) / 1_000, // 2px per frame in original game - may also need acceleration
-  dalek: (2 * zxSpectrumFrameRate) / 1_000, // same as heels
+  head: onePxPerFrameInOriginalGamePxPerMs, // 1px per frame in original game
+  charles: onePxPerFrameInOriginalGamePxPerMs, // 1px per frame in original game
+  heels: 2 * onePxPerFrameInOriginalGamePxPerMs, // 2px per frame in original game - may also need acceleration
+  dalek: 2 * onePxPerFrameInOriginalGamePxPerMs, // same as heels
+  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs, // same as heels
 };
 
 // n px per frame in original game;

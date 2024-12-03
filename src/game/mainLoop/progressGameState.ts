@@ -9,7 +9,7 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
 } from "@/model/ItemInPlay";
-import { isPlayableItem, positionContainerPosition } from "@/model/ItemInPlay";
+import { isFreeItem, isPlayableItem } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -18,8 +18,6 @@ import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
-import { isExactIntegerXyz, roundXyz, xyzEqual } from "@/utils/vectors/vectors";
-import { setStandingOnForAllItemsInRoom } from "../gameState/setStandingOnForAllItemsInRoom";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -34,25 +32,21 @@ const deleteItemFromRoom = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
   itemToDelete: AnyItemInPlay<RoomId>,
 ) => {
-  if (itemToDelete.positionContainer !== undefined) {
-    itemToDelete.positionContainer.destroy();
-  }
   delete room.items[itemToDelete.id];
 
-  // check if anything was standing on this item:
-  /*
-  just leave these dangling references for now:
-  for (const item of iterate(objectValues(room.items))) {
-    if (isFreeItem(item) && item.state.standingOn === itemToDelete) {
-      item.state.standingOn = null;
+  // anything that was stood on a deleted item isn't standing on it any more:
+  for (const stoodOnItem of itemToDelete.state.stoodOnBy) {
+    if (isFreeItem(stoodOnItem)) {
+      stoodOnItem.state.standingOn = null;
     }
-  }*/
+  }
 };
 
 /**
  * snap all items that haven't moved to the pixel grid - sub-pixel locations are
  * only allowed while items are moving
  */
+/*
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
 ) => {
@@ -73,6 +67,7 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     }
   }
 };
+*/
 
 /**
  * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
@@ -119,7 +114,7 @@ export const progressGameState = <RoomId extends string>(
   for (let i = 0; i < physicsTickCount; i++) {
     const room = currentRoom(gameState);
 
-    //console.log(`----➡️ progressing game one physics tick in ${room.id}----`);
+    console.log(`----➡️ progressing physics tick in ${room.id}----`);
 
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
 
@@ -148,16 +143,16 @@ export const progressGameState = <RoomId extends string>(
         // should never happen, but throw if it does
         throw new Error(`item ${item.id} is not in room ${room.id}`);
       }
-      if (tickItem(item, gameState, physicsTickMs)) {
+      if (tickItem(item, room, gameState, physicsTickMs)) {
         return;
       }
     }
 
-    setStandingOnForAllItemsInRoom(room, gameState.progression);
+    //setStandingOnForAllItemsInRoom(room, gameState.progression);
 
     gameState.progression++;
     gameState.gameTime += physicsTickMs;
   }
 
-  snapStationaryItemsToPixelGrid(currentRoom(gameState));
+  //snapStationaryItemsToPixelGrid(currentRoom(gameState));
 };

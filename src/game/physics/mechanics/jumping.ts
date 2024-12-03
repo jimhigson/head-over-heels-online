@@ -1,4 +1,4 @@
-import type { PlayableItem } from "@/model/ItemInPlay";
+import { isItemType, type PlayableItem } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import { type GameState } from "@/game/gameState/GameState";
@@ -41,24 +41,23 @@ export const jumping = <RoomId extends string>(
   { type, state: { standingOn } }: PlayableItem,
   gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<CharacterName> => {
+): MechanicResult<CharacterName, RoomId> => {
   const {
     inputState: { jump: jumpInput },
   } = gameState;
 
-  const standingOnTeleporter = standingOn.find(
-    (item) => item.type === "teleporter",
-  );
+  const standingOnTeleporter =
+    standingOn !== null && isItemType("teleporter")(standingOn);
 
   const startingAJump =
     jumpInput &&
     // can't jump if not standing on anything!
-    standingOn.length > 0 &&
+    standingOn !== null &&
     // you can't jump from a teleporter!
-    standingOnTeleporter === undefined;
+    !standingOnTeleporter;
 
   if (!startingAJump) {
-    if (standingOn.length > 0) {
+    if (standingOn !== null) {
       return {
         stateDelta: {
           jumped: false,
@@ -68,8 +67,8 @@ export const jumping = <RoomId extends string>(
     return unitMechanicalResult;
   }
 
-  const standingOnSpring = standingOn.find((item) => item.type === "spring");
-  const velZ = getJumpInitialVelocity(type, standingOnSpring !== undefined);
+  const standingOnSpring = isItemType("spring")(standingOn);
+  const velZ = getJumpInitialVelocity(type, standingOnSpring);
 
   return {
     vels: { gravity: { z: velZ } },

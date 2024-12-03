@@ -1,4 +1,4 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
+import { isItemType, type ItemInPlay } from "@/model/ItemInPlay";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { addXyz } from "@/utils/vectors/vectors";
@@ -23,36 +23,35 @@ export const carrying = <RoomId extends string>(
 
   if (carryInput) {
     if (carrying === null) {
-      // trying to pick up
-      const pickupableStandingOn = standingOn.find(
-        (soI) => soI.type === "portableBlock" || soI.type === "spring",
-      );
-
-      if (pickupableStandingOn === undefined) {
+      if (
+        standingOn === null ||
+        !isItemType("portableBlock", "spring")(standingOn)
+      ) {
         return;
       }
 
-      pickupableStandingOn.state.unsolidAfterProgression = -1;
-      pickupableStandingOn.state.position = { x: -1024, y: -1024, z: -1024 };
-      pickupableStandingOn.renders = false;
+      standingOn.state.unsolidAfterProgression = -1;
 
-      heelsItem.state.carrying = pickupableStandingOn;
+      heelsItem.state.carrying = standingOn;
+      heelsItem.state.standingOn = null;
+      standingOn.state.stoodOnBy.clear();
       inputState.carry = false; // handled this input
     } else {
       // trying to put down
-      if (heelsItem.state.standingOn.length === 0) {
+      if (heelsItem.state.standingOn === null) {
         // can't put down mid-air
         return;
       }
 
       carrying.state.position = heelsPosition;
       carrying.state.unsolidAfterProgression = null;
-      carrying.renders = true;
       heelsItem.state.position = addXyz(heelsPosition, {
         x: 0,
         y: 0,
         z: blockSizePx.h,
       });
+      heelsItem.state.standingOn = carrying;
+      carrying.state.stoodOnBy.add(heelsItem);
 
       // put down
       heelsItem.state.carrying = null;

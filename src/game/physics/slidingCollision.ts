@@ -1,7 +1,4 @@
 import { type Xyz } from "@/utils/vectors/vectors";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { iterate } from "@/utils/iterate";
-import { dotProductXyz } from "@/utils/vectors/vectors";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.
@@ -55,56 +52,4 @@ export const mtv = (
     // z is the smallest
     return { x: 0, y: 0, z: mtvZ }; // Slide along z-axis
   }
-};
-
-type Obstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
-  state: { position: Xyz };
-};
-
-export const obstaclePointEarliestPointInVector = (
-  vector: Xyz,
-  obstacle: Obstacle,
-): Xyz => {
-  return {
-    x:
-      vector.x > 0 ?
-        obstacle.state.position.x
-      : obstacle.state.position.x + obstacle.aabb.x,
-    y:
-      vector.y > 0 ?
-        obstacle.state.position.y
-      : obstacle.state.position.y + obstacle.aabb.y,
-    z:
-      vector.z > 0 ?
-        obstacle.state.position.z
-      : obstacle.state.position.z + obstacle.aabb.z,
-  };
-};
-
-/** sort obstacles so that the ones the subject will see first (travelling along the
- * @param vector) are first in the list. This gives the natural order of collision
- * to process the mtvs in.
- *
- * Without this, the order of the obstacles can be arbitrary and snagging is possible
- * on the boundary of two adjacent obstacles, for exmaple if falling while holding
- * the direction towards a tower of blocks
- */
-export const sortObstaclesAboutVector = <I extends Obstacle>(
-  vector: Xyz,
-  obstacles: Iterable<I>,
-): Array<[dist: number, obstacle: I]> => {
-  const withDistances = iterate(obstacles).map(
-    (obstacle) =>
-      [
-        dotProductXyz(
-          vector,
-          obstaclePointEarliestPointInVector(vector, obstacle),
-        ),
-        obstacle,
-      ] as [number, I],
-  );
-
-  return [...withDistances].sort(([distA, _obsA], [distB, _obsB]) => {
-    return distA - distB;
-  });
 };
