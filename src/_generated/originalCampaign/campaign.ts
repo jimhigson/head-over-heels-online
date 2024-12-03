@@ -1289,10 +1289,11 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth18",
       items: {
-        "baddie@4,3,0:OqFB8": {
+        "baddie@4,3,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 4, y: 3, z: 0 },
@@ -2777,28 +2778,31 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth37",
       items: {
-        "baddie@0,5,0:29gHtL": {
+        "baddie@0,5,0:Z2jz06D": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "starsAndStripes",
             which: "american-football-head",
           },
           position: { x: 0, y: 5, z: 0 },
           type: "baddie",
         },
-        "baddie@2,4,0:29gHtL": {
+        "baddie@2,4,0:ZiWCzO": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 2, y: 4, z: 0 },
           type: "baddie",
         },
-        "baddie@3,3,0:29gHtL": {
+        "baddie@3,3,0:Z2jz06D": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "starsAndStripes",
             which: "american-football-head",
           },
           position: { x: 3, y: 3, z: 0 },
@@ -3170,10 +3174,11 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth42",
       items: {
-        "baddie@3,1,0:OqFB8": {
+        "baddie@3,1,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 3, y: 1, z: 0 },
@@ -6371,10 +6376,11 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth76",
       items: {
-        "baddie@2,2,0:29gHtL": {
+        "baddie@2,2,0:ZiWCzO": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 2, y: 2, z: 0 },
@@ -6861,10 +6867,11 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth80",
       items: {
-        "baddie@2,4,0:OqFB8": {
+        "baddie@2,4,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 2, y: 4, z: 0 },
@@ -7075,19 +7082,21 @@ export const campaign = {
       floorSkip: [],
       id: "blacktooth82",
       items: {
-        "baddie@2,2,0:OqFB8": {
+        "baddie@2,2,0:Z21Y5FU": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "starsAndStripes",
             which: "american-football-head",
           },
           position: { x: 2, y: 2, z: 0 },
           type: "baddie",
         },
-        "baddie@5,3,0:OqFB8": {
+        "baddie@5,3,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 5, y: 3, z: 0 },
@@ -8484,10 +8493,11 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld19",
       items: {
-        "baddie@0,6,0:OqFB8": {
+        "baddie@0,6,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 0, y: 6, z: 0 },
@@ -9723,10 +9733,11 @@ export const campaign = {
       floorSkip: [],
       id: "bookworld31",
       items: {
-        "baddie@11,0,0:29gHtL": {
+        "baddie@11,0,0:Z2jz06D": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "starsAndStripes",
             which: "american-football-head",
           },
           position: { x: 11, y: 0, z: 0 },
@@ -22498,19 +22509,21 @@ export const campaign = {
       floorSkip: [],
       id: "safari15",
       items: {
-        "baddie@0,6,0:29gHtL": {
+        "baddie@0,6,0:ZiWCzO": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 0, y: 6, z: 0 },
           type: "baddie",
         },
-        "baddie@1,4,0:29gHtL": {
+        "baddie@1,4,0:ZiWCzO": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 1, y: 4, z: 0 },
@@ -22521,10 +22534,11 @@ export const campaign = {
           position: { x: 2, y: 12, z: 1 },
           type: "baddie",
         },
-        "baddie@2,2,0:29gHtL": {
+        "baddie@2,2,0:ZiWCzO": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 2, y: 2, z: 0 },
@@ -22621,10 +22635,11 @@ export const campaign = {
       floorSkip: [],
       id: "safari16",
       items: {
-        "baddie@2,6,0:OqFB8": {
+        "baddie@2,6,0:1eMnEb": {
           config: {
             activated: true,
             startDirection: "towards",
+            style: "greenAndPink",
             which: "american-football-head",
           },
           position: { x: 2, y: 6, z: 0 },
@@ -24982,10 +24997,11 @@ export const campaign = {
       floorSkip: [],
       id: "safari37crown",
       items: {
-        "baddie@7,2,1:29gHtL": {
+        "baddie@7,2,1:Z2jz06D": {
           config: {
             activated: true,
             startDirection: "right",
+            style: "starsAndStripes",
             which: "american-football-head",
           },
           position: { x: 7, y: 2, z: 1 },

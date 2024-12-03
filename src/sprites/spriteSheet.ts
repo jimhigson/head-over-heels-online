@@ -245,8 +245,13 @@ const frames = {
     frame: { x: 77, y: 453, ...smallItemTextureSize },
   },
   ...fourDirections(
-    "american-football-head",
-    { x: 4, y: 34 },
+    "american-football-head.starsAndStripes",
+    { x: 274, y: 131 },
+    { w: 24, h: 32 },
+  ),
+  ...fourDirections(
+    "american-football-head.greenAndPink",
+    { x: 224, y: 131 },
     { w: 24, h: 32 },
   ),
   ...fourDirections("charles", { x: 118, y: 34 }, smallItemTextureSize),

@@ -1042,12 +1042,13 @@
           "config": { "slider": false },
           "position": { "x": 3, "y": 3, "z": 1 }
         },
-        "baddie@4,3,0:OqFB8": {
+        "baddie@4,3,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
@@ -2582,30 +2583,33 @@
           "config": { "activates": {} },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "baddie@0,5,0:29gHtL": {
+        "baddie@0,5,0:Z2jz06D": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "starsAndStripes"
           },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@2,4,0:29gHtL": {
+        "baddie@2,4,0:ZiWCzO": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "baddie@3,3,0:29gHtL": {
+        "baddie@3,3,0:Z2jz06D": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "starsAndStripes"
           },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
@@ -2970,12 +2974,13 @@
         "left": ["none", "none"]
       },
       "items": {
-        "baddie@3,1,0:OqFB8": {
+        "baddie@3,1,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 3, "y": 1, "z": 0 }
         },
@@ -6288,12 +6293,13 @@
           },
           "position": { "x": 2, "y": 7, "z": 0 }
         },
-        "baddie@2,2,0:29gHtL": {
+        "baddie@2,2,0:ZiWCzO": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
@@ -6749,12 +6755,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "baddie@2,4,0:OqFB8": {
+        "baddie@2,4,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
@@ -6973,21 +6980,23 @@
           "config": { "style": "volcano" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "baddie@5,3,0:OqFB8": {
+        "baddie@5,3,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 5, "y": 3, "z": 0 }
         },
-        "baddie@2,2,0:OqFB8": {
+        "baddie@2,2,0:Z21Y5FU": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "starsAndStripes"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
@@ -8352,12 +8361,13 @@
           "config": { "style": "toaster" },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "baddie@0,6,0:OqFB8": {
+        "baddie@0,6,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
@@ -9659,12 +9669,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "baddie@11,0,0:29gHtL": {
+        "baddie@11,0,0:Z2jz06D": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "starsAndStripes"
           },
           "position": { "x": 11, "y": 0, "z": 0 }
         },
@@ -22412,30 +22423,33 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "baddie@2,2,0:29gHtL": {
+        "baddie@2,2,0:ZiWCzO": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "baddie@1,4,0:29gHtL": {
+        "baddie@1,4,0:ZiWCzO": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 1, "y": 4, "z": 0 }
         },
-        "baddie@0,6,0:29gHtL": {
+        "baddie@0,6,0:ZiWCzO": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
@@ -22537,12 +22551,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "baddie@2,6,0:OqFB8": {
+        "baddie@2,6,0:1eMnEb": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "style": "greenAndPink"
           },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
@@ -24997,12 +25012,13 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 6, "y": 3, "z": 2 }
         },
-        "baddie@7,2,1:29gHtL": {
+        "baddie@7,2,1:Z2jz06D": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
-            "activated": true
+            "activated": true,
+            "style": "starsAndStripes"
           },
           "position": { "x": 7, "y": 2, "z": 1 }
         },

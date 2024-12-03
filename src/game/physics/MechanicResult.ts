@@ -9,6 +9,10 @@ export type VelocitiesForItem<T extends ItemInPlayType> =
 
 export type MechanicResult<T extends ItemInPlayType, RoomId extends string> =
   | {
+      movementType: "endTick";
+      stateDelta?: Partial<ItemState<T, RoomId>>;
+    }
+  | {
       movementType: "static";
       stateDelta?: Partial<ItemState<T, RoomId>>;
     }

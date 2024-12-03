@@ -125,6 +125,11 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     if (mrStateDelta !== undefined) {
       item.state = { ...item.state, ...mrStateDelta };
     }
+
+    if (mechanicResult.movementType === "endTick") {
+      // this items's tick is halting the frame tick
+      return true;
+    }
   }
 
   return moveItem({

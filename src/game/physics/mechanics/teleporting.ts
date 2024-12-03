@@ -49,7 +49,7 @@ export function teleporting<RoomId extends string>(
           changeType: "teleport",
         });
         return {
-          movementType: "static",
+          movementType: "endTick",
           stateDelta: {
             teleporting: {
               phase: "in",

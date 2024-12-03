@@ -18,6 +18,10 @@ import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
+import { objectEntriesIter } from "@/utils/entries";
+import type { Xyz } from "@/utils/vectors/vectors";
+import { xyzEqual, isExactIntegerXyz, roundXyz } from "@/utils/vectors/vectors";
+import { iterate } from "@/utils/iterate";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -46,18 +50,16 @@ const deleteItemFromRoom = <RoomId extends string>(
  * snap all items that haven't moved to the pixel grid - sub-pixel locations are
  * only allowed while items are moving
  */
-/*
+
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
+  startingPositions: Record<string, Xyz>,
 ) => {
   for (const item of objectValues(room.items)) {
-    if (item.positionContainer === undefined) {
-      continue;
-    }
-
-    const previousPosition = item.positionContainer[positionContainerPosition];
-
-    const itemIsStationary = xyzEqual(previousPosition, item.state.position);
+    const itemIsStationary = xyzEqual(
+      startingPositions[item.id],
+      item.state.position,
+    );
     const shouldSnap =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
 
@@ -67,7 +69,6 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     }
   }
 };
-*/
 
 /**
  * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
@@ -111,9 +112,17 @@ export const progressGameState = <RoomId extends string>(
     return;
   }
 
-  for (let i = 0; i < physicsTickCount; i++) {
-    const room = currentRoom(gameState);
+  const room = currentRoom(gameState);
 
+  // take a snapshot of item positions before any physics ticks so we can check later what has moved:
+  const startingPositions = Object.fromEntries(
+    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+      id,
+      item.state.position,
+    ]),
+  );
+
+  for (let i = 0; i < physicsTickCount; i++) {
     console.log(`----➡️ progressing physics tick in ${room.id}----`);
 
     //console.log("a new frame is being processed, deltaMs is", deltaMS);
@@ -152,7 +161,13 @@ export const progressGameState = <RoomId extends string>(
 
     gameState.progression++;
     gameState.gameTime += physicsTickMs;
+
+    if (room !== currentRoom(gameState)) {
+      throw new Error(
+        `room has changed during physics tick ${room.id} -> ${currentRoom(gameState).id} but did not return out of the tick`,
+      );
+    }
   }
 
-  //snapStationaryItemsToPixelGrid(currentRoom(gameState));
+  snapStationaryItemsToPixelGrid(room, startingPositions);
 };

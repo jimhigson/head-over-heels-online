@@ -145,8 +145,14 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
       }
     | {
         // with a starting direction
-        which: "american-football-head" | "turtle" | "cyberman";
+        which: "turtle" | "cyberman";
         startDirection: DirectionXy4;
+      }
+    | {
+        // with a starting direction
+        which: "american-football-head";
+        startDirection: DirectionXy4;
+        style: "greenAndPink" | "starsAndStripes";
       }
   );
   portableBlock: {

@@ -512,6 +512,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          style: "greenAndPink",
           startDirection: "away",
         },
         position: { x: 1, y: 3, z: 0 },
@@ -521,6 +522,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          style: "starsAndStripes",
           startDirection: "right",
         },
         position: { x: 1, y: 5, z: 0 },
@@ -530,6 +532,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          style: "greenAndPink",
           startDirection: "left",
         },
         position: { x: 3, y: 5, z: 0 },
@@ -539,6 +542,8 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+
+          style: "starsAndStripes",
           startDirection: "towards",
         },
         position: { x: 3, y: 7, z: 0 },

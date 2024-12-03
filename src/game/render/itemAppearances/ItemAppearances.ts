@@ -457,7 +457,7 @@ export const itemAppearances: {
             // directional, no anim
             return {
               container: createSprite({
-                texture: `${config.which}.${facingXy4}`,
+                texture: `${config.which}.${config.style}.${facingXy4}`,
               }),
               renderProps,
             };

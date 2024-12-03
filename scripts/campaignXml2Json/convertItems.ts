@@ -391,7 +391,6 @@ const convertItem = ({
       };
 
     case "turtle":
-    case "diver": {
       return {
         type: "baddie",
         config: {
@@ -401,7 +400,22 @@ const convertItem = ({
         },
         position,
       };
-    }
+
+    case "diver":
+      return {
+        type: "baddie",
+        config: {
+          which: baddieConversions[item.kind],
+          startDirection: convertDirection(item.orientation),
+          activated: true,
+          style:
+            // rough way to psuedo-randomise which style:
+            (parseInt(item.x) * 2 + parseInt(item.y)) % 2 === 1 ?
+              "starsAndStripes"
+            : "greenAndPink",
+        },
+        position,
+      };
 
     case "puppy":
       return {

@@ -13,7 +13,7 @@ import {
   xyzEqual,
 } from "@/utils/vectors/vectors";
 
-type Obstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
+export type SortableObstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
   type: ItemInPlayType;
 };
@@ -58,7 +58,7 @@ const conveyorOrderComparator = (
 
 export const obstaclePointEarliestPointInVector = (
   vector: Xyz,
-  obstacle: Obstacle,
+  obstacle: SortableObstacle,
 ): Xyz => {
   return {
     x:
@@ -112,7 +112,7 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
   baddie: 10, // most impactful to touch
 };
 
-export const sortObstaclesAboutVector = <I extends Obstacle>(
+export const sortObstaclesAboutVector = <I extends SortableObstacle>(
   vector: Xyz,
   obstacles: Array<I>,
 ): Array<I> => {

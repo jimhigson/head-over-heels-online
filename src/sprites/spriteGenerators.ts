@@ -17,18 +17,18 @@ export const fourDirections = <TName extends string>(
     yield [`${name}.left`, { frame: { x: startX, y: startY, ...textureSize } }];
     yield [
       `${name}.away`,
-      { frame: { x: startX + textureSize.w + 2, y: startY, ...textureSize } },
+      { frame: { x: startX + textureSize.w + 1, y: startY, ...textureSize } },
     ];
     yield [
       `${name}.towards`,
-      { frame: { x: startX, y: startY + textureSize.h + 2, ...textureSize } },
+      { frame: { x: startX, y: startY + textureSize.h + 1, ...textureSize } },
     ];
     yield [
       `${name}.right`,
       {
         frame: {
-          x: startX + textureSize.w + 2,
-          y: startY + textureSize.h + 2,
+          x: startX + textureSize.w + 1,
+          y: startY + textureSize.h + 1,
           ...textureSize,
         },
       },
