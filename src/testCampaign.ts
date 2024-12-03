@@ -470,8 +470,8 @@ const rooms = {
     color: { hue: "yellow", shade: "basic" },
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
   big: {
-    size: { x: 11, y: 11 },
-    walls: generateWalls({ x: 11, y: 11 }, "bookworld"),
+    size: { x: 18, y: 18 },
+    walls: generateWalls({ x: 18, y: 18 }, "bookworld"),
     floor: "bookworld",
     floorSkip: [] as Xy[],
     id: "big",
@@ -480,6 +480,21 @@ const rooms = {
         type: "door",
         config: { toRoom: "doorsRoom", direction: "away" },
         position: { x: 1, y: 11, z: 4 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 1, y: 10, z: 3 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 0, y: 10, z: 3 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 2, y: 10, z: 3 },
       },
       {
         type: "baddie",

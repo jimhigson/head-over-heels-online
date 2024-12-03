@@ -27,6 +27,7 @@ export const initBaddieWalk = (
 ): Xyz => {
   switch (config.which) {
     case "dalek":
+    case "turtle":
     case "bubble-robot":
       return scaleXyz(unitVectors.towards, walkSpeedPixPerMs[config.which]);
     case "american-football-head":
@@ -124,7 +125,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
   };
 };
 
-export const americanFootballHeadAi = <RoomId extends string>(
+export const keepWalkingInSameDirection = <RoomId extends string>(
   {
     state: {
       vels: { walking },
@@ -179,12 +180,44 @@ export const tickBaddie = <RoomId extends string>(
     case "cyberman": {
       return cybermanAi(item, room, gameState, deltaMS);
     }
+    case "turtle":
     case "american-football-head": {
-      return americanFootballHeadAi(item, room, gameState, deltaMS);
+      return keepWalkingInSameDirection(item, room, gameState, deltaMS);
     }
     default:
       return unitMechanicalResult;
   }
+};
+
+const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
+  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
+  {
+    state: { position: toucheePosition },
+    aabb: toucheeAabb,
+  }: UnknownItemInPlay<RoomId>,
+) => {
+  const {
+    state: {
+      position,
+      vels: { walking },
+      activated,
+    },
+    aabb,
+  } = baddieItem;
+
+  if (!activated) return;
+
+  const m = mtv(position, aabb, toucheePosition, toucheeAabb);
+
+  if (m.z) return;
+
+  const newWalking = {
+    x: -walking.y,
+    y: walking.x,
+    z: 0,
+  };
+
+  baddieItem.state.vels.walking = newWalking;
 };
 
 const handleBaddieTouchingItemByTurningAround = <RoomId extends string>(
@@ -230,6 +263,9 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
     case "bubble-robot":
     case "american-football-head": {
       handleBaddieTouchingItemByTurningAround(baddieItem, touchee);
+      break;
     }
+    case "turtle":
+      handleBaddieTouchingItemByTurningClockwise(baddieItem, touchee);
   }
 };
