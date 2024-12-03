@@ -59,6 +59,7 @@ export const jumping = <RoomId extends string>(
   if (!startingAJump) {
     if (standingOn !== null) {
       return {
+        movementType: "static",
         stateDelta: {
           jumped: false,
         },
@@ -71,6 +72,7 @@ export const jumping = <RoomId extends string>(
   const velZ = getJumpInitialVelocity(type, standingOnSpring);
 
   return {
+    movementType: "vel",
     vels: { gravity: { z: velZ } },
     stateDelta: {
       action: "moving",

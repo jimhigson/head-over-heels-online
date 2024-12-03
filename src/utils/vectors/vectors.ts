@@ -89,15 +89,16 @@ export const perpendicularXyz = ({ x, y, z }: Xyz): Xyz => ({
   z,
 });
 
-export const addXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
-  xyzs.reduce<Xyz>(
-    (ac, xyi) => ({
-      x: ac.x + (xyi.x ?? 0),
-      y: ac.y + (xyi.y ?? 0),
-      z: ac.z + (xyi.z ?? 0),
+export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
+  return xyzs.reduce<Xyz>(
+    ({ x: acX, y: acY, z: acZ }, { x: iX = 0, y: iY = 0, z: iZ = 0 }) => ({
+      x: acX + iX,
+      y: acY + iY,
+      z: acZ + iZ,
     }),
-    xyz,
+    originXyz,
   );
+};
 
 export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
   xyzs.reduce<Xyz>(

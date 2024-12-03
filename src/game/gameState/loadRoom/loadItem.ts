@@ -73,6 +73,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         standingOn: null,
         vels: { gravity: originXyz, movingFloor: originXyz },
         activeConveyor: null,
+        latentMovement: [],
       }
     : {}),
     ...(jsonItem.type === "baddie" ?

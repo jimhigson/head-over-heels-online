@@ -40,7 +40,7 @@ export const walking = <RoomId extends string>(
 
   if (teleporting !== null) {
     // do no walking while teleporting
-    return {};
+    return unitMechanicalResult;
   }
 
   // handle 'walking' while ascending/falling:
@@ -49,6 +49,7 @@ export const walking = <RoomId extends string>(
       // heels has mandatory forward motion while jumping, but decelerates:
       if (playableItem.state.jumped) {
         return {
+          movementType: "vel",
           vels: {
             walking: subXyz(
               previousWalkingVel,
@@ -64,6 +65,7 @@ export const walking = <RoomId extends string>(
       if (inputState.jump) {
         const jumpDirection = directionOfWalk ?? facing;
         return {
+          movementType: "vel",
           vels: {
             walking: scaleXyz(
               unitVectors[jumpDirection],
@@ -84,6 +86,7 @@ export const walking = <RoomId extends string>(
   // normal walking
   if (directionOfWalk !== undefined) {
     return {
+      movementType: "vel",
       vels: {
         walking: scaleXyz(unitVectors[directionOfWalk], maxWalkSpeed),
       },
@@ -96,6 +99,7 @@ export const walking = <RoomId extends string>(
 
   // no direction pressed - we are idle and decelerate in whatever direction we're already headed:
   return {
+    movementType: "static",
     stateDelta: { action },
   };
 };

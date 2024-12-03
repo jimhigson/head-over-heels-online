@@ -87,6 +87,7 @@ export function moveLift<RoomId extends string>(
   //const velocity = velocityAtAltitude(z, direction, lowestZ, highestZ);
 
   return {
+    movementType: "vel",
     vels: { lift: { z: velocity } },
     stateDelta: {
       direction: mewDirection,

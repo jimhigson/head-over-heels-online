@@ -47,6 +47,7 @@ export const gravity = <RoomId extends string>(
         // descending on a lift - we need some gravity to keep us on the lift
         // as it falls - go slightly faster than the lift's downwards speed
         return {
+          movementType: "vel",
           vels: {
             gravity: {
               z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
@@ -59,6 +60,7 @@ export const gravity = <RoomId extends string>(
   } else {
     // not standing on anything - allow free fall up to terminal velocity
     return {
+      movementType: "vel",
       vels: {
         gravity: {
           z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),

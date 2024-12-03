@@ -1,5 +1,5 @@
 import { isItemType, type PlayableItem } from "@/model/ItemInPlay";
-import type { MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
@@ -24,6 +24,7 @@ export function teleporting<RoomId extends string>(
       isItemType("teleporter")(standingOn)
     ) {
       return {
+        movementType: "static",
         stateDelta: {
           teleporting: {
             phase: "out",
@@ -33,7 +34,7 @@ export function teleporting<RoomId extends string>(
         },
       };
     }
-    return {};
+    return unitMechanicalResult;
   }
 
   const newTimeRemaining = Math.max(teleporting.timeRemaining - deltaMS, 0);
@@ -48,6 +49,7 @@ export function teleporting<RoomId extends string>(
           changeType: "teleport",
         });
         return {
+          movementType: "static",
           stateDelta: {
             teleporting: {
               phase: "in",
@@ -61,6 +63,7 @@ export function teleporting<RoomId extends string>(
     case "in":
       if (newTimeRemaining === 0) {
         return {
+          movementType: "static",
           stateDelta: {
             teleporting: null,
           },
@@ -72,6 +75,7 @@ export function teleporting<RoomId extends string>(
   }
 
   return {
+    movementType: "static",
     stateDelta: {
       teleporting: {
         ...teleporting,

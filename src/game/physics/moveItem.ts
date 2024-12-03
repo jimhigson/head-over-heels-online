@@ -22,6 +22,7 @@ import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems
 import { objectValues } from "iter-tools";
 import type { PlanetName } from "@/sprites/planets";
 import { checkStandingOn } from "../collision/findStandingOn";
+import { originalFramePeriod } from "../render/animationTimings";
 
 const log = false;
 
@@ -240,12 +241,11 @@ export const moveItem = <RoomId extends string>({
       removeStandingOn(s);
     } else {
       const finalDelta = subXyz(subjectItem.state.position, originalPosition);
-      moveItem({
-        subjectItem: s,
-        posDelta: finalDelta,
-        gameState,
-        pusher: subjectItem,
-        deltaMS,
+      s.state.latentMovement.push({
+        // since the original game pushes items every other frame, the practical latency
+        // for standing-on items is two frames
+        gameTime: gameState.gameTime + 2 * originalFramePeriod,
+        positionDelta: finalDelta,
       });
     }
   }

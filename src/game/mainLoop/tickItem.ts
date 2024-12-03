@@ -11,7 +11,6 @@ import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
 import { walking } from "../physics/mechanics/walking";
 import { moveLift } from "../physics/mechanics/moveLift";
-import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { originXyz, addXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
@@ -20,8 +19,14 @@ import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
 import { carrying } from "../physics/mechanics/carrying";
 import type { RoomState } from "@/model/modelTypes";
+import { objectValues } from "iter-tools";
+import { objectEntriesIter } from "@/utils/entries";
+import { latentMovement } from "../physics/mechanics/latentMovement";
 
-function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
+function* itemMechanicResultGen<
+  RoomId extends string,
+  T extends ItemInPlayType,
+>(
   item: ItemInPlay<T, PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
@@ -34,9 +39,11 @@ function* itemMechanicsGen<RoomId extends string, T extends ItemInPlayType>(
   }
 
   if (isFreeItem(item)) {
-    // CHARLES and BADIES should also fall (be free items?)
     yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield* latentMovement(item, gameState, deltaMS) as Generator<
+      MechanicResult<T, RoomId>
+    >;
   }
 
   if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
@@ -70,31 +77,59 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): boolean => {
-  let accumulatedMovement = originXyz;
+  let accumulatedPosDelta = originXyz;
 
-  for (const mr of itemMechanicsGen(item, room, gameState, deltaMS)) {
-    const { vels, stateDelta } = mr;
+  for (const mechanicResult of itemMechanicResultGen(
+    item,
+    room,
+    gameState,
+    deltaMS,
+  )) {
+    // add movement to accumulatedPosDelta
+    const mrPosDelta =
+      mechanicResult.movementType === "position" ? mechanicResult.posDelta
+      : (
+        mechanicResult.movementType === "vel" &&
+        mechanicResult.vels !== undefined
+      ) ?
+        scaleXyz(
+          addXyz(
+            ...objectValues(
+              mechanicResult.vels as Record<string, Partial<Xyz>>,
+            ),
+          ),
+          deltaMS,
+        )
+      : undefined;
 
-    if (vels !== undefined)
-      for (const [mechanic, velPartial] of objectEntriesIter(vels)) {
+    if (mrPosDelta !== undefined) {
+      accumulatedPosDelta = addXyz(accumulatedPosDelta, mrPosDelta);
+    }
+
+    // update item.state.vels
+    if (
+      mechanicResult.movementType === "vel" &&
+      (isFreeItem(item) || isItemType("lift")(item))
+    ) {
+      for (const [mechanic, velPartial] of objectEntriesIter(
+        mechanicResult.vels,
+      )) {
         const vel: Xyz = { ...originXyz, ...velPartial };
-        accumulatedMovement = addXyz(
-          accumulatedMovement,
-          scaleXyz(vel, deltaMS),
-        );
-        if (isFreeItem(item) || isItemType("lift")(item)) {
-          (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
-        }
-      }
 
-    if (stateDelta !== undefined) {
-      item.state = { ...item.state, ...stateDelta };
+        (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
+      }
+    }
+
+    // update item.state.*
+    const mrStateDelta = mechanicResult.stateDelta;
+    if (mrStateDelta !== undefined) {
+      item.state = { ...item.state, ...mrStateDelta };
     }
   }
 
   return moveItem({
     subjectItem: item as UnknownItemInPlay<RoomId>,
-    posDelta: accumulatedMovement,
+    posDelta: accumulatedPosDelta,
     gameState,
     deltaMS,
   });

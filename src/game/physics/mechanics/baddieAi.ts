@@ -77,6 +77,7 @@ export const cybermanAi = <RoomId extends string>(
     : perpendicularAxisXy(axisOfShortestDistance);
 
   return {
+    movementType: "vel",
     vels: {
       walking: {
         [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
@@ -105,6 +106,7 @@ export const dalekAi = <RoomId extends string>(
     : walking;
 
   return {
+    movementType: "vel",
     vels: {
       walking: newWalking,
     },

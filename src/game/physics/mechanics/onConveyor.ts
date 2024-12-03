@@ -19,13 +19,14 @@ import {
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
 const resetConveyorStateForItem = {
+  movementType: "vel",
   vels: {
     movingFloor: originXyz,
   },
   stateDelta: {
     activeConveyor: null,
   },
-};
+} satisfies MechanicResult<FreeItemTypes, string>;
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -70,6 +71,7 @@ export const onConveyor = <RoomId extends string>(
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
 
   return {
+    movementType: "vel",
     vels: {
       movingFloor: conveyorVelocity,
     },
