@@ -221,6 +221,7 @@ export const moveItem = <RoomId extends string>({
     }
   }
 
+  // check what we are stood on
   if (
     isFreeItem(subjectItem) &&
     subjectItem.state.standingOn !== null &&
@@ -233,8 +234,20 @@ export const moveItem = <RoomId extends string>({
     }
     removeStandingOn(subjectItem);
   }
+  // check what is standing on us:
   for (const s of subjectItem.state.stoodOnBy) {
-    if (!checkStandingOn(s, subjectItem)) removeStandingOn(s);
+    if (!checkStandingOn(s, subjectItem)) {
+      removeStandingOn(s);
+    } else {
+      const finalDelta = subXyz(subjectItem.state.position, originalPosition);
+      moveItem({
+        subjectItem: s,
+        posDelta: finalDelta,
+        gameState,
+        pusher: subjectItem,
+        deltaMS,
+      });
+    }
   }
 
   return false; // no reason found to halt, can tick the next item
