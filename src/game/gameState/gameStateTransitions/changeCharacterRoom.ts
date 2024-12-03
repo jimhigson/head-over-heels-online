@@ -16,6 +16,7 @@ import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
+import { makeItemDisappear } from "../makeItemDissapear";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -130,6 +131,14 @@ export const changeCharacterRoom = <RoomId extends string>({
     if (character.type === "heels") {
       // can't carry items through rooms
       character.state.carrying = null;
+    }
+    if (character.type === "head") {
+      // can't carry items through rooms
+      for (const hushPuppyBye of iterate(objectValues(toRoom.items)).filter(
+        isItemType("hushPuppy"),
+      )) {
+        makeItemDisappear(hushPuppyBye, gameState);
+      }
     }
 
     console.log(

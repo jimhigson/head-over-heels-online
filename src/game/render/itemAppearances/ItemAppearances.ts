@@ -608,7 +608,34 @@ export const itemAppearances: {
     },
   ),
 
-  hushPuppy: staticSpriteAppearance("hushPuppy"),
+  hushPuppy({
+    item: {
+      state: { expires },
+    },
+    currentlyRenderedProps,
+  }) {
+    const bubbles = expires !== null;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      currentlyRenderedProps.bubbles !== bubbles;
+
+    if (!render) {
+      return;
+    }
+
+    return {
+      container:
+        bubbles ?
+          createSprite({
+            frames: spriteSheet.animations["bubbles.taupe"],
+            playOnce: "and-destroy",
+          })
+        : createSprite("hushPuppy"),
+      renderProps: { bubbles },
+    };
+  },
+
   ball: staticSpriteAppearance("ball"),
 
   // for now, the floor has special rendering different from the main engine.

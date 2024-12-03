@@ -36,6 +36,9 @@ type ItemRenderPropsMap = {
   pickup: {
     bubbles: boolean;
   };
+  hushPuppy: {
+    bubbles: boolean;
+  };
   deadlyBlock: EmptyObject;
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change
   baddie: {
