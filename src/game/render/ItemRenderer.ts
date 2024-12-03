@@ -57,6 +57,11 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   renderOptions: RenderOptions<RoomId>,
 ) => {
   const renderContainer: Container = new Container();
+
+  if (renderOptions.showBoundingBoxes !== "none") {
+    renderContainer.alpha = 0.5;
+  }
+
   const positionContainer: Container = new Container({
     label: `item(${item.id})`,
   });
