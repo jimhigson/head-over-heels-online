@@ -35,7 +35,7 @@ function* itemMechanicResultGen<
   if (isItemType("heels")(item)) {
     // heels can remove items from the game, so process that first since it could
     // affect other mechanics
-    carrying(item, gameState, deltaMS);
+    carrying(item, room, gameState, deltaMS);
   }
 
   if (isFreeItem(item)) {

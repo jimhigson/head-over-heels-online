@@ -24,7 +24,7 @@ export const loadPlayer = <RoomId extends string>(
           jumpEndTime: -1, // jump has already finished - ie, we are not jumping
           hasHooter: false,
           fastSteps: 0,
-          shield: 0,
+          shieldCollectedAt: null,
           standingOn: null,
           stoodOnBy: new Set(),
           activeConveyor: null,
@@ -61,7 +61,7 @@ export const loadPlayer = <RoomId extends string>(
           carrying: null,
           hasBag: false,
           bigJumps: 0,
-          shield: 0,
+          shieldCollectedAt: null,
           standingOn: null,
           stoodOnBy: new Set(),
           activeConveyor: null,

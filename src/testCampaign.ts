@@ -168,6 +168,11 @@ const rooms = {
         position: { x: 0, y: 3, z: 0 },
       },
       {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
         type: "pickup",
         config: { gives: "bag" },
         position: { x: 0, y: 3, z: 1 },
@@ -175,7 +180,7 @@ const rooms = {
       {
         type: "door",
         config: { toRoom: "laboratory", direction: "towards" },
-        position: { x: 0, y: 0, z: 0 },
+        position: { x: 0, y: 0, z: 1 },
       },
     ]),
   } satisfies RoomJson<"safari", TestCampaignRoomId>,

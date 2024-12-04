@@ -132,8 +132,6 @@ export const progressGameState = <RoomId extends string>(
   );
 
   for (let i = 0; i < physicsTickCount; i++) {
-    //console.log(`----➡️ progressing physics tick in ${room.id}----`);
-
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {

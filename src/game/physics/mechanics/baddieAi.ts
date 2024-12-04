@@ -16,6 +16,7 @@ import {
   scaleXyz,
   subXy,
   xyEqual,
+  xyzEqual,
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
@@ -127,10 +128,14 @@ export const randomlyChangeDirection = <RoomId extends string>(
     return notWalking;
   }
 
-  const speed = walkSpeedPixPerMs[which];
+  const produceNewWalk =
+    xyzEqual(walking, originXyz) || Math.random() < deltaMS / 1000;
   const newWalking =
-    Math.random() < deltaMS / 1_000 ?
-      scaleXyz(unitVectors[randomFromArray(directions)], speed)
+    produceNewWalk ?
+      scaleXyz(
+        unitVectors[randomFromArray(directions)],
+        walkSpeedPixPerMs[which],
+      )
     : walking;
 
   return {

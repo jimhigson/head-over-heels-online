@@ -3,7 +3,7 @@ import type {
   FreeItem,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isFreeItem } from "@/model/ItemInPlay";
+import { isFreeItem, isItemType } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
@@ -33,6 +33,17 @@ type MoveItemOptions<RoomId extends string> = {
    */;
   pusher?: AnyItemInPlay;
   deltaMS: number;
+  /**
+   * if true, anything this movement tries to push will get moved the total amount.
+   *
+   * Otherwise, if false/undefined, recursive pushing will split the movement 50/50 between mover and pushee.
+   *
+   * Heels putting a carried item down should be forceful - everything has to move the full amount!
+   *
+   * Lifts are always forceful - they don't slow down then things are on them. But they can be stopped
+   * as a special case if something gets stuck under them.
+   */
+  forceful?: boolean;
 };
 
 /**
@@ -46,6 +57,7 @@ export const moveItem = <RoomId extends string>({
   gameState,
   pusher,
   deltaMS,
+  forceful = isItemType("lift")(subjectItem) && pusher === undefined,
 }: MoveItemOptions<RoomId>): boolean => {
   if (xyzEqual(posDelta, originXyz)) {
     return false;
@@ -151,7 +163,7 @@ export const moveItem = <RoomId extends string>({
     // push falling (pushable) items that we intersect:
     if (isFreeItem(collision) && collision !== pusher) {
       const pushCoefficient =
-        subjectItem.type === "lift" ?
+        forceful ?
           // lifts don't slow down when stuff is on them
           -1
           // split the difference - the pushee moves half as far forward as our intersection
@@ -179,9 +191,10 @@ export const moveItem = <RoomId extends string>({
         moveItem({
           subjectItem: collision,
           posDelta: forwardPushVector,
-          gameState,
           pusher: subjectItem,
+          gameState,
           deltaMS,
+          forceful,
         })
       ) {
         // halt if the recursive call halted
@@ -220,6 +233,14 @@ export const moveItem = <RoomId extends string>({
         subjectItem.state.standingOn === null ||
         !sortedCollisions.includes(subjectItem.state.standingOn)
       ) {
+        if (log)
+          console.log(
+            `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+            `${subjectItem.id} is a free item and collided vertically with ${collision.id}`,
+            collision,
+            `so will set ${subjectItem.id} as standing on ${collision.id}`,
+          );
+
         // not colliding with the thing we were stood on before - take over the slot:
         removeStandingOn(subjectItem);
         setStandingOn(subjectItem, collision);
