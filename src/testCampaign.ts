@@ -430,48 +430,126 @@ const rooms = {
         position: { x: 2, y: 6, z: 2 },
       },
 
-      // some blocks for Heels to test stacking up:
+      // some blocks for Heels to test stacking up, and ceilings to test the colliding when putting down behaviour:
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 1, z: 0 },
+        position: { x: 13, y: 1, z: 0 },
       },
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 1, z: 1 },
+        position: { x: 13, y: 1, z: 1 },
       },
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 1, z: 2 },
+        position: { x: 13, y: 1, z: 2 },
       },
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 2, z: 0 },
+        position: { x: 13, y: 2, z: 0 },
       },
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 3, z: 0 },
+        position: { x: 13, y: 3, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: {
+          gives: "bag",
+        },
+        position: { x: 12, y: 0, z: 0 },
       },
       {
         type: "portableBlock",
         config: {
           style: "cube",
         },
-        position: { x: 4, y: 4, z: 0 },
+        position: { x: 13, y: 0, z: 0 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "tower",
+          disappearing: false,
+        },
+        position: { x: 13, y: 5, z: 0 },
+      },
+      {
+        type: "lift",
+        config: {
+          top: 3,
+          bottom: 1,
+        },
+        position: { x: 13, y: 6, z: 0 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "tower",
+          disappearing: false,
+        },
+        position: { x: 13, y: 7, z: 0 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "tower",
+          disappearing: false,
+        },
+        position: { x: 13, y: 5, z: 1 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          disappearing: false,
+        },
+        position: { x: 13, y: 5, z: 2 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          disappearing: false,
+        },
+        position: { x: 13, y: 4, z: 2 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          disappearing: false,
+        },
+        position: { x: 13, y: 4, z: 3 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          disappearing: false,
+        },
+        position: { x: 13, y: 3, z: 3 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 13, y: 3, z: 4 },
       },
 
       // test rolling physics
