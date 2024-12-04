@@ -32,12 +32,7 @@ const generateWalls = <P extends PlanetName>(
 
 type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}`;
 
-export type TestCampaignRoomId =
-  | "doorsRoom"
-  | "zRoom"
-  | "big"
-  | "tiny"
-  | ColorRoomIds;
+export type TestCampaignRoomId = "doorsRoom" | "big" | ColorRoomIds;
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
@@ -137,10 +132,10 @@ const colourRooms = () => {
 const rooms = {
   doorsRoom: {
     size: { x: 18, y: 14 },
-    planet: "blacktooth",
-    color: { hue: "cyan", shade: "dimmed" },
-    walls: generateWalls({ x: 18, y: 14 }, "blacktooth"),
-    floor: "bookworld",
+    planet: "egyptus",
+    color: { hue: "yellow", shade: "dimmed" },
+    walls: generateWalls({ x: 18, y: 14 }, "egyptus"),
+    floor: "egyptus",
     floorSkip: [] as Xy[],
     id: "doorsRoom",
     items: keyItems([
@@ -157,11 +152,6 @@ const rooms = {
         type: "door",
         config: { toRoom: "big", direction: "towards" },
         position: { x: 5, y: 0, z: 2 },
-      },
-      {
-        type: "door",
-        config: { toRoom: "zRoom", direction: "towards" },
-        position: { x: 7, y: 0, z: 3 },
       },
       // tests for lifts:
       {
@@ -478,7 +468,7 @@ const rooms = {
         config: {
           style: "cube",
         },
-        position: { x: 13, y: 0, z: 0 },
+        position: { x: 13, y: 4, z: 0 },
       },
       {
         type: "block",
@@ -491,10 +481,10 @@ const rooms = {
       {
         type: "lift",
         config: {
-          top: 3,
+          top: 2,
           bottom: 1,
         },
-        position: { x: 13, y: 6, z: 0 },
+        position: { x: 13, y: 6, z: 1 },
       },
       {
         type: "block",
@@ -625,267 +615,8 @@ const rooms = {
         position: { x: 16, y: 8.5, z: 1 },
       },
     ]),
-  } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
-  zRoom: {
-    size: { x: 13, y: 8 },
-    walls: generateWalls({ x: 13, y: 8 }, "egyptus", { x: [8, 9], y: [] }),
-    floor: "deadly",
-    floorSkip: [] as Xy[],
-    id: "zRoom",
-    items: keyItems([
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "towards" },
-        position: { x: 1, y: 0, z: 1 },
-      },
-      {
-        type: "sceneryPlayer",
-        config: { which: "head" },
-        position: { x: 1.5, y: -0.9, z: 1 },
-      },
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "towards" },
-        position: { x: 3, y: 0, z: 1 },
-      },
-      {
-        type: "sceneryPlayer",
-        config: { which: "heels" },
-        position: { x: 3.5, y: -0.4, z: 1 },
-      },
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "towards" },
-        position: { x: 5, y: 0, z: 1 },
-      },
-      {
-        type: "sceneryPlayer",
-        config: { which: "heels" },
-        position: { x: 6, y: 0, z: 1 },
-      },
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "away" },
-        position: { x: 8, y: 8, z: 1 },
-      },
-      {
-        type: "sceneryPlayer",
-        config: { which: "head" },
-        position: { x: 8.5, y: 7.5, z: 1 },
-      },
-
-      // this block should be behind...
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 5, z: 0 },
-      },
-      // ...this block (because this one is on top (only just) even though it is further back)
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5.8, y: 5.8, z: 1 },
-      },
-
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 9 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 8 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 7 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 6 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 5 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 4 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 3 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 2 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 1 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 5, y: 0, z: 0 },
-      },
-
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 5 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 4 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 3 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 2 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 1 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 10, y: 6, z: 0 },
-      },
-
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 2, y: 4, z: 0 },
-      },
-      {
-        type: "charles",
-        config: {},
-        position: { x: 2, y: 4, z: 1 },
-      },
-      {
-        type: "block",
-        config: { style: "organic", disappearing: false },
-        position: { x: 0, y: 4, z: 0 },
-      },
-      {
-        type: "charles",
-        config: {},
-        position: { x: 0, y: 4, z: 1 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 1, z: 2 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 2, z: 2 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 2, z: 1 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 2, z: 0 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 3, z: 3 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 4, z: 3 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 3, z: 2 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 1, y: 4, z: 2 },
-      },
-      {
-        type: "teleporter",
-        config: { toRoom: "doorsRoom" },
-        position: { x: 0, y: 0, z: 0 },
-      },
-      {
-        type: "teleporter",
-        config: { toRoom: "doorsRoom" },
-        // normally nothing in a room is at factional values, but this makes it easy to test:
-        position: { x: 0, y: 1, z: 0.5 },
-      },
-      {
-        // comes after in the list but should be drawn behind:
-        type: "teleporter",
-        config: { toRoom: "doorsRoom" },
-        position: { x: 1, y: 1, z: 0 },
-      },
-      {
-        // comes after in the list but should be drawn behind in terms of z-index:
-        type: "teleporter",
-        config: { toRoom: "doorsRoom" },
-        position: { x: 2, y: 2, z: 0 },
-      },
-    ]),
-    planet: "egyptus",
-    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
 
-  tiny: {
-    size: { x: 3, y: 3 },
-    walls: generateWalls({ x: 3, y: 3 }, "egyptus"),
-    floor: "deadly",
-    floorSkip: [] as Xy[],
-    id: "tiny",
-    items: keyItems([
-      {
-        type: "barrier",
-        config: { axis: "y", disappearing: false },
-        position: { x: 0, y: 0, z: 0 },
-      },
-      /*{
-        config: { which: "head" },
-        position: { x: 0, y: 0, z: 5 },
-        type: "player",
-      },*/
-    ]),
-    planet: "egyptus",
-    color: { hue: "yellow", shade: "basic" },
-  } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
   big: {
     size: { x: 18, y: 18 },
     walls: generateWalls({ x: 18, y: 18 }, "bookworld"),

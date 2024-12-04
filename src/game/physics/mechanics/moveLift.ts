@@ -72,7 +72,7 @@ export function moveLift<RoomId extends string>(
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
   const velocity = calculateVelocity({
-    currentAltitude: z,
+    currentAltitude: z - lowestZ,
     direction,
     totalDistance: highestZ - lowestZ,
   });
