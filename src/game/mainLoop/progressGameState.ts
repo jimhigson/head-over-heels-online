@@ -8,6 +8,7 @@ import type {
   UnknownItemInPlay,
   AnyItemInPlay,
   ItemInPlayType,
+  FreeItem,
 } from "@/model/ItemInPlay";
 import { isFreeItem, isPlayableItem } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
@@ -20,8 +21,16 @@ import { swopCharacters } from "../gameState/swopCharacters";
 import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
 import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { xyzEqual, isExactIntegerXyz, roundXyz } from "@/utils/vectors/vectors";
+import {
+  xyzEqual,
+  isExactIntegerXyz,
+  roundXyz,
+  subXyz,
+  originXyz,
+} from "@/utils/vectors/vectors";
 import { iterate } from "@/utils/iterate";
+import { checkStandingOn } from "../collision/checkStandingOn";
+import { originalFramePeriod } from "../render/animationTimings";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -123,9 +132,7 @@ export const progressGameState = <RoomId extends string>(
   );
 
   for (let i = 0; i < physicsTickCount; i++) {
-    console.log(`----➡️ progressing physics tick in ${room.id}----`);
-
-    //console.log("a new frame is being processed, deltaMs is", deltaMS);
+    //console.log(`----➡️ progressing physics tick in ${room.id}----`);
 
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
@@ -140,9 +147,9 @@ export const progressGameState = <RoomId extends string>(
       }
     }
 
-    for (const item of Object.values(room.items).sort(
-      itemTickOrderComparator,
-    )) {
+    const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
+
+    for (const item of sortedItems) {
       if (currentPlayableItem(gameState).state.action === "death") {
         // all physics is suspended while death animation plays
         break;
@@ -154,6 +161,36 @@ export const progressGameState = <RoomId extends string>(
       }
       if (tickItem(item, room, gameState, physicsTickMs)) {
         return;
+      }
+    }
+
+    /**
+     * standing on updated here for all - because, eg, if a lift moves down with a player on it,
+     * if the check is done inside the lift's tick, the player is then not on the lift and has no
+     * ability to walk (the walk mechanic will return a null result) while the lift descends
+     */
+    for (const item of sortedItems) {
+      // check what is standing on us - this implies that we're also checking what everything is stood on,
+      // but gives us a chance to apply latent movement:
+      for (const s of item.state.stoodOnBy) {
+        if (!checkStandingOn(s, item, gameState.progression)) {
+          removeStandingOn(s);
+        } else {
+          const finalDelta = subXyz(
+            item.state.position,
+            startingPositions[item.id],
+          );
+          // latent movement is only horizontal - anything else, collisions and gravity can handle
+          const latentMovement = { ...finalDelta, z: 0 };
+          if (!xyzEqual(latentMovement, originXyz)) {
+            s.state.latentMovement.push({
+              // since the original game pushes items every other frame, the practical latency
+              // for standing-on items is two frames
+              moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
+              positionDelta: latentMovement,
+            });
+          }
+        }
       }
     }
 
@@ -170,4 +207,13 @@ export const progressGameState = <RoomId extends string>(
   }
 
   snapStationaryItemsToPixelGrid(room, startingPositions);
+};
+
+const removeStandingOn = <RoomId extends string>(
+  item: FreeItem<PlanetName, RoomId>,
+) => {
+  if (item.state.standingOn !== null) {
+    item.state.standingOn.state.stoodOnBy.delete(item);
+  }
+  item.state.standingOn = null;
 };

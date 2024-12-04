@@ -35,6 +35,7 @@ type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 export type TestCampaignRoomId =
   | "laboratory"
   | "renderEverything"
+  | "lift"
   | ColorRoomIds;
 
 // create matrix of rooms - one in each world/colour combination
@@ -147,11 +148,43 @@ const colourRooms = () => {
 };
 
 const rooms = {
+  lift: {
+    size: { x: 4, y: 4 },
+    planet: "safari",
+    color: { hue: "yellow", shade: "dimmed" },
+    walls: generateWalls({ x: 4, y: 4 }, "safari"),
+    floor: "safari",
+    floorSkip: [] as Xy[],
+    id: "lift",
+    items: keyItems([
+      {
+        type: "lift",
+        config: { bottom: 0, top: 4 },
+        position: { x: 1, y: 1, z: 3 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 0, y: 3, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "bag" },
+        position: { x: 0, y: 3, z: 1 },
+      },
+      {
+        type: "door",
+        config: { toRoom: "laboratory", direction: "towards" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ]),
+  } satisfies RoomJson<"safari", TestCampaignRoomId>,
+
   laboratory: {
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
-    walls: generateWalls({ x: 18, y: 14 }, "egyptus"),
+    walls: generateWalls({ x: 18, y: 14 }, "egyptus", { x: [5, 6], y: [] }),
     floor: "egyptus",
     floorSkip: [] as Xy[],
     id: "laboratory",
@@ -161,7 +194,7 @@ const rooms = {
         config: { toRoom: "blacktooth-cyan-dimmed" },
         position: {
           x: 1,
-          y: 3,
+          y: 0,
           z: 0,
         },
       },
@@ -171,15 +204,88 @@ const rooms = {
         position: { x: 5, y: 0, z: 2 },
       },
       {
+        type: "door",
+        config: { toRoom: "lift", direction: "away" },
+        position: { x: 5, y: 14, z: 2 },
+      },
+      {
         type: "block",
         config: { style: "organic", disappearing: false },
         position: { x: 5, y: 0, z: 0 },
+      },
+
+      //small conveyor experiment:
+      {
+        type: "portableBlock",
+        position: { x: 0, y: 0, z: 7 },
+        config: {
+          style: "cube",
+        },
+      },
+      {
+        type: "portableBlock",
+        position: { x: 0, y: 0, z: 2 },
+        config: {
+          style: "cube",
+        },
+      },
+      {
+        type: "conveyor",
+        position: { x: 0, y: 0, z: 0 },
+        config: { direction: "away" },
+      },
+      {
+        type: "conveyor",
+        position: { x: 0, y: 1, z: 0 },
+        config: { direction: "away" },
+      },
+
+      // stack of items to test pushing stacks:
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 0 },
+      },
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 1 },
+      },
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 2 },
+      },
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 3 },
+      },
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 4 },
+      },
+      {
+        type: "movableBlock",
+        config: { style: "anvil" },
+        position: { x: 10, y: 7, z: 5 },
       },
       // tests for lifts:
       {
         type: "lift",
         config: { bottom: 0, top: 9 },
         position: { x: 0, y: 4, z: 3 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          activated: true,
+          startDirection: "left",
+          style: "starsAndStripes",
+        },
+        position: { x: 0, y: 4, z: 0 },
       },
       {
         type: "pickup",

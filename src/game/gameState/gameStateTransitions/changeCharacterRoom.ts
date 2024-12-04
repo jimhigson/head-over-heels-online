@@ -59,13 +59,14 @@ export const changeCharacterRoom = <RoomId extends string>({
   const otherName = otherCharacterName(currentCharacterName);
 
   const otherCharacterLoadedRoom = gameState.characterRooms[otherName]?.room;
+  const toRoomJson = gameState.campaign.rooms[toRoomId];
+  if (toRoomJson === undefined) {
+    throw new Error(`room ${toRoomId} does not exist in campaign`);
+  }
   const toRoom =
     otherCharacterLoadedRoom?.id === toRoomId ?
       otherCharacterLoadedRoom
-    : loadRoom(
-        gameState.campaign.rooms[toRoomId],
-        gameState.pickupsCollected[toRoomId],
-      );
+    : loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]);
 
   const character = leavingRoom.items[currentCharacterName];
 

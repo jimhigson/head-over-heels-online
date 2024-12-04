@@ -16,7 +16,7 @@ export function* latentMovement<RoomId extends string>(
   _deltaMS: number,
 ): Generator<MechanicResult<FreeItemTypes, RoomId>> {
   while (
-    (item.state.latentMovement.at(0)?.gameTime ?? Number.POSITIVE_INFINITY) <
+    (item.state.latentMovement.at(0)?.moveAtGameTime ?? Number.POSITIVE_INFINITY) <
     gameState.gameTime
   ) {
     const { positionDelta } = item.state.latentMovement.shift()!;

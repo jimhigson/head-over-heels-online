@@ -306,9 +306,23 @@ describe("cyclic dependencies", () => {
 
     const relations = zPairs(Object.values(items));
 
-    console.log(relations);
+    expect(relations).toMatchInlineSnapshot(`
+      [
+        [
+          "baddie",
+          "movableBlock",
+        ],
+        [
+          "movableBlock",
+          "pickup",
+        ],
+        [
+          "pickup",
+          "baddie",
+        ],
+      ]
+    `);
 
-    //expect(result).toHaveLength(2);
     expect(() => sortByZPairs(relations, items)).not.toThrow();
     expect(sortByZPairs(relations, items).impossible).toBe(true);
   });

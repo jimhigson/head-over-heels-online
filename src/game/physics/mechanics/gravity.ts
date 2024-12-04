@@ -3,11 +3,19 @@ import {
   type FreeItemTypes,
   type ItemInPlay,
 } from "@/model/ItemInPlay";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { isSolid } from "../isSolid";
+import { originXyz } from "@/utils/vectors/vectors";
+
+const notFalling = {
+  movementType: "vel",
+  vels: {
+    gravity: originXyz,
+  },
+} as const satisfies MechanicResult<FreeItemTypes, string>;
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -21,8 +29,8 @@ export const gravity = <RoomId extends string>(
   deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId> => {
   if (!isSolid(item, gameState.progression)) {
-    // non-solid items do not have gravity - they'd fall through the floor!
-    return unitMechanicalResult;
+    // non-solid items do not have gravity - they'd fall through the floor like gravity-impacted ghosts!
+    return notFalling;
   }
 
   const {
@@ -43,6 +51,7 @@ export const gravity = <RoomId extends string>(
     // TODO: special case for lifts going down:
     if (isItemType("lift")(standingOn)) {
       const liftVelZ = standingOn.state.vels.lift.z;
+
       if (liftVelZ < 0) {
         // descending on a lift - we need some gravity to keep us on the lift
         // as it falls - go slightly faster than the lift's downwards speed
@@ -56,7 +65,8 @@ export const gravity = <RoomId extends string>(
         };
       }
     }
-    return unitMechanicalResult;
+
+    return notFalling;
   } else {
     // not standing on anything - allow free fall up to terminal velocity
     return {

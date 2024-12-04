@@ -21,10 +21,8 @@ import { sortObstaclesAboutVector } from "./collisionsOrder";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { objectValues } from "iter-tools";
 import type { PlanetName } from "@/sprites/planets";
-import { checkStandingOn } from "../collision/findStandingOn";
-import { originalFramePeriod } from "../render/animationTimings";
 
-const log = false;
+const log = 0;
 
 type MoveItemOptions<RoomId extends string> = {
   subjectItem: UnknownItemInPlay<RoomId>;
@@ -63,13 +61,13 @@ export const moveItem = <RoomId extends string>({
 
   if (log)
     console.log(
-      `moving ${subjectItem.id} @`,
+      `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+      `💨 moving ${subjectItem.id} @`,
       subjectItem.state.position,
       `bb:`,
       subjectItem.aabb,
       ` by `,
       posDelta,
-      ` because ${pusher ? `push by ${pusher.id}` : "velocity (first cause)"}`,
       pusher ? ""
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
       : (subjectItem.state as any).vels,
@@ -82,8 +80,10 @@ export const moveItem = <RoomId extends string>({
 
   if (log)
     console.log(
+      `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
       subjectItem.id,
-      "collided with:",
+      "💥 collided with:",
+      `[${sortedCollisions.map((c) => c.id).join(", ")}]`,
       sortedCollisions,
       "from room items:",
       room.items,
@@ -125,6 +125,7 @@ export const moveItem = <RoomId extends string>({
     ) {
       if (log)
         console.log(
+          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
           `moving ${subjectItem.id}`,
           "either mover or ",
           collision.id,
@@ -142,6 +143,7 @@ export const moveItem = <RoomId extends string>({
 
     if (log)
       console.log(
+        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
         `${subjectItem.id} collided 💥 with ${collision.id} to give backing-off mtv`,
         backingOffMtv,
       );
@@ -167,7 +169,9 @@ export const moveItem = <RoomId extends string>({
 
       if (log)
         console.log(
-          `${subjectItem.id} will recursively push ${collision.id} by ${forwardPushVector}`,
+          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `${subjectItem.id} will recursively push ${collision.id} by ${forwardPushVector}
+          with push coefficient of ${pushCoefficient}`,
         );
 
       // recursively apply push to pushee
@@ -203,6 +207,7 @@ export const moveItem = <RoomId extends string>({
 
       if (log)
         console.log(
+          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
           `${subjectItem.id} can't push ${collision.id} so simply backed off to`,
           subjectItem.state.position,
         );
@@ -219,38 +224,6 @@ export const moveItem = <RoomId extends string>({
         removeStandingOn(subjectItem);
         setStandingOn(subjectItem, collision);
       }
-    }
-  }
-
-  // check what we are stood on
-  if (
-    isFreeItem(subjectItem) &&
-    subjectItem.state.standingOn !== null &&
-    !checkStandingOn(
-      subjectItem,
-      subjectItem.state.standingOn,
-      gameState.progression,
-    )
-  ) {
-    if (log) {
-      console.log(
-        `${subjectItem.id} is (spatially) no longer standing on ${subjectItem.state.standingOn.id}`,
-      );
-    }
-    removeStandingOn(subjectItem);
-  }
-  // check what is standing on us:
-  for (const s of subjectItem.state.stoodOnBy) {
-    if (!checkStandingOn(s, subjectItem, gameState.progression)) {
-      removeStandingOn(s);
-    } else {
-      const finalDelta = subXyz(subjectItem.state.position, originalPosition);
-      s.state.latentMovement.push({
-        // since the original game pushes items every other frame, the practical latency
-        // for standing-on items is two frames
-        gameTime: gameState.gameTime + 2 * originalFramePeriod,
-        positionDelta: finalDelta,
-      });
     }
   }
 

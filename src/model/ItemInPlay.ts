@@ -28,7 +28,7 @@ type FreeItemState<RoomId extends string> = {
   activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<{ gameTime: number; positionDelta: Xyz }>;
+  latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */

@@ -348,11 +348,14 @@ describe("conveyors", () => {
       firstRoomItems: {
         portableBlock: {
           type: "portableBlock",
-          position: { x: 0, y: 0, z: 4 },
+          position: { x: 0, y: 0, z: 7 },
           config: {
             style: "cube",
           },
         },
+        // block needs to be higher than player by enough (enough delayed in their fall)
+        // that it doesn't land on the player while
+        // player is moving on conveyor, or push the player while they're falling from the conveyor
         heels: {
           type: "player",
           position: { x: 0, y: 0, z: 2 },
@@ -369,7 +372,7 @@ describe("conveyors", () => {
     });
 
     playGameThrough(gameState, {
-      until: 3_000,
+      until: 4_000,
     });
     const {
       items: { portableBlock },
