@@ -48,7 +48,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "shield": {
-      player.state.shield = 99;
+      player.state.shieldCollectedAt = gameState.gameTime;
       break;
     }
 

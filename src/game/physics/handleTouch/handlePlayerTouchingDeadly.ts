@@ -2,6 +2,7 @@ import type { GameState } from "@/game/gameState/GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import type { CharacterName } from "@/model/modelTypes";
+import { shieldDuration } from "../mechanicsConstants";
 
 /**
  *
@@ -9,10 +10,19 @@ import type { CharacterName } from "@/model/modelTypes";
  */
 export function handlePlayerTouchingDeadly<RoomId extends string>(
   gameState: GameState<RoomId>,
-  subjectItem: PlayableItem<CharacterName, RoomId>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
 ): boolean {
-  subjectItem.state.action = "death";
-  subjectItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
+  const { shieldCollectedAt } = playableItem.state;
+  if (
+    shieldCollectedAt !== null &&
+    shieldCollectedAt + shieldDuration > gameState.gameTime
+  ) {
+    // shield - do nothing, do not halt
+    return false;
+  }
+
+  playableItem.state.action = "death";
+  playableItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
 
   return true;
 }

@@ -50,7 +50,9 @@ export type EitherPlayableState<RoomId extends string> =
     action: PlayableActionState;
 
     lives: number;
-    shield: number;
+    // the time a shield was collected at, or null if no shield. The hud should show
+    // seconds remaining based off of this value
+    shieldCollectedAt: number | null;
 
     // Number of pixels the player will walk forward regardless of input. This
     // puts players properly inside a room when they enter via a door
@@ -263,6 +265,7 @@ export const fallingItemTypes = [
   "baddie",
   "charles",
   "spring",
+  "ball",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof fallingItemTypes)[number];

@@ -16,6 +16,7 @@ import { type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/model/ItemInPlay";
 import type { RenderOptions } from "@/game/RenderOptions";
 import { ItemRenderer } from "../ItemRenderer";
+import { shieldDuration } from "@/game/physics/mechanicsConstants";
 
 const smallTextSize = 8;
 const livesTextFromCentre = 24;
@@ -144,7 +145,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     const updateIcons = (playableItem: PlayableItem) => {
       const {
         type: characterName,
-        state: { shield },
+        state: { shieldCollectedAt },
       } = playableItem;
 
       const { text: shieldText, container: shieldContainer } =
@@ -156,7 +157,18 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
         (screenSize.x >> 1) +
         sideMultiplier(characterName) * smallIconsFromCentre;
 
-      shieldText.text = `${shield}`;
+      const shieldRemaining =
+        (
+          shieldCollectedAt === null ||
+          gameState.gameTime > shieldCollectedAt + shieldDuration
+        ) ?
+          0
+        : 100 -
+          Math.ceil(
+            (gameState.gameTime - shieldCollectedAt) / (shieldDuration / 100),
+          );
+
+      shieldText.text = `${shieldRemaining}`;
       shieldContainer.y = screenSize.y;
 
       skillText.text =

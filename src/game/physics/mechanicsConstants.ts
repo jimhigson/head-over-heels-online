@@ -97,3 +97,6 @@ export const roomHeightBlocks = 9;
  * by this amount so they fly lower
  */
 export const liftBBShortening = 2;
+
+/** how long (in ms) a shield bunny lasts for */
+export const shieldDuration = 60_000;
