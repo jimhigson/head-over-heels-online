@@ -22,6 +22,11 @@ import type { JsonItemConfig } from "@/model/json/JsonItem";
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
+const notWalking = Object.freeze({
+  movementType: "vel",
+  vels: { walking: originXyz },
+} as const satisfies MechanicResult<"baddie", string>);
+
 export const initBaddieWalk = (
   config: JsonItemConfig<"baddie", PlanetName, string>,
 ): Xyz => {
@@ -41,13 +46,17 @@ export const initBaddieWalk = (
   }
 };
 
-export const cybermanAi = <RoomId extends string>(
-  { state: { position } }: ItemInPlay<"baddie", PlanetName, RoomId>,
+export const walkTowardsPlayer = <RoomId extends string>(
+  { state: { position, standingOn } }: ItemInPlay<"baddie", PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
   const speed = walkSpeedPixPerMs.cyberman;
+
+  if (standingOn === null) {
+    return notWalking;
+  }
 
   // find closest player in the room:
   const {
@@ -103,6 +112,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
   {
     state: {
       vels: { walking },
+      standingOn,
     },
     config: { which },
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
@@ -111,6 +121,10 @@ export const randomlyChangeDirection = <RoomId extends string>(
   deltaMS: number,
   directions: Readonly<Array<DirectionXy8>>,
 ): MechanicResult<"baddie", RoomId> => {
+  if (standingOn === null) {
+    return notWalking;
+  }
+
   const speed = walkSpeedPixPerMs[which];
   const newWalking =
     Math.random() < deltaMS / 1_000 ?
@@ -129,12 +143,17 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
   {
     state: {
       vels: { walking },
+      standingOn,
     },
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
+  if (standingOn === null) {
+    return notWalking;
+  }
+
   // just keep walking as we were:
   return {
     movementType: "vel",
@@ -178,7 +197,7 @@ export const tickBaddie = <RoomId extends string>(
       );
     }
     case "cyberman": {
-      return cybermanAi(item, room, gameState, deltaMS);
+      return walkTowardsPlayer(item, room, gameState, deltaMS);
     }
     case "turtle":
     case "american-football-head": {

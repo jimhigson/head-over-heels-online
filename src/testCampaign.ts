@@ -35,8 +35,6 @@ type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}`;
 export type TestCampaignRoomId =
   | "doorsRoom"
   | "zRoom"
-  | "wide"
-  | "deep"
   | "big"
   | "tiny"
   | ColorRoomIds;
@@ -138,9 +136,11 @@ const colourRooms = () => {
 
 const rooms = {
   doorsRoom: {
-    size: { x: 8, y: 5 },
-    walls: generateWalls({ x: 8, y: 5 }, "blacktooth"),
-    floor: "blacktooth",
+    size: { x: 12, y: 14 },
+    planet: "blacktooth",
+    color: { hue: "cyan", shade: "dimmed" },
+    walls: generateWalls({ x: 12, y: 14 }, "blacktooth"),
+    floor: "bookworld",
     floorSkip: [] as Xy[],
     id: "doorsRoom",
     items: keyItems([
@@ -149,19 +149,9 @@ const rooms = {
         config: { toRoom: "blacktooth-cyan" },
         position: {
           x: 1,
-          y: 0,
+          y: 3,
           z: 0,
         },
-      },
-      {
-        type: "door",
-        config: { toRoom: "deep", direction: "towards" },
-        position: { x: 1, y: 0, z: 0 },
-      },
-      {
-        type: "door",
-        config: { toRoom: "wide", direction: "towards" },
-        position: { x: 3, y: 0, z: 1 },
       },
       {
         type: "door",
@@ -173,9 +163,298 @@ const rooms = {
         config: { toRoom: "zRoom", direction: "towards" },
         position: { x: 7, y: 0, z: 3 },
       },
+      // tests for lifts:
+      {
+        type: "lift",
+        config: { bottom: 0, top: 9 },
+        position: { x: 0, y: 4, z: 3 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "donuts" },
+        position: { x: 0, y: 4, z: 9 },
+      },
+      {
+        type: "lift",
+        config: { bottom: 0, top: 9 },
+        position: { x: 1, y: 4, z: 2 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "hooter" },
+        position: { x: 1, y: 4, z: 9 },
+      },
+      {
+        type: "lift",
+        config: { bottom: 0, top: 9 },
+        position: { x: 2, y: 4, z: 1 },
+      },
+      {
+        type: "lift",
+        config: { bottom: 0, top: 9 },
+        position: { x: 3, y: 4, z: 0 },
+      },
+      // blocks provide a lift lobby:
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 3, y: 5, z: 8 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 3, y: 3, z: 8 },
+      },
+      // charles and joystick tests
+      {
+        type: "charles",
+        id: "ch1",
+        config: {},
+        position: { x: 3, y: 3, z: 9 },
+      },
+      {
+        type: "charles",
+        id: "ch2",
+        config: {},
+        position: { x: 3, y: 5, z: 9 },
+      },
+      {
+        type: "joystick",
+        config: { controls: ["ch1"] },
+        position: { x: 2, y: 1, z: 0 },
+      },
+      // circle of conveyors
+      {
+        type: "conveyor",
+        config: { direction: "away" },
+        position: { x: 3, y: 6, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "away" },
+        position: { x: 3, y: 7, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "away" },
+        position: { x: 3, y: 8, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "left" },
+        position: { x: 3, y: 9, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "left" },
+        position: { x: 4, y: 9, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "left" },
+        position: { x: 5, y: 9, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "towards" },
+        position: { x: 6, y: 9, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "towards" },
+        position: { x: 6, y: 8, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "towards" },
+        position: { x: 6, y: 7, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "right" },
+        position: { x: 6, y: 6, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "right" },
+        position: { x: 5, y: 6, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "right" },
+        position: { x: 4, y: 6, z: 0 },
+      },
+      {
+        type: "conveyor",
+        config: { direction: "right" },
+        position: { x: 4, y: 6, z: 5 },
+      },
+      {
+        type: "baddie",
+        config: { which: "cyberman", activated: true, startDirection: "away" },
+        position: { x: 4, y: 8, z: 5 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "extra-life" },
+        position: { x: 4, y: 6, z: 9 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "bag" },
+        position: { x: 4, y: 6, z: 10 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 5, y: 6, z: 10 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 6, y: 6, z: 2 },
+      },
+      // run of disappearing blocks:
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 0, y: 5, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 0, y: 6, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 0, y: 7, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 0, y: 8, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          style: "starsAndStripes",
+          activated: true,
+        },
+        position: { x: 1, y: 7, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "right",
+          style: "greenAndPink",
+          activated: true,
+        },
+        position: { x: 2, y: 8, z: 0 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "anvil",
+        },
+        position: { x: 2, y: 6, z: 0 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "anvil",
+        },
+        position: { x: 1, y: 6, z: 0 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "sandwich",
+        },
+        position: { x: 1, y: 6, z: 1 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "sandwich",
+        },
+        position: { x: 1, y: 6, z: 2 },
+      },
+
+      // some blocks for Heels to test stacking up:
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 1, z: 0 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 1, z: 1 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 1, z: 2 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 2, z: 0 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 3, z: 0 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "cube",
+        },
+        position: { x: 4, y: 4, z: 0 },
+      },
+
+      // test rolling physics
+      {
+        type: "ball",
+        config: {},
+        position: { x: 7, y: 4, z: 0 },
+      },
+      {
+        type: "ball",
+        config: {},
+        position: { x: 7, y: 2, z: 0 },
+      },
+      {
+        type: "ball",
+        config: {},
+        position: { x: 9, y: 4, z: 0 },
+      },
+      {
+        type: "ball",
+        config: {},
+        position: { x: 10, y: 4, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: { which: "turtle", startDirection: "towards", activated: true },
+        position: { x: 10, y: 12, z: 10 },
+      },
     ]),
-    planet: "blacktooth",
-    color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
   zRoom: {
     size: { x: 13, y: 8 },
@@ -415,39 +694,7 @@ const rooms = {
     planet: "egyptus",
     color: { hue: "cyan", shade: "basic" },
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
-  wide: {
-    size: { x: 10, y: 3 },
-    walls: generateWalls({ x: 10, y: 3 }, "market"),
-    floor: "deadly",
-    floorSkip: [] as Xy[],
-    id: "wide",
-    items: keyItems([
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "towards" },
-        position: { x: 1, y: 0, z: 1 },
-      },
-    ]),
-    planet: "market",
-    color: { hue: "cyan", shade: "basic" },
-  } satisfies RoomJson<"market", TestCampaignRoomId>,
-  deep: {
-    size: { x: 3, y: 10 },
-    walls: generateWalls({ x: 3, y: 10 }, "moonbase"),
 
-    floor: "deadly",
-    floorSkip: [] as Xy[],
-    id: "deep",
-    items: keyItems([
-      {
-        type: "door",
-        config: { toRoom: "doorsRoom", direction: "towards" },
-        position: { x: 1, y: 0, z: 1 },
-      },
-    ]),
-    planet: "moonbase",
-    color: { hue: "cyan", shade: "basic" },
-  } satisfies RoomJson<"moonbase", TestCampaignRoomId>,
   tiny: {
     size: { x: 3, y: 3 },
     walls: generateWalls({ x: 3, y: 3 }, "egyptus"),

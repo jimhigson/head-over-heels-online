@@ -56,8 +56,9 @@ export const sortByZPairs = (
         const {
           state: { position },
           aabb,
+          config,
         } = items[id];
-        return `${id} @${JSON.stringify(position)} bb:${JSON.stringify(aabb)}`;
+        return `${id} @${JSON.stringify(position)} bb:${JSON.stringify(aabb)} [${JSON.stringify(config)}]`;
       };
 
       throw new Error(

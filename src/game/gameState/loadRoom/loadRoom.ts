@@ -40,7 +40,8 @@ function* gatherConveyors<RoomId extends string>(
       perpendicularAxisXy(axisOfConveyorTravel);
     const byOrdinal = Object.groupBy(
       directionConveyors,
-      (conveyor) => conveyor.state.position[axisCrossingConveyorTravel],
+      (conveyor) =>
+        `${conveyor.state.position[axisCrossingConveyorTravel]}${conveyor.state.position.z}`,
     );
 
     for (const conveyorsInline of objectValues(byOrdinal)) {

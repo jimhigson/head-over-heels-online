@@ -150,7 +150,7 @@ export const App = <RoomId extends string>({
                     setShowBBs(checked ? "non-wall" : "none")
                   }
                 />
-                <Label htmlFor="airplane-mode">Show BBs</Label>
+                <Label htmlFor="airplane-mode">BBs</Label>
                 <Switch
                   id="airplane-mode"
                   checked={showBBs === "all"}
@@ -160,15 +160,23 @@ export const App = <RoomId extends string>({
                 />
                 <Label htmlFor="airplane-mode">inc walls</Label>
               </div>
-              <Button
-                onClick={() => gameApi.changeRoom("blacktooth1head" as RoomId)}
-              >
-                Room 1
-              </Button>
-              <Button onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}>
-                Test room
-              </Button>
-              <div className="flex flex-row items-center gap-x-2">
+              <div className="flex flex-row items-center">
+                <Button
+                  className="flex-1"
+                  onClick={() =>
+                    gameApi.changeRoom("blacktooth1head" as RoomId)
+                  }
+                >
+                  Room 1
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}
+                >
+                  Test room
+                </Button>
+              </div>
+              <div className="flex flex-row items-center">
                 <Button
                   className="flex-1"
                   onClick={() => {
@@ -201,7 +209,7 @@ export const App = <RoomId extends string>({
                   return gameApi && console.log(gameApi.gameState);
                 }}
               >
-                Game state to console (and window.gs)
+                log(gameState); gs=gameState
               </Button>
               <Button
                 onClick={() =>
