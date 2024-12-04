@@ -1,6 +1,6 @@
 import { Color } from "pixi.js";
 import type {
-  Shade,
+  ZxSpectrumShade,
   ZxSpectrumRoomColour,
   ZxSpectrumRoomHue,
 } from "./originalGame";
@@ -165,7 +165,7 @@ export const colorScheme = {
     },
   },
   // green dimmed edges is the same
-} as const satisfies Record<ZxSpectrumRoomHue, Record<Shade, ColorScheme>>;
+} as const satisfies Record<ZxSpectrumRoomHue, Record<ZxSpectrumShade, ColorScheme>>;
 
 export const getColorScheme = (colour: ZxSpectrumRoomColour) =>
   colorScheme[colour.hue][colour.shade];

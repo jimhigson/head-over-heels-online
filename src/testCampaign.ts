@@ -2,8 +2,8 @@ import type { Campaign } from "./model/modelTypes.ts";
 import { type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
 import type { PlanetName, Wall } from "./sprites/planets.ts";
 import { planetNames, planets } from "./sprites/planets.ts";
-import type { ZxSpectrumRoomHue } from "./originalGame.ts";
-import { zxSpectrumRoomHue } from "./originalGame.ts";
+import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
+import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
@@ -30,7 +30,7 @@ const generateWalls = <P extends PlanetName>(
   };
 };
 
-type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}`;
+type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
 export type TestCampaignRoomId = "doorsRoom" | "big" | ColorRoomIds;
 
@@ -60,72 +60,86 @@ const colourRooms = () => {
   ];
 
   function* room(): Generator<Entry<PlanetName>> {
-    for (let ip = 0; ip < planetNames.length; ip++) {
-      const p = planetNames[ip];
-      for (let ic = 0; ic < planetNames.length; ic++) {
-        const c = zxSpectrumRoomHue[ic];
-        yield [
-          `${p}-${c}`,
-          {
-            size: { x: 8, y: 8 },
-            walls: generateWalls({ x: 8, y: 8 }, p, { x: [4, 5], y: [4, 5] }),
-            color: { hue: c, shade: "basic" },
-            floorSkip: [] as Xy[],
-            floor: p,
-            planet: p,
-            items: keyItems([
-              {
-                type: "teleporter",
-                position: {
-                  x: 2,
-                  y: 2,
-                  z: 0,
+    for (let iPlanet = 0; iPlanet < planetNames.length; iPlanet++) {
+      const p = planetNames[iPlanet];
+      for (let iHue = 0; iHue < zxSpectrumRoomHue.length; iHue++) {
+        const hue = zxSpectrumRoomHue[iHue];
+        for (let iShade = 0; iShade < zxSpectrumShades.length; iShade++) {
+          const shade = zxSpectrumShades[iShade];
+          yield [
+            `${p}-${hue}-${shade}`,
+            {
+              size: { x: 8, y: 8 },
+              walls: generateWalls({ x: 8, y: 8 }, p, {
+                x: [4, 5],
+                y: [1, 2, 4, 5],
+              }),
+              color: { hue, shade },
+              floorSkip: [] as Xy[],
+              floor: p,
+              planet: p,
+              items: keyItems([
+                {
+                  type: "teleporter",
+                  position: {
+                    x: 2,
+                    y: 2,
+                    z: 0,
+                  },
+                  config: { toRoom: "doorsRoom" },
                 },
-                config: { toRoom: "doorsRoom" },
-              },
-              {
-                type: "door",
-                position: { x: 0, y: 0, z: 3 },
-                config: {
-                  direction: "towards",
-                  toRoom: `${p}-${zxSpectrumRoomHue[(zxSpectrumRoomHue.length + ic - 1) % zxSpectrumRoomHue.length]}`,
+                {
+                  type: "door",
+                  position: { x: 0, y: 0, z: 3 },
+                  config: {
+                    direction: "towards",
+                    toRoom: `${p}-${zxSpectrumRoomHue[(zxSpectrumRoomHue.length + iHue - 1) % zxSpectrumRoomHue.length]}-${shade}`,
+                  },
                 },
-              },
-              {
-                type: "door",
-                position: { x: 4, y: 8, z: 3 },
-                config: {
-                  direction: "away",
-                  toRoom: `${p}-${zxSpectrumRoomHue[(ic + 1) % zxSpectrumRoomHue.length]}`,
+                {
+                  type: "door",
+                  position: { x: 4, y: 8, z: 3 },
+                  config: {
+                    direction: "away",
+                    toRoom: `${p}-${zxSpectrumRoomHue[(iHue + 1) % zxSpectrumRoomHue.length]}-${shade}`,
+                  },
                 },
-              },
-              {
-                type: "door",
-                position: { x: 0, y: 4, z: 3 },
-                config: {
-                  direction: "right",
-                  toRoom: `${planetNames[(planetNames.length + ip - 1) % planetNames.length]}-${c}`,
+                {
+                  type: "door",
+                  position: { x: 0, y: 4, z: 3 },
+                  config: {
+                    direction: "right",
+                    toRoom: `${planetNames[(planetNames.length + iPlanet - 1) % planetNames.length]}-${hue}-${shade}`,
+                  },
                 },
-              },
-              {
-                type: "door",
-                position: { x: 8, y: 4, z: 3 },
-                config: {
-                  direction: "left",
-                  toRoom: `${planetNames[(planetNames.length + ip + 1) % planetNames.length]}-${c}`,
+                {
+                  type: "door",
+                  position: { x: 8, y: 4, z: 3 },
+                  config: {
+                    direction: "left",
+                    toRoom: `${planetNames[(planetNames.length + iPlanet + 1) % planetNames.length]}-${hue}-${shade}`,
+                  },
                 },
-              },
-              ...sampleItems,
-            ]),
-            id: `${p}-${c}`,
-          },
-        ];
+                {
+                  type: "door",
+                  position: { x: 8, y: 1, z: 0 },
+                  config: {
+                    direction: "left",
+                    toRoom: `${p}-${hue}-${shade === "basic" ? "dimmed" : "basic"}`,
+                  },
+                },
+                ...sampleItems,
+              ]),
+              id: `${p}-${hue}-${shade}`,
+            },
+          ];
+        }
       }
     }
   }
   return Object.fromEntries(room()) as Record<
-    `${PlanetName}-${ZxSpectrumRoomHue}`,
-    RoomJson<PlanetName, `${PlanetName}-${ZxSpectrumRoomHue}`>
+    ColorRoomIds,
+    RoomJson<PlanetName, ColorRoomIds>
   >;
 };
 
@@ -141,7 +155,7 @@ const rooms = {
     items: keyItems([
       {
         type: "teleporter",
-        config: { toRoom: "blacktooth-cyan" },
+        config: { toRoom: "blacktooth-cyan-dimmed" },
         position: {
           x: 1,
           y: 3,

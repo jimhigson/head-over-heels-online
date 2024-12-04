@@ -7,10 +7,11 @@ export const zxSpectrumRoomHue = [
   "white",
 ] as const;
 export type ZxSpectrumRoomHue = (typeof zxSpectrumRoomHue)[number];
-export type Shade = "basic" | "dimmed";
+export const zxSpectrumShades = ["basic", "dimmed"] as const;
+export type ZxSpectrumShade = (typeof zxSpectrumShades)[number];
 export type ZxSpectrumRoomColour = {
   hue: ZxSpectrumRoomHue;
-  shade: Shade;
+  shade: ZxSpectrumShade;
 };
 export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interlaced frames, hoh was at 25fps
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
