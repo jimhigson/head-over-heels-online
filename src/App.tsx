@@ -13,7 +13,7 @@ import type {
 import { isItemType } from "./model/ItemInPlay.ts";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
-import { LucideBug } from "lucide-react";
+import { LucideBug, LucideTestTube } from "lucide-react";
 import { changeCharacterRoom } from "./game/gameState/gameStateTransitions/changeCharacterRoom.ts";
 import { currentRoom } from "./game/gameState/GameState.ts";
 
@@ -136,7 +136,10 @@ export const App = <RoomId extends string>({
     <>
       {gameApi !== undefined && (
         <Collapsible>
-          <CollapsibleTrigger className="absolute bottom-2 right-2 flex flex-col z-3">
+          <CollapsibleTrigger
+            className="absolute bottom-2 right-2 flex flex-col z-3"
+            onClick={(e) => e.currentTarget.blur()}
+          >
             <LucideBug color="hsl(183, 28%,30%)" />
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -175,11 +178,12 @@ export const App = <RoomId extends string>({
                 <Button
                   className="flex-1"
                   onClick={(e) => {
-                    gameApi.changeRoom("doorsRoom" as RoomId);
+                    gameApi.changeRoom("laboratory" as RoomId);
                     e.currentTarget.blur();
                   }}
                 >
-                  Test room
+                  <LucideTestTube />
+                  To the lab!
                 </Button>
               </div>
               <div className="flex flex-row items-center">

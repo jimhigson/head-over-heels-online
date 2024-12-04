@@ -32,7 +32,10 @@ const generateWalls = <P extends PlanetName>(
 
 type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
-export type TestCampaignRoomId = "doorsRoom" | "big" | ColorRoomIds;
+export type TestCampaignRoomId =
+  | "laboratory"
+  | "renderEverything"
+  | ColorRoomIds;
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
@@ -86,7 +89,7 @@ const colourRooms = () => {
                     y: 2,
                     z: 0,
                   },
-                  config: { toRoom: "doorsRoom" },
+                  config: { toRoom: "laboratory" },
                 },
                 {
                   type: "door",
@@ -144,14 +147,14 @@ const colourRooms = () => {
 };
 
 const rooms = {
-  doorsRoom: {
+  laboratory: {
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
     walls: generateWalls({ x: 18, y: 14 }, "egyptus"),
     floor: "egyptus",
     floorSkip: [] as Xy[],
-    id: "doorsRoom",
+    id: "laboratory",
     items: keyItems([
       {
         type: "teleporter",
@@ -164,8 +167,13 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "big", direction: "towards" },
+        config: { toRoom: "renderEverything", direction: "towards" },
         position: { x: 5, y: 0, z: 2 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 5, y: 0, z: 0 },
       },
       // tests for lifts:
       {
@@ -223,9 +231,20 @@ const rooms = {
         position: { x: 3, y: 5, z: 9 },
       },
       {
+        type: "pickup",
+        // a coronation!
+        config: { gives: "crown" },
+        position: { x: 3, y: 5, z: 11 },
+      },
+      {
+        type: "joystick",
+        config: { controls: ["ch2"] },
+        position: { x: 4, y: 3, z: 0 },
+      },
+      {
         type: "joystick",
         config: { controls: ["ch1"] },
-        position: { x: 2, y: 1, z: 0 },
+        position: { x: 4, y: 1, z: 0 },
       },
       // circle of conveyors
       {
@@ -490,6 +509,29 @@ const rooms = {
           style: "tower",
           disappearing: false,
         },
+        position: { x: 14, y: 3, z: 0 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "tower",
+          disappearing: false,
+        },
+        position: { x: 14, y: 3, z: 1 },
+      },
+      {
+        type: "portableBlock",
+        config: {
+          style: "drum",
+        },
+        position: { x: 13.5, y: 3, z: 2 },
+      },
+      {
+        type: "block",
+        config: {
+          style: "tower",
+          disappearing: false,
+        },
         position: { x: 13, y: 5, z: 0 },
       },
       {
@@ -595,7 +637,7 @@ const rooms = {
           startDirection: "towards",
           activated: false,
         },
-        position: { x: 14, y: 10, z: 1 },
+        position: { x: 16, y: 13, z: 1 },
       },
       // the turtle should eventually deactivate himself!
       {
@@ -631,16 +673,16 @@ const rooms = {
     ]),
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
 
-  big: {
+  renderEverything: {
     size: { x: 18, y: 18 },
     walls: generateWalls({ x: 18, y: 18 }, "bookworld"),
     floor: "bookworld",
     floorSkip: [] as Xy[],
-    id: "big",
+    id: "renderEverything",
     items: keyItems([
       {
         type: "door",
-        config: { toRoom: "doorsRoom", direction: "away" },
+        config: { toRoom: "laboratory", direction: "away" },
         position: { x: 1, y: 11, z: 4 },
       },
       {

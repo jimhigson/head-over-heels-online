@@ -179,7 +179,7 @@ const frames = {
     frame: { x: 202, y: 349, ...smallItemTextureSize },
   },
   bag: {
-    frame: { x: 77, y: 374, ...smallItemTextureSize },
+    frame: { x: 202, y: 299, ...smallItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "fish",
