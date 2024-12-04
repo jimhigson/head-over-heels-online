@@ -31,7 +31,7 @@ const rangeOverlap = (
   bMin: number,
   bMax: number,
   /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be overlapping */
-  tolerance: number = 0.000_1,
+  tolerance: number = 0.000_01,
 ) => {
   return bMax - tolerance > aMin && bMin < aMax - tolerance;
 };

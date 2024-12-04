@@ -50,7 +50,7 @@ export const sortByZPairs = (
     return toposort(pairs);
   } catch (e) {
     if (e instanceof CyclicDependencyError) {
-      const cyclicItems = e.cyclicDependency as Array<string>;
+      const cyclicItemIds = e.cyclicDependency as Array<string>;
 
       const logItem = (id: string) => {
         const {
@@ -61,8 +61,24 @@ export const sortByZPairs = (
         return `${id} @${JSON.stringify(position)} bb:${JSON.stringify(aabb)} [${JSON.stringify(config)}]`;
       };
 
+      console.info(
+        "might want to copy this into a test to reproduce the cyclic dependency error:",
+        cyclicItemIds.map((ciid) => {
+          const ci = items[ciid];
+          return {
+            id: ciid,
+            state: {
+              position: ci.state.position,
+            },
+            aabb: ci.aabb,
+            renders: ci.renders,
+          };
+        }),
+      );
+
       throw new Error(
-        `found a cyclic dependency in the draw order - cyclic nodes are: \n\t${cyclicItems.map(logItem).join(" --in-front-of--> \n\t")}`,
+        `found a cyclic dependency in the draw order - cyclic nodes are: \n\t${cyclicItemIds.map(logItem).join(" --in-front-of--> \n\t")}`,
+        // some json to copy and paste into a test:
         e,
       );
     } else {

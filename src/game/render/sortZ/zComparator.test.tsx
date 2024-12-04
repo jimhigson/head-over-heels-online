@@ -230,7 +230,7 @@ test("zComparator gives no order preference for slightly-overlapping diagonally 
   expect(zComparator(rightLow, leftTop)).toBeGreaterThan(0);
 });
 
-test.only("edge case with equal y due to floating point error", () => {
+test("edge case with equal y due to floating point error", () => {
   /* 
   cyc. dependency due to cube being in front of heels when should have no preference:
 
