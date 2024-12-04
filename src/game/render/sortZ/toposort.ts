@@ -21,6 +21,7 @@ export class CyclicDependencyError<T> extends Error {
   constructor(
     message: string,
     public cyclicDependency: Array<T>,
+    public hasClosedCycle,
     options?: ErrorOptions,
   ) {
     super(message, options);
@@ -68,6 +69,7 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
       throw new CyclicDependencyError(
         "Cyclic dependency found - see .cyclicDependency of this error for details",
         [node],
+        false, // can't describe a cycle with a single node
       );
     }
 
@@ -92,10 +94,16 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
           visit(child, nodesHash.get(child), predecessors);
         } catch (e) {
           if (e instanceof CyclicDependencyError) {
-            throw new CyclicDependencyError<T>(e.message, [
-              ...e.cyclicDependency,
-              node,
-            ]);
+            if (e.hasClosedCycle) {
+              // the error already describes a loop - no need to add more nodes on the way up the call stack
+              throw e;
+            } else {
+              throw new CyclicDependencyError<T>(
+                e.message,
+                [...e.cyclicDependency, node],
+                e.cyclicDependency.includes(node),
+              );
+            }
           } else {
             throw e;
           }

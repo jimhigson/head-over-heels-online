@@ -10,10 +10,12 @@ import {
   directionsXy8,
   directionsXyDiagonal,
   distanceXySquared,
+  originXy,
   originXyz,
   perpendicularAxisXy,
   scaleXyz,
   subXy,
+  xyEqual,
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
@@ -32,9 +34,9 @@ export const initBaddieWalk = (
 ): Xyz => {
   switch (config.which) {
     case "dalek":
-    case "turtle":
     case "bubble-robot":
       return scaleXyz(unitVectors.towards, walkSpeedPixPerMs[config.which]);
+    case "turtle":
     case "american-football-head":
       return scaleXyz(
         unitVectors[config.startDirection],
@@ -145,6 +147,7 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
       vels: { walking },
       standingOn,
     },
+    config,
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
@@ -154,11 +157,14 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
     return notWalking;
   }
 
-  // just keep walking as we were:
   return {
     movementType: "vel",
     vels: {
-      walking,
+      walking:
+        xyEqual(walking, originXy) ?
+          // ie, we might have fallen and landed and not be walking:
+          initBaddieWalk(config)
+        : walking,
     },
   };
 };

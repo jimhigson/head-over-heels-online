@@ -1,39 +1,41 @@
 import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./zComparator";
-import { zPairs } from "./sortItemsByDrawOrder";
-import toposort from "toposort";
+import { sortByZPairs, zPairs } from "./sortItemsByDrawOrder";
+import { collision1toMany } from "@/game/collision/aabbCollision";
+
+type TestItems = Record<string, DrawOrderComparable>;
 
 test("detects behind in x", () => {
-  const items: DrawOrderComparable[] = [
-    {
+  const items: TestItems = {
+    1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-    {
+    2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 10, y: 0, z: 0 } },
     },
-    {
+    3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 20, y: 0, z: 0 } },
     },
-    {
+    4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 30, y: 0, z: 0 } },
     },
-  ];
+  };
 
-  const result = zPairs(items);
-  expect(result).toHaveLength(3);
-  expect(result).toEqual(
+  const relations = zPairs(Object.values(items));
+  expect(relations).toHaveLength(3);
+  expect(relations).toEqual(
     expect.arrayContaining([
       // [behind,  front]
       ["2", "1"],
@@ -42,40 +44,40 @@ test("detects behind in x", () => {
     ]),
   );
   // no cyclic dependencies
-  expect(() => toposort(result)).not.toThrow();
+  expect(() => sortByZPairs(relations, items)).not.toThrow();
 });
 
 test("detects behind in y", () => {
-  const items: DrawOrderComparable[] = [
-    {
+  const items: TestItems = {
+    1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-    {
+    2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 10, z: 0 } },
     },
-    {
+    3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 20, z: 0 } },
     },
-    {
+    4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 30, z: 0 } },
     },
-  ];
+  };
 
-  const result = zPairs(items);
-  expect(result).toHaveLength(3);
-  expect(result).toEqual(
+  const relations = zPairs(Object.values(items));
+  expect(relations).toHaveLength(3);
+  expect(relations).toEqual(
     expect.arrayContaining([
       // [behind,  front]
       ["2", "1"],
@@ -84,40 +86,40 @@ test("detects behind in y", () => {
     ]),
   );
   // no cyclic dependencies
-  expect(() => toposort(result)).not.toThrow();
+  expect(() => sortByZPairs(relations, items)).not.toThrow();
 });
 
 test("detects behind in z (inverted from x and y - higher is in front)", () => {
-  const items: DrawOrderComparable[] = [
-    {
+  const items: TestItems = {
+    1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-    {
+    2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 10 } },
     },
-    {
+    3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 20 } },
     },
-    {
+    4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 30 } },
     },
-  ];
+  };
 
-  const result = zPairs(items);
-  expect(result).toHaveLength(3);
-  expect(result).toEqual(
+  const relations = zPairs(Object.values(items));
+  expect(relations).toHaveLength(3);
+  expect(relations).toEqual(
     expect.arrayContaining([
       // [behind,  front]
       ["1", "2"],
@@ -126,62 +128,64 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     ]),
   );
   // no cyclic dependencies
-  expect(() => toposort(result)).not.toThrow();
+  expect(() => sortByZPairs(relations, items)).not.toThrow();
+  expect(sortByZPairs(relations, items).impossible).toBe(false);
 });
 
 test("detects as in front if on top and set back while overlapping", () => {
-  const items: DrawOrderComparable[] = [
-    {
+  const items: TestItems = {
+    bottom: {
       id: "bottom",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-    {
+    top: {
       id: "top",
       aabb: { x: 10, y: 10, z: 10 },
       renders: true,
       state: { position: { x: 9, y: 9, z: 10 } },
     },
-  ];
+  };
 
-  const result = zPairs(items);
-  expect(result).toHaveLength(1);
-  expect(result).toEqual(
+  const relations = zPairs(Object.values(items));
+  expect(relations).toHaveLength(1);
+  expect(relations).toEqual(
     expect.arrayContaining([
       // [behind,  front]
       ["bottom", "top"],
     ]),
   );
   // no cyclic dependencies
-  expect(() => toposort(result)).not.toThrow();
+  expect(() => sortByZPairs(relations, items)).not.toThrow();
+  expect(sortByZPairs(relations, items).impossible).toBe(false);
 });
 
 test("detects a tall item is front of two smaller items", () => {
-  const items: DrawOrderComparable[] = [
-    {
+  const items: TestItems = {
+    tallThinFront: {
       id: "tallThinFront",
       aabb: { x: 1, y: 0, z: 10 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-    {
+    smallerTop: {
       id: "smallerTop",
       aabb: { x: 1, y: 1, z: 1 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 9 } },
     },
-    {
+    smallerBottom: {
       id: "smallerBottom",
       aabb: { x: 1, y: 1, z: 1 },
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
-  ];
+  };
 
-  const result = zPairs(items);
-  expect(result).toHaveLength(2);
-  expect(result).toEqual(
+  const relations = zPairs(Object.values(items));
+  expect(relations).toHaveLength(2);
+  expect(relations).toEqual(
     expect.arrayContaining([
       // [behind,  front]
       ["smallerTop", "tallThinFront"],
@@ -189,7 +193,8 @@ test("detects a tall item is front of two smaller items", () => {
     ]),
   );
   // no cyclic dependencies
-  expect(() => toposort(result)).not.toThrow();
+  expect(() => sortByZPairs(relations, items)).not.toThrow();
+  expect(sortByZPairs(relations, items).impossible).toBe(false);
 });
 
 test.todo("uses renderaabb if there is one", () => {
@@ -200,7 +205,7 @@ describe("cyclic dependencies", () => {
   test("found situation 1 - 3 items", () => {
     /*
    circular reference:
-   from toposort stack trace:
+   from sortByZPairs stack trace:
       cube 
         -behind-> conveyor 
             -behind-> heels 
@@ -215,36 +220,37 @@ describe("cyclic dependencies", () => {
     // simplified:
     // note - heels should not be behind cube, but is if we take simple rectangular projection bounding areas on screen
     // to be used for detecting overlap between items
-    const items: DrawOrderComparable[] = [
-      {
+    const items: TestItems = {
+      heels: {
         id: "heels",
         state: { position: { x: 5, y: 8, z: 10 } },
         aabb: { x: 10, y: 10, z: 10 },
         renders: true,
       },
-      {
+      cube: {
         id: "cube",
         state: { position: { x: 0, y: 10, z: 0 } },
         aabb: { x: 5, y: 5, z: 10 },
         renders: true,
       },
-      {
+      conveyor: {
         id: "conveyor",
         state: { position: { x: 0, y: 0, z: 0 } },
         aabb: { x: 10, y: 10, z: 10 },
         renders: true,
       },
-    ];
+    };
 
-    const result = zPairs(items);
-    expect(result).toHaveLength(2);
-    expect(() => toposort(result)).not.toThrow();
+    const relations = zPairs(Object.values(items));
+    expect(relations).toHaveLength(2);
+    expect(() => sortByZPairs(relations, items)).not.toThrow();
+    expect(sortByZPairs(relations, items).impossible).toBe(false);
   });
 
-  test.only("found situation 2 - 4 items", () => {
-    const items: DrawOrderComparable[] = [
-      {
-        id: "movableBlock@2,6,0:Z15GVb5",
+  test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
+    const items: TestItems = {
+      movableBlock: {
+        id: "movableBlock",
         state: {
           position: {
             x: 32,
@@ -259,11 +265,11 @@ describe("cyclic dependencies", () => {
         },
         renders: true,
       },
-      {
-        id: "baddie@1,7,0:Z2jz06D",
+      baddie: {
+        id: "baddie",
         state: {
           position: {
-            x: 32.7,
+            x: 32.5,
             y: 114,
             z: 0,
           },
@@ -275,12 +281,12 @@ describe("cyclic dependencies", () => {
         },
         renders: true,
       },
-      {
-        id: "pickup@4,6,10:Zki5mP",
+      pickup: {
+        id: "pickup",
         state: {
           position: {
             x: 47.9,
-            y: 111.4,
+            y: 110,
             z: 12,
           },
         },
@@ -291,13 +297,19 @@ describe("cyclic dependencies", () => {
         },
         renders: true,
       },
-    ];
+    };
 
-    const relations = zPairs(items);
+    // verify that the items aren't illegally colliding (which would make this test maybe invalid)
+    for (const i of Object.values(items)) {
+      expect(collision1toMany(i, Object.values(items))).toEqual([]);
+    }
+
+    const relations = zPairs(Object.values(items));
 
     console.log(relations);
 
     //expect(result).toHaveLength(2);
-    expect(() => toposort(relations)).not.toThrow();
+    expect(() => sortByZPairs(relations, items)).not.toThrow();
+    expect(sortByZPairs(relations, items).impossible).toBe(true);
   });
 });

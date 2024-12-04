@@ -23,7 +23,7 @@ import {
 } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
-import { emptyObject } from "@/utils/empty";
+import type { ItemRenderProps } from "./ItemRenderProps";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -426,6 +426,7 @@ export const itemAppearances: {
 
   baddie({ item: { config, state }, currentlyRenderedProps }) {
     let startingDirection: DirectionXy4 | undefined = undefined;
+    const { activated } = state;
 
     switch (config.which) {
       case "american-football-head":
@@ -444,12 +445,13 @@ export const itemAppearances: {
 
         const render =
           currentlyRenderedProps === undefined ||
+          activated !== currentlyRenderedProps.activated ||
           facingXy4 !== currentlyRenderedProps.facingXy4;
 
         if (!render) {
           return;
         }
-        const renderProps = { facingXy4 };
+        const renderProps: ItemRenderProps<"baddie"> = { facingXy4, activated };
 
         // rendering is directional (xy4)
         switch (config.which) {
@@ -464,10 +466,14 @@ export const itemAppearances: {
           case "turtle":
             // directional, anim:
             return {
-              container: createSprite({
-                frames: spriteSheet.animations[`${config.which}.${facingXy4}`],
-                animationSpeed: 0.25,
-              }),
+              container:
+                activated ?
+                  createSprite({
+                    frames:
+                      spriteSheet.animations[`${config.which}.${facingXy4}`],
+                    animationSpeed: 0.25,
+                  })
+                : createSprite(`${config.which}.${facingXy4}.1`),
               renderProps,
             };
           case "cyberman":
@@ -499,13 +505,15 @@ export const itemAppearances: {
       case "bubble-robot":
       case "flying-ball": {
         // these baddies never re-render since they are not directional
-        const render = currentlyRenderedProps === undefined;
+        const render =
+          currentlyRenderedProps === undefined ||
+          activated !== currentlyRenderedProps.activated;
 
         if (!render) {
           return;
         }
 
-        const renderProps = emptyObject;
+        const renderProps: ItemRenderProps<"baddie"> = { activated };
 
         // rendering is uni-directional
         switch (config.which) {

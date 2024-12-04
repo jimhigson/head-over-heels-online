@@ -72,7 +72,7 @@ export const RoomRenderer = <RoomId extends string>(
       }
       if (resortZ) {
         // re-sort the room's items:
-        const order = sortByZPairs(
+        const { order } = sortByZPairs(
           zPairs(objectValues(room.items)),
           room.items,
         );

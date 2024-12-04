@@ -43,6 +43,7 @@ type ItemRenderPropsMap = {
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change
   baddie: {
     facingXy4?: DirectionXy4;
+    activated: boolean;
   };
   charles: {
     facingXy4: DirectionXy4;

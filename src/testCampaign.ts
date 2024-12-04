@@ -136,10 +136,10 @@ const colourRooms = () => {
 
 const rooms = {
   doorsRoom: {
-    size: { x: 12, y: 14 },
+    size: { x: 18, y: 14 },
     planet: "blacktooth",
     color: { hue: "cyan", shade: "dimmed" },
-    walls: generateWalls({ x: 12, y: 14 }, "blacktooth"),
+    walls: generateWalls({ x: 18, y: 14 }, "blacktooth"),
     floor: "bookworld",
     floorSkip: [] as Xy[],
     id: "doorsRoom",
@@ -305,6 +305,21 @@ const rooms = {
         position: { x: 4, y: 6, z: 10 },
       },
       {
+        type: "pickup",
+        config: { gives: "reincarnation" },
+        position: { x: 4, y: 6, z: 13 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "crown" },
+        position: { x: 4, y: 6, z: 1 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "drum" },
+        position: { x: 4, y: 6, z: 2 },
+      },
+      {
         type: "portableBlock",
         config: { style: "cube" },
         position: { x: 5, y: 6, z: 10 },
@@ -356,11 +371,28 @@ const rooms = {
         position: { x: 2, y: 8, z: 0 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "away",
+          style: "starsAndStripes",
+          activated: true,
+        },
+        position: { x: 1, y: 8, z: 0 },
+      },
+      {
         type: "movableBlock",
         config: {
           style: "anvil",
         },
         position: { x: 2, y: 6, z: 0 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "anvil",
+        },
+        position: { x: 2, y: 9, z: 0 },
       },
       {
         type: "movableBlock",
@@ -382,6 +414,20 @@ const rooms = {
           style: "sandwich",
         },
         position: { x: 1, y: 6, z: 2 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "sandwich",
+        },
+        position: { x: 2, y: 6, z: 1 },
+      },
+      {
+        type: "movableBlock",
+        config: {
+          style: "sandwich",
+        },
+        position: { x: 2, y: 6, z: 2 },
       },
 
       // some blocks for Heels to test stacking up:
@@ -451,8 +497,54 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { which: "turtle", startDirection: "towards", activated: true },
-        position: { x: 10, y: 12, z: 10 },
+        id: "t2",
+        config: {
+          which: "turtle",
+          startDirection: "left",
+          activated: true,
+        },
+        position: { x: 12, y: 12, z: 0 },
+      },
+      {
+        type: "baddie",
+        id: "t1",
+        config: {
+          which: "turtle",
+          startDirection: "towards",
+          activated: false,
+        },
+        position: { x: 14, y: 10, z: 1 },
+      },
+      // the turtle should eventually deactivate himself!
+      {
+        type: "switch",
+        config: {
+          activates: {
+            t1: {
+              left: { activated: false },
+              right: { activated: true },
+            },
+          },
+        },
+        position: { x: 17, y: 12, z: 0 },
+      },
+
+      // these three blocks have a cyclic rendering dependency - there is no way to arrange them using painter's algorithm:
+      // what's more, they all have substantial overlap that looks bad if not rendered correctly!
+      {
+        type: "block",
+        config: { style: "artificial", disappearing: false },
+        position: { x: 15.5, y: 8, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial", disappearing: false },
+        position: { x: 15, y: 9, z: 0.5 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial", disappearing: false },
+        position: { x: 16, y: 8.5, z: 1 },
       },
     ]),
   } satisfies RoomJson<"blacktooth", TestCampaignRoomId>,
