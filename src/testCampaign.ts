@@ -114,7 +114,7 @@ const colourRooms = () => {
                 },
                 {
                   type: "door",
-                  position: { x: 8, y: 4, z: 3 },
+                  position: { x: 8, y: 4, z: 4 },
                   config: {
                     direction: "left",
                     toRoom: `${planetNames[(planetNames.length + iPlanet + 1) % planetNames.length]}-${hue}-${shade}`,

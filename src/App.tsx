@@ -142,13 +142,14 @@ export const App = <RoomId extends string>({
           <CollapsibleContent>
             <div className="absolute bottom-10 right-2 flex flex-col">
               <RoomSelect gameApi={gameApi} />
-              <div className="flex flex-row items-center gap-x-2 justify-center mb-2 mt-2">
+              <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-black">
                 <Switch
                   id="airplane-mode"
                   checked={showBBs !== "none"}
                   onCheckedChange={(checked) =>
                     setShowBBs(checked ? "non-wall" : "none")
                   }
+                  onClick={(e) => e.currentTarget.blur()}
                 />
                 <Label htmlFor="airplane-mode">BBs</Label>
                 <Switch
@@ -157,21 +158,26 @@ export const App = <RoomId extends string>({
                   onCheckedChange={(checked) =>
                     setShowBBs(checked ? "all" : "non-wall")
                   }
+                  onClick={(e) => e.currentTarget.blur()}
                 />
                 <Label htmlFor="airplane-mode">inc walls</Label>
               </div>
               <div className="flex flex-row items-center">
                 <Button
                   className="flex-1"
-                  onClick={() =>
-                    gameApi.changeRoom("blacktooth1head" as RoomId)
-                  }
+                  onClick={(e) => {
+                    gameApi.changeRoom("blacktooth1head" as RoomId);
+                    e.currentTarget.blur();
+                  }}
                 >
                   Room 1
                 </Button>
                 <Button
                   className="flex-1"
-                  onClick={() => gameApi.changeRoom("doorsRoom" as RoomId)}
+                  onClick={(e) => {
+                    gameApi.changeRoom("doorsRoom" as RoomId);
+                    e.currentTarget.blur();
+                  }}
                 >
                   Test room
                 </Button>
@@ -179,7 +185,7 @@ export const App = <RoomId extends string>({
               <div className="flex flex-row items-center">
                 <Button
                   className="flex-1"
-                  onClick={() => {
+                  onClick={(e) => {
                     const roomId = currentRoom(gameApi.gameState).id;
                     gameApi.gameState.currentCharacterName = "heels";
                     changeCharacterRoom({
@@ -187,15 +193,17 @@ export const App = <RoomId extends string>({
                       changeType: "level-select",
                       toRoomId: roomId,
                     });
+                    e.currentTarget.blur();
                   }}
                 >
                   Add heels
                 </Button>
                 <Button
                   className="flex-1"
-                  onClick={() => {
+                  onClick={(e) => {
                     gameApi.gameState.characterRooms.heels!.room.items.heels!.state.hasBag =
                       true;
+                    e.currentTarget.blur();
                   }}
                 >
                   give bag
@@ -203,18 +211,21 @@ export const App = <RoomId extends string>({
               </div>
 
               <Button
-                onClick={() => {
+                onClick={(e) => {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (window as any).gs = gameApi.gameState;
-                  return gameApi && console.log(gameApi.gameState);
+                  if (gameApi) console.log(gameApi.gameState);
+                  e.currentTarget.blur();
                 }}
               >
                 log(gameState); gs=gameState
               </Button>
               <Button
-                onClick={() =>
-                  gameApi && console.log(campaign.rooms[gameApi.currentRoom.id])
-                }
+                onClick={(e) => {
+                  if (gameApi)
+                    console.log(campaign.rooms[gameApi.currentRoom.id]);
+                  e.currentTarget.blur();
+                }}
               >
                 Room JSON to console
               </Button>
@@ -224,14 +235,15 @@ export const App = <RoomId extends string>({
                 Room state to console
               </Button>
               <Button
-                onClick={() =>
-                  gameApi &&
-                  console.log(
-                    gameApi.currentRoom.items[
-                      gameApi.gameState.currentCharacterName
-                    ],
-                  )
-                }
+                onClick={(e) => {
+                  if (gameApi)
+                    console.log(
+                      gameApi.currentRoom.items[
+                        gameApi.gameState.currentCharacterName
+                      ],
+                    );
+                  e.currentTarget.blur();
+                }}
               >
                 Playable to console
               </Button>
