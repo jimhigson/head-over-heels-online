@@ -202,6 +202,21 @@
   { "op": "replace", "path": "/rooms/blacktooth55/floor", "value": "market" },
   { "op": "replace", "path": "/rooms/blacktooth51/floor", "value": "market" },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth37/items/switch@0,7,0:V4krG/config/activates/baddie@0,5,0:Z2jz06D",
+    "value": { "left": { "activated": true }, "right": { "activated": false } }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth37/items/switch@0,7,0:V4krG/config/activates/baddie@2,4,0:ZiWCzO",
+    "value": { "left": { "activated": true }, "right": { "activated": false } }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth37/items/switch@0,7,0:V4krG/config/activates/baddie@3,3,0:Z2jz06D",
+    "value": { "left": { "activated": true }, "right": { "activated": false } }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth34/items/block@5,7,0:95uHj/config/disappearing",
     "value": true

@@ -2824,11 +2824,18 @@ export const campaign = {
           type: "door",
         },
         "switch@0,7,0:V4krG": {
-          config: { activates: {} },
+          config: {
+            activates: {
+              "baddie@0,5,0:Z2jz06D": { left: { activated: true }, right: { activated: false } },
+              "baddie@2,4,0:ZiWCzO": { left: { activated: true }, right: { activated: false } },
+              "baddie@3,3,0:Z2jz06D": { left: { activated: true }, right: { activated: false } },
+            }
+          },
           position: { x: 0, y: 7, z: 0 },
           type: "switch",
         },
       },
+
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       walls: {
