@@ -3,7 +3,7 @@ import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
-import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
+import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
 
 export function teleporting<RoomId extends string>(

@@ -14,7 +14,7 @@ import { isItemType } from "./game/physics/itemPredicates.ts";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
 import { LucideBug, LucideTestTube } from "lucide-react";
-import { changeCharacterRoom } from "./game/gameState/gameStateTransitions/changeCharacterRoom.ts";
+import { changeCharacterRoom } from "./game/gameState/mutators/changeCharacterRoom.ts";
 import { currentRoom } from "./game/gameState/GameState.ts";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(

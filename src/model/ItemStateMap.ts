@@ -8,6 +8,7 @@ import type {
   UnknownItemInPlay,
 } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
+import type { PortableItemType } from "@/game/physics/itemPredicates";
 
 export type FreeItemState<RoomId extends string> = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
@@ -38,6 +39,16 @@ type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
   wouldPickUpNext: boolean;
 };
 
+type CarriedItem<
+  RoomId extends string,
+  Types extends PortableItemType = PortableItemType,
+> = {
+  [T in Types]: {
+    type: Types;
+    config: JsonItemConfig<Types, PlanetName, RoomId>;
+  };
+}[Types];
+
 export type ItemStateMap<RoomId extends string> = {
   head: EitherPlayableState<RoomId> & {
     hasHooter: boolean;
@@ -55,10 +66,7 @@ export type ItemStateMap<RoomId extends string> = {
     // by the type system as belonging only to head
     // or heels
     bigJumps: number;
-    carrying:
-      | ItemInPlay<"portableBlock", PlanetName, RoomId>
-      | ItemInPlay<"spring", PlanetName, RoomId>
-      | null;
+    carrying: CarriedItem<RoomId> | null;
   };
   spring: PortableItemState<RoomId>;
   portableBlock: PortableItemState<RoomId>;

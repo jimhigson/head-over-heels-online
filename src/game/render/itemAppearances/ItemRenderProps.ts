@@ -7,7 +7,6 @@ import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import type { EmptyObject } from "type-fest";
 
 type PortableItemRenderProps = {
-  carried: boolean;
   highlighted: boolean;
 };
 

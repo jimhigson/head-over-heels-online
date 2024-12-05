@@ -586,48 +586,38 @@ export const itemAppearances: {
 
   portableBlock({
     item: {
-      id,
       config: { style },
       state: { wouldPickUpNext },
     },
-    room,
     currentlyRenderedProps,
   }) {
-    const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
-    const carried = heelsCarrying === id;
     const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
-      highlighted !== currentlyRenderedProps.highlighted ||
-      carried !== currentlyRenderedProps.carried;
+      highlighted !== currentlyRenderedProps.highlighted;
 
     if (!render) {
       return;
     }
 
     return {
-      container: carried ? null : maybeHighlighted(style, highlighted),
-      renderProps: { carried, highlighted },
+      container: maybeHighlighted(style, highlighted),
+      renderProps: { highlighted },
     };
   },
 
   spring({
     item: {
-      id,
       state: { stoodOnBy, wouldPickUpNext },
     },
-    room,
     currentlyRenderedProps,
   }) {
-    const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
-    const carried = heelsCarrying === id;
     const compressed = stoodOnBy.size > 0;
     const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
-      carried !== currentlyRenderedProps.carried ||
       highlighted !== currentlyRenderedProps.highlighted ||
       compressed !== currentlyRenderedProps.compressed;
 
@@ -640,16 +630,15 @@ export const itemAppearances: {
 
     return {
       container:
-        carried ? null
-        : !compressed && currentlyRenderedCompressed ?
+        !compressed && currentlyRenderedCompressed ?
           createSprite({
             frames: spriteSheet.animations["spring.bounce"],
             playOnce: "and-stop",
           })
         : compressed ? maybeHighlighted("spring.compressed", highlighted)
-        : createSprite("spring.released"),
+        : maybeHighlighted("spring.released", highlighted),
 
-      renderProps: { compressed, highlighted, carried },
+      renderProps: { compressed, highlighted },
     };
   },
 

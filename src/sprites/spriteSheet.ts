@@ -197,6 +197,9 @@ const frames = {
   "spring.released": {
     frame: { x: 27, y: 453, ...smallItemTextureSize },
   },
+  "spring.released.outline": {
+    frame: { x: 253, y: 451, ...smallItemTextureSize },
+  },
 
   // Head
   // ------------

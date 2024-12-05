@@ -51,7 +51,13 @@ export type SlidingItemTypes = (typeof slidingItemTypes)[number];
 
 export const isSlidingItem = isItemType(...slidingItemTypes);
 
-export const isPortable = isItemType("spring", "portableBlock");
+export const portableItemTypes = [
+  "portableBlock",
+  "spring",
+] as const satisfies ItemInPlayType[];
+export type PortableItemType = (typeof portableItemTypes)[number];
+
+export const isPortable = isItemType(...portableItemTypes);
 
 export const isPlayableItem = <RoomId extends string = string>(
   item: AnyItemInPlay<RoomId>,
@@ -90,7 +96,7 @@ export const fallingItemTypes = [
 export type FreeItemTypes = (typeof fallingItemTypes)[number];
 
 export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
-  "spring",
+  FreeItemTypes,
   P,
   RoomId
 >;

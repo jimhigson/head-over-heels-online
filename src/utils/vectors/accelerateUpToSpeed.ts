@@ -4,42 +4,76 @@ import {
   dotProductXyz,
   addXyz,
   subXyz,
+  perpendicularXyz,
 } from "@/utils/vectors/vectors";
 import { componentInDirection } from "./componentInDirection";
 
-/* accelerates the current velocity towards the given max speed,
-   reaching it if close enough rather than allowing to go over */
+/** accelerates the current velocity towards the given max speed,
+ * reaching it if close enough rather than allowing to go over
+ * @return the new velocity, after acceleration has been applied
+ */
 export const accelerateToSpeed = ({
   vel,
   acc,
   unitD,
   maxSpeed,
   deltaMS,
+  // how much to fade the cross-component of the acellerated direction.
+  // eg, if you're accelerating north, how much to slow down going east?
+  crossComponentFade = 0,
+  minVelocity = 0,
 }: {
   /* The current velocity to accelerate from */
   vel: Xyz;
   /**
-   * m/s²
+   * acceleration to apply, in m/s²
    */
-  acc: number /** the direction to accelerate in  */;
+  acc: number;
+
+  crossComponentFade?: number;
+
+  minVelocity?: number;
+
+  /** unit vector of the direction we want to accelerate in */
   unitD: Xyz;
   maxSpeed: number;
   deltaMS: number;
 }): Xyz => {
-  const directionPressedFullAccelVector = scaleXyz(unitD, acc);
+  const existingSpeedInDirection = dotProductXyz(vel, unitD);
 
-  const targetSpeedInDirectionPressed = dotProductXyz(
-    addXyz(vel, scaleXyz(directionPressedFullAccelVector, deltaMS)),
-    unitD,
+  const targetSpeedInDirection = Math.max(
+    existingSpeedInDirection + acc * deltaMS,
+    minVelocity,
   );
 
   // would applying the full accel put us over the max speed?
-  const approachingMaxSpeed = targetSpeedInDirectionPressed > maxSpeed;
+  const hitsMaxSpeedInDirection = targetSpeedInDirection >= maxSpeed;
 
-  return approachingMaxSpeed ?
-      // return acceleration vector just enough to get up to max speed over the duration of deltaMS
-      instantAccelToSpeed({ vel, unitD, speed: maxSpeed, deltaMS })
-    : directionPressedFullAccelVector;
+  const crossUnitD = perpendicularXyz(unitD);
+  const exitingSpeedInCrossDirection = dotProductXyz(vel, crossUnitD);
+  const newSpeedInCrossDirection =
+    exitingSpeedInCrossDirection >= 0 ?
+      Math.max(exitingSpeedInCrossDirection - crossComponentFade * deltaMS, 0)
+    : Math.min(exitingSpeedInCrossDirection + crossComponentFade * deltaMS, 0);
+
+  console.log(
+    "crossUnitD",
+    crossUnitD,
+    "exitingSpeedInCrossDirection",
+    exitingSpeedInCrossDirection,
+    "newSpeedInCrossDirection",
+    newSpeedInCrossDirection,
+    "fadedCrossComponentVector",
+    scaleXyz(crossUnitD, newSpeedInCrossDirection),
+  );
+
+  return addXyz(
+    scaleXyz(
+      unitD,
+      hitsMaxSpeedInDirection ? maxSpeed : targetSpeedInDirection,
+    ),
+    scaleXyz(crossUnitD, newSpeedInCrossDirection),
+  );
 };
 
 /* calculated the accel vector to exactly hit a speed right away, in this frame */

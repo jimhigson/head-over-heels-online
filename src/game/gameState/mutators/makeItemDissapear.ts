@@ -1,7 +1,7 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
-import type { GameState } from "./GameState";
-import { fadeInOrOutDuration } from "../render/animationTimings";
+import type { GameState } from "../GameState";
+import { fadeInOrOutDuration } from "../../render/animationTimings";
 
 export const makeItemDisappear = <RoomId extends string>(
   disappearingItem:

@@ -16,7 +16,7 @@ import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
-import { makeItemDisappear } from "../makeItemDissapear";
+import { makeItemDisappear } from "./makeItemDissapear";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 

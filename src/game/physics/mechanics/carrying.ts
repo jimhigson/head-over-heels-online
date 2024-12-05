@@ -10,9 +10,12 @@ import { collision1toMany } from "@/game/collision/aabbCollision";
 import type { RoomState } from "@/model/modelTypes";
 import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
-import { itemXyOverlapArea } from "@/game/collision/xyRectangleOverlap";
-import { mtv } from "../slidingCollision";
 import { iterate } from "@/utils/iterate";
+import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
+import {
+  addItemsToRoomInPlay,
+  deleteItemFromRoomInPlay,
+} from "@/game/gameState/mutators/deleteItemFromRoomInPlay";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -36,7 +39,9 @@ export const carrying = <RoomId extends string>(
     isPortable,
   );
   const itemToPickup =
-    carrying === null ? findItemToPickup(heelsItem, room) : undefined;
+    carrying === null ?
+      findItemToPickup(heelsItem, room, gameState)
+    : undefined;
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
@@ -54,15 +59,12 @@ export const carrying = <RoomId extends string>(
         return;
       }
 
-      itemToPickup.state.unsolidAfterProgression = -1;
+      heelsItem.state.carrying = {
+        type: itemToPickup.type,
+        config: itemToPickup.config,
+      };
 
-      heelsItem.state.carrying = itemToPickup;
-      heelsItem.state.standingOn = null;
-      for (const standingOnPickedUp of itemToPickup.state.stoodOnBy) {
-        standingOnPickedUp.state.standingOn = null;
-      }
-      itemToPickup.state.stoodOnBy.clear();
-      inputState.carry = false; // handled this input
+      deleteItemFromRoomInPlay(room, itemToPickup);
     } else {
       // trying to put down
       if (heelsItem.state.standingOn === null) {
@@ -77,8 +79,14 @@ export const carrying = <RoomId extends string>(
         return;
       }
 
-      carrying.state.position = heelsPosition;
-      carrying.state.unsolidAfterProgression = null;
+      const carryingItem = addItemsToRoomInPlay(
+        gameState,
+        room,
+        carrying.type,
+        carrying.config,
+      );
+
+      carryingItem.state.position = heelsPosition;
 
       moveItem({
         subjectItem: heelsItem,
@@ -86,7 +94,7 @@ export const carrying = <RoomId extends string>(
         posDelta: {
           x: 0,
           y: 0,
-          z: carrying.aabb.z,
+          z: carryingItem.aabb.z,
         },
         pusher: heelsItem,
         forceful: true,
@@ -98,52 +106,21 @@ export const carrying = <RoomId extends string>(
 
       // put down
       heelsItem.state.carrying = null;
-      inputState.carry = false; // handled this input
     }
+    inputState.carry = false; // handled this input
   }
 };
 
 const findItemToPickup = <RoomId extends string>(
   heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
 ) => {
-  const positionSlightlyBelowHeels = addXyz(heelsItem.state.position, {
-    z: -0.001,
-  });
-
-  const portableRoomItemsIter = iterate(objectValues(room.items)).filter(
-    isPortable,
+  return findStandingOnWithHighestPriorityAndMostOverlap(
+    heelsItem,
+    iterate(objectValues(room.items)).filter(isPortable),
+    gameState.progression,
   );
-  const collisions = collision1toMany(
-    {
-      id: heelsItem.id,
-      aabb: heelsItem.aabb,
-      state: { position: positionSlightlyBelowHeels },
-    },
-    portableRoomItemsIter,
-  );
-  const potentiallyPickupable = collisions.filter(
-    (col) =>
-      mtv(
-        positionSlightlyBelowHeels,
-        heelsItem.aabb,
-        col.state.position,
-        col.aabb,
-      ).z > 0,
-  );
-
-  const itemWithMaxOverlap =
-    potentiallyPickupable.length === 0 ?
-      undefined
-    : potentiallyPickupable.reduce((ac, iCol) => {
-        if (
-          itemXyOverlapArea(heelsItem, iCol) > itemXyOverlapArea(heelsItem, ac)
-        ) {
-          return iCol;
-        } else return ac;
-      });
-
-  return itemWithMaxOverlap;
 };
 
 export const checkSpaceAvailableToPutDown = <T extends AnyItemInPlay>(

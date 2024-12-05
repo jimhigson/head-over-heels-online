@@ -1,5 +1,4 @@
 import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { FreeItem } from "./itemPredicates";
 import { isItemType } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
@@ -15,10 +14,13 @@ import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
 import { mtv } from "./slidingCollision";
-import { sortObstaclesAboutVector } from "./collisionsOrder";
+import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { objectValues } from "iter-tools";
-import type { PlanetName } from "@/sprites/planets";
+import {
+  removeStandingOn,
+  setStandingOn,
+} from "../gameState/mutators/removeStandingOn";
 
 const log = 0;
 
@@ -83,7 +85,7 @@ export const moveItem = <RoomId extends string>({
       : (subjectItem.state as any).vels,
     );
 
-  const sortedCollisions = sortObstaclesAboutVector(
+  const sortedCollisions = sortObstaclesAboutPriorityAndVector(
     posDelta,
     collision1toMany(subjectItem, objectValues(room.items)),
   );
@@ -247,21 +249,4 @@ export const moveItem = <RoomId extends string>({
   }
 
   return false; // no reason found to halt, can tick the next item
-};
-
-const removeStandingOn = <RoomId extends string>(
-  item: FreeItem<PlanetName, RoomId>,
-) => {
-  if (item.state.standingOn !== null) {
-    item.state.standingOn.state.stoodOnBy.delete(item);
-  }
-  item.state.standingOn = null;
-};
-
-const setStandingOn = <RoomId extends string>(
-  item: FreeItem<PlanetName, RoomId>,
-  standingOn: UnknownItemInPlay<RoomId>,
-) => {
-  item.state.standingOn = standingOn;
-  standingOn.state.stoodOnBy.add(item);
 };

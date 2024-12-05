@@ -86,6 +86,9 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   let currentRenderPosition: Xyz | undefined;
 
   return {
+    get item() {
+      return item;
+    },
     destroy() {
       positionContainer.destroy({ children: true });
       renderContainer.destroy({ children: true });

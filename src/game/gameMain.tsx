@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
 import { currentRoom } from "@/game/gameState/GameState";
-import { changeCharacterRoom } from "./gameState/gameStateTransitions/changeCharacterRoom";
+import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import type { RenderOptions } from "./RenderOptions";

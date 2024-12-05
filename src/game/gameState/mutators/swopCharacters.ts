@@ -1,5 +1,5 @@
 import { otherCharacterName } from "@/model/modelTypes";
-import type { GameState } from "./GameState";
+import type { GameState } from "../GameState";
 
 export const swopCharacters = <RoomId extends string>(
   gameState: GameState<RoomId>,

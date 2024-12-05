@@ -3,7 +3,7 @@ import type { PlayableItem } from "../itemPredicates";
 import { type GameState, currentRoom } from "../../gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import type { CharacterName } from "@/model/modelTypes";
-import { makeItemDisappear } from "@/game/gameState/makeItemDissapear";
+import { makeItemDisappear } from "@/game/gameState/mutators/makeItemDissapear";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   gameState: GameState<RoomId>,
