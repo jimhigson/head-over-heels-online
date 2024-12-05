@@ -709,7 +709,7 @@ const rooms = {
         position: { x: 13, y: 3, z: 4 },
       },
 
-      // test rolling physics
+      // test sliding physics
       {
         type: "ball",
         config: {},
@@ -992,12 +992,12 @@ const rooms = {
         position: { x: 10, y: 9, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "slidingDeadly",
         config: { style: "puck" },
         position: { x: 1, y: 0, z: 0 },
       },
       {
-        type: "moveableDeadly",
+        type: "slidingDeadly",
         config: { style: "puck" },
         position: { x: 7, y: 0, z: 0 },
       },

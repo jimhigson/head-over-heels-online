@@ -1,4 +1,5 @@
-import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import { type GameState, currentRoom } from "../../gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import type { CharacterName } from "@/model/modelTypes";

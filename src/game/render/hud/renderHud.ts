@@ -13,7 +13,7 @@ import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "@/game/physics/itemPredicates";
 import type { RenderOptions } from "@/game/RenderOptions";
 import { ItemRenderer } from "../ItemRenderer";
 import { shieldDuration } from "@/game/physics/mechanicsConstants";

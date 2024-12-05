@@ -1,5 +1,5 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import { isItemType } from "@/model/ItemInPlay";
+import { isItemType } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";

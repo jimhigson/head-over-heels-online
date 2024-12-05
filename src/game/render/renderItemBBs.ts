@@ -1,5 +1,6 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import { isItemType, type ItemInPlayType } from "@/model/ItemInPlay";
+import { type ItemInPlayType } from "@/model/ItemInPlay";
+import { isItemType } from "../physics/itemPredicates";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";

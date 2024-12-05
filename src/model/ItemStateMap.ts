@@ -1,8 +1,38 @@
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz, Xy } from "@/utils/vectors/vectors";
-import { EitherPlayableState, ItemInPlay, FreeItemState, EmptyObject, SwitchSetting } from "./ItemInPlay";
+import type {
+  EitherPlayableState,
+  ItemInPlay,
+  EmptyObject,
+  SwitchSetting,
+  UnknownItemInPlay,
+} from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
 
+export type FreeItemState<RoomId extends string> = {
+  /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
+  standingOn: UnknownItemInPlay<RoomId> | null;
+  /*
+    the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
+    to render itself an animating
+  */
+  activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
+
+  /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
+  latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
+
+  vels: {
+    /** vertical velocity - needed for parabolic jumping and falling */
+    gravity: Xyz;
+    movingFloor: Xyz;
+  };
+};
+
+type SlidingItemState<RoomId extends string> = FreeItemState<RoomId> & {
+  vels: {
+    sliding: Xyz;
+  };
+};
 
 export type ItemStateMap<RoomId extends string> = {
   head: EitherPlayableState<RoomId> & {
@@ -21,13 +51,18 @@ export type ItemStateMap<RoomId extends string> = {
     // by the type system as belonging only to head
     // or heels
     bigJumps: number;
-    carrying: ItemInPlay<"portableBlock", PlanetName, RoomId> |
-    ItemInPlay<"spring", PlanetName, RoomId> |
-    null;
+    carrying:
+      | ItemInPlay<"portableBlock", PlanetName, RoomId>
+      | ItemInPlay<"spring", PlanetName, RoomId>
+      | null;
   };
   spring: FreeItemState<RoomId>;
   portableBlock: FreeItemState<RoomId>;
   movableBlock: FreeItemState<RoomId>;
+  moveableDeadly: FreeItemState<RoomId>;
+  slidingDeadly: SlidingItemState<RoomId>;
+  slidingBlock: SlidingItemState<RoomId>;
+
   baddie: FreeItemState<RoomId> & {
     activated: boolean;
     vels: {
@@ -59,9 +94,5 @@ export type ItemStateMap<RoomId extends string> = {
     // others will follow this soon - facing is changing to a vector
     facing: Xy;
   };
-  ball: FreeItemState<RoomId> & {
-    vels: {
-      rolling: Xyz;
-    };
-  };
+  ball: SlidingItemState<RoomId>;
 };

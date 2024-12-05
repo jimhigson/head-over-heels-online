@@ -1,6 +1,9 @@
 import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { fallingItemTypes } from "@/model/ItemInPlay";
+import {
+  fallingItemTypes,
+  slidingItemTypes,
+} from "@/game/physics/itemPredicates";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
@@ -71,7 +74,13 @@ const initialState = (jsonItem: UnknownJsonItem) => {
     ...(free ?
       {
         standingOn: null,
-        vels: { gravity: originXyz, movingFloor: originXyz },
+        vels: {
+          gravity: originXyz,
+          movingFloor: originXyz,
+          ...((slidingItemTypes as string[]).includes(jsonItem.type) ?
+            { sliding: originXyz }
+          : {}),
+        },
         activeConveyor: null,
         latentMovement: [],
       }

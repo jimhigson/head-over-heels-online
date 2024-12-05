@@ -1,8 +1,6 @@
-import {
-  isItemType,
-  isPlayableItem,
-  type UnknownItemInPlay,
-} from "@/model/ItemInPlay";
+import { type UnknownItemInPlay } from "@/model/ItemInPlay";
+import { isItemType } from "../itemPredicates";
+import { isPlayableItem } from "../itemPredicates";
 import { type Xyz } from "@/utils/vectors/vectors";
 import type { GameState } from "@/game/gameState/GameState";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
@@ -12,7 +10,7 @@ import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
-import { isSlidingItem } from "../isSolid";
+import { isSlidingItem } from "../itemPredicates";
 
 /**
  * some old - Morties touching Morties
@@ -56,14 +54,14 @@ export const handleItemsTouchingItems = <RoomId extends string>({
 
   if (
     isSlidingItem(touchee) &&
-    handleItemTouchingSlidingItem(touchee, movingItem)
+    handleItemTouchingSlidingItem(touchee, movingItem, gameState)
   ) {
     return true;
   }
 
   if (
     isSlidingItem(movingItem) &&
-    handleSlidingItemTouchingAnyItem(movingItem)
+    handleSlidingItemTouchingAnyItem(movingItem, touchee, gameState)
   ) {
     return true;
   }

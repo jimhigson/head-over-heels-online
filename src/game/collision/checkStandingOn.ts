@@ -1,8 +1,9 @@
 import { collision1to1 } from "@/game/collision/aabbCollision";
-import type { UnknownItemInPlay, FreeItem } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { FreeItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
 import { addXyz } from "@/utils/vectors/vectors";
-import { isSolid } from "../physics/isSolid";
+import { isSolid } from "../physics/itemPredicates";
 
 const standingTolerance = 0.001;
 

@@ -3,7 +3,9 @@ import type {
   ItemInPlayType,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isItemType, isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
+import { isItemType } from "../physics/itemPredicates";
+import { isFreeItem } from "../physics/itemPredicates";
+import { isPlayableItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";

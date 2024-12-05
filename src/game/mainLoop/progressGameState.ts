@@ -8,9 +8,10 @@ import type {
   UnknownItemInPlay,
   AnyItemInPlay,
   ItemInPlayType,
-  FreeItem,
 } from "@/model/ItemInPlay";
-import { isFreeItem, isPlayableItem } from "@/model/ItemInPlay";
+import type { FreeItem } from "../physics/itemPredicates";
+import { isFreeItem } from "../physics/itemPredicates";
+import { isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";

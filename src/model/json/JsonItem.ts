@@ -22,6 +22,8 @@ export type JsonItemType =
   | "pickup"
   | "spring"
   | "sceneryPlayer"
+  | "slidingDeadly"
+  | "slidingBlock"
   | "player"
   | "baddie"
   | "lift"
@@ -102,7 +104,11 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   moveableDeadly: {
     // these can move (fall, be pushed etc) and are deadly
-    style: "puck" | "deadFish";
+    style: "deadFish";
+  };
+  slidingDeadly: {
+    // these can move (fall, be pushed etc) and are deadly
+    style: "puck";
   };
   conveyor: {
     direction: DirectionXy4;
@@ -159,7 +165,10 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     style: "drum" | "sticks" | "cube";
   };
   movableBlock: {
-    style: "anvil" | "sandwich" | "puck";
+    style: "anvil" | "sandwich";
+  };
+  slidingBlock: {
+    style: "puck";
   };
   book: {
     // books are like movableBlocks, but have orientation and are only sometimes movable.

@@ -1,9 +1,7 @@
-import type {
-  AnyItemInPlay,
-  FreeItem,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import { isFreeItem, isItemType } from "@/model/ItemInPlay";
+import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { FreeItem } from "./itemPredicates";
+import { isItemType } from "./itemPredicates";
+import { isFreeItem } from "./itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
@@ -15,7 +13,7 @@ import {
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { currentRoom } from "../gameState/GameState";
-import { isSolid } from "./isSolid";
+import { isSolid } from "./itemPredicates";
 import { mtv } from "./slidingCollision";
 import { sortObstaclesAboutVector } from "./collisionsOrder";
 import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";

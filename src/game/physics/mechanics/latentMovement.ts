@@ -1,4 +1,5 @@
-import { type FreeItemTypes, type ItemInPlay } from "@/model/ItemInPlay";
+import { type ItemInPlay } from "@/model/ItemInPlay";
+import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 
 import type { GameState } from "@/game/gameState/GameState";

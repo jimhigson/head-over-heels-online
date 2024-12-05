@@ -7,7 +7,8 @@ import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
-import { isPlayableItem, type ItemInPlayType } from "@/model/ItemInPlay";
+import { type ItemInPlayType } from "@/model/ItemInPlay";
+import { isPlayableItem } from "@/game/physics/itemPredicates";
 import { playableAppearance } from "./playableAppearance";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
@@ -40,6 +41,22 @@ const stackedSprites = (
   container.addChild(headSprite);
   return container;
 };
+
+const singleRenderWithStyleAsTexture = renderOnce<
+  "deadlyBlock" | "slidingDeadly" | "slidingBlock",
+  string
+>(
+  ({
+    item: {
+      config: { style },
+    },
+  }) => {
+    return {
+      container: createSprite(style),
+      renderProps: {},
+    };
+  },
+);
 
 export const itemAppearances: {
   [T in ItemInPlayType]: ItemAppearance<T>;
@@ -125,18 +142,9 @@ export const itemAppearances: {
     };
   },
 
-  deadlyBlock: renderOnce(
-    ({
-      item: {
-        config: { style },
-      },
-    }) => {
-      return {
-        container: createSprite(style),
-        renderProps: {},
-      };
-    },
-  ),
+  deadlyBlock: singleRenderWithStyleAsTexture,
+  slidingDeadly: singleRenderWithStyleAsTexture,
+  slidingBlock: singleRenderWithStyleAsTexture,
 
   block({
     item: {

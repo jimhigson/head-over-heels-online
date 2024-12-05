@@ -17,7 +17,8 @@ import {
   stopJumpingAMomentAfterStartingPlay,
 } from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../physics/itemPredicates";
 import { headState, heelsState, itemState } from "@/_testUtils/characterState";
 import {
   liftBBShortening,

@@ -1,6 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 import { shieldDuration } from "../mechanicsConstants";
 

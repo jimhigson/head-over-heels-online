@@ -10,7 +10,7 @@ import type {
   RenderOptions,
   ShowBoundingBoxes,
 } from "./game/RenderOptions.tsx";
-import { isItemType } from "./model/ItemInPlay.ts";
+import { isItemType } from "./game/physics/itemPredicates.ts";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
 import { LucideBug, LucideTestTube } from "lucide-react";

@@ -1,3 +1,4 @@
+import type { FreeItem } from "@/game/physics/itemPredicates";
 import type { PlanetName } from "../sprites/planets";
 import type {
   Aabb,
@@ -5,9 +6,8 @@ import type {
   Direction4Xyz,
   Xyz,
 } from "../utils/vectors/vectors";
-import type { ItemStateMap } from "./ItemStateMap";
+import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
@@ -17,25 +17,6 @@ export type ItemInPlayType =
   | "stopAutowalk"
   | "portal"
   | "floor";
-
-export type FreeItemState<RoomId extends string> = {
-  /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
-  standingOn: UnknownItemInPlay<RoomId> | null;
-  /* 
-    the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
-    to render itself an animating
-  */
-  activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
-
-  /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
-
-  vels: {
-    /** vertical velocity - needed for parabolic jumping and falling */
-    gravity: Xyz;
-    movingFloor: Xyz;
-  };
-};
 
 export type PlayableActionState =
   | "moving"
@@ -175,55 +156,6 @@ export type ItemInPlay<
 
   renders: boolean;
 };
-
-export type PlayableItem<
-  C extends CharacterName = CharacterName,
-  RoomId extends string = string,
-> =
-  C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head">
-  : never | C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
-  : never;
-
-export const isPlayableItem = <RoomId extends string = string>(
-  item: AnyItemInPlay<RoomId>,
-): item is PlayableItem<CharacterName, RoomId> => {
-  return item.type === "head" || item.type === "heels";
-};
-
-export const isItemType =
-  <T extends ItemInPlayType>(...types: Array<T>) =>
-  <RoomId extends string>(
-    item: AnyItemInPlay<RoomId>,
-  ): item is ItemInPlay<T, PlanetName, RoomId> => {
-    return (types as Array<string>).includes(item.type);
-  };
-
-export const fallingItemTypes = [
-  "head",
-  "heels",
-  "pickup",
-  "portableBlock",
-  "movableBlock",
-  "baddie",
-  "charles",
-  "spring",
-  "ball",
-] as const satisfies ItemInPlayType[];
-
-export type FreeItemTypes = (typeof fallingItemTypes)[number];
-
-export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
-  "spring",
-  P,
-  RoomId
->;
-
-export function isFreeItem<
-  P extends PlanetName = PlanetName,
-  RoomId extends string = string,
->(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
-  return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
-}
 
 /**
  * Force ItemInPlay into a union so that discrimination over

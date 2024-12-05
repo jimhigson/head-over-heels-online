@@ -1,5 +1,7 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import { isFreeItem, isItemType, type ItemInPlay } from "@/model/ItemInPlay";
+import { type ItemInPlay } from "@/model/ItemInPlay";
+import { isItemType } from "../itemPredicates";
+import { isFreeItem } from "../itemPredicates";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { addXyz } from "@/utils/vectors/vectors";

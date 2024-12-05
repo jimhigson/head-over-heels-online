@@ -1,4 +1,5 @@
-import { isItemType, type PlayableItem } from "@/model/ItemInPlay";
+import { type PlayableItem } from "../itemPredicates";
+import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";

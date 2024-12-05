@@ -10,7 +10,7 @@ import {
   heelsJumpForwardDecel,
   walkSpeedPixPerMs,
 } from "../mechanicsConstants";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";

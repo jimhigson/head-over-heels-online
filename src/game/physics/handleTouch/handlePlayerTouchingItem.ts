@@ -1,5 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlayableItem, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import {
@@ -31,6 +32,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
     case "baddie":
     case "deadlyBlock":
     case "moveableDeadly":
+    case "slidingDeadly":
       if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
         return true;
       }

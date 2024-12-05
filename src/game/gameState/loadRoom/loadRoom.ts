@@ -12,7 +12,7 @@ import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { isSolid } from "@/game/physics/isSolid";
+import { isSolid } from "@/game/physics/itemPredicates";
 
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,

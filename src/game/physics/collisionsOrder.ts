@@ -95,6 +95,7 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
   lift: 2,
   movableBlock: 2,
   portableBlock: 2,
+  slidingBlock: 2,
   spring: 2,
 
   ball: 3,
@@ -107,6 +108,7 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   pickup: 8,
 
+  slidingDeadly: 10,
   moveableDeadly: 10,
   deadlyBlock: 10,
   baddie: 10, // most impactful to touch

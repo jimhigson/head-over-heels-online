@@ -980,15 +980,15 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "moveableDeadly@3,3,0:Z1tM18t": {
+        "slidingDeadly@3,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 3, z: 0 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
-        "moveableDeadly@4,4,0:Z1tM18t": {
+        "slidingDeadly@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
       },
       planet: "blacktooth",
@@ -2826,16 +2826,24 @@ export const campaign = {
         "switch@0,7,0:V4krG": {
           config: {
             activates: {
-              "baddie@0,5,0:Z2jz06D": { left: { activated: true }, right: { activated: false } },
-              "baddie@2,4,0:ZiWCzO": { left: { activated: true }, right: { activated: false } },
-              "baddie@3,3,0:Z2jz06D": { left: { activated: true }, right: { activated: false } },
-            }
+              "baddie@0,5,0:Z2jz06D": {
+                left: { activated: true },
+                right: { activated: false },
+              },
+              "baddie@2,4,0:ZiWCzO": {
+                left: { activated: true },
+                right: { activated: false },
+              },
+              "baddie@3,3,0:Z2jz06D": {
+                left: { activated: true },
+                right: { activated: false },
+              },
+            },
           },
           position: { x: 0, y: 7, z: 0 },
           type: "switch",
         },
       },
-
       planet: "blacktooth",
       size: { x: 4, y: 8 },
       walls: {
@@ -15462,55 +15470,55 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "movableBlock@1,4,0:Z1tM18t": {
+        "slidingBlock@1,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@2,4,0:Z1tM18t": {
+        "slidingBlock@2,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@3,4,0:Z1tM18t": {
+        "slidingBlock@3,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,2,0:Z1tM18t": {
+        "slidingBlock@4,2,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,4,0:Z1tM18t": {
+        "slidingBlock@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,6,0:Z1tM18t": {
+        "slidingBlock@4,6,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,3,0:Z1tM18t": {
+        "slidingBlock@5,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,4,0:Z1tM18t": {
+        "slidingBlock@5,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,5,0:Z1tM18t": {
+        "slidingBlock@5,5,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@6,4,0:Z1tM18t": {
+        "slidingBlock@6,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
       },
       planet: "moonbase",
@@ -15828,55 +15836,55 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "movableBlock@1,4,0:Z1tM18t": {
+        "slidingBlock@1,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 1, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@2,4,0:Z1tM18t": {
+        "slidingBlock@2,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@3,4,0:Z1tM18t": {
+        "slidingBlock@3,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 3, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,2,0:Z1tM18t": {
+        "slidingBlock@4,2,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 2, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,4,0:Z1tM18t": {
+        "slidingBlock@4,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@4,6,0:Z1tM18t": {
+        "slidingBlock@4,6,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 4, y: 6, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,3,0:Z1tM18t": {
+        "slidingBlock@5,3,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 3, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,4,0:Z1tM18t": {
+        "slidingBlock@5,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@5,5,0:Z1tM18t": {
+        "slidingBlock@5,5,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 5, y: 5, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
-        "movableBlock@6,4,0:Z1tM18t": {
+        "slidingBlock@6,4,0:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 6, y: 4, z: 0 },
-          type: "movableBlock",
+          type: "slidingBlock",
         },
       },
       planet: "moonbase",
@@ -21020,15 +21028,15 @@ export const campaign = {
           position: { x: 8, y: 0, z: 3 },
           type: "door",
         },
-        "moveableDeadly@2,0,1:Z1tM18t": {
+        "slidingDeadly@2,0,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 1 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
-        "moveableDeadly@2,1,1:Z1tM18t": {
+        "slidingDeadly@2,1,1:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 1 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
       },
       planet: "penitentiary",
@@ -21284,30 +21292,30 @@ export const campaign = {
           position: { x: 5, y: 1, z: 0 },
           type: "block",
         },
-        "moveableDeadly@5,0,1:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 0, z: 1 },
-          type: "moveableDeadly",
-        },
-        "moveableDeadly@5,0,2:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 0, z: 2 },
-          type: "moveableDeadly",
-        },
-        "moveableDeadly@5,1,1:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 1, z: 1 },
-          type: "moveableDeadly",
-        },
-        "moveableDeadly@5,1,2:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 1, z: 2 },
-          type: "moveableDeadly",
-        },
         "portableBlock@1,1,1:Z14c3Fl": {
           config: { style: "sticks" },
           position: { x: 1, y: 1, z: 1 },
           type: "portableBlock",
+        },
+        "slidingDeadly@5,0,1:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 0, z: 1 },
+          type: "slidingDeadly",
+        },
+        "slidingDeadly@5,0,2:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 0, z: 2 },
+          type: "slidingDeadly",
+        },
+        "slidingDeadly@5,1,1:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 1, z: 1 },
+          type: "slidingDeadly",
+        },
+        "slidingDeadly@5,1,2:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 1, z: 2 },
+          type: "slidingDeadly",
         },
       },
       planet: "penitentiary",
@@ -21404,15 +21412,15 @@ export const campaign = {
           position: { x: 3, y: 0, z: 0 },
           type: "door",
         },
-        "moveableDeadly@2,0,5:Z1tM18t": {
+        "slidingDeadly@2,0,5:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 0, z: 5 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
-        "moveableDeadly@2,1,5:Z1tM18t": {
+        "slidingDeadly@2,1,5:Z1tM18t": {
           config: { style: "puck" },
           position: { x: 2, y: 1, z: 5 },
-          type: "moveableDeadly",
+          type: "slidingDeadly",
         },
       },
       planet: "penitentiary",
@@ -22336,15 +22344,15 @@ export const campaign = {
           position: { x: 7, y: 5, z: 0 },
           type: "lift",
         },
-        "moveableDeadly@4,0,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 4, y: 0, z: 0 },
-          type: "moveableDeadly",
-        },
         "portableBlock@3,5,0:Z1SKpmn": {
           config: { style: "drum" },
           position: { x: 3, y: 5, z: 0 },
           type: "portableBlock",
+        },
+        "slidingDeadly@4,0,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 4, y: 0, z: 0 },
+          type: "slidingDeadly",
         },
       },
       planet: "safari",
@@ -22464,16 +22472,6 @@ export const campaign = {
           position: { x: 8, y: 3, z: 0 },
           type: "door",
         },
-        "moveableDeadly@3,7,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 3, y: 7, z: 0 },
-          type: "moveableDeadly",
-        },
-        "moveableDeadly@5,7,0:Z1tM18t": {
-          config: { style: "puck" },
-          position: { x: 5, y: 7, z: 0 },
-          type: "moveableDeadly",
-        },
         "pickup@4,7,0:Zs6lvR": {
           config: { gives: "jumps" },
           position: { x: 4, y: 7, z: 0 },
@@ -22483,6 +22481,16 @@ export const campaign = {
           config: { style: "drum" },
           position: { x: 4, y: 7, z: 2 },
           type: "portableBlock",
+        },
+        "slidingDeadly@3,7,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 3, y: 7, z: 0 },
+          type: "slidingDeadly",
+        },
+        "slidingDeadly@5,7,0:Z1tM18t": {
+          config: { style: "puck" },
+          position: { x: 5, y: 7, z: 0 },
+          type: "slidingDeadly",
         },
       },
       planet: "safari",
