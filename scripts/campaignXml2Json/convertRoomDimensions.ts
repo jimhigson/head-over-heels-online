@@ -1,6 +1,6 @@
-import { Xy } from "../../src/modelTypes";
-import { SidesWithDoors } from "./convertDoors";
-import { Xml2JsonRoom } from "./readToJson";
+import type { Xy } from "../../src/utils/vectors/vectors";
+import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
+import type { Xml2JsonRoom } from "./readToJson";
 
 export const convertRoomDimensions = (
   { xTiles, yTiles, floorKind, walls }: Xml2JsonRoom,

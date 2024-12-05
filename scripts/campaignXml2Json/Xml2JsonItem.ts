@@ -1,9 +1,15 @@
-import { CompassDirections, CompassDirectionsNESW } from "./readToJson";
+import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
+
+// just the behavio(u)rs that we care to parse
+type Behavior =
+  | "behavior of disappearance on jump into"
+  | "behavior of disappearance on touch";
 
 export type Xml2JsonItem = {
   x: string;
   y: string;
   z: string;
+  behavior?: Behavior;
 } & (
   | {
       kind: `${string}-door-${CompassDirectionsNESW}`;
@@ -39,6 +45,7 @@ export type Xml2JsonItem = {
         | "donuts"
         | "drum"
         | "elephant"
+        | "elephant-head"
         | "extra-life"
         | "handbag"
         | "helicopter-bug"
@@ -48,6 +55,7 @@ export type Xml2JsonItem = {
         | "monkey"
         | "mortal-fish"
         | "quick-steps"
+        | "crown"
         | "reincarnation-fish"
         | "remote-control" //joystick
         | "sandwich"

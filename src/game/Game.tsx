@@ -1,83 +1,65 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
-import { Application } from "pixi.js";
-import { resize } from "./resize";
-import { AnyRoomJson, Campaign } from "../modelTypes";
-import { gameMain } from "./gameMain";
-import { type GameApi } from "./gameMain";
-import { EmptyObject } from "type-fest";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import type { Campaign } from "../model/modelTypes";
+import { type GameApi } from "./GameApi";
+import type { RenderOptions } from "./RenderOptions";
+import { load as loadPalette } from "@/sprites/samplePalette";
+import { loadFont } from "./render/hud/loadHohFont";
+
+const useGame = <RoomId extends string>(
+  campaign: Campaign<RoomId>,
+  renderOptions: RenderOptions<RoomId>,
+): GameApi<RoomId> | undefined => {
+  const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
+  const [loadedAssets, setLoadedAssets] = useState<boolean>();
+
+  useEffect(() => {
+    Promise.all([loadPalette(), loadFont()]).then(() => setLoadedAssets(true));
+  }, []);
+
+  useEffect(() => {
+    if (!loadedAssets) return;
+
+    let createdGameApi: GameApi<RoomId> | undefined;
+    const go = async () => {
+      // we don't import the game until we know the assets are loaded - it is
+      // not safe to do so since some modules have top-level imports that rely on them
+      const { gameMain } = await import("./gameMain");
+      createdGameApi = await gameMain(campaign);
+      setGameApi(createdGameApi);
+    };
+
+    go();
+
+    return () => {
+      createdGameApi?.stop();
+    };
+  }, [campaign, loadedAssets]);
+
+  useEffect(() => {
+    if (gameApi === undefined) return;
+
+    gameApi.renderOptions = renderOptions;
+  }, [gameApi, renderOptions]);
+
+  return gameApi;
+};
 
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
 export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
-  forwardRef<GameApi<RoomId>, EmptyObject>(
-    (_props: EmptyObject, gameApiRef) => {
-      const [gameArea, setGameArea] = useState<HTMLDivElement | null>(null);
-      const gameApi = useRef(
-        gameMain(
-          campaign,
-          window.location.hash
-            ? (window.location.hash.substring(1) as RoomId)
-            : undefined,
-        ),
-      );
-      useImperativeHandle(gameApiRef, () => gameApi.current);
+  forwardRef<
+    GameApi<RoomId> | undefined,
+    { renderOptions: RenderOptions<RoomId> }
+  >(({ renderOptions }, gameApiRef) => {
+    const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
+    const gameApi = useGame(campaign, renderOptions);
+    useImperativeHandle(gameApiRef, () => gameApi || undefined);
 
-      useEffect(() => {
-        if (gameArea === null) return;
+    useEffect(() => {
+      if (gameDiv === null || gameApi === undefined) return;
+      gameApi.renderIn(gameDiv);
+    }, [gameApi, gameDiv]);
 
-        let app: Application | undefined;
-
-        const go = async () => {
-          app = new Application();
-          await app.init({ background: "#000000", resizeTo: window });
-          // todo: load assets in parallel with init
-          gameArea.appendChild(app.canvas);
-          gameApi.current.renderIn(app);
-          gameApi.current.events.on("roomChange", ({ id }: AnyRoomJson) => {
-            window.location.hash = id;
-          });
-
-          const onHashChange = (e: HashChangeEvent) => {
-            gameApi.current.goToRoom(
-              new URL(e.newURL).hash.substring(1) as RoomId,
-            );
-          };
-
-          window.addEventListener("hashchange", onHashChange);
-
-          resize(app);
-
-          return () => {
-            window.removeEventListener("hashchange", onHashChange);
-          };
-        };
-
-        go();
-
-        return () => {
-          if (app === undefined) return;
-
-          gameArea.removeChild(app.canvas);
-          app.destroy();
-        };
-      }, [gameArea]);
-
-      useEffect(() => {
-        return () => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          gameApi.current.stop();
-        };
-      }, []);
-
-      return (
-        <div className="h-screen w-screen bg-slate-700" ref={setGameArea} />
-      );
-    },
-  );
+    return <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />;
+  });

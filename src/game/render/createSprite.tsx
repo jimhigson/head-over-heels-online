@@ -1,23 +1,32 @@
-import { AnimatedSprite, PointData, Sprite, Texture } from "pixi.js";
-import { pixiSpriteSheet, TextureId } from "../../sprites/pixiSpriteSheet";
-
-export type MoveSpriteOptions = {
-  /**
-   * if set, will give the sprite a z-index. this isn't needed for sprites that
-   * can render themselves in a known-good order - ie, back-to-front
-   */
-  giveZIndex?: boolean;
-};
+import type { AnimatedSpriteFrames, PointData, Texture } from "pixi.js";
+import { AnimatedSprite, Sprite } from "pixi.js";
+import type { TextureId } from "../../sprites/spriteSheet";
+import { spriteSheet } from "../../sprites/spriteSheet";
+import { originalGameFrameDuration } from "@/originalGame";
+import { defaultAnimationSpeed } from "./animationTimings";
 
 type AnimatedCreateSpriteOptions = {
   // animated
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
-  animationSpeed: number;
+  /**
+   * if not given, defaults to 12.5 fps, or one frame every other (deinterlaced)
+   * zx-spectrum original game frame
+   */
+  animationSpeed?: number;
   frames: Texture[];
+  /*
+   * if true, animation will run backwards
+   */
+  reverse?: boolean;
   x?: number;
   y?: number;
+  /**
+   * If true, will play once and vanish. Otherwise, (by default) will loop
+   * indefinitely
+   */
+  playOnce?: "and-destroy" | "and-stop";
 };
 
 export type CreateSpriteOptions =
@@ -51,11 +60,9 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     let sprite: Sprite;
 
     if (isAnimatedOptions(options)) {
-      sprite = new AnimatedSprite(options.frames);
-      (sprite as AnimatedSprite).animationSpeed = options.animationSpeed || 0.1;
-      (sprite as AnimatedSprite).play();
+      sprite = createAnimatedSprite(options);
     } else {
-      sprite = new Sprite(pixiSpriteSheet.textures[options.texture]);
+      sprite = new Sprite(spriteSheet.textures[options.texture]);
     }
 
     if (anchor === undefined && pivot === undefined)
@@ -81,3 +88,35 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     return sprite;
   }
 };
+function createAnimatedSprite({
+  frames,
+  animationSpeed,
+  reverse,
+  playOnce,
+}: AnimatedCreateSpriteOptions) {
+  const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
+    texture: frame,
+    time: originalGameFrameDuration,
+  }));
+
+  if (reverse) {
+    animatedSpriteFrames.reverse();
+  }
+
+  const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
+
+  animatedSprite.animationSpeed = animationSpeed || defaultAnimationSpeed;
+  animatedSprite.play();
+  if (playOnce !== undefined) {
+    animatedSprite.loop = false;
+    animatedSprite.onComplete = () => {
+      animatedSprite.stop();
+      if (playOnce === "and-destroy") {
+        // we don't actually destroy, or the item appearance will notice the container
+        // is empty and re-render it:
+        animatedSprite.visible = false;
+      }
+    };
+  }
+  return animatedSprite;
+}

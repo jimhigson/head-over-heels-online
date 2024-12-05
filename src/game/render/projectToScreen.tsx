@@ -1,16 +1,58 @@
-import { Xyz } from "../../modelTypes";
-import { blockSizePx } from "@/sprites/pixiSpriteSheet";
+import type { Container } from "pixi.js";
+import { isIntegerXyzOrCloseTo, type XyMaybeZ } from "@/utils/vectors/vectors";
+import { blockSizePx } from "@/sprites/spritePivots";
+import type { Xy, Xyz } from "@/utils/vectors/vectors";
+
+export const moveContainerToBlockXyz = (
+  blockXyz: XyMaybeZ,
+  sprite: Container,
+) => {
+  const projectionXyz = projectBlockXyzToScreenXy(blockXyz);
+
+  sprite.x = projectionXyz.x;
+  sprite.y = projectionXyz.y;
+
+  return sprite;
+};
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectToScreen = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>): Xyz => {
-  const projY = -(x + y) / 2 - z;
+export const projectWorldXyzToScreenX = ({
+  x = 0,
+  y = 0,
+}: Partial<Xyz>): number => y - x;
+
+/* position on 2d screen for a given xyz in game-space 3d pixels */
+export const projectWorldXyzToScreenXy = (position: Partial<Xyz>): Xy => {
+  const coordinatesAreInteger = isIntegerXyzOrCloseTo(position);
+
+  return coordinatesAreInteger ?
+      projectWorldXyzToScreenXyInteger(position)
+    : projectWorldXyzToScreenXyFloat(position);
+};
+
+export const projectWorldXyzToScreenXyInteger = ({
+  x = 0,
+  y = 0,
+  z = 0,
+}: Partial<Xyz>): Xy => {
   return {
     x: y - x,
-    y: projY,
-    // z here is the z-index, for if the renderer needs it
-    // boost x and y because height alone can never put an item in front
-    // of another item it is set back from, no matter what the relative heights
-    z: z - (x << 8) - (y << 8),
+    y:
+      // >> 1 is /2 but rounded down
+      -((x + y) >> 1) - z,
+  };
+};
+
+export const projectWorldXyzToScreenXyFloat = ({
+  x = 0,
+  y = 0,
+  z = 0,
+}: Partial<Xyz>): Xy => {
+  return {
+    x: y - x,
+    y:
+      // >> 1 is /2 but rounded down
+      -(x + y) / 2 - z,
   };
 };
 
@@ -28,6 +70,6 @@ export const blockXyzToFineXyz = ({
 };
 
 /* position on 2d screen for a given xyz in game-space block position */
-export const projectBlockToScreen = (blockXyz: Partial<Xyz>): Xyz => {
-  return projectToScreen(blockXyzToFineXyz(blockXyz));
+export const projectBlockXyzToScreenXy = (blockXyz: Partial<Xyz>): Xy => {
+  return projectWorldXyzToScreenXy(blockXyzToFineXyz(blockXyz));
 };

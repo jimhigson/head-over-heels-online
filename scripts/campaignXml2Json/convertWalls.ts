@@ -1,10 +1,10 @@
-import { AnyWall } from "../../src/modelTypes";
 import { convertX, convertY } from "./convertCampaign";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
-import { Xml2JsonRoom } from "./readToJson";
-import { type SidesWithDoors } from "./convertDoors";
+import type { Xml2JsonRoom } from "./readToJson";
+import { type SidesWithDoors } from "./xmlRoomSidesWithDoors";
+import type { AnyWall } from "../../src/model/modelTypes";
 
 export const convertWalls = (
   roomJson: Xml2JsonRoom,
@@ -25,9 +25,9 @@ export const convertWalls = (
     .filter((wall) => wall.along === xmlJsonAxis)
     .forEach(({ position, picture }) => {
       const ordinal =
-        xmlJsonAxis === "x"
-          ? convertX(position, roomJson, sidesWithDoors)
-          : convertY(position, roomJson, sidesWithDoors);
+        xmlJsonAxis === "x" ?
+          convertX(position, roomJson, sidesWithDoors)
+        : convertY(position, roomJson, sidesWithDoors);
 
       return (result[ordinal] = convertWallName(planet, picture));
     });

@@ -5,7 +5,6 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/head-over-heels-online",
   plugins: [
     react(),
     visualizer({

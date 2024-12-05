@@ -1,156 +1,64 @@
-import { Application, Container } from "pixi.js";
-import { RoomJson, Campaign, LoadedRoom, AnyLoadedRoom } from "../modelTypes";
-import { zxSpectrumResolution } from "../originalGame";
-import { hintColours, Shades } from "../hintColours";
-import { ColorReplaceFilter } from "pixi-filters";
-import { renderItems } from "./render/renderItems";
-import { renderFloor } from "./render/renderFloor";
-import { renderExtent } from "./render/renderExtent";
-import mitt, { Emitter } from "mitt";
-import { loadRoom } from "./loadRoom/loadRoom";
-import { PlanetName } from "@/sprites/planets";
+import { Application } from "pixi.js";
+import { type Campaign } from "../model/modelTypes";
+import { currentRoom } from "@/game/gameState/GameState";
+import { changeCharacterRoom } from "./gameState/gameStateTransitions/changeCharacterRoom";
+import { listenForInput } from "./input/listenForInput";
+import { initGameState } from "./gameState/initGameState";
+import type { RenderOptions } from "./RenderOptions";
+import { mainLoop } from "./mainLoop/mainLoop";
+import type { GameApi } from "./GameApi";
 
-function iterateToContainer(gen: Generator<Container>, into?: Container) {
-  const c = into || new Container();
-  for (const s of gen) {
-    c.addChild(s);
-  }
-  return c;
-}
-
-function* renderRoomGenerator<RoomId extends string>(
-  room: LoadedRoom<PlanetName, RoomId>,
-  options: RenderOptions<RoomId>,
-): Generator<Container, undefined, undefined> {
-  yield* renderFloor(room, options);
-  yield iterateToContainer(renderItems(room, options));
-}
-
-export const paletteSwapFilters = (shades: Shades) => [
-  // MultiColorReplaceFilter from '@pixi/filter-multi-color-replace' is also an option but its api is not as friendly
-  new ColorReplaceFilter({
-    originalColor: 0x00ffff,
-    targetColor: shades.basic,
-    tolerance: 0.05,
-  }),
-  new ColorReplaceFilter({
-    originalColor: 0x008888,
-    targetColor: shades.dimmed,
-    tolerance: 0.05,
-  }),
-];
-
-const renderRoom = <P extends PlanetName, RoomId extends string>(
-  room: LoadedRoom<P, RoomId>,
-  options: RenderOptions<RoomId>,
-) => {
-  // NB: floor could be a tiling sprite and a graphics map:
-  //  * https://pixijs.com/8.x/examples/sprite/tiling-sprite
-  //  * https://pixijs.com/8.x/examples/masks/graphics
-
-  const roomContainer = new Container();
-
-  for (const container of renderRoomGenerator(room, options)) {
-    roomContainer.addChild(container);
-  }
-
-  roomContainer.filters = paletteSwapFilters(hintColours[room.color].main);
-
-  return roomContainer;
-};
-
-export type RenderOptions<RoomId extends string> = {
-  onPortalClick: (roomId: RoomId) => void;
-};
-
-const centreRoomInRendering = (
-  room: AnyLoadedRoom,
-  container: Container,
-): void => {
-  const { leftSide, rightSide, frontSide, top } = renderExtent(room);
-
-  const renderingMedianX = (rightSide.x + leftSide.x) / 2;
-  const renderingMedianY = (top + frontSide.y) / 2;
-
-  container.x = -renderingMedianX;
-  container.y = -renderingMedianY;
-};
-
-type ApiEvents<RoomId extends string> = {
-  roomChange: RoomJson<PlanetName, RoomId>;
-};
-
-export type GameApi<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
-  currentRoom: RoomJson<PlanetName, RoomId>;
-  roomState: LoadedRoom<PlanetName, RoomId>;
-  events: Emitter<ApiEvents<RoomId>>;
-  goToRoom: (newRoom: RoomId) => void;
-  renderIn: (app: Application) => void;
-  stop: () => void;
-};
-
-export const gameMain = <RoomId extends string>(
+/**
+ * we are now outside of React-land - pure pixi game engine!
+ */
+export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  startingRoom?: NoInfer<RoomId>,
-): GameApi<RoomId> => {
-  let currentRoom = campaign.rooms[startingRoom || campaign.startRoom];
-  let loadedRoom: LoadedRoom<PlanetName, RoomId>;
-  let app: Application | undefined;
+): Promise<GameApi<RoomId>> => {
+  // TODO: re-render on HMR: https://vite.dev/guide/api-hmr.html
 
-  const events = mitt<ApiEvents<RoomId>>();
+  const renderOptions: RenderOptions<RoomId> = { showBoundingBoxes: "none" };
 
-  const worldContainer = new Container();
+  // the viewing room isn't necessarily the room of the curren playable character,
+  // but only because I allow click-through for debugging
 
-  // move origin to centre horizontally of screen:
-  worldContainer.x = zxSpectrumResolution.width / 2;
-  worldContainer.y = zxSpectrumResolution.height * 0.7;
+  // can set: {resizeTo: document.querySelector('.pixi-container')} to resize the app in a different container
+  // (ie, a div created by react) and also {resolution:4} to do some resolution scaling
+  const app = new Application();
+  await app.init({ background: "#000000", resizeTo: window });
 
-  const renderOptions: RenderOptions<RoomId> = {
-    onPortalClick(roomId) {
-      switchToRoom(roomId);
-    },
-  };
+  const gameState = initGameState(campaign, renderOptions);
+  const stopListeningForInput = listenForInput(gameState);
 
-  const switchToRoom = (roomId: RoomId) => {
-    const room = campaign.rooms[roomId];
-
-    if (room === undefined) {
-      throw new Error(`no room found with id ${roomId}`);
-    }
-
-    currentRoom = room;
-    loadedRoom = loadRoom(room);
-
-    worldContainer.removeChildren();
-
-    const roomContainer = renderRoom(loadedRoom, renderOptions);
-
-    centreRoomInRendering(loadedRoom, roomContainer);
-
-    worldContainer.addChild(roomContainer);
-
-    events.emit("roomChange", room);
-  };
-
-  switchToRoom(startingRoom || campaign.startRoom);
+  const loop = mainLoop(app, gameState).start();
 
   return {
     campaign,
+    events: gameState.events,
+    renderIn(gameDiv) {
+      gameDiv.appendChild(app.canvas);
+    },
+    changeRoom(roomId: RoomId) {
+      changeCharacterRoom({
+        gameState,
+        toRoomId: roomId,
+        changeType: "level-select",
+      });
+    },
     get currentRoom() {
-      return currentRoom;
+      return currentRoom(gameState);
     },
-    get roomState() {
-      return loadedRoom;
+    get gameState() {
+      return gameState;
     },
-    events,
-    renderIn(a) {
-      app = a;
-      app.stage.addChild(worldContainer);
+    set renderOptions(options: RenderOptions<RoomId>) {
+      gameState.renderOptions = options;
     },
-    goToRoom(roomId: RoomId) {
-      if (roomId !== currentRoom.id) switchToRoom(roomId);
+    stop() {
+      console.warn("tearing down game");
+      app.canvas.parentNode?.removeChild(app.canvas);
+      loop.stop();
+      stopListeningForInput();
+      app.destroy();
     },
-    stop: () => app?.stage?.removeChild(worldContainer),
   };
 };

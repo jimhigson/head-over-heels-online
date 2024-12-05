@@ -1,31 +1,32 @@
 import { Container, Graphics } from "pixi.js";
-import { hintColours } from "../../hintColours";
-import { Direction, LoadedRoom } from "../../modelTypes";
-import type { TextureId } from "../../sprites/pixiSpriteSheet";
-import { makeClickPortal } from "./makeClickPortal";
-import { RenderOptions, paletteSwapFilters } from "../gameMain";
+import type { RoomState } from "../../model/modelTypes";
+import type { TextureId } from "../../sprites/spriteSheet";
+import { edgePaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { createSprite } from "./createSprite";
-import { moveSpriteToBlockXyz } from "./positionSprite";
+import { moveContainerToBlockXyz } from "./projectToScreen";
 import { renderExtent } from "./renderExtent";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
-import { projectBlockToScreen } from "./projectToScreen";
-import { PlanetName } from "@/sprites/planets";
+import { projectBlockXyzToScreenXy } from "./projectToScreen";
+import type { PlanetName } from "@/sprites/planets";
+import type { DirectionXy4 } from "@/utils/vectors/vectors";
 
-export type SidesWithDoors = Partial<Record<Direction, true>>;
+export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
-export function* renderFloor<RoomId extends string>(
-  room: LoadedRoom<PlanetName, RoomId>,
-  options: RenderOptions<RoomId>,
-): Generator<Container, undefined, undefined> {
+export const renderFloor = <RoomId extends string>(
+  room: RoomState<PlanetName, RoomId>,
+): Container => {
   const { towards: hasDoorTowards, right: hasDoorRight } =
     roomSidesWithDoors(room);
 
   const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
     renderExtent(room);
 
-  const { floor: floorType } = room;
+  const {
+    floor: floorType,
+    color: { shade },
+  } = room;
 
-  const floorContainer = new Container();
+  const mainContainer = new Container({ label: `floor(${room.id})` });
 
   const floorSkipMap = Object.fromEntries(
     room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
@@ -33,7 +34,9 @@ export function* renderFloor<RoomId extends string>(
 
   if (floorType !== "none") {
     const floorTileTexture: TextureId =
-      floorType === "deadly" ? "generic.floor.deadly" : `${floorType}.floor`;
+      floorType === "deadly" ?
+        `generic${shade === "dimmed" ? ".dark" : ""}.floor.deadly`
+      : `${floorType}${shade === "dimmed" ? ".dark" : ""}.floor`;
 
     const tilesContainer = new Container();
 
@@ -47,7 +50,7 @@ export function* renderFloor<RoomId extends string>(
         }
 
         tilesContainer.addChild(
-          moveSpriteToBlockXyz(
+          moveContainerToBlockXyz(
             { x: ix, y: iy },
             createSprite({
               anchor: { x: 0.5, y: 1 },
@@ -56,6 +59,40 @@ export function* renderFloor<RoomId extends string>(
           ),
         );
       }
+    }
+
+    // render the cutting off of the floor tiles along the back
+    // walls. In the original game this was rendered by the walls
+    // themselves, but it breaks our z-ordering if the walls over-render
+    // their bounding boxes by so much
+    for (let ix = 0; ix <= room.size.x; ix++) {
+      if (room.walls.away[ix] === "none") {
+        continue;
+      }
+      tilesContainer.addChild(
+        moveContainerToBlockXyz(
+          { x: ix, y: room.size.y },
+          createSprite({
+            anchor: { x: 0, y: 1 },
+            texture: "generic.floor.overdraw",
+            flipX: true,
+          }),
+        ),
+      );
+    }
+    for (let iy = 0; iy <= room.size.y; iy++) {
+      if (room.walls.left[iy] === "none") {
+        continue;
+      }
+      tilesContainer.addChild(
+        moveContainerToBlockXyz(
+          { x: room.size.x, y: iy },
+          createSprite({
+            anchor: { x: 0, y: 1 },
+            texture: "generic.floor.overdraw",
+          }),
+        ),
+      );
     }
 
     const tilesMask = new Graphics()
@@ -70,44 +107,35 @@ export function* renderFloor<RoomId extends string>(
     tilesContainer.addChild(tilesMask);
     tilesContainer.mask = tilesMask;
 
-    floorContainer.addChild(tilesContainer);
+    mainContainer.addChild(tilesContainer);
   }
 
-  const rightEdge = new Container();
+  const towardsEdge = new Container();
   for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
-    rightEdge.addChild(
-      moveSpriteToBlockXyz(
+    towardsEdge.addChild(
+      moveContainerToBlockXyz(
         { x: ix, y: hasDoorTowards ? -0.5 : 0 },
         createSprite({
-          pivot: { x: 7, y: 1 },
+          pivot: { x: 7, y: 0 },
           texture: "generic.edge.towards",
         }),
       ),
     );
   }
-  rightEdge.filters = paletteSwapFilters(hintColours[room.color].edges.right);
-  const towardsEdge = new Container();
+  towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
+  const rightEdge = new Container();
   for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
-    towardsEdge.addChild(
-      moveSpriteToBlockXyz(
+    rightEdge.addChild(
+      moveContainerToBlockXyz(
         { x: hasDoorRight ? -0.5 : 0, y: iy },
-        createSprite({ pivot: { x: 0, y: 1 }, texture: "generic.edge.right" }),
+        createSprite({ pivot: { x: 0, y: 0 }, texture: "generic.edge.right" }),
       ),
     );
   }
-  towardsEdge.filters = paletteSwapFilters(
-    hintColours[room.color].edges.towards,
-  );
-  if (room.roomBelow) {
-    makeClickPortal(
-      room.roomBelow,
-      options,
-      ...[...towardsEdge.children, ...rightEdge.children],
-    );
-  }
+  rightEdge.filters = edgePaletteSwapFilters(room, "right");
 
-  const edgeRightPoint = projectBlockToScreen({ x: 0, y: room.size.y });
-  const edgeLeftPoint = projectBlockToScreen({ x: room.size.x, y: 0 });
+  const edgeRightPoint = projectBlockXyzToScreenXy({ x: 0, y: room.size.y });
+  const edgeLeftPoint = projectBlockXyzToScreenXy({ x: room.size.x, y: 0 });
 
   // rendering strategy differs slightly from original here - we don't render floors added in for near-side
   // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
@@ -125,10 +153,10 @@ export function* renderFloor<RoomId extends string>(
     )
     .fill(0xffff00);
 
-  floorContainer.addChild(floorMask);
-  floorContainer.addChild(rightEdge);
-  floorContainer.addChild(towardsEdge);
-  floorContainer.mask = floorMask;
+  mainContainer.addChild(floorMask);
+  mainContainer.addChild(towardsEdge);
+  mainContainer.addChild(rightEdge);
+  mainContainer.mask = floorMask;
 
-  yield floorContainer;
-}
+  return mainContainer;
+};

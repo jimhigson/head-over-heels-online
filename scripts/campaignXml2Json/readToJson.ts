@@ -1,10 +1,10 @@
 // this file is way looser than most because the xml parser ("xml-js") we're using doesn't have great typing.
 // TODO: use a different xml parser!
-/* eslint-disable no-param-reassign */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
-import { Xml2JsonItem } from "./Xml2JsonItem";
+import type { Xml2JsonItem } from "./Xml2JsonItem";
 
 const readXmlToJson = async (fileName: string) => {
   const xmlText = await readFile(`gamedata-map-xml/${fileName}.xml`, {
@@ -86,8 +86,9 @@ export const readRoomToJson = async (
 
   roomJson = roomJson.room;
   roomJson.walls = roomJson.walls.wall || [];
-  roomJson.items = Array.isArray(roomJson.items.item)
-    ? roomJson.items.item
+  roomJson.items =
+    Array.isArray(roomJson.items.item) ?
+      roomJson.items.item
     : [roomJson.items.item];
 
   delete roomJson._attributes;

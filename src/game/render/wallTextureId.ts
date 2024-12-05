@@ -1,8 +1,13 @@
-import { WallTextureId } from "@/sprites/pixiSpriteSheet";
-import { PlanetName, Wall } from "@/sprites/planets";
+import type { WallTextureId } from "@/sprites/scenerySpritesheetData";
+import type { PlanetName, Wall } from "@/sprites/planets";
 
-export const wallTextureId = <P extends PlanetName>(
+export const wallTextureId = <P extends PlanetName, TDark extends boolean>(
   planet: P,
   wallName: Wall<P>,
   side: "left" | "away",
-) => `${planet}.wall.${wallName}.${side}` as WallTextureId<P>;
+  dark: TDark,
+) =>
+  `${planet}${dark ? ".dark" : ""}.wall.${wallName}.${side}` as WallTextureId<
+    P,
+    TDark extends true ? ".dark" : ""
+  >;

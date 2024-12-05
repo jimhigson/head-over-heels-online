@@ -10,7 +10,6 @@ createRoot(document.getElementById("root")!).render(
     <App
       campaign={{
         rooms: { ...campaign.rooms, ...testCampaign.rooms },
-        startRoom: campaign.startRoom,
       }}
     />
   </StrictMode>,
