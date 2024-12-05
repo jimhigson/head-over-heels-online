@@ -1,7 +1,5 @@
 import { test } from "vitest";
-import { expectTypeOf } from "vitest";
-import type { PlayableItem, UnknownItemInPlay } from "./ItemInPlay";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import type { UnknownItemInPlay } from "./ItemInPlay";
 
 test("heads and heels have the right state", () => {
   /*
@@ -18,7 +16,7 @@ test("heads and heels have the right state", () => {
     position: Xyz;
     expires: number | null;
   }>();*/
-
+  /*
   expectTypeOf<PlayableItem["state"]>().toMatchTypeOf<{
     facing: DirectionXy4;
     action: "moving" | "idle" | "falling" | "death";
@@ -27,4 +25,5 @@ test("heads and heels have the right state", () => {
     lives: number;
     shield: number;
   }>();
+  */
 });

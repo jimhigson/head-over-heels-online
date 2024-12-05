@@ -66,8 +66,12 @@ export const walkSpeedPixPerMs = {
   ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
   ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
+  ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Record<
-  CharacterName | "charles" | JsonItemConfig<"baddie", any, any>["which"],
+  | CharacterName
+  | "charles"
+  | "ball"
+  | JsonItemConfig<"baddie", any, any>["which"],
   number
 >;
 

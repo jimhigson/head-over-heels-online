@@ -162,16 +162,16 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
     return notWalking;
   }
 
-  return {
-    movementType: "vel",
-    vels: {
-      walking:
-        xyEqual(walking, originXy) ?
-          // ie, we might have fallen and landed and not be walking:
-          initBaddieWalk(config)
-        : walking,
-    },
-  };
+  return xyEqual(walking, originXy) ?
+      {
+        movementType: "vel",
+        vels: {
+          walking:
+            // ie, we might have fallen and landed and not be walking:
+            initBaddieWalk(config),
+        },
+      }
+    : unitMechanicalResult;
 };
 
 /**
@@ -183,7 +183,7 @@ export const tickBaddie = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  if (!item.state.activated) return unitMechanicalResult;
+  if (!item.state.activated) return notWalking;
 
   switch (item.config.which) {
     case "dalek": {
@@ -215,7 +215,7 @@ export const tickBaddie = <RoomId extends string>(
       return keepWalkingInSameDirection(item, room, gameState, deltaMS);
     }
     default:
-      return unitMechanicalResult;
+      return notWalking;
   }
 };
 

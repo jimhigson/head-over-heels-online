@@ -24,7 +24,7 @@ export function teleporting<RoomId extends string>(
       isItemType("teleporter")(standingOn)
     ) {
       return {
-        movementType: "static",
+        movementType: "steady",
         stateDelta: {
           teleporting: {
             phase: "out",
@@ -63,7 +63,7 @@ export function teleporting<RoomId extends string>(
     case "in":
       if (newTimeRemaining === 0) {
         return {
-          movementType: "static",
+          movementType: "steady",
           stateDelta: {
             teleporting: null,
           },
@@ -75,7 +75,7 @@ export function teleporting<RoomId extends string>(
   }
 
   return {
-    movementType: "static",
+    movementType: "steady",
     stateDelta: {
       teleporting: {
         ...teleporting,

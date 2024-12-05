@@ -19,9 +19,10 @@ import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
 import { carrying } from "../physics/mechanics/carrying";
 import type { RoomState } from "@/model/modelTypes";
-import { objectValues } from "iter-tools";
 import { objectEntriesIter } from "@/utils/entries";
 import { latentMovement } from "../physics/mechanics/latentMovement";
+import { objectValues } from "iter-tools";
+import { iterate } from "@/utils/iterate";
 
 function* itemMechanicResultGen<
   RoomId extends string,
@@ -86,9 +87,8 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     deltaMS,
   )) {
     // add movement to accumulatedPosDelta
-    const mrPosDelta =
-      mechanicResult.movementType === "position" ? mechanicResult.posDelta
-      : (
+    //const mrPosDelta = mechanicResult.movementType === "position" ? mechanicResult.posDelta
+    /*: (
         mechanicResult.movementType === "vel" &&
         mechanicResult.vels !== undefined
       ) ?
@@ -100,10 +100,13 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
           ),
           deltaMS,
         )
-      : undefined;
+      : undefined;*/
 
-    if (mrPosDelta !== undefined) {
-      accumulatedPosDelta = addXyz(accumulatedPosDelta, mrPosDelta);
+    if (mechanicResult.movementType === "position") {
+      accumulatedPosDelta = addXyz(
+        accumulatedPosDelta,
+        mechanicResult.posDelta,
+      );
     }
 
     // update item.state.vels
@@ -130,6 +133,17 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       // this items's tick is halting the frame tick
       return true;
     }
+  }
+
+  // velocities for this item have now been updated - get the aggregate movement, including vels
+  // that stood from previous frames (did not change)
+  if (isFreeItem(item) || isItemType("lift")(item)) {
+    accumulatedPosDelta = addXyz(
+      accumulatedPosDelta,
+      ...iterate(objectValues(item.state.vels)).map((val) =>
+        scaleXyz(val, deltaMS),
+      ),
+    );
   }
 
   return moveItem({

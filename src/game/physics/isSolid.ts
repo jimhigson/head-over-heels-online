@@ -1,4 +1,8 @@
-import { type AnyItemInPlay, isPlayableItem } from "@/model/ItemInPlay";
+import {
+  type AnyItemInPlay,
+  isItemType,
+  isPlayableItem,
+} from "@/model/ItemInPlay";
 
 export const isUnsolid = (
   { state: { unsolidAfterProgression } }: AnyItemInPlay,
@@ -29,3 +33,5 @@ export const isPushable = (collisionItem: AnyItemInPlay) => {
     isPlayableItem(collisionItem)
   );
 };
+
+export const isSlidingItem = isItemType("ball");

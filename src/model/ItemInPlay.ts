@@ -4,8 +4,8 @@ import type {
   DirectionXy4,
   Direction4Xyz,
   Xyz,
-  Xy,
 } from "../utils/vectors/vectors";
+import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName } from "./modelTypes";
 
@@ -18,7 +18,7 @@ export type ItemInPlayType =
   | "portal"
   | "floor";
 
-type FreeItemState<RoomId extends string> = {
+export type FreeItemState<RoomId extends string> = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
   standingOn: UnknownItemInPlay<RoomId> | null;
   /* 
@@ -86,64 +86,6 @@ export type EitherPlayableState<RoomId extends string> =
 
 export type SwitchSetting = "left" | "right";
 
-export type ItemStateMap<RoomId extends string> = {
-  head: EitherPlayableState<RoomId> & {
-    hasHooter: boolean;
-    /** how many big jumps we can do */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    donuts: number;
-    fastSteps: number;
-  };
-  heels: EitherPlayableState<RoomId> & {
-    hasBag: boolean;
-    /** how many big jumps we can do (from picking up a bunny) */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    bigJumps: number;
-    carrying:
-      | ItemInPlay<"portableBlock", PlanetName, RoomId>
-      | ItemInPlay<"spring", PlanetName, RoomId>
-      | null;
-  };
-  spring: FreeItemState<RoomId>;
-  portableBlock: FreeItemState<RoomId>;
-  movableBlock: FreeItemState<RoomId>;
-  baddie: FreeItemState<RoomId> & {
-    activated: boolean;
-    vels: {
-      walking: Xyz;
-    };
-  };
-  pickup: FreeItemState<RoomId>;
-  aliveFish: FreeItemState<RoomId>;
-  lift: {
-    direction: "up" | "down";
-    vels: {
-      lift: Xyz;
-    };
-  };
-  stopAutowalk: EmptyObject;
-  conveyor: {
-    moving: boolean;
-  };
-  block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
-  switch: {
-    setting: SwitchSetting;
-    /**
-     * the frame this switch was last touched on. Frames only switch if they are touched and weren't
-     * already touched on the previous frame
-     */
-    touchedOnProgression: number;
-  };
-  charles: FreeItemState<RoomId> & {
-    // others will follow this soon - facing is changing to a vector
-    facing: Xy;
-  };
-};
-
 type ItemInPlayConfigMap<RoomId extends string> = {
   floor: { deadly: boolean };
   portal: {
@@ -166,7 +108,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
 };
 
 // type-fest's EmptyObject was creating issues
-type EmptyObject = {
+export type EmptyObject = {
   [n in never]: unknown;
 };
 

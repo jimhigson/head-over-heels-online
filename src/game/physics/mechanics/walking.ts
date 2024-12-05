@@ -1,4 +1,9 @@
-import { directionsXy4, scaleXyz, subXyz } from "@/utils/vectors/vectors";
+import {
+  directionsXy4,
+  originXyz,
+  scaleXyz,
+  subXyz,
+} from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
@@ -6,9 +11,14 @@ import {
   walkSpeedPixPerMs,
 } from "../mechanicsConstants";
 import type { PlayableItem } from "@/model/ItemInPlay";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
+
+const stopWalking = {
+  movementType: "vel",
+  vels: { walking: originXyz },
+} as const satisfies MechanicResult<CharacterName, string>;
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -40,7 +50,7 @@ export const walking = <RoomId extends string>(
 
   if (teleporting !== null) {
     // do no walking while teleporting
-    return unitMechanicalResult;
+    return stopWalking;
   }
 
   // handle 'walking' while ascending/falling:
@@ -59,7 +69,7 @@ export const walking = <RoomId extends string>(
         };
       } else {
         // when heels walks off something, should always fall vertically (zero motion here)
-        return unitMechanicalResult;
+        return stopWalking;
       }
     } else {
       if (inputState.jump) {
@@ -99,7 +109,8 @@ export const walking = <RoomId extends string>(
 
   // no direction pressed - we are idle and decelerate in whatever direction we're already headed:
   return {
-    movementType: "static",
+    movementType: "vel",
+    vels: { walking: originXyz },
     stateDelta: { action },
   };
 };
