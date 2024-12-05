@@ -15,8 +15,8 @@ import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFil
 import { type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
 import type { RenderOptions } from "@/game/RenderOptions";
-import { ItemRenderer } from "../ItemRenderer";
 import { shieldDuration } from "@/game/physics/mechanicsConstants";
+import { createSprite } from "../createSprite";
 
 const smallTextSize = 8;
 const livesTextFromCentre = 24;
@@ -114,9 +114,6 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       bag: iconWithNumber("bag", true, true),
       carrying: {
         container: new Container(),
-        itemRenderer: undefined as
-          | undefined
-          | ItemRenderer<"spring" | "portableBlock", RoomId>,
       },
     },
   };
@@ -205,21 +202,22 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     const updateCarrying = (
       carrying: PlayableItem<"heels", RoomId>["state"]["carrying"],
     ) => {
-      const { itemRenderer, container } = hudElements.heels.carrying;
-      if (carrying === null && itemRenderer !== undefined) {
-        // were carrying, not now:
-        itemRenderer.destroy();
-        hudElements.heels.carrying.itemRenderer = undefined;
+      const { container: carryingContainer } = hudElements.heels.carrying;
+      const hasSprite = carryingContainer.children.length > 0;
+      if (carrying === null && hasSprite) {
+        // was carrying; not now:
+        for (const child of carryingContainer.children) {
+          child.destroy();
+        }
       }
-      if (carrying !== null && itemRenderer === undefined) {
-        const itemRenderer = (hudElements.heels.carrying.itemRenderer =
-          ItemRenderer<"spring" | "portableBlock", RoomId>(
-            carrying,
-            room,
-            renderOptions,
-          ));
-
-        container.addChild(itemRenderer.container);
+      if (carrying !== null && !hasSprite) {
+        carryingContainer.addChild(
+          createSprite(
+            carrying.type === "spring" ?
+              "spring.released"
+            : carrying.config.style,
+          ),
+        );
       }
     };
 
@@ -261,11 +259,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     const heelsItem = getPlayableItem(gameState, "heels");
     const hasBag = heelsItem?.state.hasBag ?? false;
 
-    updateCarrying(
-      // this case is necessary because state isn't generic on roomid, so state.carrying doesn't have
-      // roomid completed (other than to string)
-      heelsItem?.state.carrying ?? null,
-    );
+    updateCarrying(heelsItem?.state.carrying ?? null);
 
     hudElements.heels.bag.icon.filters =
       hasBag ? noFilters : uncurrentSpriteFilter;

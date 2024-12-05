@@ -3,6 +3,7 @@
 import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
+import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 export const playerWalkAcceldPixPerMsSq = {
@@ -71,7 +72,7 @@ export const walkSpeedPixPerMs = {
   | CharacterName
   | "charles"
   | "ball"
-  | JsonItemConfig<"baddie", any, any>["which"],
+  | JsonItemConfig<"baddie", PlanetName, string>["which"],
   number
 >;
 

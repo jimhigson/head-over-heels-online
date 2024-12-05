@@ -105,7 +105,10 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
         // the appearance decided to update:
         currentlyRenderedProps = rendering.renderProps;
         renderContainer.children.forEach((child) => child.destroy());
-        renderContainer.addChild(rendering.container);
+        // it is possible to explicitly render nothing (clear the rendering)
+        // - in this case, the appearance should return null
+        if (rendering.container !== null)
+          renderContainer.addChild(rendering.container);
       }
 
       const {

@@ -35,12 +35,6 @@ function* itemMechanicResultGen<
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): Generator<MechanicResult<T, RoomId>> {
-  if (isItemType("heels")(item)) {
-    // heels can remove items from the game, so process that first since it could
-    // affect other mechanics
-    carrying(item, room, gameState, deltaMS);
-  }
-
   if (isFreeItem(item)) {
     yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
@@ -54,6 +48,11 @@ function* itemMechanicResultGen<
     yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+  }
+
+  if (isItemType("heels")(item)) {
+    // carrying has to come after jumping so we can carry+jump simultaneously
+    carrying(item, room, gameState, deltaMS);
   }
 
   if (isItemType("lift")(item)) {

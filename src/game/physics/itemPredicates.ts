@@ -7,7 +7,7 @@ export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
   <RoomId extends string>(
     item: AnyItemInPlay<RoomId>,
-  ): item is ItemInPlay<T, PlanetName, RoomId> => {
+  ): item is { [TI in T]: ItemInPlay<TI, PlanetName, RoomId> }[T] => {
     return (types as Array<string>).includes(item.type);
   };
 
@@ -50,6 +50,8 @@ export const slidingItemTypes = [
 export type SlidingItemTypes = (typeof slidingItemTypes)[number];
 
 export const isSlidingItem = isItemType(...slidingItemTypes);
+
+export const isPortable = isItemType("spring", "portableBlock");
 
 export const isPlayableItem = <RoomId extends string = string>(
   item: AnyItemInPlay<RoomId>,

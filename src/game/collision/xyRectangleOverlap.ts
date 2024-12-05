@@ -25,14 +25,3 @@ export const itemXyOverlapArea = (
 ): number => {
   return xyRectangleOverlapArea(pos1, bb1, pos2, bb2);
 };
-
-/** 1 for completely overlapping, 0.1 for hardly overlapping, 0 for not at all as a proportion of the first item */
-export const itemXyOverlapFraction = (
-  referenceItem: AnyItemInPlay,
-  comparisonItem: AnyItemInPlay,
-): number => {
-  return (
-    itemXyOverlapArea(referenceItem, comparisonItem) /
-    (referenceItem.aabb.x * referenceItem.aabb.y)
-  );
-};

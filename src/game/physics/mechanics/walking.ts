@@ -10,7 +10,7 @@ import {
   heelsJumpForwardDecel,
   walkSpeedPixPerMs,
 } from "../mechanicsConstants";
-import type { PlayableItem } from "../itemPredicates";
+import { isItemType, type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
@@ -74,12 +74,15 @@ export const walking = <RoomId extends string>(
     } else {
       if (inputState.jump) {
         const jumpDirection = directionOfWalk ?? facing;
+        const isStandingOnSpring = isItemType("spring")(standingOn);
+        const walkJumpFraction =
+          isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
         return {
           movementType: "vel",
           vels: {
             walking: scaleXyz(
               unitVectors[jumpDirection],
-              maxWalkSpeed * heelsJumpForwardSpeedFraction,
+              maxWalkSpeed * walkJumpFraction,
             ),
           },
           stateDelta: { facing: jumpDirection },

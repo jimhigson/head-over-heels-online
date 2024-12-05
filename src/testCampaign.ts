@@ -587,16 +587,26 @@ const rooms = {
         position: { x: 13, y: 1, z: 2 },
       },
       {
+        type: "spring",
+        config: {},
+        position: { x: 13, y: 0, z: 0 },
+      },
+      {
+        type: "spring",
+        config: {},
+        position: { x: 14, y: 0, z: 0 },
+      },
+      {
         type: "portableBlock",
         config: {
-          style: "cube",
+          style: "sticks",
         },
         position: { x: 13, y: 2, z: 0 },
       },
       {
         type: "portableBlock",
         config: {
-          style: "cube",
+          style: "drum",
         },
         position: { x: 13, y: 3, z: 0 },
       },

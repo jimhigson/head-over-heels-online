@@ -34,6 +34,10 @@ type SlidingItemState<RoomId extends string> = FreeItemState<RoomId> & {
   };
 };
 
+type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
+  wouldPickUpNext: boolean;
+};
+
 export type ItemStateMap<RoomId extends string> = {
   head: EitherPlayableState<RoomId> & {
     hasHooter: boolean;
@@ -56,8 +60,8 @@ export type ItemStateMap<RoomId extends string> = {
       | ItemInPlay<"spring", PlanetName, RoomId>
       | null;
   };
-  spring: FreeItemState<RoomId>;
-  portableBlock: FreeItemState<RoomId>;
+  spring: PortableItemState<RoomId>;
+  portableBlock: PortableItemState<RoomId>;
   movableBlock: FreeItemState<RoomId>;
   moveableDeadly: FreeItemState<RoomId>;
   slidingDeadly: SlidingItemState<RoomId>;

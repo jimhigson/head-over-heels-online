@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/JsonItem";
+import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -40,6 +41,36 @@ const stackedSprites = (
   headSprite.y = -12;
   container.addChild(headSprite);
   return container;
+};
+
+type OutlineTextureId = Extract<TextureId, `${string}.outline`>;
+type TextureWithOutline =
+  OutlineTextureId extends `${infer T}.outline` ? T : never;
+
+const maybeHighlighted = (
+  texture: TextureWithOutline,
+  highlighted: boolean,
+) => {
+  return highlighted ?
+      new Container({
+        children: [
+          createSprite({
+            texture,
+            pivot: {
+              x: smallItemTextureSize.w / 2,
+              y: smallItemTextureSize.h,
+            },
+          }),
+          createSprite({
+            texture: `${texture}.outline`,
+            pivot: {
+              x: smallItemTextureSize.w / 2 + 1,
+              y: smallItemTextureSize.h + 1,
+            },
+          }),
+        ],
+      })
+    : createSprite(texture);
 };
 
 const singleRenderWithStyleAsTexture = renderOnce<
@@ -265,39 +296,6 @@ export const itemAppearances: {
       renderProps: {},
     };
   }),
-
-  spring({
-    item: {
-      state: { stoodOnBy },
-    },
-    currentlyRenderedProps,
-  }) {
-    const compressed = stoodOnBy.size > 0;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      compressed !== currentlyRenderedProps.compressed;
-
-    if (!render) {
-      return;
-    }
-
-    const currentlyRenderedCompressed =
-      currentlyRenderedProps?.compressed ?? false;
-
-    return {
-      container: createSprite(
-        !compressed && currentlyRenderedCompressed ?
-          {
-            frames: spriteSheet.animations["spring.bounce"],
-            playOnce: "and-stop",
-          }
-        : compressed ? "spring.compressed"
-        : "spring.released",
-      ),
-      renderProps: { compressed },
-    };
-  },
 
   teleporter({
     item: {
@@ -590,15 +588,18 @@ export const itemAppearances: {
     item: {
       id,
       config: { style },
+      state: { wouldPickUpNext },
     },
     room,
     currentlyRenderedProps,
   }) {
     const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
     const carried = heelsCarrying === id;
+    const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
+      highlighted !== currentlyRenderedProps.highlighted ||
       carried !== currentlyRenderedProps.carried;
 
     if (!render) {
@@ -606,8 +607,49 @@ export const itemAppearances: {
     }
 
     return {
-      container: carried ? new Container() : createSprite(style),
-      renderProps: { carried },
+      container: carried ? null : maybeHighlighted(style, highlighted),
+      renderProps: { carried, highlighted },
+    };
+  },
+
+  spring({
+    item: {
+      id,
+      state: { stoodOnBy, wouldPickUpNext },
+    },
+    room,
+    currentlyRenderedProps,
+  }) {
+    const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
+    const carried = heelsCarrying === id;
+    const compressed = stoodOnBy.size > 0;
+    const highlighted = wouldPickUpNext;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      carried !== currentlyRenderedProps.carried ||
+      highlighted !== currentlyRenderedProps.highlighted ||
+      compressed !== currentlyRenderedProps.compressed;
+
+    if (!render) {
+      return;
+    }
+
+    const currentlyRenderedCompressed =
+      currentlyRenderedProps?.compressed ?? false;
+
+    return {
+      container:
+        carried ? null
+        : !compressed && currentlyRenderedCompressed ?
+          createSprite({
+            frames: spriteSheet.animations["spring.bounce"],
+            playOnce: "and-stop",
+          })
+        : compressed ? maybeHighlighted("spring.compressed", highlighted)
+        : createSprite("spring.released"),
+
+      renderProps: { compressed, highlighted, carried },
     };
   },
 
