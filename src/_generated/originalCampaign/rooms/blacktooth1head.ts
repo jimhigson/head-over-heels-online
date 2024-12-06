@@ -48,9 +48,54 @@ export const room = {
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
-    "scroll": {
-      config: { text: "I'm in jail!", sprites: ["head.walking.towards.2"] },
+    "scrollTheGame": {
+      config: {
+        text: `
+## THE GAME
+
+Head and Heels have been captured, separated and imprisoned in the castle
+headquarters of Blacktooth. Their cells contain 'keep fit' equipment, including
+a wall ladder that Head really must learn to climb. Your job is to get them both
+out of the castle and into the marketplace so they can join up again. From
+there, the journey leads to Moonbase Headquarters, where you will have to decide
+either to try to escape back to Freedom or to be a true hero and teleport to one
+of the slave planets to search for its lost crown!
+
+To overthrow the dictatorship on any of the slave planets would be a major blow
+to Blacktooth and you could return to Freedom in glory. Of course, Blacktooth
+would probably enslave them again eventually but it would slow down any
+expansion plans for now. The populace of Blacktooth are so heavily oppressed
+that they would have to see all four of the slave planets revolt before the
+Blacktooth crown could cause an uprising. This of course would be the ultimate
+accolade, and unfortunately, almost certain suicide.
+
+Source: Head Over Heels Manual
+`, sprites: ["head.walking.towards.2", "heels.walking.right.2"]
+      },
       position: { x: 3, y: 7, z: 0 },
+      type: "scroll",
+    },
+    "scrollRabbit": {
+      config: {
+        text: `
+## CUDDLY STUFFED WHITE RABBITS
+
+The cute toy bunnies magically enhance your powers. The status display at the
+bottom of the screen will keep you informed as to which powers are temporarily
+enhanced. If Head and Heels are connected when they pick up a Life or Iron pill,
+they will both get the enhanced power.
+
+There are four types:
+
+1. **Two extra lives**
+2. **Iron Pills** (to make you invulnerable) _(Shield icon)_
+3. **Jump higher bunny** (only works on Heels) _(Spring icon)_
+4. **Go faster bunny** (only works on slow-moving Head) _(Flash icon)_
+
+Source: Head Over Heels Manual
+`, sprites: ["bunny"]
+      },
+      position: { x: 3, y: 0, z: 0 },
       type: "scroll",
     },
   },

@@ -28,6 +28,20 @@ export const room = {
       position: { x: 5, y: 0, z: 7 },
       type: "lift",
     },
+    "scroll": {
+      type: "scroll",
+      position: { x: 3, y: 5, z: 0 },
+      config: {
+        text: `
+## CONVEYOR BELTS
+
+The rollers on the conveyor simply push you along it. If you wish to go the
+opposite direction you have to jump along.
+
+Source: Head Over Heels Manual
+`, sprites: ["conveyor.x.1"]
+      }
+    },
   },
   planet: "blacktooth",
   roomAbove: "blacktooth26",

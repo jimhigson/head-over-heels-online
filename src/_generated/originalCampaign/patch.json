@@ -68,6 +68,18 @@
   },
   { "op": "replace", "path": "/rooms/moonbase15/color/hue", "value": "yellow" },
   {
+    "op": "add",
+    "path": "/rooms/moonbase15/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 3, "y": 1, "z": 0 },
+      "config": {
+        "text": "\n## HUSH PUPPIES\n\nThese are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["hushPuppy"]
+      }
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/moonbase13/color/shade",
     "value": "dimmed"
@@ -153,6 +165,30 @@
   },
   { "op": "replace", "path": "/rooms/egyptus11/color/hue", "value": "cyan" },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth9/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## HOOTER\n\nThe hooter may be used by Head to fire doughnuts at attacking monsters. This\nwill freeze them in place as they lick the doughnut off their faces. The hooter\nmay only be used by Head and requires a tray of doughnuts to be of any use.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["hooter"]
+      },
+      "position": { "x": 7, "y": 1, "z": 1 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth8fish/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "config": {
+        "text": "\n## REINCARNATION FISH\n\nThe strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["fish.1"]
+      }
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth63/floor",
     "value": "bookworld"
@@ -199,8 +235,44 @@
     "value": "bookworld"
   },
   { "op": "replace", "path": "/rooms/blacktooth56/floor", "value": "market" },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth55/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 5, "y": 5, "z": 0 },
+      "config": {
+        "text": "\n## HUSH PUPPIES\n\nThese are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["hushPuppy"]
+      }
+    }
+  },
   { "op": "replace", "path": "/rooms/blacktooth55/floor", "value": "market" },
   { "op": "replace", "path": "/rooms/blacktooth51/floor", "value": "market" },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth5/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## DOUGHNUTS\n\nTrays of six doughnuts are few and far between, so don't waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["donuts"]
+      },
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth48market/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 1, "y": 6, "z": 0 },
+      "config": {
+        "text": "\n### BLACKTOOTH\n\nThis planet has a large moon with three lunar space stations on it, the larger\nof these, Moon Station HQ, is the main teleport center for the empire, with a\ndirect teleport to all the slave planets. Sometime after the Egyptus episode,\nthe latest Emperor sent out a craft to find that same strange planet, and after\nmuch exploration, it was finally located, and the craft landed. However, the\ncrew found the people had changed: instead of pyramids they used castles,\ninstead of wrapping corpses up in cloth, they wrapped living men in metal and\nthen tried to turn them into corpses with sharp metal sticks.\n\nThe Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and\nused it as his headquarters. The castle is surrounded by a small market, and\nthen a range of impassable mountains. The only way to leave is via teleport to\none of the three lunar space stations.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["ball"]
+      }
+    }
+  },
   {
     "op": "add",
     "path": "/rooms/blacktooth37/items/switch@0,7,0:V4krG/config/activates/baddie@0,5,0:Z2jz06D",
@@ -217,9 +289,87 @@
     "value": { "left": { "activated": true }, "right": { "activated": false } }
   },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth36/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 4, "y": 5, "z": 0 },
+      "config": {
+        "text": "\n## SWITCHES\n\nSimply push the switch to switch things off and on!  \n**WARNING**: Switching a deadly monster off will stop him moving but he will\nstill be deadly to touch.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["switch.left"]
+      }
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth34/items/block@5,7,0:95uHj/config/disappearing",
     "value": true
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth34/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 2, "y": 7, "z": 1 },
+      "config": {
+        "text": "\n## SPRINGS\n\nJumping from a spring will give extra height to your jump.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["spring.compressed"]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth34/items/scrollBlock",
+    "value": {
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 2, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth28/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 4, "y": 0, "z": 1 },
+      "config": {
+        "text": "\n## BAG\n\nThe bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag's icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["bag"]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth28/items/scrollBlock",
+    "value": {
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 4, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth27fish/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "config": {
+        "text": "\n## REINCARNATION FISH\n\nThe strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["fish.1"]
+      }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth25/items/scroll",
+    "value": {
+      "type": "scroll",
+      "position": { "x": 3, "y": 5, "z": 0 },
+      "config": {
+        "text": "\n## CONVEYOR BELTS\n\nThe rollers on the conveyor simply push you along it. If you wish to go the\nopposite direction you have to jump along.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["conveyor.x.1"]
+      }
+    }
   },
   {
     "op": "remove",
@@ -263,9 +413,45 @@
     }
   },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## HEAD (HEADUS MOUTHION)\n\nThis creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["head.walking.towards.2"]
+      },
+      "position": { "x": 7, "y": 1, "z": 0 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/scroll2",
+    "value": {
+      "config": {
+        "text": "\n## HEELS (FOOTUS UNDERIUM)\n\nDuring Heels's evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\nSource: Head Over Heels Manual\n",
+        "sprites": ["heels.walking.towards.2"]
+      },
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "scroll"
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth21fish/items/door@3,8,1:xRnp2/position/z",
     "value": 2
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## HISTORY OF THE BLACKTOOTH EMPIRE\n\nFar, far away from our star Sol lies the Blacktooth empire, an evil empire, four\nworlds enslaved by the planet Blacktooth. All of the slave worlds bubble with\nunrest, but due to the oppressive nature of their rulers they never reach\nboiling point, they all lack a leader to draw the masses of population together.\n\nBlacktooth itself is not any better, a world rigidly controlled by its dynastic\nleaders for so long that the populace do not ever think about revolution. The\npeoples of the neighbouring stars are getting very worried about signs of\nmilitary expansion from Blacktooth and have sent a spy from the planet Freedom\nto see if he can push the slave planets into full rebellion by finding the\ncrowns lost when Blacktooth took over.\n\nThe creatures of Freedom are very strange in that they are formed from a pair of\nsymbiotic animals that have adapted to operate either independently or, to their\nmutual advantage, join together as one - Head saddled on Heels, and indeed these\nARE their names and both are highly trained spies.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["crown"]
+      },
+      "position": { "x": 1, "y": 0, "z": 0 },
+      "type": "scroll"
+    }
   },
   {
     "op": "add",
@@ -278,13 +464,25 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth1head/items/scroll",
+    "path": "/rooms/blacktooth1head/items/scrollTheGame",
     "value": {
       "config": {
-        "text": "I'm in jail!",
-        "sprites": ["head.walking.towards.2"]
+        "text": "\n## THE GAME\n\nHead and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain 'keep fit' equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the marketplace so they can join up again. From\nthere, the journey leads to Moonbase Headquarters, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\nTo overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["head.walking.towards.2", "heels.walking.right.2"]
       },
       "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth1head/items/scrollRabbit",
+    "value": {
+      "config": {
+        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\nThe cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. **Two extra lives**\n2. **Iron Pills** (to make you invulnerable) _(Shield icon)_\n3. **Jump higher bunny** (only works on Heels) _(Spring icon)_\n4. **Go faster bunny** (only works on slow-moving Head) _(Flash icon)_\n\nSource: Head Over Heels Manual\n",
+        "sprites": ["bunny"]
+      },
+      "position": { "x": 3, "y": 0, "z": 0 },
       "type": "scroll"
     }
   },

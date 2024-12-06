@@ -38,6 +38,29 @@ export const room = {
       position: { x: 0, y: 0, z: 0 },
       type: "portableBlock",
     },
+    "scroll": {
+      type: "scroll",
+      position: { x: 0, y: 7, z: 0 },
+      config: {
+        text: `
+## REINCARNATION FISH
+
+The strangest animal in the known universe! This fish likes to be eaten! There
+have been cases of it jumping onto plates! But there is more: when you eat one,
+its prodigious memory remembers everything about you. Its memory is so good that
+if you die at some later date, you will be reincarnated at the very place you
+ate the fish, and you will even have its taste still in your mouth! How a fish
+can remember anything when it's been eaten has never been successfully
+explained.
+
+### WARNING:
+
+Even living reincarnation fish taste horrible!
+
+Source: Head Over Heels Manual
+`, sprites: ["fish.1"]
+      }
+    },
   },
   planet: "blacktooth",
   size: { x: 4, y: 8 },

@@ -18,6 +18,21 @@ export const room = {
       position: { x: 2, y: 6, z: 0 },
       type: "door",
     },
+    "scroll": {
+      type: "scroll",
+      position: { x: 4, y: 5, z: 0 },
+      config: {
+        text: `
+## SWITCHES
+
+Simply push the switch to switch things off and on!  
+**WARNING**: Switching a deadly monster off will stop him moving but he will
+still be deadly to touch.
+
+Source: Head Over Heels Manual
+`, sprites: ["switch.left"]
+      }
+    },
   },
   planet: "blacktooth",
   size: { x: 6, y: 6 },
