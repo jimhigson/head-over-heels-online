@@ -30,7 +30,7 @@ export const handleItemTouchingSlidingItem = <RoomId extends string>({
     slidingItemAabb,
   );
 
-  if (m.x === 0 || m.y === 0) return;
+  if (m.x === 0 && m.y === 0) return;
 
   const unitM = unitVector(m);
 
@@ -67,6 +67,7 @@ export const handleSlidingItemTouchingAnyItem = <RoomId extends string>({
 
   const d = dotProductXyz(m, slidingItem.state.vels.sliding);
 
+  // stop sliding
   if (d > 0) slidingItem.state.vels.sliding = originXyz;
 
   return false;

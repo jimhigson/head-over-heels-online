@@ -20,42 +20,39 @@ import { characterNames } from "@/model/modelTypes";
 export const handleItemsTouchingItems = <RoomId extends string>(
   e: ItemTouchEvent<RoomId>,
 ): boolean => {
-  switch (true) {
-    case movingItemIsType(e, ...characterNames):
-      if (handlePlayerTouchingItem(e)) return true;
-      break;
+  if (movingItemIsType(e, ...characterNames) && handlePlayerTouchingItem(e))
+    return true;
 
-    // if something moved into the player, we flip it and handle like the player moved into it:
-    case touchedItemIsType(e, ...characterNames):
-      if (
-        handlePlayerTouchingItem({
-          ...e,
-          movingItem: e.touchedItem,
-          touchedItem: e.movingItem,
-        })
-      )
-        return true;
-      break;
+  // if something moved into the player, we flip it and handle like the player moved into it:
+  if (
+    touchedItemIsType(e, ...characterNames) &&
+    handlePlayerTouchingItem({
+      ...e,
+      movingItem: e.touchedItem,
+      touchedItem: e.movingItem,
+    })
+  )
+    return true;
 
-    case touchedItemIsType(e, ...slidingItemTypes):
-      if (handleItemTouchingSlidingItem(e)) return true;
-      break;
+  if (
+    touchedItemIsType(e, ...slidingItemTypes) &&
+    handleItemTouchingSlidingItem(e)
+  )
+    return true;
 
-    case movingItemIsType(e, ...slidingItemTypes):
-      if (handleSlidingItemTouchingAnyItem(e)) return true;
-      break;
+  if (
+    movingItemIsType(e, ...slidingItemTypes) &&
+    handleSlidingItemTouchingAnyItem(e)
+  )
+    return true;
 
-    case movingItemIsType(e, "baddie"):
-      if (handleBaddieTouchingItem(e)) return true;
-      break;
+  if (movingItemIsType(e, "baddie") && handleBaddieTouchingItem(e)) return true;
 
-    case touchedItemIsType(e, "switch"):
-      if (handleItemTouchingSwitch(e)) return true;
-      break;
+  if (touchedItemIsType(e, "switch") && handleItemTouchingSwitch(e))
+    return true;
 
-    case touchedItemIsType(e, "joystick"):
-      if (handlePlayerTouchingJoystick(e)) return true;
-  }
+  if (touchedItemIsType(e, "joystick") && handlePlayerTouchingJoystick(e))
+    return true;
 
   return false;
 };
