@@ -1,13 +1,13 @@
+import type { FreeItem } from "@/game/physics/itemPredicates";
 import type { PlanetName } from "../sprites/planets";
 import type {
   Aabb,
   DirectionXy4,
   Direction4Xyz,
   Xyz,
-  Xy,
 } from "../utils/vectors/vectors";
+import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
@@ -17,25 +17,6 @@ export type ItemInPlayType =
   | "stopAutowalk"
   | "portal"
   | "floor";
-
-type FreeItemState<RoomId extends string> = {
-  /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
-  standingOn: UnknownItemInPlay<RoomId> | null;
-  /* 
-    the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
-    to render itself an animating
-  */
-  activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
-
-  /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
-
-  vels: {
-    /** vertical velocity - needed for parabolic jumping and falling */
-    gravity: Xyz;
-    movingFloor: Xyz;
-  };
-};
 
 export type PlayableActionState =
   | "moving"
@@ -86,64 +67,6 @@ export type EitherPlayableState<RoomId extends string> =
 
 export type SwitchSetting = "left" | "right";
 
-export type ItemStateMap<RoomId extends string> = {
-  head: EitherPlayableState<RoomId> & {
-    hasHooter: boolean;
-    /** how many big jumps we can do */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    donuts: number;
-    fastSteps: number;
-  };
-  heels: EitherPlayableState<RoomId> & {
-    hasBag: boolean;
-    /** how many big jumps we can do (from picking up a bunny) */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    bigJumps: number;
-    carrying:
-      | ItemInPlay<"portableBlock", PlanetName, RoomId>
-      | ItemInPlay<"spring", PlanetName, RoomId>
-      | null;
-  };
-  spring: FreeItemState<RoomId>;
-  portableBlock: FreeItemState<RoomId>;
-  movableBlock: FreeItemState<RoomId>;
-  baddie: FreeItemState<RoomId> & {
-    activated: boolean;
-    vels: {
-      walking: Xyz;
-    };
-  };
-  pickup: FreeItemState<RoomId>;
-  aliveFish: FreeItemState<RoomId>;
-  lift: {
-    direction: "up" | "down";
-    vels: {
-      lift: Xyz;
-    };
-  };
-  stopAutowalk: EmptyObject;
-  conveyor: {
-    moving: boolean;
-  };
-  block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
-  switch: {
-    setting: SwitchSetting;
-    /**
-     * the frame this switch was last touched on. Frames only switch if they are touched and weren't
-     * already touched on the previous frame
-     */
-    touchedOnProgression: number;
-  };
-  charles: FreeItemState<RoomId> & {
-    // others will follow this soon - facing is changing to a vector
-    facing: Xy;
-  };
-};
-
 type ItemInPlayConfigMap<RoomId extends string> = {
   floor: { deadly: boolean };
   portal: {
@@ -166,7 +89,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
 };
 
 // type-fest's EmptyObject was creating issues
-type EmptyObject = {
+export type EmptyObject = {
   [n in never]: unknown;
 };
 
@@ -233,55 +156,6 @@ export type ItemInPlay<
 
   renders: boolean;
 };
-
-export type PlayableItem<
-  C extends CharacterName = CharacterName,
-  RoomId extends string = string,
-> =
-  C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head">
-  : never | C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
-  : never;
-
-export const isPlayableItem = <RoomId extends string = string>(
-  item: AnyItemInPlay<RoomId>,
-): item is PlayableItem<CharacterName, RoomId> => {
-  return item.type === "head" || item.type === "heels";
-};
-
-export const isItemType =
-  <T extends ItemInPlayType>(...types: Array<T>) =>
-  <RoomId extends string>(
-    item: AnyItemInPlay<RoomId>,
-  ): item is ItemInPlay<T, PlanetName, RoomId> => {
-    return (types as Array<string>).includes(item.type);
-  };
-
-export const fallingItemTypes = [
-  "head",
-  "heels",
-  "pickup",
-  "portableBlock",
-  "movableBlock",
-  "baddie",
-  "charles",
-  "spring",
-  "ball",
-] as const satisfies ItemInPlayType[];
-
-export type FreeItemTypes = (typeof fallingItemTypes)[number];
-
-export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
-  "spring",
-  P,
-  RoomId
->;
-
-export function isFreeItem<
-  P extends PlanetName = PlanetName,
-  RoomId extends string = string,
->(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
-  return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
-}
 
 /**
  * Force ItemInPlay into a union so that discrimination over

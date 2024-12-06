@@ -1,14 +1,29 @@
-import { directionsXy4, scaleXyz, subXyz } from "@/utils/vectors/vectors";
+import {
+  directionsXy4,
+  originXyz,
+  scaleXyz,
+  subXyz,
+  xyzMagnitude,
+} from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
   heelsJumpForwardDecel,
   walkSpeedPixPerMs,
+  playerWalkAcceldPixPerMsSq,
+  playerWalkStopAccelPixPerMsSq,
+  walkMinSpeedPixPerMs,
 } from "../mechanicsConstants";
-import type { PlayableItem } from "@/model/ItemInPlay";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { isItemType, type PlayableItem } from "../itemPredicates";
+import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
+import { accelerateToSpeed } from "@/utils/vectors/accelerateUpToSpeed";
+
+const stopWalking = {
+  movementType: "vel",
+  vels: { walking: originXyz },
+} as const satisfies MechanicResult<CharacterName, string>;
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -40,7 +55,7 @@ export const walking = <RoomId extends string>(
 
   if (teleporting !== null) {
     // do no walking while teleporting
-    return unitMechanicalResult;
+    return stopWalking;
   }
 
   // handle 'walking' while ascending/falling:
@@ -59,17 +74,20 @@ export const walking = <RoomId extends string>(
         };
       } else {
         // when heels walks off something, should always fall vertically (zero motion here)
-        return unitMechanicalResult;
+        return stopWalking;
       }
     } else {
       if (inputState.jump) {
         const jumpDirection = directionOfWalk ?? facing;
+        const isStandingOnSpring = isItemType("spring")(standingOn);
+        const walkJumpFraction =
+          isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
         return {
           movementType: "vel",
           vels: {
             walking: scaleXyz(
               unitVectors[jumpDirection],
-              maxWalkSpeed * heelsJumpForwardSpeedFraction,
+              maxWalkSpeed * walkJumpFraction,
             ),
           },
           stateDelta: { facing: jumpDirection },
@@ -78,28 +96,63 @@ export const walking = <RoomId extends string>(
     }
   }
 
-  const action =
-    standingOn === null && gravityVel.z < 0 ? "falling"
-    : directionOfWalk === undefined ? "idle"
-    : "moving";
+  const isFalling = standingOn === null && gravityVel.z < 0;
 
-  // normal walking
   if (directionOfWalk !== undefined) {
-    return {
-      movementType: "vel",
-      vels: {
-        walking: scaleXyz(unitVectors[directionOfWalk], maxWalkSpeed),
-      },
-      stateDelta: {
-        facing: directionOfWalk,
-        action,
-      },
-    };
+    if (isFalling) {
+      // head's 'walking' to glide while falling - this has no accel
+      // and is always max walking speed (to help get into small gaps):
+      return {
+        movementType: "vel",
+        vels: {
+          walking: scaleXyz(unitVectors[directionOfWalk], maxWalkSpeed),
+        },
+        stateDelta: {
+          facing: directionOfWalk,
+          action: "falling",
+        },
+      };
+    } else {
+      // normal walking on the ground:
+      return {
+        movementType: "vel",
+        vels: {
+          walking: accelerateToSpeed({
+            vel: previousWalkingVel,
+            acc: playerWalkAcceldPixPerMsSq[type],
+            deltaMS,
+            maxSpeed: maxWalkSpeed,
+            unitD: unitVectors[directionOfWalk],
+            crossComponentFade: playerWalkStopAccelPixPerMsSq[type],
+            minVelocity: walkMinSpeedPixPerMs[type],
+          }),
+        },
+        stateDelta: {
+          facing: directionOfWalk,
+          action: "moving",
+        },
+      };
+    }
   }
 
-  // no direction pressed - we are idle and decelerate in whatever direction we're already headed:
+  // no direction pressed - we are not walking. Fade the velocity.
+  const previousSpeed = xyzMagnitude(previousWalkingVel);
+  const previousDirection =
+    previousSpeed === 0 ? originXyz : (
+      scaleXyz(previousWalkingVel, 1 / previousSpeed)
+    );
+  const newSpeed = Math.max(
+    previousSpeed - playerWalkStopAccelPixPerMsSq[type] * deltaMS,
+    0,
+  );
   return {
-    movementType: "static",
-    stateDelta: { action },
+    movementType: "vel",
+    vels: {
+      walking: scaleXyz(
+        previousDirection,
+        newSpeed < walkMinSpeedPixPerMs[type] ? 0 : newSpeed,
+      ),
+    },
+    stateDelta: { action: isFalling ? "falling" : "idle" },
   };
 };

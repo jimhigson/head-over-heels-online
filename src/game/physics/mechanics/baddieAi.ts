@@ -162,16 +162,16 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
     return notWalking;
   }
 
-  return {
-    movementType: "vel",
-    vels: {
-      walking:
-        xyEqual(walking, originXy) ?
-          // ie, we might have fallen and landed and not be walking:
-          initBaddieWalk(config)
-        : walking,
-    },
-  };
+  return xyEqual(walking, originXy) ?
+      {
+        movementType: "vel",
+        vels: {
+          walking:
+            // ie, we might have fallen and landed and not be walking:
+            initBaddieWalk(config),
+        },
+      }
+    : unitMechanicalResult;
 };
 
 /**
@@ -183,7 +183,7 @@ export const tickBaddie = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  if (!item.state.activated) return unitMechanicalResult;
+  if (!item.state.activated) return notWalking;
 
   switch (item.config.which) {
     case "dalek": {
@@ -215,7 +215,7 @@ export const tickBaddie = <RoomId extends string>(
       return keepWalkingInSameDirection(item, room, gameState, deltaMS);
     }
     default:
-      return unitMechanicalResult;
+      return notWalking;
   }
 };
 
@@ -239,7 +239,8 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
 
   const m = mtv(position, aabb, toucheePosition, toucheeAabb);
 
-  if (m.z) return;
+  // purely vertical touches don't change direction:
+  if (m.x === 0 && m.y === 0) return;
 
   const newWalking = {
     x: -walking.y,
@@ -250,7 +251,9 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   baddieItem.state.vels.walking = newWalking;
 };
 
-const handleBaddieTouchingItemByTurningAround = <RoomId extends string>(
+const handleBaddieTouchingItemByTurningToOppositeDirection = <
+  RoomId extends string,
+>(
   baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
   {
     state: { position: toucheePosition },
@@ -270,7 +273,8 @@ const handleBaddieTouchingItemByTurningAround = <RoomId extends string>(
 
   const m = mtv(position, aabb, toucheePosition, toucheeAabb);
 
-  if (m.z) return;
+  // purely vertical touches don't change direction:
+  if (m.x === 0 && m.y === 0) return;
 
   const newWalking = {
     x: m.x === 0 ? walking.x : -walking.x,
@@ -292,7 +296,7 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
     case "helicopter-bug":
     case "bubble-robot":
     case "american-football-head": {
-      handleBaddieTouchingItemByTurningAround(baddieItem, touchee);
+      handleBaddieTouchingItemByTurningToOppositeDirection(baddieItem, touchee);
       break;
     }
     case "turtle":

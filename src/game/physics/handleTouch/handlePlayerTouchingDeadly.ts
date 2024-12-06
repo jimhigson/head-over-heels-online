@@ -1,6 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 import { shieldDuration } from "../mechanicsConstants";
 
@@ -12,6 +12,11 @@ export function handlePlayerTouchingDeadly<RoomId extends string>(
   gameState: GameState<RoomId>,
   playableItem: PlayableItem<CharacterName, RoomId>,
 ): boolean {
+  if (playableItem.state.action === "death") {
+    // player is already showing death animation - do nothing
+    return false;
+  }
+
   const { shieldCollectedAt } = playableItem.state;
   if (
     shieldCollectedAt !== null &&

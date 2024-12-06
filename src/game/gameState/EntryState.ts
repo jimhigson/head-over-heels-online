@@ -1,4 +1,5 @@
-import type { ItemState, PlayableItem } from "@/model/ItemInPlay";
+import type { ItemState } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../physics/itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 
 /**

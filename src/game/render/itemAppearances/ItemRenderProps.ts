@@ -6,17 +6,19 @@ import type {
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import type { EmptyObject } from "type-fest";
 
+type PortableItemRenderProps = {
+  highlighted: boolean;
+};
+
 type ItemRenderPropsMap = {
-  portableBlock: {
-    carried: boolean;
-  };
+  portableBlock: PortableItemRenderProps;
   switch: {
     setting: SwitchSetting;
   };
   conveyor: {
     moving: boolean;
   };
-  spring: {
+  spring: PortableItemRenderProps & {
     compressed: boolean;
   };
   block: {

@@ -1,4 +1,5 @@
-import { type FreeItemTypes, type ItemInPlay } from "@/model/ItemInPlay";
+import { type ItemInPlay } from "@/model/ItemInPlay";
+import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 
 import type { GameState } from "@/game/gameState/GameState";
@@ -16,8 +17,8 @@ export function* latentMovement<RoomId extends string>(
   _deltaMS: number,
 ): Generator<MechanicResult<FreeItemTypes, RoomId>> {
   while (
-    (item.state.latentMovement.at(0)?.moveAtGameTime ?? Number.POSITIVE_INFINITY) <
-    gameState.gameTime
+    (item.state.latentMovement.at(0)?.moveAtGameTime ??
+      Number.POSITIVE_INFINITY) < gameState.gameTime
   ) {
     const { positionDelta } = item.state.latentMovement.shift()!;
     yield { movementType: "position", posDelta: positionDelta };

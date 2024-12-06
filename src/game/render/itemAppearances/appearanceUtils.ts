@@ -8,8 +8,11 @@ import type { ItemRenderProps } from "./ItemRenderProps";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
-      /** a new rendering, since one is required */
-      container: Container;
+      /**
+       * a new rendering, since one is required - null to explicitly change the item's rendering
+       * to nothing
+       */
+      container: Container | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: ItemRenderProps<T>;
     }

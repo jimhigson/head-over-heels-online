@@ -4,21 +4,16 @@
 // (jumping: 2px per frame in original game @25fps, so 50px per second)
 // can be guaranteed to take up every half-pixel position.
 
-import type {
-  UnknownItemInPlay,
-  AnyItemInPlay,
-  ItemInPlayType,
-  FreeItem,
-} from "@/model/ItemInPlay";
-import { isFreeItem, isPlayableItem } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
-import { swopCharacters } from "../gameState/swopCharacters";
-import { characterLosesLife } from "../gameState/gameStateTransitions/characterLosesLife";
+import { swopCharacters } from "../gameState/mutators/swopCharacters";
+import { characterLosesLife } from "../gameState/mutators/characterLosesLife";
 import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
@@ -29,31 +24,26 @@ import {
   originXyz,
 } from "@/utils/vectors/vectors";
 import { iterate } from "@/utils/iterate";
-import { checkStandingOn } from "../collision/checkStandingOn";
+import {
+  checkStandingOn,
+  findStandingOnWithHighestPriorityAndMostOverlap,
+} from "../collision/checkStandingOn";
 import { originalFramePeriod } from "../render/animationTimings";
+import {
+  removeStandingOn,
+  setStandingOn,
+} from "../gameState/mutators/removeStandingOn";
+import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
+import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
-const maximumDeltaMS = 20;
+const maximumDeltaMS = 10;
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
   gameState: GameState<RoomId>,
 ) => item.state.expires !== null && item.state.expires < gameState.gameTime;
-
-const deleteItemFromRoom = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
-  itemToDelete: AnyItemInPlay<RoomId>,
-) => {
-  delete room.items[itemToDelete.id];
-
-  // anything that was stood on a deleted item isn't standing on it any more:
-  for (const stoodOnItem of itemToDelete.state.stoodOnBy) {
-    if (isFreeItem(stoodOnItem)) {
-      stoodOnItem.state.standingOn = null;
-    }
-  }
-};
 
 /**
  * snap all items that haven't moved to the pixel grid - sub-pixel locations are
@@ -65,10 +55,13 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   startingPositions: Record<string, Xyz>,
 ) => {
   for (const item of objectValues(room.items)) {
-    const itemIsStationary = xyzEqual(
-      startingPositions[item.id],
-      item.state.position,
-    );
+    const startingPosition: Xyz | undefined = startingPositions[item.id];
+    if (startingPosition === undefined) {
+      // no position at the start of the tick: item was introduced during the tick
+      continue;
+    }
+
+    const itemIsStationary = xyzEqual(startingPosition, item.state.position);
     const shouldSnap =
       itemIsStationary && !isExactIntegerXyz(item.state.position);
 
@@ -123,15 +116,17 @@ export const progressGameState = <RoomId extends string>(
 
   const room = currentRoom(gameState);
 
-  // take a snapshot of item positions before any physics ticks so we can check later what has moved:
-  const startingPositions = Object.fromEntries(
-    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
-      id,
-      item.state.position,
-    ]),
-  );
-
   for (let i = 0; i < physicsTickCount; i++) {
+    // take a snapshot of item positions before any physics ticks so we
+    // can check later what has moved. DOne per physics tick, not render-tick
+    // because otherwise latent movement is double-applied
+    const startingPositions = Object.fromEntries(
+      iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+        id,
+        item.state.position,
+      ]),
+    );
+
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {
@@ -140,7 +135,7 @@ export const progressGameState = <RoomId extends string>(
           // gets the true starting room state
           return;
         } else {
-          deleteItemFromRoom(room, item);
+          deleteItemFromRoomInPlay(room, item);
         }
       }
     }
@@ -154,8 +149,8 @@ export const progressGameState = <RoomId extends string>(
       }
 
       if (room.items[item.id] === undefined) {
-        // should never happen, but throw if it does
-        throw new Error(`item ${item.id} is not in room ${room.id}`);
+        // item was removed from the room (eg, was picked up by heels)
+        continue;
       }
       if (tickItem(item, room, gameState, physicsTickMs)) {
         return;
@@ -170,9 +165,20 @@ export const progressGameState = <RoomId extends string>(
     for (const item of sortedItems) {
       // check what is standing on us - this implies that we're also checking what everything is stood on,
       // but gives us a chance to apply latent movement:
-      for (const s of item.state.stoodOnBy) {
-        if (!checkStandingOn(s, item, gameState.progression)) {
-          removeStandingOn(s);
+      for (const stander of item.state.stoodOnBy) {
+        if (!checkStandingOn(stander, item, gameState.progression)) {
+          removeStandingOn(stander);
+          // if we are standing on something else (ie, walked from one block to an adjacent block) get that
+          // set up so that in the next frame there is no pause in the walking (detects in the walk mechanic on
+          // the very next frame that we can walk)
+          const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
+            stander,
+            objectValues(room.items),
+            gameState.progression,
+          );
+          if (newStandingOn !== undefined) {
+            setStandingOn(stander, newStandingOn);
+          }
         } else {
           const finalDelta = subXyz(
             item.state.position,
@@ -181,7 +187,7 @@ export const progressGameState = <RoomId extends string>(
           // latent movement is only horizontal - anything else, collisions and gravity can handle
           const latentMovement = { ...finalDelta, z: 0 };
           if (!xyzEqual(latentMovement, originXyz)) {
-            s.state.latentMovement.push({
+            stander.state.latentMovement.push({
               // since the original game pushes items every other frame, the practical latency
               // for standing-on items is two frames
               moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
@@ -190,6 +196,24 @@ export const progressGameState = <RoomId extends string>(
           }
         }
       }
+    }
+
+    for (const stander of sortedItems) {
+      if (!isFreeItem(stander) || stander.state.standingOn === null) {
+        continue;
+      }
+
+      // every item touches the item it is standing on every frame. This means a lot of
+      // pointless touches, but for example, what if you're on a volcano and the shideld
+      // bunny runs out? This touch was already done when you landed on the stoodOn item,
+      // if you fell onto it :-/
+      handleItemsTouchingItems({
+        movingItem: stander,
+        touchee: stander.state.standingOn,
+        gameState,
+        deltaMS,
+        movementVector: { x: 0, y: 0, z: -1 },
+      });
     }
 
     //setStandingOnForAllItemsInRoom(room, gameState.progression);
@@ -202,16 +226,7 @@ export const progressGameState = <RoomId extends string>(
         `room has changed during physics tick ${room.id} -> ${currentRoom(gameState).id} but did not return out of the tick`,
       );
     }
-  }
 
-  snapStationaryItemsToPixelGrid(room, startingPositions);
-};
-
-const removeStandingOn = <RoomId extends string>(
-  item: FreeItem<PlanetName, RoomId>,
-) => {
-  if (item.state.standingOn !== null) {
-    item.state.standingOn.state.stoodOnBy.delete(item);
+    snapStationaryItemsToPixelGrid(room, startingPositions);
   }
-  item.state.standingOn = null;
 };

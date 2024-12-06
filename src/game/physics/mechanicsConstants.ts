@@ -3,17 +3,20 @@
 import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
+import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 
+const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
+
 export const playerWalkAcceldPixPerMsSq = {
-  head: 0.000_1,
-  heels: 0.000_2,
+  head: 0.000_2,
+  heels: 0.000_15,
 };
 
 /** deceleration of playables when input stops */
 export const playerWalkStopAccelPixPerMsSq = {
-  head: -0.000_15,
-  heels: -0.000_2,
+  head: 0.000_35,
+  heels: 0.000_4,
 };
 
 /** 
@@ -45,18 +48,19 @@ export const heelsJumpForwardSpeedFraction = 0.8;
  */
 export const heelsJumpForwardDecel = 0.001;
 
-/** when head is gliding his ability to change direction mid-air is less */
-export const headsGlideAcel = 0.000_04;
+export const walkMinSpeedPixPerMs = {
+  head: 0.25 * onePxPerFrameInOriginalGamePxPerMs,
+  heels: 0.25 * onePxPerFrameInOriginalGamePxPerMs,
+};
 
-const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 // original game timed at 5s to move 8 blocks
 export const walkSpeedPixPerMs = {
-  head: onePxPerFrameInOriginalGamePxPerMs, // 1px per frame in original game
-  charles: onePxPerFrameInOriginalGamePxPerMs, // 1px per frame in original game
-  heels: 2 * onePxPerFrameInOriginalGamePxPerMs, // 2px per frame in original game - may also need acceleration
-  dalek: 2 * onePxPerFrameInOriginalGamePxPerMs, // same as heels
-  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs, // same as head
-  ["american-football-head"]: onePxPerFrameInOriginalGamePxPerMs, // same as head
+  head: onePxPerFrameInOriginalGamePxPerMs, //
+  heels: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  charles: onePxPerFrameInOriginalGamePxPerMs,
+  dalek: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
+  ["american-football-head"]: onePxPerFrameInOriginalGamePxPerMs,
   ["helicopter-bug"]: onePxPerFrameInOriginalGamePxPerMs,
   ["headless-base"]: 2 * onePxPerFrameInOriginalGamePxPerMs,
   monkey: onePxPerFrameInOriginalGamePxPerMs,
@@ -66,8 +70,12 @@ export const walkSpeedPixPerMs = {
   ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
   ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
+  ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Record<
-  CharacterName | "charles" | JsonItemConfig<"baddie", any, any>["which"],
+  | CharacterName
+  | "charles"
+  | "ball"
+  | JsonItemConfig<"baddie", PlanetName, string>["which"],
   number
 >;
 

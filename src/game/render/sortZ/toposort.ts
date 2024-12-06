@@ -21,7 +21,7 @@ export class CyclicDependencyError<T> extends Error {
   constructor(
     message: string,
     public cyclicDependency: Array<T>,
-    public hasClosedCycle,
+    public hasClosedCycle: boolean,
     options?: ErrorOptions,
   ) {
     super(message, options);

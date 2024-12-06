@@ -1,0 +1,42 @@
+import type { RoomJson } from "../../../model/modelTypes.ts";
+
+import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = {
+  color: { hue: "cyan", shade: "basic" },
+  floor: "moonbase",
+  floorSkip: [],
+  id: "moonbase27",
+  items: {
+    "door@0,0,0:5CIja": {
+      config: { direction: "towards", toRoom: "moonbase30" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@0,3,0:Z1kFUNS": {
+      config: { direction: "right", toRoom: "moonbase26" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@0,8,0:11h2iw": {
+      config: { direction: "away", toRoom: "moonbase28" },
+      position: { x: 0, y: 8, z: 0 },
+      type: "door",
+    },
+  },
+  planet: "moonbase",
+  size: { x: 2, y: 8 },
+  walls: {
+    away: ["none", "none"],
+    left: [
+      "window2",
+      "window1",
+      "coil",
+      "window3",
+      "window2",
+      "coil",
+      "window2",
+      "window1",
+    ],
+  },
+} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

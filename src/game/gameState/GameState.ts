@@ -8,7 +8,7 @@ import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { ApiEvents } from "../GameApi";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../physics/itemPredicates";
 import type { EntryState } from "./EntryState";
 
 export const currentRoom = <RoomId extends string>(

@@ -1,13 +1,11 @@
-import {
-  isItemType,
-  type FreeItemTypes,
-  type ItemInPlay,
-} from "@/model/ItemInPlay";
+import { type ItemInPlay } from "@/model/ItemInPlay";
+import { type FreeItemTypes } from "../itemPredicates";
+import { isItemType } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { isSolid } from "../isSolid";
+import { isSolid } from "../itemPredicates";
 import { originXyz } from "@/utils/vectors/vectors";
 
 const notFalling = {

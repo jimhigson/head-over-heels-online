@@ -76,7 +76,7 @@ export const obstaclePointEarliestPointInVector = (
   };
 };
 /** when hitting two items simultaneously, the order for which to collide with first */
-const typeOrderPreference: Record<ItemInPlayType, number> = {
+export const typeOrderPreference: Record<ItemInPlayType, number> = {
   // least impactful to touch:
   stopAutowalk: 0,
   portal: 0,
@@ -95,6 +95,7 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
   lift: 2,
   movableBlock: 2,
   portableBlock: 2,
+  slidingBlock: 2,
   spring: 2,
 
   ball: 3,
@@ -107,12 +108,20 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   pickup: 8,
 
+  slidingDeadly: 10,
   moveableDeadly: 10,
   deadlyBlock: 10,
   baddie: 10, // most impactful to touch
 };
 
-export const sortObstaclesAboutVector = <I extends SortableObstacle>(
+export const collisionsPriorityComparator = <I extends SortableObstacle>(
+  a: I,
+  b: I,
+): number => {
+  return typeOrderPreference[a.type] - typeOrderPreference[b.type];
+};
+
+export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
   vector: Xyz,
   obstacles: Array<I>,
 ): Array<I> => {
@@ -123,12 +132,9 @@ export const sortObstaclesAboutVector = <I extends SortableObstacle>(
      * on a block and a baddie, the block should be processed first so that the baddie is not touched (and the block
      * becomes the `.standingOn` property of the player)
      */
-
-    const aTypeScore = typeOrderPreference[obsA.type] << 8;
-    const bTypeScore = typeOrderPreference[obsB.type] << 8;
-
-    if (aTypeScore !== bTypeScore) {
-      return aTypeScore - bTypeScore;
+    const priorityOrder = collisionsPriorityComparator(obsA, obsB);
+    if (priorityOrder !== 0) {
+      return priorityOrder;
     }
 
     /*

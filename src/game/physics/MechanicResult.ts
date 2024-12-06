@@ -13,7 +13,8 @@ export type MechanicResult<T extends ItemInPlayType, RoomId extends string> =
       stateDelta?: Partial<ItemState<T, RoomId>>;
     }
   | {
-      movementType: "static";
+      // velocity is unchanged by this result
+      movementType: "steady";
       stateDelta?: Partial<ItemState<T, RoomId>>;
     }
   | {
@@ -28,5 +29,5 @@ export type MechanicResult<T extends ItemInPlayType, RoomId extends string> =
     };
 
 export const unitMechanicalResult = {
-  movementType: "static",
+  movementType: "steady",
 } as const satisfies MechanicResult<ItemInPlayType, string>;

@@ -17,7 +17,8 @@ import {
   stopJumpingAMomentAfterStartingPlay,
 } from "@/_testUtils/playGameThrough";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../physics/itemPredicates";
 import { headState, heelsState, itemState } from "@/_testUtils/characterState";
 import {
   liftBBShortening,
@@ -160,8 +161,8 @@ describe("jumping", () => {
         // pass if he needs to get in while travelling more slowly on the way down
         // - at lower frame rates, this tests that the multiple physics frame
         // per graphics frame is working correctly
-        until: 800,
-        frameCallbacks: stopJumpingAMomentAfterStartingPlay,
+        until: 600,
+        frameCallbacks: [stopJumpingAMomentAfterStartingPlay],
       });
       expect(headState(gameState).standingOn).toMatchObject({
         id: "lowerBlock",
@@ -335,6 +336,12 @@ describe("teleporter", () => {
     });
 
     playGameThrough(gameState, {
+      frameCallbacks(gameState) {
+        if (gameState.characterRooms.heels?.room.id === "secondRoom") {
+          // stop jumping when gone through the teleporter
+          gameState.inputState.jump = false;
+        }
+      },
       until(gameState) {
         return heelsState(gameState).standingOn?.id === "teleporterLanding";
       },
@@ -505,7 +512,7 @@ describe("snapping stationary items to pixel grid", () => {
 
     playGameThrough(gameState, {
       frameCallbacks: stopAllInputAfter(400),
-      until: 450,
+      until: 500,
     });
 
     // this should always be an integer position since head has been stopped for more than a frame
@@ -826,10 +833,6 @@ describe("jumping", () => {
     //     (h) --> jump    can't land here
     // (block) (gap) (gap) (block)
   });
-  test.todo("characters can jump off a disappearing block", () => {
-    //     (h) --> jump    can't land here
-    // (block) (gap) (gap) (block)
-  });
 });
 
 describe("dissapearing blocks", () => {
@@ -844,12 +847,12 @@ describe("dissapearing blocks", () => {
             which: "heels",
           },
         },
-        disappearingBlock0: {
+        nonDisappearingBlock: {
           type: "block",
           position: { x: 0, y: 0, z: 0 },
           config: {
             style: "organic",
-            disappearing: true,
+            disappearing: false,
           },
         },
         disappearingBlock1: {
@@ -897,6 +900,10 @@ describe("dissapearing blocks", () => {
         inputState: { ...noInput(), jump: true, away: true },
       },
       {
+        frameCallbacks(gameState) {
+          // should not lose any lives
+          expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
+        },
         until(gameState) {
           // got two more lives
           return heelsState(gameState).lives === 10;

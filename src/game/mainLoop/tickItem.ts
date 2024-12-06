@@ -3,7 +3,9 @@ import type {
   ItemInPlayType,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isItemType, isPlayableItem, isFreeItem } from "@/model/ItemInPlay";
+import { isItemType } from "../physics/itemPredicates";
+import { isFreeItem } from "../physics/itemPredicates";
+import { isPlayableItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";
@@ -19,9 +21,10 @@ import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickBaddie } from "../physics/mechanics/baddieAi";
 import { carrying } from "../physics/mechanics/carrying";
 import type { RoomState } from "@/model/modelTypes";
-import { objectValues } from "iter-tools";
 import { objectEntriesIter } from "@/utils/entries";
 import { latentMovement } from "../physics/mechanics/latentMovement";
+import { objectValues } from "iter-tools";
+import { iterate } from "@/utils/iterate";
 
 function* itemMechanicResultGen<
   RoomId extends string,
@@ -32,12 +35,6 @@ function* itemMechanicResultGen<
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): Generator<MechanicResult<T, RoomId>> {
-  if (isItemType("heels")(item)) {
-    // heels can remove items from the game, so process that first since it could
-    // affect other mechanics
-    carrying(item, room, gameState, deltaMS);
-  }
-
   if (isFreeItem(item)) {
     yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
@@ -50,7 +47,12 @@ function* itemMechanicResultGen<
     // user controls:
     yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+
     yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+
+    if (isItemType("heels")(item)) {
+      carrying(item, room, gameState, deltaMS);
+    }
   }
 
   if (isItemType("lift")(item)) {
@@ -79,31 +81,17 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 ): boolean => {
   let accumulatedPosDelta = originXyz;
 
-  for (const mechanicResult of itemMechanicResultGen(
-    item,
-    room,
-    gameState,
-    deltaMS,
-  )) {
-    // add movement to accumulatedPosDelta
-    const mrPosDelta =
-      mechanicResult.movementType === "position" ? mechanicResult.posDelta
-      : (
-        mechanicResult.movementType === "vel" &&
-        mechanicResult.vels !== undefined
-      ) ?
-        scaleXyz(
-          addXyz(
-            ...objectValues(
-              mechanicResult.vels as Record<string, Partial<Xyz>>,
-            ),
-          ),
-          deltaMS,
-        )
-      : undefined;
-
-    if (mrPosDelta !== undefined) {
-      accumulatedPosDelta = addXyz(accumulatedPosDelta, mrPosDelta);
+  // by spreading the generator onto an array, we run the mechanics at the 'same'
+  // time, before the previous ones have changed the game state. This is good for
+  // jumping and carrying at the same time, for example. Otherwise, these would
+  // one stop the other from working.
+  const allResults = [...itemMechanicResultGen(item, room, gameState, deltaMS)];
+  for (const mechanicResult of allResults) {
+    if (mechanicResult.movementType === "position") {
+      accumulatedPosDelta = addXyz(
+        accumulatedPosDelta,
+        mechanicResult.posDelta,
+      );
     }
 
     // update item.state.vels
@@ -130,6 +118,17 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       // this items's tick is halting the frame tick
       return true;
     }
+  }
+
+  // velocities for this item have now been updated - get the aggregate movement, including vels
+  // that stood from previous frames (did not change)
+  if (isFreeItem(item) || isItemType("lift")(item)) {
+    accumulatedPosDelta = addXyz(
+      accumulatedPosDelta,
+      ...iterate(objectValues(item.state.vels)).map((val) =>
+        scaleXyz(val, deltaMS),
+      ),
+    );
   }
 
   return moveItem({

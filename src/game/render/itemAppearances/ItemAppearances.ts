@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/JsonItem";
+import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -7,7 +8,8 @@ import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import type { PlanetName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
-import { isPlayableItem, type ItemInPlayType } from "@/model/ItemInPlay";
+import { type ItemInPlayType } from "@/model/ItemInPlay";
+import { isPlayableItem } from "@/game/physics/itemPredicates";
 import { playableAppearance } from "./playableAppearance";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
 import { liftBBShortening } from "@/game/physics/mechanicsConstants";
@@ -40,6 +42,52 @@ const stackedSprites = (
   container.addChild(headSprite);
   return container;
 };
+
+type OutlineTextureId = Extract<TextureId, `${string}.outline`>;
+type TextureWithOutline =
+  OutlineTextureId extends `${infer T}.outline` ? T : never;
+
+const maybeHighlighted = (
+  texture: TextureWithOutline,
+  highlighted: boolean,
+) => {
+  return highlighted ?
+      new Container({
+        children: [
+          createSprite({
+            texture,
+            pivot: {
+              x: smallItemTextureSize.w / 2,
+              y: smallItemTextureSize.h,
+            },
+          }),
+          createSprite({
+            texture: `${texture}.outline`,
+            pivot: {
+              x: smallItemTextureSize.w / 2 + 1,
+              y: smallItemTextureSize.h + 1,
+            },
+          }),
+        ],
+      })
+    : createSprite(texture);
+};
+
+const singleRenderWithStyleAsTexture = renderOnce<
+  "deadlyBlock" | "slidingDeadly" | "slidingBlock",
+  string
+>(
+  ({
+    item: {
+      config: { style },
+    },
+  }) => {
+    return {
+      container: createSprite(style),
+      renderProps: {},
+    };
+  },
+);
 
 export const itemAppearances: {
   [T in ItemInPlayType]: ItemAppearance<T>;
@@ -125,18 +173,9 @@ export const itemAppearances: {
     };
   },
 
-  deadlyBlock: renderOnce(
-    ({
-      item: {
-        config: { style },
-      },
-    }) => {
-      return {
-        container: createSprite(style),
-        renderProps: {},
-      };
-    },
-  ),
+  deadlyBlock: singleRenderWithStyleAsTexture,
+  slidingDeadly: singleRenderWithStyleAsTexture,
+  slidingBlock: singleRenderWithStyleAsTexture,
 
   block({
     item: {
@@ -257,39 +296,6 @@ export const itemAppearances: {
       renderProps: {},
     };
   }),
-
-  spring({
-    item: {
-      state: { stoodOnBy },
-    },
-    currentlyRenderedProps,
-  }) {
-    const compressed = stoodOnBy.size > 0;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      compressed !== currentlyRenderedProps.compressed;
-
-    if (!render) {
-      return;
-    }
-
-    const currentlyRenderedCompressed =
-      currentlyRenderedProps?.compressed ?? false;
-
-    return {
-      container: createSprite(
-        !compressed && currentlyRenderedCompressed ?
-          {
-            frames: spriteSheet.animations["spring.bounce"],
-            playOnce: "and-stop",
-          }
-        : compressed ? "spring.compressed"
-        : "spring.released",
-      ),
-      renderProps: { compressed },
-    };
-  },
 
   teleporter({
     item: {
@@ -580,26 +586,59 @@ export const itemAppearances: {
 
   portableBlock({
     item: {
-      id,
       config: { style },
+      state: { wouldPickUpNext },
     },
-    room,
     currentlyRenderedProps,
   }) {
-    const heelsCarrying = room.items.heels?.state.carrying?.id ?? null;
-    const carried = heelsCarrying === id;
+    const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
-      carried !== currentlyRenderedProps.carried;
+      highlighted !== currentlyRenderedProps.highlighted;
 
     if (!render) {
       return;
     }
 
     return {
-      container: carried ? new Container() : createSprite(style),
-      renderProps: { carried },
+      container: maybeHighlighted(style, highlighted),
+      renderProps: { highlighted },
+    };
+  },
+
+  spring({
+    item: {
+      state: { stoodOnBy, wouldPickUpNext },
+    },
+    currentlyRenderedProps,
+  }) {
+    const compressed = stoodOnBy.size > 0;
+    const highlighted = wouldPickUpNext;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      highlighted !== currentlyRenderedProps.highlighted ||
+      compressed !== currentlyRenderedProps.compressed;
+
+    if (!render) {
+      return;
+    }
+
+    const currentlyRenderedCompressed =
+      currentlyRenderedProps?.compressed ?? false;
+
+    return {
+      container:
+        !compressed && currentlyRenderedCompressed ?
+          createSprite({
+            frames: spriteSheet.animations["spring.bounce"],
+            playOnce: "and-stop",
+          })
+        : compressed ? maybeHighlighted("spring.compressed", highlighted)
+        : maybeHighlighted("spring.released", highlighted),
+
+      renderProps: { compressed, highlighted },
     };
   },
 

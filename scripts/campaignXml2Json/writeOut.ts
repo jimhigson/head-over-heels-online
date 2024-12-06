@@ -3,15 +3,25 @@ import type { Operation } from "fast-json-patch";
 import fastJsonPatch from "fast-json-patch";
 import { writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
+import { objectValues } from "iter-tools";
 import type { AnyRoomJson } from "../../src/model/modelTypes";
+import { iterate } from "../../src/utils/iterate";
+import { orderBy } from "natural-orderby";
 
-const roomTsObjectEntry = (room: AnyRoomJson): string =>
-  `"${room.id}": ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>`;
+const roomTs = (room: AnyRoomJson): string =>
+  `
+import type {RoomJson} from "../../../model/modelTypes.ts";\n
+import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
+export const room = ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
+`;
 
 export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
-  const tsFilename = `${targetDir}/campaign.ts`;
+  const tsBarrellFilename = `${targetDir}/campaign.ts`;
+  const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
+  const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
+  const roomIdsSorted = orderBy(Object.keys(rooms));
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
@@ -29,22 +39,41 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     process.exit(1);
   }
 
-  const writeTsPromise = writeFile(
-    tsFilename,
+  const writeOriginalCampaignRoomIdType = writeFile(
+    tsRoomIdsFilename,
+    `
+        export type OriginalCampaignRoomId = ${roomIdsSorted
+          .map((roomId) => `"${roomId}"`)
+          .join("|\n")};\n
+    `,
+  );
+
+  const writeTsBarrell = writeFile(
+    tsBarrellFilename,
     `
     /* eslint-disable */
     import type {Campaign, RoomJson} from "../../model/modelTypes.ts";\n
-    
-    export type OriginalCampaignRoomId = ${Object.keys(rooms)
-      .map((rid) => `"${rid}"`)
-      .join("|")};\n
+    import {type OriginalCampaignRoomId} from './OriginalCampaignRoomId.ts';\n
+
+    ${roomIdsSorted
+      .map(
+        (roomId) => `import {room as ${roomId}} from "./rooms/${roomId}.ts";`,
+      )
+      .join("\n")};\n
         
     export const campaign = { 
       "rooms": { 
-        ${Object.values(patchedJson.rooms).map(roomTsObjectEntry).join(",\n")}
+        ${roomIdsSorted.join(",\n")}
        }
     } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
   );
 
-  await Promise.all([writeTsPromise, writeConvertedJsonPromise]);
+  await Promise.all([
+    writeTsBarrell,
+    writeOriginalCampaignRoomIdType,
+    writeConvertedJsonPromise,
+    ...iterate(objectValues(patchedJson.rooms)).map(async (room) => {
+      return writeFile(tsRoomFilename(room.id), roomTs(room));
+    }),
+  ]);
 };

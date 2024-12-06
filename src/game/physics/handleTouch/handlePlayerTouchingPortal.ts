@@ -1,10 +1,11 @@
-import type { PlayableItem, ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { addXyz, dotProductXyz, subXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { type GameState } from "../../gameState/GameState";
-import { changeCharacterRoom } from "@/game/gameState/gameStateTransitions/changeCharacterRoom";
+import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
 
 /**
  *

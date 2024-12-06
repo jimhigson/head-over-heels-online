@@ -232,7 +232,7 @@ const convertItem = ({
 
     case "mortal-cap":
       return {
-        type: "moveableDeadly",
+        type: "slidingDeadly",
         config: {
           style: "puck",
         },
@@ -279,20 +279,24 @@ const convertItem = ({
       })!;
       return {
         type: "joystick",
-        // TODO: fill in
         config: { controls: [itemKey(charlesJson)] },
         position,
       };
     }
 
     case "cap":
+      return {
+        type: "slidingBlock",
+        config: { style: "puck" },
+        position,
+      };
+
     case "sandwich":
     case "stool": {
       const conversions: Record<
         typeof item.kind,
         ItemConfigMap<PlanetName, string>["movableBlock"]["style"]
       > = {
-        cap: "puck",
         stool: "anvil",
         sandwich: "sandwich",
       };

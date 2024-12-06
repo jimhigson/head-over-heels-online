@@ -1,9 +1,7 @@
-import {
-  isItemType,
-  isPlayableItem,
-  type FreeItemTypes,
-  type ItemInPlay,
-} from "@/model/ItemInPlay";
+import { type ItemInPlay } from "@/model/ItemInPlay";
+import { type FreeItemTypes } from "../itemPredicates";
+import { isItemType } from "../itemPredicates";
+import { isPlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import {
   conveyorSpeedPixPerMs,

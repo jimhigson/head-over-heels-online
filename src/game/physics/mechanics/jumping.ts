@@ -1,4 +1,5 @@
-import { isItemType, type PlayableItem } from "@/model/ItemInPlay";
+import { type PlayableItem } from "../itemPredicates";
+import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import { type GameState } from "@/game/gameState/GameState";
@@ -59,7 +60,7 @@ export const jumping = <RoomId extends string>(
   if (!startingAJump) {
     if (standingOn !== null) {
       return {
-        movementType: "static",
+        movementType: "steady",
         stateDelta: {
           jumped: false,
         },
@@ -70,6 +71,9 @@ export const jumping = <RoomId extends string>(
 
   const standingOnSpring = isItemType("spring")(standingOn);
   const velZ = getJumpInitialVelocity(type, standingOnSpring);
+
+  // handled this input but don't set jump input flat off - it is
+  // ok to keep jump pressed to keep jumping
 
   return {
     movementType: "vel",

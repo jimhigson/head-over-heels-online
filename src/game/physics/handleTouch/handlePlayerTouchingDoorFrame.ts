@@ -1,4 +1,5 @@
-import type { ItemInPlay, PlayableItem } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
 

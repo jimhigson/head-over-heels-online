@@ -1,6 +1,6 @@
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { SortableObstacle } from "./collisionsOrder";
-import { sortObstaclesAboutVector } from "./collisionsOrder";
+import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
 import { describe, expect, test } from "vitest";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
 
@@ -28,7 +28,7 @@ const blockTower = [
 
 describe("sort order of items with same type", () => {
   test("can sort obstacles about downwards vector", () => {
-    const result = sortObstaclesAboutVector(unitVectors.down, blockTower);
+    const result = sortObstaclesAboutPriorityAndVector(unitVectors.down, blockTower);
 
     expect(result.map((r) => r.id)).toEqual([
       "topBlock",
@@ -38,7 +38,7 @@ describe("sort order of items with same type", () => {
   });
 
   test("can sort obstacles about downwards vector (reversed input)", () => {
-    const result = sortObstaclesAboutVector(
+    const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.down,
       // if sort is working properly, reversing the input should not matter
       blockTower.toReversed(),
@@ -52,7 +52,7 @@ describe("sort order of items with same type", () => {
   });
 
   test("can sort obstacles about downwards vector", () => {
-    const result = sortObstaclesAboutVector(unitVectors.up, blockTower);
+    const result = sortObstaclesAboutPriorityAndVector(unitVectors.up, blockTower);
 
     expect(result.map((r) => r.id)).toEqual([
       "lowBlock",
@@ -62,7 +62,7 @@ describe("sort order of items with same type", () => {
   });
 
   test("can sort obstacles about downwards vector (reversed input)", () => {
-    const result = sortObstaclesAboutVector(
+    const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.up,
       // if sort is working properly, reversing the input should not matter
       blockTower.toReversed(),
@@ -87,7 +87,7 @@ describe("blocks protext from baddies by colliding first", () => {
   ];
 
   test("blocks come before baddies", () => {
-    const result = sortObstaclesAboutVector(
+    const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.down,
       // if sort is working properly, reversing the input should not matter
       baddieAndBlock,
@@ -95,7 +95,7 @@ describe("blocks protext from baddies by colliding first", () => {
     expect(result.map((r) => r.id)).toEqual(["lowBlock", "baddie"]);
   });
   test("blocks come before baddies (reversed input)", () => {
-    const result = sortObstaclesAboutVector(
+    const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.down,
       // if sort is working properly, reversing the input should not matter
       baddieAndBlock.toReversed(),

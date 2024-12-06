@@ -70,6 +70,13 @@ export const RoomRenderer = <RoomId extends string>(
 
         // it is up the the item to decide if it will rerender
       }
+      // remove any rederers for items that no longer exist in the room:
+      for (const itemRenderer of itemRenderers.values()) {
+        if (!room.items[itemRenderer.item.id]) {
+          itemRenderers.delete(itemRenderer.item.id);
+          itemRenderer.destroy();
+        }
+      }
       if (resortZ) {
         // re-sort the room's items:
         const { order } = sortByZPairs(

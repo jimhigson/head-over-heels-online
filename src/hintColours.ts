@@ -165,7 +165,10 @@ export const colorScheme = {
     },
   },
   // green dimmed edges is the same
-} as const satisfies Record<ZxSpectrumRoomHue, Record<ZxSpectrumShade, ColorScheme>>;
+} as const satisfies Record<
+  ZxSpectrumRoomHue,
+  Record<ZxSpectrumShade, ColorScheme>
+>;
 
 export const getColorScheme = (colour: ZxSpectrumRoomColour) =>
   colorScheme[colour.hue][colour.shade];

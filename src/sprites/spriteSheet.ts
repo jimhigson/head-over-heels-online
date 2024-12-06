@@ -13,6 +13,7 @@ import {
   largeItemTextureSize,
   smallItemTextureSize,
   hudCharTextureSize,
+  smallItemOutlineTextureSize,
 } from "./textureSizes";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -30,10 +31,10 @@ try {
 
 const frames = {
   "generic.edge.right": {
-    frame: { x: 241, y: 497, w: 8, h: 9 },
+    frame: { x: 400, y: 502, w: 8, h: 9 },
   },
   "generic.edge.towards": {
-    frame: { x: 232, y: 497, w: 8, h: 9 },
+    frame: { x: 391, y: 502, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
     frame: { x: 180, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
@@ -169,6 +170,9 @@ const frames = {
   bunny: {
     frame: { x: 77, y: 349, ...smallItemTextureSize },
   },
+  scroll: {
+    frame: { x: 51, y: 324, ...smallItemTextureSize },
+  },
   donuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
   },
@@ -190,8 +194,14 @@ const frames = {
   "spring.compressed": {
     frame: { x: 2, y: 453, ...smallItemTextureSize },
   },
+  "spring.compressed.outline": {
+    frame: { x: 226, y: 451, ...smallItemOutlineTextureSize },
+  },
   "spring.released": {
     frame: { x: 27, y: 453, ...smallItemTextureSize },
+  },
+  "spring.released.outline": {
+    frame: { x: 253, y: 451, ...smallItemTextureSize },
   },
 
   // Head
@@ -199,10 +209,10 @@ const frames = {
   ...seriesOfAnimationFrameTextures(
     "lift",
     4,
-    { x: 259, y: 474 },
+    { x: 233, y: 481 },
     smallItemTextureSize,
   ),
-  "lift.static": { frame: { x: 359, y: 474, ...smallItemTextureSize } },
+  "lift.static": { frame: { x: 333, y: 481, ...smallItemTextureSize } },
 
   ...seriesOfAnimationFrameTextures(
     "dalek",
@@ -232,11 +242,20 @@ const frames = {
   sticks: {
     frame: { x: 2, y: 428, ...smallItemTextureSize },
   },
+  "sticks.outline": {
+    frame: { x: 226, y: 424, ...smallItemOutlineTextureSize },
+  },
   cube: {
     frame: { x: 27, y: 428, ...smallItemTextureSize },
   },
+  "cube.outline": {
+    frame: { x: 253, y: 424, ...smallItemOutlineTextureSize },
+  },
   drum: {
     frame: { x: 52, y: 428, ...smallItemTextureSize },
+  },
+  "drum.outline": {
+    frame: { x: 280, y: 424, ...smallItemOutlineTextureSize },
   },
   "switch.left": {
     frame: { x: 52, y: 453, ...smallItemTextureSize },

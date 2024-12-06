@@ -1,5 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlayableItem, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import {
@@ -10,7 +11,6 @@ import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
 import type { CharacterName } from "@/model/modelTypes";
-import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
 
 /**
  * @returns true is the physics needs to halt after this handler
@@ -20,7 +20,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
   touchee: UnknownItemInPlay<RoomId>,
   movementVector: Xyz,
   gameState: GameState<RoomId>,
-  deltaMS: number,
+  _deltaMS: number,
 ) => {
   switch (touchee.type) {
     case "stopAutowalk":
@@ -31,6 +31,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
     case "baddie":
     case "deadlyBlock":
     case "moveableDeadly":
+    case "slidingDeadly":
       if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
         return true;
       }
@@ -75,9 +76,6 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       if (touchee.state.disappearing) {
         handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
       }
-      break;
-    case "joystick":
-      handlePlayerTouchingJoystick(gameState, playableItem, touchee, deltaMS);
       break;
   }
 

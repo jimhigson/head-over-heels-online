@@ -353,6 +353,16 @@ const rooms = {
         position: { x: 4, y: 3, z: 0 },
       },
       {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "away",
+          style: "greenAndPink",
+          activated: true,
+        },
+        position: { x: 4, y: 2, z: 0 },
+      },
+      {
         type: "joystick",
         config: { controls: ["ch1"] },
         position: { x: 4, y: 1, z: 0 },
@@ -466,24 +476,25 @@ const rooms = {
       // run of disappearing blocks:
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
-        position: { x: 0, y: 5, z: 0 },
+        config: { style: "organic", disappearing: false },
+        position: { x: 8, y: 0, z: 0 },
       },
       {
         type: "block",
         config: { style: "organic", disappearing: true },
-        position: { x: 0, y: 6, z: 0 },
+        position: { x: 9, y: 0, z: 0 },
       },
       {
         type: "block",
         config: { style: "organic", disappearing: true },
-        position: { x: 0, y: 7, z: 0 },
+        position: { x: 10, y: 0, z: 0 },
       },
       {
         type: "block",
         config: { style: "organic", disappearing: true },
-        position: { x: 0, y: 8, z: 0 },
+        position: { x: 11, y: 0, z: 0 },
       },
+
       {
         type: "baddie",
         config: {
@@ -587,16 +598,26 @@ const rooms = {
         position: { x: 13, y: 1, z: 2 },
       },
       {
+        type: "spring",
+        config: {},
+        position: { x: 13, y: 0, z: 0 },
+      },
+      {
+        type: "spring",
+        config: {},
+        position: { x: 14, y: 0, z: 0 },
+      },
+      {
         type: "portableBlock",
         config: {
-          style: "cube",
+          style: "sticks",
         },
         position: { x: 13, y: 2, z: 0 },
       },
       {
         type: "portableBlock",
         config: {
-          style: "cube",
+          style: "drum",
         },
         position: { x: 13, y: 3, z: 0 },
       },
@@ -709,7 +730,7 @@ const rooms = {
         position: { x: 13, y: 3, z: 4 },
       },
 
-      // test rolling physics
+      // test sliding physics
       {
         type: "ball",
         config: {},
@@ -780,6 +801,32 @@ const rooms = {
         type: "block",
         config: { style: "artificial", disappearing: false },
         position: { x: 16, y: 8.5, z: 1 },
+      },
+      // some deadly step to check shields on:
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 17, y: 1, z: 0 },
+      },
+      {
+        type: "deadlyBlock",
+        config: { style: "volcano" },
+        position: { x: 17, y: 2, z: 0 },
+      },
+      {
+        type: "deadlyBlock",
+        config: { style: "volcano" },
+        position: { x: 17, y: 3, z: 1 },
+      },
+      {
+        type: "deadlyBlock",
+        config: { style: "volcano" },
+        position: { x: 17, y: 4, z: 2 },
+      },
+      {
+        type: "deadlyBlock",
+        config: { style: "volcano" },
+        position: { x: 17, y: 5, z: 3 },
       },
     ]),
   } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
@@ -992,12 +1039,12 @@ const rooms = {
         position: { x: 10, y: 9, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "slidingDeadly",
         config: { style: "puck" },
         position: { x: 1, y: 0, z: 0 },
       },
       {
-        type: "moveableDeadly",
+        type: "slidingDeadly",
         config: { style: "puck" },
         position: { x: 7, y: 0, z: 0 },
       },

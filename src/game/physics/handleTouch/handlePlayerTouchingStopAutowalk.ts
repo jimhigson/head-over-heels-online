@@ -1,5 +1,5 @@
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 
 /**

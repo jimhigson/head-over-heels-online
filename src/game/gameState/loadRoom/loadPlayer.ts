@@ -3,7 +3,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { PlanetName } from "@/sprites/planets";
-import type { PlayableItem } from "@/model/ItemInPlay";
+import type { PlayableItem } from "@/game/physics/itemPredicates";
 import { originXyz } from "@/utils/vectors/vectors";
 import type { CharacterName } from "@/model/modelTypes";
 

@@ -88,6 +88,28 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 [x] playables not rendering until first move
 
+[x] better test rooms
+[x] all tests pass 
+    [x] heels on lifts should be able to walk while descending
+[x] glide roll physics for pucks/balls    
+[x] items don't collide with items they're standing on.
+    [x] walking from an item to another doesn't collide with it
+    [!] now they do (on every frame) but means some duplicative touches 🤷‍♂️
+[ ] disappearing blocks should only go when stood on (hit from the top)
+[ ] head and heels can combine
+[ ] viewport sliding
+    [ ] hud readable over game
+[ ] sonic-like shield effect when got shield    
+    [?] sunglasses?
+[x] acel for player normal walking
+[ ] playable on mame joystick
+[ ] ELERI
+[ ] extra abilities pickups work
+[ ] scrolls/text
+[ ] can shoot donuts
+    [ ] pixel shader (donut colours or grey) for disabled baddies
+[ ] PAUSED text
+
 # Rooms
 
 # (heels room 4) blacktooth26
@@ -104,23 +126,34 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] donuts don't do anything when collected - no hud
 
 # (head) blacktooth8fish
-[ ] legs on far side not rendered correctly
-[ ] fish solid after connected
-[ ] baddie can kill player when player on spring
+[ ] [minor] legs on far side not rendered correctly
+[x] fish solid after connected
+[x] baddie can kill player when player on spring
 
 # blacktooth10
-[ ] overdraw on far door not showing - renders floor behind the door
+[ ] [minor] overdraw on far door not showing - renders floor behind the door
 
 # blacktooth11
 [x] currently has 238 front/back relationships when rendering - reduce this!
     * 204 with hexagon-based overlap calcs (- ~15%)
 [x] has the wrong floor - should be dots!    
 
+# (head) blacktooth14
+[x] helecopter bug doesn't move
+
+# (head) blacktooth16
+[ ] pucks don't slide along the floor (#blacktooth37)
+
+# (head) blacktooth17triple
+[x] shield bunny doesn't do anything
+    [x] count down
+    [x] make invulnerable
+
 # blacktooth18
-[ ] block doesn't push on top of american football head - it slides him(!)
+[x] block doesn't push on top of american football head - it slides him(!)
 
 # blacktooth19
-[ ] pushing bottom block doesn't move the whole stack
+[x] pushing bottom block doesn't move the whole stack
 
 # blacktooth4 -> 3
 
@@ -138,8 +171,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] fish not collectable
 [x] can't push anvil  
 [x] can't use bag for drum
-[ ] fish collected when shouldn't be (standing under it)
-[ ] dum doesn't move when anvil pushed
+[x] fish collected when shouldn't be (standing under it)
+[x] drum on top doesn't move when anvil pushed
+# ... better seen on blacktooth 9!
+[x] head can stand for too long on the disappearing block (more than one frame after it has gone)
 
 # (heels) blacktooth28
 
@@ -148,29 +183,31 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] no hud for bag
 
 # (heels) blacktooth29
-[ ] cyberman moves like a dalek
+[x] cyberman moves like a dalek
 
 # (heels) balcktooth35
 [ ] level overlaps hud
 
-# (heels) balcktooth37
-[ ] football heads don't move right
+# (heels) blacktooth37
+[x] football heads don't move right
+[ ] ball doesn't roll
 
 # blacktooth61
-[ ] hush pupplies not vanishing on head enter
+[x] hush pupplies not vanishing on head enter
 
 # moonbase8
-[ ] charging cyberman not still
+[x] charging cyberman not still
     - rename 'charging' in config to 'activated' and copy direct from config to state
 
 # egyptus12    
 [x] lift doesn't lift charles up
 
 # egyptus13
-[ ] lift is weirdly slow - maybe becuse it doesn't start at zero?
+[x] lift is weirdly slow - maybe becuse it doesn't start at zero?
 
 
-Problems with force/accel based model:
+# Problems with force/accel based model:
+
 * players feel slippery/not true to original, or they feel just the same as before
 * jumping in a small gap is tricky - when you jump, you lose all upwards velocity on hitting the ceiling - fails to reproduce the original games' weird physics.
     - doesn't 'store' the upwards jump to release when out of the gap
