@@ -209,7 +209,7 @@ export const progressGameState = <RoomId extends string>(
       // if you fell onto it :-/
       handleItemsTouchingItems({
         movingItem: stander,
-        touchee: stander.state.standingOn,
+        touchedItem: stander.state.standingOn,
         gameState,
         deltaMS,
         movementVector: { x: 0, y: 0, z: -1 },

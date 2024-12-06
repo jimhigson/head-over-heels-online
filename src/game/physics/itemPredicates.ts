@@ -91,6 +91,7 @@ export const fallingItemTypes = [
   "slidingBlock",
   "slidingDeadly",
   "spring",
+  "scroll",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof fallingItemTypes)[number];

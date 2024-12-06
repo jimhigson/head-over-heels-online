@@ -25,6 +25,8 @@ export const room = {
         text: `
 ### BLACKTOOTH
 
+![](ball)
+
 This planet has a large moon with three lunar space stations on it, the larger
 of these, Moon Station HQ, is the main teleport center for the empire, with a
 direct teleport to all the slave planets. Sometime after the Egyptus episode,
@@ -40,8 +42,7 @@ then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
 
 Source: Head Over Heels Manual
-`, sprites: ["ball"]
-      }
+`}
     },
   },
   planet: "market",

@@ -95,8 +95,8 @@ export type EmptyObject = {
 
 export type ItemInPlayConfig<
   T extends ItemInPlayType,
-  P extends PlanetName,
-  RoomId extends string,
+  P extends PlanetName = PlanetName,
+  RoomId extends string = string,
 > =
   // config type explicitly given for this item type:
   T extends keyof ItemInPlayConfigMap<RoomId> ? ItemInPlayConfigMap<RoomId>[T]

@@ -1,7 +1,7 @@
 import type { Key } from "./keys";
 import { isKey } from "./keys";
 import { entries } from "@/utils/entries";
-import type { GameState } from "../gameState/GameState";
+import type { InputState } from "./InputState";
 import { type KeyAssignment, type Action, actions } from "./InputState";
 
 const originalKeyAssignment: KeyAssignment = {
@@ -43,10 +43,17 @@ function* keyToAction(
 const standardiseCase = (k: string): string =>
   k.length === 1 ? k.toUpperCase() : k;
 
-export const listenForInput = <RoomId extends string>({
+export const listenForInput = ({
   keyAssignment,
   inputState,
-}: GameState<RoomId>) => {
+  onInputStateChange,
+}: {
+  keyAssignment: KeyAssignment;
+  /** an inputState object to directly mutate */
+  inputState: InputState;
+  /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
+  onInputStateChange?: (inputState: InputState) => void;
+}) => {
   const keyDownHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
 
@@ -58,6 +65,7 @@ export const listenForInput = <RoomId extends string>({
     for (const action of keyToAction(keyAssignment, stdKey)) {
       inputState[action] = true;
     }
+    onInputStateChange?.(inputState);
   };
   const keyUpHandler = ({ key }: KeyboardEvent): void => {
     const stdKey = standardiseCase(key);
@@ -68,10 +76,12 @@ export const listenForInput = <RoomId extends string>({
     for (const action of keyToAction(keyAssignment, stdKey)) {
       inputState[action] = false;
     }
+    onInputStateChange?.(inputState);
   };
 
   const handleWindowFocus = (): void => {
     inputState.windowFocus = true;
+    onInputStateChange?.(inputState);
   };
   const handleWindowBlur = (): void => {
     inputState.windowFocus = false;
@@ -79,6 +89,7 @@ export const listenForInput = <RoomId extends string>({
     for (const action of actions) {
       inputState[action] = false;
     }
+    onInputStateChange?.(inputState);
   };
 
   window.addEventListener("keydown", keyDownHandler, false);

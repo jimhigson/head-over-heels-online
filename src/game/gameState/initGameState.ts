@@ -6,7 +6,7 @@ import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
-import type { ApiEvents } from "../GameApi";
+import type { GameEvents } from "../GameApi";
 import { entryState } from "./EntryState";
 import { noInput } from "../input/InputState";
 
@@ -77,7 +77,7 @@ export const initGameState = <RoomId extends string>(
     inputState: noInput(),
     renderOptions,
     campaign,
-    events: mitt<ApiEvents<RoomId>>(),
+    events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,
     gameTime: 0,
     progression: 0,

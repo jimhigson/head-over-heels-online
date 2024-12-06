@@ -35,11 +35,12 @@ export const room = {
         text: `
 ## SPRINGS
 
+![](spring.compressed)
+
 Jumping from a spring will give extra height to your jump.
 
-Source: Head Over Heels Manual
-`, sprites: ["spring.compressed"]
-      },
+*Source: Head Over Heels Manual*
+`},
 
     },
     "scrollBlock": {

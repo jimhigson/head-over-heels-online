@@ -14,8 +14,6 @@ import type { GameApi } from "./GameApi";
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): Promise<GameApi<RoomId>> => {
-  // TODO: re-render on HMR: https://vite.dev/guide/api-hmr.html
-
   const renderOptions: RenderOptions<RoomId> = { showBoundingBoxes: "none" };
 
   // the viewing room isn't necessarily the room of the curren playable character,
@@ -27,15 +25,21 @@ export const gameMain = async <RoomId extends string>(
   await app.init({ background: "#000000", resizeTo: window });
 
   const gameState = initGameState(campaign, renderOptions);
-  const stopListeningForInput = listenForInput(gameState);
+  const stopListeningForInput = listenForInput({
+    keyAssignment: gameState.keyAssignment,
+    inputState: gameState.inputState,
+    onInputStateChange(inputState) {
+      gameState.events.emit("inputStateChanged", inputState);
+    },
+  });
 
   const loop = mainLoop(app, gameState).start();
 
   return {
     campaign,
     events: gameState.events,
-    renderIn(gameDiv) {
-      gameDiv.appendChild(app.canvas);
+    renderIn(containerElement) {
+      containerElement.appendChild(app.canvas);
     },
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({

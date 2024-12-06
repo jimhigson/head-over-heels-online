@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import type { ItemConfigMap } from "../../../model/json/JsonItem";
+import type { ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
@@ -690,4 +690,9 @@ export const itemAppearances: {
   floor() {
     throw new Error("floor should not be rendered as an item");
   },
+
+  scroll: renderOnce(() => ({
+    renderProps: {},
+    container: createSprite({ texture: "scroll", pivot: { x: 17, y: 24 } }),
+  })),
 };

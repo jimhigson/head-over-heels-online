@@ -16,7 +16,7 @@ import { entryState } from "../EntryState";
 import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
-import { makeItemDisappear } from "./makeItemDissapear";
+import { makeItemFadeOut } from "./makeItemFadeOut";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -138,7 +138,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       for (const hushPuppyBye of iterate(objectValues(toRoom.items)).filter(
         isItemType("hushPuppy"),
       )) {
-        makeItemDisappear(hushPuppyBye, gameState);
+        makeItemFadeOut(hushPuppyBye, gameState);
       }
     }
 

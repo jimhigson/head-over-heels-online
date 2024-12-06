@@ -35,12 +35,13 @@ export const room = {
         text: `
 ## CONVEYOR BELTS
 
+![](conveyor.x.1)
+
 The rollers on the conveyor simply push you along it. If you wish to go the
 opposite direction you have to jump along.
 
 Source: Head Over Heels Manual
-`, sprites: ["conveyor.x.1"]
-      }
+`}
     },
   },
   planet: "blacktooth",

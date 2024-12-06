@@ -96,7 +96,10 @@ const initialState = (jsonItem: UnknownJsonItem) => {
       }
     : {}),
     ...(jsonItem.type === "pickup" ? { collected: false } : {}),
-    ...(jsonItem.type === "switch" ? { setting: "left" } : {}),
+    ...(jsonItem.type === "switch" ?
+      { setting: "left", touchedOnProgression: -1 }
+    : {}),
+    ...(jsonItem.type === "scroll" ? { touchedOnProgression: -1 } : {}),
     ...(jsonItem.type === "block" ?
       { disappearing: jsonItem.config.disappearing }
     : {}),

@@ -101,12 +101,19 @@ export const boundingBoxForItem = (
           item.config.axis === "y" ?
             { x: 3, y: 15, z: blockSizePx.h - 1 }
           : { x: 15, y: 3, z: blockSizePx.h - 1 },
+        renderAabb:
+          item.config.axis === "y" ?
+            { x: 3, y: 15, z: blockSizePx.h }
+          : { x: 15, y: 3, z: blockSizePx.h },
       };
     }
     case "wall":
       return item.config.side === "left" || item.config.side === "right" ?
           { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
         : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
+
+    case "scroll":
+      return { aabb: { x: 15, y: 5, z: 12 } };
 
     default:
       console.warn("giving default aabb for item", item);

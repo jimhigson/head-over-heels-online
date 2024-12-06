@@ -3,7 +3,8 @@ import type { PlanetName } from "@/sprites/planets";
 import type { GameState } from "../GameState";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 
-export const makeItemDisappear = <RoomId extends string>(
+/** remove an item (with bubbles) */
+export const makeItemFadeOut = <RoomId extends string>(
   disappearingItem:
     | ItemInPlay<"pickup", PlanetName, RoomId>
     | ItemInPlay<"block", PlanetName, RoomId>

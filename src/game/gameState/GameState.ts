@@ -7,7 +7,7 @@ import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
-import type { ApiEvents } from "../GameApi";
+import type { GameEvents } from "../GameApi";
 import type { PlayableItem } from "../physics/itemPredicates";
 import type { EntryState } from "./EntryState";
 
@@ -70,7 +70,8 @@ export type GameState<RoomId extends string> = {
   /** partial because character can have lost all lives */
   characterRooms: CharacterRooms<RoomId>;
   renderOptions: RenderOptions<RoomId>;
-  events: Emitter<ApiEvents<RoomId>>;
+  /** TODO: is this really state? */
+  events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;

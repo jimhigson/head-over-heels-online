@@ -14,7 +14,6 @@ import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
-import type { RenderOptions } from "@/game/RenderOptions";
 import { shieldDuration } from "@/game/physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 
@@ -129,11 +128,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.bag.container);
   hudContainer.addChild(hudElements.heels.carrying.container);
 
-  return (
-    gameState: GameState<RoomId>,
-    screenSize: Xy,
-    renderOptions: RenderOptions<RoomId>,
-  ) => {
+  return (gameState: GameState<RoomId>, screenSize: Xy) => {
     const room = currentRoom(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },

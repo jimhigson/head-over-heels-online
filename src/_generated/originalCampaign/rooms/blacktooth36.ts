@@ -25,12 +25,14 @@ export const room = {
         text: `
 ## SWITCHES
 
+![](switch.left)
+
 Simply push the switch to switch things off and on!  
 **WARNING**: Switching a deadly monster off will stop him moving but he will
 still be deadly to touch.
 
 Source: Head Over Heels Manual
-`, sprites: ["switch.left"]
+`
       }
     },
   },

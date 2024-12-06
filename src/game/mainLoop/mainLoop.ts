@@ -47,12 +47,11 @@ export const mainLoop = <RoomId extends string>(
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
 
     const {
-      renderOptions,
       inputState: { windowFocus },
     } = gameState;
     const paused = !windowFocus;
 
-    updateHud(gameState, screenEffectiveSize, renderOptions);
+    updateHud(gameState, screenEffectiveSize);
 
     if (
       roomRenderer.room !== currentRoom(gameState) ||

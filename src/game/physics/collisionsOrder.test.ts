@@ -28,7 +28,10 @@ const blockTower = [
 
 describe("sort order of items with same type", () => {
   test("can sort obstacles about downwards vector", () => {
-    const result = sortObstaclesAboutPriorityAndVector(unitVectors.down, blockTower);
+    const result = sortObstaclesAboutPriorityAndVector(
+      unitVectors.down,
+      blockTower,
+    );
 
     expect(result.map((r) => r.id)).toEqual([
       "topBlock",
@@ -52,7 +55,10 @@ describe("sort order of items with same type", () => {
   });
 
   test("can sort obstacles about downwards vector", () => {
-    const result = sortObstaclesAboutPriorityAndVector(unitVectors.up, blockTower);
+    const result = sortObstaclesAboutPriorityAndVector(
+      unitVectors.up,
+      blockTower,
+    );
 
     expect(result.map((r) => r.id)).toEqual([
       "lowBlock",

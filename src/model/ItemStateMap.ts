@@ -39,6 +39,14 @@ type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
   wouldPickUpNext: boolean;
 };
 
+type SingleTouch = {
+  /**
+   * the frame this switch was last touched on. Some touches (switched, scrolls) only count if they are touched and weren't
+   * already touched on the previous frame
+   */
+  touchedOnProgression: number;
+};
+
 export type CarriedItem<
   RoomId extends string,
   Types extends PortableItemType = PortableItemType,
@@ -94,17 +102,13 @@ export type ItemStateMap<RoomId extends string> = {
     moving: boolean;
   };
   block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
-  switch: {
+  switch: SingleTouch & {
     setting: SwitchSetting;
-    /**
-     * the frame this switch was last touched on. Frames only switch if they are touched and weren't
-     * already touched on the previous frame
-     */
-    touchedOnProgression: number;
   };
   charles: FreeItemState<RoomId> & {
     // others will follow this soon - facing is changing to a vector
     facing: Xy;
   };
   ball: SlidingItemState<RoomId>;
+  scroll: SingleTouch & FreeItemState<RoomId>;
 };

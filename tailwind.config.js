@@ -3,7 +3,17 @@ export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontFamily: {
+      hoh: ['head-over-heels']
+    },
+    fontSize: {
+      base: '24px',
+      l: '32px',
+    },
     extend: {
+      scale: {
+        'double': '2',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

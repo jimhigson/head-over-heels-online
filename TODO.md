@@ -109,6 +109,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] can shoot donuts
     [ ] pixel shader (donut colours or grey) for disabled baddies
 [ ] PAUSED text
+[ ] re-render on HMR: https://vite.dev/guide/api-hmr.html
 
 # Rooms
 

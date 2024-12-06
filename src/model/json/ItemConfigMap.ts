@@ -6,7 +6,6 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type { TextureId } from "@/sprites/spriteSheet";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
@@ -136,6 +135,5 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   scroll: {
     // Text of the scroll, as markdown. Newlines are ok.
     text: string;
-    sprites: TextureId[];
   };
 };

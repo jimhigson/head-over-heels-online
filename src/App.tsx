@@ -1,4 +1,4 @@
-import { Game } from "./game/Game";
+import { Game } from "./game/components/Game.tsx";
 import { RoomSelect } from "./game/levelEdit/RoomSelect";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { GameApi } from "./game/GameApi.tsx";

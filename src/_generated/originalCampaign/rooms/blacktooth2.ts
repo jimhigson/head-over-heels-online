@@ -23,7 +23,7 @@ export const room = {
         text: `
 ## HISTORY OF THE BLACKTOOTH EMPIRE
 
-Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
+![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
 worlds enslaved by the planet Blacktooth. All of the slave worlds bubble with
 unrest, but due to the oppressive nature of their rulers they never reach
 boiling point, they all lack a leader to draw the masses of population together.
@@ -41,7 +41,7 @@ mutual advantage, join together as one - Head saddled on Heels, and indeed these
 ARE their names and both are highly trained spies.
 
 Source: Head Over Heels Manual
-`, sprites: ["crown"]
+`
       },
       position: { x: 1, y: 0, z: 0 },
       type: "scroll",

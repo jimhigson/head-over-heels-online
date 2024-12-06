@@ -171,7 +171,7 @@ const frames = {
     frame: { x: 77, y: 349, ...smallItemTextureSize },
   },
   scroll: {
-    frame: { x: 51, y: 324, ...smallItemTextureSize },
+    frame: { x: 52, y: 324, ...smallItemTextureSize },
   },
   donuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
