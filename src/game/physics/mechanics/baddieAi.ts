@@ -1,4 +1,4 @@
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
@@ -21,6 +21,7 @@ import {
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
+import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -224,7 +225,7 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   {
     state: { position: toucheePosition },
     aabb: toucheeAabb,
-  }: UnknownItemInPlay<RoomId>,
+  }: AnyItemInPlay<RoomId>,
 ) => {
   const {
     state: {
@@ -258,7 +259,7 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   {
     state: { position: toucheePosition },
     aabb: toucheeAabb,
-  }: UnknownItemInPlay<RoomId>,
+  }: AnyItemInPlay<RoomId>,
 ) => {
   const {
     state: {
@@ -285,21 +286,23 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   baddieItem.state.vels.walking = newWalking;
 };
 
-export const handleBaddieTouchingItem = <RoomId extends string>(
-  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
-  touchee: UnknownItemInPlay<RoomId>,
-  _movementVector: Xyz,
-  _gameState: GameState<RoomId>,
-) => {
+export const handleBaddieTouchingItem = <RoomId extends string>({
+  movingItem: baddieItem,
+  touchedItem: otherItem,
+}: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>) => {
   switch (baddieItem.config.which) {
     case "dalek":
     case "helicopter-bug":
     case "bubble-robot":
     case "american-football-head": {
-      handleBaddieTouchingItemByTurningToOppositeDirection(baddieItem, touchee);
+      handleBaddieTouchingItemByTurningToOppositeDirection(
+        baddieItem,
+        otherItem,
+      );
       break;
     }
     case "turtle":
-      handleBaddieTouchingItemByTurningClockwise(baddieItem, touchee);
+      handleBaddieTouchingItemByTurningClockwise(baddieItem, otherItem);
   }
+  return false;
 };

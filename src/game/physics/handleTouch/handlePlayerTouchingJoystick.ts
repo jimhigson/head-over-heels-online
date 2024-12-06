@@ -1,18 +1,18 @@
 import { scaleXyz, unitVector } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
-import type { GameState } from "@/game/gameState/GameState";
 import { currentRoom } from "@/game/gameState/GameState";
-import type { AnyItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { moveItem } from "../moveItem";
 import { walkSpeedPixPerMs } from "../mechanicsConstants";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
-export const handlePlayerTouchingJoystick = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  toucher: AnyItemInPlay,
-  joystickItem: ItemInPlay<"joystick", PlanetName, RoomId>,
-  deltaMS: number,
-) => {
+export const handlePlayerTouchingJoystick = <RoomId extends string>({
+  gameState,
+  movingItem,
+  touchedItem: joystickItem,
+  deltaMS,
+}: ItemTouchEvent<RoomId, ItemInPlayType, "joystick">) => {
   const room = currentRoom(gameState);
 
   const {
@@ -22,8 +22,8 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>(
   } = joystickItem;
 
   const m = mtv(
-    toucher.state.position,
-    toucher.aabb,
+    movingItem.state.position,
+    movingItem.aabb,
     joystickPosition,
     joystickAabb,
   );
@@ -51,4 +51,6 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>(
       deltaMS,
     });
   }
+
+  return false;
 };

@@ -1,23 +1,20 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { PlanetName } from "@/sprites/planets";
-import type { Xyz } from "@/utils/vectors/vectors";
 import { addXyz, dotProductXyz, subXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import { type GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
+import type { CharacterName } from "@/model/modelTypes";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  *
  * @returns true if the player went through the portal
  */
-export const handlePlayerTouchingPortal = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  player: PlayableItem,
-  portalItem: ItemInPlay<"portal", PlanetName, RoomId>,
+export const handlePlayerTouchingPortal = <RoomId extends string>({
+  gameState,
+  movingItem: player,
+  touchedItem: portalItem,
   /** the movement that caused the player to touch the portal */
-  movementDelta: Xyz,
-): boolean => {
+  movementVector,
+}: ItemTouchEvent<RoomId, CharacterName, "portal">): boolean => {
   const {
     config: { relativePoint, toRoom, direction: portalDirection },
     state: { position: portalPosition },
@@ -25,7 +22,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>(
   const doorDirectionVector = unitVectors[portalDirection];
   const movementComponentInDoorDirection = dotProductXyz(
     doorDirectionVector,
-    movementDelta,
+    movementVector,
   );
 
   if (movementComponentInDoorDirection <= 0) {

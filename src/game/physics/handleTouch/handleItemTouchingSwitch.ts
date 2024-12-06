@@ -1,15 +1,12 @@
-import { currentRoom, type GameState } from "@/game/gameState/GameState";
-import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import { currentRoom } from "@/game/gameState/GameState";
 import { objectEntriesIter } from "@/utils/entries";
-import type { Xyz } from "@/utils/vectors/vectors";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemInPlayType } from "@/model/ItemInPlay";
 
-export const handleItemTouchingSwitch = <RoomId extends string>(
-  switchItem: ItemInPlay<"switch", PlanetName, RoomId>,
-  _touchee: UnknownItemInPlay<RoomId>,
-  _movementVector: Xyz,
-  gameState: GameState<RoomId>,
-) => {
+export const handleItemTouchingSwitch = <RoomId extends string>({
+  touchedItem: switchItem,
+  gameState,
+}: ItemTouchEvent<RoomId, ItemInPlayType, "switch">) => {
   const room = currentRoom(gameState);
 
   const {
@@ -32,4 +29,6 @@ export const handleItemTouchingSwitch = <RoomId extends string>(
 
     affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
   }
+
+  return false;
 };

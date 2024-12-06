@@ -1,17 +1,16 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
-import { type Xyz, addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
+import { addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
  * slides sideways into their opening, to make them easier to walk through
  */
-export const handlePlayerTouchingDoorFrame = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
-  xyzDelta: Xyz,
-  doorFrame: ItemInPlay<"doorFrame">,
-): boolean => {
+export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
+  movingItem: player,
+  movementVector,
+  touchedItem: doorFrame,
+}: ItemTouchEvent<RoomId, CharacterName, "doorFrame">): boolean => {
   const {
     config: { direction, nearness },
   } = doorFrame;
@@ -21,19 +20,16 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>(
   const slideVector =
     nearness === "far" ?
       {
-        x: axis === "x" ? -Math.abs(xyzDelta.y) : 0,
-        y: axis === "y" ? -Math.abs(xyzDelta.x) : 0,
+        x: axis === "x" ? -Math.abs(movementVector.y) : 0,
+        y: axis === "y" ? -Math.abs(movementVector.x) : 0,
         z: 0,
       }
     : {
-        x: axis === "x" ? Math.abs(xyzDelta.y) : 0,
-        y: axis === "y" ? Math.abs(xyzDelta.x) : 0,
+        x: axis === "x" ? Math.abs(movementVector.y) : 0,
+        y: axis === "y" ? Math.abs(movementVector.x) : 0,
         z: 0,
       };
 
-  playableItem.state.position = addXyz(
-    playableItem.state.position,
-    slideVector,
-  );
+  player.state.position = addXyz(player.state.position, slideVector);
   return false;
 };

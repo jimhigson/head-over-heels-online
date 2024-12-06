@@ -100,3 +100,11 @@ export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
   P,
   RoomId
 >;
+
+export const deadlyItemTypes = [
+  "baddie",
+  "deadlyBlock",
+  "moveableDeadly",
+  "slidingDeadly",
+] as const satisfies ItemInPlayType[];
+export type DeadlyItemType = (typeof deadlyItemTypes)[number];

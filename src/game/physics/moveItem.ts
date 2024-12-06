@@ -122,7 +122,7 @@ export const moveItem = <RoomId extends string>({
       pusher !== collision &&
       handleItemsTouchingItems({
         movingItem: subjectItem,
-        touchee: collision,
+        touchedItem: collision,
         movementVector: subXyz(subjectItem.state.position, originalPosition),
         gameState,
         deltaMS,
