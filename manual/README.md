@@ -132,7 +132,62 @@ The Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and
 
 The illustration indicates the joystick control orientation and the juxtaposition of the first 20 or so rooms of this exciting game. The starting "Cell" is shown and with a little practice you'll soon be investigating over 300 challenging and action-packed locations.
 
-*(Illustration notes removed for Markdown formatting purposes.)*
+```
+
+  _________
+ /         \
+|           \
+ \/|  __     \
+ /_| /\ \     \                         ___
+    /  \ \     \             N      E  /\  \
+   /    \ \     \              `__ �  /_ \  \
+   \     \ \____ \             (  )==== ) \  \
+    \     \/\ \ \ \            (__)----_) /  /
+     \    /  \ \ \ \          �    `  \  /  /
+      \  /    \_\_\ \        W      S  \/__/
+       \/     / / /  \
+       /     / /_/    |
+       \    / /\ \    |
+        \  / /\ \ \    \
+         \/_/  \ \ \    |
+           /    \ \ \   |  
+ C        /      \ \.\   \  __
+          \      /\:\ \   \/\ \
+ A         \    / /\ \ \  /  \ \
+            \  / /  \ \ \/    \ \        __
+ S           \/_/    \ \/      \_\      /\ \
+       ,,      /:    /\/\      / /     /  \ \
+ T    %\ \  __/  :  / /  \    / /     /    \ \
+      \ \ \/\/    :/./\   \  / / \/| /      \_\
+ L     \ \/  \    / /  \   \/_/  /_|/\THE   / /
+        \/    \  / /    \  / /     / CELLS / /
+ E      /      \/_/      \/_/     /    \  / / __
+       /        \_\               \ START/_/ | /
+       \        /_/                \    / /  |/\
+        \      /\ \                 \  / /      \
+ B      /\    /  \ \                 \/_/        \
+       / /\  /    \.\                             \
+ L    / / /\/\    :\ \                             \
+      %/,/    \  :  \ \                             \
+ A            /\:    \_\  __                         |
+             /  \    / / /\ \                        |
+ C          /    \  / / /  \ \                       |
+           /      \/_/\/    \ \                      |
+ K         \       \_\/      \ \  __                 |
+            \      / /        \_\/\ \                |
+ T           \    / /\        / /  \ \               |
+              \  / /  \      / /    \ \              |
+ O             \/_/\   \    / /      \ \            /
+                    \   \  /_/        \_\          /
+ O                   \   \/\ \        / /         /
+                      \  /  \ \      / / __      /
+ T                     \/    \ \    / / | /     /
+                       /      \_\  / /  |/\____/
+ H                     \      / /\/_/
+                        \    / / /
+                         \  / / /
+                          \/_/_/
+```
 
 ---
 
