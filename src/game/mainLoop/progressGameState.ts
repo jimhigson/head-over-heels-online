@@ -5,7 +5,7 @@
 // can be guaranteed to take up every half-pixel position.
 
 import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import { isPlayableItem } from "../physics/itemPredicates";
+import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -34,10 +34,11 @@ import {
   setStandingOn,
 } from "../gameState/mutators/removeStandingOn";
 import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
+import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
-const maximumDeltaMS = 20;
+const maximumDeltaMS = 10;
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
@@ -115,15 +116,17 @@ export const progressGameState = <RoomId extends string>(
 
   const room = currentRoom(gameState);
 
-  // take a snapshot of item positions before any physics ticks so we can check later what has moved:
-  const startingPositions = Object.fromEntries(
-    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
-      id,
-      item.state.position,
-    ]),
-  );
-
   for (let i = 0; i < physicsTickCount; i++) {
+    // take a snapshot of item positions before any physics ticks so we
+    // can check later what has moved. DOne per physics tick, not render-tick
+    // because otherwise latent movement is double-applied
+    const startingPositions = Object.fromEntries(
+      iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+        id,
+        item.state.position,
+      ]),
+    );
+
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {
@@ -195,6 +198,24 @@ export const progressGameState = <RoomId extends string>(
       }
     }
 
+    for (const stander of sortedItems) {
+      if (!isFreeItem(stander) || stander.state.standingOn === null) {
+        continue;
+      }
+
+      // every item touches the item it is standing on every frame. This means a lot of
+      // pointless touches, but for example, what if you're on a volcano and the shideld
+      // bunny runs out? This touch was already done when you landed on the stoodOn item,
+      // if you fell onto it :-/
+      handleItemsTouchingItems({
+        movingItem: stander,
+        touchee: stander.state.standingOn,
+        gameState,
+        deltaMS,
+        movementVector: { x: 0, y: 0, z: -1 },
+      });
+    }
+
     //setStandingOnForAllItemsInRoom(room, gameState.progression);
 
     gameState.progression++;
@@ -205,7 +226,7 @@ export const progressGameState = <RoomId extends string>(
         `room has changed during physics tick ${room.id} -> ${currentRoom(gameState).id} but did not return out of the tick`,
       );
     }
-  }
 
-  snapStationaryItemsToPixelGrid(room, startingPositions);
+    snapStationaryItemsToPixelGrid(room, startingPositions);
+  }
 };

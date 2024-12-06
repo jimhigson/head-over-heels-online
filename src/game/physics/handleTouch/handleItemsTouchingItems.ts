@@ -11,6 +11,7 @@ import {
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
 import { isSlidingItem } from "../itemPredicates";
+import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
 
 /**
  * some old - Morties touching Morties
@@ -75,6 +76,12 @@ export const handleItemsTouchingItems = <RoomId extends string>({
   if (
     isItemType("switch")(touchee) &&
     handleItemTouchingSwitch(touchee, movingItem, movementVector, gameState)
+  )
+    return true;
+
+  if (
+    isItemType("joystick")(touchee) &&
+    handlePlayerTouchingJoystick(gameState, movingItem, touchee, deltaMS)
   )
     return true;
 

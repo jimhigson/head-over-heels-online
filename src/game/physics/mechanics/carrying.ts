@@ -1,6 +1,7 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
-import { isItemType, isPortable } from "../itemPredicates";
+import type { PortableItemType } from "../itemPredicates";
+import { isPortable } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
@@ -16,6 +17,7 @@ import {
   addItemsToRoomInPlay,
   deleteItemFromRoomInPlay,
 } from "@/game/gameState/mutators/deleteItemFromRoomInPlay";
+import type { CarriedItem } from "@/model/ItemStateMap";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -50,21 +52,13 @@ export const carrying = <RoomId extends string>(
   if (inputState.carry) {
     if (carrying === null) {
       // trying to pick up
-      if (
-        // can't pick up while falling (or not standing on anything)
-        itemToPickup === undefined ||
-        // can only pick up these item types
-        !isItemType("portableBlock", "spring")(itemToPickup)
-      ) {
+      if (itemToPickup === undefined) {
+        console.warn("nothing to pick up");
+        // nothing to pick up
         return;
       }
 
-      heelsItem.state.carrying = {
-        type: itemToPickup.type,
-        config: itemToPickup.config,
-      };
-
-      deleteItemFromRoomInPlay(room, itemToPickup);
+      pickUpItem(room, heelsItem, itemToPickup);
     } else {
       // trying to put down
       if (heelsItem.state.standingOn === null) {
@@ -109,6 +103,20 @@ export const carrying = <RoomId extends string>(
     }
     inputState.carry = false; // handled this input
   }
+};
+
+const pickUpItem = <RoomId extends string, T extends PortableItemType>(
+  room: RoomState<PlanetName, RoomId>,
+  heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
+  itemToPickup: ItemInPlay<T, PlanetName, RoomId>,
+) => {
+  const carrying = {
+    type: itemToPickup.type,
+    config: itemToPickup.config,
+  } as CarriedItem<RoomId>;
+  heelsItem.state.carrying = carrying;
+
+  deleteItemFromRoomInPlay(room, itemToPickup);
 };
 
 const findItemToPickup = <RoomId extends string>(

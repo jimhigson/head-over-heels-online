@@ -56,17 +56,6 @@ export const accelerateToSpeed = ({
       Math.max(exitingSpeedInCrossDirection - crossComponentFade * deltaMS, 0)
     : Math.min(exitingSpeedInCrossDirection + crossComponentFade * deltaMS, 0);
 
-  console.log(
-    "crossUnitD",
-    crossUnitD,
-    "exitingSpeedInCrossDirection",
-    exitingSpeedInCrossDirection,
-    "newSpeedInCrossDirection",
-    newSpeedInCrossDirection,
-    "fadedCrossComponentVector",
-    scaleXyz(crossUnitD, newSpeedInCrossDirection),
-  );
-
   return addXyz(
     scaleXyz(
       unitD,

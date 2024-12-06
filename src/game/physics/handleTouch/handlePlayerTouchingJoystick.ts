@@ -2,16 +2,14 @@ import { scaleXyz, unitVector } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { GameState } from "@/game/gameState/GameState";
 import { currentRoom } from "@/game/gameState/GameState";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "@/model/modelTypes";
+import type { AnyItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { moveItem } from "../moveItem";
 import { walkSpeedPixPerMs } from "../mechanicsConstants";
 
 export const handlePlayerTouchingJoystick = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  player: PlayableItem<CharacterName, RoomId>,
+  toucher: AnyItemInPlay,
   joystickItem: ItemInPlay<"joystick", PlanetName, RoomId>,
   deltaMS: number,
 ) => {
@@ -24,13 +22,13 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>(
   } = joystickItem;
 
   const m = mtv(
-    player.state.position,
-    player.aabb,
+    toucher.state.position,
+    toucher.aabb,
     joystickPosition,
     joystickAabb,
   );
 
-  if (m.z !== 0) {
+  if (m.x === 0 && m.y === 0) {
     return;
   }
 

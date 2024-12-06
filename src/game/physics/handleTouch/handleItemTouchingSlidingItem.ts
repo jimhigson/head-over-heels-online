@@ -32,6 +32,8 @@ export const handleItemTouchingSlidingItem = <RoomId extends string>(
     slidingItemAabb,
   );
 
+  if (m.x === 0 || m.y === 0) return;
+
   const unitM = unitVector(m);
 
   const slidingVel = scaleXyz(unitM, -walkSpeedPixPerMs.ball);

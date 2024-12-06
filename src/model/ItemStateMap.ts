@@ -39,13 +39,13 @@ type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
   wouldPickUpNext: boolean;
 };
 
-type CarriedItem<
+export type CarriedItem<
   RoomId extends string,
   Types extends PortableItemType = PortableItemType,
 > = {
   [T in Types]: {
-    type: Types;
-    config: JsonItemConfig<Types, PlanetName, RoomId>;
+    type: T;
+    config: JsonItemConfig<T, PlanetName, RoomId>;
   };
 }[Types];
 

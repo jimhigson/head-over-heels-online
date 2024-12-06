@@ -72,6 +72,9 @@ export const jumping = <RoomId extends string>(
   const standingOnSpring = isItemType("spring")(standingOn);
   const velZ = getJumpInitialVelocity(type, standingOnSpring);
 
+  // handled this input but don't set jump input flat off - it is
+  // ok to keep jump pressed to keep jumping
+
   return {
     movementType: "vel",
     vels: { gravity: { z: velZ } },

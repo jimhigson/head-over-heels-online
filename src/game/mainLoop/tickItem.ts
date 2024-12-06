@@ -47,12 +47,12 @@ function* itemMechanicResultGen<
     // user controls:
     yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
-    yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
-  }
 
-  if (isItemType("heels")(item)) {
-    // carrying has to come after jumping so we can carry+jump simultaneously
-    carrying(item, room, gameState, deltaMS);
+    yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+
+    if (isItemType("heels")(item)) {
+      carrying(item, room, gameState, deltaMS);
+    }
   }
 
   if (isItemType("lift")(item)) {
@@ -81,28 +81,12 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 ): boolean => {
   let accumulatedPosDelta = originXyz;
 
-  for (const mechanicResult of itemMechanicResultGen(
-    item,
-    room,
-    gameState,
-    deltaMS,
-  )) {
-    // add movement to accumulatedPosDelta
-    //const mrPosDelta = mechanicResult.movementType === "position" ? mechanicResult.posDelta
-    /*: (
-        mechanicResult.movementType === "vel" &&
-        mechanicResult.vels !== undefined
-      ) ?
-        scaleXyz(
-          addXyz(
-            ...objectValues(
-              mechanicResult.vels as Record<string, Partial<Xyz>>,
-            ),
-          ),
-          deltaMS,
-        )
-      : undefined;*/
-
+  // by spreading the generator onto an array, we run the mechanics at the 'same'
+  // time, before the previous ones have changed the game state. This is good for
+  // jumping and carrying at the same time, for example. Otherwise, these would
+  // one stop the other from working.
+  const allResults = [...itemMechanicResultGen(item, room, gameState, deltaMS)];
+  for (const mechanicResult of allResults) {
     if (mechanicResult.movementType === "position") {
       accumulatedPosDelta = addXyz(
         accumulatedPosDelta,

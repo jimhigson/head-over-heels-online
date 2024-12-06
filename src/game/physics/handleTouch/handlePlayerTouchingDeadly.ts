@@ -12,6 +12,11 @@ export function handlePlayerTouchingDeadly<RoomId extends string>(
   gameState: GameState<RoomId>,
   playableItem: PlayableItem<CharacterName, RoomId>,
 ): boolean {
+  if (playableItem.state.action === "death") {
+    // player is already showing death animation - do nothing
+    return false;
+  }
+
   const { shieldCollectedAt } = playableItem.state;
   if (
     shieldCollectedAt !== null &&

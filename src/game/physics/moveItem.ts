@@ -44,6 +44,8 @@ type MoveItemOptions<RoomId extends string> = {
    * as a special case if something gets stuck under them.
    */
   forceful?: boolean;
+
+  recursionDepth?: number;
 };
 
 /**
@@ -58,9 +60,14 @@ export const moveItem = <RoomId extends string>({
   pusher,
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
+  recursionDepth = 0,
 }: MoveItemOptions<RoomId>): boolean => {
   if (xyzEqual(posDelta, originXyz)) {
     return false;
+  }
+
+  if (recursionDepth > 16) {
+    throw new Error("this probably means a non-terminating issue");
   }
 
   const room = currentRoom(gameState);
@@ -106,15 +113,8 @@ export const moveItem = <RoomId extends string>({
       //dist - 0.001 > lastProcessedDistance &&
       !collision1to1(subjectItem, collision)
     ) {
-      // it is possible there is no longer a collision due to previous sliding - in this case,
-      // the mtv will be wrong and erratic - skip this obstacle
-
-      // HERE: we want to only continue if the sorting didn't give an equal score to this
-      // and the previous item (ie, the current item is further away).
-      // Otherwise, for example, if gravity is pushing us down onto two items,
-      // we miss the chance to interact with them both (eg, on the boundary of two conveyors - we want to
-      // use the direction from both. Otherwise, we are sensitive to the order items appeared in the world as
-      // since the sort will not have changed this
+      // it is possible there is no longer a collision due to previous sliding - we have
+      // been protected from this collision by previous collisions so it no longer applies
       continue;
     }
 
@@ -195,6 +195,7 @@ export const moveItem = <RoomId extends string>({
           gameState,
           deltaMS,
           forceful,
+          recursionDepth: recursionDepth + 1,
         })
       ) {
         // halt if the recursive call halted
@@ -226,7 +227,7 @@ export const moveItem = <RoomId extends string>({
         );
     }
 
-    // check if we are standing on the item:
+    // check if we landed on the item to take over the standingOn slot::
     if (isFreeItem(subjectItem) && backingOffMtv.z > 0) {
       // moving vertically down onto the item
       if (

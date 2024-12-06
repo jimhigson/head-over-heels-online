@@ -56,6 +56,7 @@ export const boundingBoxForItem = (
       return { aabb: doubleHeighCharacter };
 
     case "ball":
+      return { aabb: { x: 11, y: 11, z: 12 } };
     case "movableBlock":
       return { aabb: largeItemAabb };
 
