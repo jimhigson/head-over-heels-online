@@ -1,0 +1,67 @@
+import type { RoomJson } from "../../../model/modelTypes.ts";
+
+import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+
+export const room = {
+  color: { hue: "magenta", shade: "basic" },
+  floor: "deadly",
+  floorSkip: [],
+  id: "blacktooth12",
+  items: {
+    "block@0,0,3:95uHj": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 0, z: 3 },
+      type: "block",
+    },
+    "block@0,1,3:95uHj": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 1, z: 3 },
+      type: "block",
+    },
+    "block@4,0,3:Z1AdJxh": {
+      config: { disappearing: true, style: "organic" },
+      position: { x: 4, y: 0, z: 3 },
+      type: "block",
+    },
+    "block@4,1,3:Z1AdJxh": {
+      config: { disappearing: true, style: "organic" },
+      position: { x: 4, y: 1, z: 3 },
+      type: "block",
+    },
+    "block@7,0,3:95uHj": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 0, z: 3 },
+      type: "block",
+    },
+    "block@7,1,3:95uHj": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 1, z: 3 },
+      type: "block",
+    },
+    "door@0,0,5:uMrSb": {
+      config: { direction: "right", toRoom: "blacktooth11" },
+      position: { x: 0, y: 0, z: 5 },
+      type: "door",
+    },
+    "door@8,0,5:ZUD4oK": {
+      config: { direction: "left", toRoom: "blacktooth13" },
+      position: { x: 8, y: 0, z: 5 },
+      type: "door",
+    },
+  },
+  planet: "blacktooth",
+  size: { x: 8, y: 2 },
+  walls: {
+    away: [
+      "plain",
+      "armour",
+      "plain",
+      "shield",
+      "shield",
+      "plain",
+      "armour",
+      "plain",
+    ],
+    left: ["none", "none"],
+  },
+} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
