@@ -113,7 +113,7 @@ export const room = {
       position: { x: 0, y: 4, z: 7 },
       type: "pickup",
     },
-    "scroll": {
+    scroll: {
       config: {
         text: `
 ## HOOTER
@@ -124,7 +124,8 @@ will freeze them in place as they lick the doughnut off their faces. The hooter
 may only be used by Head and requires a tray of doughnuts to be of any use.
 
 *Source: Head Over Heels Manual*
-`},
+`,
+      },
       position: { x: 7, y: 1, z: 1 },
       type: "scroll",
     },

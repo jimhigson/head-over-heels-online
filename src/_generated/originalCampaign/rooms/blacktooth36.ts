@@ -18,7 +18,7 @@ export const room = {
       position: { x: 2, y: 6, z: 0 },
       type: "door",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 4, y: 5, z: 0 },
       config: {
@@ -32,8 +32,8 @@ Simply push the switch to switch things off and on!
 still be deadly to touch.
 
 Source: Head Over Heels Manual
-`
-      }
+`,
+      },
     },
   },
   planet: "blacktooth",

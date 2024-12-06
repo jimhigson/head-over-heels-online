@@ -38,7 +38,7 @@ export const room = {
       position: { x: 0, y: 0, z: 0 },
       type: "portableBlock",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 0, y: 7, z: 0 },
       config: {
@@ -60,7 +60,8 @@ explained.
 Even living reincarnation fish taste horrible!
 
 Source: Head Over Heels Manual
-`}
+`,
+      },
     },
   },
   planet: "blacktooth",

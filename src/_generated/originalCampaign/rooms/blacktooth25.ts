@@ -28,20 +28,19 @@ export const room = {
       position: { x: 5, y: 0, z: 7 },
       type: "lift",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 3, y: 5, z: 0 },
       config: {
         text: `
 ## CONVEYOR BELTS
 
-![](conveyor.x.1)
-
-The rollers on the conveyor simply push you along it. If you wish to go the
+![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the
 opposite direction you have to jump along.
 
 Source: Head Over Heels Manual
-`}
+`,
+      },
     },
   },
   planet: "blacktooth",

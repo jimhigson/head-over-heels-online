@@ -178,7 +178,7 @@ export const room = {
       position: { x: 0, y: 0, z: 0 },
       type: "teleporter",
     },
-    "scroll": {
+    scroll: {
       config: {
         text: `
 ## HEAD 
@@ -190,12 +190,12 @@ rudimentary wings that allow Head to jump up to twice his own height and to
 guide himself through the air.
 
 *Head Over Heels Manual*
-`
+`,
       },
       position: { x: 7, y: 1, z: 0 },
       type: "scroll",
     },
-    "scroll2": {
+    scroll2: {
       config: {
         text: `
 ## HEELS 
@@ -205,7 +205,7 @@ guide himself through the air.
 become very powerful. Heels can jump his own height and can also run very fast.        
 
 *Head Over Heels Manual*
-`
+`,
       },
       position: { x: 3, y: 7, z: 0 },
       type: "scroll",

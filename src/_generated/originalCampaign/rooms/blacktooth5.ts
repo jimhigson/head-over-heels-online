@@ -33,7 +33,7 @@ export const room = {
       position: { x: 2, y: 3, z: 0 },
       type: "door",
     },
-    "scroll": {
+    scroll: {
       config: {
         text: `
 ## DOUGHNUTS
@@ -43,7 +43,7 @@ may pick up doughnuts. The number of remaining doughnuts will be displayed above
 the doughnut icon at the bottom left of the screen.
 
 Source: Head Over Heels Manual
-`
+`,
       },
       position: { x: 1, y: 5, z: 0 },
       type: "scroll",

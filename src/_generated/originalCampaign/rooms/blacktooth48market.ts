@@ -18,7 +18,7 @@ export const room = {
       position: { x: 2, y: 3, z: 0 },
       type: "door",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 1, y: 6, z: 0 },
       config: {
@@ -42,7 +42,8 @@ then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
 
 Source: Head Over Heels Manual
-`}
+`,
+      },
     },
   },
   planet: "market",

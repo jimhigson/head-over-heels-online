@@ -48,7 +48,7 @@ export const room = {
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
-    "scrollTheGame": {
+    scrollTheGame: {
       config: {
         text: `
 ## THE GAME
@@ -70,12 +70,12 @@ Blacktooth crown could cause an uprising. This of course would be the ultimate
 accolade, and unfortunately, almost certain suicide.
 
 *Head Over Heels Manual*
-`
+`,
       },
       position: { x: 3, y: 7, z: 0 },
       type: "scroll",
     },
-    "scrollRabbit": {
+    scrollRabbit: {
       config: {
         text: `
 ## CUDDLY STUFFED WHITE RABBITS
@@ -93,7 +93,7 @@ There are four types:
 4. **Go faster bunny** (only works on slow-moving Head) ![](hud.fastSteps)
 
 *Head Over Heels Manual*
-`
+`,
       },
       position: { x: 3, y: 0, z: 0 },
       type: "scroll",

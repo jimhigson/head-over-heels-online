@@ -23,7 +23,7 @@ export const room = {
       position: { x: 3, y: 0, z: 0 },
       type: "lift",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 5, y: 5, z: 0 },
       config: {
@@ -43,7 +43,8 @@ Head's race, they disappear and won't return until they are sure the coast is
 clear.
 
 Source: Head Over Heels Manual
-`}
+`,
+      },
     },
   },
   planet: "jail",

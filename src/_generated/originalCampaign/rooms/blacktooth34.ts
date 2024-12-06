@@ -28,7 +28,7 @@ export const room = {
       position: { x: 7, y: 7, z: 0 },
       type: "lift",
     },
-    "scroll": {
+    scroll: {
       type: "scroll",
       position: { x: 2, y: 7, z: 1 },
       config: {
@@ -40,14 +40,14 @@ export const room = {
 Jumping from a spring will give extra height to your jump.
 
 *Source: Head Over Heels Manual*
-`},
-
+`,
+      },
     },
-    "scrollBlock": {
+    scrollBlock: {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 7, z: 0 },
       type: "block",
-    }
+    },
   },
   planet: "jail",
   roomBelow: "blacktooth33",

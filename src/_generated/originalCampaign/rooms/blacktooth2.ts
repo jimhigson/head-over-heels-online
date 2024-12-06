@@ -18,7 +18,7 @@ export const room = {
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
-    "scroll": {
+    scroll: {
       config: {
         text: `
 ## HISTORY OF THE BLACKTOOTH EMPIRE
@@ -41,7 +41,7 @@ mutual advantage, join together as one - Head saddled on Heels, and indeed these
 ARE their names and both are highly trained spies.
 
 Source: Head Over Heels Manual
-`
+`,
       },
       position: { x: 1, y: 0, z: 0 },
       type: "scroll",
