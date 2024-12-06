@@ -48,6 +48,11 @@ export const room = {
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
+    "scroll": {
+      config: { text: "I'm in jail!", sprites: ["head.walking.towards.2"] },
+      position: { x: 3, y: 7, z: 0 },
+      type: "scroll",
+    },
   },
   planet: "jail",
   size: { x: 6, y: 8 },

@@ -91,17 +91,23 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] better test rooms
 [x] all tests pass 
     [x] heels on lifts should be able to walk while descending
-[ ] glide roll physics for pucks/balls    
-[ ] viewport scsliding
+[x] glide roll physics for pucks/balls    
+[x] items don't collide with items they're standing on.
+    [x] walking from an item to another doesn't collide with it
+    [!] now they do (on every frame) but means some duplicative touches 🤷‍♂️
+[ ] disappearing blocks should only go when stood on (hit from the top)
+[ ] head and heels can combine
+[ ] viewport sliding
     [ ] hud readable over game
 [ ] sonic-like shield effect when got shield    
-[ ] head and heels can combine
-[ ] acel for player normal walking
+    [?] sunglasses?
+[x] acel for player normal walking
 [ ] playable on mame joystick
 [ ] ELERI
 [ ] extra abilities pickups work
 [ ] scrolls/text
-[ ] pixel shader (donut colours or grey) for disabled baddies
+[ ] can shoot donuts
+    [ ] pixel shader (donut colours or grey) for disabled baddies
 [ ] PAUSED text
 
 # Rooms

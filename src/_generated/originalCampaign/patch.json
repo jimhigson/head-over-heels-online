@@ -276,5 +276,17 @@
       "type": "player"
     }
   },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth1head/items/scroll",
+    "value": {
+      "config": {
+        "text": "I'm in jail!",
+        "sprites": ["head.walking.towards.2"]
+      },
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "scroll"
+    }
+  },
   { "op": "replace", "path": "/rooms/blacktooth11/floor", "value": "market" }
 ]
