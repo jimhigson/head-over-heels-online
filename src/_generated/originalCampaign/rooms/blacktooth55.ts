@@ -30,9 +30,7 @@ export const room = {
         text: `
 ## HUSH PUPPIES
 
-![](hushPuppy)
-
-These are a very strange type of beast; they are incredibly sleepy. In fact,
+![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
 they never wake up and it is quite normal for them to sleep for their entire
 lives. They are often used as tables and even used as building bricks. They are
 a native of Freedom, and for many thousands of years Head and his ancestors have
@@ -42,7 +40,7 @@ themselves away. Nobody knows where they go, but the instant they see any of
 Head's race, they disappear and won't return until they are sure the coast is
 clear.
 
-Source: Head Over Heels Manual
+*Head Over Heels Manual*
 `,
       },
     },

@@ -25,9 +25,7 @@ export const room = {
         text: `
 ### BLACKTOOTH
 
-![](ball)
-
-This planet has a large moon with three lunar space stations on it, the larger
+![](ball) This planet has a large moon with three lunar space stations on it, the larger
 of these, Moon Station HQ, is the main teleport center for the empire, with a
 direct teleport to all the slave planets. Sometime after the Egyptus episode,
 the latest Emperor sent out a craft to find that same strange planet, and after
@@ -41,7 +39,7 @@ used it as his headquarters. The castle is surrounded by a small market, and
 then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
 
-Source: Head Over Heels Manual
+*Head Over Heels Manual*
 `,
       },
     },

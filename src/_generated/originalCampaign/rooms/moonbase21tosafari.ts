@@ -117,6 +117,20 @@ export const room = {
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
+    scroll: {
+      type: "scroll",
+      position: { x: 1, y: 3, z: 0 },
+      config: {
+        text: `
+## SAFARI
+
+A densely vegetated planet, mainly used for hunting. The natives live in wooden
+forts in the jungle, beware traps!
+
+*Head Over Heels Manual*
+`,
+      }
+    }
   },
   planet: "moonbase",
   size: { x: 6, y: 8 },

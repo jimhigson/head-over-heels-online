@@ -125,15 +125,15 @@ export const room = {
         text: `
 ## BAG
 
-![](bag)
-
-The bag may be used to carry small objects around a room. It is essential for
+![](bag)The bag may be used to carry small objects around a room. It is essential for
 Heels to find and get the bag as it is impossible to get far without it. The
 object in the bag will be displayed immediately above the bag's icon at the
 bottom right of the screen. To pick up an object just stand on top of it and
 press the CARRY key. It is not possible to drop an object in a doorway.
 
-*Source: Head Over Heels Manual*
+![](cube)![](drum)![](spring.compressed)![](sticks)
+
+**Head Over Heels Manual**
 `,
       },
     },

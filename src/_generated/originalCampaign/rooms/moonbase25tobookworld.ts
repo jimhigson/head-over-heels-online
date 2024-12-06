@@ -177,6 +177,21 @@ export const room = {
       position: { x: 7, y: 4, z: 0 },
       type: "teleporter",
     },
+    scroll: {
+      type: "scroll",
+      position: { x: 6, y: 6, z: 0 },
+      config: {
+        text: `
+## BOOK WORLD
+
+The emperor is very keen on cowboy books and has devoted an entire world to a
+western library. Only the emperor's minions are permitted to read them.
+Information is rigorously suppressed in the empire.
+
+*Head Over Heels Manual*
+`,
+      }
+    }
   },
   planet: "moonbase",
   size: { x: 8, y: 8 },

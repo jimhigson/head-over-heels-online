@@ -93,6 +93,21 @@ export const room = {
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
+    scroll: {
+      type: "scroll",
+      position: { x: 1, y: 4, z: 0 },
+      config: {
+        text: `
+## PENITENTIARY
+### The empire's prison planet
+
+Millions are imprisoned here. A harsh planet, very mountainous, much climbing,
+skill required. The worst place is The Pit, try not to fall into it!
+
+*Head Over Heels Manual*
+`,
+      }
+    }
   },
   planet: "moonbase",
   size: { x: 6, y: 8 },

@@ -182,6 +182,27 @@ export const room = {
       position: { x: 4, y: 4, z: 0 },
       type: "teleporter",
     },
+    scroll: {
+      type: "scroll",
+      position: { x: 7, y: 5, z: 0 },
+      config: {
+        text: `
+## HUSH PUPPIES
+
+![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
+they never wake up and it is quite normal for them to sleep for their entire
+lives. They are often used as tables and even used as building bricks. They are
+a native of Freedom, and for many thousands of years Head and his ancestors have
+been mistaking them for Heels and causing so much trouble to the poor old hush
+puppies that they evolved a defense mechanism: they somehow learned to teleport
+themselves away. Nobody knows where they go, but the instant they see any of
+Head's race, they disappear and won't return until they are sure the coast is
+clear.
+
+*Head Over Heels Manual*
+`,
+      }
+    }
   },
   planet: "moonbase",
   size: { x: 8, y: 8 },

@@ -42,6 +42,7 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
+      <DialogTitle />
       {children}
     </DialogPrimitive.Content>
   </DialogPortal>

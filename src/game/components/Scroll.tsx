@@ -77,7 +77,7 @@ type ScrollProps = {
 const Scroll = ({ content }: ScrollProps) => {
   return (
     <Dialog open={content !== null}>
-      <DialogContent className="font-hoh">
+      <DialogContent className="font-hoh" aria-describedby={undefined}>
         {content === null ? null : <ScrollContent content={content} />}
         <p className="text-center text-base">Press jump to continue</p>
       </DialogContent>

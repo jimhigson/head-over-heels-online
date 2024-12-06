@@ -67,7 +67,7 @@ explained.
 
 Even living reincarnation fish taste horrible!
 
-Source: Head Over Heels Manual
+*Head Over Heels Manual*
 `,
       },
     },

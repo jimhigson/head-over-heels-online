@@ -38,6 +38,8 @@ export const boundingBoxForItem = (
     case "spring":
     case "portableBlock":
     case "moveableDeadly":
+    case "slidingDeadly":
+    case "slidingBlock":
     case "pickup":
     case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
