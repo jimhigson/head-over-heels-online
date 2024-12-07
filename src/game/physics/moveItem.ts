@@ -163,10 +163,9 @@ export const moveItem = <RoomId extends string>({
     // push falling (pushable) items that we intersect:
     if (isFreeItem(collision) && collision !== pusher) {
       const pushCoefficient =
-        forceful ?
+        forceful || isSlidingItem(collision) ?
           // lifts don't slow down when stuff is on them
           -1
-        : isSlidingItem(collision) ? -0.9
           // split the difference - the pushed item moves half as far forward as our intersection
         : -0.5;
 
