@@ -11,14 +11,24 @@ import type {
 import { originXyz } from "@/utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { first } from "iter-tools";
+import { isFreeItem } from "@/game/physics/itemPredicates";
 
 export const deleteItemFromRoomInPlay = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
   item: AnyItemInPlay,
 ) => {
+  // ain't in that room no more:
   delete room.items[item.id];
+
+  // whatever the deleted item had standing on it, it ain't no more:
   for (const s of item.state.stoodOnBy) {
     s.state.standingOn = null;
+  }
+
+  // whatever the deleted item was standing on in the room they left, it aim't no more:
+  if (isFreeItem(item) && item.state.standingOn !== null) {
+    item.state.standingOn.state.stoodOnBy.delete(item);
+    item.state.standingOn = null;
   }
 };
 

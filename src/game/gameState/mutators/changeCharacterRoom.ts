@@ -17,6 +17,7 @@ import { otherCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
 import { makeItemFadeOut } from "./makeItemFadeOut";
+import { deleteItemFromRoomInPlay } from "./deleteItemFromRoomInPlay";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -77,7 +78,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   }
 
   // take the character out of the previous room:
-  delete leavingRoom.items[currentCharacterName];
+  deleteItemFromRoomInPlay(leavingRoom, character);
 
   if (changeType !== "teleport") {
     const isPortal = isItemType("portal");
@@ -181,7 +182,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
   // by default):
-  delete toRoom.items[currentCharacterName];
+  deleteItemFromRoomInPlay(toRoom, character);
 
   // but the character into the (probably newly loaded) room:
   (toRoom.items[currentCharacterName] as typeof character) = character;
