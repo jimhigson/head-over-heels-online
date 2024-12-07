@@ -193,8 +193,8 @@ rebuilt the capital city of one of the slave planets to resemble the story.
 
 *Head Over Heels Manual*
 `,
-      }
-    }
+      },
+    },
   },
   planet: "moonbase",
   size: { x: 8, y: 8 },

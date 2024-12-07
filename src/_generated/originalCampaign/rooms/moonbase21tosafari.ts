@@ -129,8 +129,8 @@ forts in the jungle, beware traps!
 
 *Head Over Heels Manual*
 `,
-      }
-    }
+      },
+    },
   },
   planet: "moonbase",
   size: { x: 6, y: 8 },

@@ -16,7 +16,12 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
 
   switchItem.state.touchedOnProgression = gameState.progression;
 
-  if (gameState.progression === touchedOnProgression + 1) {
+  if (
+    // touched on the last progression
+    gameState.progression === touchedOnProgression + 1 ||
+    // touched on this progression (handled touch twice in one frame)
+    gameState.progression === touchedOnProgression
+  ) {
     // switch was already being pressed so skip it:
     return;
   }

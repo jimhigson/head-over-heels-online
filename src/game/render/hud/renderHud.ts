@@ -35,7 +35,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const makeText = (doubleHeight: boolean = false) => {
     const yScaleFactor = doubleHeight ? 2 : 1;
 
-    const headLives = new Text({
+    const text = new Text({
       style: {
         fill: "white",
         fontFamily: "Head over Heels",
@@ -45,8 +45,8 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       resolution: 8,
       anchor: { x: 0.5, y: 1 },
     });
-    headLives.scale = { x: 1, y: yScaleFactor };
-    return headLives;
+    text.scale = { x: 1, y: yScaleFactor };
+    return text;
   };
 
   const characterSprite = (characterName: CharacterName) => {
@@ -134,11 +134,9 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
     } = getColorScheme(room.color);
 
-    const updateIcons = (playableItem: PlayableItem) => {
-      const {
-        type: characterName,
-        state: { shieldCollectedAt },
-      } = playableItem;
+    const updateIcons = (characterName: CharacterName) => {
+      const playableItem = getPlayableItem(gameState, characterName);
+      const shieldCollectedAt = playableItem?.state.shieldCollectedAt ?? null;
 
       const { text: shieldText, container: shieldContainer } =
         hudElements[characterName].shield;
@@ -164,13 +162,13 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       shieldContainer.y = screenSize.y;
 
       skillText.text =
-        playableItem.type === "head" ?
-          playableItem.state.fastSteps
+        playableItem === undefined ? "0"
+        : playableItem.type === "head" ? playableItem.state.fastSteps
         : playableItem.state.bigJumps;
       skillContainer.y = screenSize.y - 24;
     };
 
-    const updateCharacterSprite = ({ type: characterName }: PlayableItem) => {
+    const updateCharacterSprite = (characterName: CharacterName) => {
       const isCurrent = gameState.currentCharacterName === characterName;
       const characterSprite = hudElements[characterName].sprite;
       characterSprite.filters = isCurrent ? noFilters : uncurrentSpriteFilter;
@@ -181,10 +179,10 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
 
       characterSprite.y = screenSize.y - smallItemTextureSize.h;
     };
-    const updateLivesText = ({
-      type: characterName,
-      state: { lives },
-    }: PlayableItem) => {
+    const updateLivesText = (characterName: CharacterName) => {
+      const playableItem = getPlayableItem(gameState, characterName);
+      const lives = playableItem?.state.lives ?? 0;
+
       const text = hudElements[characterName].livesText;
       text.x =
         (screenSize.x >> 1) +
@@ -221,13 +219,9 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     iconFilter.targetColor = iconShade.basic;
 
     for (const character of characterNames) {
-      const itemInPlay = getPlayableItem(gameState, character);
-
-      if (itemInPlay !== undefined) {
-        updateLivesText(itemInPlay);
-        updateCharacterSprite(itemInPlay);
-        updateIcons(itemInPlay);
-      }
+      updateLivesText(character);
+      updateCharacterSprite(character);
+      updateIcons(character);
     }
     hudElements.head.hooter.container.x = hudElements.head.donuts.container.x =
       (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
@@ -242,14 +236,15 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     hudElements.heels.bag.container.y = hudElements.head.hooter.container.y =
       screenSize.y - 8;
 
-    const {
-      state: { hasHooter, donuts },
-    } = getPlayableItem(gameState, "head")!;
+    const headItem = getPlayableItem(gameState, "head");
+
+    const hasHooter = headItem?.state.hasHooter ?? false;
     hudElements.head.hooter.icon.filters =
       hasHooter ? noFilters : uncurrentSpriteFilter;
+    const donutCount = headItem?.state.donuts ?? 0;
     hudElements.head.donuts.icon.filters =
-      donuts !== 0 ? noFilters : uncurrentSpriteFilter;
-    hudElements.head.donuts.text.text = `${donuts}`;
+      donutCount !== 0 ? noFilters : uncurrentSpriteFilter;
+    hudElements.head.donuts.text.text = `${donutCount}`;
 
     const heelsItem = getPlayableItem(gameState, "heels");
     const hasBag = heelsItem?.state.hasBag ?? false;

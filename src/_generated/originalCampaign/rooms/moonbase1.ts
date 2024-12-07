@@ -201,8 +201,8 @@ clear.
 
 *Head Over Heels Manual*
 `,
-      }
-    }
+      },
+    },
   },
   planet: "moonbase",
   size: { x: 8, y: 8 },

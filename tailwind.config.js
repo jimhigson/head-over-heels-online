@@ -14,12 +14,34 @@ export default {
       scale: {
         double: "2",
       },
+      maxWidth: {
+        // suitable for dialogs opened for game menus
+        'mostOfScreen': '76rem',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        
+        'pureBlack':  '#000000',
+        'lightBlack':  '#3b4e48',
+        'shadow':  '#445a57',
+        'midGrey':  '#8a8080',
+        'lightGrey':  '#c4b8b8',
+        'white':  '#ffffff',
+        'metallicBlue':  '#4d74ad',
+        'pink':  '#d79ad4',
+        'moss':  '#a69c15',
+        'redShadow':  '#896a63',
+        'midRed':  '#ca8279',
+        'lightBeige':  '#dbb0a1',
+        'highlightBeige':  '#eccba5',
+        'alpha':  '#000000',
+        'replaceLight':  '#00ffff',
+        'replaceDark':  '#008080',
+      
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

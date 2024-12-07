@@ -10,10 +10,10 @@ import type { EmptyObject } from "type-fest";
 import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 import type { InputState } from "../input/InputState";
 
-type ScrollContent = ItemInPlayConfig<"scroll">;
+type ScrollConfig = ItemInPlayConfig<"scroll">;
 
 type ScrollContentProps = {
-  content: ScrollContent;
+  content: ScrollConfig;
 };
 
 function assertIsTextureId(textureId: string): asserts textureId is TextureId {
@@ -24,13 +24,16 @@ function assertIsTextureId(textureId: string): asserts textureId is TextureId {
 
 const markdownComponents: Components = {
   h2: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h2 className="scale-y-double text-l mb-6">{children}</h2>
+    <h2 className="text-metallicBlue scale-y-double text-l mb-6">{children}</h2>
   ),
   h3: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h3 className="text-l mb-6">{children}</h3>
+    <h3 className="text-metallicBlue text-l mb-6">{children}</h3>
   ),
   p: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <p className="text-base mb-6">{children}</p>
+    <p className="text-base text-shadow mb-6">{children}</p>
+  ),
+  em: ({ children }: PropsWithChildren<EmptyObject>) => (
+    <em className="text-base text-metallicBlue">{children}</em>
   ),
   img({ src }: JSX.IntrinsicElements["img"]) {
     if (src === undefined) return null;
@@ -71,15 +74,20 @@ const ScrollContent = ({ content }: ScrollContentProps) => {
 };
 
 type ScrollProps = {
-  content: ScrollContent | null;
+  content: ScrollConfig | null;
 };
 
 const Scroll = ({ content }: ScrollProps) => {
   return (
     <Dialog open={content !== null}>
-      <DialogContent className="font-hoh" aria-describedby={undefined}>
+      <DialogContent
+        className="font-hoh bg-highlightBeige"
+        aria-describedby={undefined}
+      >
         {content === null ? null : <ScrollContent content={content} />}
-        <p className="text-center text-base">Press jump to continue</p>
+        <p className="text-center scale-y-double text-base m-6 text-redShadow">
+          Press jump to continue
+        </p>
       </DialogContent>
     </Dialog>
   );
@@ -92,15 +100,13 @@ export type ScrollOpenerProps<RoomId extends string> = {
 export const ScrollOpener = <RoomId extends string>({
   gameApi,
 }: ScrollOpenerProps<RoomId>) => {
-  const [scrollContent, setScrollContent] = useState<ScrollContent | null>(
-    null,
-  );
+  const [scrollContent, setScrollContent] = useState<ScrollConfig | null>(null);
 
   useEffect(
     function listenForScrollOpen() {
       if (gameApi === undefined) return;
 
-      const handleScrollOpened = (scrollContent: ScrollContent) => {
+      const handleScrollOpened = (scrollContent: ScrollConfig) => {
         setScrollContent(scrollContent);
       };
 

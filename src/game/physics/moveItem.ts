@@ -1,5 +1,5 @@
 import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import { isItemType } from "./itemPredicates";
+import { isItemType, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
@@ -166,7 +166,8 @@ export const moveItem = <RoomId extends string>({
         forceful ?
           // lifts don't slow down when stuff is on them
           -1
-          // split the difference - the pushee moves half as far forward as our intersection
+        : isSlidingItem(collision) ? -0.9
+          // split the difference - the pushed item moves half as far forward as our intersection
         : -0.5;
 
       // the vector in the direction of the push:
@@ -186,7 +187,7 @@ export const moveItem = <RoomId extends string>({
           with push coefficient of ${pushCoefficient}`,
         );
 
-      // recursively apply push to pushee
+      // recursively apply push to pushed item
       if (
         moveItem({
           subjectItem: collision,

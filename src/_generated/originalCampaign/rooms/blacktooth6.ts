@@ -66,7 +66,7 @@ export const room = {
     "switch@6,0,1:V4krG": {
       config: {
         activates: {
-          "baddie@3,0,1:Z1w4InY": {
+          "baddie@3,0,1:Z1rA6U9": {
             left: { activated: true },
             right: { activated: false },
           },

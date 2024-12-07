@@ -1,7 +1,8 @@
-import type {
-  RoomState,
-  CharacterName,
-  Campaign,
+import {
+  type RoomState,
+  type CharacterName,
+  type Campaign,
+  otherCharacterName,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
@@ -32,6 +33,14 @@ export const currentPlayableItem = <RoomId extends string>(
   gameState.characterRooms[gameState.currentCharacterName]!.room.items[
     gameState.currentCharacterName
   ]!;
+
+/** gets the playable item for the non-current character */
+export const otherPlayableItem = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+): PlayableItem | undefined => {
+  const name = otherCharacterName(gameState.currentCharacterName);
+  return gameState.characterRooms[name]?.room.items[name];
+};
 
 export const getPlayableItem = <
   C extends CharacterName,

@@ -73,18 +73,17 @@ const sampleSpritesheetPalette = () =>
       function* pixels(): Generator<[ColorPaletteName, Color]> {
         for (let i = 0; i < 16; i++) {
           const pixelStart = i * 4;
-          yield [
-            colourPaletteNames[i],
-            new Color({
-              r: imageData[pixelStart],
-              g: imageData[pixelStart + 1],
-              b: imageData[pixelStart + 2],
-            }),
-          ];
+          const colour = new Color({
+            r: imageData[pixelStart],
+            g: imageData[pixelStart + 1],
+            b: imageData[pixelStart + 2],
+          });
+          yield [colourPaletteNames[i], colour];
         }
       }
 
       const paletteMap = fromAllEntries(pixels());
+
       resolve(paletteMap);
     };
 

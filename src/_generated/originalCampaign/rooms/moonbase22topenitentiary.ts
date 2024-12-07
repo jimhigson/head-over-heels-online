@@ -106,8 +106,8 @@ skill required. The worst place is The Pit, try not to fall into it!
 
 *Head Over Heels Manual*
 `,
-      }
-    }
+      },
+    },
   },
   planet: "moonbase",
   size: { x: 6, y: 8 },
