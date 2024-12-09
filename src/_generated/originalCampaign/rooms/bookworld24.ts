@@ -3,7 +3,7 @@ import type { RoomJson } from "../../../model/modelTypes.ts";
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = {
-  color: { hue: "white", shade: "basic" },
+  color: { hue: "magenta", shade: "basic" },
   floor: "deadly",
   floorSkip: [],
   id: "bookworld24",

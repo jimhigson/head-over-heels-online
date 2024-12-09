@@ -40,7 +40,7 @@ themselves away. Nobody knows where they go, but the instant they see any of
 Head's race, they disappear and won't return until they are sure the coast is
 clear.
 
-*Head Over Heels Manual*
+*> Head Over Heels Manual*
 `,
       },
     },

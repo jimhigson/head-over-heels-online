@@ -69,7 +69,7 @@ that they would have to see all four of the slave planets revolt before the
 Blacktooth crown could cause an uprising. This of course would be the ultimate
 accolade, and unfortunately, almost certain suicide.
 
-*Head Over Heels Manual*
+*> Head Over Heels Manual*
 `,
       },
       position: { x: 3, y: 7, z: 0 },
@@ -92,7 +92,7 @@ There are four types:
 3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
 4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
 
-*Head Over Heels Manual*
+*> Head Over Heels Manual*
 `,
       },
       position: { x: 3, y: 0, z: 0 },

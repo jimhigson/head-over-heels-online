@@ -3,7 +3,7 @@ import type { RoomJson } from "../../../model/modelTypes.ts";
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = {
-  color: { hue: "white", shade: "basic" },
+  color: { hue: "yellow", shade: "basic" },
   floor: "none",
   floorSkip: [],
   id: "bookworld39",
@@ -62,6 +62,28 @@ export const room = {
       config: { toRoom: "bookworld1" },
       position: { x: 7, y: 4, z: 0 },
       type: "teleporter",
+    },
+    scroll: {
+      config: {
+        text: `
+## Exalted Emperor:
+
+![](teleporter)Sire, I took the liberty of installing this teleporter 
+to aid your magnificent return to the moonbase after the daily crown inspections.
+
+![](cyberman.towards) Supplies are running short of teleporters, so I set it up one-way
+until more come in.
+May I humbly suggest you teleport after inspecting the crown or his grace
+will have a long walk (well, ride on a minion’s back) to get back here.
+
+Of course, those two spies we threw in jail might try to use it to grab the crown and escape.
+Just kidding, they’ll never get this far!
+
+*> Your humble minion*
+`,
+      },
+      position: { x: 0, y: 0, z: 10 },
+      type: "scroll",
     },
   },
   planet: "bookworld",

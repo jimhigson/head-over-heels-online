@@ -18,7 +18,7 @@ export const room = {
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
-    "scrollBlock": {
+    scrollBlock: {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 5, z: 0 },
       type: "block",
@@ -61,7 +61,7 @@ export const room = {
 13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching
     carefully for any movement in the room as you enter.
 
-*Head Over Heels Manual*
+*> Head Over Heels Manual*
 `,
       },
       position: { x: 7, y: 5, z: 1 },

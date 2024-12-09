@@ -1,4 +1,26 @@
 [
+  {
+    "op": "add",
+    "path": "/rooms/safari34/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## Exalted Emperor:\n\n![](teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](cyberman.towards) Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
+      },
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary33/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## Exalted Emperor:\n\n![](teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](cyberman.towards) Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
+      },
+      "position": { "x": 5, "y": 6, "z": 2 },
+      "type": "scroll"
+    }
+  },
   { "op": "replace", "path": "/rooms/moonbase9/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase8/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase7/color/hue", "value": "green" },
@@ -34,7 +56,7 @@
       "type": "scroll",
       "position": { "x": 6, "y": 6, "z": 0 },
       "config": {
-        "text": "\n## BOOK WORLD\n\nThe emperor is very keen on cowboy books and has devoted an entire world to a\nwestern library. Only the emperor's minions are permitted to read them.\nInformation is rigorously suppressed in the empire.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## BOOK WORLD\n\n![](bookworld.wall.person.left) The emperor is very keen on cowboy books and has devoted an entire world to a\nwestern library. Only the emperor's minions are permitted to read them.\nInformation is rigorously suppressed in the empire.\n\n*> Head Over Heels Manual*\n"
       }
     }
   },
@@ -50,7 +72,7 @@
       "type": "scroll",
       "position": { "x": 2, "y": 3, "z": 0 },
       "config": {
-        "text": "\n## EGYPTUS\n\nOnce, a long time ago, a craft from Blacktooth got a bit lost while doing a\nhyperspace jump and landed on an unknown planet. Here the crew found a primitive\nanimal forming a sort of civilization that appeared to revolve around wrapping\ncorpses in lots of bandages and putting them into huge stone pyramids. When they\nreturned to Blacktooth their emperor liked the sound of it so much that he\nrebuilt the capital city of one of the slave planets to resemble the story.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## EGYPTUS\n\n![](egyptus.wall.sarcophagus.left) Once, a long time ago, a craft from Blacktooth got a bit lost while doing a\nhyperspace jump and landed on an unknown planet. Here the crew found a primitive\nanimal forming a sort of civilization that appeared to revolve around wrapping\ncorpses in lots of bandages and putting them into huge stone pyramids. When they\nreturned to Blacktooth their emperor liked the sound of it so much that he\nrebuilt the capital city of one of the slave planets to resemble the story.\n\n*> Head Over Heels Manual*\n"
       }
     }
   },
@@ -71,7 +93,7 @@
       "type": "scroll",
       "position": { "x": 1, "y": 4, "z": 0 },
       "config": {
-        "text": "\n## PENITENTIARY\n### The empire's prison planet\n\nMillions are imprisoned here. A harsh planet, very mountainous, much climbing,\nskill required. The worst place is The Pit, try not to fall into it!\n\n*Head Over Heels Manual*\n"
+        "text": "\n## PENITENTIARY\n### The empire's prison planet\n\n![](penitentiary.wall.skeleton.left) Millions are imprisoned here. A harsh planet, very mountainous, much climbing,\nskill required. The worst place is The Pit, try not to fall into it!\n\n*> Head Over Heels Manual*\n"
       }
     }
   },
@@ -87,7 +109,7 @@
       "type": "scroll",
       "position": { "x": 1, "y": 3, "z": 0 },
       "config": {
-        "text": "\n## SAFARI\n\nA densely vegetated planet, mainly used for hunting. The natives live in wooden\nforts in the jungle, beware traps!\n\n*Head Over Heels Manual*\n"
+        "text": "\n## SAFARI\n\n![](safari.wall.shield.left) A densely vegetated planet, mainly used for hunting. The natives live in wooden\nforts in the jungle, beware traps!\n\n*> Head Over Heels Manual*\n"
       }
     }
   },
@@ -153,6 +175,17 @@
     "value": "dimmed"
   },
   { "op": "replace", "path": "/rooms/egyptus38/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus38/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## Exalted Emperor:\n\n![](teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](cyberman.towards) Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
+      },
+      "position": { "x": 5, "y": 6, "z": 6 },
+      "type": "scroll"
+    }
+  },
   { "op": "replace", "path": "/rooms/egyptus37/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/egyptus36/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/egyptus35/color/hue", "value": "yellow" },
@@ -218,12 +251,170 @@
     "value": "dimmed"
   },
   { "op": "replace", "path": "/rooms/egyptus11/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/bookworld8/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/bookworld7/color/hue", "value": "green" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld40/color/hue",
+    "value": "yellow"
+  },
+  { "op": "replace", "path": "/rooms/bookworld4/color/hue", "value": "green" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld39/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld39/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## Exalted Emperor:\n\n![](teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](cyberman.towards) Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
+      },
+      "position": { "x": 0, "y": 0, "z": 10 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld38/color/hue",
+    "value": "yellow"
+  },
+  { "op": "replace", "path": "/rooms/bookworld37/color/hue", "value": "cyan" },
+  { "op": "replace", "path": "/rooms/bookworld36/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/bookworld35/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld33/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld33/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld32/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld31/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld30/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld30/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld3/color/hue",
+    "value": "magenta"
+  },
+  { "op": "replace", "path": "/rooms/bookworld27/color/hue", "value": "green" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld26/color/hue",
+    "value": "magenta"
+  },
+  { "op": "replace", "path": "/rooms/bookworld25/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld24/color/hue",
+    "value": "magenta"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld23/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/bookworld23/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld22/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld21/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld21/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld20/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld2/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/bookworld2/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld19/color/hue",
+    "value": "yellow"
+  },
+  { "op": "replace", "path": "/rooms/bookworld18/color/hue", "value": "green" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld16/color/shade",
+    "value": "dimmed"
+  },
+  { "op": "replace", "path": "/rooms/bookworld16/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld15/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld15/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld13/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld12fish/color/hue",
+    "value": "cyan"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld11/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld11/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld10/color/hue",
+    "value": "yellow"
+  },
   {
     "op": "add",
     "path": "/rooms/blacktooth9/items/scroll",
     "value": {
       "config": {
-        "text": "\n## HOOTER\n\n![](hooter)\nThe hooter may be used by Head to fire doughnuts at attacking monsters. This\nwill freeze them in place as they lick the doughnut off their faces. The hooter\nmay only be used by Head and requires a tray of doughnuts to be of any use.\n\n**Head Over Heels Manual**\n"
+        "text": "\n## HOOTER\n\n![](hooter)\nThe hooter may be used by Head to fire doughnuts at attacking monsters. This\nwill freeze them in place as they lick the doughnut off their faces. The hooter\nmay only be used by Head and requires a tray of doughnuts to be of any use.\n\n**> Head Over Heels Manual**\n"
       },
       "position": { "x": 7, "y": 1, "z": 1 },
       "type": "scroll"
@@ -290,7 +481,7 @@
     "path": "/rooms/blacktooth6/items/scroll",
     "value": {
       "config": {
-        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 2, "y": 3, "z": 1 },
       "type": "scroll"
@@ -314,7 +505,7 @@
       "type": "scroll",
       "position": { "x": 5, "y": 5, "z": 0 },
       "config": {
-        "text": "\n## HUSH PUPPIES\n\n![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## HUSH PUPPIES\n\n![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> Head Over Heels Manual*\n"
       }
     }
   },
@@ -396,7 +587,7 @@
     "path": "/rooms/blacktooth3/items/scroll",
     "value": {
       "config": {
-        "text": "\n## HINTS AND TIPS\n\n1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. ![](hud.char.2) When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. ![](hud.char.3) Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. ![](hud.char.4) Make sure Head learns to climb ladders; this is an essential skill.\n5. ![](hud.char.5) Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. ![](hud.char.6) If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. ![](hud.char.7) Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. ![](hud.char.9) Make a map.\n10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.\n11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.\n12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## HINTS AND TIPS\n\n1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. ![](hud.char.2) When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. ![](hud.char.3) Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. ![](hud.char.4) Make sure Head learns to climb ladders; this is an essential skill.\n5. ![](hud.char.5) Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. ![](hud.char.6) If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. ![](hud.char.7) Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. ![](hud.char.9) Make a map.\n10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.\n11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.\n12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 7, "y": 5, "z": 1 },
       "type": "scroll"
@@ -490,7 +681,7 @@
     "path": "/rooms/blacktooth23heels/items/scroll",
     "value": {
       "config": {
-        "text": "\n## HEAD \n### (HEADUS MOUTHION)\n\n![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## HEAD \n### (HEADUS MOUTHION)\n\n![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 7, "y": 1, "z": 0 },
       "type": "scroll"
@@ -501,7 +692,7 @@
     "path": "/rooms/blacktooth23heels/items/scroll2",
     "value": {
       "config": {
-        "text": "\n## HEELS \n### (FOOTUS UNDERIUM)\n\n![](heels.walking.towards.2) During Heels’s evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\n*Head Over Heels Manual*\n"
+        "text": "\n## HEELS \n### (FOOTUS UNDERIUM)\n\n![](heels.walking.towards.2) During Heels’s evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "scroll"
@@ -537,7 +728,7 @@
     "path": "/rooms/blacktooth1head/items/scrollTheGame",
     "value": {
       "config": {
-        "text": "\n## THE GAME\n\n![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the marketplace so they can join up again. From\nthere, the journey leads to Moonbase Headquarters, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\n![](crown)To overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## THE GAME\n\n![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the marketplace so they can join up again. From\nthere, the journey leads to Moonbase Headquarters, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\n![](crown)To overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "scroll"
@@ -548,7 +739,7 @@
     "path": "/rooms/blacktooth1head/items/scrollRabbit",
     "value": {
       "config": {
-        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. ![](hud.char.2) **Two extra lives**\n2. ![](hud.shield) **Iron Pills** (to make you invulnerable)\n3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)\n4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)\n\n*Head Over Heels Manual*\n"
+        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. ![](hud.char.2) **Two extra lives**\n2. ![](hud.shield) **Iron Pills** (to make you invulnerable)\n3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)\n4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)\n\n*> Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 0, "z": 0 },
       "type": "scroll"

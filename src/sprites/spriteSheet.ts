@@ -390,7 +390,7 @@ const spritesheetData = {
       "spring.released",
       "spring.compressed",
       "spring.released",
-  ],
+    ],
     ...playableSpritesheetData.animations,
   },
   meta: { scale: 1 },

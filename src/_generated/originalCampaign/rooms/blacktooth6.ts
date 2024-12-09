@@ -83,7 +83,7 @@ export const room = {
       position: { x: 6, y: 0, z: 1 },
       type: "switch",
     },
-    "scrollBlock": {
+    scrollBlock: {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 3, z: 0 },
       type: "block",
@@ -97,7 +97,7 @@ export const room = {
 may pick up doughnuts. The number of remaining doughnuts will be displayed above
 the doughnut icon at the bottom left of the screen.
 
-*Head Over Heels Manual*
+*> Head Over Heels Manual*
 `,
       },
       position: { x: 2, y: 3, z: 1 },
