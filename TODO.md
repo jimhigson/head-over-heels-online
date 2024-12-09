@@ -97,6 +97,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     [!] now they do (on every frame) but means some duplicative touches 🤷‍♂️
 [ ] disappearing blocks should only go when stood on (hit from the top)
 [ ] head and heels can combine
+[ ] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding
     [ ] hud readable over game
 [ ] sonic-like shield effect when got shield    
@@ -221,3 +222,7 @@ Pros:
 * jumping, gravity etc are trivial now
 * easy to 'edge up' by single pixels
 * was already tracking zVelocity (for jumping), but not x/y/z - jumping set (redudantly) the zVel and gave a state delta - could have given either/or - is more consistent. Could probably store velocity just for walkin
+
+
+musicxml for game music: https://github.com/dougmencken/HeadOverHeels/blob/master/gamedata/music/safari.xml
+musicxml player in browser: https://blog.karimratib.me/demos/musicxml/

@@ -301,6 +301,10 @@ ate the fish, and you will even have its taste still in your mouth! How a fish
 can remember anything when it's been eaten has never been successfully
 explained.
 
+You must be very careful to check that the fish is
+alive and wriggling as dead fish decompose very quickly and it rapidly
+turns so poisonous that a single lick can kill.
+
 ### WARNING:
 
 Even living reincarnation fish taste horrible!

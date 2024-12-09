@@ -54,7 +54,7 @@ export const room = {
 ## THE GAME
 
 ![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle
-headquarters of Blacktooth. Their cells contain 'keep fit' equipment, including
+headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb. Your job is to get them both
 out of the castle and into the marketplace so they can join up again. From
 there, the journey leads to Moonbase Headquarters, where you will have to decide
@@ -88,9 +88,9 @@ they will both get the enhanced power.
 There are four types:
 
 1. **Two extra lives**
-2. **Iron Pills** [ to make you invulnerable ] ![](hud.shield)
-3. **Jump higher bunny** [ only works on Heels ] ![](hud.bigJumps)
-4. **Go faster bunny** [ only works on slow-moving Head ] ![](hud.fastSteps)
+2. ![](hud.shield) **Iron Pills** (to make you invulnerable)
+3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
+4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
 
 *Head Over Heels Manual*
 `,

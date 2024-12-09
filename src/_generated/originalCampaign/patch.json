@@ -236,7 +236,7 @@
       "type": "scroll",
       "position": { "x": 3, "y": 7, "z": 0 },
       "config": {
-        "text": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
+        "text": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
       }
     }
   },
@@ -257,7 +257,7 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/baddie@3,0,1:Z1w4InY",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1:V4krG/config/activates/baddie@3,0,1:Z1rA6U9",
     "value": { "left": { "activated": true }, "right": { "activated": false } }
   },
   {
@@ -305,7 +305,7 @@
     "path": "/rooms/blacktooth5/items/scroll",
     "value": {
       "config": {
-        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don't waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 1, "y": 5, "z": 0 },
       "type": "scroll"
@@ -375,12 +375,32 @@
   },
   {
     "op": "add",
+    "path": "/rooms/blacktooth3/items/scrollBlock",
+    "value": {
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 7, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth3/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## HINTS AND TIPS\n\n1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. ![](hud.char.2) When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. ![](hud.char.3) Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. ![](hud.char.4) Make sure Head learns to climb ladders; this is an essential skill.\n5. ![](hud.char.5) Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. ![](hud.char.6) If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. ![](hud.char.7) Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. ![](hud.char.9) Make a map. The first part of Castle Blacktooth has been mapped and drawn on\n   the cover to show you the best way to approach this.\n10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.\n11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.\n12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n14. ![](hud.char.1)![](hud.char.4)If you wish to freeze the game without the pause message obscuring the\n    screen display, keep the pause key depressed.\n\n*Head Over Heels Manual*\n"
+      },
+      "position": { "x": 7, "y": 5, "z": 1 },
+      "type": "scroll"
+    }
+  },
+  {
+    "op": "add",
     "path": "/rooms/blacktooth28/items/scroll",
     "value": {
       "type": "scroll",
       "position": { "x": 4, "y": 0, "z": 1 },
       "config": {
-        "text": "\n## BAG\n\n![](bag)The bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag's icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\n![](cube)![](drum)![](spring.compressed)![](sticks)\n\n**Head Over Heels Manual**\n"
+        "text": "\n## BAG\n\n![](bag)The bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag’s icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\n![](cube)![](drum)![](spring.compressed)![](sticks)\n\n**Head Over Heels Manual**\n"
       }
     }
   },
@@ -400,7 +420,7 @@
       "type": "scroll",
       "position": { "x": 0, "y": 7, "z": 0 },
       "config": {
-        "text": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
+        "text": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
       }
     }
   },
@@ -461,7 +481,7 @@
     "path": "/rooms/blacktooth23heels/items/scroll",
     "value": {
       "config": {
-        "text": "\n## HEAD \n### HEADUS MOUTHION\n\n![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## HEAD \n### (HEADUS MOUTHION)\n\n![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 7, "y": 1, "z": 0 },
       "type": "scroll"
@@ -472,7 +492,7 @@
     "path": "/rooms/blacktooth23heels/items/scroll2",
     "value": {
       "config": {
-        "text": "\n## HEELS \n### FOOTUS UNDERIUM\n\n![](heels.walking.towards.2) During Heels's evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\n*Head Over Heels Manual*\n"
+        "text": "\n## HEELS \n### (FOOTUS UNDERIUM)\n\n![](heels.walking.towards.2) During Heels’s evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "scroll"
@@ -508,7 +528,7 @@
     "path": "/rooms/blacktooth1head/items/scrollTheGame",
     "value": {
       "config": {
-        "text": "\n## THE GAME\n\n![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain 'keep fit' equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the marketplace so they can join up again. From\nthere, the journey leads to Moonbase Headquarters, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\n![](crown)To overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## THE GAME\n\n![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the marketplace so they can join up again. From\nthere, the journey leads to Moonbase Headquarters, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\n![](crown)To overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "scroll"
@@ -519,7 +539,7 @@
     "path": "/rooms/blacktooth1head/items/scrollRabbit",
     "value": {
       "config": {
-        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. **Two extra lives**\n2. **Iron Pills** [ to make you invulnerable ] ![](hud.shield)\n3. **Jump higher bunny** [ only works on Heels ] ![](hud.bigJumps)\n4. **Go faster bunny** [ only works on slow-moving Head ] ![](hud.fastSteps)\n\n*Head Over Heels Manual*\n"
+        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. **Two extra lives**\n2. ![](hud.shield) **Iron Pills** (to make you invulnerable)\n3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)\n4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 0, "z": 0 },
       "type": "scroll"

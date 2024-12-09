@@ -48,6 +48,8 @@ export type FrameNumbers<N extends number> =
   : `${N}` extends "5" ? "1" | "2" | "3" | "4" | "5"
   : `${N}` extends "6" ? "1" | "2" | "3" | "4" | "5" | "6"
   : `${N}` extends "7" ? "1" | "2" | "3" | "4" | "5" | "6" | "7"
+  : `${N}` extends "8" ? "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"
+  : `${N}` extends "9" ? "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
   : never;
 
 //technically not all our animations have four frames but that's the maximum and it'll do ok

@@ -139,6 +139,19 @@ export const randomlyChangeDirection = <RoomId extends string>(
       )
     : walking;
 
+  /*walking: accelerateToSpeed({
+        acc: 0.000_1,
+        crossComponentFade: 0.000_1,
+        deltaMS,
+        maxSpeed: walkSpeedPixPerMs[which],
+        minVelocity: walkSpeedPixPerMs[which] / 4,
+        unitD:
+          produceNewWalk ?
+            unitVectors[randomFromArray(directions)]
+          : unitVector(walking),
+        vel: walking,
+      }),*/
+
   return {
     movementType: "vel",
     vels: {

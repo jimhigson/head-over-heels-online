@@ -12,12 +12,12 @@ import {
   doorTextureSize,
   largeItemTextureSize,
   smallItemTextureSize,
-  hudCharTextureSize,
   smallItemOutlineTextureSize,
 } from "./textureSizes";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
+import { hudSpritesheetData } from "./hudSritesheetData";
 
 let spritesTexture: Texture;
 try {
@@ -355,18 +355,9 @@ const frames = {
     frame: { x: 102, y: 453, ...smallItemTextureSize },
   },
 
-  "hud.fastSteps": {
-    frame: { x: 569, y: 0, ...hudCharTextureSize },
-  },
-  "hud.shield": {
-    frame: { x: 578, y: 0, ...hudCharTextureSize },
-  },
-  "hud.bigJumps": {
-    frame: { x: 587, y: 0, ...hudCharTextureSize },
-  },
-
   ...playableSpritesheetData.frames,
   ...scenerySpritesheetData.frames,
+  ...hudSpritesheetData.frames,
 };
 
 const spritesheetData = {
@@ -399,7 +390,7 @@ const spritesheetData = {
       "spring.released",
       "spring.compressed",
       "spring.released",
-    ],
+  ],
     ...playableSpritesheetData.animations,
   },
   meta: { scale: 1 },

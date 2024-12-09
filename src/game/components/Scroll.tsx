@@ -5,10 +5,18 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
-import { Sprite } from "./Sprite";
+import {
+  ImgSprite,
+  ImgSpriteText,
+  RenderTextChildrenAsSprites,
+} from "./Sprite";
 import type { EmptyObject } from "type-fest";
-import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 import type { InputState } from "../input/InputState";
+import { assertIsTextureId } from "../../sprites/assertIsTextureId";
+import { spritesheetPalette } from "@/sprites/samplePalette";
+
+const imageScale = 8;
+const textScale = 4;
 
 type ScrollConfig = ItemInPlayConfig<"scroll">;
 
@@ -16,24 +24,67 @@ type ScrollContentProps = {
   content: ScrollConfig;
 };
 
-function assertIsTextureId(textureId: string): asserts textureId is TextureId {
-  if (spriteSheet.textures[textureId as TextureId] === undefined) {
-    throw new Error(`Invalid textureId: "${textureId}"`);
-  }
-}
-
 const markdownComponents: Components = {
   h2: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h2 className="text-metallicBlue scale-y-double text-l mb-6">{children}</h2>
+    <h2 className={`text-metallicBlue mb-${textScale * 2}`}>
+      <RenderTextChildrenAsSprites
+        imgSpriteTextProps={{
+          doubleHeight: true,
+          color: spritesheetPalette().metallicBlue,
+          scale: textScale,
+        }}
+      >
+        {children}
+      </RenderTextChildrenAsSprites>
+    </h2>
   ),
   h3: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h3 className="text-metallicBlue text-l mb-6">{children}</h3>
+    <h3 className={`text-metallicBlue mt-${textScale * 2} mb-${textScale}`}>
+      <RenderTextChildrenAsSprites
+        imgSpriteTextProps={{
+          color: spritesheetPalette().metallicBlue,
+          scale: textScale,
+        }}
+      >
+        {children}
+      </RenderTextChildrenAsSprites>
+    </h3>
   ),
   p: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <p className="text-base text-shadow mb-6">{children}</p>
+    <p className={`mb-${textScale} leading-${textScale} clear-both`}>
+      <RenderTextChildrenAsSprites imgSpriteTextProps={{ scale: textScale }}>
+        {children}
+      </RenderTextChildrenAsSprites>
+    </p>
+  ),
+  li: ({ children }: PropsWithChildren<EmptyObject>) => (
+    <p className={`mb-${textScale} leading-${textScale}`}>
+      <RenderTextChildrenAsSprites imgSpriteTextProps={{ scale: textScale }}>
+        {children}
+      </RenderTextChildrenAsSprites>
+    </p>
+  ),
+  strong: ({ children }: PropsWithChildren<EmptyObject>) => (
+    <RenderTextChildrenAsSprites
+      className={`me-${textScale}`}
+      imgSpriteTextProps={{
+        scale: textScale,
+        color: spritesheetPalette().midRed,
+      }}
+    >
+      {children}
+    </RenderTextChildrenAsSprites>
   ),
   em: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <em className="text-base text-metallicBlue">{children}</em>
+    <RenderTextChildrenAsSprites
+      className={`me-${textScale}`}
+      imgSpriteTextProps={{
+        scale: textScale,
+        color: spritesheetPalette().moss,
+      }}
+    >
+      {children}
+    </RenderTextChildrenAsSprites>
   ),
   img({ src }: JSX.IntrinsicElements["img"]) {
     if (src === undefined) return null;
@@ -41,9 +92,10 @@ const markdownComponents: Components = {
     assertIsTextureId(src);
 
     return (
-      <Sprite
-        spriteOptions={src}
-        className="float-left mr-8 my-8 w-1/5 aspect-square mb-2"
+      <ImgSprite
+        scale={imageScale}
+        textureId={src}
+        className={`float-left mr-${textScale} mb-${textScale} w-1/5 mb-2`}
       />
     );
   },
@@ -78,16 +130,22 @@ type ScrollProps = {
 };
 
 const Scroll = ({ content }: ScrollProps) => {
+  const isOpen = content !== null;
   return (
-    <Dialog open={content !== null}>
-      <DialogContent
-        className="font-hoh bg-highlightBeige"
-        aria-describedby={undefined}
-      >
+    <Dialog open={isOpen}>
+      <DialogContent className="bg-highlightBeige" aria-describedby={undefined}>
         {content === null ? null : <ScrollContent content={content} />}
-        <p className="text-center scale-y-double text-base m-6 text-redShadow">
-          Press jump to continue
-        </p>
+        {isOpen && (
+          <p className="text-center">
+            <ImgSpriteText
+              scale={textScale}
+              doubleHeight
+              color={spritesheetPalette().redShadow}
+            >
+              Press jump to continue
+            </ImgSpriteText>
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );

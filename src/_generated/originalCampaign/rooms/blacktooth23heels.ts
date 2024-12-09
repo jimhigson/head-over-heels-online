@@ -182,7 +182,7 @@ export const room = {
       config: {
         text: `
 ## HEAD 
-### HEADUS MOUTHION
+### (HEADUS MOUTHION)
 
 ![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting
 on top of one. Head is descended from a breed of flying reptile and still has
@@ -199,9 +199,9 @@ guide himself through the air.
       config: {
         text: `
 ## HEELS 
-### FOOTUS UNDERIUM
+### (FOOTUS UNDERIUM)
 
-![](heels.walking.towards.2) During Heels's evolution, the arms have totally disappeared while the legs have
+![](heels.walking.towards.2) During Heels’s evolution, the arms have totally disappeared while the legs have
 become very powerful. Heels can jump his own height and can also run very fast.        
 
 *Head Over Heels Manual*

@@ -487,6 +487,16 @@ const rooms = {
       {
         type: "block",
         config: { style: "organic", disappearing: true },
+        position: { x: 9, y: 0, z: 1 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 9, y: 0, z: 3 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
         position: { x: 10, y: 0, z: 0 },
       },
       {

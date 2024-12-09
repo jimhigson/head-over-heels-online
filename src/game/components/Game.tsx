@@ -3,7 +3,6 @@ import type { Campaign } from "../../model/modelTypes";
 import { type GameApi } from "../GameApi";
 import type { RenderOptions } from "../RenderOptions";
 import { load as loadPalette } from "@/sprites/samplePalette";
-import { loadFont } from "../render/hud/loadHohFont";
 import { ScrollOpener } from "./Scroll";
 
 const useGame = <RoomId extends string>(
@@ -14,7 +13,7 @@ const useGame = <RoomId extends string>(
   const [loadedAssets, setLoadedAssets] = useState<boolean>();
 
   useEffect(function loadAssets() {
-    Promise.all([loadPalette(), loadFont()]).then(() => setLoadedAssets(true));
+    Promise.all([loadPalette()]).then(() => setLoadedAssets(true));
   }, []);
 
   useEffect(
