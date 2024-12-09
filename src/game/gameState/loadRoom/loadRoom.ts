@@ -1,5 +1,6 @@
 import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
+import type { RoomState, RoomStateItems } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { entries, objectEntriesIter } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";

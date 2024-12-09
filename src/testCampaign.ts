@@ -1,5 +1,6 @@
 import type { Campaign } from "./model/modelTypes.ts";
-import { type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
+import { type RoomWalls } from "./model/modelTypes.ts";
+import { type RoomJson } from "./model/RoomJson.ts";
 import type { PlanetName, Wall } from "./sprites/planets.ts";
 import { planetNames, planets } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
@@ -42,7 +43,7 @@ export type TestCampaignRoomId =
 const colourRooms = () => {
   type Entry<P extends PlanetName> = [
     ColorRoomIds,
-    RoomJson<P, TestCampaignRoomId>,
+    RoomJson<P, TestCampaignRoomId, string>,
   ];
 
   const sampleItems: UnknownJsonItem<TestCampaignRoomId>[] = [
@@ -143,7 +144,7 @@ const colourRooms = () => {
   }
   return Object.fromEntries(room()) as Record<
     ColorRoomIds,
-    RoomJson<PlanetName, ColorRoomIds>
+    RoomJson<PlanetName, ColorRoomIds, string>
   >;
 };
 
@@ -839,7 +840,7 @@ const rooms = {
         position: { x: 17, y: 5, z: 3 },
       },
     ]),
-  } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
+  } satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
 
   renderEverything: {
     size: { x: 18, y: 18 },

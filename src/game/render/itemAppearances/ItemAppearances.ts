@@ -347,7 +347,7 @@ export const itemAppearances: {
     }
 
     const pickupIcons: Record<
-      ItemConfigMap<PlanetName, string>["pickup"]["gives"],
+      ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
       CreateSpriteOptions
     > = {
       shield: "bunny",
@@ -683,6 +683,34 @@ export const itemAppearances: {
     };
   },
 
+  scroll({
+    item: {
+      state: { expires },
+    },
+    currentlyRenderedProps,
+  }) {
+    const bubbles = expires !== null;
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      currentlyRenderedProps.bubbles !== bubbles;
+
+    if (!render) {
+      return;
+    }
+
+    return {
+      container:
+        bubbles ?
+          createSprite({
+            frames: spriteSheet.animations["bubbles.taupe"],
+            playOnce: "and-destroy",
+          })
+        : createSprite("scroll"),
+      renderProps: { bubbles },
+    };
+  },
+
   ball: staticSpriteAppearance("ball"),
 
   // for now, the floor has special rendering different from the main engine.
@@ -690,9 +718,4 @@ export const itemAppearances: {
   floor() {
     throw new Error("floor should not be rendered as an item");
   },
-
-  scroll: renderOnce(() => ({
-    renderProps: {},
-    container: createSprite({ texture: "scroll", pivot: { x: 17, y: 24 } }),
-  })),
 };

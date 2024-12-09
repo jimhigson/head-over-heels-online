@@ -19,7 +19,7 @@ export function* loadItem<RoomId extends string>(
   jsonItem: UnknownJsonItem<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
 ): Generator<UnknownItemInPlay<RoomId>, undefined> {
-  if (jsonItem.type === "pickup" && roomPickupsCollected[itemId]) {
+  if (roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
     return;
   }

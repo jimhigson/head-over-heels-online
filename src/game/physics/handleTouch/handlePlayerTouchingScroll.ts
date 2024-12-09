@@ -1,40 +1,28 @@
+import { makeItemFadeOut } from "@/game/gameState/mutators/makeItemFadeOut";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { CharacterName } from "@/model/modelTypes";
 
 export const handlePlayerTouchingScroll = <RoomId extends string>({
   touchedItem: scrollItem,
-  gameState: { progression, events },
+  gameState,
+  room,
 }: ItemTouchEvent<RoomId, CharacterName, "scroll">) => {
   const {
     config,
-    state: { touchedOnProgression },
+    state: { expires },
   } = scrollItem;
 
-  scrollItem.state.touchedOnProgression = progression;
-  console.log("ℹ️ update touchedOnProgression to", progression);
-
-  if (
-    // touched on the last 10 ticks:
-    progression <
-    touchedOnProgression + 10
-  ) {
-    console.log(
-      "❌ not considering scroll touchd because progression is",
-      progression,
-      "and touchedOnProgression is",
-      touchedOnProgression,
-    );
-
-    // switch was already being pressed so skip it:
+  if (expires !== null) {
+    // is on its way out, having already been touched
     return;
   }
 
-  console.log(
-    "✅ considering scroll touchd because progression is",
-    progression,
-    "and touchedOnProgression is",
-    touchedOnProgression,
-  );
+  const roomPickupCollections = gameState.pickupsCollected[room.id] as Record<
+    string,
+    true
+  >;
+  roomPickupCollections[scrollItem.id] = true;
 
-  events.emit("scrollOpened", config);
+  gameState.events.emit("scrollOpened", config);
+  makeItemFadeOut(scrollItem, gameState);
 };

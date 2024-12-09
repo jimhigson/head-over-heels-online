@@ -2,7 +2,7 @@ import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
-import type { RoomJson } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { addXy, addXyz, originXyz, subXy } from "@/utils/vectors/vectors";

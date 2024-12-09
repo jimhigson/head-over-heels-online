@@ -9,6 +9,7 @@ export const makeItemFadeOut = <RoomId extends string>(
     | ItemInPlay<"pickup", PlanetName, RoomId>
     | ItemInPlay<"block", PlanetName, RoomId>
     | ItemInPlay<"barrier", PlanetName, RoomId>
+    | ItemInPlay<"scroll", PlanetName, RoomId>
     | ItemInPlay<"hushPuppy", PlanetName, RoomId>,
   gameState: GameState<RoomId>,
 ) => {

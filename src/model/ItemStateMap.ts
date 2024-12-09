@@ -110,5 +110,5 @@ export type ItemStateMap<RoomId extends string> = {
     facing: Xy;
   };
   ball: SlidingItemState<RoomId>;
-  scroll: SingleTouch & FreeItemState<RoomId>;
+  scroll: FreeItemState<RoomId>;
 };

@@ -9,7 +9,11 @@ import type {
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
-export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
+export type ItemConfigMap<
+  P extends PlanetName,
+  RoomId extends string,
+  ItemId extends string,
+> = {
   door: {
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
@@ -121,7 +125,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   switch: {
     // list of all items (de)activated by this switch
     activates: {
-      [itemId: string]: {
+      [I in ItemId]?: {
         // state deltas for the impacted items
         left: Record<string, unknown>;
         right: Record<string, unknown>;
@@ -130,7 +134,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
-    controls: string[];
+    controls: ItemId[];
   };
   scroll: {
     // Text of the scroll, as markdown. Newlines are ok.

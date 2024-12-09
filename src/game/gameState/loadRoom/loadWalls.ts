@@ -1,6 +1,6 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { RoomJson } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {

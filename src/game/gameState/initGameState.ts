@@ -1,4 +1,5 @@
-import type { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
+import type { Campaign, CharacterName } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { defaultKeyAssignments } from "../input/listenForInput";

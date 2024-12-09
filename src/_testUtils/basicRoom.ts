@@ -2,7 +2,7 @@ import type { GameState } from "@/game/gameState/GameState";
 import { initGameState } from "@/game/gameState/initGameState";
 import type { InputState } from "@/game/input/InputState";
 import type { RenderOptions } from "@/game/RenderOptions";
-import type { RoomJson } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import { produce } from "immer";
 
 /**

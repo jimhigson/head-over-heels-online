@@ -1,25 +1,14 @@
 import { Game } from "./game/components/Game.tsx";
-import { RoomSelect } from "./game/levelEdit/RoomSelect";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { GameApi } from "./game/GameApi.tsx";
 import type { Campaign } from "./model/modelTypes.ts";
-import { Button } from "./components/ui/button.tsx";
-import { Switch } from "./components/ui/switch.tsx";
-import { Label } from "./components/ui/label.tsx";
 import type {
   RenderOptions,
   ShowBoundingBoxes,
 } from "./game/RenderOptions.tsx";
 import { isItemType } from "./game/physics/itemPredicates.ts";
-import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
-import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
-import { LucideBug, LucideTestTube } from "lucide-react";
-import { changeCharacterRoom } from "./game/gameState/mutators/changeCharacterRoom.ts";
-import {
-  currentPlayableItem,
-  currentRoom,
-} from "./game/gameState/GameState.ts";
-import { ImgSprite } from "./game/components/Sprite.tsx";
+
+import { Cheats } from "./game/components/Cheats.tsx";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -139,171 +128,7 @@ export const App = <RoomId extends string>({
   return (
     <>
       {gameApi !== undefined && (
-        <Collapsible>
-          <CollapsibleTrigger
-            className="absolute bottom-2 right-2 flex flex-col z-3"
-            onClick={(e) => e.currentTarget.blur()}
-          >
-            <LucideBug color="hsl(183, 28%,30%)" />
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="absolute bottom-10 right-2 flex flex-col">
-              <RoomSelect gameApi={gameApi} />
-              <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-black">
-                <Switch
-                  id="airplane-mode"
-                  checked={showBBs !== "none"}
-                  onCheckedChange={(checked) =>
-                    setShowBBs(checked ? "non-wall" : "none")
-                  }
-                  onClick={(e) => e.currentTarget.blur()}
-                />
-                <Label htmlFor="airplane-mode">BBs</Label>
-                <Switch
-                  id="airplane-mode"
-                  checked={showBBs === "all"}
-                  onCheckedChange={(checked) =>
-                    setShowBBs(checked ? "all" : "non-wall")
-                  }
-                  onClick={(e) => e.currentTarget.blur()}
-                />
-                <Label htmlFor="airplane-mode">inc walls</Label>
-              </div>
-              <div className="flex flex-row items-center">
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    gameApi.changeRoom("blacktooth1head" as RoomId);
-                    e.currentTarget.blur();
-                  }}
-                >
-                  Room 1
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    gameApi.changeRoom("laboratory" as RoomId);
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <LucideTestTube />
-                  To the lab!
-                </Button>
-              </div>
-              <div className="flex flex-row items-center">
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    const roomId = currentRoom(gameApi.gameState).id;
-                    gameApi.gameState.currentCharacterName = "heels";
-                    changeCharacterRoom({
-                      gameState: gameApi.gameState,
-                      changeType: "level-select",
-                      toRoomId: roomId,
-                    });
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="heels.walking.right.2" />
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    const roomId = currentRoom(gameApi.gameState).id;
-                    gameApi.gameState.currentCharacterName = "head";
-                    changeCharacterRoom({
-                      gameState: gameApi.gameState,
-                      changeType: "level-select",
-                      toRoomId: roomId,
-                    });
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="head.walking.right.2" />
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    gameApi.gameState.characterRooms.heels!.room.items.heels!.state.hasBag =
-                      true;
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="bag" />
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    gameApi.gameState.characterRooms.head!.room.items.head!.state.hasHooter =
-                      true;
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="hooter" />
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    gameApi.gameState.characterRooms.head!.room.items.head!.state.donuts += 6;
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="donuts" />
-                </Button>
-                <Button
-                  className="flex-1"
-                  onClick={(e) => {
-                    currentPlayableItem(
-                      gameApi.gameState,
-                    ).state.shieldCollectedAt = gameApi.gameState.gameTime;
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <ImgSprite textureId="bunny" />
-                  <ImgSprite textureId="hud.shield" />
-                </Button>
-              </div>
-
-              <Button
-                onClick={(e) => {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).gs = gameApi.gameState;
-                  if (gameApi) console.log(gameApi.gameState);
-                  e.currentTarget.blur();
-                }}
-              >
-                log(gameState); gs=gameState
-              </Button>
-              <Button
-                onClick={(e) => {
-                  if (gameApi)
-                    console.log(campaign.rooms[gameApi.currentRoom.id]);
-                  e.currentTarget.blur();
-                }}
-              >
-                Room JSON to console
-              </Button>
-              <Button
-                onClick={() => gameApi && console.log(gameApi.currentRoom)}
-              >
-                Room state to console
-              </Button>
-              <Button
-                onClick={(e) => {
-                  if (gameApi)
-                    console.log(
-                      gameApi.currentRoom.items[
-                        gameApi.gameState.currentCharacterName
-                      ],
-                    );
-                  e.currentTarget.blur();
-                }}
-              >
-                Playable to console
-              </Button>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
+        <Cheats gameApi={gameApi} showBBs={showBBs} setShowBBs={setShowBBs} />
       )}
       <CampaignGame
         renderOptions={renderOptions}

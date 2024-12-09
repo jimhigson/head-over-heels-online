@@ -71,20 +71,26 @@ export type JsonItemConfig<
   T extends JsonItemType,
   P extends PlanetName,
   RoomId extends string,
+  ItemId extends string = string,
 > =
-  T extends keyof ItemConfigMap<P, RoomId> ? ItemConfigMap<P, RoomId>[T]
+  T extends keyof ItemConfigMap<P, RoomId, ItemId> ?
+    ItemConfigMap<P, RoomId, ItemId>[T]
   : EmptyObject;
 
 export type JsonItem<
   T extends JsonItemType,
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
+  ItemId extends string = string,
 > = {
   type: T;
-  config: JsonItemConfig<T, P, RoomId>;
+  config: JsonItemConfig<T, P, RoomId, ItemId>;
   position: Xyz;
 };
 
-export type UnknownJsonItem<RoomId extends string = string> = {
-  [IT in JsonItemType]: JsonItem<IT, PlanetName, RoomId>;
+export type UnknownJsonItem<
+  RoomId extends string = string,
+  ItemId extends string = string,
+> = {
+  [IT in JsonItemType]: JsonItem<IT, PlanetName, RoomId, ItemId>;
 }[JsonItemType];
