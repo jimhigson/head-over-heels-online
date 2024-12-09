@@ -46,10 +46,7 @@ export const mainLoop = <RoomId extends string>(
     const screenEffectiveSize = upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;
 
-    const {
-      inputState: { windowFocus },
-    } = gameState;
-    const paused = !windowFocus;
+    const paused = gameState.gameSpeed === 0;
 
     updateHud(gameState, screenEffectiveSize);
 

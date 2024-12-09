@@ -9,8 +9,7 @@ import type { Color } from "pixi.js";
 import { Application } from "pixi.js";
 import spritesheetUrl from "../../../gfx/sprites.png";
 import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
-import { assertIsTextureId } from "@/sprites/assertIsTextureId";
-import type { ImgSpriteTextProps } from "./Sprite";
+import { isTextureId } from "@/sprites/assertIsTextureId";
 import { spritesheetPalette } from "@/sprites/samplePalette";
 
 export interface PixiSpriteProps {
@@ -107,20 +106,23 @@ export const ImgSprite = ({
   );
 };
 
-export interface ImgSpriteTextProps {
-  children: string;
+export interface BitmapTextProps {
+  children: string | string[];
   scale?: number;
   doubleHeight?: boolean;
   color?: Color;
 }
 
-export const ImgSpriteText = ({
+export const BitmapText = ({
   children: text,
   scale = 1,
   doubleHeight,
   color = spritesheetPalette().shadow,
-}: ImgSpriteTextProps) => {
-  const trimmed = text.trim();
+}: BitmapTextProps) => {
+  const trimmed =
+    Array.isArray(text) ?
+      text.map((text) => text.trim()).join(" ")
+    : text.trim();
   if (trimmed.length === 0) {
     return null;
   }
@@ -133,12 +135,11 @@ export const ImgSpriteText = ({
           <span className={`word text-nowrap me-${scale}`} key={wordIndex}>
             {w.split("").map((c, charIndex) => {
               const textureId = `hud.char.${c}`;
-              assertIsTextureId(textureId);
               return (
                 <ImgSprite
                   className={c}
                   key={charIndex}
-                  textureId={textureId}
+                  textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
                   doubleHeight={doubleHeight}
                   scale={scale}
                   color={color}
@@ -156,7 +157,7 @@ export const RenderTextChildrenAsSprites = ({
   imgSpriteTextProps,
   className,
 }: PropsWithChildren<{
-  imgSpriteTextProps?: Omit<ImgSpriteTextProps, "children">;
+  imgSpriteTextProps?: Omit<BitmapTextProps, "children">;
   className?: string;
 }>): ReactNode => {
   if (Array.isArray(children)) {
@@ -170,7 +171,7 @@ export const RenderTextChildrenAsSprites = ({
   } else if (typeof children === "string") {
     return (
       <span className={className}>
-        <ImgSpriteText {...imgSpriteTextProps}>{children}</ImgSpriteText>
+        <BitmapText {...imgSpriteTextProps}>{children}</BitmapText>
       </span>
     );
   } else {

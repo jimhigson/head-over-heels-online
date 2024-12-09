@@ -101,8 +101,9 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
-  const physicsTickMs = deltaMS / physicsTickCount;
+  const deltaMSScaled = deltaMS * gameState.gameSpeed;
+  const physicsTickCount = Math.ceil(deltaMSScaled / maximumDeltaMS);
+  const physicsTickMs = deltaMSScaled / physicsTickCount;
 
   const { inputState } = gameState;
 
@@ -211,8 +212,9 @@ export const progressGameState = <RoomId extends string>(
         movingItem: stander,
         touchedItem: stander.state.standingOn,
         gameState,
-        deltaMS,
+        deltaMS: physicsTickMs,
         movementVector: { x: 0, y: 0, z: -1 },
+        room,
       });
     }
 

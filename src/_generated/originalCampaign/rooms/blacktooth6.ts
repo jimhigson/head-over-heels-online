@@ -83,6 +83,26 @@ export const room = {
       position: { x: 6, y: 0, z: 1 },
       type: "switch",
     },
+    "scrollBlock": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 3, z: 0 },
+      type: "block",
+    },
+    scroll: {
+      config: {
+        text: `
+## DOUGHNUTS
+
+![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head
+may pick up doughnuts. The number of remaining doughnuts will be displayed above
+the doughnut icon at the bottom left of the screen.
+
+*Head Over Heels Manual*
+`,
+      },
+      position: { x: 2, y: 3, z: 1 },
+      type: "scroll",
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 8 },

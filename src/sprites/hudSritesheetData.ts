@@ -49,7 +49,7 @@ const pucntuation = [
   "]",
   "-",
 ] as const;
-const pucntuation2 = ["‘", "’", "'"] as const;
+const pucntuation2 = ["‘", "’", "'", "`"] as const;
 
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,

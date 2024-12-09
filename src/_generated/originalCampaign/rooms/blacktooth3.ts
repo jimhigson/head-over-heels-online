@@ -52,8 +52,7 @@ export const room = {
    they jump.
 8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s
    jumps.
-9. ![](hud.char.9) Make a map. The first part of Castle Blacktooth has been mapped and drawn on
-   the cover to show you the best way to approach this.
+9. ![](hud.char.9) Make a map.
 10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.
 11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.
 12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and
@@ -61,8 +60,6 @@ export const room = {
     extra jumping height.
 13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching
     carefully for any movement in the room as you enter.
-14. ![](hud.char.1)![](hud.char.4)If you wish to freeze the game without the pause message obscuring the
-    screen display, keep the pause key depressed.
 
 *Head Over Heels Manual*
 `,

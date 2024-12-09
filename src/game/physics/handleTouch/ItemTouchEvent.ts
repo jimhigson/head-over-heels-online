@@ -3,6 +3,7 @@ import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { isItemType } from "../itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
+import type { RoomState } from "@/model/modelTypes";
 
 export type ItemTouchEvent<
   RoomId extends string,
@@ -14,6 +15,7 @@ export type ItemTouchEvent<
   touchedItem: ItemInPlay<TouchedItemType, PlanetName, RoomId>;
   gameState: GameState<RoomId>;
   deltaMS: number;
+  room: RoomState<PlanetName, RoomId>;
 };
 
 export const touchedItemIsType = <

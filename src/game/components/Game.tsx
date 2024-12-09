@@ -3,7 +3,7 @@ import type { Campaign } from "../../model/modelTypes";
 import { type GameApi } from "../GameApi";
 import type { RenderOptions } from "../RenderOptions";
 import { load as loadPalette } from "@/sprites/samplePalette";
-import { ScrollOpener } from "./Scroll";
+import { GameOverlayDialogs } from "./GameOverlayDialogs";
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
@@ -71,7 +71,7 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
     return (
       <>
         <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
-        <ScrollOpener gameApi={gameApi} />
+        {gameApi && <GameOverlayDialogs gameApi={gameApi} />}
       </>
     );
   });

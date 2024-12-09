@@ -81,5 +81,6 @@ export const initGameState = <RoomId extends string>(
     pickupsCollected,
     gameTime: 0,
     progression: 0,
+    gameSpeed: 1,
   };
 };

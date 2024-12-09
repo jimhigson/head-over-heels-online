@@ -126,6 +126,7 @@ export const moveItem = <RoomId extends string>({
         movementVector: subXyz(subjectItem.state.position, originalPosition),
         gameState,
         deltaMS,
+        room,
       })
     ) {
       return true;

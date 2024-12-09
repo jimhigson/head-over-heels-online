@@ -13,7 +13,7 @@ const originalKeyAssignment: KeyAssignment = {
   carry: ["C", "M"],
   fire: ["N"],
   swop: ["Enter", "S"],
-  pause: ["H"],
+  hold: ["H"],
 };
 
 export const defaultKeyAssignments: KeyAssignment = {
@@ -25,7 +25,7 @@ export const defaultKeyAssignments: KeyAssignment = {
   carry: ["Shift", "`", ...originalKeyAssignment.carry],
   fire: ["Control", ...originalKeyAssignment.fire],
   swop: originalKeyAssignment.swop,
-  pause: ["F8", ...originalKeyAssignment.pause],
+  hold: ["F8", ...originalKeyAssignment.hold],
 };
 
 // returns the action for a given keyboard key, or undefined if none was found

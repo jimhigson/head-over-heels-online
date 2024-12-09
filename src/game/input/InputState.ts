@@ -8,7 +8,8 @@ export const actions = [
   "fire",
   "carry",
   "swop",
-  "pause",
+  /* original game calls this hold (not pause) */
+  "hold",
 ] as const;
 export type Action = (typeof actions)[number];
 

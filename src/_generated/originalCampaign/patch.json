@@ -277,6 +277,26 @@
     }
   },
   {
+    "op": "add",
+    "path": "/rooms/blacktooth6/items/scrollBlock",
+    "value": {
+      "config": { "disappearing": false, "style": "organic" },
+      "position": { "x": 2, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth6/items/scroll",
+    "value": {
+      "config": {
+        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*Head Over Heels Manual*\n"
+      },
+      "position": { "x": 2, "y": 3, "z": 1 },
+      "type": "scroll"
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/blacktooth59/floor",
     "value": "bookworld"
@@ -300,17 +320,6 @@
   },
   { "op": "replace", "path": "/rooms/blacktooth55/floor", "value": "market" },
   { "op": "replace", "path": "/rooms/blacktooth51/floor", "value": "market" },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth5/items/scroll",
-    "value": {
-      "config": {
-        "text": "\n## DOUGHNUTS\n\n![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*Head Over Heels Manual*\n"
-      },
-      "position": { "x": 1, "y": 5, "z": 0 },
-      "type": "scroll"
-    }
-  },
   {
     "op": "add",
     "path": "/rooms/blacktooth48market/items/scroll",
@@ -387,7 +396,7 @@
     "path": "/rooms/blacktooth3/items/scroll",
     "value": {
       "config": {
-        "text": "\n## HINTS AND TIPS\n\n1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. ![](hud.char.2) When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. ![](hud.char.3) Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. ![](hud.char.4) Make sure Head learns to climb ladders; this is an essential skill.\n5. ![](hud.char.5) Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. ![](hud.char.6) If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. ![](hud.char.7) Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. ![](hud.char.9) Make a map. The first part of Castle Blacktooth has been mapped and drawn on\n   the cover to show you the best way to approach this.\n10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.\n11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.\n12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n14. ![](hud.char.1)![](hud.char.4)If you wish to freeze the game without the pause message obscuring the\n    screen display, keep the pause key depressed.\n\n*Head Over Heels Manual*\n"
+        "text": "\n## HINTS AND TIPS\n\n1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. ![](hud.char.2) When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. ![](hud.char.3) Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. ![](hud.char.4) Make sure Head learns to climb ladders; this is an essential skill.\n5. ![](hud.char.5) Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. ![](hud.char.6) If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. ![](hud.char.7) Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. ![](hud.char.8) Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. ![](hud.char.9) Make a map.\n10. ![](hud.char.1)![](hud.char.0) Do not waste doughnuts; they are not easy to find.\n11. ![](hud.char.1)![](hud.char.1)Do not get confused; only Heels may carry anything, and only Head may fire.\n12. ![](hud.char.1)![](hud.char.2)To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. ![](hud.char.1)![](hud.char.3)If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 7, "y": 5, "z": 1 },
       "type": "scroll"
@@ -539,7 +548,7 @@
     "path": "/rooms/blacktooth1head/items/scrollRabbit",
     "value": {
       "config": {
-        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. **Two extra lives**\n2. ![](hud.shield) **Iron Pills** (to make you invulnerable)\n3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)\n4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)\n\n*Head Over Heels Manual*\n"
+        "text": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a Life or Iron pill,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. ![](hud.char.2) **Two extra lives**\n2. ![](hud.shield) **Iron Pills** (to make you invulnerable)\n3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)\n4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)\n\n*Head Over Heels Manual*\n"
       },
       "position": { "x": 3, "y": 0, "z": 0 },
       "type": "scroll"

@@ -1,26 +1,24 @@
-import { currentRoom } from "@/game/gameState/GameState";
 import { objectEntriesIter } from "@/utils/entries";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
 
 export const handleItemTouchingSwitch = <RoomId extends string>({
   touchedItem: switchItem,
-  gameState,
+  gameState: { progression },
+  room,
 }: ItemTouchEvent<RoomId, ItemInPlayType, "switch">) => {
-  const room = currentRoom(gameState);
-
   const {
     config: { activates },
     state: { setting, touchedOnProgression },
   } = switchItem;
 
-  switchItem.state.touchedOnProgression = gameState.progression;
+  switchItem.state.touchedOnProgression = progression;
 
   if (
     // touched on the last progression
-    gameState.progression === touchedOnProgression + 1 ||
+    progression === touchedOnProgression + 1 ||
     // touched on this progression (handled touch twice in one frame)
-    gameState.progression === touchedOnProgression
+    progression === touchedOnProgression
   ) {
     // switch was already being pressed so skip it:
     return;
