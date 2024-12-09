@@ -120,7 +120,11 @@ export const ImgSpriteText = ({
   doubleHeight,
   color = spritesheetPalette().shadow,
 }: ImgSpriteTextProps) => {
-  const words = text.trim().toUpperCase().split(/\s+/);
+  const trimmed = text.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+  const words = trimmed.toUpperCase().split(/\s+/);
   return (
     <>
       {words.map((w, wordIndex) => {
@@ -156,8 +160,9 @@ export const RenderTextChildrenAsSprites = ({
   className?: string;
 }>): ReactNode => {
   if (Array.isArray(children)) {
-    return children.map((c) => (
+    return children.map((c, i) => (
       <RenderTextChildrenAsSprites
+        key={i}
         children={c}
         imgSpriteTextProps={imgSpriteTextProps}
       />

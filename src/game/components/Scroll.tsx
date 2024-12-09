@@ -26,7 +26,7 @@ type ScrollContentProps = {
 
 const markdownComponents: Components = {
   h2: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h2 className={`text-metallicBlue mb-${textScale * 2}`}>
+    <h2 className={`text-metallicBlue mb-${textScale}`}>
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
           doubleHeight: true,
@@ -39,7 +39,7 @@ const markdownComponents: Components = {
     </h2>
   ),
   h3: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h3 className={`text-metallicBlue mt-${textScale * 2} mb-${textScale}`}>
+    <h3 className={`text-metallicBlue mt-${textScale} mb-${textScale}`}>
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
           color: spritesheetPalette().metallicBlue,
@@ -58,7 +58,7 @@ const markdownComponents: Components = {
     </p>
   ),
   li: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <p className={`mb-${textScale} leading-${textScale}`}>
+    <p className={`mb-${textScale} leading-${textScale} clear-both`}>
       <RenderTextChildrenAsSprites imgSpriteTextProps={{ scale: textScale }}>
         {children}
       </RenderTextChildrenAsSprites>
@@ -66,7 +66,6 @@ const markdownComponents: Components = {
   ),
   strong: ({ children }: PropsWithChildren<EmptyObject>) => (
     <RenderTextChildrenAsSprites
-      className={`me-${textScale}`}
       imgSpriteTextProps={{
         scale: textScale,
         color: spritesheetPalette().midRed,
@@ -77,7 +76,6 @@ const markdownComponents: Components = {
   ),
   em: ({ children }: PropsWithChildren<EmptyObject>) => (
     <RenderTextChildrenAsSprites
-      className={`me-${textScale}`}
       imgSpriteTextProps={{
         scale: textScale,
         color: spritesheetPalette().moss,

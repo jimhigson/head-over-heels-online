@@ -87,7 +87,7 @@ they will both get the enhanced power.
 
 There are four types:
 
-1. **Two extra lives**
+1. ![](hud.char.2) **Two extra lives**
 2. ![](hud.shield) **Iron Pills** (to make you invulnerable)
 3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
 4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
