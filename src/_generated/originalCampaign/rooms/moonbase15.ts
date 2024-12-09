@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "moonbase",
   floorSkip: [],
@@ -49,8 +49,6 @@ export const room = {
       type: "hushPuppy",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 3, y: 1, z: 0 },
       config: {
         text: `
 ## HUSH PUPPIES
@@ -70,6 +68,8 @@ clear.
 *Head Over Heels Manual*
 `,
       },
+      position: { x: 3, y: 1, z: 0 },
+      type: "scroll",
     },
   },
   planet: "moonbase",
@@ -87,4 +87,4 @@ clear.
     ],
     left: ["none", "none"],
   },
-} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

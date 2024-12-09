@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "safari",
   floorSkip: [],
@@ -103,16 +103,6 @@ export const room = {
       position: { x: 1, y: 0, z: 0 },
       type: "portableBlock",
     },
-    "teleporter@3,3,0:1mtSsV": {
-      config: { toRoom: "safari1" },
-      position: { x: 3, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@3,4,0:1mtSsV": {
-      config: { toRoom: "safari1" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "teleporter",
-    },
     scroll: {
       config: {
         text: `
@@ -134,6 +124,16 @@ Just kidding, they’ll never get this far!
       },
       position: { x: 0, y: 0, z: 0 },
       type: "scroll",
+    },
+    "teleporter@3,3,0:1mtSsV": {
+      config: { toRoom: "safari1" },
+      position: { x: 3, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@3,4,0:1mtSsV": {
+      config: { toRoom: "safari1" },
+      position: { x: 3, y: 4, z: 0 },
+      type: "teleporter",
     },
   },
   planet: "safari",
@@ -161,4 +161,4 @@ Just kidding, they’ll never get this far!
       "wall",
     ],
   },
-} satisfies RoomJson<"safari", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"safari", OriginalCampaignRoomId>;

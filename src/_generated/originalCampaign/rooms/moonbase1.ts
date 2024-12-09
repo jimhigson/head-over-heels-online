@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   floor: "moonbase",
   floorSkip: [],
@@ -162,6 +162,27 @@ export const room = {
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
+    scroll: {
+      config: {
+        text: `
+## HUSH PUPPIES
+
+![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
+they never wake up and it is quite normal for them to sleep for their entire
+lives. They are often used as tables and even used as building bricks. They are
+a native of Freedom, and for many thousands of years Head and his ancestors have
+been mistaking them for Heels and causing so much trouble to the poor old hush
+puppies that they evolved a defense mechanism: they somehow learned to teleport
+themselves away. Nobody knows where they go, but the instant they see any of
+Head's race, they disappear and won't return until they are sure the coast is
+clear.
+
+*Head Over Heels Manual*
+`,
+      },
+      position: { x: 7, y: 5, z: 0 },
+      type: "scroll",
+    },
     "teleporter@3,3,0:Z1GpSz2": {
       config: { toRoom: "blacktooth51" },
       position: { x: 3, y: 3, z: 0 },
@@ -181,27 +202,6 @@ export const room = {
       config: { toRoom: "blacktooth51" },
       position: { x: 4, y: 4, z: 0 },
       type: "teleporter",
-    },
-    scroll: {
-      type: "scroll",
-      position: { x: 7, y: 5, z: 0 },
-      config: {
-        text: `
-## HUSH PUPPIES
-
-![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
-they never wake up and it is quite normal for them to sleep for their entire
-lives. They are often used as tables and even used as building bricks. They are
-a native of Freedom, and for many thousands of years Head and his ancestors have
-been mistaking them for Heels and causing so much trouble to the poor old hush
-puppies that they evolved a defense mechanism: they somehow learned to teleport
-themselves away. Nobody knows where they go, but the instant they see any of
-Head's race, they disappear and won't return until they are sure the coast is
-clear.
-
-*Head Over Heels Manual*
-`,
-      },
     },
   },
   planet: "moonbase",
@@ -228,4 +228,4 @@ clear.
       "window1",
     ],
   },
-} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

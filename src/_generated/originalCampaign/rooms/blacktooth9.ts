@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "deadly",
   floorSkip: [],
@@ -154,4 +154,4 @@ may only be used by Head and requires a tray of doughnuts to be of any use.
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

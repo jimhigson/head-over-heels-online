@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "jail",
   floorSkip: [],
@@ -43,10 +43,28 @@ export const room = {
       position: { x: 5, y: 0, z: 7 },
       type: "pickup",
     },
-    "teleporter@5,7,0:Z12mRwL": {
-      config: { toRoom: "blacktooth2" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "teleporter",
+    scrollRabbit: {
+      config: {
+        text: `
+## CUDDLY STUFFED WHITE RABBITS
+
+![](bunny)The cute toy bunnies magically enhance your powers. The status display at the
+bottom of the screen will keep you informed as to which powers are temporarily
+enhanced. If Head and Heels are connected when they pick up a Life or Iron pill,
+they will both get the enhanced power.
+
+There are four types:
+
+1. ![](hud.char.2) **Two extra lives**
+2. ![](hud.shield) **Iron Pills** (to make you invulnerable)
+3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
+4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
+
+*> Head Over Heels Manual*
+`,
+      },
+      position: { x: 3, y: 0, z: 0 },
+      type: "scroll",
     },
     scrollTheGame: {
       config: {
@@ -75,28 +93,10 @@ accolade, and unfortunately, almost certain suicide.
       position: { x: 3, y: 7, z: 0 },
       type: "scroll",
     },
-    scrollRabbit: {
-      config: {
-        text: `
-## CUDDLY STUFFED WHITE RABBITS
-
-![](bunny)The cute toy bunnies magically enhance your powers. The status display at the
-bottom of the screen will keep you informed as to which powers are temporarily
-enhanced. If Head and Heels are connected when they pick up a Life or Iron pill,
-they will both get the enhanced power.
-
-There are four types:
-
-1. ![](hud.char.2) **Two extra lives**
-2. ![](hud.shield) **Iron Pills** (to make you invulnerable)
-3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
-4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
-
-*> Head Over Heels Manual*
-`,
-      },
-      position: { x: 3, y: 0, z: 0 },
-      type: "scroll",
+    "teleporter@5,7,0:Z12mRwL": {
+      config: { toRoom: "blacktooth2" },
+      position: { x: 5, y: 7, z: 0 },
+      type: "teleporter",
     },
   },
   planet: "jail",
@@ -105,4 +105,4 @@ There are four types:
     away: ["bars", "bars", "bars", "bars", "bars", "bars"],
     left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
   },
-} satisfies RoomJson<"jail", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

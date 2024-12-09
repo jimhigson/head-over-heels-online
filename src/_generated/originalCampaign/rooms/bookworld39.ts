@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "none",
   floorSkip: [],
@@ -53,16 +53,6 @@ export const room = {
       position: { x: 7, y: 1, z: 0 },
       type: "conveyor",
     },
-    "teleporter@7,3,0:Z8cIGu": {
-      config: { toRoom: "bookworld1" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@7,4,0:Z8cIGu": {
-      config: { toRoom: "bookworld1" },
-      position: { x: 7, y: 4, z: 0 },
-      type: "teleporter",
-    },
     scroll: {
       config: {
         text: `
@@ -85,6 +75,16 @@ Just kidding, they’ll never get this far!
       position: { x: 0, y: 0, z: 10 },
       type: "scroll",
     },
+    "teleporter@7,3,0:Z8cIGu": {
+      config: { toRoom: "bookworld1" },
+      position: { x: 7, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@7,4,0:Z8cIGu": {
+      config: { toRoom: "bookworld1" },
+      position: { x: 7, y: 4, z: 0 },
+      type: "teleporter",
+    },
   },
   planet: "bookworld",
   roomAbove: "bookworld38",
@@ -94,4 +94,4 @@ Just kidding, they’ll never get this far!
     away: ["book", "book", "person", "book", "book", "person", "book", "book"],
     left: ["book", "book", "person", "book", "book", "person", "book", "book"],
   },
-} satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;

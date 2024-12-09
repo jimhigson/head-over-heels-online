@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   floor: "deadly",
   floorSkip: [],
@@ -119,8 +119,6 @@ export const room = {
       type: "portableBlock",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 4, y: 0, z: 1 },
       config: {
         text: `
 ## BAG
@@ -136,6 +134,8 @@ press the CARRY key. It is not possible to drop an object in a doorway.
 **Head Over Heels Manual**
 `,
       },
+      position: { x: 4, y: 0, z: 1 },
+      type: "scroll",
     },
     scrollBlock: {
       config: { disappearing: false, style: "organic" },
@@ -167,4 +167,4 @@ press the CARRY key. It is not possible to drop an object in a doorway.
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

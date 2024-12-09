@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   floor: "market",
   floorSkip: [],
@@ -19,8 +19,6 @@ export const room = {
       type: "door",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 1, y: 6, z: 0 },
       config: {
         text: `
 ### BLACKTOOTH
@@ -42,6 +40,8 @@ one of the three lunar space stations.
 *Head Over Heels Manual*
 `,
       },
+      position: { x: 1, y: 6, z: 0 },
+      type: "scroll",
     },
   },
   planet: "market",
@@ -59,4 +59,4 @@ one of the three lunar space stations.
       "passage",
     ],
   },
-} satisfies RoomJson<"market", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"market", OriginalCampaignRoomId>;

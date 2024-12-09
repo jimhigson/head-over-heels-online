@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "blacktooth",
   floorSkip: [],
@@ -29,8 +29,6 @@ export const room = {
       type: "lift",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 3, y: 5, z: 0 },
       config: {
         text: `
 ## CONVEYOR BELTS
@@ -41,6 +39,8 @@ opposite direction you have to jump along.
 *Head Over Heels Manual*
 `,
       },
+      position: { x: 3, y: 5, z: 0 },
+      type: "scroll",
     },
   },
   planet: "blacktooth",
@@ -50,4 +50,4 @@ opposite direction you have to jump along.
     away: ["plain", "armour", "shield", "shield", "armour", "plain"],
     left: ["plain", "armour", "shield", "shield", "armour", "plain"],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

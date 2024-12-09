@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   floor: "none",
   floorSkip: [],
@@ -16,11 +16,6 @@ export const room = {
     "block@4,5,0:95uHj": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 5, z: 0 },
-      type: "block",
-    },
-    scrollBlock: {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
     "door@3,6,2:29aJEC": {
@@ -67,6 +62,11 @@ export const room = {
       position: { x: 7, y: 5, z: 1 },
       type: "scroll",
     },
+    scrollBlock: {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 5, z: 0 },
+      type: "block",
+    },
   },
   planet: "jail",
   roomBelow: "blacktooth4",
@@ -75,4 +75,4 @@ export const room = {
     away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
     left: ["bars", "bars", "bars", "bars", "bars", "bars"],
   },
-} satisfies RoomJson<"jail", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

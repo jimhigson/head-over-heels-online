@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "egyptus",
   floorSkip: [],
@@ -98,26 +98,6 @@ export const room = {
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "teleporter@3,3,0:1roqmH": {
-      config: { toRoom: "egyptus4" },
-      position: { x: 3, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@3,4,0:1roqmH": {
-      config: { toRoom: "egyptus4" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@4,3,0:1roqmH": {
-      config: { toRoom: "egyptus4" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@4,4,0:1roqmH": {
-      config: { toRoom: "egyptus4" },
-      position: { x: 4, y: 4, z: 0 },
-      type: "teleporter",
-    },
     scroll: {
       config: {
         text: `
@@ -139,6 +119,26 @@ Just kidding, they’ll never get this far!
       },
       position: { x: 5, y: 6, z: 6 },
       type: "scroll",
+    },
+    "teleporter@3,3,0:1roqmH": {
+      config: { toRoom: "egyptus4" },
+      position: { x: 3, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@3,4,0:1roqmH": {
+      config: { toRoom: "egyptus4" },
+      position: { x: 3, y: 4, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@4,3,0:1roqmH": {
+      config: { toRoom: "egyptus4" },
+      position: { x: 4, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@4,4,0:1roqmH": {
+      config: { toRoom: "egyptus4" },
+      position: { x: 4, y: 4, z: 0 },
+      type: "teleporter",
     },
   },
   planet: "egyptus",
@@ -165,4 +165,4 @@ Just kidding, they’ll never get this far!
       "hieroglyphics",
     ],
   },
-} satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;

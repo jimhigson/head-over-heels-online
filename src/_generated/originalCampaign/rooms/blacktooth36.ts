@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "blacktooth",
   floorSkip: [],
@@ -19,8 +19,6 @@ export const room = {
       type: "door",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 4, y: 5, z: 0 },
       config: {
         text: `
 ## SWITCHES
@@ -34,6 +32,8 @@ still be deadly to touch.
 *Head Over Heels Manual*
 `,
       },
+      position: { x: 4, y: 5, z: 0 },
+      type: "scroll",
     },
   },
   planet: "blacktooth",
@@ -42,4 +42,4 @@ still be deadly to touch.
     away: ["plain", "shield", "none", "none", "shield", "plain"],
     left: ["plain", "armour", "shield", "shield", "armour", "plain"],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

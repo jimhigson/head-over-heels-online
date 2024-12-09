@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "blacktooth",
   floorSkip: [],
@@ -12,11 +12,6 @@ export const room = {
       config: { direction: "towards", toRoom: "blacktooth3" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
-    },
-    "teleporter@5,7,0:ZO2t8x": {
-      config: { toRoom: "blacktooth1head" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "teleporter",
     },
     scroll: {
       config: {
@@ -46,6 +41,11 @@ ARE their names and both are highly trained spies.
       position: { x: 1, y: 0, z: 0 },
       type: "scroll",
     },
+    "teleporter@5,7,0:ZO2t8x": {
+      config: { toRoom: "blacktooth1head" },
+      position: { x: 5, y: 7, z: 0 },
+      type: "teleporter",
+    },
   },
   planet: "blacktooth",
   size: { x: 6, y: 8 },
@@ -62,4 +62,4 @@ ARE their names and both are highly trained spies.
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

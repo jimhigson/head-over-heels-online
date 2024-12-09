@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   floor: "penitentiary",
   floorSkip: [],
@@ -98,26 +98,6 @@ export const room = {
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "teleporter@0,3,0:Z1dKvnA": {
-      config: { toRoom: "penitentiary2" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@0,4,0:Z1dKvnA": {
-      config: { toRoom: "penitentiary2" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@1,3,0:Z1dKvnA": {
-      config: { toRoom: "penitentiary2" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@1,4,0:Z1dKvnA": {
-      config: { toRoom: "penitentiary2" },
-      position: { x: 1, y: 4, z: 0 },
-      type: "teleporter",
-    },
     scroll: {
       config: {
         text: `
@@ -139,6 +119,26 @@ Just kidding, they’ll never get this far!
       },
       position: { x: 5, y: 6, z: 2 },
       type: "scroll",
+    },
+    "teleporter@0,3,0:Z1dKvnA": {
+      config: { toRoom: "penitentiary2" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@0,4,0:Z1dKvnA": {
+      config: { toRoom: "penitentiary2" },
+      position: { x: 0, y: 4, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@1,3,0:Z1dKvnA": {
+      config: { toRoom: "penitentiary2" },
+      position: { x: 1, y: 3, z: 0 },
+      type: "teleporter",
+    },
+    "teleporter@1,4,0:Z1dKvnA": {
+      config: { toRoom: "penitentiary2" },
+      position: { x: 1, y: 4, z: 0 },
+      type: "teleporter",
     },
   },
   planet: "penitentiary",
@@ -165,4 +165,4 @@ Just kidding, they’ll never get this far!
       "loop",
     ],
   },
-} satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;

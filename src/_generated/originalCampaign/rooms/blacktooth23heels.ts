@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "jail",
   floorSkip: [],
@@ -173,11 +173,6 @@ export const room = {
       position: { x: 3.5, y: 3.5, z: 0 },
       type: "player",
     },
-    "teleporter@0,0,0:Z1GqgNT": {
-      config: { toRoom: "blacktooth24" },
-      position: { x: 0, y: 0, z: 0 },
-      type: "teleporter",
-    },
     scroll: {
       config: {
         text: `
@@ -210,6 +205,11 @@ become very powerful. Heels can jump his own height and can also run very fast.
       position: { x: 3, y: 7, z: 0 },
       type: "scroll",
     },
+    "teleporter@0,0,0:Z1GqgNT": {
+      config: { toRoom: "blacktooth24" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "teleporter",
+    },
   },
   planet: "jail",
   size: { x: 8, y: 8 },
@@ -217,4 +217,4 @@ become very powerful. Heels can jump his own height and can also run very fast.
     away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
     left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
   },
-} satisfies RoomJson<"jail", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

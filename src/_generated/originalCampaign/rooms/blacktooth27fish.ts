@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "blacktooth",
   floorSkip: [],
@@ -39,8 +39,6 @@ export const room = {
       type: "portableBlock",
     },
     scroll: {
-      type: "scroll",
-      position: { x: 0, y: 7, z: 0 },
       config: {
         text: `
 ## REINCARNATION FISH
@@ -64,6 +62,8 @@ Even living reincarnation fish taste horrible!
 *Head Over Heels Manual*
 `,
       },
+      position: { x: 0, y: 7, z: 0 },
+      type: "scroll",
     },
   },
   planet: "blacktooth",
@@ -81,4 +81,4 @@ Even living reincarnation fish taste horrible!
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
