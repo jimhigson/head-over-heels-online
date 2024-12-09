@@ -15,7 +15,11 @@ import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import { CollapsibleTrigger } from "./components/ui/collapsible.tsx";
 import { LucideBug, LucideTestTube } from "lucide-react";
 import { changeCharacterRoom } from "./game/gameState/mutators/changeCharacterRoom.ts";
-import { currentRoom } from "./game/gameState/GameState.ts";
+import {
+  currentPlayableItem,
+  currentRoom,
+} from "./game/gameState/GameState.ts";
+import { ImgSprite } from "./game/components/Sprite.tsx";
 
 const useHashSyncedWithRoomId = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -200,7 +204,22 @@ export const App = <RoomId extends string>({
                     e.currentTarget.blur();
                   }}
                 >
-                  Add heels
+                  <ImgSprite textureId="heels.walking.right.2" />
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={(e) => {
+                    const roomId = currentRoom(gameApi.gameState).id;
+                    gameApi.gameState.currentCharacterName = "head";
+                    changeCharacterRoom({
+                      gameState: gameApi.gameState,
+                      changeType: "level-select",
+                      toRoomId: roomId,
+                    });
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <ImgSprite textureId="head.walking.right.2" />
                 </Button>
                 <Button
                   className="flex-1"
@@ -210,7 +229,38 @@ export const App = <RoomId extends string>({
                     e.currentTarget.blur();
                   }}
                 >
-                  give bag
+                  <ImgSprite textureId="bag" />
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={(e) => {
+                    gameApi.gameState.characterRooms.head!.room.items.head!.state.hasHooter =
+                      true;
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <ImgSprite textureId="hooter" />
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={(e) => {
+                    gameApi.gameState.characterRooms.head!.room.items.head!.state.donuts += 6;
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <ImgSprite textureId="donuts" />
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={(e) => {
+                    currentPlayableItem(
+                      gameApi.gameState,
+                    ).state.shieldCollectedAt = gameApi.gameState.gameTime;
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <ImgSprite textureId="bunny" />
+                  <ImgSprite textureId="hud.shield" />
                 </Button>
               </div>
 
