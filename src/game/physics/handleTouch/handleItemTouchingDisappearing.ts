@@ -9,8 +9,9 @@ import type { CharacterName } from "@/model/modelTypes";
 import { characterNames } from "@/model/modelTypes";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
-export const handleItemTouchingDissapearingOnTouch = <RoomId extends string>(
+export const handleItemTouchingDissapearing = <RoomId extends string>(
   e: ItemTouchEvent<RoomId>,
 ) => {
   const spatiallyStandingOn =
@@ -20,9 +21,6 @@ export const handleItemTouchingDissapearingOnTouch = <RoomId extends string>(
       e.touchedItem,
       Math.abs(e.movementVector.z),
     );
-  // TODO: check if is disappear on touch, or on stand-on
-  // if on stand-on, check if player is standing on it
-  // if player is, run jump mechanics again
 
   const shouldDisappear =
     e.touchedItem.state.disappear === "onTouch" ||
@@ -34,7 +32,7 @@ export const handleItemTouchingDissapearingOnTouch = <RoomId extends string>(
     if (spatiallyStandingOn && movingItemIsType(e, ...characterNames)) {
       //give one last chance to jump off htis item as it disappears - 'stand' on it
       //(but it will be removed very soon and this property will be gone):
-      setStandingOn(e.movingItem, e.touchedItem);
+      setStandingOn(e.movingItem, e.touchedItem as UnknownItemInPlay<RoomId>);
       const controlMechanicalResults = [
         jumping(
           e.movingItem as PlayableItem<CharacterName, RoomId>,

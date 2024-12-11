@@ -8,7 +8,6 @@ export const room = inferRoomJson({
   floorSkip: [],
   id: "blacktooth23heels",
   items: {
-
     heels: {
       type: "player",
       position: { x: 0, y: 0, z: 1 },
@@ -55,7 +54,6 @@ export const room = inferRoomJson({
         gives: "extra-life",
       },
     },
-
   },
   planet: "jail",
   size: { x: 8, y: 8 },

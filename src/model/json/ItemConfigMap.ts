@@ -90,6 +90,7 @@ export type ItemConfigMap<
     top: number;
     bottom: number;
   };
+  bubbles: { style: "fish" | "taupe" | "white" };
   baddie: { activated: boolean } & (
     | {
         which:

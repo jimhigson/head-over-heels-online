@@ -5,6 +5,7 @@ import type { ItemConfigMap } from "./ItemConfigMap";
 
 export type JsonItemType =
   | "door"
+  | "bubbles" // only in-play, never in json, but is created dynamically
   | "floor" // only in-play, never in json - TODO: remove from json typings
   | "doorFrame" // only in-play, never in json - TODO: remove from json typings
   | "doorLegs" // only in-play, never in json - TODO: remove from json typings

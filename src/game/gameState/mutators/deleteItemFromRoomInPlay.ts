@@ -1,17 +1,6 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { loadItemFromJson } from "../loadRoom/loadItem";
-import type {
-  JsonItem,
-  JsonItemConfig,
-  JsonItemType,
-  UnknownJsonItem,
-} from "@/model/json/JsonItem";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { originXyz } from "@/utils/vectors/vectors";
-import type { GameState } from "../GameState";
-import { first } from "iter-tools";
 import { isFreeItem } from "@/game/physics/itemPredicates";
 
 export const deleteItemFromRoomInPlay = <RoomId extends string>({
@@ -35,4 +24,3 @@ export const deleteItemFromRoomInPlay = <RoomId extends string>({
     item.state.standingOn = null;
   }
 };
-

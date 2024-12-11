@@ -88,7 +88,6 @@ type ItemInPlayConfigMap<RoomId extends string> = {
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for donuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", PlanetName, RoomId>, "disappearing">;
-  bubbles: { style: "fish" | "taupe" | "white" };
 };
 
 // type-fest's EmptyObject was creating issues
