@@ -36,6 +36,7 @@ export const walking = <RoomId extends string>(
   const {
     type,
     state: {
+      action,
       autoWalk,
       standingOn,
       facing,
@@ -53,8 +54,8 @@ export const walking = <RoomId extends string>(
 
   const maxWalkSpeed = walkSpeedPixPerMs[type];
 
-  if (teleporting !== null) {
-    // do no walking while teleporting
+  if (teleporting !== null || action === "death") {
+    // do no walking while teleporting or showing dying animation:
     return stopWalking;
   }
 

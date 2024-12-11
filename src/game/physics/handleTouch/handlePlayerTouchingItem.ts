@@ -4,10 +4,8 @@ import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
 import type { CharacterName } from "@/model/modelTypes";
-import { handlePlayerTouchingScroll } from "./handlePlayerTouchingScroll";
 import { touchedItemIsType, type ItemTouchEvent } from "./ItemTouchEvent";
-import { deadlyItemTypes, isItemType } from "../itemPredicates";
-import { makeItemFadeOut } from "@/game/gameState/mutators/makeItemFadeOut";
+import { deadlyItemTypes } from "../itemPredicates";
 
 /**
  * @returns true is the physics needs to halt after this handler
@@ -44,22 +42,6 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
         return true;
       }
       break;
-
-    case touchedItemIsType(e, "block", "barrier"): {
-      const disappearing =
-        (isItemType("barrier")(e.touchedItem) &&
-          e.touchedItem.config.disappearing) ||
-        (isItemType("block")(e.touchedItem) &&
-          e.touchedItem.state.disappearing);
-
-      if (disappearing) {
-        makeItemFadeOut(e.touchedItem, e.gameState);
-      }
-      break;
-    }
-
-    case touchedItemIsType(e, "scroll"):
-      handlePlayerTouchingScroll(e);
   }
 
   return false;

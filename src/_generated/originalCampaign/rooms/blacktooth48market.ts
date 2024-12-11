@@ -20,7 +20,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ### BLACKTOOTH
 
 ![](ball) This planet has a large moon with three lunar space stations on it, the larger
@@ -41,7 +42,7 @@ one of the three lunar space stations.
 `,
       },
       position: { x: 1, y: 6, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "market",

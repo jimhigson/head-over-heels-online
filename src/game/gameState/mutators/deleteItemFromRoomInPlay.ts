@@ -1,22 +1,26 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { loadItem } from "../loadRoom/loadItem";
+import { loadItemFromJson } from "../loadRoom/loadItem";
 import type {
   JsonItem,
   JsonItemConfig,
   JsonItemType,
   UnknownJsonItem,
 } from "@/model/json/JsonItem";
+import type { Xyz } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { first } from "iter-tools";
 import { isFreeItem } from "@/game/physics/itemPredicates";
 
-export const deleteItemFromRoomInPlay = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
-  item: AnyItemInPlay,
-) => {
+export const deleteItemFromRoomInPlay = <RoomId extends string>({
+  room,
+  item,
+}: {
+  room: RoomState<PlanetName, RoomId>;
+  item: AnyItemInPlay;
+}) => {
   // ain't in that room no more:
   delete room.items[item.id];
 
@@ -25,40 +29,10 @@ export const deleteItemFromRoomInPlay = <RoomId extends string>(
     s.state.standingOn = null;
   }
 
-  // whatever the deleted item was standing on in the room they left, it aim't no more:
+  // whatever the deleted item was standing on, it aim't no more:
   if (isFreeItem(item) && item.state.standingOn !== null) {
     item.state.standingOn.state.stoodOnBy.delete(item);
     item.state.standingOn = null;
   }
 };
 
-let i = 0;
-
-export const addItemsToRoomInPlay = <
-  T extends JsonItemType,
-  RoomId extends string,
->(
-  gameState: GameState<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
-  itemType: T,
-  config: JsonItemConfig<T, PlanetName, RoomId>,
-) => {
-  const itemJson: JsonItem<T, PlanetName, RoomId> = {
-    type: itemType,
-    config,
-    position: originXyz,
-  };
-  const itemId = `${itemType}/${i++}`;
-  const item = first(
-    loadItem(
-      itemId,
-      itemJson as UnknownJsonItem<RoomId>,
-      gameState.pickupsCollected[room.id],
-    ),
-  );
-  if (item === undefined) {
-    throw new Error("failed to generate any items");
-  }
-  room.items[itemId] = item;
-  return item;
-};

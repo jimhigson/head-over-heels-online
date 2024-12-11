@@ -40,7 +40,6 @@ export const boundingBoxForItem = (
     case "moveableDeadly":
     case "slidingDeadly":
     case "slidingBlock":
-    case "pickup":
     case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
     case "lift":
@@ -53,6 +52,11 @@ export const boundingBoxForItem = (
         aabb: { ...smallItemAabb, z: smallItemAabb.z - 2 },
       };
     }
+
+    case "pickup":
+      return item.config.gives === "scroll" ?
+          { aabb: { x: 15, y: 5, z: 12 } }
+        : { aabb: smallItemAabb };
 
     case "charles":
       return { aabb: doubleHeighCharacter };
@@ -121,9 +125,6 @@ export const boundingBoxForItem = (
       return item.config.side === "left" || item.config.side === "right" ?
           { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
         : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
-
-    case "scroll":
-      return { aabb: { x: 15, y: 5, z: 12 } };
 
     default:
       console.warn("giving default aabb for item", item);

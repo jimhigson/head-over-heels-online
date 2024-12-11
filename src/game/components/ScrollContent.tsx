@@ -1,19 +1,16 @@
-import type { ItemInPlayConfig } from "@/model/ItemInPlay";
 import { spritesheetPalette } from "@/sprites/samplePalette";
 import { BlockyMarkdown } from "./BlockyMarkdown";
 import { textScale } from "./dialogScales";
 import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
 
-type ScrollConfig = ItemInPlayConfig<"scroll">;
-
 export type ScrollContentProps = {
-  content: ScrollConfig;
+  markdown: string;
   keyAssignment: KeyAssignment;
 };
 
 export const ScrollContent = ({
-  content,
+  markdown,
   keyAssignment,
 }: ScrollContentProps) => {
   return (
@@ -23,7 +20,7 @@ export const ScrollContent = ({
         backgroundColor: spritesheetPalette().highlightBeige.toRgbaString(),
       }}
     >
-      <BlockyMarkdown markdown={content.text}></BlockyMarkdown>
+      <BlockyMarkdown markdown={markdown}></BlockyMarkdown>
       <PressToContinue action="jump" keyAssignment={keyAssignment} />
     </div>
   );

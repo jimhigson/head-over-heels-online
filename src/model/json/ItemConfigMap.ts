@@ -60,18 +60,23 @@ export type ItemConfigMap<
   conveyor: {
     direction: DirectionXy4;
   };
-  pickup: {
-    gives:
-      | "extra-life"
-      | "fast"
-      | "jumps"
-      | "shield"
-      | "donuts"
-      | "bag"
-      | "crown"
-      | "hooter"
-      | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
-  };
+  pickup:
+    | {
+        gives:
+          | "extra-life"
+          | "fast"
+          | "jumps"
+          | "shield"
+          | "donuts"
+          | "bag"
+          | "crown"
+          | "hooter"
+          | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
+      }
+    | {
+        gives: "scroll";
+        markdown: string;
+      };
   player: {
     which: CharacterName;
   };
@@ -135,9 +140,5 @@ export type ItemConfigMap<
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
     controls: ItemId[];
-  };
-  scroll: {
-    // Text of the scroll, as markdown. Newlines are ok.
-    text: string;
   };
 };

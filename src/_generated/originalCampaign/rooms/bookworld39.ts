@@ -55,7 +55,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## Exalted Emperor:
 
 ![](teleporter)Sire, I took the liberty of installing this teleporter 
@@ -73,7 +74,7 @@ Just kidding, they’ll never get this far!
 `,
       },
       position: { x: 0, y: 0, z: 10 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@7,3,0:Z8cIGu": {
       config: { toRoom: "bookworld1" },

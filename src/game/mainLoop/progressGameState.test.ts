@@ -835,7 +835,7 @@ describe("jumping", () => {
   });
 });
 
-describe("dissapearing blocks", () => {
+describe("dissapearing items", () => {
   const gameStateWithDisappearingBlocks: GameState<TestRoomId> = basicGameState(
     {
       firstRoomItems: {
@@ -847,17 +847,17 @@ describe("dissapearing blocks", () => {
             which: "heels",
           },
         },
-        nonDisappearingBlock: {
+        disappearingBlock0: {
           type: "block",
           position: { x: 0, y: 0, z: 0 },
           config: {
             style: "organic",
-            disappearing: false,
+            disappearing: true,
           },
         },
         disappearingBlock1: {
           type: "block",
-          position: { x: 0, y: 1, z: 0 },
+          position: { x: 0, y: 1, z: 1 },
           config: {
             style: "organic",
             disappearing: true,
@@ -873,7 +873,9 @@ describe("dissapearing blocks", () => {
         },
         disappearingBlock3: {
           type: "block",
-          position: { x: 0, y: 3, z: 0 },
+          // note the block is higher, testing that the player can climb up disappearing blocks as heels.
+          // this requires that they don't vanish as soon as they are touched, but only when stood on
+          position: { x: 0, y: 3, z: 1 },
           config: {
             style: "organic",
             disappearing: true,
@@ -881,7 +883,7 @@ describe("dissapearing blocks", () => {
         },
         pickup: {
           type: "pickup",
-          position: { x: 0, y: 4, z: 1 },
+          position: { x: 0, y: 4, z: 2 },
           config: {
             gives: "extra-life",
           },
@@ -921,6 +923,68 @@ describe("dissapearing blocks", () => {
         until(gameState) {
           // lost a life
           return heelsState(gameState).lives === 7;
+        },
+      },
+    );
+  });
+  test("can jump along a line of pickups, collecting them", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        // two items that will fall (and therefore be marked dirty)
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        disappearingpickup0: {
+          type: "pickup",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+        disappearingpickup1: {
+          type: "pickup",
+          position: { x: 0, y: 1, z: 1 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+        disappearingpickup2: {
+          type: "pickup",
+          position: { x: 0, y: 2, z: 0 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+        disappearingpickup3: {
+          type: "pickup",
+          // note the block is higher, testing that the player can climb up disappearing blocks as heels.
+          // this requires that they don't vanish as soon as they are touched, but only when stood on
+          position: { x: 0, y: 3, z: 1 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+      },
+      firstRoomProps: {
+        floor: "deadly",
+      },
+    });
+
+    playGameThrough(
+      { ...gameState, inputState: { ...noInput(), jump: true, away: true } },
+      {
+        frameCallbacks(gameState) {
+          // should not lose any lives. If this happens, was not able to jump off pickups as they are collected
+          // and fell onto the deadly floor
+          expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
+        },
+        until(gameState) {
+          // got 4 x 2 more lives
+          return heelsState(gameState).lives === 16;
         },
       },
     );

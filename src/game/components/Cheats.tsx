@@ -10,13 +10,13 @@ import { Switch } from "@radix-ui/react-switch";
 import { LucideBug, LucideTestTube } from "lucide-react";
 import { currentRoom, currentPlayableItem } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/mutators/changeCharacterRoom";
-import { addItemsToRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
 import { RoomSelect } from "../levelEdit/RoomSelect";
 import { ImgSprite } from "./Sprite";
 import type { GameApi } from "../GameApi";
 import type { ShowBoundingBoxes } from "../RenderOptions";
 import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { PlanetName } from "@/sprites/planets";
+import { addItemToRoomInPlay } from "../gameState/mutators/addItemToRoomInPlay";
 
 export const Cheats = <RoomId extends string>({
   gameApi,
@@ -35,16 +35,16 @@ export const Cheats = <RoomId extends string>({
   ) => {
     const { gameState } = gameApi;
     const playable = currentPlayableItem(gameState);
-    const item = addItemsToRoomInPlay(
+    addItemToRoomInPlay({
       gameState,
-      currentRoom(gameState),
+      room: currentRoom(gameState),
       itemType,
       config,
-    );
-    item.state.position = {
-      ...playable.state.position,
-      z: playable.state.position.z + blockSizePx.h * 2,
-    };
+      position: {
+        ...playable.state.position,
+        z: playable.state.position.z + blockSizePx.h * 2,
+      },
+    });
   };
 
   return (
@@ -58,7 +58,7 @@ export const Cheats = <RoomId extends string>({
       <CollapsibleContent>
         <div className="absolute bottom-10 right-2 flex flex-col">
           <RoomSelect gameApi={gameApi} />
-          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-black">
+          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-white">
             <Switch
               id="showbbs"
               checked={showBBs !== "none"}
@@ -190,6 +190,63 @@ export const Cheats = <RoomId extends string>({
             >
               <ImgSprite textureId="bunny" />
               <ImgSprite textureId="hud.bigJumps" scale={2} />
+            </Button>
+          </div>
+
+          <div className="flex flex-row items-center">
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 0.1;
+                e.currentTarget.blur();
+              }}
+            >
+              x0.1
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 0.5;
+                e.currentTarget.blur();
+              }}
+            >
+              x0.5
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 1;
+                e.currentTarget.blur();
+              }}
+            >
+              x1
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 2;
+                e.currentTarget.blur();
+              }}
+            >
+              x2
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 5;
+                e.currentTarget.blur();
+              }}
+            >
+              x5
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.gameState.gameSpeed = 10;
+                e.currentTarget.blur();
+              }}
+            >
+              x10
             </Button>
           </div>
 

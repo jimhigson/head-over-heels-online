@@ -159,7 +159,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## EGYPTUS
 
 ![](egyptus.wall.sarcophagus.left) Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
@@ -173,7 +174,7 @@ rebuilt the capital city of one of the slave planets to resemble the story.
 `,
       },
       position: { x: 2, y: 3, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@3,3,0:1ropAr": {
       config: { toRoom: "egyptus1" },

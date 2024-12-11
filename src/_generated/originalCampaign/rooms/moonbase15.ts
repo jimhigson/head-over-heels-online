@@ -50,7 +50,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HUSH PUPPIES
 
 ![Hush Puppy](hushPuppy)
@@ -69,7 +70,7 @@ clear.
 `,
       },
       position: { x: 3, y: 1, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "moonbase",

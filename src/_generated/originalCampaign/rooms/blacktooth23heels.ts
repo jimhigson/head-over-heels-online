@@ -175,7 +175,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HEAD 
 ### (HEADUS MOUTHION)
 
@@ -188,11 +189,12 @@ guide himself through the air.
 `,
       },
       position: { x: 7, y: 1, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     scroll2: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HEELS 
 ### (FOOTUS UNDERIUM)
 
@@ -203,7 +205,7 @@ become very powerful. Heels can jump his own height and can also run very fast.
 `,
       },
       position: { x: 3, y: 7, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@0,0,0:Z1GqgNT": {
       config: { toRoom: "blacktooth24" },

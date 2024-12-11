@@ -81,12 +81,7 @@ const singleRenderWithStyleAsTexture = renderOnce<
     item: {
       config: { style },
     },
-  }) => {
-    return {
-      container: createSprite(style),
-      renderProps: {},
-    };
-  },
+  }) => createSprite(style),
 );
 
 export const itemAppearances: {
@@ -115,63 +110,39 @@ export const itemAppearances: {
         throw new Error("this wall should be non-rendering");
       }
 
-      return {
-        container: createSprite({
-          texture: wallTextureId(
-            room.planet,
-            style,
-            side,
-            room.color.shade === "dimmed",
-          ),
-          pivot:
-            side === "away" ?
-              {
-                x: wallTileSize.w,
-                // walls need to be rendered 1px high to match original game (original puts them 1px low, but
-                // we already position them (in world space) 2px low to match original rendering while keeping
-                // bounding boxes correct
-                y: wallTileSize.h + 1,
-              }
-            : { x: 0, y: wallTileSize.h + 1 },
-        }),
-        renderProps: {},
-      };
+      return createSprite({
+        texture: wallTextureId(
+          room.planet,
+          style,
+          side,
+          room.color.shade === "dimmed",
+        ),
+        pivot:
+          side === "away" ?
+            {
+              x: wallTileSize.w,
+              // walls need to be rendered 1px high to match original game (original puts them 1px low, but
+              // we already position them (in world space) 2px low to match original rendering while keeping
+              // bounding boxes correct
+              y: wallTileSize.h + 1,
+            }
+          : { x: 0, y: wallTileSize.h + 1 },
+      });
     },
   ),
 
-  barrier({
-    item: {
-      config: { axis },
-      state: { expires },
+  barrier: renderOnce(
+    ({
+      item: {
+        config: { axis },
+      },
+    }) => {
+      return createSprite({
+        texture: `barrier.${axis}`,
+        pivot: barrierPivot[axis],
+      });
     },
-    currentlyRenderedProps,
-  }) {
-    const bubbles = expires !== null;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      bubbles !== currentlyRenderedProps.bubbles;
-
-    if (!render) {
-      return;
-    }
-
-    return {
-      container:
-        bubbles ?
-          createSprite({
-            frames: spriteSheet.animations["bubbles.taupe"],
-            playOnce: "and-destroy",
-            pivot: barrierPivot[axis],
-            //...projectWorldXyzToScreenXyInteger(blockXyzToFineXyz({ x: -0.5 })),
-          })
-        : createSprite({
-            texture: `barrier.${axis}`,
-            pivot: barrierPivot[axis],
-          }),
-      renderProps: { bubbles },
-    };
-  },
+  ),
 
   deadlyBlock: singleRenderWithStyleAsTexture,
   slidingDeadly: singleRenderWithStyleAsTexture,
@@ -180,30 +151,23 @@ export const itemAppearances: {
   block({
     item: {
       config: { style },
-      state: { expires, disappearing },
+      state: { disappear },
     },
     currentlyRenderedProps,
   }) {
-    const bubbles = expires !== null;
-
     const render =
       currentlyRenderedProps === undefined ||
-      currentlyRenderedProps.bubbles !== bubbles ||
-      currentlyRenderedProps.disappearing !== disappearing;
+      currentlyRenderedProps.disappear !== disappear;
 
     if (!render) {
       return;
     }
 
     return {
-      container:
-        bubbles ?
-          createSprite({
-            frames: spriteSheet.animations["bubbles.taupe"],
-            playOnce: "and-destroy",
-          })
-        : createSprite(`block.${style}${disappearing ? ".disappearing" : ""}`),
-      renderProps: { bubbles, disappearing },
+      container: createSprite(
+        `block.${style}${disappear ? ".disappearing" : ""}`,
+      ),
+      renderProps: { disappear },
     };
   },
 
@@ -291,10 +255,7 @@ export const itemAppearances: {
 
     rendering.addChild(createSprite({ texture: "lift.static", pivot }));
 
-    return {
-      container: rendering,
-      renderProps: {},
-    };
+    return rendering;
   }),
 
   teleporter({
@@ -329,71 +290,42 @@ export const itemAppearances: {
     };
   },
 
-  pickup({
-    item: {
-      config: { gives },
-      state: { expires },
-    },
-    currentlyRenderedProps,
-  }) {
-    const bubbles = expires !== null;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      currentlyRenderedProps.bubbles !== bubbles;
-
-    if (!render) {
-      return;
-    }
-
-    const pickupIcons: Record<
-      ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
-      CreateSpriteOptions
-    > = {
-      shield: "bunny",
-      jumps: "bunny",
-      fast: "bunny",
-      "extra-life": "bunny",
-      bag: "bag",
-      donuts: "donuts",
-      hooter: "hooter",
-      crown: "crown",
-      reincarnation: {
-        frames: spriteSheet.animations["fish"],
-        animationSpeed: 0.25,
+  pickup: renderOnce(
+    ({
+      item: {
+        config: { gives },
       },
-    };
-    const texture = pickupIcons[gives];
+    }) => {
+      const pickupIcons: Record<
+        ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
+        CreateSpriteOptions
+      > = {
+        shield: "bunny",
+        jumps: "bunny",
+        fast: "bunny",
+        "extra-life": "bunny",
+        bag: "bag",
+        donuts: "donuts",
+        hooter: "hooter",
+        crown: "crown",
+        scroll: "scroll",
+        reincarnation: {
+          frames: spriteSheet.animations["fish"],
+          animationSpeed: 0.25,
+        },
+      };
+      const texture = pickupIcons[gives];
 
-    return {
-      container: createSprite(
-        bubbles ?
-          {
-            frames:
-              texture === "donuts" ?
-                spriteSheet.animations[`bubbles.taupe`]
-              : spriteSheet.animations[`bubbles.white`],
-            playOnce: "and-destroy",
-          }
-        : texture,
-      ),
-      renderProps: { bubbles },
-    };
-  },
+      return createSprite(texture);
+    },
+  ),
 
   moveableDeadly: renderOnce(
     ({
       item: {
         config: { style },
       },
-    }) => {
-      return {
-        container: createSprite(
-          style === "deadFish" ? "fish.1" : "puck.deadly",
-        ),
-        renderProps: {},
-      };
-    },
+    }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
   sceneryPlayer: renderOnce(
@@ -401,12 +333,7 @@ export const itemAppearances: {
       item: {
         config: { which },
       },
-    }) => {
-      return {
-        container: createSprite(`${which}.walking.towards.2`),
-        renderProps: {},
-      };
-    },
+    }) => createSprite(`${which}.walking.towards.2`),
   ),
 
   charles({
@@ -576,12 +503,7 @@ export const itemAppearances: {
       item: {
         config: { style },
       },
-    }) => {
-      return {
-        container: createSprite(style),
-        renderProps: {},
-      };
-    },
+    }) => createSprite(style),
   ),
 
   portableBlock({
@@ -647,69 +569,22 @@ export const itemAppearances: {
       item: {
         config: { slider },
       },
-    }) => {
-      return {
-        container: createSprite(`book.${slider ? "y" : "x"}`),
-        renderProps: {},
-      };
-    },
+    }) => createSprite(`book.${slider ? "y" : "x"}`),
   ),
 
-  hushPuppy({
-    item: {
-      state: { expires },
+  hushPuppy: staticSpriteAppearance("hushPuppy"),
+
+  bubbles: renderOnce(
+    ({
+      item: {
+        config: { style },
+      },
+    }) => {
+      return createSprite({
+        frames: spriteSheet.animations[`bubbles.${style}`],
+      });
     },
-    currentlyRenderedProps,
-  }) {
-    const bubbles = expires !== null;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      currentlyRenderedProps.bubbles !== bubbles;
-
-    if (!render) {
-      return;
-    }
-
-    return {
-      container:
-        bubbles ?
-          createSprite({
-            frames: spriteSheet.animations["bubbles.taupe"],
-            playOnce: "and-destroy",
-          })
-        : createSprite("hushPuppy"),
-      renderProps: { bubbles },
-    };
-  },
-
-  scroll({
-    item: {
-      state: { expires },
-    },
-    currentlyRenderedProps,
-  }) {
-    const bubbles = expires !== null;
-
-    const render =
-      currentlyRenderedProps === undefined ||
-      currentlyRenderedProps.bubbles !== bubbles;
-
-    if (!render) {
-      return;
-    }
-
-    return {
-      container:
-        bubbles ?
-          createSprite({
-            frames: spriteSheet.animations["bubbles.taupe"],
-            playOnce: "and-destroy",
-          })
-        : createSprite("scroll"),
-      renderProps: { bubbles },
-    };
-  },
+  ),
 
   ball: staticSpriteAppearance("ball"),
 

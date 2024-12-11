@@ -118,8 +118,7 @@ export const moveItem = <RoomId extends string>({
       continue;
     }
 
-    if (
-      pusher !== collision &&
+    if (pusher !== collision)
       handleItemsTouchingItems({
         movingItem: subjectItem,
         touchedItem: collision,
@@ -127,15 +126,14 @@ export const moveItem = <RoomId extends string>({
         gameState,
         deltaMS,
         room,
-      })
-    ) {
-      return true;
+      });
+
+    if (room.items[collision.id] === undefined) {
+      // the touch handler might have removed this item from the world - in this case we can move on
+      continue;
     }
 
-    if (
-      !isSolid(collision, gameState.progression) ||
-      !isSolid(subjectItem, gameState.progression)
-    ) {
+    if (!isSolid(collision) || !isSolid(subjectItem)) {
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
@@ -214,6 +212,8 @@ export const moveItem = <RoomId extends string>({
         ),
       );
     } else {
+      // collision was not with a freeitem
+
       // back off to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
         subjectItem.state.position,

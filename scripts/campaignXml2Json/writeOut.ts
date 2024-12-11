@@ -70,7 +70,8 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     tsBarrellFilename,
     `
     /* eslint-disable */
-    import type {Campaign, RoomJson} from "../../model/modelTypes.ts";\n
+    import type {Campaign} from "@/model/modelTypes.ts";\n
+    import type {RoomJson} from "@/model/RoomJson.ts";\n
     import {type OriginalCampaignRoomId} from './OriginalCampaignRoomId.ts';\n
 
     ${roomIdsSorted

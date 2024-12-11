@@ -14,9 +14,8 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
 export const handleItemTouchingSlidingItem = <RoomId extends string>({
   movingItem: touchingItem,
   touchedItem: slidingItem,
-  gameState,
 }: ItemTouchEvent<RoomId, ItemInPlayType, SlidingItemTypes>) => {
-  if (!isSolid(touchingItem, gameState.progression)) return;
+  if (!isSolid(touchingItem)) return;
 
   const {
     state: { position: slidingItemPosition },
@@ -45,9 +44,8 @@ export const handleSlidingItemTouchingAnyItem = <RoomId extends string>({
   movingItem: slidingItem,
   /** the item that touched this sliding item */
   touchedItem,
-  gameState,
 }: ItemTouchEvent<RoomId, SlidingItemTypes, ItemInPlayType>) => {
-  if (!isSolid(touchedItem, gameState.progression)) return;
+  if (!isSolid(touchedItem)) return;
 
   const slidingVel = slidingItem.state.vels.sliding;
 

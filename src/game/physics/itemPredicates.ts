@@ -1,36 +1,32 @@
-import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
 import { type AnyItemInPlay } from "@/model/ItemInPlay";
 import type { CharacterName } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
+
+type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
+  [TI in T]: ItemInPlay<TI, PlanetName, RoomId>;
+}[T];
 
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
   <RoomId extends string>(
     item: AnyItemInPlay<RoomId>,
-  ): item is { [TI in T]: ItemInPlay<TI, PlanetName, RoomId> }[T] => {
+  ): item is ItemTypeUnion<T, RoomId> => {
     return (types as Array<string>).includes(item.type);
   };
 
-export const isUnsolid = (
-  { state: { unsolidAfterProgression } }: AnyItemInPlay,
-  // number of the frame we are on
-  progression: number,
-) => {
-  return (
-    unsolidAfterProgression !== null && progression > unsolidAfterProgression
-  );
-};
+const isUnsolid = isItemType("bubbles", "portal", "stopAutowalk");
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
  * given @param item as being solid */
 
-export const isSolid = (
-  item: AnyItemInPlay,
-  // number of the frame we are on
-  progression: number,
-) => {
-  return !isUnsolid(item, progression);
+export const isSolid = (item: AnyItemInPlay) => {
+  return !isUnsolid(item);
 };
 
 export const isPushable = (collisionItem: AnyItemInPlay) => {
@@ -91,7 +87,6 @@ export const fallingItemTypes = [
   "slidingBlock",
   "slidingDeadly",
   "spring",
-  "scroll",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof fallingItemTypes)[number];
@@ -109,3 +104,9 @@ export const deadlyItemTypes = [
   "slidingDeadly",
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
+
+export const isDeadlyItem = <RoomId extends string>(
+  item: UnknownItemInPlay<RoomId>,
+): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
+  isItemType(...deadlyItemTypes)(item) ||
+  (item.type === "floor" && item.config.deadly);

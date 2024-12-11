@@ -13,6 +13,7 @@ import {
   type ItemTouchEvent,
 } from "./ItemTouchEvent";
 import { characterNames } from "@/model/modelTypes";
+import { handleItemTouchingDissapearingOnTouch } from "./handleItemTouchingDisappearing";
 
 /**
  * same old - Morties touching Morties
@@ -53,6 +54,9 @@ export const handleItemsTouchingItems = <RoomId extends string>(
 
   if (touchedItemIsType(e, "joystick") && handlePlayerTouchingJoystick(e))
     return true;
+
+  if (e.touchedItem.state.disappear !== null)
+    handleItemTouchingDissapearingOnTouch(e);
 
   return false;
 };

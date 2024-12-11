@@ -3,7 +3,7 @@ import type {
   ItemInPlayType,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isItemType } from "../physics/itemPredicates";
+import { isDeadlyItem, isItemType } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
@@ -25,6 +25,8 @@ import { objectEntriesIter } from "@/utils/entries";
 import { latentMovement } from "../physics/mechanics/latentMovement";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
+import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
+import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 
 function* itemMechanicResultGen<
   RoomId extends string,
@@ -48,7 +50,7 @@ function* itemMechanicResultGen<
     yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
 
-    yield jumping(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield jumping(item, gameState /*, deltaMS*/) as MechanicResult<T, RoomId>;
 
     if (isItemType("heels")(item)) {
       carrying(item, room, gameState, deltaMS);
@@ -79,14 +81,74 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): boolean => {
-  let accumulatedPosDelta = originXyz;
+  if (
+    isPlayableItem(item) &&
+    item.state.standingOn !== null &&
+    isDeadlyItem(item.state.standingOn)
+  ) {
+    // the player has a shield that has only just expired - if they are standing on a deadly
+    // item, it should kill them. This would normally have already killed them, but it is possible
+    // they had a shield that has just expired.
+    handlePlayerTouchingDeadly({
+      gameState,
+      room,
+      movingItem: item,
+      touchedItem: item.state.standingOn,
+      deltaMS,
+      movementVector: { x: 0, y: 0, z: -1 },
+    });
+  }
 
   // by spreading the generator onto an array, we run the mechanics at the 'same'
   // time, before the previous ones have changed the game state. This is good for
   // jumping and carrying at the same time, for example. Otherwise, these would
   // one stop the other from working.
-  const allResults = [...itemMechanicResultGen(item, room, gameState, deltaMS)];
-  for (const mechanicResult of allResults) {
+  const mechanicsResults = [
+    ...itemMechanicResultGen(item, room, gameState, deltaMS),
+  ];
+
+  // HERE: handle item standing on an item with dissppear='onStand' - this has to
+  // be after calculating itemMechanicResultGen so that the user can jump off of it for
+  // this single frame
+  if (
+    isFreeItem(item) &&
+    item.state.standingOn !== null &&
+    item.state.standingOn.state.disappear === "onStand"
+  ) {
+    makeItemFadeOut({ touchedItem: item.state.standingOn, gameState, room });
+  }
+
+  let accumulatedPosDelta = applyMechanicsResults(item, mechanicsResults);
+
+  // velocities for this item have now been updated - get the aggregate movement, including vels
+  // that stood from previous frames (did not change)
+  if (isFreeItem(item) || isItemType("lift")(item)) {
+    accumulatedPosDelta = addXyz(
+      accumulatedPosDelta,
+      ...iterate(objectValues(item.state.vels)).map((val) =>
+        scaleXyz(val, deltaMS),
+      ),
+    );
+  }
+
+  return moveItem({
+    subjectItem: item as UnknownItemInPlay<RoomId>,
+    posDelta: accumulatedPosDelta,
+    gameState,
+    deltaMS,
+  });
+};
+
+export const applyMechanicsResults = <
+  RoomId extends string,
+  T extends ItemInPlayType,
+>(
+  item: ItemInPlay<T, PlanetName, RoomId>,
+  mechanicsResults: Array<MechanicResult<T, RoomId>>,
+) => {
+  let accumulatedPosDelta = originXyz;
+
+  for (const mechanicResult of mechanicsResults) {
     if (mechanicResult.movementType === "position") {
       accumulatedPosDelta = addXyz(
         accumulatedPosDelta,
@@ -113,28 +175,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     if (mrStateDelta !== undefined) {
       item.state = { ...item.state, ...mrStateDelta };
     }
-
-    if (mechanicResult.movementType === "endTick") {
-      // this items's tick is halting the frame tick
-      return true;
-    }
   }
 
-  // velocities for this item have now been updated - get the aggregate movement, including vels
-  // that stood from previous frames (did not change)
-  if (isFreeItem(item) || isItemType("lift")(item)) {
-    accumulatedPosDelta = addXyz(
-      accumulatedPosDelta,
-      ...iterate(objectValues(item.state.vels)).map((val) =>
-        scaleXyz(val, deltaMS),
-      ),
-    );
-  }
-
-  return moveItem({
-    subjectItem: item as UnknownItemInPlay<RoomId>,
-    posDelta: accumulatedPosDelta,
-    gameState,
-    deltaMS,
-  });
+  return accumulatedPosDelta;
 };

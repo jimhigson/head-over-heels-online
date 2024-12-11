@@ -25,7 +25,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HINTS AND TIPS
 
 1. ![](hud.char.1) Beginners should aim to escape from Blacktooth and get back to Freedom
@@ -60,7 +61,7 @@ export const room = inferRoomJson({
 `,
       },
       position: { x: 7, y: 5, z: 1 },
-      type: "scroll",
+      type: "pickup",
     },
     scrollBlock: {
       config: { disappearing: false, style: "organic" },

@@ -1,21 +1,33 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
+import { deleteItemFromRoomInPlay } from "./deleteItemFromRoomInPlay";
+import type { RoomState } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
-import { fadeInOrOutDuration } from "../../render/animationTimings";
+import { fadeInOrOutDuration } from "@/game/render/animationTimings";
+import { addItemToRoomInPlay } from "./addItemToRoomInPlay";
 
-/** remove an item (with bubbles) */
-export const makeItemFadeOut = <RoomId extends string>(
-  disappearingItem:
-    | ItemInPlay<"pickup", PlanetName, RoomId>
-    | ItemInPlay<"block", PlanetName, RoomId>
-    | ItemInPlay<"barrier", PlanetName, RoomId>
-    | ItemInPlay<"scroll", PlanetName, RoomId>
-    | ItemInPlay<"hushPuppy", PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
-) => {
-  // already disappearing so leave as-is (do not extend the deadline):
-  if (disappearingItem.state.expires !== null) return;
+/**
+ * remove an item (with bubbles)
+ */
+export const makeItemFadeOut = <RoomId extends string>({
+  touchedItem,
+  room,
+  gameState,
+}: {
+  touchedItem: AnyItemInPlay<RoomId>;
+  room: RoomState<PlanetName, RoomId>;
+  gameState: GameState<RoomId>;
+}) => {
+  deleteItemFromRoomInPlay({ room, item: touchedItem });
 
-  disappearingItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
-  disappearingItem.state.unsolidAfterProgression = gameState.progression + 1;
+  const bubblesItem = addItemToRoomInPlay({
+    itemType: "bubbles",
+    config: { style: "white" },
+    position: touchedItem.state.position,
+    room,
+    gameState,
+  });
+
+  // remove bubbles after a time:
+  bubblesItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
 };

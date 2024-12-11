@@ -40,7 +40,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## REINCARNATION FISH
 
 ![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There
@@ -63,7 +64,7 @@ Even living reincarnation fish taste horrible!
 `,
       },
       position: { x: 0, y: 7, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "blacktooth",

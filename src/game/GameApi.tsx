@@ -3,12 +3,11 @@ import type { PlanetName } from "@/sprites/planets";
 import type { Emitter } from "mitt";
 import type { GameState } from "./gameState/GameState";
 import type { RenderOptions } from "./RenderOptions";
-import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { InputState } from "./input/InputState";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
-  scrollOpened: JsonItemConfig<"scroll", PlanetName, RoomId>;
+  scrollOpened: { markdown: string };
   /** emitted when input changes - only really so react/dom bits can close when some input happens */
   inputStateChanged: InputState;
 };

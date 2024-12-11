@@ -92,6 +92,7 @@ export const listenForInput = ({
     onInputStateChange?.(inputState);
   };
 
+  window.focus();
   window.addEventListener("keydown", keyDownHandler, false);
   window.addEventListener("keyup", keyUpHandler, false);
   window.addEventListener("focus", handleWindowFocus, false);

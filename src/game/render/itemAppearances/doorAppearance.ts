@@ -80,10 +80,7 @@ function* doorLegsGenerator(
 }
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
   ({ item: doorLegsItem, room }) => {
-    return {
-      container: iterateToContainer(doorLegsGenerator(doorLegsItem, room)),
-      renderProps: {},
-    };
+    return iterateToContainer(doorLegsGenerator(doorLegsItem, room));
   },
 );
 
@@ -124,9 +121,6 @@ function* doorFrameGenerator(
 }
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
   ({ item: doorFrameItem, room }) => {
-    return {
-      container: iterateToContainer(doorFrameGenerator(doorFrameItem, room)),
-      renderProps: {},
-    };
+    return iterateToContainer(doorFrameGenerator(doorFrameItem, room));
   },
 );

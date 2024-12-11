@@ -65,7 +65,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## DOUGHNUTS
 
 ![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head
@@ -76,7 +77,7 @@ the doughnut icon at the bottom left of the screen.
 `,
       },
       position: { x: 2, y: 3, z: 1 },
-      type: "scroll",
+      type: "pickup",
     },
     scrollBlock: {
       config: { disappearing: false, style: "organic" },
@@ -91,12 +92,12 @@ the doughnut icon at the bottom left of the screen.
             right: { activated: false },
           },
           "block@0,7,0:Z1AdJxh": {
-            left: { disappearing: true },
-            right: { disappearing: false },
+            left: { disappear: "onTouch" },
+            right: { disappear: null },
           },
           "block@3,7,0:Z1AdJxh": {
-            left: { disappearing: true },
-            right: { disappearing: false },
+            left: { disappear: "onTouch" },
+            right: { disappear: null },
           },
         },
       },

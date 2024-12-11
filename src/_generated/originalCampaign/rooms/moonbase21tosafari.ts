@@ -99,7 +99,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## SAFARI
 
 ![](safari.wall.shield.left) A densely vegetated planet, mainly used for hunting. The natives live in wooden
@@ -109,7 +110,7 @@ forts in the jungle, beware traps!
 `,
       },
       position: { x: 1, y: 3, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@2,3,0:1mtSsV": {
       config: { toRoom: "safari1" },

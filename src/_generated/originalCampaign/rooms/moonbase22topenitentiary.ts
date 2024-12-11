@@ -75,7 +75,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## PENITENTIARY
 ### The empire's prison planet
 
@@ -86,7 +87,7 @@ skill required. The worst place is The Pit, try not to fall into it!
 `,
       },
       position: { x: 1, y: 4, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@2,3,0:Z1dKvDl": {
       config: { toRoom: "penitentiary1" },

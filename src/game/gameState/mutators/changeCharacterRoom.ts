@@ -78,7 +78,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   }
 
   // take the character out of the previous room:
-  deleteItemFromRoomInPlay(leavingRoom, character);
+  deleteItemFromRoomInPlay({ room: leavingRoom, item: character });
 
   if (changeType !== "teleport") {
     const isPortal = isItemType("portal");
@@ -139,7 +139,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       for (const hushPuppyBye of iterate(objectValues(toRoom.items)).filter(
         isItemType("hushPuppy"),
       )) {
-        makeItemFadeOut(hushPuppyBye, gameState);
+        makeItemFadeOut({ touchedItem: hushPuppyBye, gameState, room: toRoom });
       }
     }
 
@@ -182,7 +182,7 @@ export const changeCharacterRoom = <RoomId extends string>({
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
   // by default):
-  deleteItemFromRoomInPlay(toRoom, character);
+  deleteItemFromRoomInPlay({ room: toRoom, item: character });
 
   // but the character into the (probably newly loaded) room:
   (toRoom.items[currentCharacterName] as typeof character) = character;

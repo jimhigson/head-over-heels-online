@@ -169,8 +169,8 @@ const rooms = {
         position: { x: 0, y: 3, z: 0 },
       },
       {
-        type: "portableBlock",
-        config: { style: "cube" },
+        type: "block",
+        config: { style: "organic", disappearing: true },
         position: { x: 0, y: 2, z: 0 },
       },
       {
@@ -277,6 +277,27 @@ const rooms = {
         config: { style: "anvil" },
         position: { x: 10, y: 7, z: 5 },
       },
+      // to test disappearing barriers:
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: false },
+        position: { x: 10, y: 6, z: 0 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: true },
+        position: { x: 10, y: 6, z: 1 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: false },
+        position: { x: 10, y: 8, z: 0 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: true },
+        position: { x: 10, y: 8, z: 1 },
+      },
       // tests for lifts:
       {
         type: "lift",
@@ -290,6 +311,14 @@ const rooms = {
           activated: true,
           startDirection: "left",
           style: "starsAndStripes",
+        },
+        position: { x: 0, y: 4, z: 1 },
+      },
+      {
+        type: "block",
+        config: {
+          disappearing: true,
+          style: "organic",
         },
         position: { x: 0, y: 4, z: 0 },
       },

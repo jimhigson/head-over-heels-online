@@ -61,7 +61,7 @@ export function* loadDoor<RoomId extends string>(
         ),
         expires: null,
         stoodOnBy: emptySet,
-        unsolidAfterProgression: null,
+        disappear: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
       renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
@@ -85,7 +85,7 @@ export function* loadDoor<RoomId extends string>(
         position: doorNearPosition,
         expires: null,
         stoodOnBy: emptySet,
-        unsolidAfterProgression: null,
+        disappear: null,
       },
       aabb: { x: 8, y: 8, z: doorPortalHeight },
       renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
@@ -120,7 +120,7 @@ export function* loadDoor<RoomId extends string>(
         ),
         expires: null,
         stoodOnBy: emptySet,
-        unsolidAfterProgression: -1,
+        disappear: null,
       },
       aabb: {
         [axis]: blockSizePx.w,
@@ -149,7 +149,7 @@ export function* loadDoor<RoomId extends string>(
         ),
         expires: null,
         stoodOnBy: emptySet,
-        unsolidAfterProgression: null,
+        disappear: null,
       },
       aabb: blockXyzToFineXyz({
         [axis]: 2,
@@ -181,7 +181,7 @@ export function* loadDoor<RoomId extends string>(
         }),
         expires: null,
         stoodOnBy: new Set(),
-        unsolidAfterProgression: null,
+        disappear: null,
       },
       aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
     },
@@ -198,7 +198,7 @@ export function* loadDoor<RoomId extends string>(
       ),
       expires: null,
       stoodOnBy: emptySet,
-      unsolidAfterProgression: -1, // never solid
+      disappear: null,
     },
   };
 }

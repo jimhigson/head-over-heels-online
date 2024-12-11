@@ -30,7 +30,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## CONVEYOR BELTS
 
 ![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the
@@ -40,7 +41,7 @@ opposite direction you have to jump along.
 `,
       },
       position: { x: 3, y: 5, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "blacktooth",

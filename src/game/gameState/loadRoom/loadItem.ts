@@ -14,7 +14,7 @@ import { originXyz } from "@/utils/vectors/vectors";
 import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
-export function* loadItem<RoomId extends string>(
+export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
   jsonItem: UnknownJsonItem<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
@@ -69,7 +69,6 @@ const initialState = (jsonItem: UnknownJsonItem) => {
   return {
     expires: null,
     stoodOnBy: new Set(),
-    unsolidAfterProgression: null,
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(free ?
       {
@@ -95,13 +94,17 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         activated: jsonItem.config.activated,
       }
     : {}),
-    ...(jsonItem.type === "pickup" ? { collected: false } : {}),
+    ...(jsonItem.type === "pickup" ?
+      { collected: false, disappear: "onTouchByPlayer" }
+    : {}),
     ...(jsonItem.type === "switch" ?
       { setting: "left", touchedOnProgression: -1 }
     : {}),
-    ...(jsonItem.type === "scroll" ? { touchedOnProgression: -1 } : {}),
     ...(jsonItem.type === "block" ?
-      { disappearing: jsonItem.config.disappearing }
+      { disappear: jsonItem.config.disappearing ? "onStand" : null }
+    : {}),
+    ...(jsonItem.type === "barrier" ?
+      { disappear: jsonItem.config.disappearing ? "onTouch" : null }
     : {}),
     ...(jsonItem.type === "lift" ?
       { direction: "up", vels: { lift: originXyz } }

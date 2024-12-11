@@ -159,7 +159,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## BOOK WORLD
 
 ![](bookworld.wall.person.left) The emperor is very keen on cowboy books and has devoted an entire world to a
@@ -170,7 +171,7 @@ Information is rigorously suppressed in the empire.
 `,
       },
       position: { x: 6, y: 6, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@6,3,0:Z8cIGu": {
       config: { toRoom: "bookworld1" },

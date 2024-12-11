@@ -120,7 +120,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## BAG
 
 ![](bag)The bag may be used to carry small objects around a room. It is essential for
@@ -135,7 +136,7 @@ press the CARRY key. It is not possible to drop an object in a doorway.
 `,
       },
       position: { x: 4, y: 0, z: 1 },
-      type: "scroll",
+      type: "pickup",
     },
     scrollBlock: {
       config: { disappearing: false, style: "organic" },

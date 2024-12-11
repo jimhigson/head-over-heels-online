@@ -94,8 +94,12 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] glide roll physics for pucks/balls    
 [x] items don't collide with items they're standing on.
     [x] walking from an item to another doesn't collide with it
-    [!] now they do (on every frame) but means some duplicative touches 🤷‍♂️
+    [x] now they do (on every frame) but means some duplicative touches 🤷‍♂️
 [ ] disappearing blocks should only go when stood on (hit from the top)
+    [ ] bubbles are their own item
+    [ ] remove unsolid after concept
+[ ] can't jump off of collected powerups    
+
 [ ] head and heels can combine
 [ ] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding

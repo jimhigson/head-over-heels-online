@@ -15,7 +15,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HISTORY OF THE BLACKTOOTH EMPIRE
 
 ![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
@@ -39,7 +40,7 @@ ARE their names and both are highly trained spies.
 `,
       },
       position: { x: 1, y: 0, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
     "teleporter@5,7,0:ZO2t8x": {
       config: { toRoom: "blacktooth1head" },

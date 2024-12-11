@@ -3,26 +3,24 @@ import type { GameApi } from "../GameApi";
 import type { InputState } from "../input/InputState";
 import { GameDialog } from "./GameDialog";
 import { ScrollContent } from "./ScrollContent";
-import type { ItemInPlayConfig } from "@/model/ItemInPlay";
 import { HoldBanner } from "./HoldBanner";
 
 export type GameOverlayDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
 };
 
-type ScrollConfig = ItemInPlayConfig<"scroll">;
-
 export const GameOverlayDialogs = <RoomId extends string>({
   gameApi,
 }: GameOverlayDialogsProps<RoomId>) => {
-  const [displayedScrollContent, setDisplayedScrollContent] =
-    useState<ScrollConfig | null>(null);
+  const [displayedScrollContent, setDisplayedScrollContent] = useState<
+    string | null
+  >(null);
   const [paused, setPaused] = useState<boolean>(false);
 
   useEffect(
     function listenForScrollOpen() {
-      const handleScrollOpened = (scrollContent: ScrollConfig) => {
-        setDisplayedScrollContent(scrollContent);
+      const handleScrollOpened = ({ markdown }: { markdown: string }) => {
+        setDisplayedScrollContent(markdown);
         gameApi.gameState.gameSpeed = 0;
       };
 
@@ -77,7 +75,7 @@ export const GameOverlayDialogs = <RoomId extends string>({
       <GameDialog
         content={
           <ScrollContent
-            content={displayedScrollContent}
+            markdown={displayedScrollContent}
             keyAssignment={gameApi.gameState.keyAssignment}
           />
         }

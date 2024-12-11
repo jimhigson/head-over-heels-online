@@ -115,7 +115,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HOOTER
 
 ![](hooter)
@@ -127,7 +128,7 @@ may only be used by Head and requires a tray of doughnuts to be of any use.
 `,
       },
       position: { x: 7, y: 1, z: 1 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "blacktooth",

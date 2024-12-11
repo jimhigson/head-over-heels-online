@@ -26,7 +26,7 @@ export const gravity = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId> => {
-  if (!isSolid(item, gameState.progression)) {
+  if (!isSolid(item)) {
     // non-solid items do not have gravity - they'd fall through the floor like gravity-impacted ghosts!
     return notFalling;
   }

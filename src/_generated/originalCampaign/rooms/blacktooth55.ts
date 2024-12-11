@@ -25,7 +25,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## HUSH PUPPIES
 
 ![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
@@ -42,7 +43,7 @@ clear.
 `,
       },
       position: { x: 5, y: 5, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "jail",

@@ -1,21 +1,28 @@
 import { collision1to1 } from "@/game/collision/aabbCollision";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { FreeItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
-import { addXyz } from "@/utils/vectors/vectors";
 import { isSolid } from "../physics/itemPredicates";
 import { iterate } from "@/utils/iterate";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
+import { addXyz } from "@/utils/vectors/vectors";
+import { epsilon } from "@/utils/veryClose";
 
-const standingTolerance = 0.001;
-
-export const checkStandingOn = <RoomId extends string>(
+export const spatiallyCheckStandingOn = <RoomId extends string>(
   item: FreeItem<PlanetName, RoomId>,
-  itemMaybeBeingStoodOn: UnknownItemInPlay<RoomId>,
-  progression: number,
+  itemMaybeBeingStoodOn: AnyItemInPlay<RoomId>,
+  /**
+    How much overlap is ok? if not given, an epsilon value is used,
+    which means to return true the bottom of @param item should equal
+    the top of @param itemMaybeBeingStoodOn (negating floating point error).
+
+    A value can be given if item moved in this frame, since they cover a range
+    of values during the frame before they overlap it
+  */
+  zOverlapAllowed: number = 0.001,
 ): boolean => {
-  if (!isSolid(itemMaybeBeingStoodOn, progression)) {
+  if (!isSolid(itemMaybeBeingStoodOn)) {
     return false;
   }
 
@@ -25,13 +32,10 @@ export const checkStandingOn = <RoomId extends string>(
 
   const {
     state: {
-      position,
       vels: {
         gravity: { z: gravityVelZ },
       },
     },
-    aabb,
-    id,
   } = item;
 
   if (gravityVelZ > 0) {
@@ -39,15 +43,34 @@ export const checkStandingOn = <RoomId extends string>(
     return false;
   }
 
-  const positionJustBelowItem = addXyz(position, { z: -standingTolerance });
-
+  // check for collisions of a box representing just the top of one item
+  // and just the bottom of the other
   return collision1to1(
+    // just the bottom of item:
     {
-      state: { position: positionJustBelowItem },
-      aabb,
-      id,
+      state: {
+        position: addXyz(item.state.position, {
+          x: 0,
+          y: 0,
+          z: -epsilon,
+        }),
+      },
+      aabb: { ...item.aabb, z: zOverlapAllowed + epsilon },
+      id: item.id,
     },
-    itemMaybeBeingStoodOn,
+
+    // just the zero-volume top of itemMaybeBeingStoodOn:
+    {
+      state: {
+        position: addXyz(itemMaybeBeingStoodOn.state.position, {
+          x: 0,
+          y: 0,
+          z: itemMaybeBeingStoodOn.aabb.z,
+        }),
+      },
+      aabb: { ...itemMaybeBeingStoodOn.aabb, z: 0 },
+      id: itemMaybeBeingStoodOn.id,
+    },
   );
 
   /*
@@ -74,10 +97,9 @@ export const findStandingOnWithHighestPriorityAndMostOverlap = <
 >(
   item: FreeItem<PlanetName, RoomId>,
   itemsMaybeBeingStoodOn: Iterable<Item>,
-  progression: number,
 ): Item | undefined => {
   const potentiallyStoodOn = iterate(itemsMaybeBeingStoodOn).filter((i) =>
-    checkStandingOn(item, i, progression),
+    spatiallyCheckStandingOn(item, i),
   );
 
   const potentiallyStoodOnArray = [...potentiallyStoodOn];

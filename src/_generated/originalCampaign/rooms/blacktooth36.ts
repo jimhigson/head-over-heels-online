@@ -20,7 +20,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## SWITCHES
 
 ![](switch.left)
@@ -33,7 +34,7 @@ still be deadly to touch.
 `,
       },
       position: { x: 4, y: 5, z: 0 },
-      type: "scroll",
+      type: "pickup",
     },
   },
   planet: "blacktooth",

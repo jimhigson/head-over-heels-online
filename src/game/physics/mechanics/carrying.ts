@@ -13,11 +13,9 @@ import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
 import { iterate } from "@/utils/iterate";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
-import {
-  addItemsToRoomInPlay,
-  deleteItemFromRoomInPlay,
-} from "@/game/gameState/mutators/deleteItemFromRoomInPlay";
+import { deleteItemFromRoomInPlay } from "@/game/gameState/mutators/deleteItemFromRoomInPlay";
 import type { CarriedItem } from "@/model/ItemStateMap";
+import { addItemToRoomInPlay } from "@/game/gameState/mutators/addItemToRoomInPlay";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -41,9 +39,7 @@ export const carrying = <RoomId extends string>(
     isPortable,
   );
   const itemToPickup =
-    carrying === null ?
-      findItemToPickup(heelsItem, room, gameState)
-    : undefined;
+    carrying === null ? findItemToPickup(heelsItem, room) : undefined;
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
@@ -73,14 +69,13 @@ export const carrying = <RoomId extends string>(
         return;
       }
 
-      const carryingItem = addItemsToRoomInPlay(
+      const carryingItem = addItemToRoomInPlay({
         gameState,
         room,
-        carrying.type,
-        carrying.config,
-      );
-
-      carryingItem.state.position = heelsPosition;
+        itemType: carrying.type,
+        config: carrying.config,
+        position: heelsPosition,
+      });
 
       moveItem({
         subjectItem: heelsItem,
@@ -116,18 +111,16 @@ const pickUpItem = <RoomId extends string, T extends PortableItemType>(
   } as CarriedItem<RoomId>;
   heelsItem.state.carrying = carrying;
 
-  deleteItemFromRoomInPlay(room, itemToPickup);
+  deleteItemFromRoomInPlay({ room, item: itemToPickup });
 };
 
 const findItemToPickup = <RoomId extends string>(
   heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
 ) => {
   return findStandingOnWithHighestPriorityAndMostOverlap(
     heelsItem,
     iterate(objectValues(room.items)).filter(isPortable),
-    gameState.progression,
   );
 };
 

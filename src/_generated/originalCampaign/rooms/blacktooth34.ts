@@ -30,7 +30,8 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: {
-        text: `
+        gives: "scroll",
+        markdown: `
 ## SPRINGS
 
 ![](spring.compressed)
@@ -41,7 +42,7 @@ Jumping from a spring will give extra height to your jump.
 `,
       },
       position: { x: 2, y: 7, z: 1 },
-      type: "scroll",
+      type: "pickup",
     },
     scrollBlock: {
       config: { disappearing: false, style: "organic" },

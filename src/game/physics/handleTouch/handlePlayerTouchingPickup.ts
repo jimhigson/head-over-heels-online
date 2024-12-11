@@ -1,18 +1,20 @@
 import { isItemType } from "../itemPredicates";
-import { currentRoom } from "../../gameState/GameState";
 import type { CharacterName } from "@/model/modelTypes";
-import { makeItemFadeOut } from "@/game/gameState/mutators/makeItemFadeOut";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 const isHead = isItemType("head");
 const isHeels = isItemType("heels");
 
-export const handlePlayerTouchingPickup = <RoomId extends string>({
-  gameState,
-  movingItem: player,
-  touchedItem: pickup,
-}: ItemTouchEvent<RoomId, CharacterName, "pickup">) => {
-  const roomId = currentRoom(gameState).id;
+export const handlePlayerTouchingPickup = <RoomId extends string>(
+  e: ItemTouchEvent<RoomId, CharacterName, "pickup">,
+) => {
+  const {
+    gameState,
+    movingItem: player,
+    touchedItem: pickup,
+    room: { id: roomId },
+  } = e;
+
   if (gameState.pickupsCollected[roomId][pickup.id] === true) {
     // ignore already picked up items
     return;
@@ -23,7 +25,6 @@ export const handlePlayerTouchingPickup = <RoomId extends string>({
     true
   >;
   roomPickupCollections[pickup.id] = true;
-  makeItemFadeOut(pickup, gameState);
 
   switch (pickup.config.gives) {
     case "hooter": {
@@ -73,6 +74,14 @@ export const handlePlayerTouchingPickup = <RoomId extends string>({
       player.state.lives += 2;
       break;
 
+    case "scroll":
+      // avoid the scroll being closed right away if the player already has jump held:
+      gameState.inputState.jump = false;
+      gameState.events.emit("scrollOpened", {
+        markdown: pickup.config.markdown,
+      });
+      break;
+
     case "reincarnation":
       //TODO:
       break;
@@ -80,5 +89,8 @@ export const handlePlayerTouchingPickup = <RoomId extends string>({
     case "crown":
       //TODO:
       break;
+
+    default:
+      pickup.config satisfies never;
   }
 };
