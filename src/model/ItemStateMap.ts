@@ -101,7 +101,6 @@ export type ItemStateMap<RoomId extends string> = {
   conveyor: {
     moving: boolean;
   };
-  block: Pick<JsonItemConfig<"block", PlanetName, string>, "disappearing">;
   switch: SingleTouch & {
     setting: SwitchSetting;
   };

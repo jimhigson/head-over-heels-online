@@ -30,6 +30,12 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
   for (const [k, v] of objectEntriesIter(activates)) {
     const affectedItem = room.items[k];
 
+    if (affectedItem === undefined) {
+      // item could have been deleted from the room (ie, be a disappearing block
+      // that's already been stood on)
+      continue;
+    }
+
     affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
   }
 

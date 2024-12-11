@@ -7,6 +7,8 @@ import type {
   DeadlyItemStyle,
 } from "./JsonItem";
 
+export type BlockStyle = "organic" | "artificial" | "tower";
+
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
 export type ItemConfigMap<
@@ -42,7 +44,7 @@ export type ItemConfigMap<
     disappearing: boolean;
   };
   block: {
-    style: "organic" | "artificial" | "tower";
+    style: BlockStyle;
     disappearing: boolean;
   };
   deadlyBlock: {

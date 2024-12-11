@@ -2,6 +2,7 @@ import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors/vectors";
 import { liftBBShortening } from "../physics/mechanicsConstants";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -32,7 +33,7 @@ export const yAxisWallRenderAabb = { ...yAxisWallAabb, z: wallRenderHeight };
 
 // TODO: also support giving renderAabbs
 export const boundingBoxForItem = (
-  item: UnknownJsonItem,
+  item: UnknownJsonItem | UnknownItemInPlay,
 ): { aabb: Aabb; renderAabb?: Aabb } => {
   switch (item.type) {
     case "spring":
@@ -105,6 +106,7 @@ export const boundingBoxForItem = (
 
     case "book":
     case "conveyor":
+    case "bubbles":
     case "hushPuppy":
     case "teleporter": {
       return { aabb: largeItemAabb };

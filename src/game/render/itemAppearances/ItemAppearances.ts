@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import type { ItemConfigMap } from "@/model/json/ItemConfigMap";
+import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
@@ -46,6 +46,17 @@ const stackedSprites = (
 type OutlineTextureId = Extract<TextureId, `${string}.outline`>;
 type TextureWithOutline =
   OutlineTextureId extends `${infer T}.outline` ? T : never;
+
+const blockTextureId = (
+  isDark: boolean,
+  style: BlockStyle,
+  disappear: boolean,
+): TextureId => {
+  if (style === "organic" && isDark) {
+    return `block.organic.dark${disappear ? ".disappearing" : ""}`;
+  }
+  return `block.${style}${disappear ? ".disappearing" : ""}`;
+};
 
 const maybeHighlighted = (
   texture: TextureWithOutline,
@@ -153,6 +164,7 @@ export const itemAppearances: {
       config: { style },
       state: { disappear },
     },
+    room,
     currentlyRenderedProps,
   }) {
     const render =
@@ -165,7 +177,11 @@ export const itemAppearances: {
 
     return {
       container: createSprite(
-        `block.${style}${disappear ? ".disappearing" : ""}`,
+        blockTextureId(
+          room.color.shade === "dimmed",
+          style,
+          disappear !== null,
+        ),
       ),
       renderProps: { disappear },
     };

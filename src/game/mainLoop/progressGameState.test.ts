@@ -857,6 +857,8 @@ describe("dissapearing items", () => {
         },
         disappearingBlock1: {
           type: "block",
+          // note elevated block tests that can get up on and jump off disappearing blocks
+          // - this is needed for heels' tricky jumping rooms such as #egyptus15
           position: { x: 0, y: 1, z: 1 },
           config: {
             style: "organic",
@@ -873,9 +875,7 @@ describe("dissapearing items", () => {
         },
         disappearingBlock3: {
           type: "block",
-          // note the block is higher, testing that the player can climb up disappearing blocks as heels.
-          // this requires that they don't vanish as soon as they are touched, but only when stood on
-          position: { x: 0, y: 3, z: 1 },
+          position: { x: 0, y: 3, z: 0 },
           config: {
             style: "organic",
             disappearing: true,
@@ -933,7 +933,7 @@ describe("dissapearing items", () => {
         // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
-          position: { x: 0, y: 0, z: 1 },
+          position: { x: 0, y: 0, z: 2 },
           config: {
             which: "heels",
           },
@@ -947,7 +947,7 @@ describe("dissapearing items", () => {
         },
         disappearingpickup1: {
           type: "pickup",
-          position: { x: 0, y: 1, z: 1 },
+          position: { x: 0, y: 1, z: 0 },
           config: {
             gives: "extra-life",
           },
@@ -963,7 +963,7 @@ describe("dissapearing items", () => {
           type: "pickup",
           // note the block is higher, testing that the player can climb up disappearing blocks as heels.
           // this requires that they don't vanish as soon as they are touched, but only when stood on
-          position: { x: 0, y: 3, z: 1 },
+          position: { x: 0, y: 3, z: 0 },
           config: {
             gives: "extra-life",
           },

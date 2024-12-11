@@ -18,6 +18,30 @@ import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { PlanetName } from "@/sprites/planets";
 import { addItemToRoomInPlay } from "../gameState/mutators/addItemToRoomInPlay";
 
+export interface SpeedButtonProps<RoomId extends string> {
+  gameApi: GameApi<RoomId>;
+  speed: number;
+  className: string;
+}
+
+export const SpeedButton = <RoomId extends string>({
+  gameApi,
+  speed,
+  className,
+}: SpeedButtonProps<RoomId>) => {
+  return (
+    <Button
+      className={className}
+      onClick={(e) => {
+        gameApi.gameState.gameSpeed = speed;
+        e.currentTarget.blur();
+      }}
+    >
+      x{speed}
+    </Button>
+  );
+};
+
 export const Cheats = <RoomId extends string>({
   gameApi,
   showBBs,
@@ -194,60 +218,14 @@ export const Cheats = <RoomId extends string>({
           </div>
 
           <div className="flex flex-row items-center">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 0.1;
-                e.currentTarget.blur();
-              }}
-            >
-              x0.1
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 0.5;
-                e.currentTarget.blur();
-              }}
-            >
-              x0.5
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 1;
-                e.currentTarget.blur();
-              }}
-            >
-              x1
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 2;
-                e.currentTarget.blur();
-              }}
-            >
-              x2
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 5;
-                e.currentTarget.blur();
-              }}
-            >
-              x5
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.gameState.gameSpeed = 10;
-                e.currentTarget.blur();
-              }}
-            >
-              x10
-            </Button>
+            <SpeedButton className="flex-1" speed={0.1} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={0.5} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={1} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={2} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={5} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={10} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={25} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={100} gameApi={gameApi} />
           </div>
 
           <Button

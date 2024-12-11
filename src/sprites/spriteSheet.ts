@@ -43,10 +43,10 @@ const frames = {
     frame: { x: 197, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.floor.deadly": {
-    frame: { x: 193, y: 403, ...floorTileSize },
+    frame: { x: 376, y: 454, ...floorTileSize },
   },
   "generic.dark.floor.deadly": {
-    frame: { x: 160, y: 403, ...floorTileSize },
+    frame: { x: 376, y: 471, ...floorTileSize },
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
@@ -131,8 +131,14 @@ const frames = {
   "block.organic": {
     frame: { x: 160, y: 449, ...largeItemTextureSize },
   },
+  "block.organic.dark": {
+    frame: { x: 160, y: 391, ...largeItemTextureSize },
+  },
   "block.organic.disappearing": {
     frame: { x: 160, y: 420, ...largeItemTextureSize },
+  },
+  "block.organic.dark.disappearing": {
+    frame: { x: 127, y: 391, ...largeItemTextureSize },
   },
   "block.artificial": {
     frame: { x: 127, y: 449, ...largeItemTextureSize },
