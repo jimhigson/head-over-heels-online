@@ -21,6 +21,7 @@ export default {
     colors: spritesheetPalette,
     spacing: {
       // Built around scaled-up text of size 8x8px:
+      0: "0px",
       1: "8px",
       2: "16px",
       3: "24px",
