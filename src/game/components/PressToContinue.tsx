@@ -3,21 +3,26 @@ import type { Action, KeyAssignment } from "../input/InputState";
 import { Fragment } from "react/jsx-runtime";
 import { textScale } from "./dialogScales";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import type { Color } from "pixi.js";
+import { cx } from "class-variance-authority";
 
 export const PressToContinue = ({
   action,
   keyAssignment,
+  className,
+  textColor = spritesheetPalette.metallicBlue,
+  keyColor = spritesheetPalette.pink,
 }: {
   action: Action;
   keyAssignment: KeyAssignment;
+  className?: string;
+  textColor?: Color;
+  keyColor?: Color;
 }) => {
   const keys = keyAssignment[action];
 
-  const textColor = spritesheetPalette.metallicBlue;
-  const keyColor = spritesheetPalette.pink;
-
   return (
-    <div className={`text-center mt-${textScale * 2}`}>
+    <div className={cx("text-left", `mt-${textScale * 2}`, className)}>
       <BitmapText scale={4} color={textColor}>
         Press
       </BitmapText>
