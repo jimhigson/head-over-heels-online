@@ -125,7 +125,7 @@ const shadowMask = (
     case "pickup":
       return jsonItem.config.gives === "scroll" ?
           "shadowMask.scroll"
-        : "shadowMask.smallRound";
+        : undefined;
     case "slidingDeadly":
       return "shadowMask.smallRound";
   }
@@ -162,6 +162,9 @@ const shadowCast = (
       return jsonItem.config.style === "drum" ?
           "shadow.smallRound"
         : "shadow.smallBlock";
+    case "pickup":
+    case "baddie":
+      return "shadow.smallRound";
   }
 };
 

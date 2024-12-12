@@ -29,6 +29,10 @@ export const characterLosesLife = <RoomId extends string>(
     standingOn: null,
   };
 
+  if (character.type === "heels") {
+    character.state.carrying = null;
+  }
+
   const reloadedRoom = loadRoom(
     gameState.campaign.rooms[room.id],
     gameState.pickupsCollected[room.id],
