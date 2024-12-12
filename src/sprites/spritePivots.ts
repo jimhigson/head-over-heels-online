@@ -13,4 +13,4 @@ export const doorTexturePivot = {
   },
 };
 export const doorLegsPivotY = { x: 0, y: 36 };
-export const barrierPivot = { x: { x: 18, y: 22 }, y: { x: 6, y: 22 } };
+//export const barrierPivot = { x: { x: 18, y: 22 }, y: { x: 6, y: 22 } };

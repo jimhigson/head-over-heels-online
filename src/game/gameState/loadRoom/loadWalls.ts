@@ -12,10 +12,6 @@ import {
 import { doorAlongAxis } from "@/utils/vectors/vectors";
 import { emptySet } from "@/utils/empty";
 
-// walls sink slightly low, to match the rendering of the original game.
-// by rendering them low, the bounding boxes match the (lower) rendering
-const wallPositionZ = -2;
-
 /**
  * convert a room's walls into normal items (that can be collided with as with any other item)
  */
@@ -36,7 +32,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: {
               ...blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
-              z: wallPositionZ,
+              z: 0,
             },
             expires: null,
             stoodOnBy: emptySet,
@@ -93,7 +89,7 @@ export function* loadWalls<R extends string>(
           state: {
             position: {
               ...blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
-              z: wallPositionZ,
+              z: 0,
             },
             expires: null,
             stoodOnBy: emptySet,

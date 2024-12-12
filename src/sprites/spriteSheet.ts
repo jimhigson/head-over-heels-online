@@ -124,10 +124,16 @@ const frames = {
   ),
 
   "barrier.x": {
-    frame: { x: 27, y: 349, w: 24, h: 24 },
+    frame: { x: 335, y: 241, ...smallItemTextureSize, pivot: { x: 18, y: 22 } },
   },
   "barrier.y": {
-    frame: { x: 2, y: 349, w: 24, h: 24 },
+    frame: { x: 310, y: 241, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
+  },
+  "shadowMask.barrier.y": {
+    frame: { x: 310, y: 216, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
+  },
+  "shadow.barrier.y": {
+    frame: { x: 310, y: 266, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
   },
   "block.organic": {
     frame: { x: 160, y: 449, ...largeItemTextureSize },
@@ -156,6 +162,9 @@ const frames = {
   volcano: {
     frame: { x: 193, y: 420, ...largeItemTextureSize },
   },
+  "shadowMask.volcano": {
+    frame: { x: 193, y: 449, ...largeItemTextureSize },
+  },
   toaster: {
     frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
@@ -178,7 +187,10 @@ const frames = {
     frame: { x: 77, y: 349, ...smallItemTextureSize },
   },
   scroll: {
-    frame: { x: 52, y: 324, ...smallItemTextureSize },
+    frame: { x: 52, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
+  },
+  "shadowMask.scroll": {
+    frame: { x: 27, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
   },
   donuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
@@ -190,7 +202,7 @@ const frames = {
     frame: { x: 202, y: 349, ...smallItemTextureSize },
   },
   bag: {
-    frame: { x: 202, y: 299, ...smallItemTextureSize },
+    frame: { x: 227, y: 349, ...smallItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "fish",
@@ -235,7 +247,10 @@ const frames = {
     frame: { x: 2, y: 374, ...smallItemTextureSize },
   },
   anvil: {
-    frame: { x: 134, y: 478, ...largeItemTextureSize },
+    frame: { x: 252, y: 366, ...largeItemTextureSize },
+  },
+  "shadowMask.anvil": {
+    frame: { x: 285, y: 366, ...largeItemTextureSize },
   },
   "book.x": {
     frame: { x: 167, y: 478, ...largeItemTextureSize },
@@ -269,6 +284,9 @@ const frames = {
   },
   "switch.right": {
     frame: { x: 77, y: 453, ...smallItemTextureSize },
+  },
+  "shadowMask.switch": {
+    frame: { x: 77, y: 428, ...smallItemTextureSize },
   },
   ...fourDirections(
     "american-football-head.starsAndStripes",
@@ -350,7 +368,10 @@ const frames = {
   ),
 
   hushPuppy: {
-    frame: { x: 193, y: 449, ...largeItemTextureSize },
+    frame: { x: 209, y: 291, ...largeItemTextureSize },
+  },
+  "shadowMask.hushPuppy": {
+    frame: { x: 242, y: 291, ...largeItemTextureSize },
   },
   ball: {
     frame: { x: 54, y: 4, ...smallItemTextureSize },

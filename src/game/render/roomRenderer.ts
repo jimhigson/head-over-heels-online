@@ -2,7 +2,6 @@ import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
-import { renderFloor } from "./renderFloor";
 import { renderExtent } from "./renderExtent";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
@@ -32,8 +31,6 @@ export const RoomRenderer = <RoomId extends string>(
   const roomContainer = new Container({ label: `room(${room.id})` });
   const itemsContainer = new Container({ label: `items(room(${room.id}))` });
 
-  // the floor is a special case, not rendered as a normal item
-  roomContainer.addChild(renderFloor(room));
   roomContainer.addChild(itemsContainer);
 
   roomContainer.filters = mainPaletteSwapFilters(room);
@@ -70,7 +67,7 @@ export const RoomRenderer = <RoomId extends string>(
 
         // it is up the the item to decide if it will rerender
       }
-      // remove any rederers for items that no longer exist in the room:
+      // remove any renderers for items that no longer exist in the room:
       for (const itemRenderer of itemRenderers.values()) {
         if (!room.items[itemRenderer.item.id]) {
           itemRenderers.delete(itemRenderer.item.id);

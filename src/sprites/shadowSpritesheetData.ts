@@ -21,5 +21,11 @@ export const shadowSpritesheetData = {
     "shadow.smallRound": {
       frame: { x: 159, y: 291, ...smallItemTextureSize },
     },
+    "shadowMask.smallRound": {
+      frame: { x: 184, y: 291, ...smallItemTextureSize },
+    },
+    "shadowMask.tower": {
+      frame: { x: 27, y: 349, ...smallItemTextureSize },
+    },
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

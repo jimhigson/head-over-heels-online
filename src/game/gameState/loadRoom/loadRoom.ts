@@ -15,6 +15,8 @@ import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/itemPredicates";
 
+// might do this again later, or use it as a template to gather other item types
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,
 ): Generator<UnknownItemInPlay<RoomId>> {

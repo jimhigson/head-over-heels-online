@@ -1,9 +1,15 @@
-import type { AnimatedSpriteFrames, PointData, Texture } from "pixi.js";
+import type {
+  AnimatedSpriteFrames,
+  PointData,
+  SpritesheetFrameData,
+  Texture,
+} from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 import type { TextureId } from "../../sprites/spriteSheet";
 import { spriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "@/originalGame";
 import { defaultAnimationSpeed } from "./animationTimings";
+import type { Xy } from "@/utils/vectors/vectors";
 
 type AnimatedCreateSpriteOptions = {
   // animated
@@ -65,9 +71,28 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
       sprite = new Sprite(spriteSheet.textures[options.texture]);
     }
 
-    if (anchor === undefined && pivot === undefined)
-      sprite.anchor = bottomMiddleDefaultAnchor;
-    else {
+    if (anchor === undefined && pivot === undefined) {
+      if (!isAnimatedOptions(options)) {
+        // I allow a non-standard pivot property on my sprites:
+        const spriteDataFrame = spriteSheet.data.frames[options.texture]
+          .frame as SpritesheetFrameData["frame"] & { pivot: Xy };
+        // what the spritesheet calls a anchor, I actually use as
+        // a pivot - not sure if pixi means it to be used that way
+        if (spriteDataFrame.pivot !== undefined) {
+          sprite.pivot =
+            flipX ?
+              {
+                x: spriteDataFrame.w - spriteDataFrame.pivot.x,
+                y: spriteDataFrame.pivot.y,
+              }
+            : spriteDataFrame.pivot;
+        } else {
+          sprite.anchor = bottomMiddleDefaultAnchor;
+        }
+      } else {
+        sprite.anchor = bottomMiddleDefaultAnchor;
+      }
+    } else {
       if (anchor !== undefined) sprite.anchor = anchor;
       if (pivot !== undefined) sprite.pivot = pivot;
     }

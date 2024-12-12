@@ -40,6 +40,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
         shadowMaskTexture: shadowMask(jsonItem),
+        shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: { ...jsonItem.config, count: 1 } as any,
@@ -56,6 +57,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
         shadowMaskTexture: shadowMask(jsonItem),
+        shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
@@ -77,8 +79,87 @@ const shadowMask = (
         texture: "shadowMask.conveyor",
         flipX: directionAxis(jsonItem.config.direction) === "x",
       };
+    case "barrier":
+      return {
+        texture: "shadowMask.barrier.y",
+        flipX: jsonItem.config.axis === "x",
+      };
+    case "spring":
+      return "shadowMask.smallRound";
     case "block":
+      return jsonItem.config.style === "tower" ?
+          "shadowMask.tower"
+        : "shadowMask.fullBlock";
+    case "movableBlock":
+      return jsonItem.config.style === "anvil" ?
+          "shadowMask.anvil"
+        : "shadowMask.fullBlock";
+    case "teleporter":
+      // just happens to be the right shape:
+      return "teleporter.flashing.1";
+    case "hushPuppy":
+      // just happens to be the right shape:
+      return "shadowMask.hushPuppy";
+    case "book":
       return "shadowMask.fullBlock";
+    case "portableBlock":
+      return jsonItem.config.style === "drum" ?
+          "shadowMask.smallRound"
+        : "shadowMask.smallBlock";
+    case "deadlyBlock":
+      switch (jsonItem.config.style) {
+        case "volcano":
+          return "shadowMask.volcano";
+        case "toaster":
+          return "shadowMask.fullBlock";
+        case "spikes":
+          return undefined;
+        default:
+          jsonItem.config.style satisfies never;
+      }
+      break;
+    case "switch":
+      return "shadowMask.switch";
+    case "pickup":
+      return jsonItem.config.gives === "scroll" ?
+          "shadowMask.scroll"
+        : "shadowMask.smallRound";
+    case "slidingDeadly":
+      return "shadowMask.smallRound";
+  }
+};
+
+const shadowCast = (
+  jsonItem: UnknownJsonItem,
+): CreateSpriteOptions | undefined => {
+  switch (jsonItem.type) {
+    case "lift":
+      return "shadow.smallBlock";
+    case "conveyor":
+      return {
+        texture: "shadow.fullBlock",
+        flipX: directionAxis(jsonItem.config.direction) === "x",
+      };
+    case "barrier":
+      return {
+        texture: "shadow.barrier.y",
+        flipX: jsonItem.config.axis === "x",
+      };
+    case "spring":
+      return "shadow.smallRound";
+    case "block":
+      return jsonItem.config.style === "tower" ?
+          "shadow.smallRound"
+        : "shadow.fullBlock";
+    case "movableBlock":
+    case "hushPuppy":
+    case "deadlyBlock":
+    case "book":
+      return "shadow.fullBlock";
+    case "portableBlock":
+      return jsonItem.config.style === "drum" ?
+          "shadow.smallRound"
+        : "shadow.smallBlock";
   }
 };
 

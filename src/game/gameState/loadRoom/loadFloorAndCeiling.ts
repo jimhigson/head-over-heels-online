@@ -16,22 +16,42 @@ export function* loadFloorAndCeiling<RoomId extends string>(
   };
   const floorPosition = blockXyzToFineXyz(subXy(originXyz));
 
-  if (room.floor === "none" && room.roomBelow !== undefined)
+  if (room.floor === "none" && room.roomBelow !== undefined) {
+    // yield a floor purely for the rendering ("no" floor still renders an edge)
+    yield {
+      ...defaultItemProperties,
+      ...{
+        type: "floor",
+        id: "floor",
+        config: {
+          deadly: false,
+        },
+
+        aabb: floorCeilingAabb,
+        // no shadows on a none floor:
+        shadowMaskTexture: undefined,
+        state: {
+          position: floorPosition,
+          expires: null,
+          stoodOnBy: new Set(),
+          disappear: null,
+        },
+        renders: true,
+        fixedZIndex: -1,
+      },
+    } satisfies ItemInPlay<"floor", PlanetName, RoomId>;
+    // yield a portal for going to the room below:
     yield {
       ...defaultItemProperties,
       ...{
         type: "portal",
-        id: "floor",
+        id: "floor/portal",
         config: {
           toRoom: room.roomBelow,
           relativePoint: originXyz,
           direction: "down",
         },
-        // the floor's bounding box is extended to be 1 block bigger than the room in
-        // all directions - this is because doors extend outside of the box by half a block
-        // on the towards/left sides. Since the floor doesn't render, it doesn't matter
-        // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
-        // safeguards against falling 'off the edge of the world'
+
         aabb: floorCeilingAabb,
         state: {
           position: floorPosition,
@@ -42,7 +62,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         renders: false,
       },
     } satisfies ItemInPlay<"portal", PlanetName, RoomId>;
-  else
+  } else
     yield {
       ...defaultItemProperties,
       ...{
@@ -51,19 +71,17 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         config: {
           deadly: room.floor === "deadly",
         },
-        // the floor's bounding box is extended to be 1 block bigger than the room in
-        // all directions - this is because doors extend outside of the box by half a block
-        // on the towards/left sides. Since the floor doesn't render, it doesn't matter
-        // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
-        // safeguards against falling 'off the edge of the world'
+
         aabb: floorCeilingAabb,
+        shadowMaskTexture: "all",
         state: {
           position: floorPosition,
           expires: null,
           stoodOnBy: new Set(),
           disappear: null,
         },
-        renders: false,
+        renders: true,
+        fixedZIndex: -1,
       },
     } satisfies ItemInPlay<"floor", PlanetName, RoomId>;
 
@@ -81,11 +99,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
           relativePoint: { x: 0, y: 0, z: -blockSizePx.h },
           direction: "up",
         },
-        // the floor's bounding box is extended to be 1 block bigger than the room in
-        // all directions - this is because doors extend outside of the box by half a block
-        // on the towards/left sides. Since the floor doesn't render, it doesn't matter
-        // for z-sorting how big it is. Althoughao it probably wouldn't happen anyway, this
-        // safeguards against falling 'off the edge of the world'
+
         aabb: floorCeilingAabb,
         state: {
           position: ceilingPosition,

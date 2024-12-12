@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
-import { barrierPivot, blockSizePx } from "@/sprites/spritePivots";
+import { blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
@@ -26,6 +26,7 @@ import {
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
+import { floorAppearance } from "./floorAppearance";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -128,6 +129,9 @@ export const itemAppearances: {
           side,
           room.color.shade === "dimmed",
         ),
+        // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
+        // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
+        y: 2,
         pivot:
           side === "away" ?
             {
@@ -150,7 +154,7 @@ export const itemAppearances: {
     }) => {
       return createSprite({
         texture: `barrier.${axis}`,
-        pivot: barrierPivot[axis],
+        //pivot: barrierPivot[axis],
       });
     },
   ),
@@ -324,7 +328,7 @@ export const itemAppearances: {
         donuts: "donuts",
         hooter: "hooter",
         crown: "crown",
-        scroll: { texture: "scroll", pivot: { x: 19, y: 24 } },
+        scroll: { texture: "scroll" },
         reincarnation: {
           frames: spriteSheet.animations["fish"],
           animationSpeed: 0.25,
@@ -604,9 +608,5 @@ export const itemAppearances: {
 
   ball: staticSpriteAppearance("ball"),
 
-  // for now, the floor has special rendering different from the main engine.
-  // TODO: standardise
-  floor() {
-    throw new Error("floor should not be rendered as an item");
-  },
+  floor: floorAppearance,
 };

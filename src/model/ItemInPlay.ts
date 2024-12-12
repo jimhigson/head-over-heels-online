@@ -8,7 +8,6 @@ import type {
 } from "../utils/vectors/vectors";
 import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { TextureId } from "@/sprites/spriteSheet";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
 
 export type ItemInPlayType =
@@ -156,10 +155,19 @@ export type ItemInPlay<
 
   renders: boolean;
 
-  // the area of this item that shadows can be cast on
-  shadowMaskTexture?: CreateSpriteOptions;
-  // the shadow this item casts on other items
-  shadowCastTexture?: TextureId;
+  /**
+   * the area of this item that shadows can be cast on, or 'all' for no mask (ie, a floor)
+   * or undefined for no shadows
+   */
+  shadowMaskTexture?: CreateSpriteOptions | "all";
+  /* the shadow this item casts on other items */
+  shadowCastTexture?: CreateSpriteOptions;
+
+  /**
+   * if defined, the z-index for this item will not be based on
+   * topological sort of the items in the room
+   */
+  fixedZIndex?: number;
 };
 
 /**
