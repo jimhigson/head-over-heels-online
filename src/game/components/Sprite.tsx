@@ -10,7 +10,7 @@ import { Application } from "pixi.js";
 import spritesheetUrl from "../../../gfx/sprites.png";
 import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 import { isTextureId } from "@/sprites/assertIsTextureId";
-import { spritesheetPalette } from "@/sprites/samplePalette";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export interface PixiSpriteProps {
   spriteOptions: CreateSpriteOptions;
@@ -117,7 +117,7 @@ export const BitmapText = ({
   children: text,
   scale = 1,
   doubleHeight,
-  color = spritesheetPalette().shadow,
+  color = spritesheetPalette.shadow,
 }: BitmapTextProps) => {
   const trimmed =
     Array.isArray(text) ?

@@ -324,7 +324,7 @@ export const itemAppearances: {
         donuts: "donuts",
         hooter: "hooter",
         crown: "crown",
-        scroll: "scroll",
+        scroll: { texture: "scroll", pivot: { x: 19, y: 24 } },
         reincarnation: {
           frames: spriteSheet.animations["fish"],
           animationSpeed: 0.25,

@@ -2,11 +2,11 @@ import type { ColorSource } from "pixi.js";
 import { Color, Filter, GlProgram } from "pixi.js";
 import { vertex } from "../defaults";
 import fragment from "./revertColourise.frag?raw";
-import { spritesheetPalette } from "@/sprites/samplePalette";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const sourceBlacks: [Color, Color] = [
-  spritesheetPalette().pureBlack,
-  spritesheetPalette().lightBlack,
+  spritesheetPalette.pureBlack,
+  spritesheetPalette.lightBlack,
 ];
 
 /**

@@ -13,14 +13,38 @@ for iffFile in gfx/*.iff; do
     yes | ffmpeg -hide_banner -i $iffFile -vf "$curveFilter" -update 1 -frames:v 1 ${iffFile%.iff}.png
 done
 
+echo "🤖 sampling palette -> ts"
+colorNames=(pureBlack lightBlack shadow midGrey lightGrey white metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
+rm gfx/spritesheetPalette.ts gfx/spritesheetPalette.json
+echo "import { Color } from 'pixi.js';" >> gfx/spritesheetPalette.ts
+echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> gfx/spritesheetPalette.ts
+echo "export const spritesheetPalette = {" >> gfx/spritesheetPalette.ts
+echo "{" >> gfx/spritesheetPalette.json
+
+for i in $(seq 0 15);
+do
+    color=$(magick gfx/sprites.png -format "#%[hex:u.p{$i,0}]" info:);
+    echo ${colorNames[$i]} $color
+    echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> gfx/spritesheetPalette.ts
+    echo "  \"${colorNames[$i]}\": \"$color\"" >> gfx/spritesheetPalette.json
+
+    if [ $i -ne 15 ]; then
+        echo "," >> gfx/spritesheetPalette.json
+    fi
+done
+echo "} as const;" >> gfx/spritesheetPalette.ts
+echo "}" >> gfx/spritesheetPalette.json
+node_modules/.bin/prettier --write gfx/spritesheetPalette.* 
+
 #
 # make sprite mask colour actually transparent in the png (dpaint uses a normal colour)
 echo "🤖 making transparent"
 # since the palette is in the first 16 pixels of the image, we can auto-detect the transparency colour:
 transparencyColor=$(magick gfx/sprites.png -format "#%[hex:u.p{13,0}]" info:)
-echo "transparent color detected as \"$transparencyColor\""
+matteColor=$(magick gfx/sprites.png -format "#%[hex:u.p{0,1}]" info:)
+echo "transparent color detected as \"$transparencyColor\" and matte as \"$matteColor\""
 
-magick gfx/sprites.png -transparent $transparencyColor gfx/sprites.png
+magick gfx/sprites.png -transparent $transparencyColor -fill transparent -floodfill +0+1 $matteColor gfx/sprites.png
 
 echo "🤖 reducing palette"
 pngquant -vf --quality 100-100 \

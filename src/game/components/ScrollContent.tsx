@@ -1,4 +1,3 @@
-import { spritesheetPalette } from "@/sprites/samplePalette";
 import { BlockyMarkdown } from "./BlockyMarkdown";
 import { textScale } from "./dialogScales";
 import { PressToContinue } from "./PressToContinue";
@@ -14,12 +13,7 @@ export const ScrollContent = ({
   keyAssignment,
 }: ScrollContentProps) => {
   return (
-    <div
-      className={`p-${textScale}`}
-      style={{
-        backgroundColor: spritesheetPalette().highlightBeige.toRgbaString(),
-      }}
-    >
+    <div className={`p-${textScale} bg-highlightBeige`}>
       <BlockyMarkdown markdown={markdown}></BlockyMarkdown>
       <PressToContinue action="jump" keyAssignment={keyAssignment} />
     </div>

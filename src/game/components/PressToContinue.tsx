@@ -1,8 +1,8 @@
-import { spritesheetPalette } from "@/sprites/samplePalette";
 import { BitmapText } from "./Sprite";
 import type { Action, KeyAssignment } from "../input/InputState";
 import { Fragment } from "react/jsx-runtime";
 import { textScale } from "./dialogScales";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export const PressToContinue = ({
   action,
@@ -13,8 +13,8 @@ export const PressToContinue = ({
 }) => {
   const keys = keyAssignment[action];
 
-  const textColor = spritesheetPalette().metallicBlue;
-  const keyColor = spritesheetPalette().pink;
+  const textColor = spritesheetPalette.metallicBlue;
+  const keyColor = spritesheetPalette.pink;
 
   return (
     <div className={`text-center mt-${textScale * 2}`}>
@@ -24,7 +24,7 @@ export const PressToContinue = ({
       <BitmapText scale={4} color={keyColor}>
         {action}
       </BitmapText>
-      <BitmapText scale={4} color={spritesheetPalette().metallicBlue}>
+      <BitmapText scale={4} color={spritesheetPalette.metallicBlue}>
         to continue
       </BitmapText>
       <div>
@@ -43,7 +43,7 @@ export const PressToContinue = ({
             )}
           </Fragment>
         ))}
-        <BitmapText scale={4} color={spritesheetPalette().metallicBlue}>
+        <BitmapText scale={4} color={spritesheetPalette.metallicBlue}>
           )
         </BitmapText>
       </div>

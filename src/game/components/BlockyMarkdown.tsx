@@ -4,8 +4,8 @@ import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsSprites } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
-import { spritesheetPalette } from "@/sprites/samplePalette";
 import { imageScale, textScale } from "./dialogScales";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export interface BlockyMarkdownProps {
   markdown: string;
@@ -17,7 +17,7 @@ const markdownComponents: Components = {
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
           doubleHeight: true,
-          color: spritesheetPalette().metallicBlue,
+          color: spritesheetPalette.metallicBlue,
           scale: textScale,
         }}
       >
@@ -29,7 +29,7 @@ const markdownComponents: Components = {
     <h3 className={`text-metallicBlue mt-${textScale} mb-${textScale}`}>
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
-          color: spritesheetPalette().metallicBlue,
+          color: spritesheetPalette.metallicBlue,
           scale: textScale,
         }}
       >
@@ -55,7 +55,7 @@ const markdownComponents: Components = {
     <RenderTextChildrenAsSprites
       imgSpriteTextProps={{
         scale: textScale,
-        color: spritesheetPalette().midRed,
+        color: spritesheetPalette.midRed,
       }}
     >
       {children}
@@ -65,7 +65,7 @@ const markdownComponents: Components = {
     <RenderTextChildrenAsSprites
       imgSpriteTextProps={{
         scale: textScale,
-        color: spritesheetPalette().moss,
+        color: spritesheetPalette.moss,
       }}
     >
       {children}

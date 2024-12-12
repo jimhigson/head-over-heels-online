@@ -8,10 +8,10 @@ import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import { spritesheetPalette } from "@/sprites/samplePalette";
 import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../render/filters/paletteSwapFilters";
 import { RoomRenderer } from "../render/roomRenderer";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const hudBottomMargin = 4;
 
@@ -29,7 +29,7 @@ export const mainLoop = <RoomId extends string>(
   hudContainer.y = -hudBottomMargin;
   app.stage.addChild(hudContainer);
 
-  const pauseFilter = new RevertColouriseFilter(spritesheetPalette().shadow);
+  const pauseFilter = new RevertColouriseFilter(spritesheetPalette.shadow);
 
   let roomRenderer = RoomRenderer(
     currentRoom(gameState),

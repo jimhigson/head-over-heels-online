@@ -95,11 +95,14 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] items don't collide with items they're standing on.
     [x] walking from an item to another doesn't collide with it
     [x] now they do (on every frame) but means some duplicative touches 🤷‍♂️
-[ ] disappearing blocks should only go when stood on (hit from the top)
-    [ ] bubbles are their own item
-    [ ] remove unsolid after concept
-[ ] can't jump off of collected powerups    
+[x] disappearing blocks should only go when stood on (hit from the top)
+    [x] bubbles are their own item
+    [x] remove unsolid after concept
+[x] can't jump off of collected powerups    
 
+[ ] fast walk for head
+[ ] big jump for heels
+[ ] heads can fire donuts
 [ ] head and heels can combine
 [ ] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding
