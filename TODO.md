@@ -163,7 +163,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # blacktooth19
 [x] pushing bottom block doesn't move the whole stack
-[ ] #blacktooth19 ITEMS DON"T WAIT UNTIL ON CONVEYOR FULLY TO STARTR MOVING FROM IT
+[x] #blacktooth19 ITEMS DON"T WAIT UNTIL ON CONVEYOR FULLY TO STARTR MOVING FROM IT
      [?] might actually be the anvils pushing each other???
 
 # blacktooth4 -> 3
@@ -196,12 +196,20 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # (heels) blacktooth29
 [x] cyberman moves like a dalek
 
+# (heels) blacktooth29/30
+[x] heels spontaneuously dies when getting off lift (why??) - probably coliding with item from
+    previous room
+
 # (heels) balcktooth35
 [ ] level overlaps hud
 
 # (heels) blacktooth37
 [x] football heads don't move right
-[ ] ball doesn't roll
+[x] ball doesn't roll
+[ ] heads always look right after being stopped
+
+# (heels) blacktooth39
+[x] baddie doesn't push blocks (at all)
 
 # blacktooth61
 [x] hush pupplies not vanishing on head enter
@@ -216,6 +224,14 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # egyptus13
 [x] lift is weirdly slow - maybe becuse it doesn't start at zero?
 
+# bookworld2
+[ ] vanishing conveyors don't vanish
+
+# bookworld3
+[ ] monkeys don't move
+
+# bookworld6
+[ ] sliding book doesn't slide
 
 # Problems with force/accel based model:
 

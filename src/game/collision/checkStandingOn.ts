@@ -110,9 +110,10 @@ export const findStandingOnWithHighestPriorityAndMostOverlap = <
     : potentiallyStoodOnArray.reduce((ac, iCol) => {
         const priorityComparison = collisionsPriorityComparator(iCol, ac);
 
-        if (priorityComparison > 0) {
+        if (priorityComparison < 0) {
           return iCol;
         }
+
         if (
           priorityComparison === 0 &&
           itemXyOverlapArea(item, iCol) > itemXyOverlapArea(item, ac)

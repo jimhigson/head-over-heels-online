@@ -2,6 +2,10 @@
 
 [see work in progress](https://blockstack.ing/)
 
+Shadows
+=======
+[Amiga extra halfbright](https://amiga.lychesis.net/articles/ExtraHalfBright.html)
+
 Credits
 
 - Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
