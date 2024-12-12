@@ -6,11 +6,16 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type { TextureId } from "@/sprites/spriteSheet";
+
+export type BlockStyle = "organic" | "artificial" | "tower";
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
-export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
+export type ItemConfigMap<
+  P extends PlanetName,
+  RoomId extends string,
+  ItemId extends string,
+> = {
   door: {
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
@@ -39,7 +44,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     disappearing: boolean;
   };
   block: {
-    style: "organic" | "artificial" | "tower";
+    style: BlockStyle;
     disappearing: boolean;
   };
   deadlyBlock: {
@@ -57,18 +62,23 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   conveyor: {
     direction: DirectionXy4;
   };
-  pickup: {
-    gives:
-      | "extra-life"
-      | "fast"
-      | "jumps"
-      | "shield"
-      | "donuts"
-      | "bag"
-      | "crown"
-      | "hooter"
-      | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
-  };
+  pickup:
+    | {
+        gives:
+          | "extra-life"
+          | "fast"
+          | "jumps"
+          | "shield"
+          | "donuts"
+          | "bag"
+          | "crown"
+          | "hooter"
+          | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
+      }
+    | {
+        gives: "scroll";
+        markdown: string;
+      };
   player: {
     which: CharacterName;
   };
@@ -80,6 +90,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
     top: number;
     bottom: number;
   };
+  bubbles: { style: "fish" | "taupe" | "white" };
   baddie: { activated: boolean } & (
     | {
         which:
@@ -122,7 +133,7 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   switch: {
     // list of all items (de)activated by this switch
     activates: {
-      [itemId: string]: {
+      [I in ItemId]?: {
         // state deltas for the impacted items
         left: Record<string, unknown>;
         right: Record<string, unknown>;
@@ -131,11 +142,6 @@ export type ItemConfigMap<P extends PlanetName, RoomId extends string> = {
   };
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
-    controls: string[];
-  };
-  scroll: {
-    // Text of the scroll, as markdown. Newlines are ok.
-    text: string;
-    sprites: TextureId[];
+    controls: ItemId[];
   };
 };

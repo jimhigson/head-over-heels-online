@@ -1,4 +1,4 @@
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
@@ -21,6 +21,7 @@ import {
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
+import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -138,6 +139,19 @@ export const randomlyChangeDirection = <RoomId extends string>(
       )
     : walking;
 
+  /*walking: accelerateToSpeed({
+        acc: 0.000_1,
+        crossComponentFade: 0.000_1,
+        deltaMS,
+        maxSpeed: walkSpeedPixPerMs[which],
+        minVelocity: walkSpeedPixPerMs[which] / 4,
+        unitD:
+          produceNewWalk ?
+            unitVectors[randomFromArray(directions)]
+          : unitVector(walking),
+        vel: walking,
+      }),*/
+
   return {
     movementType: "vel",
     vels: {
@@ -224,7 +238,7 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   {
     state: { position: toucheePosition },
     aabb: toucheeAabb,
-  }: UnknownItemInPlay<RoomId>,
+  }: AnyItemInPlay<RoomId>,
 ) => {
   const {
     state: {
@@ -258,7 +272,7 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   {
     state: { position: toucheePosition },
     aabb: toucheeAabb,
-  }: UnknownItemInPlay<RoomId>,
+  }: AnyItemInPlay<RoomId>,
 ) => {
   const {
     state: {
@@ -285,21 +299,23 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   baddieItem.state.vels.walking = newWalking;
 };
 
-export const handleBaddieTouchingItem = <RoomId extends string>(
-  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
-  touchee: UnknownItemInPlay<RoomId>,
-  _movementVector: Xyz,
-  _gameState: GameState<RoomId>,
-) => {
+export const handleBaddieTouchingItem = <RoomId extends string>({
+  movingItem: baddieItem,
+  touchedItem: otherItem,
+}: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>) => {
   switch (baddieItem.config.which) {
     case "dalek":
     case "helicopter-bug":
     case "bubble-robot":
     case "american-football-head": {
-      handleBaddieTouchingItemByTurningToOppositeDirection(baddieItem, touchee);
+      handleBaddieTouchingItemByTurningToOppositeDirection(
+        baddieItem,
+        otherItem,
+      );
       break;
     }
     case "turtle":
-      handleBaddieTouchingItemByTurningClockwise(baddieItem, touchee);
+      handleBaddieTouchingItemByTurningClockwise(baddieItem, otherItem);
   }
+  return false;
 };

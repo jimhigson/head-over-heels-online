@@ -1,13 +1,13 @@
 import { describe, expect, test } from "vitest";
 import { checkSpaceAvailableToPutDown } from "./carrying";
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import { loadItem } from "@/game/gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "@/game/gameState/loadRoom/loadItem";
 import { first } from "iter-tools";
 import type { Xyz } from "@/utils/vectors/vectors";
 
 const makeHeels = (position: Xyz) =>
   first(
-    loadItem(
+    loadItemFromJson(
       "heels",
       {
         type: "player",
@@ -20,7 +20,7 @@ const makeHeels = (position: Xyz) =>
 
 const makeBlock = (position: Xyz) =>
   first(
-    loadItem(
+    loadItemFromJson(
       "block",
       {
         type: "block",
@@ -33,7 +33,7 @@ const makeBlock = (position: Xyz) =>
 
 const makePortableBlock = (position: Xyz) =>
   first(
-    loadItem(
+    loadItemFromJson(
       "portableBlock",
       {
         type: "portableBlock",

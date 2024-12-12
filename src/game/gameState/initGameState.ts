@@ -1,4 +1,5 @@
-import type { Campaign, CharacterName, RoomJson } from "@/model/modelTypes";
+import type { Campaign, CharacterName } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { defaultKeyAssignments } from "../input/listenForInput";
@@ -6,7 +7,7 @@ import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
-import type { ApiEvents } from "../GameApi";
+import type { GameEvents } from "../GameApi";
 import { entryState } from "./EntryState";
 import { noInput } from "../input/InputState";
 
@@ -77,9 +78,10 @@ export const initGameState = <RoomId extends string>(
     inputState: noInput(),
     renderOptions,
     campaign,
-    events: mitt<ApiEvents<RoomId>>(),
+    events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,
     gameTime: 0,
     progression: 0,
+    gameSpeed: 1,
   };
 };

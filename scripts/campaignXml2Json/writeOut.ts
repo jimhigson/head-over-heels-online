@@ -4,15 +4,33 @@ import fastJsonPatch from "fast-json-patch";
 import { writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
 import { objectValues } from "iter-tools";
-import type { AnyRoomJson } from "../../src/model/modelTypes";
 import { iterate } from "../../src/utils/iterate";
 import { orderBy } from "natural-orderby";
+import type { AnyRoomJson } from "../../src/model/RoomJson";
+
+/* multi-line string are easier to read than single-line strings with \n */
+function convertMultilineToTemplate(jsonString: string): string {
+  // Regular expression to match strings containing `\n` within quotes
+  const multilineRegex = /"([^"\\]*(?:\\.[^"\\]*)*\\n[^"\\]*(?:\\.[^"\\]*)*)"/g;
+
+  // Replace matches with template literal syntax
+  return jsonString.replace(multilineRegex, (_match, multilineContent) => {
+    // Unescape JSON-escaped characters
+    const unescapedContent = multilineContent
+      .replace(/\\"/g, '"') // Unescape double quotes
+      .replace(/\\\\/g, "\\") // Unescape backslashes
+      .replace(/\\n/g, "\n"); // Convert escaped \n to real newlines
+
+    // Wrap in backticks for JavaScript template literal
+    return `\`${unescapedContent.replace(/`/g, "\\`")}\``; // Escape backticks
+  });
+}
 
 const roomTs = (room: AnyRoomJson): string =>
   `
-import type {RoomJson} from "../../../model/modelTypes.ts";\n
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
-export const room = ${canonicalize(room)} satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
+export const room = inferRoomJson(${convertMultilineToTemplate(canonicalize(room))}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
 `;
 
 export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
@@ -52,7 +70,8 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     tsBarrellFilename,
     `
     /* eslint-disable */
-    import type {Campaign, RoomJson} from "../../model/modelTypes.ts";\n
+    import type {Campaign} from "@/model/modelTypes.ts";\n
+    import type {RoomJson} from "@/model/RoomJson.ts";\n
     import {type OriginalCampaignRoomId} from './OriginalCampaignRoomId.ts';\n
 
     ${roomIdsSorted

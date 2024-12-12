@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   floor: "blacktooth",
   floorSkip: [],
@@ -18,6 +18,24 @@ export const room = {
       position: { x: 2, y: 6, z: 0 },
       type: "door",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## SWITCHES
+
+![](switch.left)
+
+Simply push the switch to switch things off and on!  
+**WARNING**: Switching a deadly monster off will stop him moving but he will
+still be deadly to touch.
+
+*Head Over Heels Manual*
+`,
+      },
+      position: { x: 4, y: 5, z: 0 },
+      type: "pickup",
+    },
   },
   planet: "blacktooth",
   size: { x: 6, y: 6 },
@@ -25,4 +43,4 @@ export const room = {
     away: ["plain", "shield", "none", "none", "shield", "plain"],
     left: ["plain", "armour", "shield", "shield", "armour", "plain"],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

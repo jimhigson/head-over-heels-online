@@ -1,8 +1,4 @@
-import { type UnknownItemInPlay } from "@/model/ItemInPlay";
-import { isItemType } from "../itemPredicates";
-import { isPlayableItem } from "../itemPredicates";
-import { type Xyz } from "@/utils/vectors/vectors";
-import type { GameState } from "@/game/gameState/GameState";
+import { slidingItemTypes } from "../itemPredicates";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import { handleBaddieTouchingItem } from "../mechanics/baddieAi";
 import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
@@ -10,80 +6,65 @@ import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
-import { isSlidingItem } from "../itemPredicates";
 import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
+import {
+  movingItemIsType,
+  touchedItemIsType,
+  type ItemTouchEvent,
+} from "./ItemTouchEvent";
+import { characterNames } from "@/model/modelTypes";
+import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
 
 /**
- * some old - Morties touching Morties
+ * same old - Morties touching Morties
  */
-export const handleItemsTouchingItems = <RoomId extends string>({
-  movingItem,
-  movementVector,
-  touchee,
-  gameState,
-  deltaMS,
-}: {
-  movingItem: UnknownItemInPlay<RoomId>;
-  movementVector: Xyz;
-  touchee: UnknownItemInPlay<RoomId>;
-  gameState: GameState<RoomId>;
-  deltaMS: number;
-}): boolean => {
-  if (
-    isPlayableItem(movingItem) &&
-    handlePlayerTouchingItem(
-      movingItem,
-      touchee,
-      movementVector,
-      gameState,
-      deltaMS,
-    )
-  )
-    return true;
-
-  if (
-    isPlayableItem(touchee) &&
-    handlePlayerTouchingItem(
-      touchee,
-      movingItem,
-      movementVector,
-      gameState,
-      deltaMS,
-    )
-  )
-    return true;
-
-  if (
-    isSlidingItem(touchee) &&
-    handleItemTouchingSlidingItem(touchee, movingItem, gameState)
-  ) {
-    return true;
+export const handleItemsTouchingItems = <RoomId extends string>(
+  e: ItemTouchEvent<RoomId>,
+) => {
+  // if the player moved into something, we handle that:
+  if (movingItemIsType(e, ...characterNames)) {
+    handlePlayerTouchingItem(e);
   }
 
-  if (
-    isSlidingItem(movingItem) &&
-    handleSlidingItemTouchingAnyItem(movingItem, touchee, gameState)
-  ) {
-    return true;
+  // if something moved into the player, we flip it and handle like the player moved into it:
+  if (touchedItemIsType(e, ...characterNames)) {
+    handlePlayerTouchingItem({
+      ...e,
+      movingItem: e.touchedItem,
+      touchedItem: e.movingItem,
+    });
   }
 
-  if (
-    isItemType("baddie")(movingItem) &&
-    handleBaddieTouchingItem(movingItem, touchee, movementVector, gameState)
-  )
-    return true;
+  if (touchedItemIsType(e, ...slidingItemTypes)) {
+    handleItemTouchingSlidingItem(e);
+  }
 
-  if (
-    isItemType("switch")(touchee) &&
-    handleItemTouchingSwitch(touchee, movingItem, movementVector, gameState)
-  )
-    return true;
+  if (movingItemIsType(e, ...slidingItemTypes)) {
+    handleSlidingItemTouchingAnyItem(e);
+  }
 
-  if (
-    isItemType("joystick")(touchee) &&
-    handlePlayerTouchingJoystick(gameState, movingItem, touchee, deltaMS)
-  )
-    return true;
+  if (movingItemIsType(e, "baddie")) {
+    handleBaddieTouchingItem(e);
+  }
 
-  return false;
+  if (touchedItemIsType(e, "switch")) {
+    handleItemTouchingSwitch(e);
+  }
+
+  if (touchedItemIsType(e, "joystick")) {
+    handlePlayerTouchingJoystick(e);
+  }
+
+  if (e.touchedItem.state.disappear) {
+    handleItemTouchingDissapearing(e);
+  }
+  // is the thing that moved has disappearing (more unusual case but could be a powerup falling on player for example,
+  // flip and treat like it is the thing that was touched):
+  if (e.movingItem.state.disappear) {
+    handleItemTouchingDissapearing({
+      ...e,
+      movingItem: e.touchedItem,
+      touchedItem: e.movingItem,
+    });
+  }
 };

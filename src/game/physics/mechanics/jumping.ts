@@ -41,7 +41,7 @@ const getJumpInitialVelocity = (
 export const jumping = <RoomId extends string>(
   { type, state: { standingOn } }: PlayableItem,
   gameState: GameState<RoomId>,
-  _deltaMS: number,
+  //_deltaMS: number,
 ): MechanicResult<CharacterName, RoomId> => {
   const {
     inputState: { jump: jumpInput },

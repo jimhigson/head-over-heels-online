@@ -1,13 +1,14 @@
-import type {
-  RoomState,
-  CharacterName,
-  Campaign,
+import {
+  type RoomState,
+  type CharacterName,
+  type Campaign,
+  otherCharacterName,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
-import type { ApiEvents } from "../GameApi";
+import type { GameEvents } from "../GameApi";
 import type { PlayableItem } from "../physics/itemPredicates";
 import type { EntryState } from "./EntryState";
 
@@ -32,6 +33,14 @@ export const currentPlayableItem = <RoomId extends string>(
   gameState.characterRooms[gameState.currentCharacterName]!.room.items[
     gameState.currentCharacterName
   ]!;
+
+/** gets the playable item for the non-current character */
+export const otherPlayableItem = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+): PlayableItem | undefined => {
+  const name = otherCharacterName(gameState.currentCharacterName);
+  return gameState.characterRooms[name]?.room.items[name];
+};
 
 export const getPlayableItem = <
   C extends CharacterName,
@@ -70,7 +79,8 @@ export type GameState<RoomId extends string> = {
   /** partial because character can have lost all lives */
   characterRooms: CharacterRooms<RoomId>;
   renderOptions: RenderOptions<RoomId>;
-  events: Emitter<ApiEvents<RoomId>>;
+  /** TODO: is this really state? */
+  events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;
@@ -81,6 +91,11 @@ export type GameState<RoomId extends string> = {
    * each progression having its own unique number
    */
   progression: number;
+
+  /**
+   * 0 = paused, 1 = normal speed, 0.5 = slow motion, 2 = double speed, etc
+   */
+  gameSpeed: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

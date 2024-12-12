@@ -83,6 +83,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   wall: 0,
   doorLegs: 0,
   sceneryPlayer: 0,
+  bubbles: 0, // actually never solid so won't collide
 
   block: 1,
   barrier: 1,

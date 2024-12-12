@@ -1,80 +1,45 @@
-import type { GameState } from "@/game/gameState/GameState";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { Xyz } from "@/utils/vectors/vectors";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
-import {
-  handlePlayerTouchingPickup,
-  handlePlayerTouchingDisappearing,
-} from "./handlePlayerTouchingPickup";
+import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
 import type { CharacterName } from "@/model/modelTypes";
+import { touchedItemIsType, type ItemTouchEvent } from "./ItemTouchEvent";
+import { deadlyItemTypes } from "../itemPredicates";
 
 /**
  * @returns true is the physics needs to halt after this handler
  */
 export const handlePlayerTouchingItem = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
-  touchee: UnknownItemInPlay<RoomId>,
-  movementVector: Xyz,
-  gameState: GameState<RoomId>,
-  _deltaMS: number,
+  e: ItemTouchEvent<RoomId, CharacterName>,
 ) => {
-  switch (touchee.type) {
-    case "stopAutowalk":
-      if (handlePlayerTouchingStopAutowalk<RoomId>(gameState, playableItem)) {
+  switch (true) {
+    case touchedItemIsType(e, "stopAutowalk"):
+      if (handlePlayerTouchingStopAutowalk<RoomId>(e)) {
         return true;
       }
       break;
-    case "baddie":
-    case "deadlyBlock":
-    case "moveableDeadly":
-    case "slidingDeadly":
-      if (handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)) {
-        return true;
-      }
-      break;
-    case "floor":
-      if (
-        touchee.config.deadly &&
-        handlePlayerTouchingDeadly<RoomId>(gameState, playableItem)
-      )
-        return true;
-      break;
-    case "portal":
-      if (
-        handlePlayerTouchingPortal(
-          gameState,
-          playableItem,
-          touchee,
-          movementVector,
-        )
-      ) {
-        // has activated the portal - halt all physics:
-        return true;
-      }
-      break;
-    case "pickup":
-      handlePlayerTouchingPickup(gameState, playableItem, touchee);
-      break;
-    case "doorFrame":
-      if (
-        handlePlayerTouchingDoorFrame(playableItem, movementVector, touchee)
-      ) {
+    case touchedItemIsType(e, ...deadlyItemTypes) ||
+      (touchedItemIsType(e, "floor") && e.touchedItem.config.deadly):
+      if (handlePlayerTouchingDeadly<RoomId>(e)) {
         return true;
       }
       break;
 
-    case "barrier":
-      if (touchee.config.disappearing) {
-        handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
+    case touchedItemIsType(e, "portal"):
+      if (handlePlayerTouchingPortal(e)) {
+        // has activated the portal - halt all physics:
+        return true;
       }
       break;
-    case "block":
-      if (touchee.state.disappearing) {
-        handlePlayerTouchingDisappearing(gameState, playableItem, touchee);
+
+    case touchedItemIsType(e, "pickup"):
+      handlePlayerTouchingPickup(e);
+      break;
+
+    case touchedItemIsType(e, "doorFrame"):
+      if (handlePlayerTouchingDoorFrame(e)) {
+        return true;
       }
       break;
   }

@@ -1,7 +1,7 @@
 import type { GameState } from "@/game/gameState/GameState";
 import { getPlayableItem, currentRoom } from "@/game/gameState/GameState";
 import { Container } from "pixi.js";
-import { Text, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import type { TextureId } from "@/sprites/spriteSheet";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import {
@@ -14,11 +14,11 @@ import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
-import type { RenderOptions } from "@/game/RenderOptions";
 import { shieldDuration } from "@/game/physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
+import { assertIsTextureId } from "@/sprites/assertIsTextureId";
+import { iterateToContainer } from "@/game/iterateToContainer";
 
-const smallTextSize = 8;
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
 const smallIconsFromCentre = 80;
@@ -28,6 +28,26 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
+function* numberSprites(n: number) {
+  const chars = n.toString().split("");
+  const l = chars.length;
+  for (let i = 0; i < l; i++) {
+    const textureId = `hud.char.${chars[i]}`;
+    assertIsTextureId(textureId);
+    yield createSprite({
+      texture: textureId,
+      x: (i + 0.5 - l / 2) * hudCharTextureSize.w,
+    });
+  }
+}
+
+function showNumberInContainer(container: Container, n: number) {
+  for (const c of container.children) {
+    c.destroy();
+  }
+  iterateToContainer(numberSprites(n), container);
+}
+
 export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
@@ -36,18 +56,9 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const makeText = (doubleHeight: boolean = false) => {
     const yScaleFactor = doubleHeight ? 2 : 1;
 
-    const headLives = new Text({
-      style: {
-        fill: "white",
-        fontFamily: "Head over Heels",
-        fontSize: smallTextSize,
-        align: "center",
-      },
-      resolution: 8,
-      anchor: { x: 0.5, y: 1 },
-    });
-    headLives.scale = { x: 1, y: yScaleFactor };
-    return headLives;
+    const text = new Container();
+    text.scale = { x: 1, y: yScaleFactor };
+    return text;
   };
 
   const characterSprite = (characterName: CharacterName) => {
@@ -79,7 +90,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     container.addChild(icon);
 
     const text = makeText();
-    text.text = "0";
+    //text.text = "0";
     text.y = textOnTop ? 0 : 16;
     text.filters = textFilter;
 
@@ -129,21 +140,15 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.bag.container);
   hudContainer.addChild(hudElements.heels.carrying.container);
 
-  return (
-    gameState: GameState<RoomId>,
-    screenSize: Xy,
-    renderOptions: RenderOptions<RoomId>,
-  ) => {
+  return (gameState: GameState<RoomId>, screenSize: Xy) => {
     const room = currentRoom(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
     } = getColorScheme(room.color);
 
-    const updateIcons = (playableItem: PlayableItem) => {
-      const {
-        type: characterName,
-        state: { shieldCollectedAt },
-      } = playableItem;
+    const updateIcons = (characterName: CharacterName) => {
+      const playableItem = getPlayableItem(gameState, characterName);
+      const shieldCollectedAt = playableItem?.state.shieldCollectedAt ?? null;
 
       const { text: shieldText, container: shieldContainer } =
         hudElements[characterName].shield;
@@ -165,17 +170,20 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
             (gameState.gameTime - shieldCollectedAt) / (shieldDuration / 100),
           );
 
-      shieldText.text = `${shieldRemaining}`;
+      showNumberInContainer(shieldText, shieldRemaining);
       shieldContainer.y = screenSize.y;
 
-      skillText.text =
-        playableItem.type === "head" ?
-          playableItem.state.fastSteps
-        : playableItem.state.bigJumps;
+      showNumberInContainer(
+        skillText,
+        playableItem === undefined ? 0
+        : playableItem.type === "head" ? playableItem.state.fastSteps
+        : playableItem.state.bigJumps,
+      );
+
       skillContainer.y = screenSize.y - 24;
     };
 
-    const updateCharacterSprite = ({ type: characterName }: PlayableItem) => {
+    const updateCharacterSprite = (characterName: CharacterName) => {
       const isCurrent = gameState.currentCharacterName === characterName;
       const characterSprite = hudElements[characterName].sprite;
       characterSprite.filters = isCurrent ? noFilters : uncurrentSpriteFilter;
@@ -186,17 +194,17 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
 
       characterSprite.y = screenSize.y - smallItemTextureSize.h;
     };
-    const updateLivesText = ({
-      type: characterName,
-      state: { lives },
-    }: PlayableItem) => {
+    const updateLivesText = (characterName: CharacterName) => {
+      const playableItem = getPlayableItem(gameState, characterName);
+      const lives = playableItem?.state.lives ?? 0;
+
       const text = hudElements[characterName].livesText;
       text.x =
         (screenSize.x >> 1) +
         sideMultiplier(characterName) * livesTextFromCentre;
       text.y = screenSize.y;
-      text.style.fill = livesShade.basic;
-      text.text = `${lives ?? 0}`;
+      text.tint = livesShade.basic;
+      showNumberInContainer(text, lives ?? 0);
     };
 
     const updateCarrying = (
@@ -226,13 +234,9 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     iconFilter.targetColor = iconShade.basic;
 
     for (const character of characterNames) {
-      const itemInPlay = getPlayableItem(gameState, character);
-
-      if (itemInPlay !== undefined) {
-        updateLivesText(itemInPlay);
-        updateCharacterSprite(itemInPlay);
-        updateIcons(itemInPlay);
-      }
+      updateLivesText(character);
+      updateCharacterSprite(character);
+      updateIcons(character);
     }
     hudElements.head.hooter.container.x = hudElements.head.donuts.container.x =
       (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
@@ -247,14 +251,16 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     hudElements.heels.bag.container.y = hudElements.head.hooter.container.y =
       screenSize.y - 8;
 
-    const {
-      state: { hasHooter, donuts },
-    } = getPlayableItem(gameState, "head")!;
+    const headItem = getPlayableItem(gameState, "head");
+
+    const hasHooter = headItem?.state.hasHooter ?? false;
     hudElements.head.hooter.icon.filters =
       hasHooter ? noFilters : uncurrentSpriteFilter;
+    const donutCount = headItem?.state.donuts ?? 0;
     hudElements.head.donuts.icon.filters =
-      donuts !== 0 ? noFilters : uncurrentSpriteFilter;
-    hudElements.head.donuts.text.text = `${donuts}`;
+      donutCount !== 0 ? noFilters : uncurrentSpriteFilter;
+    showNumberInContainer(hudElements.head.donuts.text, donutCount);
+    //hudElements.head.donuts.text.text = `${donutCount}`;
 
     const heelsItem = getPlayableItem(gameState, "heels");
     const hasBag = heelsItem?.state.hasBag ?? false;

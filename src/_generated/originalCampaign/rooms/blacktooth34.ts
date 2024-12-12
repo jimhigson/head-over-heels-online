@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "none",
   floorSkip: [],
@@ -28,6 +28,27 @@ export const room = {
       position: { x: 7, y: 7, z: 0 },
       type: "lift",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## SPRINGS
+
+![](spring.compressed)
+
+Jumping from a spring will give extra height to your jump.
+
+**Head Over Heels Manual**
+`,
+      },
+      position: { x: 2, y: 7, z: 1 },
+      type: "pickup",
+    },
+    scrollBlock: {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 7, z: 0 },
+      type: "block",
+    },
   },
   planet: "jail",
   roomBelow: "blacktooth33",
@@ -36,4 +57,4 @@ export const room = {
     away: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
     left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
   },
-} satisfies RoomJson<"jail", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

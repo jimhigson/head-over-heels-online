@@ -1,5 +1,6 @@
 import type { Campaign } from "./model/modelTypes.ts";
-import { type RoomJson, type RoomWalls } from "./model/modelTypes.ts";
+import { type RoomWalls } from "./model/modelTypes.ts";
+import { type RoomJson } from "./model/RoomJson.ts";
 import type { PlanetName, Wall } from "./sprites/planets.ts";
 import { planetNames, planets } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
@@ -42,7 +43,7 @@ export type TestCampaignRoomId =
 const colourRooms = () => {
   type Entry<P extends PlanetName> = [
     ColorRoomIds,
-    RoomJson<P, TestCampaignRoomId>,
+    RoomJson<P, TestCampaignRoomId, string>,
   ];
 
   const sampleItems: UnknownJsonItem<TestCampaignRoomId>[] = [
@@ -143,7 +144,7 @@ const colourRooms = () => {
   }
   return Object.fromEntries(room()) as Record<
     ColorRoomIds,
-    RoomJson<PlanetName, ColorRoomIds>
+    RoomJson<PlanetName, ColorRoomIds, string>
   >;
 };
 
@@ -168,8 +169,8 @@ const rooms = {
         position: { x: 0, y: 3, z: 0 },
       },
       {
-        type: "portableBlock",
-        config: { style: "cube" },
+        type: "block",
+        config: { style: "organic", disappearing: true },
         position: { x: 0, y: 2, z: 0 },
       },
       {
@@ -276,6 +277,27 @@ const rooms = {
         config: { style: "anvil" },
         position: { x: 10, y: 7, z: 5 },
       },
+      // to test disappearing barriers:
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: false },
+        position: { x: 10, y: 6, z: 0 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: true },
+        position: { x: 10, y: 6, z: 1 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: false },
+        position: { x: 10, y: 8, z: 0 },
+      },
+      {
+        type: "barrier",
+        config: { axis: "x", disappearing: true },
+        position: { x: 10, y: 8, z: 1 },
+      },
       // tests for lifts:
       {
         type: "lift",
@@ -289,6 +311,14 @@ const rooms = {
           activated: true,
           startDirection: "left",
           style: "starsAndStripes",
+        },
+        position: { x: 0, y: 4, z: 1 },
+      },
+      {
+        type: "block",
+        config: {
+          disappearing: true,
+          style: "organic",
         },
         position: { x: 0, y: 4, z: 0 },
       },
@@ -483,6 +513,16 @@ const rooms = {
         type: "block",
         config: { style: "organic", disappearing: true },
         position: { x: 9, y: 0, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 9, y: 0, z: 1 },
+      },
+      {
+        type: "block",
+        config: { style: "organic", disappearing: true },
+        position: { x: 9, y: 0, z: 3 },
       },
       {
         type: "block",
@@ -829,7 +869,7 @@ const rooms = {
         position: { x: 17, y: 5, z: 3 },
       },
     ]),
-  } satisfies RoomJson<"egyptus", TestCampaignRoomId>,
+  } satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
 
   renderEverything: {
     size: { x: 18, y: 18 },

@@ -1,5 +1,5 @@
 import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import { isItemType } from "./itemPredicates";
+import { isItemType, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
@@ -118,23 +118,22 @@ export const moveItem = <RoomId extends string>({
       continue;
     }
 
-    if (
-      pusher !== collision &&
+    if (pusher !== collision)
       handleItemsTouchingItems({
         movingItem: subjectItem,
-        touchee: collision,
+        touchedItem: collision,
         movementVector: subXyz(subjectItem.state.position, originalPosition),
         gameState,
         deltaMS,
-      })
-    ) {
-      return true;
+        room,
+      });
+
+    if (room.items[collision.id] === undefined) {
+      // the touch handler might have removed this item from the world - in this case we can move on
+      continue;
     }
 
-    if (
-      !isSolid(collision, gameState.progression) ||
-      !isSolid(subjectItem, gameState.progression)
-    ) {
+    if (!isSolid(collision) || !isSolid(subjectItem)) {
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
@@ -163,10 +162,10 @@ export const moveItem = <RoomId extends string>({
     // push falling (pushable) items that we intersect:
     if (isFreeItem(collision) && collision !== pusher) {
       const pushCoefficient =
-        forceful ?
+        forceful || isSlidingItem(collision) ?
           // lifts don't slow down when stuff is on them
           -1
-          // split the difference - the pushee moves half as far forward as our intersection
+          // split the difference - the pushed item moves half as far forward as our intersection
         : -0.5;
 
       // the vector in the direction of the push:
@@ -186,7 +185,7 @@ export const moveItem = <RoomId extends string>({
           with push coefficient of ${pushCoefficient}`,
         );
 
-      // recursively apply push to pushee
+      // recursively apply push to pushed item
       if (
         moveItem({
           subjectItem: collision,
@@ -213,6 +212,8 @@ export const moveItem = <RoomId extends string>({
         ),
       );
     } else {
+      // collision was not with a freeitem
+
       // back off to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
         subjectItem.state.position,

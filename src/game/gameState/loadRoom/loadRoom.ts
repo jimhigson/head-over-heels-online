@@ -1,9 +1,10 @@
 import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState, RoomJson, RoomStateItems } from "@/model/modelTypes";
+import type { RoomState, RoomStateItems } from "@/model/modelTypes";
+import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { entries, objectEntriesIter } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
-import { loadItem } from "./loadItem";
+import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
@@ -89,7 +90,7 @@ function* loadItems<RoomId extends string>(
 ): Generator<UnknownItemInPlay<RoomId>> {
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
-    yield* loadItem(id, item, roomPickupsCollected);
+    yield* loadItemFromJson(id, item, roomPickupsCollected);
   }
 }
 
@@ -134,7 +135,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
   // if they are:
   for (const i of objectValues(loadedItems)) {
     const collisions = collision1toMany(i, objectValues(loadedItems));
-    const solidCol = collisions.find((col) => isSolid(i, 0) && isSolid(col, 0));
+    const solidCol = collisions.find((col) => isSolid(i) && isSolid(col));
     if (solidCol !== undefined) {
       throw new Error(
         `item ${i.id} is colliding with (solid item) ${solidCol.id} on loading room ${roomJson.id}`,

@@ -4,7 +4,11 @@ import type { Container } from "pixi.js";
 import type { TextureId } from "@/sprites/spriteSheet";
 import type { RoomState } from "@/model/modelTypes";
 import { createSprite } from "../createSprite";
-import type { ItemRenderProps } from "./ItemRenderProps";
+import type {
+  ItemInPlayTypesWithoutRenderProps,
+  ItemRenderProps,
+} from "./ItemRenderProps";
+import { emptyObject } from "@/utils/empty";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -57,17 +61,20 @@ export const staticSpriteAppearance =
  * that handles not rendering again after the first render
  */
 export const renderOnce =
-  <T extends ItemInPlayType, RoomId extends string>(
+  <T extends ItemInPlayTypesWithoutRenderProps, RoomId extends string>(
     renderWith: (
       appearance: Omit<
         ItemAppearanceOptions<T, RoomId>,
         "currentlyRenderedProps"
       >,
-    ) => ItemAppearanceReturn<T>,
+    ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
   ({ item, room, currentlyRenderedProps }) => {
     if (currentlyRenderedProps === undefined) {
-      return renderWith({ item, room });
+      return {
+        container: renderWith({ item, room }),
+        renderProps: emptyObject as ItemRenderProps<T>,
+      };
     }
   };

@@ -2,6 +2,7 @@ import type {
   SwitchSetting,
   PlayableActionState,
   ItemInPlayType,
+  Disappear,
 } from "@/model/ItemInPlay";
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import type { EmptyObject } from "type-fest";
@@ -22,26 +23,12 @@ type ItemRenderPropsMap = {
     compressed: boolean;
   };
   block: {
-    disappearing: boolean;
-    bubbles: boolean;
-  };
-  /*book: {
-    axis: "x" | "y";
-  };*/
-  barrier: {
-    //axis: "x" | "y";
-    bubbles: boolean;
+    disappear: Disappear;
   };
   teleporter: {
     flashing: boolean;
   };
-  pickup: {
-    bubbles: boolean;
-  };
-  hushPuppy: {
-    bubbles: boolean;
-  };
-  deadlyBlock: EmptyObject;
+
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change
   baddie: {
     facingXy4?: DirectionXy4;
@@ -64,3 +51,7 @@ type ItemRenderPropsMap = {
 
 export type ItemRenderProps<T extends ItemInPlayType> =
   T extends keyof ItemRenderPropsMap ? ItemRenderPropsMap[T] : EmptyObject;
+
+export type ItemInPlayTypesWithoutRenderProps = {
+  [T in ItemInPlayType]: T extends keyof ItemRenderPropsMap ? never : T;
+}[ItemInPlayType];

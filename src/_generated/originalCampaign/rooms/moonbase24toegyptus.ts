@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "moonbase",
   floorSkip: [],
@@ -157,6 +157,25 @@ export const room = {
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## EGYPTUS
+
+![](egyptus.wall.sarcophagus.left) Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
+hyperspace jump and landed on an unknown planet. Here the crew found a primitive
+animal forming a sort of civilization that appeared to revolve around wrapping
+corpses in lots of bandages and putting them into huge stone pyramids. When they
+returned to Blacktooth their emperor liked the sound of it so much that he
+rebuilt the capital city of one of the slave planets to resemble the story.
+
+*> Head Over Heels Manual*
+`,
+      },
+      position: { x: 2, y: 3, z: 0 },
+      type: "pickup",
+    },
     "teleporter@3,3,0:1ropAr": {
       config: { toRoom: "egyptus1" },
       position: { x: 3, y: 3, z: 0 },
@@ -202,4 +221,4 @@ export const room = {
       "window1",
     ],
   },
-} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

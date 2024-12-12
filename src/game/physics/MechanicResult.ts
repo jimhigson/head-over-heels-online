@@ -8,10 +8,10 @@ export type VelocitiesForItem<T extends ItemInPlayType> =
   : never;
 
 export type MechanicResult<T extends ItemInPlayType, RoomId extends string> =
-  | {
+  /*| {
       movementType: "endTick";
       stateDelta?: Partial<ItemState<T, RoomId>>;
-    }
+    }*/
   | {
       // velocity is unchanged by this result
       movementType: "steady";

@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   floor: "moonbase",
   floorSkip: [],
@@ -157,6 +157,22 @@ export const room = {
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## BOOK WORLD
+
+![](bookworld.wall.person.left) The emperor is very keen on cowboy books and has devoted an entire world to a
+western library. Only the emperor's minions are permitted to read them.
+Information is rigorously suppressed in the empire.
+
+*> Head Over Heels Manual*
+`,
+      },
+      position: { x: 6, y: 6, z: 0 },
+      type: "pickup",
+    },
     "teleporter@6,3,0:Z8cIGu": {
       config: { toRoom: "bookworld1" },
       position: { x: 6, y: 3, z: 0 },
@@ -202,4 +218,4 @@ export const room = {
       "window1",
     ],
   },
-} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

@@ -5,7 +5,7 @@
 // can be guaranteed to take up every half-pixel position.
 
 import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
+import { isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -25,7 +25,7 @@ import {
 } from "@/utils/vectors/vectors";
 import { iterate } from "@/utils/iterate";
 import {
-  checkStandingOn,
+  spatiallyCheckStandingOn,
   findStandingOnWithHighestPriorityAndMostOverlap,
 } from "../collision/checkStandingOn";
 import { originalFramePeriod } from "../render/animationTimings";
@@ -34,7 +34,6 @@ import {
   setStandingOn,
 } from "../gameState/mutators/removeStandingOn";
 import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
-import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
@@ -72,6 +71,67 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   }
 };
 
+const removeNonApplicableStandingOn = <RoomId extends string>(
+  items: Array<UnknownItemInPlay<RoomId>>,
+) => {
+  /**
+   * standing on updated here for all - because, eg, if a lift moves down with a player on it,
+   * if the check is done inside the lift's tick, the player is then not on the lift and has no
+   * ability to walk (the walk mechanic will return a null result) while the lift descends
+   */
+  for (const item of items) {
+    // check what is standing on us - this implies that we're also checking what everything is stood on,
+    // but gives us a chance to apply latent movement:
+    for (const stander of item.state.stoodOnBy) {
+      if (!spatiallyCheckStandingOn(stander, item)) {
+        removeStandingOn(stander);
+        // if we are standing on something else (ie, walked from one block to an adjacent block) get that
+        // set up so that in the next frame there is no pause in the walking (detects in the walk mechanic on
+        // the very next frame that we can walk)
+        const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
+          stander,
+          items,
+        );
+        if (newStandingOn !== undefined) {
+          setStandingOn(stander, newStandingOn);
+        }
+      }
+    }
+  }
+};
+
+const assignLatentMovement = <RoomId extends string>(
+  items: Array<UnknownItemInPlay<RoomId>>,
+  gameState: GameState<RoomId>,
+  startingPositions: Record<string, Xyz>,
+) => {
+  /**
+   * standing on updated here for all - because, eg, if a lift moves down with a player on it,
+   * if the check is done inside the lift's tick, the player is then not on the lift and has no
+   * ability to walk (the walk mechanic will return a null result) while the lift descends
+   */
+  for (const item of items) {
+    // check what is standing on us - this implies that we're also checking what everything is stood on,
+    // but gives us a chance to apply latent movement:
+    for (const stander of item.state.stoodOnBy) {
+      const finalDelta = subXyz(
+        item.state.position,
+        startingPositions[item.id],
+      );
+      // latent movement is only horizontal - anything else, collisions and gravity can handle
+      const latentMovement = { ...finalDelta, z: 0 };
+      if (!xyzEqual(latentMovement, originXyz)) {
+        stander.state.latentMovement.push({
+          // since the original game pushes items every other frame, the practical latency
+          // for standing-on items is two frames
+          moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
+          positionDelta: latentMovement,
+        });
+      }
+    }
+  }
+};
+
 /**
  * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
  * lifts should be processed first so they can push everything else before they can also move and fail
@@ -101,8 +161,9 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  const physicsTickCount = Math.ceil(deltaMS / maximumDeltaMS);
-  const physicsTickMs = deltaMS / physicsTickCount;
+  const deltaMSScaled = deltaMS * gameState.gameSpeed;
+  const physicsTickCount = Math.ceil(deltaMSScaled / maximumDeltaMS);
+  const physicsTickMs = deltaMSScaled / physicsTickCount;
 
   const { inputState } = gameState;
 
@@ -135,7 +196,7 @@ export const progressGameState = <RoomId extends string>(
           // gets the true starting room state
           return;
         } else {
-          deleteItemFromRoomInPlay(room, item);
+          deleteItemFromRoomInPlay({ room, item });
         }
       }
     }
@@ -157,64 +218,8 @@ export const progressGameState = <RoomId extends string>(
       }
     }
 
-    /**
-     * standing on updated here for all - because, eg, if a lift moves down with a player on it,
-     * if the check is done inside the lift's tick, the player is then not on the lift and has no
-     * ability to walk (the walk mechanic will return a null result) while the lift descends
-     */
-    for (const item of sortedItems) {
-      // check what is standing on us - this implies that we're also checking what everything is stood on,
-      // but gives us a chance to apply latent movement:
-      for (const stander of item.state.stoodOnBy) {
-        if (!checkStandingOn(stander, item, gameState.progression)) {
-          removeStandingOn(stander);
-          // if we are standing on something else (ie, walked from one block to an adjacent block) get that
-          // set up so that in the next frame there is no pause in the walking (detects in the walk mechanic on
-          // the very next frame that we can walk)
-          const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
-            stander,
-            objectValues(room.items),
-            gameState.progression,
-          );
-          if (newStandingOn !== undefined) {
-            setStandingOn(stander, newStandingOn);
-          }
-        } else {
-          const finalDelta = subXyz(
-            item.state.position,
-            startingPositions[item.id],
-          );
-          // latent movement is only horizontal - anything else, collisions and gravity can handle
-          const latentMovement = { ...finalDelta, z: 0 };
-          if (!xyzEqual(latentMovement, originXyz)) {
-            stander.state.latentMovement.push({
-              // since the original game pushes items every other frame, the practical latency
-              // for standing-on items is two frames
-              moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
-              positionDelta: latentMovement,
-            });
-          }
-        }
-      }
-    }
-
-    for (const stander of sortedItems) {
-      if (!isFreeItem(stander) || stander.state.standingOn === null) {
-        continue;
-      }
-
-      // every item touches the item it is standing on every frame. This means a lot of
-      // pointless touches, but for example, what if you're on a volcano and the shideld
-      // bunny runs out? This touch was already done when you landed on the stoodOn item,
-      // if you fell onto it :-/
-      handleItemsTouchingItems({
-        movingItem: stander,
-        touchee: stander.state.standingOn,
-        gameState,
-        deltaMS,
-        movementVector: { x: 0, y: 0, z: -1 },
-      });
-    }
+    removeNonApplicableStandingOn(sortedItems);
+    assignLatentMovement(sortedItems, gameState, startingPositions);
 
     //setStandingOnForAllItemsInRoom(room, gameState.progression);
 
@@ -222,9 +227,7 @@ export const progressGameState = <RoomId extends string>(
     gameState.gameTime += physicsTickMs;
 
     if (room !== currentRoom(gameState)) {
-      throw new Error(
-        `room has changed during physics tick ${room.id} -> ${currentRoom(gameState).id} but did not return out of the tick`,
-      );
+      return;
     }
 
     snapStationaryItemsToPixelGrid(room, startingPositions);

@@ -2,6 +2,7 @@ import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors/vectors";
 import { liftBBShortening } from "../physics/mechanicsConstants";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -32,13 +33,14 @@ export const yAxisWallRenderAabb = { ...yAxisWallAabb, z: wallRenderHeight };
 
 // TODO: also support giving renderAabbs
 export const boundingBoxForItem = (
-  item: UnknownJsonItem,
+  item: UnknownJsonItem | UnknownItemInPlay,
 ): { aabb: Aabb; renderAabb?: Aabb } => {
   switch (item.type) {
     case "spring":
     case "portableBlock":
     case "moveableDeadly":
-    case "pickup":
+    case "slidingDeadly":
+    case "slidingBlock":
     case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
     case "lift":
@@ -51,6 +53,11 @@ export const boundingBoxForItem = (
         aabb: { ...smallItemAabb, z: smallItemAabb.z - 2 },
       };
     }
+
+    case "pickup":
+      return item.config.gives === "scroll" ?
+          { aabb: { x: 15, y: 5, z: 12 } }
+        : { aabb: smallItemAabb };
 
     case "charles":
       return { aabb: doubleHeighCharacter };
@@ -86,11 +93,20 @@ export const boundingBoxForItem = (
         default:
           return { aabb: largeItemAabb };
       }
+
     case "deadlyBlock":
-      return { aabb: largeItemAabb };
+      switch (item.config.style) {
+        case "toaster":
+          return { aabb: { ...largeItemAabb, y: largeItemAabb.y - 2 } };
+        case "spikes":
+        case "volcano":
+          return { aabb: largeItemAabb };
+      }
+      break;
 
     case "book":
     case "conveyor":
+    case "bubbles":
     case "hushPuppy":
     case "teleporter": {
       return { aabb: largeItemAabb };
@@ -101,6 +117,10 @@ export const boundingBoxForItem = (
           item.config.axis === "y" ?
             { x: 3, y: 15, z: blockSizePx.h - 1 }
           : { x: 15, y: 3, z: blockSizePx.h - 1 },
+        renderAabb:
+          item.config.axis === "y" ?
+            { x: 3, y: 15, z: blockSizePx.h }
+          : { x: 15, y: 3, z: blockSizePx.h },
       };
     }
     case "wall":

@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "deadly",
   floorSkip: [],
@@ -113,6 +113,23 @@ export const room = {
       position: { x: 0, y: 4, z: 7 },
       type: "pickup",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## HOOTER
+
+![](hooter)
+The hooter may be used by Head to fire doughnuts at attacking monsters. This
+will freeze them in place as they lick the doughnut off their faces. The hooter
+may only be used by Head and requires a tray of doughnuts to be of any use.
+
+**> Head Over Heels Manual**
+`,
+      },
+      position: { x: 7, y: 1, z: 1 },
+      type: "pickup",
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 8 },
@@ -138,4 +155,4 @@ export const room = {
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

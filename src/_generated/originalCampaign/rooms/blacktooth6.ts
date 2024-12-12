@@ -1,8 +1,9 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
+import { Disappear } from "@/model/ItemInPlay.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   floor: "deadly",
   floorSkip: [],
@@ -63,20 +64,41 @@ export const room = {
       position: { x: 7, y: 7, z: 1 },
       type: "pickup",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## DOUGHNUTS
+
+![](donuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head
+may pick up doughnuts. The number of remaining doughnuts will be displayed above
+the doughnut icon at the bottom left of the screen.
+
+*> Head Over Heels Manual*
+`,
+      },
+      position: { x: 2, y: 3, z: 1 },
+      type: "pickup",
+    },
+    scrollBlock: {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 3, z: 0 },
+      type: "block",
+    },
     "switch@6,0,1:V4krG": {
       config: {
         activates: {
-          "baddie@3,0,1:Z1w4InY": {
+          "baddie@3,0,1:Z1rA6U9": {
             left: { activated: true },
             right: { activated: false },
           },
           "block@0,7,0:Z1AdJxh": {
-            left: { disappearing: true },
-            right: { disappearing: false },
+            left: { disappear: "onStand" satisfies Disappear },
+            right: { disappear: null },
           },
           "block@3,7,0:Z1AdJxh": {
-            left: { disappearing: true },
-            right: { disappearing: false },
+            left: { disappear: "onStand" satisfies Disappear },
+            right: { disappear: null },
           },
         },
       },
@@ -108,4 +130,4 @@ export const room = {
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

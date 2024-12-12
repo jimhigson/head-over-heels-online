@@ -16,7 +16,9 @@ export type ItemInPlayType =
   | "doorFrame"
   | "stopAutowalk"
   | "portal"
-  | "floor";
+  | "floor"
+  // when another item is fading out, the bubbles are a separate item
+  | "bubbles";
 
 export type PlayableActionState =
   | "moving"
@@ -33,7 +35,7 @@ export type EitherPlayableState<RoomId extends string> =
     lives: number;
     // the time a shield was collected at, or null if no shield. The hud should show
     // seconds remaining based off of this value
-    shieldCollectedAt: number | null;
+    shieldCollectedAt: number;
 
     // Number of pixels the player will walk forward regardless of input. This
     // puts players properly inside a room when they enter via a door
@@ -95,8 +97,8 @@ export type EmptyObject = {
 
 export type ItemInPlayConfig<
   T extends ItemInPlayType,
-  P extends PlanetName,
-  RoomId extends string,
+  P extends PlanetName = PlanetName,
+  RoomId extends string = string,
 > =
   // config type explicitly given for this item type:
   T extends keyof ItemInPlayConfigMap<RoomId> ? ItemInPlayConfigMap<RoomId>[T]
@@ -104,26 +106,22 @@ export type ItemInPlayConfig<
   T extends JsonItemType ? JsonItemConfig<T, P, RoomId>
   : EmptyObject;
 
+export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
+
 type BaseItemState<RoomId extends string> = {
   position: Readonly<Xyz>;
   /**
    * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
    * set to -1. Otherwise, can set to the duration of an animation that needs to play
    *
-   * If undefined, the item is not scheduled for removal (the normal case)
+   * If null, the item is not scheduled for removal (the normal case)
    */
   expires: number | null;
-  /**
-   * If not null, the item will not be considered solid after this frame. Can be set to:
-   *  * the current frame to make non-solid right away
-   *  * the next frame to give one more frame's chance to jump
-   *  * -1 to be unsolid forever
-   *  * null to be solid (most items will have this value forever)
-   */
-  unsolidAfterProgression: number | null;
 
   /** what is standing on this item? */
   stoodOnBy: Set<FreeItem<PlanetName, RoomId>>;
+
+  disappear: Disappear;
 };
 
 export type ItemState<T extends ItemInPlayType, RoomId extends string> =

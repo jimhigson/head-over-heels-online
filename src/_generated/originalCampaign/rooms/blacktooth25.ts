@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "blacktooth",
   floorSkip: [],
@@ -28,6 +28,21 @@ export const room = {
       position: { x: 5, y: 0, z: 7 },
       type: "lift",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## CONVEYOR BELTS
+
+![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the
+opposite direction you have to jump along.
+
+*Head Over Heels Manual*
+`,
+      },
+      position: { x: 3, y: 5, z: 0 },
+      type: "pickup",
+    },
   },
   planet: "blacktooth",
   roomAbove: "blacktooth26",
@@ -36,4 +51,4 @@ export const room = {
     away: ["plain", "armour", "shield", "shield", "armour", "plain"],
     left: ["plain", "armour", "shield", "shield", "armour", "plain"],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

@@ -1,11 +1,9 @@
-import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SpritesheetFrameData } from "pixi.js";
-import type { UnknownJsonItem } from "./json/JsonItem";
 import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
 import type { PlanetName, Wall } from "../sprites/planets";
-import type { Xy } from "../utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
+import type { RoomJson } from "./RoomJson";
 
 export const characterNames = ["head", "heels"] as const;
 export type CharacterName = (typeof characterNames)[number];
@@ -26,35 +24,6 @@ export type RoomWalls<P extends PlanetName> = {
   left: Wall<P>[];
   away: Wall<P>[];
 };
-
-/**
- * serialisation format of a room to be stored in while not in play
- */
-export type RoomJson<P extends PlanetName, RoomId extends string> = {
-  id: RoomId;
-  size: {
-    /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
-    x: number;
-    /* depth in game blocks. this is the integer unit of room size and different from the width in pixels */
-    y: number;
-  };
-  planet: P;
-  floor: Floor;
-  floorSkip: Xy[];
-  roomAbove?: RoomId;
-  roomBelow?: RoomId;
-  walls: RoomWalls<P>;
-  // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
-  // colours in each room
-  color: ZxSpectrumRoomColour;
-
-  /**
-   * by keying each item with an id, it makes the diffing easier since the array is no longer
-   * position-dependent
-   */
-  items: Record<string, UnknownJsonItem<RoomId>>;
-};
-export type AnyRoomJson = RoomJson<PlanetName, string>;
 
 /**
  * a map of items-in-play in a room

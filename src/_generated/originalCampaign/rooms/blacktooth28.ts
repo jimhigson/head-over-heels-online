@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   floor: "deadly",
   floorSkip: [],
@@ -118,6 +118,31 @@ export const room = {
       position: { x: 1, y: 7, z: 0 },
       type: "portableBlock",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## BAG
+
+![](bag)The bag may be used to carry small objects around a room. It is essential for
+Heels to find and get the bag as it is impossible to get far without it. The
+object in the bag will be displayed immediately above the bag’s icon at the
+bottom right of the screen. To pick up an object just stand on top of it and
+press the CARRY key. It is not possible to drop an object in a doorway.
+
+![](cube)![](drum)![](spring.compressed)![](sticks)
+
+**Head Over Heels Manual**
+`,
+      },
+      position: { x: 4, y: 0, z: 1 },
+      type: "pickup",
+    },
+    scrollBlock: {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 4, y: 0, z: 0 },
+      type: "block",
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 8 },
@@ -143,4 +168,4 @@ export const room = {
       "plain",
     ],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

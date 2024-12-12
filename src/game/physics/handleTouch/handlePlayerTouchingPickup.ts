@@ -1,16 +1,20 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import { type GameState, currentRoom } from "../../gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import { isItemType } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
-import { makeItemDisappear } from "@/game/gameState/mutators/makeItemDissapear";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
+
+const isHead = isItemType("head");
+const isHeels = isItemType("heels");
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  player: PlayableItem<CharacterName, RoomId>,
-  pickup: ItemInPlay<"pickup", PlanetName, RoomId>,
+  e: ItemTouchEvent<RoomId, CharacterName, "pickup">,
 ) => {
-  const roomId = currentRoom(gameState).id;
+  const {
+    gameState,
+    movingItem: player,
+    touchedItem: pickup,
+    room: { id: roomId },
+  } = e;
+
   if (gameState.pickupsCollected[roomId][pickup.id] === true) {
     // ignore already picked up items
     return;
@@ -21,11 +25,10 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     true
   >;
   roomPickupCollections[pickup.id] = true;
-  handlePlayerTouchingDisappearing(gameState, player, pickup);
 
   switch (pickup.config.gives) {
     case "hooter": {
-      if (player.type === "head") {
+      if (isHead(player)) {
         player.state.hasHooter = true;
         break;
       }
@@ -33,7 +36,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "donuts": {
-      if (player.type === "head") {
+      if (isHead(player)) {
         player.state.donuts += 6;
         break;
       }
@@ -41,7 +44,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "bag": {
-      if (player.type === "heels") {
+      if (isHeels(player)) {
         player.state.hasBag = true;
         break;
       }
@@ -54,14 +57,14 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "fast": {
-      if (player.type === "head") {
+      if (isHead(player)) {
         player.state.fastSteps = 99;
       }
       break;
     }
 
     case "jumps": {
-      if (player.type === "heels") {
+      if (isHeels(player)) {
         player.state.bigJumps = 10;
       }
       break;
@@ -71,6 +74,14 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
       player.state.lives += 2;
       break;
 
+    case "scroll":
+      // avoid the scroll being closed right away if the player already has jump held:
+      gameState.inputState.jump = false;
+      gameState.events.emit("scrollOpened", {
+        markdown: pickup.config.markdown,
+      });
+      break;
+
     case "reincarnation":
       //TODO:
       break;
@@ -78,16 +89,8 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     case "crown":
       //TODO:
       break;
-  }
-};
 
-export const handlePlayerTouchingDisappearing = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-  _player: PlayableItem<CharacterName, RoomId>,
-  disappearingItem:
-    | ItemInPlay<"pickup", PlanetName, RoomId>
-    | ItemInPlay<"block", PlanetName, RoomId>
-    | ItemInPlay<"barrier", PlanetName, RoomId>,
-) => {
-  makeItemDisappear(disappearingItem, gameState);
+    default:
+      pickup.config satisfies never;
+  }
 };

@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   floor: "blacktooth",
   floorSkip: [],
@@ -56,4 +56,4 @@ export const room = {
     away: ["plain", "shield", "none", "none", "shield", "plain"],
     left: ["plain", "shield", "none", "none", "shield", "plain"],
   },
-} satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

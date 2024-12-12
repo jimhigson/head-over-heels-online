@@ -94,9 +94,14 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] glide roll physics for pucks/balls    
 [x] items don't collide with items they're standing on.
     [x] walking from an item to another doesn't collide with it
-    [!] now they do (on every frame) but means some duplicative touches 🤷‍♂️
+    [x] now they do (on every frame) but means some duplicative touches 🤷‍♂️
 [ ] disappearing blocks should only go when stood on (hit from the top)
+    [ ] bubbles are their own item
+    [ ] remove unsolid after concept
+[ ] can't jump off of collected powerups    
+
 [ ] head and heels can combine
+[ ] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding
     [ ] hud readable over game
 [ ] sonic-like shield effect when got shield    
@@ -109,6 +114,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] can shoot donuts
     [ ] pixel shader (donut colours or grey) for disabled baddies
 [ ] PAUSED text
+[ ] re-render on HMR: https://vite.dev/guide/api-hmr.html
 
 # Rooms
 
@@ -220,3 +226,7 @@ Pros:
 * jumping, gravity etc are trivial now
 * easy to 'edge up' by single pixels
 * was already tracking zVelocity (for jumping), but not x/y/z - jumping set (redudantly) the zVel and gave a state delta - could have given either/or - is more consistent. Could probably store velocity just for walkin
+
+
+musicxml for game music: https://github.com/dougmencken/HeadOverHeels/blob/master/gamedata/music/safari.xml
+musicxml player in browser: https://blog.karimratib.me/demos/musicxml/

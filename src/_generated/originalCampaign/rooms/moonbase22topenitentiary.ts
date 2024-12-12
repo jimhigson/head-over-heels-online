@@ -1,8 +1,8 @@
-import type { RoomJson } from "../../../model/modelTypes.ts";
+import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
-export const room = {
+export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "moonbase",
   floorSkip: [],
@@ -73,6 +73,22 @@ export const room = {
       position: { x: 2, y: 8, z: 0 },
       type: "door",
     },
+    scroll: {
+      config: {
+        gives: "scroll",
+        markdown: `
+## PENITENTIARY
+### The empire's prison planet
+
+![](penitentiary.wall.skeleton.left) Millions are imprisoned here. A harsh planet, very mountainous, much climbing,
+skill required. The worst place is The Pit, try not to fall into it!
+
+*> Head Over Heels Manual*
+`,
+      },
+      position: { x: 1, y: 4, z: 0 },
+      type: "pickup",
+    },
     "teleporter@2,3,0:Z1dKvDl": {
       config: { toRoom: "penitentiary1" },
       position: { x: 2, y: 3, z: 0 },
@@ -109,4 +125,4 @@ export const room = {
       "window1",
     ],
   },
-} satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
+}) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

@@ -1,6 +1,5 @@
 import { mtv } from "../slidingCollision";
-import type { ItemInPlay, AnyItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { ItemInPlayType } from "@/model/ItemInPlay";
 import {
   dotProductXyz,
   originXyz,
@@ -10,15 +9,13 @@ import {
 } from "@/utils/vectors/vectors";
 import { walkSpeedPixPerMs } from "../mechanicsConstants";
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
-import type { GameState } from "@/game/gameState/GameState";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
-export const handleItemTouchingSlidingItem = <RoomId extends string>(
-  slidingItem: ItemInPlay<SlidingItemTypes, PlanetName, RoomId>,
-  /** the item that touched this sliding item */
-  touchingItem: AnyItemInPlay<RoomId>,
-  gameState: GameState<RoomId>,
-) => {
-  if (!isSolid(touchingItem, gameState.progression)) return;
+export const handleItemTouchingSlidingItem = <RoomId extends string>({
+  movingItem: touchingItem,
+  touchedItem: slidingItem,
+}: ItemTouchEvent<RoomId, ItemInPlayType, SlidingItemTypes>) => {
+  if (!isSolid(touchingItem)) return;
 
   const {
     state: { position: slidingItemPosition },
@@ -32,22 +29,23 @@ export const handleItemTouchingSlidingItem = <RoomId extends string>(
     slidingItemAabb,
   );
 
-  if (m.x === 0 || m.y === 0) return;
+  if (m.x === 0 && m.y === 0) return;
 
   const unitM = unitVector(m);
 
   const slidingVel = scaleXyz(unitM, -walkSpeedPixPerMs.ball);
 
   slidingItem.state.vels.sliding = slidingVel;
+
+  return false;
 };
 
-export const handleSlidingItemTouchingAnyItem = <RoomId extends string>(
-  slidingItem: ItemInPlay<SlidingItemTypes, PlanetName, RoomId>,
+export const handleSlidingItemTouchingAnyItem = <RoomId extends string>({
+  movingItem: slidingItem,
   /** the item that touched this sliding item */
-  touchingItem: AnyItemInPlay<RoomId>,
-  gameState: GameState<RoomId>,
-) => {
-  if (!isSolid(touchingItem, gameState.progression)) return;
+  touchedItem,
+}: ItemTouchEvent<RoomId, SlidingItemTypes, ItemInPlayType>) => {
+  if (!isSolid(touchedItem)) return;
 
   const slidingVel = slidingItem.state.vels.sliding;
 
@@ -59,13 +57,16 @@ export const handleSlidingItemTouchingAnyItem = <RoomId extends string>(
   } = slidingItem;
 
   const m = mtv(
-    touchingItem.state.position,
-    touchingItem.aabb,
+    touchedItem.state.position,
+    touchedItem.aabb,
     slidingItemPosition,
     slidingItemAabb,
   );
 
   const d = dotProductXyz(m, slidingItem.state.vels.sliding);
 
+  // stop sliding
   if (d > 0) slidingItem.state.vels.sliding = originXyz;
+
+  return false;
 };
