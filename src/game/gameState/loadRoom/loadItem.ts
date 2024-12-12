@@ -106,6 +106,8 @@ const shadowMask = (
       return jsonItem.config.style === "drum" ?
           "shadowMask.smallRound"
         : "shadowMask.smallBlock";
+    case "slidingBlock":
+      return "shadowMask.smallRound";
     case "deadlyBlock":
       switch (jsonItem.config.style) {
         case "volcano":
