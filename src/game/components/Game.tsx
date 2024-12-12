@@ -2,7 +2,6 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import type { Campaign } from "../../model/modelTypes";
 import { type GameApi } from "../GameApi";
 import type { RenderOptions } from "../RenderOptions";
-import { load as loadPalette } from "@/sprites/samplePalette";
 import { GameOverlayDialogs } from "./GameOverlayDialogs";
 
 const useGame = <RoomId extends string>(
@@ -10,16 +9,9 @@ const useGame = <RoomId extends string>(
   renderOptions: RenderOptions<RoomId>,
 ): GameApi<RoomId> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
-  const [loadedAssets, setLoadedAssets] = useState<boolean>();
-
-  useEffect(function loadAssets() {
-    Promise.all([loadPalette()]).then(() => setLoadedAssets(true));
-  }, []);
 
   useEffect(
     function createGameWhenAssetsLoaded() {
-      if (!loadedAssets) return;
-
       let thisEffectGameApi: GameApi<RoomId> | undefined;
       const go = async () => {
         // we don't import the game until we know the assets are loaded - it is
@@ -36,7 +28,7 @@ const useGame = <RoomId extends string>(
         thisEffectGameApi?.stop();
       };
     },
-    [campaign, loadedAssets],
+    [campaign],
   );
 
   useEffect(

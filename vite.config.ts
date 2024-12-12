@@ -23,6 +23,7 @@ export default defineConfig({
     alias: {
       // for shadcn: https://ui.shadcn.com/docs/installation/vite
       "@": path.resolve(__dirname, "./src"),
+      gfx: path.resolve(__dirname, "./gfx"),
     },
   },
 });
