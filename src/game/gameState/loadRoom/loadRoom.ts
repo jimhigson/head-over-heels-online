@@ -127,7 +127,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(loadWalls(roomJson)),
     ...itemsInItemObjectMap(
-      gatherConveyors(loadItems(roomJson, roomPickupsCollected)),
+      /*gatherConveyors(*/ loadItems(roomJson, roomPickupsCollected) /*)*/,
     ),
   };
 

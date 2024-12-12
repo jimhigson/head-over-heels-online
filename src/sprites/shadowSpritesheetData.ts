@@ -10,13 +10,13 @@ export const shadowSpritesheetData = {
       frame: { x: 259, y: 395, ...largeItemTextureSize },
     },
     "shadowMask.smallBlock": {
-      frame: { x: 226, y: 395, ...largeItemTextureSize },
+      frame: { x: 333, y: 456, ...smallItemTextureSize },
     },
     "shadow.smallBlock": {
-      frame: { x: 308, y: 456, ...largeItemTextureSize },
+      frame: { x: 308, y: 456, ...smallItemTextureSize },
     },
     "shadowMask.conveyor": {
-      frame: { x: 333, y: 456, ...largeItemTextureSize },
+      frame: { x: 292, y: 395, ...largeItemTextureSize },
     },
     "shadow.smallRound": {
       frame: { x: 159, y: 291, ...smallItemTextureSize },

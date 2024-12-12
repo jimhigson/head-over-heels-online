@@ -9,6 +9,7 @@ import type {
 import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { TextureId } from "@/sprites/spriteSheet";
+import type { CreateSpriteOptions } from "@/game/render/createSprite";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
@@ -156,7 +157,7 @@ export type ItemInPlay<
   renders: boolean;
 
   // the area of this item that shadows can be cast on
-  shadowMaskTexture?: TextureId;
+  shadowMaskTexture?: CreateSpriteOptions;
   // the shadow this item casts on other items
   shadowCastTexture?: TextureId;
 };

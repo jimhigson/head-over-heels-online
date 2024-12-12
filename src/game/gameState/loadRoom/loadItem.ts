@@ -10,10 +10,10 @@ import { loadDoor } from "./loadDoor";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
-import { originXyz } from "@/utils/vectors/vectors";
+import { directionAxis, originXyz } from "@/utils/vectors/vectors";
 import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { TextureId } from "@/sprites/spriteSheet";
+import type { CreateSpriteOptions } from "@/game/render/createSprite";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -66,8 +66,17 @@ export function* loadItemFromJson<RoomId extends string>(
   }
 }
 
-const shadowMask = (jsonItem: UnknownJsonItem): TextureId | undefined => {
+const shadowMask = (
+  jsonItem: UnknownJsonItem,
+): CreateSpriteOptions | undefined => {
   switch (jsonItem.type) {
+    case "lift":
+      return "shadowMask.smallBlock";
+    case "conveyor":
+      return {
+        texture: "shadowMask.conveyor",
+        flipX: directionAxis(jsonItem.config.direction) === "x",
+      };
     case "block":
       return "shadowMask.fullBlock";
   }
