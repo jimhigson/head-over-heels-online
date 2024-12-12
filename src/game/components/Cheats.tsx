@@ -82,7 +82,7 @@ export const Cheats = <RoomId extends string>({
       <CollapsibleContent>
         <div className="absolute bottom-10 right-2 flex flex-col">
           <RoomSelect gameApi={gameApi} />
-          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-white">
+          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">
             <Switch
               id="showbbs"
               checked={showBBs !== "none"}

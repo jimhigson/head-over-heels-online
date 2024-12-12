@@ -2,7 +2,6 @@ import { BlockyMarkdown } from "./BlockyMarkdown";
 import { textScale } from "./dialogScales";
 import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export type ScrollContentProps = {
   markdown: string;
@@ -14,12 +13,7 @@ export const ScrollContent = ({
   keyAssignment,
 }: ScrollContentProps) => {
   return (
-    <div
-      className={`p-${textScale}`}
-      style={{
-        backgroundColor: spritesheetPalette.highlightBeige.toRgbaString(),
-      }}
-    >
+    <div className={`p-${textScale} bg-highlightBeige`}>
       <BlockyMarkdown markdown={markdown}></BlockyMarkdown>
       <PressToContinue action="jump" keyAssignment={keyAssignment} />
     </div>

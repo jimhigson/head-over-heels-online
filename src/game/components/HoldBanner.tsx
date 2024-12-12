@@ -10,7 +10,7 @@ export const HoldBanner = ({
   keyAssignment: KeyAssignment;
 }) => {
   return (
-    <div className="text-center bg-black">
+    <div className="text-center bg-pureBlack">
       <div>
         <BitmapText
           scale={textScale}

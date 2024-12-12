@@ -15,18 +15,26 @@ done
 
 echo "🤖 sampling palette -> ts"
 colorNames=(pureBlack lightBlack shadow midGrey lightGrey white metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
-rm gfx/spritesheetPalette.ts
+rm gfx/spritesheetPalette.ts gfx/spritesheetPalette.json
 echo "import { Color } from 'pixi.js';" >> gfx/spritesheetPalette.ts
 echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> gfx/spritesheetPalette.ts
 echo "export const spritesheetPalette = {" >> gfx/spritesheetPalette.ts
+echo "{" >> gfx/spritesheetPalette.json
+
 for i in $(seq 0 15);
 do
     color=$(magick gfx/sprites.png -format "#%[hex:u.p{$i,0}]" info:);
     echo ${colorNames[$i]} $color
     echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> gfx/spritesheetPalette.ts
+    echo "  \"${colorNames[$i]}\": \"$color\"" >> gfx/spritesheetPalette.json
+
+    if [ $i -ne 15 ]; then
+        echo "," >> gfx/spritesheetPalette.json
+    fi
 done
 echo "} as const;" >> gfx/spritesheetPalette.ts
-node_modules/.bin/prettier --write gfx/spritesheetPalette.ts 
+echo "}" >> gfx/spritesheetPalette.json
+node_modules/.bin/prettier --write gfx/spritesheetPalette.* 
 
 #
 # make sprite mask colour actually transparent in the png (dpaint uses a normal colour)
