@@ -1,5 +1,5 @@
 import type { UnknownRoomState } from "@/model/modelTypes";
-import type { SidesWithDoors } from "./renderFloor";
+import type { SidesWithDoors } from "./itemAppearances/floorAppearance";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isItemType } from "../physics/itemPredicates";
 import { doorAlongAxis } from "@/utils/vectors/vectors";

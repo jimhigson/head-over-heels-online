@@ -9,6 +9,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export interface BlockyMarkdownProps {
   markdown: string;
+  className?: string;
 }
 
 const markdownComponents: Components = {
@@ -86,9 +87,13 @@ const markdownComponents: Components = {
   },
 };
 
-export const BlockyMarkdown = ({ markdown }: BlockyMarkdownProps) => {
+export const BlockyMarkdown = ({
+  markdown,
+  className,
+}: BlockyMarkdownProps) => {
   return (
     <Markdown
+      className={className}
       components={markdownComponents}
       allowedElements={[
         "h1",

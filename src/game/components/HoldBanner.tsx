@@ -21,7 +21,11 @@ export const HoldBanner = ({
         </BitmapText>
       </div>
       <span>
-        <PressToContinue action="hold" keyAssignment={keyAssignment} />
+        <PressToContinue
+          className="text-center"
+          action="hold"
+          keyAssignment={keyAssignment}
+        />
       </span>
     </div>
   );

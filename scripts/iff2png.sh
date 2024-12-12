@@ -44,6 +44,7 @@ transparencyColor=$(magick gfx/sprites.png -format "#%[hex:u.p{13,0}]" info:)
 matteColor=$(magick gfx/sprites.png -format "#%[hex:u.p{0,1}]" info:)
 echo "transparent color detected as \"$transparencyColor\" and matte as \"$matteColor\""
 
+cp gfx/sprites.png gfx/sprites.borders.png
 magick gfx/sprites.png -transparent $transparencyColor -fill transparent -floodfill +0+1 $matteColor gfx/sprites.png
 
 echo "🤖 reducing palette"

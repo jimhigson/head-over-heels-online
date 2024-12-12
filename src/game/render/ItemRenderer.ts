@@ -13,6 +13,7 @@ import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
+import { ItemShadowRenderer } from "./ItemShadowRenderer";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -56,25 +57,28 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
-  const renderContainer: Container = new Container();
+  const renderContainer: Container = new Container({ label: "render" });
 
   if (renderOptions.showBoundingBoxes !== "none") {
     renderContainer.alpha = 0.5;
   }
 
-  const positionContainer: Container = new Container({
+  const mainContainer: Container = new Container({
     label: `item(${item.id})`,
   });
-  positionContainer.addChild(renderContainer);
+  mainContainer.addChild(renderContainer);
+  if (item.fixedZIndex !== undefined) {
+    mainContainer.zIndex = item.fixedZIndex;
+  }
 
-  assignMouseActions(item, renderContainer, renderOptions);
+  assignMouseActions(item, mainContainer, renderOptions);
 
   if (
     renderOptions.showBoundingBoxes === "all" ||
     (renderOptions.showBoundingBoxes === "non-wall" && item.type !== "wall")
   ) {
-    positionContainer.addChild(renderItemBBs(item));
-    moveContainerToItemPosition(item, positionContainer);
+    mainContainer.addChild(renderItemBBs(item));
+    moveContainerToItemPosition(item, mainContainer);
   }
 
   /* the props used to render this item last time */
@@ -85,23 +89,31 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
    */
   let currentRenderPosition: Xyz | undefined;
 
+  const appearance = itemAppearances[item.type];
+
+  const itemShadowRenderer: ItemShadowRenderer<T, RoomId> | undefined =
+    ItemShadowRenderer(item, room, renderOptions);
+
+  if (itemShadowRenderer !== undefined) {
+    mainContainer.addChild(itemShadowRenderer.container);
+  }
+
   return {
     get item() {
       return item;
     },
     destroy() {
-      positionContainer.destroy({ children: true });
+      mainContainer.destroy({ children: true });
       renderContainer.destroy({ children: true });
+      if (itemShadowRenderer) itemShadowRenderer.destroy();
     },
     /**
      * @returns true iff the item needs z-order resorting for the room
      */
-    tick() {
+    tick(progression: number) {
       if (!item.renders) {
         return;
       }
-
-      const appearance = itemAppearances[item.type];
 
       const rendering = appearance({ item, room, currentlyRenderedProps });
       if (rendering !== undefined) {
@@ -123,14 +135,16 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
 
       if (movedSinceLastRender) {
         // current position of item doesn't match its current rendered position
-        moveContainerToItemPosition(item, positionContainer);
+        moveContainerToItemPosition(item, mainContainer);
 
         currentRenderPosition = itemPosition;
       }
 
+      if (itemShadowRenderer) itemShadowRenderer.tick(progression);
+
       return movedSinceLastRender;
     },
-    container: positionContainer,
+    container: mainContainer,
   };
 };
 export type ItemRenderer<

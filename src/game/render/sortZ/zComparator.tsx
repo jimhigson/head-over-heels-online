@@ -1,13 +1,13 @@
 import type { Xyz } from "@/utils/vectors/vectors";
 import { addXyz, axesXyz } from "@/utils/vectors/vectors";
 import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
+import type { AnyItemInPlay } from "@/model/ItemInPlay";
 
-export type DrawOrderComparable = {
-  id: string;
+export type DrawOrderComparable = Pick<
+  AnyItemInPlay,
+  "id" | "aabb" | "renders" | "renderAabb" | "fixedZIndex"
+> & {
   state: { position: { x: number; y: number; z: number } };
-  aabb: { x: number; y: number; z: number };
-  renders: boolean;
-  renderAabb?: { x: number; y: number; z: number };
 };
 
 /**
@@ -147,7 +147,12 @@ const visuallyOverlaps = (
 };
 
 export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
-  if (a.renders === false || b.renders === false) {
+  if (
+    a.renders === false ||
+    b.renders === false ||
+    a.fixedZIndex !== undefined ||
+    b.fixedZIndex !== undefined
+  ) {
     return 0;
   }
 

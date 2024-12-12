@@ -16,6 +16,7 @@ export const loadPlayer = <RoomId extends string>(
       config: {},
       ...defaultItemProperties,
       ...boundingBoxForItem(jsonItem),
+      shadowCastTexture: "shadow.smallRound",
       ...{
         id: "head",
         state: {
@@ -53,6 +54,7 @@ export const loadPlayer = <RoomId extends string>(
       config: {},
       ...defaultItemProperties,
       ...boundingBoxForItem(jsonItem),
+      shadowCastTexture: "shadow.smallRound",
       ...{
         id: "heels",
         state: {

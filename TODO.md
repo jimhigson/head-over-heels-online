@@ -163,6 +163,8 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # blacktooth19
 [x] pushing bottom block doesn't move the whole stack
+[ ] #blacktooth19 ITEMS DON"T WAIT UNTIL ON CONVEYOR FULLY TO STARTR MOVING FROM IT
+     [?] might actually be the anvils pushing each other???
 
 # blacktooth4 -> 3
 

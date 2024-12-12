@@ -119,6 +119,10 @@ export const App = <RoomId extends string>({
           "\ncontainer:",
           container,
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).container = container;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).item = item;
       },
     };
   }, [showBBs, gameApi]);
