@@ -8,6 +8,7 @@ import type {
 } from "../utils/vectors/vectors";
 import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
+import type { TextureId } from "@/sprites/spriteSheet";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
@@ -153,6 +154,11 @@ export type ItemInPlay<
   readonly renderAabb?: Aabb;
 
   renders: boolean;
+
+  // the area of this item that shadows can be cast on
+  shadowMaskTexture?: TextureId;
+  // the shadow this item casts on other items
+  shadowCastTexture?: TextureId;
 };
 
 /**

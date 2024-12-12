@@ -54,7 +54,7 @@ export const RoomRenderer = <RoomId extends string>(
       return room;
     },
     /** update the rendering of all items in the room */
-    tick() {
+    tick(progression: number) {
       let resortZ = false;
       for (const item of objectValues(room.items)) {
         let itemRenderer = itemRenderers.get(item.id);
@@ -66,7 +66,7 @@ export const RoomRenderer = <RoomId extends string>(
           itemsContainer.addChild(itemRenderer.container);
         }
 
-        resortZ = itemRenderer.tick() || resortZ;
+        resortZ = itemRenderer.tick(progression) || resortZ;
 
         // it is up the the item to decide if it will rerender
       }

@@ -6,13 +6,21 @@ import type {
 } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { type Xyz, xyzEqual } from "@/utils/vectors/vectors";
+import { subXy, type Xyz, xyzEqual } from "@/utils/vectors/vectors";
 import { Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
 import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
-import { projectWorldXyzToScreenXy } from "./projectToScreen";
+import {
+  projectWorldXyzToScreenXy,
+  projectWorldXyzToScreenXyFloat,
+} from "./projectToScreen";
+import { createSprite } from "./createSprite";
+import { collision1toMany } from "../collision/aabbCollision";
+import { objectEntries, objectValues } from "iter-tools";
+import { iterate } from "@/utils/iterate";
+import type { TextureId } from "@/sprites/spriteSheet";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -59,7 +67,7 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   const renderContainer: Container = new Container();
 
   if (renderOptions.showBoundingBoxes !== "none") {
-    renderContainer.alpha = 0.5;
+    renderContainer.alpha = 1;
   }
 
   const positionContainer: Container = new Container({
@@ -67,7 +75,7 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   });
   positionContainer.addChild(renderContainer);
 
-  assignMouseActions(item, renderContainer, renderOptions);
+  assignMouseActions(item, positionContainer, renderOptions);
 
   if (
     renderOptions.showBoundingBoxes === "all" ||
@@ -85,6 +93,15 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
    */
   let currentRenderPosition: Xyz | undefined;
 
+  const appearance = itemAppearances[item.type];
+
+  const itemShadowRenderer: ItemShadowRenderer<T, RoomId> | undefined =
+    ItemShadowRenderer(item, room, renderOptions);
+
+  if (itemShadowRenderer !== undefined) {
+    positionContainer.addChild(itemShadowRenderer.container);
+  }
+
   return {
     get item() {
       return item;
@@ -92,16 +109,15 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
     destroy() {
       positionContainer.destroy({ children: true });
       renderContainer.destroy({ children: true });
+      if (itemShadowRenderer) itemShadowRenderer.destroy();
     },
     /**
      * @returns true iff the item needs z-order resorting for the room
      */
-    tick() {
+    tick(progression: number) {
       if (!item.renders) {
         return;
       }
-
-      const appearance = itemAppearances[item.type];
 
       const rendering = appearance({ item, room, currentlyRenderedProps });
       if (rendering !== undefined) {
@@ -128,6 +144,8 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
         currentRenderPosition = itemPosition;
       }
 
+      if (itemShadowRenderer) itemShadowRenderer.tick(progression);
+
       return movedSinceLastRender;
     },
     container: positionContainer,
@@ -137,3 +155,113 @@ export type ItemRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
 > = ReturnType<typeof ItemRenderer<T, RoomId>>;
+
+const veryHighZ = 9999;
+export const ItemShadowRenderer = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+>(
+  item: ItemInPlay<T, PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  _renderOptions: RenderOptions<RoomId>,
+) => {
+  if (item.shadowMaskTexture === undefined) {
+    return undefined;
+  }
+
+  const shadowMaskedContainer: Container = new Container({
+    label: "shadowsMasked",
+  });
+  const shadowsContainer: Container = new Container({
+    label: "shadows",
+    alpha: 0.5,
+  });
+  const shadowMaskSprite = createSprite(item.shadowMaskTexture);
+  const shadows: Record<
+    string,
+    { container: Container; usedOnProgression: number }
+  > = {};
+
+  shadowMaskedContainer.addChild(shadowsContainer);
+  shadowMaskedContainer.addChild(shadowMaskSprite);
+  shadowMaskedContainer.mask = shadowMaskSprite;
+
+  return {
+    get item() {
+      return item;
+    },
+    destroy() {
+      shadowMaskedContainer.destroy({ children: true });
+    },
+    /**
+     * @returns true iff the item needs z-order resorting for the room
+     */
+    tick(progression: number) {
+      const itemTop = item.state.position.z + item.aabb.z;
+      // collide up from this item to find everything that casts a shadow:
+      const collisions = collision1toMany(
+        {
+          id: item.id,
+          state: {
+            position: {
+              ...item.state.position,
+              z: itemTop,
+            },
+          },
+          aabb: {
+            ...item.aabb,
+            z: veryHighZ,
+          },
+        },
+        objectValues(room.items),
+      );
+
+      let hasShadows = false;
+      const castersIter = iterate(collisions).filter(
+        (c): c is typeof c & { shadowCastTexture: TextureId } =>
+          c.shadowCastTexture !== undefined,
+      );
+
+      for (const casterItem of castersIter) {
+        if (shadows[casterItem.id] === undefined) {
+          const newShadowSprite = createSprite(casterItem.shadowCastTexture);
+          shadowsContainer.addChild(newShadowSprite);
+          shadows[casterItem.id] = {
+            container: newShadowSprite,
+            usedOnProgression: progression,
+          };
+        }
+        const shadow = shadows[casterItem.id];
+        shadow.usedOnProgression = progression;
+
+        const screenXy = projectWorldXyzToScreenXyFloat({
+          ...subXy(casterItem.state.position, item.state.position),
+          z: item.aabb.z,
+        });
+        shadow.container.x = screenXy.x;
+        shadow.container.y = screenXy.y;
+
+        hasShadows = true;
+      }
+
+      //remove all shadow sprites not used on this progression:
+      for (const [id, { container, usedOnProgression }] of objectEntries(
+        shadows,
+      )) {
+        if (usedOnProgression !== progression) {
+          container.destroy();
+          delete shadows[id];
+        }
+      }
+
+      // for efficiency, hide all shadow rendering if there are no shadows on an item:
+      shadowMaskedContainer.visible = hasShadows;
+    },
+    container: shadowMaskedContainer,
+  };
+};
+
+type ItemShadowRenderer<
+  T extends ItemInPlayType,
+  RoomId extends string,
+> = ReturnType<typeof ItemShadowRenderer<T, RoomId>>;

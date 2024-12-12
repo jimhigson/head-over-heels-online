@@ -18,6 +18,7 @@ import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
+import { shadowSpritesheetData } from "./shadowSpritesheetData";
 
 let spritesTexture: Texture;
 try {
@@ -364,6 +365,7 @@ const frames = {
   ...playableSpritesheetData.frames,
   ...scenerySpritesheetData.frames,
   ...hudSpritesheetData.frames,
+  ...shadowSpritesheetData.frames,
 };
 
 const spritesheetData = {

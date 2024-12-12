@@ -158,26 +158,31 @@ const rooms = {
     floorSkip: [] as Xy[],
     id: "lift",
     items: keyItems([
-      {
-        type: "lift",
-        config: { bottom: 0, top: 4 },
-        position: { x: 1, y: 1, z: 3 },
-      },
-      {
-        type: "portableBlock",
-        config: { style: "cube" },
-        position: { x: 0, y: 3, z: 0 },
-      },
+      // {
+      //   type: "lift",
+      //   config: { bottom: 0, top: 4 },
+      //   position: { x: 1, y: 1, z: 3 },
+      // },
+      // {
+      //   type: "portableBlock",
+      //   config: { style: "cube" },
+      //   position: { x: 0, y: 3, z: 0 },
+      // },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: false },
         position: { x: 0, y: 2, z: 0 },
       },
       {
-        type: "pickup",
-        config: { gives: "bag" },
-        position: { x: 0, y: 3, z: 1 },
+        type: "block",
+        config: { style: "organic", disappearing: false },
+        position: { x: 1, y: 2, z: 0 },
       },
+      // {
+      //   type: "pickup",
+      //   config: { gives: "bag" },
+      //   position: { x: 0, y: 3, z: 1 },
+      // },
       {
         type: "door",
         config: { toRoom: "laboratory", direction: "towards" },

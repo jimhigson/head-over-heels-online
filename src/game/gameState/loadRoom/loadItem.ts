@@ -13,6 +13,7 @@ import type { RoomPickupsCollected } from "../GameState";
 import { originXyz } from "@/utils/vectors/vectors";
 import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 import { unitVectors } from "@/utils/vectors/unitVectors";
+import type { TextureId } from "@/sprites/spriteSheet";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -38,6 +39,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
+        shadowMaskTexture: shadowMask(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: { ...jsonItem.config, count: 1 } as any,
@@ -53,6 +55,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
+        shadowMaskTexture: shadowMask(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
@@ -62,6 +65,13 @@ export function* loadItemFromJson<RoomId extends string>(
     }
   }
 }
+
+const shadowMask = (jsonItem: UnknownJsonItem): TextureId | undefined => {
+  switch (jsonItem.type) {
+    case "block":
+      return "shadowMask.fullBlock";
+  }
+};
 
 const initialState = (jsonItem: UnknownJsonItem) => {
   const free = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
