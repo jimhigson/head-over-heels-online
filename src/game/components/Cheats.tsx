@@ -188,6 +188,16 @@ export const Cheats = <RoomId extends string>({
             <Button
               className="flex-1"
               onClick={(e) => {
+                summonItem("pickup", { gives: "extra-life" });
+                e.currentTarget.blur();
+              }}
+            >
+              <ImgSprite textureId="bunny" />
+              <ImgSprite textureId="hud.char.2" scale={2} />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
                 summonItem("pickup", { gives: "shield" });
                 e.currentTarget.blur();
               }}

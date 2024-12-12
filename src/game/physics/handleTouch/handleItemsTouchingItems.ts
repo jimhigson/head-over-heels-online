@@ -20,42 +20,51 @@ import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing
  */
 export const handleItemsTouchingItems = <RoomId extends string>(
   e: ItemTouchEvent<RoomId>,
-): boolean => {
-  if (movingItemIsType(e, ...characterNames) && handlePlayerTouchingItem(e))
-    return true;
+) => {
+  // if the player moved into something, we handle that:
+  if (movingItemIsType(e, ...characterNames)) {
+    handlePlayerTouchingItem(e);
+  }
 
   // if something moved into the player, we flip it and handle like the player moved into it:
-  if (
-    touchedItemIsType(e, ...characterNames) &&
+  if (touchedItemIsType(e, ...characterNames)) {
     handlePlayerTouchingItem({
       ...e,
       movingItem: e.touchedItem,
       touchedItem: e.movingItem,
-    })
-  )
-    return true;
+    });
+  }
 
-  if (
-    touchedItemIsType(e, ...slidingItemTypes) &&
-    handleItemTouchingSlidingItem(e)
-  )
-    return true;
+  if (touchedItemIsType(e, ...slidingItemTypes)) {
+    handleItemTouchingSlidingItem(e);
+  }
 
-  if (
-    movingItemIsType(e, ...slidingItemTypes) &&
-    handleSlidingItemTouchingAnyItem(e)
-  )
-    return true;
+  if (movingItemIsType(e, ...slidingItemTypes)) {
+    handleSlidingItemTouchingAnyItem(e);
+  }
 
-  if (movingItemIsType(e, "baddie") && handleBaddieTouchingItem(e)) return true;
+  if (movingItemIsType(e, "baddie")) {
+    handleBaddieTouchingItem(e);
+  }
 
-  if (touchedItemIsType(e, "switch") && handleItemTouchingSwitch(e))
-    return true;
+  if (touchedItemIsType(e, "switch")) {
+    handleItemTouchingSwitch(e);
+  }
 
-  if (touchedItemIsType(e, "joystick") && handlePlayerTouchingJoystick(e))
-    return true;
+  if (touchedItemIsType(e, "joystick")) {
+    handlePlayerTouchingJoystick(e);
+  }
 
-  if (e.touchedItem.state.disappear !== null) handleItemTouchingDissapearing(e);
-
-  return false;
+  if (e.touchedItem.state.disappear) {
+    handleItemTouchingDissapearing(e);
+  }
+  // is the thing that moved has disappearing (more unusual case but could be a powerup falling on player for example,
+  // flip and treat like it is the thing that was touched):
+  if (e.movingItem.state.disappear) {
+    handleItemTouchingDissapearing({
+      ...e,
+      movingItem: e.touchedItem,
+      touchedItem: e.movingItem,
+    });
+  }
 };

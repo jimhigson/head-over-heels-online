@@ -78,6 +78,10 @@ describe("pickups", () => {
     expect(
       gameState.pickupsCollected[firstRoomId]["pickupTwoSquaresFromHead"],
     ).toBe(true);
+    // the pickup should have disappeared:
+    expect(
+      currentRoom(gameState).items["pickupTwoSquaresFromHead"],
+    ).toBeUndefined();
     expect(headState(gameState).lives).toBe(10);
 
     // but not this one (included as a control):
@@ -86,6 +90,9 @@ describe("pickups", () => {
         "pickupCharactersWillNotGetInThisTest"
       ],
     ).toBeFalsy();
+    expect(
+      currentRoom(gameState).items["pickupCharactersWillNotGetInThisTest"],
+    ).not.toBeUndefined();
   });
 
   test("pickup can land on character", () => {
@@ -115,7 +122,9 @@ describe("pickups", () => {
     expect(gameState.pickupsCollected[firstRoomId]["pickupAboveHeels"]).toBe(
       true,
     );
-    expect(currentRoom(gameState).items.heels?.state.lives).toBe(10);
+    expect(heelsState(gameState).lives).toBe(10);
+    // the pickup should have disappeared:
+    expect(currentRoom(gameState).items["pickupAboveHeels"]).toBeUndefined();
   });
 
   test.todo(
