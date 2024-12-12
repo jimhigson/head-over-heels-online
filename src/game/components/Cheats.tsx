@@ -228,7 +228,8 @@ export const Cheats = <RoomId extends string>({
           </div>
 
           <div className="flex flex-row items-center">
-            <SpeedButton className="flex-1" speed={0.1} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={0.05} gameApi={gameApi} />
+            <SpeedButton className="flex-1" speed={0.2} gameApi={gameApi} />
             <SpeedButton className="flex-1" speed={0.5} gameApi={gameApi} />
             <SpeedButton className="flex-1" speed={1} gameApi={gameApi} />
             <SpeedButton className="flex-1" speed={2} gameApi={gameApi} />

@@ -88,6 +88,12 @@ export type ItemStateMap<RoomId extends string> = {
     vels: {
       walking: Xyz;
     };
+    /**
+     * enemies turn around when they hit things but they have to be touching
+     * for a certain amount of time before they do, so they can push items more
+     * than a miniscule amount in a single frame
+     */
+    durationOfTouch: number;
   };
   pickup: FreeItemState<RoomId>;
   aliveFish: FreeItemState<RoomId>;

@@ -1,4 +1,4 @@
-import type { AnyItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import type { ItemInPlayType } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
@@ -234,11 +234,15 @@ export const tickBaddie = <RoomId extends string>(
 };
 
 const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
-  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
   {
-    state: { position: toucheePosition },
-    aabb: toucheeAabb,
-  }: AnyItemInPlay<RoomId>,
+    movingItem: baddieItem,
+    touchedItem: {
+      state: { position: touchedItemPosition },
+      aabb: touchedItemAabb,
+    },
+    deltaMS,
+  }: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+  { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
 ) => {
   const {
     state: {
@@ -251,7 +255,11 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
 
   if (!activated) return;
 
-  const m = mtv(position, aabb, toucheePosition, toucheeAabb);
+  baddieItem.state.durationOfTouch += deltaMS;
+
+  if (baddieItem.state.durationOfTouch < touchDurationBeforeTurn) return;
+
+  const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
 
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) return;
@@ -263,16 +271,21 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   };
 
   baddieItem.state.vels.walking = newWalking;
+  baddieItem.state.durationOfTouch = 0;
 };
 
 const handleBaddieTouchingItemByTurningToOppositeDirection = <
   RoomId extends string,
 >(
-  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
   {
-    state: { position: toucheePosition },
-    aabb: toucheeAabb,
-  }: AnyItemInPlay<RoomId>,
+    movingItem: baddieItem,
+    touchedItem: {
+      state: { position: touchedItemPosition },
+      aabb: touchedItemAabb,
+    },
+    deltaMS,
+  }: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+  { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
 ) => {
   const {
     state: {
@@ -285,7 +298,11 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
 
   if (!activated) return;
 
-  const m = mtv(position, aabb, toucheePosition, toucheeAabb);
+  baddieItem.state.durationOfTouch += deltaMS;
+
+  if (baddieItem.state.durationOfTouch < touchDurationBeforeTurn) return;
+
+  const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
 
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) return;
@@ -297,25 +314,28 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   };
 
   baddieItem.state.vels.walking = newWalking;
+  baddieItem.state.durationOfTouch = 0;
 };
 
-export const handleBaddieTouchingItem = <RoomId extends string>({
-  movingItem: baddieItem,
-  touchedItem: otherItem,
-}: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>) => {
+export const handleBaddieTouchingItem = <RoomId extends string>(
+  e: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+) => {
+  const { movingItem: baddieItem } = e;
+
   switch (baddieItem.config.which) {
     case "dalek":
     case "helicopter-bug":
     case "bubble-robot":
     case "american-football-head": {
-      handleBaddieTouchingItemByTurningToOppositeDirection(
-        baddieItem,
-        otherItem,
-      );
+      handleBaddieTouchingItemByTurningToOppositeDirection(e, {
+        touchDurationBeforeTurn: 150,
+      });
       break;
     }
     case "turtle":
-      handleBaddieTouchingItemByTurningClockwise(baddieItem, otherItem);
+      handleBaddieTouchingItemByTurningClockwise(e, {
+        touchDurationBeforeTurn: 150,
+      });
   }
   return false;
 };
