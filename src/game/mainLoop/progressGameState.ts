@@ -213,9 +213,7 @@ export const progressGameState = <RoomId extends string>(
         // item was removed from the room (eg, was picked up by heels)
         continue;
       }
-      if (tickItem(item, room, gameState, physicsTickMs)) {
-        return;
-      }
+      tickItem(item, room, gameState, physicsTickMs);
     }
 
     removeNonApplicableStandingOn(sortedItems);

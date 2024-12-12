@@ -51,7 +51,6 @@ type MoveItemOptions<RoomId extends string> = {
 /**
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
- * @returns true if the tick should halt here
  */
 export const moveItem = <RoomId extends string>({
   subjectItem,
@@ -61,9 +60,9 @@ export const moveItem = <RoomId extends string>({
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
   recursionDepth = 0,
-}: MoveItemOptions<RoomId>): boolean => {
+}: MoveItemOptions<RoomId>) => {
   if (xyzEqual(posDelta, originXyz)) {
-    return false;
+    return;
   }
 
   if (recursionDepth > 16) {
@@ -128,8 +127,11 @@ export const moveItem = <RoomId extends string>({
         room,
       });
 
+    // the touch handler might have removed either item from the world - in this case we can move on or stop:
+    if (room.items[subjectItem.id] === undefined) {
+      return;
+    }
     if (room.items[collision.id] === undefined) {
-      // the touch handler might have removed this item from the world - in this case we can move on
       continue;
     }
 
@@ -186,20 +188,16 @@ export const moveItem = <RoomId extends string>({
         );
 
       // recursively apply push to pushed item
-      if (
-        moveItem({
-          subjectItem: collision,
-          posDelta: forwardPushVector,
-          pusher: subjectItem,
-          gameState,
-          deltaMS,
-          forceful,
-          recursionDepth: recursionDepth + 1,
-        })
-      ) {
-        // halt if the recursive call halted
-        return true;
-      }
+      moveItem({
+        subjectItem: collision,
+        posDelta: forwardPushVector,
+        pusher: subjectItem,
+        gameState,
+        deltaMS,
+        forceful,
+        recursionDepth: recursionDepth + 1,
+      });
+
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(
@@ -249,6 +247,4 @@ export const moveItem = <RoomId extends string>({
       }
     }
   }
-
-  return false; // no reason found to halt, can tick the next item
 };

@@ -80,7 +80,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): boolean => {
+) => {
   if (
     isPlayableItem(item) &&
     item.state.standingOn !== null &&
@@ -131,7 +131,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     );
   }
 
-  return moveItem({
+  moveItem({
     subjectItem: item as UnknownItemInPlay<RoomId>,
     posDelta: accumulatedPosDelta,
     gameState,
