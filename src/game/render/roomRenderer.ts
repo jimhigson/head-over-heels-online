@@ -1,6 +1,5 @@
 import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
-import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
 import { floorRenderExtent } from "./renderExtent";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
@@ -34,8 +33,6 @@ export const RoomRenderer = <RoomId extends string>(
   const itemsContainer = new Container({ label: `items(room(${room.id}))` });
 
   roomContainer.addChild(itemsContainer);
-
-  roomContainer.filters = mainPaletteSwapFilters(room);
 
   centreRoomInRendering(room, roomContainer);
 

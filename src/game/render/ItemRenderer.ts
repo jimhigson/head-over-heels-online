@@ -13,6 +13,7 @@ import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
+import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -58,6 +59,8 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
   renderOptions: RenderOptions<RoomId>,
 ) => {
   const renderContainer: Container = new Container({ label: "render" });
+  // this has to be done before shadows are applied, since shadows stop the colour replace from working:
+  renderContainer.filters = mainPaletteSwapFilters(room);
 
   if (renderOptions.showBoundingBoxes !== "none") {
     renderContainer.alpha = 0.5;
