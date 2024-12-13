@@ -19,7 +19,7 @@ export const room = inferRoomJson({
       type: "door",
     },
     "lift@0,7,7:ZTwqnv": {
-      config: { bottom: 0, top: 9 },
+      config: { bottom: 0, top: 11 },
       position: { x: 0, y: 7, z: 7 },
       type: "lift",
     },

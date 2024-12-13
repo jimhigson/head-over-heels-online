@@ -9,7 +9,7 @@ export const room = inferRoomJson({
   id: "penitentiary9",
   items: {
     "lift@0,4,0:ZTwqnv": {
-      config: { bottom: 0, top: 9 },
+      config: { bottom: 0, top: 11 },
       position: { x: 0, y: 4, z: 0 },
       type: "lift",
     },

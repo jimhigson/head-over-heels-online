@@ -1,5 +1,10 @@
 [
   {
+    "op": "replace",
+    "path": "/rooms/safari34/items/lift@7,7,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
     "op": "add",
     "path": "/rooms/safari34/items/scroll",
     "value": {
@@ -12,6 +17,16 @@
     }
   },
   {
+    "op": "replace",
+    "path": "/rooms/safari12/items/lift@7,5,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary9/items/lift@0,4,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
     "op": "add",
     "path": "/rooms/penitentiary33/items/scroll",
     "value": {
@@ -22,6 +37,21 @@
       "position": { "x": 5, "y": 6, "z": 2 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary23/items/lift@4,3,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary16/items/lift@3,0,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary14/items/lift@0,1,0:ZTwqnv/config/top",
+    "value": 11
   },
   { "op": "replace", "path": "/rooms/moonbase9/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase8/color/hue", "value": "yellow" },
@@ -197,11 +227,26 @@
   },
   { "op": "replace", "path": "/rooms/egyptus37/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/egyptus36/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus36/items/lift@0,0,0:ZTwqnv/config/top",
+    "value": 11
+  },
   { "op": "replace", "path": "/rooms/egyptus35/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/egyptus33/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/egyptus32/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/egyptus31/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus31/items/lift@5,0,0:ZTwqnv/config/top",
+    "value": 11
+  },
   { "op": "replace", "path": "/rooms/egyptus30/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus30/items/lift@5,0,0:ZTwqnv/config/top",
+    "value": 11
+  },
   { "op": "replace", "path": "/rooms/egyptus29/color/hue", "value": "yellow" },
   {
     "op": "replace",
@@ -239,6 +284,11 @@
     "value": true
   },
   { "op": "replace", "path": "/rooms/egyptus19/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus19/items/lift@5,7,0:ZTwqnv/config/top",
+    "value": 11
+  },
   { "op": "replace", "path": "/rooms/egyptus18/color/hue", "value": "magenta" },
   { "op": "replace", "path": "/rooms/egyptus17/color/hue", "value": "cyan" },
   {
@@ -252,6 +302,11 @@
     "value": true
   },
   { "op": "replace", "path": "/rooms/egyptus14/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus14/items/lift@0,7,0:ZTwqnv/config/top",
+    "value": 11
+  },
   { "op": "replace", "path": "/rooms/egyptus13/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/egyptus12/color/hue", "value": "green" },
   {
@@ -266,6 +321,11 @@
     "op": "replace",
     "path": "/rooms/bookworld40/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld40/items/lift@0,0,0:ZTwqnv/config/top",
+    "value": 11
   },
   { "op": "replace", "path": "/rooms/bookworld4/color/hue", "value": "green" },
   {
@@ -327,6 +387,11 @@
     "op": "replace",
     "path": "/rooms/bookworld3/color/hue",
     "value": "magenta"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld28/items/lift@3,3,1:ZTwqnv/config/top",
+    "value": 11
   },
   { "op": "replace", "path": "/rooms/bookworld27/color/hue", "value": "green" },
   {
@@ -445,6 +510,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/blacktooth78/items/lift@1,1,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
     "path": "/rooms/blacktooth63/floor",
     "value": "bookworld"
   },
@@ -512,6 +582,11 @@
   },
   { "op": "replace", "path": "/rooms/blacktooth56/floor", "value": "market" },
   {
+    "op": "replace",
+    "path": "/rooms/blacktooth55/items/lift@3,0,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
     "op": "add",
     "path": "/rooms/blacktooth55/items/scroll",
     "value": {
@@ -536,6 +611,16 @@
       "position": { "x": 1, "y": 6, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth4/items/lift@3,5,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth39/items/lift@2,0,0:ZTwqnv/config/top",
+    "value": 11
   },
   {
     "op": "add",
@@ -591,6 +676,11 @@
     }
   },
   {
+    "op": "replace",
+    "path": "/rooms/blacktooth33/items/lift@7,7,0:ZTwqnv/config/top",
+    "value": 11
+  },
+  {
     "op": "add",
     "path": "/rooms/blacktooth3/items/scroll",
     "value": {
@@ -610,6 +700,11 @@
       "position": { "x": 7, "y": 5, "z": 0 },
       "type": "block"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth29/items/lift@0,7,7:ZTwqnv/config/top",
+    "value": 11
   },
   {
     "op": "add",
@@ -643,6 +738,11 @@
       "position": { "x": 0, "y": 7, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth25/items/lift@5,0,7:ZTwqnv/config/top",
+    "value": 11
   },
   {
     "op": "add",
