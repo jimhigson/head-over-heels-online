@@ -12,6 +12,7 @@ const useGame = <RoomId extends string>(
 
   useEffect(
     function createGameWhenAssetsLoaded() {
+      let stopped = false;
       let thisEffectGameApi: GameApi<RoomId> | undefined;
       const go = async () => {
         // we don't import the game until we know the assets are loaded - it is
@@ -19,6 +20,10 @@ const useGame = <RoomId extends string>(
         // have top-level imports that rely on them
         const { gameMain } = await import("../gameMain");
         thisEffectGameApi = await gameMain(campaign);
+        if (stopped) {
+          thisEffectGameApi.stop();
+          return;
+        }
         setGameApi(thisEffectGameApi);
       };
 
@@ -26,6 +31,7 @@ const useGame = <RoomId extends string>(
 
       return () => {
         thisEffectGameApi?.stop();
+        stopped = true;
       };
     },
     [campaign],
@@ -67,3 +73,4 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
       </>
     );
   });
+Game.displayName = "Game";
