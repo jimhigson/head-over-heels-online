@@ -306,7 +306,7 @@ const rooms = {
       // tests for lifts:
       {
         type: "lift",
-        config: { bottom: 0, top: 9 },
+        config: { bottom: 0, top: 11 },
         position: { x: 0, y: 4, z: 3 },
       },
       {
@@ -334,7 +334,7 @@ const rooms = {
       },
       {
         type: "lift",
-        config: { bottom: 0, top: 9 },
+        config: { bottom: 0, top: 11 },
         position: { x: 1, y: 4, z: 2 },
       },
       {
@@ -344,12 +344,12 @@ const rooms = {
       },
       {
         type: "lift",
-        config: { bottom: 0, top: 9 },
+        config: { bottom: 0, top: 11 },
         position: { x: 2, y: 4, z: 1 },
       },
       {
         type: "lift",
-        config: { bottom: 0, top: 9 },
+        config: { bottom: 0, top: 11 },
         position: { x: 3, y: 4, z: 0 },
       },
       // blocks provide a lift lobby:

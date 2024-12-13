@@ -37,7 +37,7 @@ import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRo
 
 // any frame with more than this deltaMS will be split into multiple physics ticks
 // eg, for getting into smaller gaps
-const maximumDeltaMS = 10;
+const maximumDeltaMS = 9;
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,

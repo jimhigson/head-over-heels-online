@@ -690,7 +690,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 5 },
           config: {
             bottom: 0,
-            top: roomHeightBlocks,
+            top: 9,
           },
         },
         landing: {

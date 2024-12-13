@@ -35,7 +35,7 @@ export const terminalVelocityPixPerMs = {
 };
 
 export const maxLiftAcc = fallG * 0.5;
-export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.6;
+export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.5;
 
 /**
  * when heels jumps forwards, instantly gets this fraction of her max speed forward,

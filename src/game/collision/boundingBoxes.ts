@@ -109,9 +109,11 @@ export const boundingBoxForItem = (
       }
       break;
 
+    case "bubbles":
+      return { aabb: smallItemAabb };
+
     case "book":
     case "conveyor":
-    case "bubbles":
     case "hushPuppy":
     case "teleporter": {
       return { aabb: largeItemAabb };
@@ -119,10 +121,6 @@ export const boundingBoxForItem = (
     case "barrier": {
       return {
         aabb:
-          item.config.axis === "y" ?
-            { x: 3, y: 15, z: blockSizePx.h - 1 }
-          : { x: 15, y: 3, z: blockSizePx.h - 1 },
-        renderAabb:
           item.config.axis === "y" ?
             { x: 3, y: 15, z: blockSizePx.h }
           : { x: 15, y: 3, z: blockSizePx.h },
