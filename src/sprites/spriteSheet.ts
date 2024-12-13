@@ -169,7 +169,10 @@ const frames = {
     frame: { x: 101, y: 478, ...largeItemTextureSize },
   },
   spikes: {
-    frame: { x: 127, y: 420, ...largeItemTextureSize },
+    frame: { x: 333, y: 427, ...largeItemTextureSize },
+  },
+  "shadowMask.spikes": {
+    frame: { x: 333, y: 397, ...largeItemTextureSize },
   },
   ...seriesOfAnimationFrameTextures(
     "conveyor.x",
@@ -239,6 +242,9 @@ const frames = {
     { x: 4, y: 4 },
     smallItemTextureSize,
   ),
+  "shadowMask.dalek": {
+    frame: { x: 4, y: 29, ...smallItemTextureSize },
+  },
 
   "headless-base": {
     frame: { x: 93, y: 102, ...smallItemTextureSize },

@@ -115,7 +115,7 @@ const shadowMask = (
         case "toaster":
           return "shadowMask.fullBlock";
         case "spikes":
-          return undefined;
+          return "shadowMask.spikes";
         default:
           jsonItem.config.style satisfies never;
       }
@@ -128,6 +128,13 @@ const shadowMask = (
         : undefined;
     case "slidingDeadly":
       return "shadowMask.smallRound";
+    case "baddie":
+      switch (jsonItem.config.which) {
+        case "dalek":
+          return "shadowMask.dalek";
+        default:
+          return undefined;
+      }
   }
 };
 
