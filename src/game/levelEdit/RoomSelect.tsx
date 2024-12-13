@@ -20,10 +20,12 @@ import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
+  className?: string;
 };
 
 export function RoomSelect<RoomId extends string>({
   gameApi,
+  className,
 }: RoomSelectProps<RoomId>) {
   const [open, setOpen] = React.useState(false);
 
@@ -41,17 +43,17 @@ export function RoomSelect<RoomId extends string>({
         <Button
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between"
+          className={`justify-between ${className}`}
         >
           {viewingRoomId || "Select a room"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
-        <Command>
+      <PopoverContent className="p-0">
+        <Command className="w-[--radix-popper-anchor-width]">
           <CommandInput placeholder="Room id" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No room found</CommandEmpty>
             <CommandGroup>
               {roomIds.map((r) => (
                 <CommandItem
