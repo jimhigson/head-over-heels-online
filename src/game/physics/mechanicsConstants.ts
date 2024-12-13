@@ -90,14 +90,14 @@ export const originalGameJumpPxPerFrame = 2;
 
 export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
-  head: blockSizePx.h * 2.5,
+  head: blockSizePx.h * 2.6,
   heels: blockSizePx.h,
 };
 
 // original game lift speed was 1px per frame
 export const liftSpeed = pxPerFrameSpeed(2);
 
-export const roomHeightBlocks = 9;
+export const roomHeightBlocks = 11;
 
 /**
  * lifts need to go down visually into the ground a bit, or they are too difficult to jump onto
@@ -108,3 +108,5 @@ export const liftBBShortening = 2;
 
 /** how long (in ms) a shield bunny lasts for */
 export const shieldDuration = 60_000;
+
+export const veryHighZ = 9999;

@@ -170,6 +170,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 [x] lift doesn't correctly take us up
 
+# blacktooth20
+[ ] corder of room not shown in shadow
+
 # blacktooth25
 
 [x] lift is too slow when character is on it
@@ -211,6 +214,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # (heels) blacktooth39
 [x] baddie doesn't push blocks (at all)
 
+# blacktooth53market
+[ ] baddie doesn't move like in original game
+
 # blacktooth61
 [x] hush pupplies not vanishing on head enter
 
@@ -223,6 +229,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # egyptus13
 [x] lift is weirdly slow - maybe becuse it doesn't start at zero?
+[ ] teleporter to [egyptus9] doesn't go to correct space in next room
+
+# egyptus14
+[x] first jump not possible (actually, is possible but very difficult)
+    - needs a test specially for a jump to 2 across, 1 up
 
 # bookworld2
 [ ] vanishing conveyors don't vanish
@@ -232,6 +243,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # bookworld6
 [ ] sliding book doesn't slide
+
+# penitentiary6
+[ ] anvil needs to move
 
 # Problems with force/accel based model:
 
