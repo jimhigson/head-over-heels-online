@@ -6,7 +6,7 @@ import type {
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { subXy } from "@/utils/vectors/vectors";
-import { AlphaFilter, Container } from "pixi.js";
+import { AlphaFilter, BlurFilter, Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
 import { createSprite } from "./createSprite";
@@ -14,17 +14,18 @@ import { collision1toMany } from "../collision/aabbCollision";
 import { objectEntries, objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import type { SetRequired } from "type-fest";
+import { veryHighZ } from "../physics/mechanicsConstants";
 
-const veryHighZ = 9999;
 export const ItemShadowRenderer = <
   T extends ItemInPlayType,
   RoomId extends string,
 >(
   item: ItemInPlay<T, PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
-  _renderOptions: RenderOptions<RoomId>,
+  renderOptions: RenderOptions<RoomId>,
 ) => {
-  if (item.shadowMaskTexture === undefined) {
+  if (item.shadowMask === undefined) {
+    // this item does not render shadows - return nothing
     return undefined;
   }
 
@@ -38,12 +39,20 @@ export const ItemShadowRenderer = <
   // https://github.com/pixijs/pixijs/issues/4334
   // using alpha fitler (not .alpha) to set alpha here:
   // https://pixijs.download/dev/docs/filters.AlphaFilter.html
-  mainShadowsContainer.filters = new AlphaFilter({ alpha: 0.5 });
+  if (!renderOptions.showShadowMasks) {
+    mainShadowsContainer.filters = new AlphaFilter({ alpha: 0.5 });
+  }
 
-  if (item.shadowMaskTexture !== "all") {
-    const shadowMaskSprite = createSprite(item.shadowMaskTexture);
+  if (item.shadowMask.spriteOptions) {
+    const shadowMaskSprite = createSprite(item.shadowMask.spriteOptions);
+    if (item.shadowMask.relativeTo === "top") {
+      shadowMaskSprite.y = -item.aabb.z;
+    }
+
     mainShadowsContainer.addChild(shadowMaskSprite);
-    mainShadowsContainer.mask = shadowMaskSprite;
+    if (!renderOptions.showShadowMasks) {
+      mainShadowsContainer.mask = shadowMaskSprite;
+    }
   }
 
   const shadows: Record<
@@ -95,6 +104,7 @@ export const ItemShadowRenderer = <
         if (shadows[casterItem.id] === undefined) {
           const newShadowSprite = createSprite(casterItem.shadowCastTexture);
           newShadowSprite.label = casterItem.id;
+          newShadowSprite.filters = [new BlurFilter()];
           shadowsContainer.addChild(newShadowSprite);
           shadows[casterItem.id] = {
             container: newShadowSprite,
@@ -110,8 +120,9 @@ export const ItemShadowRenderer = <
         });
         shadow.container.x = screenXy.x;
         shadow.container.y = screenXy.y;
-
-        //console.log(casterItem.id, "has a shadow on", item.id);
+        const heightDifference = casterItem.state.position.z - itemTop;
+        const [blurFilter] = shadow.container.filters as BlurFilter[];
+        blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
 
         hasShadows = true;
       }

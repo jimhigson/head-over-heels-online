@@ -387,6 +387,7 @@ const rooms = {
         config: { controls: ["ch2"] },
         position: { x: 4, y: 3, z: 0 },
       },
+      // baddies that push the joysticks!
       {
         type: "baddie",
         config: {
@@ -396,6 +397,16 @@ const rooms = {
           activated: true,
         },
         position: { x: 4, y: 2, z: 0 },
+      },
+      {
+        type: "baddie",
+        config: {
+          which: "american-football-head",
+          startDirection: "away",
+          style: "greenAndPink",
+          activated: true,
+        },
+        position: { x: 4, y: 0, z: 0 },
       },
       {
         type: "joystick",

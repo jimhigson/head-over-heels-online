@@ -79,13 +79,7 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
         if (spriteDataFrame.pivot !== undefined) {
-          sprite.pivot =
-            flipX ?
-              {
-                x: spriteDataFrame.w - spriteDataFrame.pivot.x,
-                y: spriteDataFrame.pivot.y,
-              }
-            : spriteDataFrame.pivot;
+          sprite.pivot = spriteDataFrame.pivot;
         } else {
           sprite.anchor = bottomMiddleDefaultAnchor;
         }

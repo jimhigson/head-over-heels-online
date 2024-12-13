@@ -7,46 +7,54 @@ import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
 import type { Aabb } from "@/utils/vectors/vectors";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
-  return (
-    new Graphics()
-      // bottom:
-      .poly([
-        projectWorldXyzToScreenXyFloat({}),
-        projectWorldXyzToScreenXyFloat({ x: aabb.x }),
-        projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
-        projectWorldXyzToScreenXyFloat({ y: aabb.y }),
-      ])
-      // right:
-      .poly([
-        projectWorldXyzToScreenXyFloat({}),
-        projectWorldXyzToScreenXyFloat({ z: aabb.z }),
-        projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
-        projectWorldXyzToScreenXyFloat({ y: aabb.y }),
-      ])
-      // left:
-      .poly([
-        projectWorldXyzToScreenXyFloat({ x: aabb.x }),
-        projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
-        projectWorldXyzToScreenXyFloat(aabb),
-        projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
-      ])
-      // top:
-      .poly([
-        projectWorldXyzToScreenXyFloat({ z: aabb.z }),
-        projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
-        projectWorldXyzToScreenXyFloat({
-          x: aabb.x,
-          y: aabb.y,
-          z: aabb.z,
-        }),
-        projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
-      ])
-      .stroke({
-        width: 1,
-        color,
-        alpha: 0.5,
-      })
-  );
+  const graphics = new Graphics()
+    // bottom:
+    .poly([
+      projectWorldXyzToScreenXyFloat({}),
+      projectWorldXyzToScreenXyFloat({ x: aabb.x }),
+      projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
+      projectWorldXyzToScreenXyFloat({ y: aabb.y }),
+    ])
+    // right:
+    .poly([
+      projectWorldXyzToScreenXyFloat({}),
+      projectWorldXyzToScreenXyFloat({ z: aabb.z }),
+      projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
+      projectWorldXyzToScreenXyFloat({ y: aabb.y }),
+    ])
+    // left:
+    .poly([
+      projectWorldXyzToScreenXyFloat({ x: aabb.x }),
+      projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
+      projectWorldXyzToScreenXyFloat(aabb),
+      projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
+    ])
+    // top:
+    .poly([
+      projectWorldXyzToScreenXyFloat({ z: aabb.z }),
+      projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
+      projectWorldXyzToScreenXyFloat({
+        x: aabb.x,
+        y: aabb.y,
+        z: aabb.z,
+      }),
+      projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
+    ])
+    .stroke({
+      width: 1,
+      color,
+      alpha: 0.5,
+    });
+
+  graphics.eventMode = "static";
+  graphics.on("pointerenter", () => {
+    graphics.fill({ color, alpha: 0.5 });
+  });
+  graphics.on("pointerleave", () => {
+    graphics.fill({ color: "transparent" });
+  });
+
+  return graphics;
 };
 
 const bbColors: Partial<Record<ItemInPlayType, string>> = {

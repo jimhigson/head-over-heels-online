@@ -49,6 +49,8 @@ export type RoomState<
 > = Simplify<
   Omit<RoomJson<P, RoomId>, "items"> & {
     items: RoomStateItems<P, RoomId, ItemId>;
+    /** the json this room was loaded from */
+    roomJson: RoomJson<P, RoomId, ItemId>;
   }
 >;
 export type UnknownRoomState = RoomState<PlanetName, string>;

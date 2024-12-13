@@ -1,7 +1,7 @@
 import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors/vectors";
-import { liftBBShortening } from "../physics/mechanicsConstants";
+import { liftBBShortening, veryHighZ } from "../physics/mechanicsConstants";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
@@ -12,24 +12,29 @@ const wallRenderHeight = 50;
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal
-const wallHeight = 999;
+export const wallThicknessBlocks = 1;
 
 export const xAxisWallAabb = {
   x: blockSizePx.w,
-  y: 0,
-  z: wallHeight,
+  y: blockSizePx.d * wallThicknessBlocks,
+  z: veryHighZ,
 };
 export const xAxisWallRenderAabb = {
-  ...xAxisWallAabb,
+  x: xAxisWallAabb.x,
+  y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
 export const yAxisWallAabb = {
-  x: 0, //wallThicknessBlocks * blockSizePx.w,
+  x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: wallHeight,
+  z: veryHighZ,
 };
-export const yAxisWallRenderAabb = { ...yAxisWallAabb, z: wallRenderHeight };
+export const yAxisWallRenderAabb = {
+  x: 0,
+  y: yAxisWallAabb.y,
+  z: wallRenderHeight,
+};
 
 // TODO: also support giving renderAabbs
 export const boundingBoxForItem = (

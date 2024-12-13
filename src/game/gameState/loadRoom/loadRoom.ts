@@ -137,7 +137,15 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
   // if they are:
   for (const i of objectValues(loadedItems)) {
     const collisions = collision1toMany(i, objectValues(loadedItems));
-    const solidCol = collisions.find((col) => isSolid(i) && isSolid(col));
+    const solidCol = collisions.find(
+      (col) =>
+        isSolid(i) &&
+        isSolid(col) &&
+        // walls are allowed to collide with other walls, since they have thickness
+        // - this is only really possible in large rooms with extra walls
+        !(i.type === "wall" && col.type === "wall"),
+    );
+
     if (solidCol !== undefined) {
       throw new Error(
         `item ${i.id} is colliding with (solid item) ${solidCol.id} on loading room ${roomJson.id}`,
@@ -147,6 +155,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
 
   const roomState: RoomState<P, RoomId> = {
     ...roomJson,
+    roomJson,
     items: {
       ...loadedItems,
       ...extraItems,

@@ -1,5 +1,5 @@
 import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { ShadowMaskOptions, UnknownItemInPlay } from "@/model/ItemInPlay";
 import {
   fallingItemTypes,
   slidingItemTypes,
@@ -39,7 +39,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
-        shadowMaskTexture: shadowMask(jsonItem),
+        shadowMask: shadowMask(jsonItem),
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,7 +56,7 @@ export function* loadItemFromJson<RoomId extends string>(
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
-        shadowMaskTexture: shadowMask(jsonItem),
+        shadowMask: shadowMask(jsonItem),
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,68 +70,93 @@ export function* loadItemFromJson<RoomId extends string>(
 
 const shadowMask = (
   jsonItem: UnknownJsonItem,
-): CreateSpriteOptions | undefined => {
+): ShadowMaskOptions | undefined => {
+  // charles doesn't work because can't (yet) have direction-specific (changing) maps
   switch (jsonItem.type) {
     case "lift":
-      return "shadowMask.smallBlock";
+      return { spriteOptions: "shadowMask.smallBlock", relativeTo: "origin" };
     case "conveyor":
       return {
-        texture: "shadowMask.conveyor",
-        flipX: directionAxis(jsonItem.config.direction) === "x",
+        spriteOptions: {
+          texture: "shadowMask.conveyor",
+          flipX: directionAxis(jsonItem.config.direction) === "x",
+        },
+        relativeTo: "origin",
       };
     case "barrier":
       return {
-        texture: "shadowMask.barrier.y",
-        flipX: jsonItem.config.axis === "x",
+        spriteOptions: {
+          texture: "shadowMask.barrier.y",
+          flipX: jsonItem.config.axis === "x",
+        },
+        relativeTo: "origin",
       };
     case "spring":
-      return "shadowMask.smallRound";
+      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
     case "block":
-      return jsonItem.config.style === "tower" ?
-          "shadowMask.tower"
-        : "shadowMask.fullBlock";
+      return {
+        spriteOptions:
+          jsonItem.config.style === "tower" ?
+            "shadowMask.tower"
+          : "shadowMask.fullBlock",
+        relativeTo: "origin",
+      };
     case "movableBlock":
-      return jsonItem.config.style === "anvil" ?
-          "shadowMask.anvil"
-        : "shadowMask.fullBlock";
+      return {
+        spriteOptions:
+          jsonItem.config.style === "anvil" ?
+            "shadowMask.anvil"
+          : "shadowMask.fullBlock",
+        relativeTo: "origin",
+      };
     case "teleporter":
       // just happens to be the right shape:
-      return "teleporter.flashing.1";
+      return { spriteOptions: "teleporter.flashing.1", relativeTo: "origin" };
     case "hushPuppy":
       // just happens to be the right shape:
-      return "shadowMask.hushPuppy";
+      return { spriteOptions: "shadowMask.hushPuppy", relativeTo: "origin" };
     case "book":
-      return "shadowMask.fullBlock";
+      return { spriteOptions: "shadowMask.fullBlock", relativeTo: "origin" };
     case "portableBlock":
-      return jsonItem.config.style === "drum" ?
-          "shadowMask.smallRound"
-        : "shadowMask.smallBlock";
+      return {
+        spriteOptions:
+          jsonItem.config.style === "drum" ?
+            "shadowMask.smallRound"
+          : "shadowMask.smallBlock",
+        relativeTo: "origin",
+      };
     case "slidingBlock":
-      return "shadowMask.smallRound";
+      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
     case "deadlyBlock":
       switch (jsonItem.config.style) {
         case "volcano":
-          return "shadowMask.volcano";
+          return { spriteOptions: "shadowMask.volcano", relativeTo: "origin" };
         case "toaster":
-          return "shadowMask.fullBlock";
+          return {
+            spriteOptions: "shadowMask.fullBlock",
+            relativeTo: "origin",
+          };
         case "spikes":
-          return "shadowMask.spikes";
+          return { spriteOptions: "shadowMask.spikes", relativeTo: "origin" };
         default:
           jsonItem.config.style satisfies never;
       }
       break;
     case "switch":
-      return "shadowMask.switch";
+      return { spriteOptions: "shadowMask.switch", relativeTo: "origin" };
     case "pickup":
       return jsonItem.config.gives === "scroll" ?
-          "shadowMask.scroll"
+          {
+            spriteOptions: "shadowMask.scroll",
+            relativeTo: "origin",
+          }
         : undefined;
     case "slidingDeadly":
-      return "shadowMask.smallRound";
+      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
     case "baddie":
       switch (jsonItem.config.which) {
         case "dalek":
-          return "shadowMask.dalek";
+          return { spriteOptions: "shadowMask.dalek", relativeTo: "origin" };
         default:
           return undefined;
       }
@@ -170,6 +195,9 @@ const shadowCast = (
           "shadow.smallRound"
         : "shadow.smallBlock";
     case "pickup":
+      return jsonItem.config.gives === "scroll" ?
+          "shadow.scroll"
+        : "shadow.smallRound";
     case "baddie":
       return "shadow.smallRound";
   }

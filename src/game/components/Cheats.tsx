@@ -44,12 +44,16 @@ export const SpeedButton = <RoomId extends string>({
 
 export const Cheats = <RoomId extends string>({
   gameApi,
-  showBBs,
-  setShowBBs,
+  showBoundingBoxes,
+  setShowBoundingBoxes,
+  setShowShadowMasks,
+  showShadowMasks,
 }: {
   gameApi: GameApi<RoomId>;
-  showBBs: ShowBoundingBoxes;
-  setShowBBs: (show: ShowBoundingBoxes) => void;
+  showBoundingBoxes: ShowBoundingBoxes;
+  setShowBoundingBoxes: (show: ShowBoundingBoxes) => void;
+  showShadowMasks: boolean;
+  setShowShadowMasks: (show: boolean) => void;
 }) => {
   const { campaign } = gameApi.gameState;
 
@@ -85,22 +89,29 @@ export const Cheats = <RoomId extends string>({
           <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">
             <Switch
               id="showbbs"
-              checked={showBBs !== "none"}
+              checked={showBoundingBoxes !== "none"}
               onCheckedChange={(checked) =>
-                setShowBBs(checked ? "non-wall" : "none")
+                setShowBoundingBoxes(checked ? "non-wall" : "none")
               }
               onClick={(e) => e.currentTarget.blur()}
             />
-            <Label htmlFor="showbbs">BBs</Label>
+            <Label htmlFor="showbbs">show BBs</Label>
             <Switch
               id="showAllBbs"
-              checked={showBBs === "all"}
+              checked={showBoundingBoxes === "all"}
               onCheckedChange={(checked) =>
-                setShowBBs(checked ? "all" : "non-wall")
+                setShowBoundingBoxes(checked ? "all" : "non-wall")
               }
               onClick={(e) => e.currentTarget.blur()}
             />
-            <Label htmlFor="showAllBbs">inc walls</Label>
+            <Label htmlFor="showAllBbs">inc wall BBs</Label>
+            <Switch
+              id="showshadows"
+              checked={showShadowMasks}
+              onCheckedChange={(checked) => setShowShadowMasks(checked)}
+              onClick={(e) => e.currentTarget.blur()}
+            />
+            <Label htmlFor="showshadows">shadow masks</Label>
           </div>
           <div className="flex flex-row items-center">
             <Button

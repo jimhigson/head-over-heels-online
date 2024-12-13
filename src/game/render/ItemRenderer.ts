@@ -1,4 +1,3 @@
-import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import type {
   AnyItemInPlay,
   ItemInPlayType,
@@ -28,6 +27,7 @@ const assignMouseActions = <RoomId extends string>(
       });
     }
 
+    /*
     container.on("pointerenter", () => {
       container!.filters = new RevertColouriseFilter(
         // don't have the room here and this doesn't really matter so arbitrary choose yellow
@@ -37,7 +37,7 @@ const assignMouseActions = <RoomId extends string>(
 
     container.on("pointerleave", () => {
       container!.filters = [];
-    });
+    });*/
   }
 };
 

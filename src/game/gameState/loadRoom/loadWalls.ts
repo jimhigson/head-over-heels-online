@@ -4,6 +4,7 @@ import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {
+  wallThicknessBlocks,
   xAxisWallAabb,
   xAxisWallRenderAabb,
   yAxisWallAabb,
@@ -61,9 +62,14 @@ export function* loadWalls<R extends string>(
         ...{
           type: "wall",
           id: `wall-right-${yi}`,
-          config: { side: "left", style: "none" },
+          config: { side: "right", style: "none" },
+          shadowCastTexture: "shadow.wall.y",
           state: {
-            position: blockXyzToFineXyz({ x: 0, y: yi, z: 0 }),
+            position: blockXyzToFineXyz({
+              x: -wallThicknessBlocks,
+              y: yi,
+              z: 0,
+            }),
             expires: null,
             stoodOnBy: emptySet,
             disappear: null,
@@ -118,8 +124,16 @@ export function* loadWalls<R extends string>(
           type: "wall",
           id: `wall-towards-${xi}`,
           config: { side: "towards", style: "none" },
+          shadowCastTexture: {
+            texture: "shadow.wall.y",
+            flipX: true,
+          },
           state: {
-            position: blockXyzToFineXyz({ x: xi, y: 0, z: 0 }),
+            position: blockXyzToFineXyz({
+              x: xi,
+              y: -wallThicknessBlocks,
+              z: 0,
+            }),
             expires: null,
             stoodOnBy: emptySet,
             disappear: null,

@@ -1,12 +1,11 @@
 import { Container, Graphics } from "pixi.js";
-import type { TextureId } from "../../../sprites/spriteSheet";
+import { type TextureId } from "../../../sprites/spriteSheet";
 import { edgePaletteSwapFilters } from "../filters/paletteSwapFilters";
 import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
-import { renderExtent } from "../renderExtent";
-import { roomSidesWithDoors } from "../roomSidesWithDoors";
+import { floorRenderExtent } from "../renderExtent";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import { originXy, type DirectionXy4 } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
 
@@ -14,11 +13,10 @@ export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ room }) => {
-    const { towards: hasDoorTowards, right: hasDoorRight } =
-      roomSidesWithDoors(room);
-
-    const { blockXMin, blockYMin, rightSide, leftSide, frontSide, backSide } =
-      renderExtent(room);
+    const { blockXMin, blockYMin, blockXMax, blockYMax, sidesWithDoors } =
+      floorRenderExtent(room.roomJson);
+    const blockXExtent = blockXMax - blockXMin;
+    const blockYExtent = blockYMax - blockYMin;
 
     const {
       floor: floorType,
@@ -26,10 +24,6 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     } = room;
 
     const mainContainer = new Container({ label: `floor(${room.id})` });
-
-    const floorSkipMap = Object.fromEntries(
-      room.floorSkip.map(({ x, y }) => [`${x},${y}`, true] as [string, true]),
-    );
 
     if (floorType !== "none") {
       const floorTileTexture: TextureId =
@@ -42,25 +36,22 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       // each sprite covers enough graphics for 2 blocks. we only need to
       // render a sprite for the 'white' squares on the chessboard (render or
       // not according to a checkerboard pattern)
-      for (let ix = -1; ix <= room.size.x; ix++) {
-        for (let iy = (ix % 2) - 1; iy <= room.size.y; iy += 2) {
-          if (floorSkipMap[`${ix},${iy}`]) {
-            continue;
-          }
-
+      for (let ix = -1; ix <= blockXMax + 2; ix++) {
+        for (let iy = (ix % 2) - 1; iy <= blockYMax + 2; iy += 2) {
           tilesContainer.addChild(
             moveContainerToBlockXyz(
-              { x: ix, y: iy },
+              {
+                x: ix + (sidesWithDoors.right ? -0.5 : 0),
+                y: iy + (sidesWithDoors.towards ? -0.5 : 0),
+              },
               createSprite({
-                anchor: { x: 0.5, y: 1 },
                 texture: floorTileTexture,
               }),
             ),
           );
         }
       }
-
-      // render the cutting off of the floor tiles along the back
+      // render the right-angle cutting off of the floor tiles along the back
       // walls. In the original game this was rendered by the walls
       // themselves, but it breaks our z-ordering if the walls over-render
       // their bounding boxes by so much
@@ -70,7 +61,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
         }
         tilesContainer.addChild(
           moveContainerToBlockXyz(
-            { x: ix, y: room.size.y },
+            {
+              x: ix - blockXMin,
+              y: room.size.y + (sidesWithDoors.towards ? 0.5 : 0),
+            },
             createSprite({
               anchor: { x: 0, y: 1 },
               texture: "generic.floor.overdraw",
@@ -85,7 +79,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
         }
         tilesContainer.addChild(
           moveContainerToBlockXyz(
-            { x: room.size.x, y: iy },
+            {
+              x: room.size.x + (sidesWithDoors.right ? 0.5 : 0),
+              y: iy - blockYMin,
+            },
             createSprite({
               anchor: { x: 0, y: 1 },
               texture: "generic.floor.overdraw",
@@ -96,8 +93,16 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
 
       const tilesMask = new Graphics()
         // Add the rectangular area to show
-        .poly([frontSide, rightSide, backSide, leftSide], true)
-        .fill(0xff0000)
+        .poly(
+          [
+            originXy,
+            projectBlockXyzToScreenXy({ x: blockXExtent, y: 0 }),
+            projectBlockXyzToScreenXy({ x: blockXExtent, y: blockYExtent }),
+            projectBlockXyzToScreenXy({ x: 0, y: blockYExtent }),
+          ],
+          true,
+        )
+        .fill({ color: 0xff0000, alpha: 0.5 })
         // use a stroke to draw more than is strictly on the floor for the purpose of extending
         // under the pixelated edges of other sprites that are otherdrawn - otherwise the edge
         // would be a very smooth diagonal on modern screens
@@ -110,10 +115,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     }
 
     const towardsEdge = new Container();
-    for (let ix = blockXMin; ix <= room.size.x; ix += 0.5) {
+    for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
       towardsEdge.addChild(
         moveContainerToBlockXyz(
-          { x: ix, y: hasDoorTowards ? -0.5 : 0 },
+          { x: ix, y: 0 },
           createSprite({
             pivot: { x: 7, y: 0 },
             texture: "generic.edge.towards",
@@ -123,10 +128,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     }
     towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
     const rightEdge = new Container();
-    for (let iy = blockYMin; iy <= room.size.y; iy += 0.5) {
+    for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
       rightEdge.addChild(
         moveContainerToBlockXyz(
-          { x: hasDoorRight ? -0.5 : 0, y: iy },
+          { x: 0, y: iy },
           createSprite({
             pivot: { x: 0, y: 0 },
             texture: "generic.edge.right",
@@ -136,8 +141,15 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     }
     rightEdge.filters = edgePaletteSwapFilters(room, "right");
 
-    const edgeRightPoint = projectBlockXyzToScreenXy({ x: 0, y: room.size.y });
-    const edgeLeftPoint = projectBlockXyzToScreenXy({ x: room.size.x, y: 0 });
+    // track the points where the left-most and right-most visible walls will be rendered:
+    const edgeLeft = projectBlockXyzToScreenXy({
+      x: room.size.x + (sidesWithDoors.right ? 0.5 : 0),
+      y: -blockYMin,
+    }).x;
+    const edgeRight = projectBlockXyzToScreenXy({
+      x: -blockXMin,
+      y: room.size.y + (sidesWithDoors.towards ? 0.5 : 0),
+    }).x;
 
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
@@ -145,11 +157,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       // Add the rectangular area to show
       .poly(
         [
-          { x: frontSide.x, y: frontSide.y + 16 },
-          { x: edgeRightPoint.x, y: edgeRightPoint.y + 16 },
-          { x: edgeRightPoint.x, y: -999 },
-          { x: edgeLeftPoint.x, y: -999 },
-          { x: edgeLeftPoint.x, y: edgeLeftPoint.y + 16 },
+          { x: edgeLeft, y: 16 },
+          { x: edgeLeft, y: -999 },
+          { x: edgeRight, y: -999 },
+          { x: edgeRight, y: 16 },
         ],
         true,
       )

@@ -65,14 +65,28 @@ const useShowBoundingBoxes = (): [
   (showBoundingBoxes: ShowBoundingBoxes) => void,
 ] => {
   const [showBBs, setShowBBs] = useState<ShowBoundingBoxes>(
-    (localStorage.getItem("showBBs") || "none") as ShowBoundingBoxes,
+    (localStorage.getItem("showBoundingBoxes") || "none") as ShowBoundingBoxes,
   );
 
   useEffect(() => {
-    localStorage.setItem("showBBs", showBBs);
+    localStorage.setItem("showBoundingBoxes", showBBs);
   }, [showBBs]);
 
   return [showBBs, setShowBBs];
+};
+const useShowShadowMasks = (): [
+  boolean,
+  (showShadowMasks: boolean) => void,
+] => {
+  const [showShadowMasks, setShowShadowMasks] = useState<boolean>(
+    (localStorage.getItem("showShadowMasks") === "true") as boolean,
+  );
+
+  useEffect(() => {
+    localStorage.setItem("showShadowMasks", `${showShadowMasks}`);
+  }, [showShadowMasks]);
+
+  return [showShadowMasks, setShowShadowMasks];
 };
 
 export const App = <RoomId extends string>({
@@ -83,17 +97,20 @@ export const App = <RoomId extends string>({
   const [gameApi, setGameApi] = useState<GameApi<RoomId> | undefined>(
     undefined,
   );
-  const [showBBs, setShowBBs] = useShowBoundingBoxes();
+  const [showBoundingBoxes, setShowBoundingBoxes] = useShowBoundingBoxes();
+  const [showShadowMasks, setShowShadowMask] = useShowShadowMasks();
   useHashSyncedWithRoomId(gameApi);
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)
       return {
-        showBoundingBoxes: showBBs,
+        showBoundingBoxes,
+        showShadowMasks,
       };
 
     return {
-      showBoundingBoxes: showBBs,
+      showBoundingBoxes,
+      showShadowMasks,
       onItemClick(item, container) {
         if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
@@ -125,14 +142,20 @@ export const App = <RoomId extends string>({
         (window as any).item = item;
       },
     };
-  }, [showBBs, gameApi]);
+  }, [gameApi, showBoundingBoxes, showShadowMasks]);
 
   const CampaignGame = useRef(Game(campaign)).current;
 
   return (
     <>
       {gameApi !== undefined && (
-        <Cheats gameApi={gameApi} showBBs={showBBs} setShowBBs={setShowBBs} />
+        <Cheats
+          gameApi={gameApi}
+          showBoundingBoxes={showBoundingBoxes}
+          setShowBoundingBoxes={setShowBoundingBoxes}
+          showShadowMasks={showShadowMasks}
+          setShowShadowMasks={setShowShadowMask}
+        />
       )}
       <CampaignGame
         renderOptions={renderOptions}

@@ -1,15 +1,15 @@
-import type { UnknownRoomState } from "../../model/modelTypes";
 import { wallTileSize } from "@/sprites/textureSizes";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
+import type { AnyRoomJson } from "@/model/RoomJson";
 
-export const renderExtent = (loadedRoom: UnknownRoomState) => {
-  const sidesWithDoors = roomSidesWithDoors(loadedRoom);
+export const floorRenderExtent = (roomJson: AnyRoomJson) => {
+  const sidesWithDoors = roomSidesWithDoors(roomJson);
 
   const blockXMin = sidesWithDoors.right ? -0.5 : 0;
-  const blockXMax = loadedRoom.size.x + (sidesWithDoors.left ? 0.5 : 0);
+  const blockXMax = roomJson.size.x + (sidesWithDoors.left ? 0.5 : 0);
   const blockYMin = sidesWithDoors.towards ? -0.5 : 0;
-  const blockYMax = loadedRoom.size.y + (sidesWithDoors.away ? 0.5 : 0);
+  const blockYMax = roomJson.size.y + (sidesWithDoors.away ? 0.5 : 0);
 
   const rightSide = projectBlockXyzToScreenXy({ x: blockXMin, y: blockYMax });
   const leftSide = projectBlockXyzToScreenXy({ x: blockXMax, y: blockYMin });
@@ -27,5 +27,6 @@ export const renderExtent = (loadedRoom: UnknownRoomState) => {
     frontSide,
     backSide,
     top,
+    sidesWithDoors,
   };
 };

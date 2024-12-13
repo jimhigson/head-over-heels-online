@@ -14,7 +14,10 @@ import type { GameApi } from "./GameApi";
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): Promise<GameApi<RoomId>> => {
-  const renderOptions: RenderOptions<RoomId> = { showBoundingBoxes: "none" };
+  const renderOptions: RenderOptions<RoomId> = {
+    showBoundingBoxes: "none",
+    showShadowMasks: false,
+  };
 
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging

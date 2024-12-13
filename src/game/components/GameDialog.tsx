@@ -7,7 +7,7 @@ export type GameDialogProps = {
 
 export const GameDialog = ({ content }: GameDialogProps) => {
   return (
-    <Dialog open={true}>
+    <Dialog open={true} modal={false}>
       <DialogContent className="bg-highlightBeige" aria-describedby={undefined}>
         {content}
       </DialogContent>

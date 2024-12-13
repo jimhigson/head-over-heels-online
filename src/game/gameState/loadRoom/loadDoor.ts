@@ -158,34 +158,46 @@ export function* loadDoor<RoomId extends string>(
       }),
     },
   };
-  // note: when z === 0, the door "legs" are just an extra bit of floor
-  // under the doorway that can prevent us from falling off the edge of the world
-  yield {
-    ...jsonDoor,
-    ...defaultItemProperties,
-    ...{
-      type: "doorLegs",
-      id: `${id}/legs`,
-      config: {
-        ...jsonDoor.config,
-        inHiddenWall,
-        style: "none",
-        side: "away", // TODO: look at typings - this isn't needed for hidden walls
-        height: position.z,
+
+  if (position.z !== 0)
+    yield {
+      ...jsonDoor,
+      ...defaultItemProperties,
+      ...{
+        type: "doorLegs",
+        id: `${id}/legs`,
+        config: {
+          ...jsonDoor.config,
+          inHiddenWall,
+          style: "none",
+          side: "away", // TODO: look at typings - this isn't needed for hidden walls
+          height: position.z,
+        },
+        renders: true,
+        shadowCastTexture:
+          inHiddenWall ? "shadow.door.floatingThreshold.double.y" : undefined,
+        shadowMask: {
+          spriteOptions: {
+            texture:
+              inHiddenWall ?
+                "shadowMask.door.floatingThreshold.double.y"
+              : "shadowMask.door.legs.threshold.double.y",
+            flipX: axis === "x",
+          },
+          relativeTo: "top",
+        },
+        state: {
+          position: addXyz({
+            ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+            z: 0,
+          }),
+          expires: null,
+          stoodOnBy: new Set(),
+          disappear: null,
+        },
+        aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
       },
-      renders: position.z !== 0,
-      state: {
-        position: addXyz({
-          ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
-          z: 0,
-        }),
-        expires: null,
-        stoodOnBy: new Set(),
-        disappear: null,
-      },
-      aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
-    },
-  };
+    };
   yield {
     type: "stopAutowalk",
     id: `${id}/stopAutowalk`,

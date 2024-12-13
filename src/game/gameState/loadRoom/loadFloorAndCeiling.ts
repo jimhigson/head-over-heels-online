@@ -1,22 +1,39 @@
 import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
+import { floorRenderExtent } from "@/game/render/renderExtent";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { addXy, addXyz, originXyz, subXy } from "@/utils/vectors/vectors";
+import { addXyz, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
-  room: RoomJson<PlanetName, RoomId>,
+  roomJson: RoomJson<PlanetName, RoomId>,
 ): Generator<UnknownItemInPlay<RoomId>> {
-  const floorCeilingAabb = {
-    ...blockXyzToFineXyz(addXy(room.size)),
+  const roomNaturalFootprintAabb = {
+    ...blockXyzToFineXyz(roomJson.size),
     z: 0,
   };
-  const floorPosition = blockXyzToFineXyz(subXy(originXyz));
 
-  if (room.floor === "none" && room.roomBelow !== undefined) {
+  const roomRenderExtent = floorRenderExtent(roomJson);
+
+  /** room footprint made a bit bigger for the area under doors: */
+  const roomExtendedFootprintAabb = blockXyzToFineXyz({
+    x: roomRenderExtent.blockXMax - roomRenderExtent.blockXMin,
+    y: roomRenderExtent.blockYMax - roomRenderExtent.blockYMin,
+    z: 0,
+  });
+
+  const floorPosition = blockXyzToFineXyz(originXyz);
+
+  const roomExtendedPositionAabb = blockXyzToFineXyz({
+    x: roomRenderExtent.blockXMin,
+    y: roomRenderExtent.blockYMin,
+    z: 0,
+  });
+
+  if (roomJson.floor === "none" && roomJson.roomBelow !== undefined) {
     // yield a floor purely for the rendering ("no" floor still renders an edge)
     yield {
       ...defaultItemProperties,
@@ -27,9 +44,9 @@ export function* loadFloorAndCeiling<RoomId extends string>(
           deadly: false,
         },
 
-        aabb: floorCeilingAabb,
+        aabb: roomNaturalFootprintAabb,
         // no shadows on a none floor:
-        shadowMaskTexture: undefined,
+        shadowMask: undefined,
         state: {
           position: floorPosition,
           expires: null,
@@ -47,12 +64,12 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         type: "portal",
         id: "floor/portal",
         config: {
-          toRoom: room.roomBelow,
+          toRoom: roomJson.roomBelow,
           relativePoint: originXyz,
           direction: "down",
         },
 
-        aabb: floorCeilingAabb,
+        aabb: roomNaturalFootprintAabb,
         state: {
           position: floorPosition,
           expires: null,
@@ -69,13 +86,13 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         type: "floor",
         id: "floor",
         config: {
-          deadly: room.floor === "deadly",
+          deadly: roomJson.floor === "deadly",
         },
 
-        aabb: floorCeilingAabb,
-        shadowMaskTexture: "all",
+        aabb: roomExtendedFootprintAabb,
+        shadowMask: { relativeTo: "origin" },
         state: {
-          position: floorPosition,
+          position: roomExtendedPositionAabb,
           expires: null,
           stoodOnBy: new Set(),
           disappear: null,
@@ -85,7 +102,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
       },
     } satisfies ItemInPlay<"floor", PlanetName, RoomId>;
 
-  if (room.roomAbove !== undefined) {
+  if (roomJson.roomAbove !== undefined) {
     const ceilingPosition = addXyz(floorPosition, {
       z: blockSizePx.h * roomHeightBlocks,
     });
@@ -95,12 +112,12 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         type: "portal",
         id: "ceiling",
         config: {
-          toRoom: room.roomAbove,
+          toRoom: roomJson.roomAbove,
           relativePoint: { x: 0, y: 0, z: -blockSizePx.h },
           direction: "up",
         },
 
-        aabb: floorCeilingAabb,
+        aabb: roomNaturalFootprintAabb,
         state: {
           position: ceilingPosition,
           expires: null,

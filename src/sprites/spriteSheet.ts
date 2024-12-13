@@ -43,6 +43,9 @@ const frames = {
   "generic.wall.overdraw": {
     frame: { x: 197, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
+  "shadow.wall.y": {
+    frame: { x: 410, y: 129, w: 36, h: 16 },
+  },
   "generic.floor.deadly": {
     frame: { x: 376, y: 454, ...floorTileSize },
   },
@@ -69,11 +72,38 @@ const frames = {
   "generic.door.legs.threshold.double.y": {
     frame: { x: 186, y: 68, w: wallTileSize.w * 2, h: 24 },
   },
+  "shadowMask.door.legs.threshold.double.y": {
+    frame: {
+      x: 254,
+      y: 68,
+      w: wallTileSize.w * 2,
+      h: 21,
+      pivot: { x: 0, y: 21 },
+    },
+  },
   "generic.door.floatingThreshold.x": {
     frame: { x: 209, y: 93, w: 26, h: 19 },
   },
   "generic.door.floatingThreshold.y": {
     frame: { x: 180, y: 93, w: 26, h: 19 },
+  },
+  "shadowMask.door.floatingThreshold.double.y": {
+    frame: {
+      x: 254,
+      y: 90,
+      w: 42,
+      h: 21,
+      pivot: { x: 8, y: 20 },
+    },
+  },
+  "shadow.door.floatingThreshold.double.y": {
+    frame: {
+      x: 297,
+      y: 90,
+      w: 42,
+      h: 21,
+      pivot: { x: 8, y: 20 },
+    },
   },
   "generic.door.platform.towards": {
     frame: { x: 317, y: 219, w: 32, h: 32 },
@@ -195,6 +225,9 @@ const frames = {
   "shadowMask.scroll": {
     frame: { x: 27, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
   },
+  "shadow.scroll": {
+    frame: { x: 2, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
+  },
   donuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
   },
@@ -305,7 +338,16 @@ const frames = {
     { w: 24, h: 32 },
   ),
   ...fourDirections("charles", { x: 118, y: 34 }, smallItemTextureSize),
-  ...fourDirections("cyberman", { x: 61, y: 34 }, smallItemTextureSize),
+  /*
+  charles doesn't work because can't (yet) have direction-specific (changing) maps
+  "shadowMask.charles.x": {
+    frame: { x: 93, y: 34, ...smallItemTextureSize },
+  },
+  "shadowMask.charles.y": {
+    frame: { x: 93, y: 59, ...smallItemTextureSize },
+  },
+  */
+  ...fourDirections("cyberman", { x: 29, y: 29 }, smallItemTextureSize),
   ...fourDirections("monkey", { x: 118, y: 90 }, smallItemTextureSize),
   ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
   ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),

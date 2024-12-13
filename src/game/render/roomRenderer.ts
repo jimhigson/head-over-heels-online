@@ -2,7 +2,7 @@ import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import { Container } from "pixi.js";
-import { renderExtent } from "./renderExtent";
+import { floorRenderExtent } from "./renderExtent";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -13,7 +13,9 @@ const centreRoomInRendering = (
   room: UnknownRoomState,
   container: Container,
 ): void => {
-  const { leftSide, rightSide, frontSide, top } = renderExtent(room);
+  const { leftSide, rightSide, frontSide, top } = floorRenderExtent(
+    room.roomJson,
+  );
 
   const renderingMedianX = (rightSide.x + leftSide.x) / 2;
   const renderingMedianY = (top + frontSide.y) / 2;
