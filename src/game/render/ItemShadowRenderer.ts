@@ -1,30 +1,31 @@
-import type {
-  ItemInPlayType,
-  ItemInPlay,
-  AnyItemInPlay,
-} from "@/model/ItemInPlay";
+import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { subXy } from "@/utils/vectors/vectors";
-import { AlphaFilter, BlurFilter, Container } from "pixi.js";
+import type { Sprite } from "pixi.js";
+import { AlphaFilter, Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
 import { createSprite } from "./createSprite";
-import { collision1toMany } from "../collision/aabbCollision";
-import { objectEntries, objectValues } from "iter-tools";
+import type { Collideable } from "../collision/aabbCollision";
+import { collision1to1 } from "../collision/aabbCollision";
+import { concat, objectEntries, objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../physics/mechanicsConstants";
+import type { RenderContext } from "./roomRenderer";
 
 export const ItemShadowRenderer = <
   T extends ItemInPlayType,
   RoomId extends string,
+  ItemId extends string,
 >(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  /** the item currently being rendered for = the one that the shadow is cast on  */
+  shadowSurfaceItem: ItemInPlay<T, PlanetName, RoomId, ItemId>,
+  room: RoomState<PlanetName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
-  if (item.shadowMask === undefined) {
+  if (shadowSurfaceItem.shadowMask === undefined) {
     // this item does not render shadows - return nothing
     return undefined;
   }
@@ -43,10 +44,12 @@ export const ItemShadowRenderer = <
     mainShadowsContainer.filters = new AlphaFilter({ alpha: 0.5 });
   }
 
-  if (item.shadowMask.spriteOptions) {
-    const shadowMaskSprite = createSprite(item.shadowMask.spriteOptions);
-    if (item.shadowMask.relativeTo === "top") {
-      shadowMaskSprite.y = -item.aabb.z;
+  if (shadowSurfaceItem.shadowMask.spriteOptions) {
+    const shadowMaskSprite = createSprite(
+      shadowSurfaceItem.shadowMask.spriteOptions,
+    );
+    if (shadowSurfaceItem.shadowMask.relativeTo === "top") {
+      shadowMaskSprite.y = -shadowSurfaceItem.aabb.z;
     }
 
     mainShadowsContainer.addChild(shadowMaskSprite);
@@ -55,16 +58,27 @@ export const ItemShadowRenderer = <
     }
   }
 
-  const shadows: Record<
-    string,
-    { container: Container; usedOnProgression: number }
-  > = {};
+  type Cast = {
+    /* the sprite of the shadow */
+    sprite: Sprite;
+    /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
+    renderedOnProgression: number;
+  };
+
+  /**
+   * record all the shadows currently being cast, to maintain some state between frames so we ca
+   * cut out unnecessary extra work
+   *
+   * Mapping to an explicit value of "not-needed" tells us that we evaluated this last time
+   * and found it not required
+   */
+  const casts = {} as Record<string, Cast>;
 
   mainShadowsContainer.addChild(shadowsContainer);
 
   return {
     get item() {
-      return item;
+      return shadowSurfaceItem;
     },
     destroy() {
       mainShadowsContainer.destroy({ children: true });
@@ -72,73 +86,108 @@ export const ItemShadowRenderer = <
     /**
      * @returns true iff the item needs z-order resorting for the room
      */
-    tick(progression: number) {
+    tick({ movedItems, progression }: RenderContext) {
       //console.log("considering shadows for", item.id);
 
-      const itemTop = item.state.position.z + item.aabb.z;
-      // collide up from this item to find everything that casts a shadow:
-      const collisions: AnyItemInPlay<RoomId>[] = collision1toMany(
-        {
-          id: item.id,
-          state: {
-            position: {
-              ...item.state.position,
-              z: itemTop,
-            },
-          },
-          aabb: {
-            ...item.aabb,
-            z: veryHighZ,
+      const shadowCastersIter = iterate(objectValues(room.items)).filter(
+        function castsAShadow(
+          c,
+        ): c is SetRequired<typeof c, "shadowCastTexture"> {
+          return c.shadowCastTexture !== undefined;
+        },
+      );
+
+      const surfaceMoved = movedItems.has(shadowSurfaceItem);
+      const itemTop =
+        shadowSurfaceItem.state.position.z + shadowSurfaceItem.aabb.z;
+
+      const spaceAboveSurface: Collideable = {
+        id: shadowSurfaceItem.id,
+        state: {
+          position: {
+            ...shadowSurfaceItem.state.position,
+            z: itemTop,
           },
         },
-        objectValues(room.items),
-      );
+        aabb: {
+          ...shadowSurfaceItem.aabb,
+          z: veryHighZ,
+        },
+      };
 
-      let hasShadows = false;
-      const castersIter = iterate(collisions).filter(
-        (c): c is SetRequired<AnyItemInPlay<RoomId>, "shadowCastTexture"> =>
-          c.shadowCastTexture !== undefined,
-      );
-
-      for (const casterItem of castersIter) {
-        if (shadows[casterItem.id] === undefined) {
-          const newShadowSprite = createSprite(casterItem.shadowCastTexture);
-          newShadowSprite.label = casterItem.id;
-          newShadowSprite.filters = [new BlurFilter()];
-          shadowsContainer.addChild(newShadowSprite);
-          shadows[casterItem.id] = {
-            container: newShadowSprite,
-            usedOnProgression: progression,
-          };
+      // collide up from this item to find which of the shadow casters is above it:
+      const bins = Object.groupBy(shadowCastersIter, (caster) => {
+        const previouslyHadShadow = casts[caster.id] !== undefined;
+        const casterMoved = movedItems.has(caster);
+        if (!surfaceMoved && !casterMoved) {
+          // neither the surface being cast onto, nor the item casting the shadow have moved - keep as-is:
+          if (previouslyHadShadow) {
+            return "keepUnchanged";
+          } else {
+            return "stillNone";
+          }
         }
-        const shadow = shadows[casterItem.id];
-        shadow.usedOnProgression = progression;
+        if (collision1to1(spaceAboveSurface, caster)) {
+          if (previouslyHadShadow) {
+            return "update";
+          } else {
+            return "create";
+          }
+        }
+        // now know caster has no shadow:
+        if (previouslyHadShadow) {
+          return "delete";
+        } else {
+          return "stillNone";
+        }
+      });
 
-        const screenXy = projectWorldXyzToScreenXyFloat({
-          ...subXy(casterItem.state.position, item.state.position),
-          z: item.aabb.z,
-        });
-        shadow.container.x = screenXy.x;
-        shadow.container.y = screenXy.y;
-        const heightDifference = casterItem.state.position.z - itemTop;
-        const [blurFilter] = shadow.container.filters as BlurFilter[];
-        blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
-
-        hasShadows = true;
+      // record that these are going through this generation:
+      for (const casterItem of concat(bins.keepUnchanged, bins.update)) {
+        casts[casterItem.id].renderedOnProgression = progression;
       }
 
-      //remove all shadow sprites not used on this progression:
-      for (const [id, { container, usedOnProgression }] of objectEntries(
-        shadows,
-      )) {
-        if (usedOnProgression !== progression) {
+      for (const casterItem of concat(bins.create)) {
+        const newShadowSprite = createSprite(casterItem.shadowCastTexture);
+        newShadowSprite.label = casterItem.id;
+        //newShadowSprite.filters = [new BlurFilter()];
+        shadowsContainer.addChild(newShadowSprite);
+        casts[casterItem.id] = {
+          sprite: newShadowSprite,
+          renderedOnProgression: progression,
+        };
+      }
+
+      for (const casterItem of concat(bins.create, bins.update)) {
+        const { sprite } = casts[casterItem.id];
+
+        const screenXy = projectWorldXyzToScreenXyFloat({
+          ...subXy(casterItem.state.position, shadowSurfaceItem.state.position),
+          z: shadowSurfaceItem.aabb.z,
+        });
+        sprite.x = screenXy.x;
+        sprite.y = screenXy.y;
+        //const heightDifference = casterItem.state.position.z - itemTop;
+        //const [blurFilter] = shadow.container.filters as BlurFilter[];
+        //blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
+      }
+
+      for (const [
+        id,
+        { sprite: container, renderedOnProgression: currentAsOfProgression },
+      ] of objectEntries(casts)) {
+        if (currentAsOfProgression !== progression) {
           container.destroy();
-          delete shadows[id];
+          delete casts[id];
         }
       }
 
       // for efficiency, hide all shadow rendering if there are no shadows on an item:
-      mainShadowsContainer.visible = hasShadows;
+      mainShadowsContainer.visible =
+        (bins.keepUnchanged?.length ?? 0) +
+          (bins.update?.length ?? 0) +
+          (bins.create?.length ?? 0) >
+        0;
     },
     container: mainShadowsContainer,
   };
@@ -147,4 +196,5 @@ export const ItemShadowRenderer = <
 export type ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-> = ReturnType<typeof ItemShadowRenderer<T, RoomId>>;
+  ItemId extends string,
+> = ReturnType<typeof ItemShadowRenderer<T, RoomId, ItemId>>;

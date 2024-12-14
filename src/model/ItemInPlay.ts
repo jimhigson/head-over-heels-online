@@ -111,6 +111,7 @@ export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
 
 type BaseItemState<RoomId extends string> = {
   position: Readonly<Xyz>;
+
   /**
    * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
    * set to -1. Otherwise, can set to the duration of an animation that needs to play
@@ -146,14 +147,14 @@ export type ItemInPlay<
   //S extends ItemState<T> = ItemState<T>,
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
-  ID extends string = string,
+  Itemid extends string = string,
 > = {
   type: T;
 
   // borrow the config from the json typings:
   config: ItemInPlayConfig<T, P, RoomId>;
 
-  readonly id: ID;
+  readonly id: Itemid;
   state: ItemState<T, RoomId>;
 
   /**
@@ -185,13 +186,15 @@ export type ItemInPlay<
  * Force ItemInPlay into a union so that discrimination over
  * unions works
  */
-export type UnknownItemInPlay<RoomId extends string = string> = {
-  [IT in ItemInPlayType]: ItemInPlay<IT, PlanetName, RoomId>;
+export type UnknownItemInPlay<
+  RoomId extends string = string,
+  ItemId extends string = string,
+> = {
+  [IT in ItemInPlayType]: ItemInPlay<IT, PlanetName, RoomId, ItemId>;
 }[ItemInPlayType];
 
 /** Non-union version of any item type */
-export type AnyItemInPlay<RoomId extends string = string> = ItemInPlay<
-  ItemInPlayType,
-  PlanetName,
-  RoomId
->;
+export type AnyItemInPlay<
+  RoomId extends string = string,
+  ItemId extends string = string,
+> = ItemInPlay<ItemInPlayType, PlanetName, RoomId, ItemId>;

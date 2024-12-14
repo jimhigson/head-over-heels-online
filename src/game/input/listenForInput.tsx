@@ -96,7 +96,7 @@ export const listenForInput = ({
   window.addEventListener("keydown", keyDownHandler, false);
   window.addEventListener("keyup", keyUpHandler, false);
   window.addEventListener("focus", handleWindowFocus, false);
-  //window.addEventListener("blur", handleWindowBlur, false);
+  window.addEventListener("blur", handleWindowBlur, false);
 
   return () => {
     window.removeEventListener("keydown", keyDownHandler, false);

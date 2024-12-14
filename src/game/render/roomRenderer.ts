@@ -2,11 +2,12 @@ import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { RenderOptions } from "../RenderOptions";
 import { Container } from "pixi.js";
 import { floorRenderExtent } from "./renderExtent";
-import type { ItemInPlayType } from "@/model/ItemInPlay";
+import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
-import { sortByZPairs, zPairs } from "./sortZ/sortItemsByDrawOrder";
+import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
+import type { MovedItems } from "../mainLoop/progressGameState";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -23,14 +24,21 @@ const centreRoomInRendering = (
   container.y = -renderingMedianY;
 };
 
-export const RoomRenderer = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
+export type RenderContext = {
+  movedItems: MovedItems;
+  progression: number;
+};
+
+export const RoomRenderer = <RoomId extends string, ItemId extends string>(
+  room: RoomState<PlanetName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
   // nothing in a room can ever be under the floor, so we can render
   // it outside of the normal object loop
   const roomContainer = new Container({ label: `room(${room.id})` });
   const itemsContainer = new Container({ label: `items(room(${room.id}))` });
+
+  let isFirstRender = true;
 
   roomContainer.addChild(itemsContainer);
 
@@ -39,7 +47,7 @@ export const RoomRenderer = <RoomId extends string>(
   // where we render all the items in the room
   const itemRenderers: Map<
     string,
-    ItemRenderer<ItemInPlayType, RoomId>
+    ItemRenderer<ItemInPlayType, RoomId, ItemId>
   > = new Map();
 
   return {
@@ -50,21 +58,31 @@ export const RoomRenderer = <RoomId extends string>(
       return room;
     },
     /** update the rendering of all items in the room */
-    tick(progression: number) {
-      let resortZ = false;
+    tick(givenRenderContext: RenderContext) {
+      /* for the first render, we consider that all items have moved */
+      const renderContext =
+        isFirstRender ?
+          {
+            movedItems: new Set(objectValues(room.items)),
+            progression: 0,
+          }
+        : givenRenderContext;
+
       for (const item of objectValues(room.items)) {
         let itemRenderer = itemRenderers.get(item.id);
 
         if (itemRenderer === undefined) {
           // don't already have a renderer for this item so make one
-          itemRenderer = ItemRenderer(item, room, renderOptions);
+          itemRenderer = ItemRenderer(
+            // this cast shouldn't be needed - maybe look into why room.items isn't properly typed with the room's ItemId
+            item as UnknownItemInPlay<RoomId, ItemId>,
+            room,
+            renderOptions,
+          );
           itemRenderers.set(item.id, itemRenderer);
           itemsContainer.addChild(itemRenderer.container);
         }
-
-        resortZ = itemRenderer.tick(progression) || resortZ;
-
-        // it is up the the item to decide if it will rerender
+        itemRenderer.tick(renderContext);
       }
       // remove any renderers for items that no longer exist in the room:
       for (const itemRenderer of itemRenderers.values()) {
@@ -73,10 +91,10 @@ export const RoomRenderer = <RoomId extends string>(
           itemRenderer.destroy();
         }
       }
-      if (resortZ) {
-        // re-sort the room's items:
+      if (isFirstRender || renderContext.movedItems.size > 0) {
+        // something has moved so re-sort the room's items:
         const { order } = sortByZPairs(
-          zPairs(objectValues(room.items)),
+          zEdges(objectValues(room.items)),
           room.items,
         );
 
@@ -87,9 +105,10 @@ export const RoomRenderer = <RoomId extends string>(
               `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,
             );
           }
-          itemRenderer.container.zIndex = i;
+          itemRenderer.container.zIndex = order.length - i;
         }
       }
+      isFirstRender = false;
     },
     destroy() {
       roomContainer.destroy({ children: true });
@@ -103,6 +122,7 @@ export const RoomRenderer = <RoomId extends string>(
   };
 };
 
-export type RoomRenderer<RoomId extends string> = ReturnType<
-  typeof RoomRenderer<RoomId>
->;
+export type RoomRenderer<
+  RoomId extends string,
+  ItemId extends string,
+> = ReturnType<typeof RoomRenderer<RoomId, ItemId>>;

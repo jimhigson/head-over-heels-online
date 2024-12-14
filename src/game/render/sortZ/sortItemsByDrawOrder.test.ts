@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./zComparator";
-import { sortByZPairs, zPairs } from "./sortItemsByDrawOrder";
+import type { SortByZPairsReturn} from "./sortItemsByDrawOrder";
+import { sortByZPairs, zEdges } from "./sortItemsByDrawOrder";
 import { collision1toMany } from "@/game/collision/aabbCollision";
 
 type TestItems = Record<string, DrawOrderComparable>;
@@ -33,18 +34,23 @@ test("detects behind in x", () => {
     },
   };
 
-  const relations = zPairs(Object.values(items));
-  expect(relations).toHaveLength(3);
-  expect(relations).toEqual(
-    expect.arrayContaining([
-      // [behind,  front]
-      ["2", "1"],
-      ["3", "2"],
-      ["4", "3"],
-    ]),
-  );
+  const edges = zEdges(Object.values(items));
+  // front => behind
+  expect(edges).toMatchInlineSnapshot(`
+    Map {
+      "1" => Set {
+        "2",
+      },
+      "2" => Set {
+        "3",
+      },
+      "3" => Set {
+        "4",
+      },
+    }
+  `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(relations, items)).not.toThrow();
+  expect(() => sortByZPairs(edges, items)).not.toThrow();
 });
 
 test("detects behind in y", () => {
@@ -75,16 +81,21 @@ test("detects behind in y", () => {
     },
   };
 
-  const relations = zPairs(Object.values(items));
-  expect(relations).toHaveLength(3);
-  expect(relations).toEqual(
-    expect.arrayContaining([
-      // [behind,  front]
-      ["2", "1"],
-      ["3", "2"],
-      ["4", "3"],
-    ]),
-  );
+  const relations = zEdges(Object.values(items));
+  // front => behind
+  expect(relations).toMatchInlineSnapshot(`
+    Map {
+      "1" => Set {
+        "2",
+      },
+      "2" => Set {
+        "3",
+      },
+      "3" => Set {
+        "4",
+      },
+    }
+  `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
 });
@@ -117,16 +128,21 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   };
 
-  const relations = zPairs(Object.values(items));
-  expect(relations).toHaveLength(3);
-  expect(relations).toEqual(
-    expect.arrayContaining([
-      // [behind,  front]
-      ["1", "2"],
-      ["2", "3"],
-      ["3", "4"],
-    ]),
-  );
+  const relations = zEdges(Object.values(items));
+  // front => behind
+  expect(relations).toMatchInlineSnapshot(`
+    Map {
+      "2" => Set {
+        "1",
+      },
+      "3" => Set {
+        "2",
+      },
+      "4" => Set {
+        "3",
+      },
+    }
+  `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
   expect(sortByZPairs(relations, items).impossible).toBe(false);
@@ -148,14 +164,15 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   };
 
-  const relations = zPairs(Object.values(items));
-  expect(relations).toHaveLength(1);
-  expect(relations).toEqual(
-    expect.arrayContaining([
-      // [behind,  front]
-      ["bottom", "top"],
-    ]),
-  );
+  const relations = zEdges(Object.values(items));
+  // front => behind - top in front of bottom:
+  expect(relations).toMatchInlineSnapshot(`
+    Map {
+      "top" => Set {
+        "bottom",
+      },
+    }
+  `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
   expect(sortByZPairs(relations, items).impossible).toBe(false);
@@ -183,15 +200,15 @@ test("detects a tall item is front of two smaller items", () => {
     },
   };
 
-  const relations = zPairs(Object.values(items));
-  expect(relations).toHaveLength(2);
-  expect(relations).toEqual(
-    expect.arrayContaining([
-      // [behind,  front]
-      ["smallerTop", "tallThinFront"],
-      ["smallerBottom", "tallThinFront"],
-    ]),
-  );
+  const relations = zEdges(Object.values(items));
+  expect(relations).toMatchInlineSnapshot(`
+    Map {
+      "tallThinFront" => Set {
+        "smallerTop",
+        "smallerBottom",
+      },
+    }
+  `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
   expect(sortByZPairs(relations, items).impossible).toBe(false);
@@ -241,8 +258,7 @@ describe("cyclic dependencies", () => {
       },
     };
 
-    const relations = zPairs(Object.values(items));
-    expect(relations).toHaveLength(2);
+    const relations = zEdges(Object.values(items));
     expect(() => sortByZPairs(relations, items)).not.toThrow();
     expect(sortByZPairs(relations, items).impossible).toBe(false);
   });
@@ -304,26 +320,25 @@ describe("cyclic dependencies", () => {
       expect(collision1toMany(i, Object.values(items))).toEqual([]);
     }
 
-    const relations = zPairs(Object.values(items));
+    const relations = zEdges(Object.values(items));
 
+    // front => behind - this is a cycle!
     expect(relations).toMatchInlineSnapshot(`
-      [
-        [
+      Map {
+        "movableBlock" => Set {
           "baddie",
+        },
+        "pickup" => Set {
           "movableBlock",
-        ],
-        [
-          "movableBlock",
+        },
+        "baddie" => Set {
           "pickup",
-        ],
-        [
-          "pickup",
-          "baddie",
-        ],
-      ]
+        },
+      }
     `);
 
-    expect(() => sortByZPairs(relations, items)).not.toThrow();
-    expect(sortByZPairs(relations, items).impossible).toBe(true);
+    let result: SortByZPairsReturn | undefined;
+    expect(() => (result = sortByZPairs(relations, items))).not.toThrow();
+    expect(result?.impossible).toBe(true);
   });
 });

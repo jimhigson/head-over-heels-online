@@ -1,6 +1,6 @@
 /**
  *
- * Slight fork of toposort:
+ * fork/update of toposort:
  *      [git](https://github.com/marcelklehr/toposort)
  *      [npm](https://www.npmjs.com/package/toposort)
  * and @types/toposort:
@@ -15,16 +15,18 @@
  * @returns {Array}
  */
 
-type Edges<T> = ReadonlyArray<[T, T]>;
+export type GraphEdges<T> = Map<T, Set<T>>;
 
 export class CyclicDependencyError<T> extends Error {
   constructor(
-    message: string,
     public cyclicDependency: Array<T>,
     public hasClosedCycle: boolean,
     options?: ErrorOptions,
   ) {
-    super(message, options);
+    super(
+      `CyclicDependencyError: .cyclicDependency property of this error has nodes as an array. ${cyclicDependency.join(" -> ")}`,
+      options,
+    );
   }
 }
 
@@ -35,28 +37,15 @@ export class CyclicDependencyError<T> extends Error {
  * @returns a list of vertices, sorted from "start" to "end"
  * @throws if there are any cycles in the graph
  */
-export const toposort = <T>(edges: Edges<T>): T[] => {
-  return _toposort(uniqueNodes(edges), edges);
-};
+export const toposort = <T>(outgoingEdges: GraphEdges<T>): T[] => {
+  const nodes = uniqueNodes(outgoingEdges);
 
-const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
   let cursor = nodes.length;
   let i = cursor;
 
-  const sorted = new Array(cursor),
-    visited: Record<number, boolean> = {},
-    // Better data structures make algorithm much faster.
-    outgoingEdges = makeOutgoingEdges(edges),
-    nodesHash = makeNodesHash(nodes);
-
-  // check for unknown nodes
-  edges.forEach(function (edge) {
-    if (!nodesHash.has(edge[0]) || !nodesHash.has(edge[1])) {
-      throw new Error(
-        "Unknown node. There is an unknown node in the supplied edges.",
-      );
-    }
-  });
+  const sorted = new Array(cursor);
+  const visited: Record<number, boolean> = {};
+  const nodeIndexLookup = makeNodeIndexLookup(nodes);
 
   while (i--) {
     if (!visited[i]) visit(nodes[i], i, new Set());
@@ -67,16 +56,8 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
   function visit(node: T, i: number, predecessors: Set<T>) {
     if (predecessors.has(node)) {
       throw new CyclicDependencyError(
-        "Cyclic dependency found - see .cyclicDependency of this error for details",
         [node],
         false, // can't describe a cycle with a single node
-      );
-    }
-
-    if (!nodesHash.has(node)) {
-      throw new Error(
-        "Found unknown node. Make sure to provided all involved nodes. Unknown node: " +
-          JSON.stringify(node),
       );
     }
 
@@ -91,7 +72,7 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
       do {
         const child = outgoingArray[--i];
         try {
-          visit(child, nodesHash.get(child), predecessors);
+          visit(child, nodeIndexLookup.get(child)!, predecessors);
         } catch (e) {
           if (e instanceof CyclicDependencyError) {
             if (e.hasClosedCycle) {
@@ -99,8 +80,7 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
               throw e;
             } else {
               throw new CyclicDependencyError<T>(
-                e.message,
-                [...e.cyclicDependency, node],
+                [node, ...e.cyclicDependency],
                 e.cyclicDependency.includes(node),
               );
             }
@@ -116,28 +96,20 @@ const _toposort = <T>(nodes: Array<T>, edges: Edges<T>) => {
   }
 };
 
-function uniqueNodes<T>(arr: ReadonlyArray<[T, T]>): Array<T> {
+function uniqueNodes<T>(edges: GraphEdges<T>): Array<T> {
   const res = new Set<T>();
-  for (let i = 0, len = arr.length; i < len; i++) {
-    const edge = arr[i];
-    res.add(edge[0]);
-    res.add(edge[1]);
+
+  for (const [source, targets] of edges.entries()) {
+    res.add(source);
+    for (const target of targets) {
+      res.add(target);
+    }
   }
+
   return Array.from(res);
 }
 
-function makeOutgoingEdges<T>(arr: Edges<T>) {
-  const edges = new Map<T, Set<T>>();
-  for (let i = 0, len = arr.length; i < len; i++) {
-    const edge = arr[i];
-    if (!edges.has(edge[0])) edges.set(edge[0], new Set());
-    if (!edges.has(edge[1])) edges.set(edge[1], new Set());
-    edges.get(edge[0])!.add(edge[1]);
-  }
-  return edges;
-}
-
-function makeNodesHash<T>(arr: ReadonlyArray<T>) {
+function makeNodeIndexLookup<T>(arr: ReadonlyArray<T>): Map<T, number> {
   const res = new Map();
   for (let i = 0, len = arr.length; i < len; i++) {
     res.set(arr[i], i);

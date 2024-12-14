@@ -62,8 +62,8 @@ export const mainLoop = <RoomId extends string>(
 
     if (!paused) {
       app.stage.filters = noFilters;
-      progressGameState(gameState, deltaMS);
-      roomRenderer.tick(gameState.progression);
+      const movedItems = progressGameState(gameState, deltaMS);
+      roomRenderer.tick({ progression: gameState.progression, movedItems });
     } else {
       app.stage.filters = pauseFilter;
       const roomColor = currentRoom(gameState).color;

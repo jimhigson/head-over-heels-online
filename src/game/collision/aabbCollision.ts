@@ -1,7 +1,6 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { iterate } from "@/utils/iterate";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { axesXyz } from "@/utils/vectors/vectors";
 
 export type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
@@ -15,13 +14,24 @@ export const collision1to1 = (
   { aabb: bbA, state: { position: posA } }: Collideable,
   { aabb: bbB, state: { position: posB } }: Collideable,
 ) => {
-  for (const axis of axesXyz) {
-    if (
-      posA[axis] + bbA[axis] <= posB[axis] ||
-      posA[axis] >= posB[axis] + bbB[axis]
-    ) {
-      return false;
-    }
+  // more elegant, but slower (and this is a bottleneck for scripting)
+  // for (const axis of axesXyz) {
+  //   if (
+  //     posA[axis] + bbA[axis] <= posB[axis] ||
+  //     posA[axis] >= posB[axis] + bbB[axis]
+  //   ) {
+  //     return false;
+  //   }
+  // }
+
+  if (posA.x + bbA.x <= posB.x || posA.x >= posB.x + bbB.x) {
+    return false;
+  }
+  if (posA.y + bbA.y <= posB.y || posA.y >= posB.y + bbB.y) {
+    return false;
+  }
+  if (posA.z + bbA.z <= posB.z || posA.z >= posB.z + bbB.z) {
+    return false;
   }
 
   // If all axes overlap, return true for collision

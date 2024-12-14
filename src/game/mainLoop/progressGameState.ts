@@ -4,7 +4,11 @@
 // (jumping: 2px per frame in original game @25fps, so 50px per second)
 // can be guaranteed to take up every half-pixel position.
 
-import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import type {
+  UnknownItemInPlay,
+  ItemInPlayType,
+  AnyItemInPlay,
+} from "@/model/ItemInPlay";
 import { isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
@@ -101,7 +105,7 @@ const removeNonApplicableStandingOn = <RoomId extends string>(
 };
 
 const assignLatentMovement = <RoomId extends string>(
-  items: Array<UnknownItemInPlay<RoomId>>,
+  movedItems: Set<AnyItemInPlay>,
   gameState: GameState<RoomId>,
   startingPositions: Record<string, Xyz>,
 ) => {
@@ -110,17 +114,22 @@ const assignLatentMovement = <RoomId extends string>(
    * if the check is done inside the lift's tick, the player is then not on the lift and has no
    * ability to walk (the walk mechanic will return a null result) while the lift descends
    */
-  for (const item of items) {
+  for (const moverItem of movedItems) {
+    const previousPosition: Xyz | undefined = startingPositions[moverItem.id];
+
+    if (previousPosition === undefined) {
+      // item was introduced to the world during this tick, can't have latent movement:
+      continue;
+    }
+
     // check what is standing on us - this implies that we're also checking what everything is stood on,
     // but gives us a chance to apply latent movement:
-    for (const stander of item.state.stoodOnBy) {
-      const finalDelta = subXyz(
-        item.state.position,
-        startingPositions[item.id],
-      );
-      // latent movement is only horizontal - anything else, collisions and gravity can handle
-      const latentMovement = { ...finalDelta, z: 0 };
-      if (!xyzEqual(latentMovement, originXyz)) {
+    const movementDelta = subXyz(moverItem.state.position, previousPosition);
+    // latent movement is only horizontal - anything else, collisions and gravity can handle
+    const latentMovement = { ...movementDelta, z: 0 };
+
+    if (!xyzEqual(latentMovement, originXyz)) {
+      for (const stander of moverItem.state.stoodOnBy) {
         stander.state.latentMovement.push({
           // since the original game pushes items every other frame, the practical latency
           // for standing-on items is two frames
@@ -157,10 +166,13 @@ const itemTickOrderComparator = (
   return aScore - bScore;
 };
 
+/* the items that moved while progressing the game state */
+export type MovedItems = Set<AnyItemInPlay>;
+
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
-) => {
+): MovedItems => {
   const deltaMSScaled = deltaMS * gameState.gameSpeed;
   const physicsTickCount = Math.ceil(deltaMSScaled / maximumDeltaMS);
   const physicsTickMs = deltaMSScaled / physicsTickCount;
@@ -172,29 +184,27 @@ export const progressGameState = <RoomId extends string>(
     // we have now handled that keypress, turn it off until the key is pressed again,
     // which will turn this flag back on
     inputState.swop = false;
-    return;
+    // now we let the room play through normally on the assumption it isn't harmful to do so
   }
 
   const room = currentRoom(gameState);
 
-  for (let i = 0; i < physicsTickCount; i++) {
-    // take a snapshot of item positions before any physics ticks so we
-    // can check later what has moved. DOne per physics tick, not render-tick
-    // because otherwise latent movement is double-applied
-    const startingPositions = Object.fromEntries(
-      iterate(objectEntriesIter(room.items)).map(([id, item]) => [
-        id,
-        item.state.position,
-      ]),
-    );
+  // take a snapshot of item positions before any physics ticks so we
+  // can check later what has moved. DOne per physics tick, not render-tick
+  // because otherwise latent movement is double-applied
+  const startingPositions = Object.fromEntries(
+    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+      id,
+      item.state.position,
+    ]),
+  );
 
+  for (let i = 0; i < physicsTickCount; i++) {
     for (const item of objectValues(room.items)) {
       if (itemHasExpired(item, gameState)) {
         if (isPlayableItem(item)) {
           characterLosesLife(gameState);
-          // we won't run the rest of the render tick now, so the next render
-          // gets the true starting room state
-          return;
+          // now we let the room play through normally on the assumption it isn't harmful to do so
         } else {
           deleteItemFromRoomInPlay({ room, item });
         }
@@ -217,17 +227,30 @@ export const progressGameState = <RoomId extends string>(
     }
 
     removeNonApplicableStandingOn(sortedItems);
-    assignLatentMovement(sortedItems, gameState, startingPositions);
 
     //setStandingOnForAllItemsInRoom(room, gameState.progression);
 
     gameState.progression++;
     gameState.gameTime += physicsTickMs;
 
-    if (room !== currentRoom(gameState)) {
-      return;
-    }
-
-    snapStationaryItemsToPixelGrid(room, startingPositions);
+    //  not sure if this is needed - is it really harmful to progress the room a little bit after the player left the room?
+    //    if (room !== currentRoom(gameState)) {
+    // room changed during the tick - that's fine but move on so the game can render the next room:
+    //      return moveMap;
+    //    }
   }
+
+  const movedItems = new Set<AnyItemInPlay>(
+    iterate(objectValues(room.items)).filter(
+      (i) =>
+        // wasn't in the room before (treated like a move)
+        startingPositions[i.id] === undefined ||
+        // moved on this frame:
+        !xyzEqual(i.state.position, startingPositions[i.id]),
+    ),
+  );
+  assignLatentMovement(movedItems, gameState, startingPositions);
+  snapStationaryItemsToPixelGrid(room, startingPositions);
+
+  return movedItems;
 };

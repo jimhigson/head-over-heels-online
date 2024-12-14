@@ -2,10 +2,10 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
   ItemInPlay,
+  UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { type Xyz, xyzEqual } from "@/utils/vectors/vectors";
 import { Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
 import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
@@ -14,6 +14,7 @@ import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
+import type { RenderContext } from "./roomRenderer";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -42,6 +43,18 @@ const assignMouseActions = <RoomId extends string>(
   }
 };
 
+const needsColorReplace = (item: UnknownItemInPlay): boolean => {
+  return (
+    item.type === "wall" ||
+    item.type === "floor" ||
+    item.type === "doorFrame" ||
+    item.type === "doorLegs" ||
+    (item.type === "block" && item.config.style === "organic") ||
+    (item.type === "baddie" && item.config.which === "cyberman") ||
+    (item.type === "deadlyBlock" && item.config.style === "volcano")
+  );
+};
+
 const moveContainerToItemPosition = (
   { state: { position } }: AnyItemInPlay,
   container: Container,
@@ -53,14 +66,21 @@ const moveContainerToItemPosition = (
   container.y = projectionXyz.y;
 };
 
-export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+export const ItemRenderer = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  ItemId extends string,
+>(
+  item: ItemInPlay<T, PlanetName, RoomId, ItemId>,
+  room: RoomState<PlanetName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
   const renderContainer: Container = new Container({ label: "render" });
-  // this has to be done before shadows are applied, since shadows stop the colour replace from working:
-  renderContainer.filters = mainPaletteSwapFilters(room);
+  // color filtering has to be done before shadows are applied, since shadows stop the colour replace,
+  // but for efficiency, we only apply the filter to items that will use it:
+  if (needsColorReplace(item as UnknownItemInPlay)) {
+    renderContainer.filters = mainPaletteSwapFilters(room);
+  }
 
   if (renderOptions.showBoundingBoxes !== "none") {
     renderContainer.alpha = 0.5;
@@ -86,15 +106,10 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
 
   /* the props used to render this item last time */
   let currentlyRenderedProps: ItemRenderProps<T> | undefined = undefined;
-  /*
-   * world position where this item was rendered last time - initially undefined since has not been
-   * positioned at time of declaration
-   */
-  let currentRenderPosition: Xyz | undefined;
 
   const appearance = itemAppearances[item.type];
 
-  const itemShadowRenderer: ItemShadowRenderer<T, RoomId> | undefined =
+  const itemShadowRenderer: ItemShadowRenderer<T, RoomId, ItemId> | undefined =
     ItemShadowRenderer(item, room, renderOptions);
 
   if (itemShadowRenderer !== undefined) {
@@ -113,7 +128,7 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
     /**
      * @returns true iff the item needs z-order resorting for the room
      */
-    tick(progression: number) {
+    tick(renderContext: RenderContext) {
       if (!item.renders) {
         return;
       }
@@ -129,23 +144,14 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
           renderContainer.addChild(rendering.container);
       }
 
-      const {
-        state: { position: itemPosition },
-      } = item;
-      const movedSinceLastRender =
-        currentRenderPosition === undefined ||
-        !xyzEqual(currentRenderPosition, itemPosition);
+      const hasMoved = renderContext.movedItems.has(item);
 
-      if (movedSinceLastRender) {
+      if (hasMoved) {
         // current position of item doesn't match its current rendered position
         moveContainerToItemPosition(item, mainContainer);
-
-        currentRenderPosition = itemPosition;
       }
 
-      if (itemShadowRenderer) itemShadowRenderer.tick(progression);
-
-      return movedSinceLastRender;
+      if (itemShadowRenderer) itemShadowRenderer.tick(renderContext);
     },
     container: mainContainer,
   };
@@ -153,4 +159,5 @@ export const ItemRenderer = <T extends ItemInPlayType, RoomId extends string>(
 export type ItemRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-> = ReturnType<typeof ItemRenderer<T, RoomId>>;
+  ItemId extends string,
+> = ReturnType<typeof ItemRenderer<T, RoomId, ItemId>>;
