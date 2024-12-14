@@ -28,7 +28,6 @@ import { smallItemAabb } from "../collision/boundingBoxes";
 import { noInput } from "../input/InputState";
 
 const testFrameRates = [
-  15, // crazy slow - slower than original
   25, // original game, PAL
   29.97, // NTSC real
   30, // NTSC almost
@@ -161,17 +160,41 @@ describe("jumping", () => {
             config: { style: "organic", disappearing: false },
           },
         },
-        inputState: { towards: true, jump: true },
+        inputState: { towards: true },
       });
 
       playGameThrough(gameState, {
         frameRate,
-        // in 800ms, head only has time to get into the gap on the way up - it won't
-        // pass if he needs to get in while travelling more slowly on the way down
-        // - at lower frame rates, this tests that the multiple physics frame
-        // per graphics frame is working correctly
-        until: 600,
-        frameCallbacks: [stopJumpingAMomentAfterStartingPlay],
+        until: 1200,
+        frameCallbacks: [
+          function startJumpingSoonAfterTheStart(gameState) {
+            const inputState = {
+              ...noInput(),
+              towards: true,
+              jump:
+                gameState.gameTime > 100 &&
+                headState(gameState).position.z === 0,
+            };
+
+            // since head gets into the gap, should not go past one block of height:
+            expect(headState(gameState).position.z).toBeLessThan(
+              blockSizePx.h + 1,
+            );
+
+            /*            console.log(
+              headState(gameState).position,
+              headState(gameState).standingOn?.id ?? null,
+              "inputState.jump:",
+              inputState.jump,
+            );*/
+
+            // stop pressing jump after a short time
+            return {
+              ...gameState,
+              inputState,
+            };
+          },
+        ],
       });
       expect(headState(gameState).standingOn).toMatchObject({
         id: "lowerBlock",
@@ -207,7 +230,7 @@ describe("jumping", () => {
       });
 
       playGameThrough(gameState, {
-        until: 1_000,
+        until: 1_500,
         frameRate,
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });

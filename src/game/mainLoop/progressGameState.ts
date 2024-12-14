@@ -39,10 +39,6 @@ import {
 } from "../gameState/mutators/removeStandingOn";
 import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
 
-// any frame with more than this deltaMS will be split into multiple physics ticks
-// eg, for getting into smaller gaps
-const maximumDeltaMS = 9;
-
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
   gameState: GameState<RoomId>,
@@ -173,10 +169,6 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems => {
-  const deltaMSScaled = deltaMS * gameState.gameSpeed;
-  const physicsTickCount = Math.ceil(deltaMSScaled / maximumDeltaMS);
-  const physicsTickMs = deltaMSScaled / physicsTickCount;
-
   const { inputState } = gameState;
 
   if (inputState.swop) {
@@ -199,46 +191,33 @@ export const progressGameState = <RoomId extends string>(
     ]),
   );
 
-  for (let i = 0; i < physicsTickCount; i++) {
-    for (const item of objectValues(room.items)) {
-      if (itemHasExpired(item, gameState)) {
-        if (isPlayableItem(item)) {
-          characterLosesLife(gameState);
-          // now we let the room play through normally on the assumption it isn't harmful to do so
-        } else {
-          deleteItemFromRoomInPlay({ room, item });
-        }
+  for (const item of objectValues(room.items)) {
+    if (itemHasExpired(item, gameState)) {
+      if (isPlayableItem(item)) {
+        characterLosesLife(gameState);
+        // now we let the room play through normally on the assumption it isn't harmful to do so
+      } else {
+        deleteItemFromRoomInPlay({ room, item });
       }
     }
-
-    const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
-
-    for (const item of sortedItems) {
-      if (currentPlayableItem(gameState).state.action === "death") {
-        // all physics is suspended while death animation plays
-        break;
-      }
-
-      if (room.items[item.id] === undefined) {
-        // item was removed from the room (eg, was picked up by heels)
-        continue;
-      }
-      tickItem(item, room, gameState, physicsTickMs);
-    }
-
-    removeNonApplicableStandingOn(sortedItems);
-
-    //setStandingOnForAllItemsInRoom(room, gameState.progression);
-
-    gameState.progression++;
-    gameState.gameTime += physicsTickMs;
-
-    //  not sure if this is needed - is it really harmful to progress the room a little bit after the player left the room?
-    //    if (room !== currentRoom(gameState)) {
-    // room changed during the tick - that's fine but move on so the game can render the next room:
-    //      return moveMap;
-    //    }
   }
+
+  const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
+
+  for (const item of sortedItems) {
+    if (currentPlayableItem(gameState).state.action === "death") {
+      // all physics is suspended while death animation plays
+      break;
+    }
+
+    if (room.items[item.id] === undefined) {
+      // item was removed from the room (eg, was picked up by heels)
+      continue;
+    }
+    tickItem(item, room, gameState, deltaMS);
+  }
+
+  removeNonApplicableStandingOn(sortedItems);
 
   const movedItems = new Set<AnyItemInPlay>(
     iterate(objectValues(room.items)).filter(
@@ -251,6 +230,9 @@ export const progressGameState = <RoomId extends string>(
   );
   assignLatentMovement(movedItems, gameState, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions);
+
+  gameState.progression++;
+  gameState.gameTime += deltaMS;
 
   return movedItems;
 };

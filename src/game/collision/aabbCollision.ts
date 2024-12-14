@@ -24,18 +24,11 @@ export const collision1to1 = (
   //   }
   // }
 
-  if (posA.x + bbA.x <= posB.x || posA.x >= posB.x + bbB.x) {
-    return false;
-  }
-  if (posA.y + bbA.y <= posB.y || posA.y >= posB.y + bbB.y) {
-    return false;
-  }
-  if (posA.z + bbA.z <= posB.z || posA.z >= posB.z + bbB.z) {
-    return false;
-  }
-
-  // If all axes overlap, return true for collision
-  return true;
+  return (
+    !(posA.x + bbA.x <= posB.x || posA.x >= posB.x + bbB.x) &&
+    !(posA.y + bbA.y <= posB.y || posA.y >= posB.y + bbB.y) &&
+    !(posA.z + bbA.z <= posB.z || posA.z >= posB.z + bbB.z)
+  );
 };
 
 /**

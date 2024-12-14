@@ -14,8 +14,6 @@ export const setStandingOn = <RoomId extends string>(
   item: FreeItem<PlanetName, RoomId>,
   standingOn: UnknownItemInPlay<RoomId>,
 ) => {
-  console.log("standing on changed:", item.id, "is now on", standingOn.id);
-
   item.state.standingOn = standingOn;
   standingOn.state.stoodOnBy.add(item);
 };

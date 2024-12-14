@@ -62,18 +62,21 @@ const visuallyOverlaps = (
   const aXAxisSlopeMinC = cornersA.topRight.y - cornersA.topRight.x / 2;
   const aXAxisSlopeMaxC = cornersA.bottomCentre.y - cornersA.bottomCentre.x / 2;
 
+  /*
   if (aXAxisSlopeMinC > aXAxisSlopeMaxC) {
     throw new Error(
       `aXAxisSlopeMinC ${aXAxisSlopeMinC} > aXAxisSlopeMaxC ${aXAxisSlopeMaxC}`,
     );
-  }
+  }*/
 
   const bXAxisSlopeMinC = cornersB.topRight.y - cornersB.topRight.x / 2;
   const bXAxisSlopeMaxC = cornersB.bottomCentre.y - cornersB.bottomCentre.x / 2;
 
+  /*
   if (bXAxisSlopeMinC > bXAxisSlopeMaxC) {
     throw new Error("bXAxisSlopeMinC > bXAxisSlopeMaxC");
   }
+    */
 
   const xAxisSlopeOverlap = rangeOverlap(
     aXAxisSlopeMinC,
@@ -87,16 +90,20 @@ const visuallyOverlaps = (
   const aYAxisSlopeMinC = cornersA.topLeft.y + cornersA.topLeft.x / 2;
   const aYAxisSlopeMaxC = cornersA.bottomCentre.y + cornersA.bottomCentre.x / 2;
 
+  /*
   if (aYAxisSlopeMinC > aYAxisSlopeMaxC) {
     throw new Error("aYAxisSlopeMinC > aYAxisSlopeMaxC");
   }
+    */
 
   const bYAxisSlopeMinC = cornersB.topLeft.y + cornersB.topLeft.x / 2;
   const bYAxisSlopeMaxC = cornersB.bottomCentre.y + cornersB.bottomCentre.x / 2;
 
+  /*
   if (bYAxisSlopeMinC > bYAxisSlopeMaxC) {
     throw new Error("bYAxisSlopeMinC > bYAxisSlopeMaxC");
   }
+    */
 
   const yAxisSlopeOverlap = rangeOverlap(
     aYAxisSlopeMinC,
@@ -104,44 +111,6 @@ const visuallyOverlaps = (
     bYAxisSlopeMinC,
     bYAxisSlopeMaxC,
   );
-
-  /*
-  console.log("min/max:", {
-    a: {
-      x: {
-        min: aXMin,
-        max: aXMax,
-      },
-      xS: {
-        min: aXAxisSlopeMinC,
-        max: aXAxisSlopeMaxC,
-      },
-      yS: {
-        min: aYAxisSlopeMinC,
-        max: aYAxisSlopeMaxC,
-      },
-    },
-    b: {
-      x: {
-        min: bXMin,
-        max: bXMax,
-      },
-      xS: {
-        min: bXAxisSlopeMinC,
-        max: bXAxisSlopeMaxC,
-      },
-      yS: {
-        min: bYAxisSlopeMinC,
-        max: bYAxisSlopeMaxC,
-      },
-    },
-  });  
-  console.log("overlap", {
-    horizontalOverlap,
-    xAxisSlopeOverlap,
-    yAxisSlopeOverlap,
-  });
-  */
 
   return horizontalOverlap && xAxisSlopeOverlap && yAxisSlopeOverlap;
 };

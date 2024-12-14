@@ -89,6 +89,10 @@ export const ItemShadowRenderer = <
     tick({ movedItems, progression }: RenderContext) {
       //console.log("considering shadows for", item.id);
 
+      const surfaceMoved = movedItems.has(shadowSurfaceItem);
+      const itemTop =
+        shadowSurfaceItem.state.position.z + shadowSurfaceItem.aabb.z;
+
       const shadowCastersIter = iterate(objectValues(room.items)).filter(
         function castsAShadow(
           c,
@@ -96,10 +100,6 @@ export const ItemShadowRenderer = <
           return c.shadowCastTexture !== undefined;
         },
       );
-
-      const surfaceMoved = movedItems.has(shadowSurfaceItem);
-      const itemTop =
-        shadowSurfaceItem.state.position.z + shadowSurfaceItem.aabb.z;
 
       const spaceAboveSurface: Collideable = {
         id: shadowSurfaceItem.id,
@@ -124,7 +124,7 @@ export const ItemShadowRenderer = <
           if (previouslyHadShadow) {
             return "keepUnchanged";
           } else {
-            return "stillNone";
+            return "noShadow";
           }
         }
         if (collision1to1(spaceAboveSurface, caster)) {
@@ -135,11 +135,7 @@ export const ItemShadowRenderer = <
           }
         }
         // now know caster has no shadow:
-        if (previouslyHadShadow) {
-          return "delete";
-        } else {
-          return "stillNone";
-        }
+        return "noShadow";
       });
 
       // record that these are going through this generation:
@@ -172,6 +168,7 @@ export const ItemShadowRenderer = <
         //blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
       }
 
+      // clean out casts that are no longer needed:
       for (const [
         id,
         { sprite: container, renderedOnProgression: currentAsOfProgression },
@@ -182,7 +179,7 @@ export const ItemShadowRenderer = <
         }
       }
 
-      // for efficiency, hide all shadow rendering if there are no shadows on an item:
+      // for efficiency, hide all shadow rendering if nothing is casting on this item:
       mainShadowsContainer.visible =
         (bins.keepUnchanged?.length ?? 0) +
           (bins.update?.length ?? 0) +
