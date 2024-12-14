@@ -2,43 +2,90 @@ import type { DrawOrderComparable } from "./zComparator";
 import { zComparator } from "./zComparator";
 import type { GraphEdges } from "./toposort/toposort";
 import { CyclicDependencyError, toposort } from "./toposort/toposort";
+import { objectValues } from "iter-tools";
+
+const addEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
+  if (!edges.has(from)) {
+    edges.set(from, new Set());
+  }
+  edges.get(from)!.add(to);
+};
+
+const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
+  const s = edges.get(from);
+  if (s !== undefined) {
+    s?.delete(to);
+    if (s.size === 0) {
+      edges.delete(from);
+    }
+  }
+};
 
 export const zEdges = <TItem extends DrawOrderComparable>(
-  items: Iterable<TItem>,
+  items: Record<string, TItem>,
+  // the nodes that have moved - nodes that did not move are not considered
+  moved: Set<TItem> = new Set(objectValues(items)),
+  // if given, will create an incremental update starting from the previous edges
+  inFrontOf: GraphEdges<string> = new Map(),
 ): GraphEdges<string> => {
-  const edges: GraphEdges<string> = new Map();
+  // track items that have already been compared to cut out duplicate comparisons:
+  const comparisonsDone: GraphEdges<TItem> = new Map();
 
-  // TODO: rewrite as a generator
-  for (const itemI of items) {
+  // sanitise the given inFrontOf for nodes that no longer exist - this
+  // is important for incremental updates:
+  for (const [front, behinds] of inFrontOf) {
+    if (!items[front]) {
+      inFrontOf.delete(front);
+    } else {
+      for (const behind of behinds) {
+        if (!items[behind]) {
+          deleteEdge(inFrontOf, front, behind);
+        }
+      }
+    }
+  }
+
+  for (const itemI of moved) {
     if (!itemI.renders) {
       continue;
     }
 
-    for (const itemJ of items) {
-      if (itemI === itemJ) {
-        break;
-      }
-      if (!itemJ.renders) {
+    // moved nodes are compared against all nodes (moving or not):
+    // - only unmoved/umomved pairs can be skipped since they
+    // are known not to have changed
+    for (const itemJ of objectValues(items)) {
+      if (
+        !itemJ.renders ||
+        // already compared the other way:
+        comparisonsDone.get(itemJ)?.has(itemI) ||
+        // no point comparing to self:
+        itemI === itemJ
+      ) {
         continue;
       }
 
       const comparison = zComparator(itemI, itemJ);
 
+      addEdge(comparisonsDone, itemI, itemJ);
+
       if (comparison === 0) {
+        deleteEdge(inFrontOf, itemI.id, itemJ.id);
+        deleteEdge(inFrontOf, itemJ.id, itemI.id);
         continue;
       }
 
       const front = comparison > 0 ? itemI.id : itemJ.id;
       const back = comparison > 0 ? itemJ.id : itemI.id;
 
-      if (!edges.has(front)) {
-        edges.set(front, new Set());
-      }
-      edges.get(front)?.add(back);
+      addEdge(inFrontOf, front, back);
+
+      // can't link the other way - delete if it does:
+      deleteEdge(inFrontOf, back, front);
     }
   }
 
-  return edges;
+  //console.log(comparisonCount);
+  return inFrontOf;
 };
 
 export type SortByZPairsReturn = {

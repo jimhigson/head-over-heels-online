@@ -8,6 +8,7 @@ import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
 import type { MovedItems } from "../mainLoop/progressGameState";
+import type { GraphEdges } from "./sortZ/toposort/toposort";
 
 const centreRoomInRendering = (
   room: UnknownRoomState,
@@ -39,6 +40,8 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
   const itemsContainer = new Container({ label: `items(room(${room.id}))` });
 
   let isFirstRender = true;
+  // store the edges of the behind/front graph between frames so we can incrementally update it
+  const incrementalZEdges: GraphEdges<string> = new Map();
 
   roomContainer.addChild(itemsContainer);
 
@@ -94,7 +97,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
       if (isFirstRender || renderContext.movedItems.size > 0) {
         // something has moved so re-sort the room's items:
         const { order } = sortByZPairs(
-          zEdges(objectValues(room.items)),
+          zEdges(room.items, renderContext.movedItems, incrementalZEdges),
           room.items,
         );
 

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./zComparator";
-import type { SortByZPairsReturn} from "./sortItemsByDrawOrder";
+import type { SortByZPairsReturn } from "./sortItemsByDrawOrder";
 import { sortByZPairs, zEdges } from "./sortItemsByDrawOrder";
 import { collision1toMany } from "@/game/collision/aabbCollision";
 
@@ -34,7 +34,7 @@ test("detects behind in x", () => {
     },
   };
 
-  const edges = zEdges(Object.values(items));
+  const edges = zEdges(items);
   // front => behind
   expect(edges).toMatchInlineSnapshot(`
     Map {
@@ -81,7 +81,7 @@ test("detects behind in y", () => {
     },
   };
 
-  const relations = zEdges(Object.values(items));
+  const relations = zEdges(items);
   // front => behind
   expect(relations).toMatchInlineSnapshot(`
     Map {
@@ -128,7 +128,7 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   };
 
-  const relations = zEdges(Object.values(items));
+  const relations = zEdges(items);
   // front => behind
   expect(relations).toMatchInlineSnapshot(`
     Map {
@@ -164,7 +164,7 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   };
 
-  const relations = zEdges(Object.values(items));
+  const relations = zEdges(items);
   // front => behind - top in front of bottom:
   expect(relations).toMatchInlineSnapshot(`
     Map {
@@ -198,9 +198,16 @@ test("detects a tall item is front of two smaller items", () => {
       renders: true,
       state: { position: { x: 0, y: 0, z: 0 } },
     },
+    // should be ignored for the results:
+    unrelatedFarAway: {
+      id: "unrelatedFarAway",
+      aabb: { x: 1, y: 1, z: 1 },
+      renders: true,
+      state: { position: { x: 20, y: 0, z: 0 } },
+    },
   };
 
-  const relations = zEdges(Object.values(items));
+  const relations = zEdges(items);
   expect(relations).toMatchInlineSnapshot(`
     Map {
       "tallThinFront" => Set {
@@ -216,6 +223,68 @@ test("detects a tall item is front of two smaller items", () => {
 
 test.todo("uses renderaabb if there is one", () => {
   //
+});
+
+test("incrementally updates", () => {
+  const items: TestItems = {
+    1: {
+      id: "1",
+      aabb: { x: 10, y: 10, z: 10 },
+      renders: true,
+      state: { position: { x: 0, y: 0, z: 0 } },
+    },
+    2: {
+      id: "2",
+      aabb: { x: 10, y: 10, z: 10 },
+      renders: true,
+      state: { position: { x: 10, y: 0, z: 0 } },
+    },
+    3: {
+      id: "3",
+      aabb: { x: 10, y: 10, z: 10 },
+      renders: true,
+      state: { position: { x: 20, y: 0, z: 0 } },
+    },
+    4: {
+      id: "4",
+      aabb: { x: 10, y: 10, z: 10 },
+      renders: true,
+      state: { position: { x: 30, y: 0, z: 0 } },
+    },
+  };
+
+  const edges = zEdges(items);
+  // front => behind
+  expect(edges).toMatchInlineSnapshot(`
+    Map {
+      "1" => Set {
+        "2",
+      },
+      "2" => Set {
+        "3",
+      },
+      "3" => Set {
+        "4",
+      },
+    }
+  `);
+
+  // move item 1 to the left - it is now behind all others:
+  items[1].state.position.x = 40;
+  // move item 2 far away in the sky - it is now not behind/in front of anything:
+  items[2].state.position.z = 100;
+  zEdges(items, new Set([items[1], items[2]]), edges);
+
+  expect(edges).toMatchInlineSnapshot(`
+    Map {
+      "3" => Set {
+        "4",
+      },
+      "4" => Set {
+        "1",
+      },
+    }
+  `);
 });
 
 describe("cyclic dependencies", () => {
@@ -258,7 +327,7 @@ describe("cyclic dependencies", () => {
       },
     };
 
-    const relations = zEdges(Object.values(items));
+    const relations = zEdges(items);
     expect(() => sortByZPairs(relations, items)).not.toThrow();
     expect(sortByZPairs(relations, items).impossible).toBe(false);
   });
@@ -320,7 +389,7 @@ describe("cyclic dependencies", () => {
       expect(collision1toMany(i, Object.values(items))).toEqual([]);
     }
 
-    const relations = zEdges(Object.values(items));
+    const relations = zEdges(items);
 
     // front => behind - this is a cycle!
     expect(relations).toMatchInlineSnapshot(`
