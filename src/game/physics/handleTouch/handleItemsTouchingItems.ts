@@ -1,4 +1,4 @@
-import { slidingItemTypes } from "../itemPredicates";
+import { isSolid, slidingItemTypes } from "../itemPredicates";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import { handleBaddieTouchingItem } from "../mechanics/baddieAi";
 import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
@@ -68,7 +68,11 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   }
   // is the thing that moved has disappearing (more unusual case but could be a powerup falling on player for example,
   // flip and treat like it is the thing that was touched):
-  if (e.movingItem.state.disappear) {
+  if (
+    e.movingItem.state.disappear &&
+    // solid check: eg, firedDonuts don't disappear on touching the stopAutowalk in front of a door
+    isSolid(e.touchedItem)
+  ) {
     handleItemTouchingDissapearing({
       ...e,
       movingItem: e.touchedItem,
