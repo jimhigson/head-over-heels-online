@@ -15,7 +15,7 @@ import { iterate } from "@/utils/iterate";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
 import { deleteItemFromRoom } from "@/game/gameState/mutators/deleteItemFromRoom";
 import type { CarriedItem } from "@/model/ItemStateMap";
-import { addItemToRoomInPlay } from "@/game/gameState/mutators/addItemToRoomInPlay";
+import { addItemFromJsonToRoom } from "@/game/gameState/mutators/addItemToRoom";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -69,7 +69,7 @@ export const carrying = <RoomId extends string>(
         return;
       }
 
-      const carryingItem = addItemToRoomInPlay({
+      const carryingItem = addItemFromJsonToRoom({
         gameState,
         room,
         itemType: carrying.type,

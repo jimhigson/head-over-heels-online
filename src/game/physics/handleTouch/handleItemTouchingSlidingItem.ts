@@ -7,7 +7,7 @@ import {
   unitVector,
   xyzEqual,
 } from "@/utils/vectors/vectors";
-import { walkSpeedPixPerMs } from "../mechanicsConstants";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -33,7 +33,7 @@ export const handleItemTouchingSlidingItem = <RoomId extends string>({
 
   const unitM = unitVector(m);
 
-  const slidingVel = scaleXyz(unitM, -walkSpeedPixPerMs.ball);
+  const slidingVel = scaleXyz(unitM, -moveSpeedPixPerMs.ball);
 
   slidingItem.state.vels.sliding = slidingVel;
 

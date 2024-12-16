@@ -458,6 +458,7 @@ const spritesheetData = {
     "bubbles.cold": ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/],
     "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
     "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],
+    "bubbles.donut": ["bubbles.taupe.1", "bubbles.taupe.2"],
     "bubbles.fish": ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"],
     "conveyor.x": seriesOfAnimationFrameTextureIds("conveyor.x", 7),
     "conveyor.y": seriesOfAnimationFrameTextureIds("conveyor.y", 7),

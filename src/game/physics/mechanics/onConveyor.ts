@@ -5,7 +5,7 @@ import { isPlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import {
   conveyorSpeedPixPerMs,
-  walkSpeedPixPerMs,
+  moveSpeedPixPerMs,
 } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
@@ -64,7 +64,7 @@ export const onConveyor = <RoomId extends string>(
     item.state.facing === oppositeDirection(direction);
 
   const conveyorSpeed =
-    heelsWalkingAgainst ? walkSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
+    heelsWalkingAgainst ? moveSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
 
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
 

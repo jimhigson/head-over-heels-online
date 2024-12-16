@@ -65,6 +65,8 @@ export type ItemStateMap<RoomId extends string> = {
     // by the type system as belonging only to head
     // or heels
     donuts: number;
+    /** time in ms donut was last fired, used to limit rate of fire */
+    donutLastFireTime: number;
     fastSteps: number;
   };
   heels: EitherPlayableState<RoomId> & {
@@ -85,6 +87,7 @@ export type ItemStateMap<RoomId extends string> = {
 
   baddie: FreeItemState<RoomId> & {
     activated: boolean;
+    busyLickingDoughnutsOffFace: boolean;
     vels: {
       walking: Xyz;
     };
@@ -103,6 +106,12 @@ export type ItemStateMap<RoomId extends string> = {
       lift: Xyz;
     };
   };
+  firedDonut: {
+    vels: {
+      fired: Xyz;
+    };
+  };
+
   stopAutowalk: EmptyObject;
   conveyor: {
     moving: boolean;

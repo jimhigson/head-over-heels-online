@@ -39,6 +39,7 @@ export const loadPlayer = <RoomId extends string>(
           jumped: false,
           lives: 8,
           donuts: 0,
+          donutLastFireTime: Number.NEGATIVE_INFINITY,
           autoWalk: false,
           teleporting: null,
           position: positionCentredInBlock(jsonItem),

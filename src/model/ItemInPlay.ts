@@ -19,7 +19,8 @@ export type ItemInPlayType =
   | "portal"
   | "floor"
   // when another item is fading out, the bubbles are a separate item
-  | "bubbles";
+  | "bubbles"
+  | "firedDonut";
 
 export type PlayableActionState =
   | "moving"

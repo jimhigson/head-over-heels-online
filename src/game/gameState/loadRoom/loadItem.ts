@@ -1,9 +1,6 @@
 import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
 import type { ShadowMaskOptions, UnknownItemInPlay } from "@/model/ItemInPlay";
-import {
-  fallingItemTypes,
-  slidingItemTypes,
-} from "@/game/physics/itemPredicates";
+import { freeItemTypes, slidingItemTypes } from "@/game/physics/itemPredicates";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
@@ -204,7 +201,7 @@ const shadowCast = (
 };
 
 const initialState = (jsonItem: UnknownJsonItem) => {
-  const free = (fallingItemTypes as JsonItemType[]).includes(jsonItem.type);
+  const free = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     expires: null,

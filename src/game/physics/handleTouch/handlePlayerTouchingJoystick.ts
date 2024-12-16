@@ -4,7 +4,7 @@ import { currentRoom } from "@/game/gameState/GameState";
 import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { moveItem } from "../moveItem";
-import { walkSpeedPixPerMs } from "../mechanicsConstants";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 export const handlePlayerTouchingJoystick = <RoomId extends string>({
@@ -41,7 +41,7 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>({
       RoomId
     >;
 
-    const posDelta = scaleXyz(unitM, -walkSpeedPixPerMs.charles * deltaMS);
+    const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
     sillyOldFace.state.facing = posDelta;
     moveItem({
       subjectItem: sillyOldFace,
@@ -51,6 +51,4 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>({
       deltaMS,
     });
   }
-
-  return false;
 };

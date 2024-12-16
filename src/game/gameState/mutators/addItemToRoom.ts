@@ -11,10 +11,11 @@ import type { Xyz } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { first } from "iter-tools";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 let i = 0;
 
-export const addItemToRoomInPlay = <
+export const addItemFromJsonToRoom = <
   T extends JsonItemType,
   RoomId extends string,
 >({
@@ -48,6 +49,18 @@ export const addItemToRoomInPlay = <
     throw new Error("failed to generate any items");
   }
   item.state.position = position;
-  room.items[itemId] = item;
+
+  addItemToRoom({ room, item });
+  return item;
+};
+
+export const addItemToRoom = <RoomId extends string>({
+  room,
+  item,
+}: {
+  room: RoomState<PlanetName, RoomId>;
+  item: UnknownItemInPlay<RoomId>;
+}) => {
+  room.items[item.id] = item;
   return item;
 };

@@ -14,6 +14,7 @@ import {
 } from "./ItemTouchEvent";
 import { characterNames } from "@/model/modelTypes";
 import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
+import { handleFiredDonutTouchingBaddie } from "./handleFiredDonutTouchingBaddie";
 
 /**
  * same old - Morties touching Morties
@@ -41,6 +42,13 @@ export const handleItemsTouchingItems = <RoomId extends string>(
 
   if (movingItemIsType(e, ...slidingItemTypes)) {
     handleSlidingItemTouchingAnyItem(e);
+  }
+
+  if (
+    (movingItemIsType(e, "baddie") && touchedItemIsType(e, "firedDonut")) ||
+    (movingItemIsType(e, "firedDonut") && touchedItemIsType(e, "baddie"))
+  ) {
+    handleFiredDonutTouchingBaddie(e);
   }
 
   if (movingItemIsType(e, "baddie")) {

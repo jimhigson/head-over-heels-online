@@ -33,6 +33,7 @@ type ItemRenderPropsMap = {
   baddie: {
     facingXy4?: DirectionXy4;
     activated: boolean;
+    busyLickingDoughnutsOffFace: boolean;
   };
   charles: {
     facingXy4: DirectionXy4;

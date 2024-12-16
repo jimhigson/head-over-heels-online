@@ -9,7 +9,7 @@ uniform vec3 uReplacement[SWOP_COUNT];
 
 // colours are floats so check if they're very close rather than exactly equal:
 bool colorsEffectivelyEqual(vec3 color1, vec3 color2) {       
-    return distance(color1, color2) < 0.001;
+    return distance(color1, color2) < 0.05;
 }
 
 void main(void) {
@@ -20,7 +20,7 @@ void main(void) {
         return;
     }
     
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < SWOP_COUNT; i++) {
         if ( colorsEffectivelyEqual(c.rgb, uOriginal[i]) ) {
             finalColor = vec4(uReplacement[i], c.a);            
             return;

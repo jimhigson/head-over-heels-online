@@ -1,5 +1,6 @@
 // NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
 
+import type { ItemInPlayType } from "@/model/ItemInPlay";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
@@ -54,7 +55,7 @@ export const walkMinSpeedPixPerMs = {
 };
 
 // original game timed at 5s to move 8 blocks
-export const walkSpeedPixPerMs = {
+export const moveSpeedPixPerMs = {
   head: onePxPerFrameInOriginalGamePxPerMs, //
   heels: 2 * onePxPerFrameInOriginalGamePxPerMs,
   charles: onePxPerFrameInOriginalGamePxPerMs,
@@ -71,12 +72,14 @@ export const walkSpeedPixPerMs = {
   ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
-} satisfies Record<
-  | CharacterName
-  | "charles"
-  | "ball"
-  | JsonItemConfig<"baddie", PlanetName, string>["which"],
-  number
+  firedDonut: 2 * onePxPerFrameInOriginalGamePxPerMs,
+} satisfies Partial<
+  Record<
+    | CharacterName
+    | ItemInPlayType
+    | JsonItemConfig<"baddie", PlanetName, string>["which"],
+    number
+  >
 >;
 
 // n px per frame in original game;

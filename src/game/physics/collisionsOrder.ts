@@ -109,6 +109,8 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   pickup: 8,
 
+  firedDonut: 9,
+
   slidingDeadly: 10,
   moveableDeadly: 10,
   deadlyBlock: 10,

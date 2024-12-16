@@ -14,7 +14,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
   touchedItem: portalItem,
   /** the movement that caused the player to touch the portal */
   movementVector,
-}: ItemTouchEvent<RoomId, CharacterName, "portal">): boolean => {
+}: ItemTouchEvent<RoomId, CharacterName, "portal">) => {
   const {
     config: { relativePoint, toRoom, direction: portalDirection },
     state: { position: portalPosition },
@@ -28,7 +28,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
   if (movementComponentInDoorDirection <= 0) {
     // player is not walking in the right direction of the portal. ie, they might
     // be auto-walking into the room
-    return false;
+    return;
   }
 
   changeCharacterRoom({
@@ -41,6 +41,4 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
     sourcePortal: portalItem,
     changeType: "portal",
   });
-
-  return true;
 };

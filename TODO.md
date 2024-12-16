@@ -100,12 +100,12 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     [x] remove unsolid after concept
 [x] can't jump off of collected powerups    
 
-[ ] death of char A after char B moved into room splits off into two room states
+[x] head can fire donuts
 [ ] fast walk for head
 [ ] big jump for heels
-[ ] heads can fire donuts
 [ ] head and heels can combine
-[ ] use defaultAnchor: { x: number, y: number } property in spritesheet
+[ ] death of char A after char B moved into room splits off into two room states
+[x] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding
     [ ] hud readable over game
 [ ] sonic-like shield effect when got shield    

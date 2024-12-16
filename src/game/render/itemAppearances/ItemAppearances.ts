@@ -1,3 +1,4 @@
+import type { Filter } from "pixi.js";
 import { Container } from "pixi.js";
 import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
@@ -27,17 +28,26 @@ import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
 import { floorAppearance } from "./floorAppearance";
-import { mainPaletteSwapFilter } from "../filters/paletteSwapFilters";
+import {
+  doughnuttedFilter,
+  greyFilter,
+  mainPaletteSwapFilter,
+} from "../filters/paletteSwapFilters";
 
-const bubbles = {
+const itemRidingOnBubblesSpritesOptions = {
   frames: spriteSheet.animations["bubbles.cold"],
   animationSpeed: 0.25,
 };
-const stackedSprites = (
-  head: CreateSpriteOptions,
-  body: CreateSpriteOptions = "headless-base",
-): Container => {
-  const container = new Container();
+const stackedSprites = ({
+  head,
+  body = "headless-base",
+  filter,
+}: {
+  head: CreateSpriteOptions;
+  body?: CreateSpriteOptions;
+  filter?: Filter;
+}): Container => {
+  const container = new Container({ filters: filter });
   container.addChild(createSprite(body));
   const headSprite = createSprite(head);
   headSprite.y = -12;
@@ -387,14 +397,19 @@ export const itemAppearances: {
       return;
     }
     return {
-      container: stackedSprites(`charles.${facingXy4}`),
+      container: stackedSprites({ head: `charles.${facingXy4}` }),
       renderProps: { facingXy4 },
     };
   },
 
   baddie({ item: { config, state }, room, currentlyRenderedProps }) {
     let startingDirection: DirectionXy4 | undefined = undefined;
-    const { activated } = state;
+    const { activated, busyLickingDoughnutsOffFace } = state;
+
+    const filter =
+      busyLickingDoughnutsOffFace ? doughnuttedFilter
+      : !activated ? greyFilter
+      : undefined;
 
     switch (config.which) {
       case "american-football-head":
@@ -414,12 +429,18 @@ export const itemAppearances: {
         const render =
           currentlyRenderedProps === undefined ||
           activated !== currentlyRenderedProps.activated ||
+          busyLickingDoughnutsOffFace !==
+            currentlyRenderedProps.busyLickingDoughnutsOffFace ||
           facingXy4 !== currentlyRenderedProps.facingXy4;
 
         if (!render) {
           return;
         }
-        const renderProps: ItemRenderProps<"baddie"> = { facingXy4, activated };
+        const renderProps: ItemRenderProps<"baddie"> = {
+          facingXy4,
+          activated,
+          busyLickingDoughnutsOffFace,
+        };
 
         // rendering is directional (xy4)
         switch (config.which) {
@@ -428,6 +449,7 @@ export const itemAppearances: {
             return {
               container: createSprite({
                 texture: `${config.which}.${config.style}.${facingXy4}`,
+                filter,
               }),
               renderProps,
             };
@@ -440,24 +462,31 @@ export const itemAppearances: {
                     frames:
                       spriteSheet.animations[`${config.which}.${facingXy4}`],
                     animationSpeed: 0.25,
+                    filter,
                   })
-                : createSprite(`${config.which}.${facingXy4}.1`),
+                : createSprite({
+                    texture: `${config.which}.${facingXy4}.1`,
+                    filter,
+                  }),
               renderProps,
             };
           case "cyberman":
             // directional, animated, stacked (bubbles):
             return {
               container:
-                state.activated ?
-                  stackedSprites(
-                    {
+                state.activated || state.busyLickingDoughnutsOffFace ?
+                  stackedSprites({
+                    head: {
                       texture: `${config.which}.${facingXy4}`,
-                      filter: mainPaletteSwapFilter(room),
+                      filter: filter || mainPaletteSwapFilter(room),
                     },
-                    bubbles,
-                  )
+                    body: itemRidingOnBubblesSpritesOptions,
+                  })
                   // charging on a toaster
-                : createSprite(`${config.which}.${facingXy4}`),
+                : createSprite({
+                    texture: `${config.which}.${facingXy4}`,
+                    filter,
+                  }),
               renderProps,
             };
           case "computer-bot":
@@ -465,7 +494,10 @@ export const itemAppearances: {
           case "monkey":
             // directional, not animated, stacked (base)
             return {
-              container: stackedSprites(`${config.which}.${facingXy4}`),
+              container: stackedSprites({
+                head: `${config.which}.${facingXy4}`,
+                filter,
+              }),
               renderProps,
             };
         }
@@ -487,44 +519,62 @@ export const itemAppearances: {
           return;
         }
 
-        const renderProps: ItemRenderProps<"baddie"> = { activated };
+        const renderProps: ItemRenderProps<"baddie"> = {
+          activated,
+          busyLickingDoughnutsOffFace,
+        };
 
         // rendering is uni-directional
         switch (config.which) {
           case "helicopter-bug":
-          case "dalek":
+          case "dalek": {
+            const frames = spriteSheet.animations[config.which];
             // not directional, animated
             return {
-              container: createSprite({
-                frames: spriteSheet.animations[config.which],
-                animationSpeed: 0.5,
-              }),
+              container: createSprite(
+                activated ?
+                  {
+                    frames,
+                    animationSpeed: 0.5,
+                    filter,
+                  }
+                : { texture: `${config.which}.1`, filter },
+              ),
               renderProps,
             };
+          }
           case "headless-base":
             // not directional, not animated
             return {
-              container: createSprite(config.which),
+              filter,
+              container: createSprite({ texture: config.which, filter }),
               renderProps,
             };
           case "elephant-head":
             // not directional, not animated
             return {
-              container: createSprite("elephant.towards"),
+              container: createSprite({ texture: "elephant.towards", filter }),
               renderProps,
             };
 
           case "bubble-robot":
             //not directional, animated, stacked (base):
             return {
-              container: stackedSprites(bubbles),
+              container: stackedSprites({
+                head: itemRidingOnBubblesSpritesOptions,
+                filter,
+              }),
               renderProps,
             };
 
           case "flying-ball":
             //not directional, stacked (bubbles):
             return {
-              container: stackedSprites(`ball`, bubbles),
+              container: stackedSprites({
+                head: `ball`,
+                body: itemRidingOnBubblesSpritesOptions,
+                filter,
+              }),
               renderProps,
             };
         }
@@ -626,6 +676,9 @@ export const itemAppearances: {
       });
     },
   ),
+  firedDonut: staticSpriteAppearance({
+    frames: spriteSheet.animations["bubbles.donut"],
+  }),
 
   ball: staticSpriteAppearance("ball"),
 

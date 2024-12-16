@@ -7,8 +7,6 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
  */
 export function handlePlayerTouchingStopAutowalk<RoomId extends string>({
   movingItem,
-}: ItemTouchEvent<RoomId, CharacterName, "stopAutowalk">): boolean {
+}: ItemTouchEvent<RoomId, CharacterName, "stopAutowalk">) {
   movingItem.state.autoWalk = false;
-
-  return false;
 }

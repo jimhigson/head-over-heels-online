@@ -9,7 +9,7 @@ import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
   heelsJumpForwardDecel,
-  walkSpeedPixPerMs,
+  moveSpeedPixPerMs,
   playerWalkAcceldPixPerMsSq,
   playerWalkStopAccelPixPerMsSq,
   walkMinSpeedPixPerMs,
@@ -52,7 +52,7 @@ export const walking = <RoomId extends string>(
       })
     );
 
-  const maxWalkSpeed = walkSpeedPixPerMs[type];
+  const maxWalkSpeed = moveSpeedPixPerMs[type];
 
   if (teleporting !== null || action === "death") {
     // do no walking while teleporting or showing dying animation:

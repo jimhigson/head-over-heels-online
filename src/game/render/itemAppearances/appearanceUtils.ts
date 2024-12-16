@@ -1,8 +1,8 @@
 import { type ItemInPlayType, type ItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import type { Container } from "pixi.js";
-import type { TextureId } from "@/sprites/spriteSheet";
 import type { RoomState } from "@/model/modelTypes";
+import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type {
   ItemInPlayTypesWithoutRenderProps,
@@ -47,14 +47,11 @@ export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;
 };
 
-export const staticSpriteAppearance =
-  <T extends ItemInPlayType>(textureId: TextureId): ItemAppearance<T> =>
-  () => {
-    return {
-      container: createSprite(textureId),
-      renderProps: {} as ItemRenderProps<T>,
-    };
-  };
+export const staticSpriteAppearance = <
+  T extends ItemInPlayTypesWithoutRenderProps,
+>(
+  createSpriteOptions: CreateSpriteOptions,
+): ItemAppearance<T> => renderOnce(() => createSprite(createSpriteOptions));
 
 /**
  * plenty of items never need to be re-rendered and have no render props - convenience for that case

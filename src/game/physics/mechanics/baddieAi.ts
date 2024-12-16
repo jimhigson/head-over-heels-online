@@ -3,7 +3,7 @@ import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { walkSpeedPixPerMs } from "../mechanicsConstants";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
 import {
@@ -37,12 +37,12 @@ export const initBaddieWalk = (
   switch (config.which) {
     case "dalek":
     case "bubble-robot":
-      return scaleXyz(unitVectors.towards, walkSpeedPixPerMs[config.which]);
+      return scaleXyz(unitVectors.towards, moveSpeedPixPerMs[config.which]);
     case "turtle":
     case "american-football-head":
       return scaleXyz(
         unitVectors[config.startDirection],
-        walkSpeedPixPerMs[config.which],
+        moveSpeedPixPerMs[config.which],
       );
 
     default:
@@ -56,7 +56,7 @@ export const walkTowardsPlayer = <RoomId extends string>(
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  const speed = walkSpeedPixPerMs.cyberman;
+  const speed = moveSpeedPixPerMs.cyberman;
 
   if (standingOn === null) {
     return notWalking;
@@ -135,7 +135,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
     produceNewWalk ?
       scaleXyz(
         unitVectors[randomFromArray(directions)],
-        walkSpeedPixPerMs[which],
+        moveSpeedPixPerMs[which],
       )
     : walking;
 
@@ -197,7 +197,8 @@ export const tickBaddie = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  if (!item.state.activated) return notWalking;
+  if (!item.state.activated || item.state.busyLickingDoughnutsOffFace)
+    return notWalking;
 
   switch (item.config.which) {
     case "dalek": {

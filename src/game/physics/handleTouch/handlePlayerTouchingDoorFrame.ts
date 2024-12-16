@@ -10,7 +10,7 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
   movingItem: player,
   movementVector,
   touchedItem: doorFrame,
-}: ItemTouchEvent<RoomId, CharacterName, "doorFrame">): boolean => {
+}: ItemTouchEvent<RoomId, CharacterName, "doorFrame">) => {
   const {
     config: { direction, nearness },
   } = doorFrame;
@@ -31,5 +31,4 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
       };
 
   player.state.position = addXyz(player.state.position, slideVector);
-  return false;
 };

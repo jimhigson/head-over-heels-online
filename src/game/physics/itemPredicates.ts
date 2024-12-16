@@ -19,7 +19,7 @@ export const isItemType =
     return (types as Array<string>).includes(item.type);
   };
 
-const isUnsolid = isItemType("bubbles", "portal", "stopAutowalk");
+const isUnsolid = isItemType("bubbles", "portal", "stopAutowalk", "firedDonut");
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
@@ -64,7 +64,7 @@ export function isFreeItem<
   P extends PlanetName = PlanetName,
   RoomId extends string = string,
 >(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
-  return (fallingItemTypes as ItemInPlayType[]).includes(item.type);
+  return (freeItemTypes as ItemInPlayType[]).includes(item.type);
 }
 export type PlayableItem<
   C extends CharacterName = CharacterName,
@@ -74,7 +74,7 @@ export type PlayableItem<
   : never | C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
   : never;
 
-export const fallingItemTypes = [
+export const freeItemTypes = [
   "baddie",
   "ball",
   "charles",
@@ -89,7 +89,7 @@ export const fallingItemTypes = [
   "spring",
 ] as const satisfies ItemInPlayType[];
 
-export type FreeItemTypes = (typeof fallingItemTypes)[number];
+export type FreeItemTypes = (typeof freeItemTypes)[number];
 
 export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
   FreeItemTypes,

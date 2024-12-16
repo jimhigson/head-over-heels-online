@@ -1,3 +1,4 @@
+import { smallItemAabb } from "@/game/collision/boundingBoxes";
 import type { UnknownItemInPlay } from "./ItemInPlay";
 
 /**
@@ -6,4 +7,5 @@ import type { UnknownItemInPlay } from "./ItemInPlay";
 
 export const defaultItemProperties = {
   renders: true,
+  aabb: smallItemAabb,
 } as const satisfies Partial<UnknownItemInPlay>;

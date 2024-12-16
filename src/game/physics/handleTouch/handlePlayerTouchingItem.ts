@@ -15,22 +15,17 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
 ) => {
   switch (true) {
     case touchedItemIsType(e, "stopAutowalk"):
-      if (handlePlayerTouchingStopAutowalk<RoomId>(e)) {
-        return true;
-      }
+      handlePlayerTouchingStopAutowalk<RoomId>(e);
       break;
+
     case touchedItemIsType(e, ...deadlyItemTypes) ||
       (touchedItemIsType(e, "floor") && e.touchedItem.config.deadly):
-      if (handlePlayerTouchingDeadly<RoomId>(e)) {
-        return true;
-      }
+      handlePlayerTouchingDeadly<RoomId>(e);
       break;
 
     case touchedItemIsType(e, "portal"):
-      if (handlePlayerTouchingPortal(e)) {
-        // has activated the portal - halt all physics:
-        return true;
-      }
+      handlePlayerTouchingPortal(e);
+      // has activated the portal - halt all physics:
       break;
 
     case touchedItemIsType(e, "pickup"):
@@ -38,11 +33,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       break;
 
     case touchedItemIsType(e, "doorFrame"):
-      if (handlePlayerTouchingDoorFrame(e)) {
-        return true;
-      }
+      handlePlayerTouchingDoorFrame(e);
       break;
   }
-
-  return false;
 };

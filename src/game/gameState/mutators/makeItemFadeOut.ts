@@ -4,7 +4,7 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { RoomState } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
-import { addItemToRoomInPlay } from "./addItemToRoomInPlay";
+import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { addXyz, originXyz, scaleXyz, subXyz } from "@/utils/vectors/vectors";
 
 /**
@@ -21,7 +21,7 @@ export const makeItemFadeOut = <RoomId extends string>({
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });
 
-  const bubblesItem = addItemToRoomInPlay({
+  const bubblesItem = addItemFromJsonToRoom({
     itemType: "bubbles",
     config: { style: "white" },
     // give any placeholder position:

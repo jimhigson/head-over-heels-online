@@ -27,6 +27,7 @@ import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
+import { firing } from "../physics/mechanics/firing";
 
 function* itemMechanicResultGen<
   RoomId extends string,
@@ -54,6 +55,9 @@ function* itemMechanicResultGen<
 
     if (isItemType("heels")(item)) {
       carrying(item, room, gameState, deltaMS);
+    }
+    if (isItemType("head")(item)) {
+      firing(item, room, gameState, deltaMS);
     }
   }
 
@@ -107,9 +111,9 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     ...itemMechanicResultGen(item, room, gameState, deltaMS),
   ];
 
-  // HERE: handle item standing on an item with dissppear='onStand' - this has to
-  // be after calculating itemMechanicResultGen so that the user can jump off of it for
-  // this single frame
+  // handle standing on an item with dissppear='onStand' - eg, if got onto this item
+  // by walking onto it from another item, there would have been no collision with it
+  // to set the standing on property
   if (
     isFreeItem(item) &&
     item.state.standingOn !== null &&
@@ -122,7 +126,11 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 
   // velocities for this item have now been updated - get the aggregate movement, including vels
   // that stood from previous frames (did not change)
-  if (isFreeItem(item) || isItemType("lift")(item)) {
+  if (
+    isFreeItem(item) ||
+    isItemType("lift")(item) ||
+    isItemType("firedDonut")(item)
+  ) {
     accumulatedPosDelta = addXyz(
       accumulatedPosDelta,
       ...iterate(objectValues(item.state.vels)).map((val) =>

@@ -23,7 +23,7 @@ export const defaultKeyAssignments: KeyAssignment = {
   away: ["ArrowUp", ...originalKeyAssignment.away],
   jump: ["`", ...originalKeyAssignment.jump],
   carry: ["Shift", "`", ...originalKeyAssignment.carry],
-  fire: ["Control", ...originalKeyAssignment.fire],
+  fire: ["D", ...originalKeyAssignment.fire],
   swop: originalKeyAssignment.swop,
   hold: ["F8", ...originalKeyAssignment.hold],
 };

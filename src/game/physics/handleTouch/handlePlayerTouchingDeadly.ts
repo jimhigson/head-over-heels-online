@@ -11,10 +11,10 @@ import type { DeadlyItemType } from "../itemPredicates";
 export function handlePlayerTouchingDeadly<RoomId extends string>({
   gameState,
   movingItem: playableItem,
-}: ItemTouchEvent<RoomId, CharacterName, DeadlyItemType | "floor">): boolean {
+}: ItemTouchEvent<RoomId, CharacterName, DeadlyItemType | "floor">) {
   if (playableItem.state.action === "death") {
     // player is already showing death animation - do nothing
-    return false;
+    return;
   }
 
   const { shieldCollectedAt } = playableItem.state;
@@ -23,11 +23,11 @@ export function handlePlayerTouchingDeadly<RoomId extends string>({
     shieldCollectedAt + shieldDuration > gameState.gameTime
   ) {
     // shield - do nothing, do not halt
-    return false;
+    return;
   }
 
   playableItem.state.action = "death";
   playableItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
 
-  return true;
+  return;
 }

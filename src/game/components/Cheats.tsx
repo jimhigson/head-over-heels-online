@@ -15,7 +15,7 @@ import type { GameApi } from "../GameApi";
 import type { ShowBoundingBoxes } from "../RenderOptions";
 import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { PlanetName } from "@/sprites/planets";
-import { addItemToRoomInPlay } from "../gameState/mutators/addItemToRoomInPlay";
+import { addItemFromJsonToRoom } from "../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import { Switch } from "@/components/ui/switch";
 
@@ -71,7 +71,7 @@ export const Cheats = <RoomId extends string>({
   ) => {
     const { gameState } = gameApi;
     const playable = currentPlayableItem(gameState);
-    addItemToRoomInPlay({
+    addItemFromJsonToRoom({
       gameState,
       room: currentRoom(gameState),
       itemType,
