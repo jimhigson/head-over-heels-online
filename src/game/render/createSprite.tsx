@@ -1,5 +1,6 @@
 import type {
   AnimatedSpriteFrames,
+  Filter,
   PointData,
   SpritesheetFrameData,
   Texture,
@@ -28,6 +29,9 @@ type AnimatedCreateSpriteOptions = {
   reverse?: boolean;
   x?: number;
   y?: number;
+
+  filter?: Filter;
+
   /**
    * If true, will play once and vanish. Otherwise, (by default) will loop
    * indefinitely
@@ -45,6 +49,7 @@ export type CreateSpriteOptions =
       texture: TextureId;
       x?: number;
       y?: number;
+      filter?: Filter;
     }
   | AnimatedCreateSpriteOptions;
 
@@ -61,7 +66,7 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
     // shortcutted convenience for creating with the texture name and no other options
     return createSprite({ texture: options });
   } else {
-    const { anchor, flipX, pivot, x, y } = options;
+    const { anchor, flipX, pivot, x, y, filter } = options;
 
     let sprite: Sprite;
 
@@ -97,6 +102,10 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
 
     if (y !== undefined) {
       sprite.y = y;
+    }
+
+    if (filter !== undefined) {
+      sprite.filters = filter;
     }
 
     sprite.eventMode = "static";

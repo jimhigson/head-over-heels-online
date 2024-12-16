@@ -1,12 +1,12 @@
+import { originalFramePeriod } from "@/game/render/animationTimings";
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import { type Xyz, subXyz, xyzEqual, originXyz } from "@/utils/vectors/vectors";
-import type { GameState } from "../gameState/GameState";
-import { originalFramePeriod } from "../render/animationTimings";
+import type { GameState } from "../GameState";
 
 export const assignLatentMovement = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,
   gameState: GameState<RoomId>,
-  startingPositions: Record<string, Xyz>
+  startingPositions: Record<string, Xyz>,
 ) => {
   /**
    * standing on updated here for all - because, eg, if a lift moves down with a player on it,

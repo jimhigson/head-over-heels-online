@@ -1,126 +1,64 @@
-import type { ColorSource } from "pixi.js";
-import { Color, Filter, GlProgram } from "pixi.js";
+import type { Color } from "pixi.js";
+import { Filter, GlProgram } from "pixi.js";
 import { vertex } from "../defaults";
 import fragment from "./paletteSwap.frag?raw";
+import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 /** Options for the PaletteSwapFilter constructor. */
-export interface PaletteSwapFilterOptions {
-  /**
-   * The color that will be changed.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0xff0000
-   */
-  originalColor?: ColorSource;
-  /**
-   * The resulting color.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0x000000
-   */
-  targetColor?: ColorSource;
-  /**
-   * Tolerance/sensitivity of the floating-point comparison between colors (lower = more exact, higher = more inclusive)
-   * @default 0.4
-   */
-  tolerance?: number;
-}
+export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 
 /**
- * Filter to emulate palette swapping from the indexed graphics days
+ * Filter to emulate palette swopping from the indexed graphics days
  */
 export class PaletteSwapFilter extends Filter {
-  /** Default values for options. */
-  public static readonly DEFAULT_OPTIONS: PaletteSwapFilterOptions = {
-    originalColor: 0xff0000,
-    targetColor: 0x000000,
-    tolerance: 0.4,
-  };
-
-  public uniforms: {
-    uOriginalColor: Float32Array;
-    uTargetColor: Float32Array;
-    uTolerance: number;
-  };
-
-  private _originalColor: Color;
-  private _targetColor: Color;
-
   /**
    * @param options - Options for the PaletteSwapFilter constructor.
    */
-  constructor(options: PaletteSwapFilterOptions) {
-    options = { ...PaletteSwapFilter.DEFAULT_OPTIONS, ...options };
+  constructor(swops: PaletteSwaps) {
+    const swopCount = Object.keys(swops).length;
 
     const glProgram = GlProgram.from({
       vertex,
-      fragment,
-      name: "palette-swap-filter",
+      fragment: fragment.replace(/\$\{SWOP_COUNT\}/g, swopCount.toFixed(0)),
+      name: "palette-swop-filter",
     });
 
     super({
-      //gpuProgram, the (more modern!) gpuProgram has been removed for the simple palette swap effects in head-over-heels-online
+      //gpuProgram, the (more modern!) gpuProgram has been removed for the simple palette swop effects in head-over-heels-online
       // - this could be ported back later if support is good enough, but our demands are extremely low and glsl is fine
       glProgram,
       resources: {
         colorReplaceUniforms: {
-          uOriginalColor: { value: new Float32Array(3), type: "vec3<f32>" },
-          uTargetColor: { value: new Float32Array(3), type: "vec3<f32>" },
-          uTolerance: { value: options.tolerance, type: "f32" },
+          uOriginal: {
+            value: new Float32Array(3 * swopCount),
+            type: "vec3<f32>",
+            size: swopCount,
+          },
+          uReplacement: {
+            value: new Float32Array(3 * swopCount),
+            type: "vec3<f32>",
+            size: swopCount,
+          },
         },
       },
     });
 
-    this.uniforms = this.resources.colorReplaceUniforms.uniforms;
+    const uniforms = this.resources.colorReplaceUniforms.uniforms as {
+      uOriginal: Float32Array;
+      uReplacement: Float32Array;
+    };
 
-    this._originalColor = new Color();
-    this._targetColor = new Color();
-    this.originalColor = options.originalColor ?? 0xff0000;
-    this.targetColor = options.targetColor ?? 0x000000;
+    (Object.entries(swops) as [SpritesheetPaletteColourName, Color][]).forEach(
+      ([original, target], i) => {
+        spritesheetPalette[original].toArray().forEach((c, j) => {
+          uniforms.uOriginal[i * 3 + j] = c;
+        });
 
-    Object.assign(this, options);
-  }
-
-  /**
-   * The color that will be changed.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0xff0000
-   */
-  get originalColor(): ColorSource {
-    return this._originalColor.value as ColorSource;
-  }
-  set originalColor(value: ColorSource) {
-    this._originalColor.setValue(value);
-    const [r, g, b] = this._originalColor.toArray();
-
-    this.uniforms.uOriginalColor[0] = r;
-    this.uniforms.uOriginalColor[1] = g;
-    this.uniforms.uOriginalColor[2] = b;
-  }
-
-  /**
-   * The resulting color.
-   * @example [1.0, 1.0, 1.0] = 0xffffff
-   * @default 0x000000
-   */
-  get targetColor(): ColorSource {
-    return this._targetColor.value as ColorSource;
-  }
-  set targetColor(value: ColorSource) {
-    this._targetColor.setValue(value);
-    const [r, g, b] = this._targetColor.toArray();
-
-    this.uniforms.uTargetColor[0] = r;
-    this.uniforms.uTargetColor[1] = g;
-    this.uniforms.uTargetColor[2] = b;
-  }
-
-  /**
-   * Tolerance/sensitivity of the floating-point comparison between colors (lower = more exact, higher = more inclusive)
-   * @default 0.4
-   */
-  get tolerance(): number {
-    return this.uniforms.uTolerance;
-  }
-  set tolerance(value: number) {
-    this.uniforms.uTolerance = value;
+        target.toArray().forEach((c, j) => {
+          uniforms.uReplacement[i * 3 + j] = c;
+        });
+      },
+    );
   }
 }

@@ -7,7 +7,6 @@ import {
 } from "@radix-ui/react-collapsible";
 import { Label } from "@radix-ui/react-label";
 
-import { LucideBug } from "lucide-react";
 import { currentRoom, currentPlayableItem } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "../levelEdit/RoomSelect";
@@ -87,13 +86,13 @@ export const Cheats = <RoomId extends string>({
   return (
     <Collapsible>
       <CollapsibleTrigger
-        className="absolute bottom-0 right-0 flex flex-col z-3 text-midRed hover:text-metallicBlue bg-shadow"
+        className="absolute bottom-0 right-0 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <LucideBug size={64} />
+        <ImgSprite textureId="helicopter-bug.1" scale={2} />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="absolute bottom-[64px] right-0 flex flex-col w-[500px]">
+        <div className="absolute bottom-[48px] right-0 flex flex-col w-[500px]">
           <Heading>room select:</Heading>
           <RoomSelect gameApi={gameApi} className="w-full" />
           <div className="flex flex-row items-center">

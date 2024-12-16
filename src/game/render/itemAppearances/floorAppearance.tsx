@@ -1,6 +1,9 @@
 import { Container, Graphics } from "pixi.js";
 import { type TextureId } from "../../../sprites/spriteSheet";
-import { edgePaletteSwapFilters } from "../filters/paletteSwapFilters";
+import {
+  edgePaletteSwapFilters,
+  mainPaletteSwapFilter,
+} from "../filters/paletteSwapFilters";
 import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
 import { floorRenderExtent } from "../renderExtent";
@@ -109,6 +112,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
         .stroke({ width: 8 });
 
       tilesContainer.addChild(tilesMask);
+      tilesContainer.filters = mainPaletteSwapFilter(room);
       tilesContainer.mask = tilesMask;
 
       mainContainer.addChild(tilesContainer);

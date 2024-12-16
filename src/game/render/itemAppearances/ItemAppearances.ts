@@ -27,6 +27,7 @@ import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
 import { floorAppearance } from "./floorAppearance";
+import { mainPaletteSwapFilter } from "../filters/paletteSwapFilters";
 
 const bubbles = {
   frames: spriteSheet.animations["bubbles.cold"],
@@ -142,6 +143,7 @@ export const itemAppearances: {
               y: wallTileSize.h + 1,
             }
           : { x: 0, y: wallTileSize.h + 1 },
+        filter: mainPaletteSwapFilter(room),
       });
     },
   ),
@@ -159,7 +161,18 @@ export const itemAppearances: {
     },
   ),
 
-  deadlyBlock: singleRenderWithStyleAsTexture,
+  deadlyBlock: renderOnce(
+    ({
+      item: {
+        config: { style },
+      },
+      room,
+    }) =>
+      createSprite({
+        texture: style,
+        filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
+      }),
+  ),
   slidingDeadly: singleRenderWithStyleAsTexture,
   slidingBlock: singleRenderWithStyleAsTexture,
 
@@ -180,13 +193,14 @@ export const itemAppearances: {
     }
 
     return {
-      container: createSprite(
-        blockTextureId(
+      container: createSprite({
+        texture: blockTextureId(
           room.color.shade === "dimmed",
           style,
           disappear !== null,
         ),
-      ),
+        filter: style === "organic" ? mainPaletteSwapFilter(room) : undefined,
+      }),
       renderProps: { disappear },
     };
   },
@@ -315,6 +329,7 @@ export const itemAppearances: {
       item: {
         config: { gives },
       },
+      room,
     }) => {
       const pickupIcons: Record<
         ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
@@ -328,15 +343,15 @@ export const itemAppearances: {
         donuts: "donuts",
         hooter: "hooter",
         crown: "crown",
-        scroll: { texture: "scroll" },
+        scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
         reincarnation: {
           frames: spriteSheet.animations["fish"],
           animationSpeed: 0.25,
         },
       };
-      const texture = pickupIcons[gives];
+      const createOptions = pickupIcons[gives];
 
-      return createSprite(texture);
+      return createSprite(createOptions);
     },
   ),
 
@@ -377,7 +392,7 @@ export const itemAppearances: {
     };
   },
 
-  baddie({ item: { config, state }, currentlyRenderedProps }) {
+  baddie({ item: { config, state }, room, currentlyRenderedProps }) {
     let startingDirection: DirectionXy4 | undefined = undefined;
     const { activated } = state;
 
@@ -434,7 +449,13 @@ export const itemAppearances: {
             return {
               container:
                 state.activated ?
-                  stackedSprites(`${config.which}.${facingXy4}`, bubbles)
+                  stackedSprites(
+                    {
+                      texture: `${config.which}.${facingXy4}`,
+                      filter: mainPaletteSwapFilter(room),
+                    },
+                    bubbles,
+                  )
                   // charging on a toaster
                 : createSprite(`${config.which}.${facingXy4}`),
               renderProps,

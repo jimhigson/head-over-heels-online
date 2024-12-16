@@ -2,7 +2,6 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
   ItemInPlay,
-  UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
@@ -13,7 +12,6 @@ import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
-import { mainPaletteSwapFilters } from "./filters/paletteSwapFilters";
 import type { RenderContext } from "./roomRenderer";
 
 const assignMouseActions = <RoomId extends string>(
@@ -43,7 +41,7 @@ const assignMouseActions = <RoomId extends string>(
   }
 };
 
-const needsColorReplace = (item: UnknownItemInPlay): boolean => {
+/*const needsColorReplace = (item: UnknownItemInPlay): boolean => {
   return (
     item.type === "wall" ||
     item.type === "floor" ||
@@ -54,7 +52,7 @@ const needsColorReplace = (item: UnknownItemInPlay): boolean => {
     (item.type === "baddie" && item.config.which === "cyberman") ||
     (item.type === "deadlyBlock" && item.config.style === "volcano")
   );
-};
+};*/
 
 const moveContainerToItemPosition = (
   { state: { position } }: AnyItemInPlay,
@@ -77,11 +75,6 @@ export const ItemRenderer = <
   renderOptions: RenderOptions<RoomId>,
 ) => {
   const renderContainer: Container = new Container({ label: "render" });
-  // color filtering has to be done before shadows are applied, since shadows stop the colour replace,
-  // but for efficiency, we only apply the filter to items that will use it:
-  if (needsColorReplace(item as UnknownItemInPlay)) {
-    renderContainer.filters = mainPaletteSwapFilters(room);
-  }
 
   if (renderOptions.showBoundingBoxes !== "none") {
     renderContainer.alpha = 0.5;

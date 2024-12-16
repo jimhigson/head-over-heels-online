@@ -18,3 +18,4 @@ export const spritesheetPalette = {
   replaceLight: new Color("#00FFFF"),
   replaceDark: new Color("#008080"),
 } as const;
+export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;

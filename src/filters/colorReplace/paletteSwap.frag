@@ -1,15 +1,30 @@
 in vec2 vTextureCoord;
 out vec4 finalColor;
 
+const int SWOP_COUNT = ${SWOP_COUNT};
+
 uniform sampler2D uTexture;
-uniform vec3 uOriginalColor;
-uniform vec3 uTargetColor;
-uniform float uTolerance;
+uniform vec3 uOriginal[SWOP_COUNT];
+uniform vec3 uReplacement[SWOP_COUNT];
+
+// colours are floats so check if they're very close rather than exactly equal:
+bool colorsEffectivelyEqual(vec3 color1, vec3 color2) {       
+    return distance(color1, color2) < 0.001;
+}
 
 void main(void) {
     vec4 c = texture(uTexture, vTextureCoord);
-    vec3 colorDiff = uOriginalColor - (c.rgb / max(c.a, 0.0000000001));
-    float colorDistance = length(colorDiff);
-    float doReplace = step(colorDistance, uTolerance);
-    finalColor = vec4(mix(c.rgb, uTargetColor * c.a, doReplace), c.a);
+
+    if( c.a == 0.0 ) {
+        finalColor = c;
+        return;
+    }
+    
+    for(int i = 0; i < 2; i++) {
+        if ( colorsEffectivelyEqual(c.rgb, uOriginal[i]) ) {
+            finalColor = vec4(uReplacement[i], c.a);            
+            return;
+        }
+    }    
+    finalColor = vec4(c.rgb, c.a);
 }

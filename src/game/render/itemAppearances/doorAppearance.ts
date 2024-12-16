@@ -1,11 +1,14 @@
-import type { Container } from "pixi.js";
+import { Container } from "pixi.js";
 import { createSprite } from "../createSprite";
 import { doorTexture } from "./doorTexture";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import type { UnknownRoomState } from "../../../model/modelTypes";
 import { doorTexturePivot } from "../../../sprites/spritePivots";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { edgePaletteSwapFilters } from "../filters/paletteSwapFilters";
+import {
+  edgePaletteSwapFilters,
+  mainPaletteSwapFilter,
+} from "../filters/paletteSwapFilters";
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   perpendicularAxisXy,
@@ -80,7 +83,12 @@ function* doorLegsGenerator(
 }
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
   ({ item: doorLegsItem, room }) => {
-    return iterateToContainer(doorLegsGenerator(doorLegsItem, room));
+    return iterateToContainer(
+      doorLegsGenerator(doorLegsItem, room),
+      new Container({
+        filters: mainPaletteSwapFilter(room),
+      }),
+    );
   },
 );
 
@@ -117,6 +125,7 @@ function* doorFrameGenerator(
   yield createSprite({
     texture: doorTexture(room, axis, nearness),
     pivot: doorTexturePivot[nearness][axis],
+    filter: mainPaletteSwapFilter(room),
   });
 }
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(

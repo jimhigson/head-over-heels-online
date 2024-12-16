@@ -33,6 +33,7 @@ do
     fi
 done
 echo "} as const;" >> gfx/spritesheetPalette.ts
+echo "export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;" >> gfx/spritesheetPalette.ts
 echo "}" >> gfx/spritesheetPalette.json
 node_modules/.bin/prettier --write gfx/spritesheetPalette.* 
 
