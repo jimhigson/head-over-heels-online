@@ -6,8 +6,8 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 import { Label } from "@radix-ui/react-label";
-import { Switch } from "@radix-ui/react-switch";
-import { LucideBug, LucideTestTube } from "lucide-react";
+
+import { LucideBug } from "lucide-react";
 import { currentRoom, currentPlayableItem } from "../gameState/GameState";
 import { changeCharacterRoom } from "../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "../levelEdit/RoomSelect";
@@ -18,6 +18,7 @@ import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { PlanetName } from "@/sprites/planets";
 import { addItemToRoomInPlay } from "../gameState/mutators/addItemToRoomInPlay";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
+import { Switch } from "@/components/ui/switch";
 
 export interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -38,9 +39,14 @@ export const SpeedButton = <RoomId extends string>({
         e.currentTarget.blur();
       }}
     >
-      x{speed}
+      {/* remove leading zeros etc: */}
+      {speed.toString().replace(/^0\./, ".")}
     </Button>
   );
+};
+
+const Heading = ({ children }: { children: string }) => {
+  return <h4 className="bg-shadow pl-2">{children}</h4>;
 };
 
 export const Cheats = <RoomId extends string>({
@@ -81,14 +87,36 @@ export const Cheats = <RoomId extends string>({
   return (
     <Collapsible>
       <CollapsibleTrigger
-        className="absolute bottom-2 right-2 flex flex-col z-3"
+        className="absolute bottom-0 right-0 flex flex-col z-3 text-midRed hover:text-metallicBlue bg-shadow"
         onClick={(e) => e.currentTarget.blur()}
       >
-        <LucideBug color="hsl(183, 28%,30%)" />
+        <LucideBug size={64} />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="absolute bottom-10 right-2 flex flex-col">
+        <div className="absolute bottom-[64px] right-0 flex flex-col w-[500px]">
+          <Heading>room select:</Heading>
           <RoomSelect gameApi={gameApi} className="w-full" />
+          <div className="flex flex-row items-center">
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.changeRoom("blacktooth1head" as RoomId);
+                e.currentTarget.blur();
+              }}
+            >
+              starting room
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                gameApi.changeRoom("laboratory" as RoomId);
+                e.currentTarget.blur();
+              }}
+            >
+              To the lab!
+            </Button>
+          </div>
+          <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">
             <Switch
               id="showbbs"
@@ -98,7 +126,7 @@ export const Cheats = <RoomId extends string>({
               }
               onClick={(e) => e.currentTarget.blur()}
             />
-            <Label htmlFor="showbbs">show BBs</Label>
+            <Label htmlFor="showbbs">BBs</Label>
             <Switch
               id="showAllBbs"
               checked={showBoundingBoxes === "all"}
@@ -107,7 +135,7 @@ export const Cheats = <RoomId extends string>({
               }
               onClick={(e) => e.currentTarget.blur()}
             />
-            <Label htmlFor="showAllBbs">inc wall BBs</Label>
+            <Label htmlFor="showAllBbs">wall BBs</Label>
             <Switch
               id="showshadows"
               checked={showShadowMasks}
@@ -116,27 +144,8 @@ export const Cheats = <RoomId extends string>({
             />
             <Label htmlFor="showshadows">shadow masks</Label>
           </div>
-          <div className="flex flex-row items-center">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.changeRoom("blacktooth1head" as RoomId);
-                e.currentTarget.blur();
-              }}
-            >
-              Room 1
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.changeRoom("laboratory" as RoomId);
-                e.currentTarget.blur();
-              }}
-            >
-              <LucideTestTube />
-              To the lab!
-            </Button>
-          </div>
+
+          <Heading>summon character:</Heading>
           <div className="flex flex-row items-center">
             <Button
               className="flex-1"
@@ -168,7 +177,18 @@ export const Cheats = <RoomId extends string>({
             >
               <ImgSprite textureId="head.walking.right.2" />
             </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                e.currentTarget.blur();
+              }}
+            >
+              <ImgSprite textureId="head.walking.right.2" />
+              over
+              <ImgSprite textureId="heels.walking.right.2" />
+            </Button>
           </div>
+          <Heading>summon item:</Heading>
           <div className="flex flex-row items-center">
             <Button
               className="flex-1"
@@ -241,6 +261,7 @@ export const Cheats = <RoomId extends string>({
             </Button>
           </div>
 
+          <Heading>game speed x:</Heading>
           <div className="flex flex-row items-center">
             <SpeedButton className="flex-1" speed={0.05} gameApi={gameApi} />
             <SpeedButton className="flex-1" speed={0.2} gameApi={gameApi} />
@@ -253,40 +274,73 @@ export const Cheats = <RoomId extends string>({
             <SpeedButton className="flex-1" speed={100} gameApi={gameApi} />
           </div>
 
-          <Button
-            onClick={(e) => {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (window as any).gs = gameApi.gameState;
-              if (gameApi) console.log(gameApi.gameState);
-              e.currentTarget.blur();
-            }}
-          >
-            log(gameState); gs=gameState
-          </Button>
-          <Button
-            onClick={(e) => {
-              if (gameApi) console.log(campaign.rooms[gameApi.currentRoom.id]);
-              e.currentTarget.blur();
-            }}
-          >
-            Room JSON to console
-          </Button>
-          <Button onClick={() => gameApi && console.log(gameApi.currentRoom)}>
-            Room state to console
-          </Button>
-          <Button
-            onClick={(e) => {
-              if (gameApi)
-                console.log(
-                  gameApi.currentRoom.items[
-                    gameApi.gameState.currentCharacterName
-                  ],
-                );
-              e.currentTarget.blur();
-            }}
-          >
-            Playable to console
-          </Button>
+          <Heading>write to console:</Heading>
+          <div className="flex flex-row items-center flex-wrap">
+            <Button
+              className="flex-grow"
+              onClick={(e) => {
+                if (gameApi) {
+                  console.log(gameApi.gameState);
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).gs = gameApi.gameState;
+                  console.log("gameState on window.gs");
+                }
+                e.currentTarget.blur();
+              }}
+            >
+              gameState
+            </Button>
+            <Button
+              className="flex-grow"
+              onClick={(e) => {
+                if (gameApi) {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).roomJson = gameApi.gameState;
+                  const roomJson = campaign.rooms[gameApi.currentRoom.id];
+                  console.log(roomJson);
+                  console.log("roomJson on window.roomJson");
+                }
+                e.currentTarget.blur();
+              }}
+            >
+              Room JSON
+            </Button>
+            <Button
+              className="flex-grow"
+              onClick={(e) => {
+                if (gameApi) {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).room = gameApi.currentRoom;
+                  console.log(gameApi.currentRoom);
+                  console.log("currentRoom on window.room");
+                }
+                e.currentTarget.blur();
+              }}
+            >
+              Room state
+            </Button>
+            <Button
+              className="flex-grow"
+              onClick={(e) => {
+                if (gameApi) {
+                  const playable =
+                    gameApi.currentRoom.items[
+                      gameApi.gameState.currentCharacterName
+                    ];
+
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).playable = playable;
+                  console.log(playable);
+                  console.log("playable on window.playable");
+                }
+
+                e.currentTarget.blur();
+              }}
+            >
+              <ImgSprite textureId="head.walking.right.2" />|
+              <ImgSprite textureId="heels.walking.right.2" />
+            </Button>
+          </div>
         </div>
       </CollapsibleContent>
     </Collapsible>

@@ -12,7 +12,7 @@ import type {
 import { isPlayableItem } from "../physics/itemPredicates";
 import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
-import { objectValues } from "iter-tools";
+import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { currentPlayableItem, currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
@@ -174,6 +174,24 @@ const itemTickOrderComparator = (
 export type MovedItems = Set<AnyItemInPlay>;
 
 export const progressGameState = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+): MovedItems => {
+  if (gameState.gameSpeed > 1) {
+    let movedItems = new Set<AnyItemInPlay>();
+    for (let i = 0; i < gameState.gameSpeed; i++) {
+      movedItems = new Set(
+        concat(movedItems, _progressGameState(gameState, deltaMS)),
+      );
+    }
+    return movedItems;
+  }
+
+  // gamespeed is 1 or <1
+  return _progressGameState(gameState, deltaMS * gameState.gameSpeed);
+};
+
+export const _progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems => {
