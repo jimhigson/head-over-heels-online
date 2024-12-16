@@ -49,6 +49,7 @@ const needsColorReplace = (item: UnknownItemInPlay): boolean => {
     item.type === "floor" ||
     item.type === "doorFrame" ||
     item.type === "doorLegs" ||
+    (item.type === "pickup" && item.config.gives === "scroll") ||
     (item.type === "block" && item.config.style === "organic") ||
     (item.type === "baddie" && item.config.which === "cyberman") ||
     (item.type === "deadlyBlock" && item.config.style === "volcano")

@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { App } from "./App.tsx";
+import { App } from "./game/components/App.tsx";
 import { campaign } from "./_generated/originalCampaign/campaign.ts";
 import { testCampaign } from "./testCampaign.ts";
 

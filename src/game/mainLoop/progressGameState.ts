@@ -83,6 +83,14 @@ const removeNonApplicableStandingOn = <RoomId extends string>(
     // check what is standing on us - this implies that we're also checking what everything is stood on,
     // but gives us a chance to apply latent movement:
     for (const stander of item.state.stoodOnBy) {
+      /*console.log(
+        stander.id,
+        "still stood on",
+        item.id,
+        "?",
+        spatiallyCheckStandingOn(stander, item),
+      );*/
+
       if (!spatiallyCheckStandingOn(stander, item)) {
         removeStandingOn(stander);
         // if we are standing on something else (ie, walked from one block to an adjacent block) get that

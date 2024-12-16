@@ -17,6 +17,7 @@ import type { ShowBoundingBoxes } from "../RenderOptions";
 import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { PlanetName } from "@/sprites/planets";
 import { addItemToRoomInPlay } from "../gameState/mutators/addItemToRoomInPlay";
+import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 export interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -56,6 +57,8 @@ export const Cheats = <RoomId extends string>({
   setShowShadowMasks: (show: boolean) => void;
 }) => {
   const { campaign } = gameApi.gameState;
+
+  useLevelSelectByUrlHash(gameApi);
 
   const summonItem = <T extends JsonItemType>(
     itemType: T,
