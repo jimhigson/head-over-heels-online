@@ -3,7 +3,7 @@ import type { PlayableItem } from "../itemPredicates";
 import { isFreeItem, isPlayableItem } from "../itemPredicates";
 import { movingItemIsType, type ItemTouchEvent } from "./ItemTouchEvent";
 import { makeItemFadeOut } from "@/game/gameState/mutators/makeItemFadeOut";
-import { setStandingOn } from "@/game/gameState/mutators/removeStandingOn";
+import { setStandingOn } from "@/game/gameState/mutators/modifyStandingOn";
 import { applyMechanicsResults } from "@/game/mainLoop/tickItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { characterNames } from "@/model/modelTypes";

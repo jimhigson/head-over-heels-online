@@ -1,6 +1,6 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
-import { deleteItemFromRoomInPlay } from "./deleteItemFromRoomInPlay";
+import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { RoomState } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
@@ -19,7 +19,7 @@ export const makeItemFadeOut = <RoomId extends string>({
   room: RoomState<PlanetName, RoomId>;
   gameState: GameState<RoomId>;
 }) => {
-  deleteItemFromRoomInPlay({ room, item: touchedItem });
+  deleteItemFromRoom({ room, item: touchedItem });
 
   const bubblesItem = addItemToRoomInPlay({
     itemType: "bubbles",

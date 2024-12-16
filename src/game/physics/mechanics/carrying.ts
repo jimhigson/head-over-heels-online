@@ -13,7 +13,7 @@ import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
 import { iterate } from "@/utils/iterate";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
-import { deleteItemFromRoomInPlay } from "@/game/gameState/mutators/deleteItemFromRoomInPlay";
+import { deleteItemFromRoom } from "@/game/gameState/mutators/deleteItemFromRoom";
 import type { CarriedItem } from "@/model/ItemStateMap";
 import { addItemToRoomInPlay } from "@/game/gameState/mutators/addItemToRoomInPlay";
 
@@ -111,7 +111,7 @@ const pickUpItem = <RoomId extends string, T extends PortableItemType>(
   } as CarriedItem<RoomId>;
   heelsItem.state.carrying = carrying;
 
-  deleteItemFromRoomInPlay({ room, item: itemToPickup });
+  deleteItemFromRoom({ room, item: itemToPickup });
 };
 
 const findItemToPickup = <RoomId extends string>(

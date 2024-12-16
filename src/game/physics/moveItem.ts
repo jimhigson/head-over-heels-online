@@ -20,7 +20,7 @@ import { objectValues } from "iter-tools";
 import {
   removeStandingOn,
   setStandingOn,
-} from "../gameState/mutators/removeStandingOn";
+} from "../gameState/mutators/modifyStandingOn";
 
 const log = 0;
 

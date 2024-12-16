@@ -100,6 +100,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     [x] remove unsolid after concept
 [x] can't jump off of collected powerups    
 
+[ ] death of char A after char B moved into room splits off into two room states
 [ ] fast walk for head
 [ ] big jump for heels
 [ ] heads can fire donuts
@@ -151,7 +152,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] helecopter bug doesn't move
 
 # (head) blacktooth16
-[ ] pucks don't slide along the floor (#blacktooth37)
+[x] pucks don't slide along the floor (#blacktooth37)
 
 # (head) blacktooth17triple
 [x] shield bunny doesn't do anything
@@ -198,6 +199,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # (heels) blacktooth29
 [x] cyberman moves like a dalek
+
+# (heels) blacktooth28
+[x] after death on spikes, can walk in air off door legs
 
 # (heels) blacktooth29/30
 [x] heels spontaneuously dies when getting off lift (why??) - probably coliding with item from

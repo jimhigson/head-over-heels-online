@@ -1,9 +1,3 @@
-// if the period of the frame rate is less than this value, each rendering tick
-// will be split into multiple physics ticks down to this size:
-// this needs to be small enough that the fastest movement
-// (jumping: 2px per frame in original game @25fps, so 50px per second)
-// can be guaranteed to take up every half-pixel position.
-
 import type {
   UnknownItemInPlay,
   ItemInPlayType,
@@ -20,24 +14,11 @@ import { swopCharacters } from "../gameState/mutators/swopCharacters";
 import { characterLosesLife } from "../gameState/mutators/characterLosesLife";
 import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
-import {
-  xyzEqual,
-  isExactIntegerXyz,
-  roundXyz,
-  subXyz,
-  originXyz,
-} from "@/utils/vectors/vectors";
+import { xyzEqual, isExactIntegerXyz, roundXyz } from "@/utils/vectors/vectors";
 import { iterate } from "@/utils/iterate";
-import {
-  spatiallyCheckStandingOn,
-  findStandingOnWithHighestPriorityAndMostOverlap,
-} from "../collision/checkStandingOn";
-import { originalFramePeriod } from "../render/animationTimings";
-import {
-  removeStandingOn,
-  setStandingOn,
-} from "../gameState/mutators/removeStandingOn";
-import { deleteItemFromRoomInPlay } from "../gameState/mutators/deleteItemFromRoomInPlay";
+import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
+import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
+import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
@@ -67,80 +48,6 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     if (shouldSnap) {
       console.log(`snapping item ${item.id} to pixel grid`);
       item.state.position = roundXyz(item.state.position);
-    }
-  }
-};
-
-const removeNonApplicableStandingOn = <RoomId extends string>(
-  items: Array<UnknownItemInPlay<RoomId>>,
-) => {
-  /**
-   * standing on updated here for all - because, eg, if a lift moves down with a player on it,
-   * if the check is done inside the lift's tick, the player is then not on the lift and has no
-   * ability to walk (the walk mechanic will return a null result) while the lift descends
-   */
-  for (const item of items) {
-    // check what is standing on us - this implies that we're also checking what everything is stood on,
-    // but gives us a chance to apply latent movement:
-    for (const stander of item.state.stoodOnBy) {
-      /*console.log(
-        stander.id,
-        "still stood on",
-        item.id,
-        "?",
-        spatiallyCheckStandingOn(stander, item),
-      );*/
-
-      if (!spatiallyCheckStandingOn(stander, item)) {
-        removeStandingOn(stander);
-        // if we are standing on something else (ie, walked from one block to an adjacent block) get that
-        // set up so that in the next frame there is no pause in the walking (detects in the walk mechanic on
-        // the very next frame that we can walk)
-        const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
-          stander,
-          items,
-        );
-        if (newStandingOn !== undefined) {
-          setStandingOn(stander, newStandingOn);
-        }
-      }
-    }
-  }
-};
-
-const assignLatentMovement = <RoomId extends string>(
-  movedItems: Set<AnyItemInPlay>,
-  gameState: GameState<RoomId>,
-  startingPositions: Record<string, Xyz>,
-) => {
-  /**
-   * standing on updated here for all - because, eg, if a lift moves down with a player on it,
-   * if the check is done inside the lift's tick, the player is then not on the lift and has no
-   * ability to walk (the walk mechanic will return a null result) while the lift descends
-   */
-  for (const moverItem of movedItems) {
-    const previousPosition: Xyz | undefined = startingPositions[moverItem.id];
-
-    if (previousPosition === undefined) {
-      // item was introduced to the world during this tick, can't have latent movement:
-      continue;
-    }
-
-    // check what is standing on us - this implies that we're also checking what everything is stood on,
-    // but gives us a chance to apply latent movement:
-    const movementDelta = subXyz(moverItem.state.position, previousPosition);
-    // latent movement is only horizontal - anything else, collisions and gravity can handle
-    const latentMovement = { ...movementDelta, z: 0 };
-
-    if (!xyzEqual(latentMovement, originXyz)) {
-      for (const stander of moverItem.state.stoodOnBy) {
-        stander.state.latentMovement.push({
-          // since the original game pushes items every other frame, the practical latency
-          // for standing-on items is two frames
-          moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
-          positionDelta: latentMovement,
-        });
-      }
     }
   }
 };
@@ -222,9 +129,8 @@ export const _progressGameState = <RoomId extends string>(
       if (isPlayableItem(item)) {
         characterLosesLife(gameState);
         // now we let the room play through normally on the assumption it isn't harmful to do so
-      } else {
-        deleteItemFromRoomInPlay({ room, item });
       }
+      deleteItemFromRoom({ room, item });
     }
   }
 
@@ -243,7 +149,7 @@ export const _progressGameState = <RoomId extends string>(
     tickItem(item, room, gameState, deltaMS);
   }
 
-  removeNonApplicableStandingOn(sortedItems);
+  removeNoLongerStandingOn(room);
 
   const movedItems = new Set<AnyItemInPlay>(
     iterate(objectValues(room.items)).filter(

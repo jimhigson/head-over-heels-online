@@ -3,7 +3,7 @@ import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { isFreeItem } from "@/game/physics/itemPredicates";
 
-export const deleteItemFromRoomInPlay = <RoomId extends string>({
+export const deleteItemFromRoom = <RoomId extends string>({
   room,
   item,
 }: {
