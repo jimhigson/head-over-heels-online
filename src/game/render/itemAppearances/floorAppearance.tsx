@@ -8,11 +8,11 @@ import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
 import { floorRenderExtent } from "../renderExtent";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
-import { originXy, type DirectionXy4 } from "@/utils/vectors/vectors";
+import { originXy, type Direction4Xy } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
 
-export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
+export type SidesWithDoors = Partial<Record<Direction4Xy, true>>;
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ room }) => {

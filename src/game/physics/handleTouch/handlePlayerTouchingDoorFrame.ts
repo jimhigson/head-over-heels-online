@@ -1,6 +1,6 @@
 import type { CharacterName } from "@/model/modelTypes";
 import { addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -10,7 +10,7 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
   movingItem: player,
   movementVector,
   touchedItem: doorFrame,
-}: ItemTouchEvent<RoomId, CharacterName, "doorFrame">) => {
+}: ItemTouchEventByItemType<RoomId, CharacterName, "doorFrame">) => {
   const {
     config: { direction, nearness },
   } = doorFrame;

@@ -113,3 +113,5 @@ export const liftBBShortening = 2;
 export const shieldDuration = 60_000;
 
 export const veryHighZ = 9999;
+
+export const uncombineLittleJumpPxHeight = 2;

@@ -1,8 +1,9 @@
+import type { IndividualCharacterName } from "../../model/modelTypes";
 import {
   type RoomState,
   type CharacterName,
   type Campaign,
-  otherCharacterName,
+  otherIndividualCharacterName,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
@@ -18,40 +19,12 @@ export const currentRoom = <RoomId extends string>(
   // assuming both players haven't lost all their lives, or this is not reliable!
   gameState.characterRooms[gameState.currentCharacterName]!.room;
 
-/*
-  export const pickupCollected = <RoomId extends string>(
-  pickupsCollected: PickupsCollected<RoomId>,
-  roomId: RoomId,
-  pickupItemId: string,
-): boolean => pickupsCollected[roomId][pickupItemId] === true;
-*/
-
-export const currentPlayableItem = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-): PlayableItem =>
-  // assuming both players haven't lost all their lives, or this is not reliable!
-  gameState.characterRooms[gameState.currentCharacterName]!.room.items[
-    gameState.currentCharacterName
-  ]!;
-
 /** gets the playable item for the non-current character */
 export const otherPlayableItem = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ): PlayableItem | undefined => {
-  const name = otherCharacterName(gameState.currentCharacterName);
+  const name = otherIndividualCharacterName(gameState.currentCharacterName);
   return gameState.characterRooms[name]?.room.items[name];
-};
-
-export const getPlayableItem = <
-  C extends CharacterName,
-  RoomId extends string = string,
->(
-  gameState: GameState<RoomId>,
-  character: C,
-): PlayableItem<C, RoomId> | undefined => {
-  return gameState.characterRooms[character]?.room.items[character] as
-    | PlayableItem<C, RoomId>
-    | undefined;
 };
 
 export type RoomPickupsCollected = Record<string, true>;
@@ -61,19 +34,22 @@ export type PickupsCollected<RoomId extends string> = Record<
   RoomPickupsCollected
 >;
 
-type CharacterRooms<RoomId extends string> = {
-  [C in CharacterName]:
-    | {
-        room: RoomState<PlanetName, RoomId>;
-        entryState: EntryState;
-      }
-    | undefined;
-};
+type CharacterRooms<RoomId extends string> = Partial<{
+  [C in CharacterName]: {
+    room: RoomState<PlanetName, RoomId>;
+    entryState: EntryState;
+  };
+}>;
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   keyAssignment: KeyAssignment;
   currentCharacterName: CharacterName;
+  /** 
+    if playing combined, which character was paid immediately before combining?
+    this allows to give the right character control after uncombining
+    */
+  previousPlayable?: IndividualCharacterName;
   inputState: InputState;
 
   /** partial because character can have lost all lives */

@@ -1,5 +1,5 @@
 import type { PlanetName, Wall } from "@/sprites/planets";
-import type { DirectionXy4, Xyz, AxisXy } from "@/utils/vectors/vectors";
+import type { Direction4Xy, Xyz, AxisXy } from "@/utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
   DoorFrameConfig,
@@ -19,7 +19,7 @@ export type ItemConfigMap<
   door: {
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
-    direction: DirectionXy4;
+    direction: Direction4Xy;
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
@@ -33,7 +33,7 @@ export type ItemConfigMap<
   };
   wall: {
     style: Wall<P>;
-    side: DirectionXy4;
+    side: Direction4Xy;
   };
   teleporter: {
     toRoom: RoomId;
@@ -60,7 +60,7 @@ export type ItemConfigMap<
     style: "puck";
   };
   conveyor: {
-    direction: DirectionXy4;
+    direction: Direction4Xy;
   };
   pickup:
     | {
@@ -107,12 +107,12 @@ export type ItemConfigMap<
     | {
         // with a starting direction
         which: "turtle" | "cyberman";
-        startDirection: DirectionXy4;
+        startDirection: Direction4Xy;
       }
     | {
         // with a starting direction
         which: "american-football-head";
-        startDirection: DirectionXy4;
+        startDirection: Direction4Xy;
         style: "greenAndPink" | "starsAndStripes";
       }
   );

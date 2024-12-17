@@ -243,7 +243,7 @@ export const moveItem = <RoomId extends string>({
 
         // not colliding with the thing we were stood on before - take over the slot:
         removeStandingOn(subjectItem);
-        setStandingOn(subjectItem, collision);
+        setStandingOn({ above: subjectItem, below: collision });
       }
     }
   }

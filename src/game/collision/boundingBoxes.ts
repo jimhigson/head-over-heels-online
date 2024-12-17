@@ -7,7 +7,10 @@ import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
 const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
-const doubleHeighCharacter: Aabb = { ...smallItemAabb, z: blockSizePx.h * 2 };
+export const doubleHeightCharacter: Aabb = {
+  ...smallItemAabb,
+  z: blockSizePx.h * 2,
+};
 const wallRenderHeight = 50;
 
 // can't take room height blocks times block height, or it is still possible to
@@ -47,7 +50,6 @@ export const boundingBoxForItem = (
     case "slidingDeadly":
     case "firedDonut":
     case "slidingBlock":
-    case "player": // head's nose seems to be rendered outside of his bb in the original
       return { aabb: smallItemAabb };
     case "lift":
       return {
@@ -66,7 +68,7 @@ export const boundingBoxForItem = (
         : { aabb: smallItemAabb };
 
     case "charles":
-      return { aabb: doubleHeighCharacter };
+      return { aabb: doubleHeightCharacter };
 
     case "ball":
       return { aabb: { x: 11, y: 11, z: 12 } };
@@ -92,7 +94,7 @@ export const boundingBoxForItem = (
         case "elephant":
         case "flying-ball":
         case "computer-bot":
-          return { aabb: doubleHeighCharacter };
+          return { aabb: doubleHeightCharacter };
         case "helicopter-bug":
         case "dalek":
           return { aabb: smallItemAabb };

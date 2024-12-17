@@ -1,5 +1,5 @@
 import {
-  directionsXy4,
+  directions4Xy,
   originXyz,
   scaleXyz,
   subXyz,
@@ -45,14 +45,17 @@ export const walking = <RoomId extends string>(
     },
   } = playableItem;
 
+  // heels does the walking for headOverHeels, so we need to use the heels walking speed:
+  const effectiveWalkingCharacter = type === "headOverHeels" ? "heels" : type;
+
   const directionOfWalk =
     autoWalk ? facing : (
-      directionsXy4.find((d) => {
+      directions4Xy.find((d) => {
         return inputState[d] === true;
       })
     );
 
-  const maxWalkSpeed = moveSpeedPixPerMs[type];
+  const maxWalkSpeed = moveSpeedPixPerMs[effectiveWalkingCharacter];
 
   if (teleporting !== null || action === "death") {
     // do no walking while teleporting or showing dying animation:
@@ -120,12 +123,13 @@ export const walking = <RoomId extends string>(
         vels: {
           walking: accelerateToSpeed({
             vel: previousWalkingVel,
-            acc: playerWalkAcceldPixPerMsSq[type],
+            acc: playerWalkAcceldPixPerMsSq[effectiveWalkingCharacter],
             deltaMS,
             maxSpeed: maxWalkSpeed,
             unitD: unitVectors[directionOfWalk],
-            crossComponentFade: playerWalkStopAccelPixPerMsSq[type],
-            minVelocity: walkMinSpeedPixPerMs[type],
+            crossComponentFade:
+              playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter],
+            minVelocity: walkMinSpeedPixPerMs[effectiveWalkingCharacter],
           }),
         },
         stateDelta: {
@@ -143,7 +147,8 @@ export const walking = <RoomId extends string>(
       scaleXyz(previousWalkingVel, 1 / previousSpeed)
     );
   const newSpeed = Math.max(
-    previousSpeed - playerWalkStopAccelPixPerMsSq[type] * deltaMS,
+    previousSpeed -
+      playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter] * deltaMS,
     0,
   );
   return {
@@ -151,7 +156,9 @@ export const walking = <RoomId extends string>(
     vels: {
       walking: scaleXyz(
         previousDirection,
-        newSpeed < walkMinSpeedPixPerMs[type] ? 0 : newSpeed,
+        newSpeed < walkMinSpeedPixPerMs[effectiveWalkingCharacter] ?
+          0
+        : newSpeed,
       ),
     },
     stateDelta: { action: isFalling ? "falling" : "idle" },

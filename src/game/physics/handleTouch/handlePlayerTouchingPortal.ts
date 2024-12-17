@@ -2,7 +2,7 @@ import { addXyz, dotProductXyz, subXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
 import type { CharacterName } from "@/model/modelTypes";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /**
  *
@@ -14,7 +14,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
   touchedItem: portalItem,
   /** the movement that caused the player to touch the portal */
   movementVector,
-}: ItemTouchEvent<RoomId, CharacterName, "portal">) => {
+}: ItemTouchEventByItemType<RoomId, CharacterName, "portal">) => {
   const {
     config: { relativePoint, toRoom, direction: portalDirection },
     state: { position: portalPosition },

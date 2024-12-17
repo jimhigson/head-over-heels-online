@@ -74,6 +74,14 @@ export const ItemRenderer = <
   room: RoomState<PlanetName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
+  const renderBoundingBoxes =
+    renderOptions.showBoundingBoxes === "all" ||
+    (renderOptions.showBoundingBoxes === "non-wall" && item.type !== "wall");
+
+  if (!item.renders && !renderBoundingBoxes) {
+    return undefined;
+  }
+
   const renderContainer: Container = new Container({ label: "render" });
 
   if (renderOptions.showBoundingBoxes !== "none") {
@@ -90,10 +98,7 @@ export const ItemRenderer = <
 
   assignMouseActions(item, mainContainer, renderOptions);
 
-  if (
-    renderOptions.showBoundingBoxes === "all" ||
-    (renderOptions.showBoundingBoxes === "non-wall" && item.type !== "wall")
-  ) {
+  if (renderBoundingBoxes) {
     mainContainer.addChild(renderItemBBs(item));
     moveContainerToItemPosition(item, mainContainer);
   }
@@ -120,13 +125,9 @@ export const ItemRenderer = <
       if (itemShadowRenderer) itemShadowRenderer.destroy();
     },
     /**
-     * @returns true iff the item needs z-order resorting for the room
+     * update the rendering for the item
      */
     tick(renderContext: RenderContext) {
-      if (!item.renders) {
-        return;
-      }
-
       const rendering = appearance({ item, room, currentlyRenderedProps });
       if (rendering !== undefined) {
         // the appearance decided to update:
@@ -141,6 +142,8 @@ export const ItemRenderer = <
       const hasMoved = renderContext.movedItems.has(item);
 
       if (hasMoved) {
+        console.log("ItemRenderer for", item.id, "will position rendering");
+
         // current position of item doesn't match its current rendered position
         moveContainerToItemPosition(item, mainContainer);
       }
@@ -154,4 +157,4 @@ export type ItemRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   ItemId extends string,
-> = ReturnType<typeof ItemRenderer<T, RoomId, ItemId>>;
+> = NonNullable<ReturnType<typeof ItemRenderer<T, RoomId, ItemId>>>;

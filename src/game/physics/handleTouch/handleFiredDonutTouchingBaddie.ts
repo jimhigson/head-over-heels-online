@@ -1,5 +1,5 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /**
  *
@@ -7,8 +7,8 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
  */
 export function handleFiredDonutTouchingBaddie<RoomId extends string>(
   e:
-    | ItemTouchEvent<RoomId, "firedDonut", "baddie">
-    | ItemTouchEvent<RoomId, "baddie", "firedDonut">,
+    | ItemTouchEventByItemType<RoomId, "firedDonut", "baddie">
+    | ItemTouchEventByItemType<RoomId, "baddie", "firedDonut">,
 ) {
   const baddie: ItemInPlay<"baddie"> =
     e.movingItem.type === "baddie" ?

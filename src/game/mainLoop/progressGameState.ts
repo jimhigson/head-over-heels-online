@@ -8,9 +8,9 @@ import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
-import { currentPlayableItem, currentRoom } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
-import { swopCharacters } from "../gameState/mutators/swopCharacters";
+import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { characterLosesLife } from "../gameState/mutators/characterLosesLife";
 import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
@@ -19,6 +19,7 @@ import { iterate } from "@/utils/iterate";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
 import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
@@ -104,14 +105,6 @@ export const _progressGameState = <RoomId extends string>(
 ): MovedItems => {
   const { inputState } = gameState;
 
-  if (inputState.swop) {
-    swopCharacters(gameState);
-    // we have now handled that keypress, turn it off until the key is pressed again,
-    // which will turn this flag back on
-    inputState.swop = false;
-    // now we let the room play through normally on the assumption it isn't harmful to do so
-  }
-
   const room = currentRoom(gameState);
 
   // take a snapshot of item positions before any physics ticks so we
@@ -123,6 +116,14 @@ export const _progressGameState = <RoomId extends string>(
       item.state.position,
     ]),
   );
+
+  if (inputState.swop) {
+    swopPlayables(gameState);
+    // we have now handled that keypress, turn it off until the key is pressed again,
+    // which will turn this flag back on
+    inputState.swop = false;
+    // now we let the room play through normally on the assumption it isn't harmful to do so
+  }
 
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, gameState)) {
@@ -137,7 +138,7 @@ export const _progressGameState = <RoomId extends string>(
   const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
 
   for (const item of sortedItems) {
-    if (currentPlayableItem(gameState).state.action === "death") {
+    if (selectCurrentPlayableItem(gameState).state.action === "death") {
       // all physics is suspended while death animation plays
       break;
     }

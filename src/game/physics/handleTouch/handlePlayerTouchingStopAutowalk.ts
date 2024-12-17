@@ -1,5 +1,5 @@
 import type { CharacterName } from "@/model/modelTypes";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /**
  *
@@ -7,6 +7,6 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
  */
 export function handlePlayerTouchingStopAutowalk<RoomId extends string>({
   movingItem,
-}: ItemTouchEvent<RoomId, CharacterName, "stopAutowalk">) {
+}: ItemTouchEventByItemType<RoomId, CharacterName, "stopAutowalk">) {
   movingItem.state.autoWalk = false;
 }

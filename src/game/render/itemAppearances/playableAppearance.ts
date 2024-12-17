@@ -1,8 +1,64 @@
 import { spriteSheet } from "@/sprites/spriteSheet";
+import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 
-import type { CharacterName } from "@/model/modelTypes";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "@/model/modelTypes";
 import type { ItemAppearanceOptions } from "./appearanceUtils";
+
+import type { Direction4Xy } from "@/utils/vectors/vectors";
+import { stackedSprites } from "./stackedSprites";
+import type {
+  PlayableActionState,
+  PlayableTeleportingState,
+} from "@/model/ItemStateMap";
+
+const renderSprite = (
+  name: IndividualCharacterName,
+  action: PlayableActionState,
+  facing: Direction4Xy,
+  teleporting: PlayableTeleportingState | null,
+): CreateSpriteOptions => {
+  if (action === "death") {
+    return {
+      frames: spriteSheet.animations[`${name}.fadeOut`],
+    };
+  }
+
+  if (teleporting !== null) {
+    if (teleporting.phase === "out") {
+      return {
+        frames: spriteSheet.animations[`${name}.fadeOut`],
+      };
+    }
+
+    if (teleporting.phase === "in") {
+      return {
+        frames: spriteSheet.animations[`${name}.fadeOut`].toReversed(),
+      };
+    }
+  }
+  if (action === "moving") {
+    return {
+      frames: spriteSheet.animations[`${name}.walking.${facing}`],
+    };
+  } else if (
+    action === "falling" &&
+    name === "head" &&
+    (facing === "towards" || facing === "right")
+  ) {
+    return `head.falling.${facing}`;
+  } else {
+    if (name === "head" && (facing === "towards" || facing === "right")) {
+      return {
+        frames: spriteSheet.animations[`head.idle.${facing}`],
+      };
+    }
+    return `${name}.walking.${facing}.2`;
+  }
+};
 
 export const playableAppearance = <C extends CharacterName>({
   item: {
@@ -21,48 +77,14 @@ export const playableAppearance = <C extends CharacterName>({
     return;
   }
 
-  const renderSprite = () => {
-    if (action === "death") {
-      return createSprite({
-        frames: spriteSheet.animations[`${type}.fadeOut`],
-      });
-    }
-
-    if (teleporting !== null) {
-      if (teleporting.phase === "out") {
-        return createSprite({
-          frames: spriteSheet.animations[`${type}.fadeOut`],
-        });
-      }
-
-      if (teleporting.phase === "in") {
-        return createSprite({
-          frames: spriteSheet.animations[`${type}.fadeOut`].toReversed(),
-        });
-      }
-    }
-    if (action === "moving") {
-      return createSprite({
-        frames: spriteSheet.animations[`${type}.walking.${facing}`],
-      });
-    } else if (
-      action === "falling" &&
-      type === "head" &&
-      (facing === "towards" || facing === "right")
-    ) {
-      return createSprite(`head.falling.${facing}`);
-    } else {
-      if (type === "head" && (facing === "towards" || facing === "right")) {
-        return createSprite({
-          frames: spriteSheet.animations[`head.idle.${facing}`],
-        });
-      }
-      return createSprite(`${type}.walking.${facing}.2`);
-    }
-  };
-
   return {
-    container: renderSprite(),
+    container:
+      type === "headOverHeels" ?
+        stackedSprites({
+          top: renderSprite("head", action, facing, teleporting),
+          bottom: renderSprite("heels", action, facing, teleporting),
+        })
+      : createSprite(renderSprite(type, action, facing, teleporting)),
     renderProps: {
       action,
       facingXy4: facing,

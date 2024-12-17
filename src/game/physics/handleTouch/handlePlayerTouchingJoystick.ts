@@ -5,14 +5,14 @@ import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { moveItem } from "../moveItem";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 export const handlePlayerTouchingJoystick = <RoomId extends string>({
   gameState,
   movingItem,
   touchedItem: joystickItem,
   deltaMS,
-}: ItemTouchEvent<RoomId, ItemInPlayType, "joystick">) => {
+}: ItemTouchEventByItemType<RoomId, ItemInPlayType, "joystick">) => {
   const room = currentRoom(gameState);
 
   const {

@@ -1,8 +1,6 @@
 import type { PlanetName } from "@/sprites/planets";
-import type { Xyz, Xy } from "@/utils/vectors/vectors";
+import type { Xyz, Xy, Direction4Xy } from "@/utils/vectors/vectors";
 import type {
-  EitherPlayableState,
-  ItemInPlay,
   EmptyObject,
   SwitchSetting,
   UnknownItemInPlay,
@@ -10,14 +8,27 @@ import type {
 import type { JsonItemConfig } from "./json/JsonItem";
 import type { PortableItemType } from "@/game/physics/itemPredicates";
 
-export type FreeItemState<RoomId extends string> = {
+export type PlayableActionState =
+  | "moving"
+  | "idle"
+  | "falling"
+  /** death animation is playing - character will have had expired set  */
+  | "death";
+
+export type PlayableTeleportingState =
+  | {
+      phase: "out";
+      timeRemaining: number;
+      toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
+    }
+  | {
+      phase: "in";
+      timeRemaining: number;
+    };
+
+export type FreeItemState<RoomId extends string = string> = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
   standingOn: UnknownItemInPlay<RoomId> | null;
-  /*
-    the conveyor currently stood on, if any - taken from the standingOn list. This ix used so the conveyor knows
-    to render itself an animating
-  */
-  activeConveyor: ItemInPlay<"conveyor", PlanetName, RoomId> | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
@@ -25,6 +36,7 @@ export type FreeItemState<RoomId extends string> = {
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */
     gravity: Xyz;
+    /** eg, for conveyors - maybe for other kinds of moving floors in future */
     movingFloor: Xyz;
   };
 };
@@ -57,26 +69,57 @@ export type CarriedItem<
   };
 }[Types];
 
-export type ItemStateMap<RoomId extends string> = {
-  head: EitherPlayableState<RoomId> & {
-    hasHooter: boolean;
-    /** how many big jumps we can do */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    donuts: number;
-    /** time in ms donut was last fired, used to limit rate of fire */
-    donutLastFireTime: number;
-    fastSteps: number;
+export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
+  facing: Direction4Xy;
+  action: PlayableActionState;
+
+  // the time a shield was collected at, or null if no shield. The hud should show
+  // seconds remaining based off of this value
+  shieldCollectedAt: number;
+
+  // Number of pixels the player will walk forward regardless of input. This
+  // puts players properly inside a room when they enter via a door
+  autoWalk: boolean;
+
+  vels: {
+    gravity: Xyz;
+    /** allows the walking mechanic to keep track of its own velocities */
+    walking: Xyz;
+    movingFloor: Xyz;
   };
-  heels: EitherPlayableState<RoomId> & {
-    hasBag: boolean;
-    /** how many big jumps we can do (from picking up a bunny) */
-    // TODO: these properties should be recognised
-    // by the type system as belonging only to head
-    // or heels
-    bigJumps: number;
-    carrying: CarriedItem<RoomId> | null;
+
+  /**
+   * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
+   * we fall (vertical falling, no forward motion)
+   */
+  jumped: boolean;
+
+  teleporting: PlayableTeleportingState | null;
+};
+
+export type HeadAbilities = {
+  hasHooter: boolean;
+  donuts: number;
+  /** time in ms donut was last fired, used to limit rate of fire */
+  donutLastFireTime: number;
+  fastSteps: number;
+  lives: number;
+};
+
+export type HeelsAbilities<RoomId extends string> = {
+  hasBag: boolean;
+  /** how many big jumps we can do (from picking up a bunny) */
+  bigJumps: number;
+  carrying: CarriedItem<RoomId> | null;
+  lives: number;
+};
+
+export type ItemStateMap<RoomId extends string> = {
+  head: PlayableState<RoomId> & HeadAbilities;
+  heels: PlayableState<RoomId> & HeelsAbilities<RoomId>;
+  headOverHeels: PlayableState<RoomId> & {
+    head: HeadAbilities;
+    heels: HeelsAbilities<RoomId>;
   };
   spring: PortableItemState<RoomId>;
   portableBlock: PortableItemState<RoomId>;

@@ -1,12 +1,19 @@
-import { isItemType } from "../itemPredicates";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
-
-const isHead = isItemType("head");
-const isHeels = isItemType("heels");
+import {
+  selectHeadAbilities,
+  selectHeelsAbilities,
+} from "@/game/gameState/gameStateSelectors/selectPlayableItem";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId, CharacterName, "pickup">,
+  e: ItemTouchEvent<
+    RoomId,
+    PlayableItem<CharacterName, RoomId>,
+    ItemInPlay<"pickup", PlanetName, RoomId>
+  >,
 ) => {
   const {
     gameState,
@@ -28,24 +35,26 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
 
   switch (pickup.config.gives) {
     case "hooter": {
-      if (isHead(player)) {
-        player.state.hasHooter = true;
+      const toModify = selectHeadAbilities(player);
+      if (toModify !== undefined) {
+        toModify.hasHooter = true;
         break;
       }
       break;
     }
 
     case "donuts": {
-      if (isHead(player)) {
-        player.state.donuts += 6;
-        break;
+      const toModify = selectHeadAbilities(player);
+      if (toModify !== undefined) {
+        toModify.donuts += 6;
       }
       break;
     }
 
     case "bag": {
-      if (isHeels(player)) {
-        player.state.hasBag = true;
+      const toModify = selectHeelsAbilities(player);
+      if (toModify !== undefined) {
+        toModify.hasBag = true;
         break;
       }
       break;
@@ -57,21 +66,29 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "fast": {
-      if (isHead(player)) {
-        player.state.fastSteps = 99;
+      const toModify = selectHeadAbilities(player);
+      if (toModify !== undefined) {
+        toModify.fastSteps = 99;
       }
       break;
     }
 
     case "jumps": {
-      if (isHeels(player)) {
-        player.state.bigJumps = 10;
+      const toModify = selectHeelsAbilities(player);
+      if (toModify !== undefined) {
+        toModify.bigJumps += 10;
       }
       break;
     }
 
     case "extra-life":
-      player.state.lives += 2;
+      if (player.type === "headOverHeels") {
+        player.state.head.lives += 2;
+        player.state.heels.lives += 2;
+        break;
+      } else {
+        player.state.lives += 2;
+      }
       break;
 
     case "scroll":

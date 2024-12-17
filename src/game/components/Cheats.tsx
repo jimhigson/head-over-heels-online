@@ -7,7 +7,8 @@ import {
 } from "@radix-ui/react-collapsible";
 import { Label } from "@radix-ui/react-label";
 
-import { currentRoom, currentPlayableItem } from "../gameState/GameState";
+import { currentRoom } from "../gameState/GameState";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { changeCharacterRoom } from "../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "../levelEdit/RoomSelect";
 import { ImgSprite } from "./Sprite";
@@ -70,7 +71,7 @@ export const Cheats = <RoomId extends string>({
     config: JsonItemConfig<T, PlanetName, RoomId>,
   ) => {
     const { gameState } = gameApi;
-    const playable = currentPlayableItem(gameState);
+    const playable = selectCurrentPlayableItem(gameState);
     addItemFromJsonToRoom({
       gameState,
       room: currentRoom(gameState),
@@ -179,6 +180,13 @@ export const Cheats = <RoomId extends string>({
             <Button
               className="flex-1"
               onClick={(e) => {
+                const roomId = currentRoom(gameApi.gameState).id;
+                gameApi.gameState.currentCharacterName = "headOverHeels";
+                changeCharacterRoom({
+                  gameState: gameApi.gameState,
+                  changeType: "level-select",
+                  toRoomId: roomId,
+                });
                 e.currentTarget.blur();
               }}
             >

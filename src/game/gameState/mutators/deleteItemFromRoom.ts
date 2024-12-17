@@ -3,15 +3,25 @@ import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { isFreeItem } from "@/game/physics/itemPredicates";
 
-export const deleteItemFromRoom = <RoomId extends string>({
+export const deleteItemFromRoom = <
+  RoomId extends string,
+  ItemId extends string,
+>({
   room,
-  item,
+  item: itemParam,
 }: {
-  room: RoomState<PlanetName, RoomId>;
-  item: AnyItemInPlay;
+  room: RoomState<PlanetName, RoomId, ItemId>;
+  item: AnyItemInPlay<RoomId, ItemId> | ItemId;
 }) => {
-  // ain't in that room no more:
-  delete room.items[item.id];
+  const item =
+    typeof itemParam === "string" ? room.items[itemParam] : itemParam;
+
+  if (typeof itemParam === "string") {
+    delete room.items[itemParam];
+  } else {
+    type K = keyof typeof room.items;
+    delete room.items[item.id as K];
+  }
 
   // whatever the deleted item had standing on it, it ain't no more:
   for (const s of item.state.stoodOnBy) {

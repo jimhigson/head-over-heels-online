@@ -19,7 +19,7 @@ import type {
   UnknownJsonItem,
 } from "../../src/model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
-import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
+import type { Direction4Xy } from "../../src/utils/vectors/vectors";
 
 const baddieConversions = {
   "helicopter-bug": "helicopter-bug",
@@ -71,7 +71,7 @@ const convertItemsArray = (
 
 type ConvertItemParams = {
   xml2JsonRoom: Xml2JsonRoom;
-  doorMap: Partial<Record<DirectionXy4, true>>;
+  doorMap: Partial<Record<Direction4Xy, true>>;
   map: MapJson;
   roomName: string;
   item: Xml2JsonItem;

@@ -1,12 +1,12 @@
 import { objectEntriesIter } from "@/utils/entries";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type { ItemInPlayType } from "@/model/ItemInPlay";
 
 export const handleItemTouchingSwitch = <RoomId extends string>({
   touchedItem: switchItem,
   gameState: { progression },
   room,
-}: ItemTouchEvent<RoomId, ItemInPlayType, "switch">) => {
+}: ItemTouchEventByItemType<RoomId, ItemInPlayType, "switch">) => {
   const {
     config: { activates },
     state: { setting, touchedOnProgression },

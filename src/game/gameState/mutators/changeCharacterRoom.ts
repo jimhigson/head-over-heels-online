@@ -3,21 +3,22 @@ import { isItemType } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
-import type { DirectionXy4, Direction4Xyz, Xyz } from "@/utils/vectors/vectors";
+import type { Direction4Xy, Direction4Xyz, Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
-  directionsXy4,
+  directions4Xy,
   oppositeDirection,
   originXyz,
 } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../EntryState";
-import { otherCharacterName } from "@/model/modelTypes";
+import { otherIndividualCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
 import { makeItemFadeOut } from "./makeItemFadeOut";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
+import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -57,7 +58,7 @@ export const changeCharacterRoom = <RoomId extends string>({
     );
   }*/
 
-  const otherName = otherCharacterName(currentCharacterName);
+  const otherName = otherIndividualCharacterName(currentCharacterName);
 
   const otherCharacterLoadedRoom = gameState.characterRooms[otherName]?.room;
   const toRoomJson = gameState.campaign.rooms[toRoomId];
@@ -94,7 +95,7 @@ export const changeCharacterRoom = <RoomId extends string>({
         iterate(objectValues(toRoom.items)).find(
           (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
             isPortal(i) &&
-            (directionsXy4 as Readonly<Direction4Xyz[]>).includes(
+            (directions4Xy as Readonly<Direction4Xyz[]>).includes(
               i.config.direction,
             ),
         ) ||
@@ -130,15 +131,17 @@ export const changeCharacterRoom = <RoomId extends string>({
       : {},
     );
 
-    if (character.type === "heels") {
+    const heelsAbilities = selectHeelsAbilities(character);
+    if (heelsAbilities !== undefined) {
       // can't carry items through rooms
-      character.state.carrying = null;
+      heelsAbilities.carrying = null;
     }
-    if (character.type === "head") {
-      // can't carry items through rooms
-      for (const hushPuppyBye of iterate(objectValues(toRoom.items)).filter(
+    if (character.type === "head" || character.type === "headOverHeels") {
+      const hushPuppyInRoomIter = iterate(objectValues(toRoom.items)).filter(
         isItemType("hushPuppy"),
-      )) {
+      );
+      // can't carry items through rooms
+      for (const hushPuppyBye of hushPuppyInRoomIter) {
         makeItemFadeOut({ touchedItem: hushPuppyBye, gameState, room: toRoom });
       }
     }
@@ -158,9 +161,9 @@ export const changeCharacterRoom = <RoomId extends string>({
     } = destinationPortal;
     if (
       // portal is horizontal - not up or down
-      (directionsXy4 as Readonly<Direction4Xyz[]>).includes(portalDirection)
+      (directions4Xy as Readonly<Direction4Xyz[]>).includes(portalDirection)
     ) {
-      const portalDirectionXy = portalDirection as DirectionXy4;
+      const portalDirectionXy = portalDirection as Direction4Xy;
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
