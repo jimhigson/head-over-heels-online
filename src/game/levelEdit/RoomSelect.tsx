@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,6 +16,7 @@ import {
 } from "@/components/ui/popover";
 import type { GameApi } from "../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
+import { ImgSprite } from "../components/Sprite";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
@@ -59,17 +59,26 @@ export function RoomSelect<RoomId extends string>({
                 <CommandItem
                   key={r}
                   value={r}
+                  className={viewingRoomId === r ? "bg-moss" : ""}
                   onSelect={(currentValue) => {
                     gameApi.changeRoom(currentValue as RoomId);
                     setOpen(false);
                   }}
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      viewingRoomId === r ? "opacity-100" : "opacity-0",
-                    )}
-                  />
+                  {gameApi.gameState.characterRooms.head?.room.id === r && (
+                    <ImgSprite
+                      textureId="head.walking.towards.2"
+                      scale={2}
+                      className="m-1"
+                    />
+                  )}
+                  {gameApi.gameState.characterRooms.heels?.room.id === r && (
+                    <ImgSprite
+                      textureId="heels.walking.towards.2"
+                      scale={2}
+                      className="m-1"
+                    />
+                  )}
                   {r}
                 </CommandItem>
               ))}
