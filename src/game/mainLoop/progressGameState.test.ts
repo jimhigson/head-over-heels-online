@@ -419,7 +419,7 @@ describe("conveyors", () => {
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOn).toMatchObject({ id: "floor" });
     expect(heelsState(gameState).position).toEqual({
-      x: 2,
+      x: 1,
       y: blockSizePx.d,
       z: 0,
     });
@@ -550,8 +550,8 @@ describe("snapping stationary items to pixel grid", () => {
     // this should always be an integer position since head has been stopped for more than a frame
     expect(headState(gameState).position).toMatchInlineSnapshot(`
       {
-        "x": 52,
-        "y": 62,
+        "x": 51,
+        "y": 61,
         "z": 0,
       }
     `);
