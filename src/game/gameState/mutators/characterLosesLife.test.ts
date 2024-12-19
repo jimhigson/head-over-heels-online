@@ -27,6 +27,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 import { addXyz } from "@/utils/vectors/vectors";
 import { setStandingOn } from "./modifyStandingOn";
 import { swopPlayables } from "./swopCharacters";
+import type { PlayableActionState } from "@/model/ItemStateMap";
 
 type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -313,7 +314,7 @@ const harness = () => {
     expectPlayableToBeStoodAtPortal<R extends TestCampaignRoomId>(
       playableName: CharacterName,
       roomId: R,
-      portalJsonId: keyof (typeof testCampaign)["rooms"][R]["items"],
+      portalJsonId: string & keyof (typeof testCampaign)["rooms"][R]["items"],
     ) {
       const portalItemId = `${portalJsonId}/portal`;
 
@@ -333,9 +334,20 @@ const harness = () => {
         TestCampaignRoomId
       >;
 
+      console.log(
+        playable.state.position,
+        addXyz(portal.state.position, portal.config.relativePoint),
+      );
+
       expect(playable.state.position).toEqual(
         addXyz(portal.state.position, portal.config.relativePoint),
       );
+    },
+    expectPlayableAction(
+      playableName: CharacterName,
+      action: PlayableActionState,
+    ) {
+      expect(this.selectPlayable(playableName)?.state.action).toEqual(action);
     },
     expectNotCarryingIfHeels(playableName: CharacterName) {
       if (playableName === "heels" || playableName === "headOverHeels") {
@@ -639,14 +651,15 @@ describe("while in symbiosis", () => {
         });
 
         h.expectPlayableToBeInGame("headOverHeels");
-        h.expectPlayableToBeOutOfTheGame("heels");
         h.expectPlayableToBeOutOfTheGame("head");
+        h.expectPlayableToBeOutOfTheGame("heels");
 
         h.expectPlayableToBeStoodAtPortal(
           "headOverHeels",
           "thirdRoom",
           "doorToHeelsStartingRoom",
         );
+        h.expectPlayableAction("headOverHeels", "moving");
       });
       test("having entered via different doors, room is reloaded with characters separate and at their respective doors", () => {
         const h = harness();
@@ -682,6 +695,8 @@ describe("while in symbiosis", () => {
           "thirdRoom",
           "doorToHeelsStartingRoom",
         );
+        h.expectPlayableAction("head", "moving");
+        h.expectPlayableAction("heels", "moving");
       });
     });
   });

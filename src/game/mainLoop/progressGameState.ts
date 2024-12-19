@@ -127,11 +127,13 @@ export const _progressGameState = <RoomId extends string>(
 
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, gameState)) {
+      deleteItemFromRoom({ room, item });
       if (isPlayableItem(item)) {
+        // playableLosesLife may put the playable character back into the room,
+        // if they have lives left:
         playableLosesLife(gameState, item);
         // now we let the room play through normally on the assumption it isn't harmful to do so
       }
-      deleteItemFromRoom({ room, item });
     }
   }
 

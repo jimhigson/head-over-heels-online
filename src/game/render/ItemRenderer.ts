@@ -128,7 +128,10 @@ export const ItemRenderer = <
      * update the rendering for the item
      */
     tick(renderContext: RenderContext) {
-      const rendering = appearance({ item, room, currentlyRenderedProps });
+      const rendering =
+        item.renders ?
+          appearance({ item, room, currentlyRenderedProps })
+        : undefined;
       if (rendering !== undefined) {
         // the appearance decided to update:
         currentlyRenderedProps = rendering.renderProps;

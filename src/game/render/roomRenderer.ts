@@ -74,11 +74,12 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
           }
         : givenRenderContext;
 
-      if (renderContext.movedItems.size > 0)
+      /*if (renderContext.movedItems.size > 0)
         console.log(
           "roomrenderer.tick: movedItems are",
           renderContext.movedItems,
         );
+        */
 
       for (const item of objectValues(room.items)) {
         let itemRenderer = itemRenderers.get(item.id as ItemId);

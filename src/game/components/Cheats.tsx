@@ -23,6 +23,7 @@ import { addItemFromJsonToRoom } from "../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import { Switch } from "@/components/ui/switch";
 import type { CharacterName } from "@/model/modelTypes";
+import type { PropsWithChildren } from "react";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -92,6 +93,29 @@ const SummonPlayableButton = <RoomId extends string>({
   );
 };
 
+export type GoToRoomButtonProps<RoomId extends string> = {
+  gameApi: GameApi<RoomId>;
+  readonly roomId: RoomId;
+};
+
+export const GoToRoomButton = <RoomId extends string>({
+  gameApi,
+  roomId,
+  children,
+}: PropsWithChildren<GoToRoomButtonProps<RoomId>>) => {
+  return (
+    <Button
+      className="flex-1"
+      onClick={(e) => {
+        gameApi.changeRoom(roomId);
+        e.currentTarget.blur();
+      }}
+    >
+      {children || roomId}
+    </Button>
+  );
+};
+
 const Heading = ({ children }: { children: string }) => {
   return <h4 className="bg-shadow pl-2">{children}</h4>;
 };
@@ -137,31 +161,31 @@ export const Cheats = <RoomId extends string>({
         className="absolute bottom-0 right-0 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <ImgSprite textureId="helicopter-bug.1" scale={2} />
+        <ImgSprite textureId="helicopter-bug.1" scale={4} />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="absolute bottom-[48px] right-0 flex flex-col w-[500px]">
           <Heading>room select:</Heading>
           <RoomSelect gameApi={gameApi} className="w-full" />
           <div className="flex flex-row items-center">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.changeRoom("blacktooth1head" as RoomId);
-                e.currentTarget.blur();
-              }}
+            <GoToRoomButton
+              gameApi={gameApi}
+              roomId={"blacktooth1head" as RoomId}
             >
-              starting room
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                gameApi.changeRoom("laboratory" as RoomId);
-                e.currentTarget.blur();
-              }}
-            >
+              Starting room
+            </GoToRoomButton>
+            <GoToRoomButton gameApi={gameApi} roomId={"laboratory" as RoomId}>
               To the lab!
-            </Button>
+            </GoToRoomButton>
+          </div>
+          <div className="flex flex-row items-center">
+            <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId} />
+            <GoToRoomButton gameApi={gameApi} roomId={"safari1" as RoomId} />
+            <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId} />
+            <GoToRoomButton
+              gameApi={gameApi}
+              roomId={"penitentiary1" as RoomId}
+            />
           </div>
           <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">

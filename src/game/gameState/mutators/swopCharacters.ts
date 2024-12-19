@@ -6,13 +6,13 @@ import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 
 import { addXyz } from "@/utils/vectors/vectors";
-import { blockSizePx } from "@/sprites/spritePivots";
 import { setStandingOn } from "./modifyStandingOn";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import {
   uncombinePlayablesFromSymbiosis,
   combinePlayablesInSymbiosis,
 } from "./symbiosis";
+import { uncombineLittleJumpPxHeight } from "@/game/physics/mechanicsConstants";
 
 const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -51,10 +51,16 @@ const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
 
   // little jump to make it obvious who we switched to:
   if (switchingToCharacter === "head") {
-    head.state.position = addXyz(head.state.position, { z: blockSizePx.h });
+    head.state.position = addXyz(head.state.position, {
+      z: uncombineLittleJumpPxHeight,
+    });
   } else {
-    head.state.position = addXyz(head.state.position, { z: blockSizePx.h });
-    heels.state.position = addXyz(heels.state.position, { z: blockSizePx.h });
+    head.state.position = addXyz(head.state.position, {
+      z: uncombineLittleJumpPxHeight,
+    });
+    heels.state.position = addXyz(heels.state.position, {
+      z: uncombineLittleJumpPxHeight,
+    });
   }
 
   deleteItemFromRoom({ room, item: "headOverHeels" });

@@ -88,9 +88,11 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
       // can't put then back as individuals without a collision - it is likely they
       // entered via the same door. Recombine and continue:
       const rejoined = combinePlayablesInSymbiosis({ head, heels });
+      // give headOverHeels heels' entry state:
+      resetPlayableToEntryState(gameState, rejoined, "heels");
       const reloadedRoom = reloadRoomWithCharacterInIt({
         gameState,
-        playableItems: [headOverHeels],
+        playableItems: [rejoined],
         roomId: room.id,
       });
       gameState.characterRooms = { headOverHeels: reloadedRoom };
@@ -134,8 +136,16 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
 const resetPlayableToEntryState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   playableItem: PlayableItem<CharacterName, RoomId>,
+  /** if given, will use someone else's entry state. This is only really useful
+   * to give headOverHeels heels' entry state when rejoining after losing a life
+   */
+  whoseEntryState: CharacterName = playableItem.id,
 ) => {
-  const entryState = gameState.entryState[playableItem.id]!;
+  const entryState = gameState.entryState[whoseEntryState];
+
+  if (entryState === undefined) {
+    //throw new Error(`No entry state for ${whoseEntryState}`);
+  }
 
   playableItem.state = {
     ...playableItem.state,
