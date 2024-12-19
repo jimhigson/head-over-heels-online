@@ -16,25 +16,27 @@ done
 echo "🤖 sampling palette -> ts"
 colorNames=(pureBlack lightBlack shadow midGrey lightGrey white metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
 rm gfx/spritesheetPalette.ts gfx/spritesheetPalette.json
-echo "import { Color } from 'pixi.js';" >> gfx/spritesheetPalette.ts
-echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> gfx/spritesheetPalette.ts
-echo "export const spritesheetPalette = {" >> gfx/spritesheetPalette.ts
-echo "{" >> gfx/spritesheetPalette.json
+echo "import { Color } from 'pixi.js';" >> gfx/spritesheetPalette.ts.out
+echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> gfx/spritesheetPalette.ts.out
+echo "export const spritesheetPalette = {" >> gfx/spritesheetPalette.ts.out
+echo "{" >> gfx/spritesheetPalette.json.out
 
 for i in $(seq 0 15);
 do
     color=$(magick gfx/sprites.png -format "#%[hex:u.p{$i,0}]" info:);
     echo ${colorNames[$i]} $color
-    echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> gfx/spritesheetPalette.ts
-    echo "  \"${colorNames[$i]}\": \"$color\"" >> gfx/spritesheetPalette.json
+    echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> gfx/spritesheetPalette.ts.out
+    echo "  \"${colorNames[$i]}\": \"$color\"" >> gfx/spritesheetPalette.json.out
 
     if [ $i -ne 15 ]; then
-        echo "," >> gfx/spritesheetPalette.json
+        echo "," >> gfx/spritesheetPalette.json.out
     fi
 done
-echo "} as const;" >> gfx/spritesheetPalette.ts
-echo "export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;" >> gfx/spritesheetPalette.ts
-echo "}" >> gfx/spritesheetPalette.json
+echo "} as const;" >> gfx/spritesheetPalette.ts.out
+echo "export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;" >> gfx/spritesheetPalette.ts.out
+echo "}" >> gfx/spritesheetPalette.json.out
+mv gfx/spritesheetPalette.ts.out gfx/spritesheetPalette.ts
+mv gfx/spritesheetPalette.json.out gfx/spritesheetPalette.json
 node_modules/.bin/prettier --write gfx/spritesheetPalette.* 
 
 #
