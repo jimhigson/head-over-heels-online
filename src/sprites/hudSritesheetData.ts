@@ -4,7 +4,6 @@ import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
 import { fromAllEntries } from "@/utils/entries";
 import type { Xy } from "@/utils/vectors/vectors";
 
-// Define the array of uppercase letters
 const alphabetUppercase = [
   "A",
   "B",
@@ -34,7 +33,7 @@ const alphabetUppercase = [
   "Z",
 ] as const;
 
-const pucntuation = [
+const punctuation = [
   " ",
   "?",
   "!",
@@ -50,7 +49,17 @@ const pucntuation = [
   "<",
   ">",
 ] as const;
-const pucntuation2 = ["‘", "’", "'", "`", "-"] as const;
+const punctuation2 = [
+  "‘",
+  "’",
+  "'",
+  "`",
+  "-",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "ArrowDown",
+] as const;
 
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,
@@ -92,8 +101,8 @@ export const hudSpritesheetData = {
       frame: { x: 479, y: 0, ...hudCharTextureSize },
     },
     ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
-    ...charFrames(pucntuation, { x: 515, y: 9 }),
-    ...charFrames(pucntuation2, { x: 515, y: 18 }),
+    ...charFrames(punctuation, { x: 515, y: 9 }),
+    ...charFrames(punctuation2, { x: 515, y: 18 }),
     ...seriesOfAnimationFrameTextures(
       "hud.char",
       9,

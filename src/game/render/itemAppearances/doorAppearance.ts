@@ -3,7 +3,6 @@ import { createSprite } from "../createSprite";
 import { doorTexture } from "./doorTexture";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import type { UnknownRoomState } from "../../../model/modelTypes";
-import { doorTexturePivot } from "../../../sprites/spritePivots";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
@@ -94,7 +93,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
 
 function* doorFrameGenerator(
   {
-    config: { direction, inHiddenWall, nearness },
+    config: { direction, inHiddenWall, part },
     state: { position },
   }: ItemInPlay<"doorFrame">,
   room: UnknownRoomState,
@@ -109,7 +108,7 @@ function* doorFrameGenerator(
         [perpendicularAxisXy(axis)]: 0.5,
       });
 
-      if (nearness === "far") {
+      if (part === "far") {
         // hide the floor behind the door
         yield createSprite({
           anchor: { x: 0, y: 1 },
@@ -123,8 +122,7 @@ function* doorFrameGenerator(
 
   // draw the actual door frame
   yield createSprite({
-    texture: doorTexture(room, axis, nearness),
-    pivot: doorTexturePivot[nearness][axis],
+    texture: doorTexture(room, axis, part),
     filter: mainPaletteSwapFilter(room),
   });
 }

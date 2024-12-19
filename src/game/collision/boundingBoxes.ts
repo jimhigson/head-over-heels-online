@@ -1,7 +1,10 @@
 import type { UnknownJsonItem } from "@/model/json/JsonItem";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors/vectors";
-import { liftBBShortening, veryHighZ } from "../physics/mechanicsConstants";
+import {
+  liftBBShortening,
+  roomHeightBlocks,
+} from "../physics/mechanicsConstants";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
@@ -20,7 +23,7 @@ export const wallThicknessBlocks = 1;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
   y: blockSizePx.d * wallThicknessBlocks,
-  z: veryHighZ,
+  z: roomHeightBlocks * blockSizePx.h,
 };
 export const xAxisWallRenderAabb = {
   x: xAxisWallAabb.x,
@@ -31,7 +34,7 @@ export const xAxisWallRenderAabb = {
 export const yAxisWallAabb = {
   x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: veryHighZ,
+  z: roomHeightBlocks * blockSizePx.h,
 };
 export const yAxisWallRenderAabb = {
   x: 0,
@@ -39,7 +42,6 @@ export const yAxisWallRenderAabb = {
   z: wallRenderHeight,
 };
 
-// TODO: also support giving renderAabbs
 export const boundingBoxForItem = (
   item: UnknownJsonItem | UnknownItemInPlay,
 ): { aabb: Aabb; renderAabb?: Aabb } => {

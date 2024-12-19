@@ -397,7 +397,7 @@ export const itemAppearances: {
 
     const filter =
       busyLickingDoughnutsOffFace ? doughnuttedFilter
-      : !activated ? greyFilter
+      : !activated ? greyFilter(room)
       : undefined;
 
     switch (config.which) {

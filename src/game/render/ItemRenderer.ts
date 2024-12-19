@@ -27,8 +27,7 @@ const assignMouseActions = <RoomId extends string>(
       });
     }
 
-    /*
-    container.on("pointerenter", () => {
+    /*container.on("pointerenter", () => {
       container!.filters = new RevertColouriseFilter(
         // don't have the room here and this doesn't really matter so arbitrary choose yellow
         "white",
@@ -40,19 +39,6 @@ const assignMouseActions = <RoomId extends string>(
     });*/
   }
 };
-
-/*const needsColorReplace = (item: UnknownItemInPlay): boolean => {
-  return (
-    item.type === "wall" ||
-    item.type === "floor" ||
-    item.type === "doorFrame" ||
-    item.type === "doorLegs" ||
-    (item.type === "pickup" && item.config.gives === "scroll") ||
-    (item.type === "block" && item.config.style === "organic") ||
-    (item.type === "baddie" && item.config.which === "cyberman") ||
-    (item.type === "deadlyBlock" && item.config.style === "volcano")
-  );
-};*/
 
 const moveContainerToItemPosition = (
   { state: { position } }: AnyItemInPlay,

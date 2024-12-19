@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -46,7 +45,11 @@ export function RoomSelect<RoomId extends string>({
           className={`justify-between ${className}`}
         >
           {viewingRoomId || "Select a room"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ImgSprite
+            textureId={open ? "hud.char.X" : "hud.char.ArrowDown"}
+            scale={3}
+            className="ml-2 h-4 w-4 shrink-0"
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">

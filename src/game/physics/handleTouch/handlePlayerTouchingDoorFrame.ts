@@ -12,13 +12,15 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
   touchedItem: doorFrame,
 }: ItemTouchEventByItemType<RoomId, CharacterName, "doorFrame">) => {
   const {
-    config: { direction, nearness },
+    config: { direction, part },
   } = doorFrame;
 
   const axis = doorAlongAxis(direction);
 
+  if (part === "top") return;
+
   const slideVector =
-    nearness === "far" ?
+    part === "far" ?
       {
         x: axis === "x" ? -Math.abs(movementVector.y) : 0,
         y: axis === "y" ? -Math.abs(movementVector.x) : 0,

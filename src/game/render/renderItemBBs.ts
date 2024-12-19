@@ -41,9 +41,9 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
       projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
     ])
     .stroke({
-      width: 1,
+      width: 0.25,
       color,
-      alpha: 0.5,
+      alpha: 1,
     });
 
   graphics.eventMode = "static";

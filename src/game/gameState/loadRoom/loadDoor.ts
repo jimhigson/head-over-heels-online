@@ -15,6 +15,7 @@ import {
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { emptySet } from "@/utils/empty";
+import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -22,7 +23,8 @@ import { emptySet } from "@/utils/empty";
  * it is set to exactly match the door sprite's internal height
  */
 export const doorPortalHeight = blockSizePx.h * 2;
-export const doorPostRenderHeight = blockSizePx.h * 4;
+export const doorPostHeightBlocks = 4;
+export const doorPostHeight = blockSizePx.h * 4;
 
 export function* loadDoor<RoomId extends string>(
   jsonDoor: JsonItem<"door", PlanetName, RoomId>,
@@ -53,7 +55,7 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
-        nearness: "far",
+        part: "far",
       },
       state: {
         position: blockXyzToFineXyz(
@@ -63,8 +65,7 @@ export function* loadDoor<RoomId extends string>(
         stoodOnBy: emptySet,
         disappear: null,
       },
-      aabb: { x: 8, y: 8, z: doorPortalHeight },
-      renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
+      aabb: { x: 8, y: 8, z: doorPostHeight },
     },
   };
   const doorNearPosition = blockXyzToFineXyz(
@@ -79,7 +80,7 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
-        nearness: "near",
+        part: "near",
       },
       state: {
         position: doorNearPosition,
@@ -87,8 +88,68 @@ export function* loadDoor<RoomId extends string>(
         stoodOnBy: emptySet,
         disappear: null,
       },
-      aabb: { x: 8, y: 8, z: doorPortalHeight },
-      renderAabb: { x: 8, y: 8, z: doorPostRenderHeight },
+      /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
+         the bb very well */
+      aabb: { [axis]: 9, [crossAxis]: 8, z: doorPostHeight } as Xyz,
+    },
+  };
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      type: "doorFrame",
+      id: `${id}/top`,
+      config: {
+        ...jsonDoor.config,
+        inHiddenWall,
+        part: "top",
+      },
+      state: {
+        position: addXyz(
+          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          {
+            [axis]: 9,
+            z: doorPortalHeight,
+          },
+        ),
+        expires: null,
+        stoodOnBy: emptySet,
+        disappear: null,
+      },
+      aabb: {
+        [axis]: 2 * blockSizePx.w - 8 - 9,
+        [crossAxis]: 8,
+        z: doorPostHeight - doorPortalHeight,
+      } as Xyz,
+    },
+  };
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      id: `${id}/wall`,
+      config: {
+        style: "none",
+        side: "away", // TODO: look at typings - this isn't needed for hidden walls
+      },
+      renders: false,
+      type: "wall",
+      state: {
+        position: addXyz(
+          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          {
+            z: doorPostHeight,
+          },
+        ),
+        expires: null,
+        stoodOnBy: emptySet,
+        disappear: null,
+      },
+      aabb: blockXyzToFineXyz({
+        [axis]: 2,
+        [crossAxis]: 0.5,
+        z: roomHeightBlocks - doorPostHeightBlocks,
+      }),
     },
   };
   yield {
@@ -127,35 +188,6 @@ export function* loadDoor<RoomId extends string>(
         [crossAxis]: 0,
         z: doorPortalHeight,
       } as Xyz,
-    },
-  };
-  yield {
-    ...jsonDoor,
-    ...defaultItemProperties,
-    ...{
-      id: `${id}/wall`,
-      config: {
-        style: "none",
-        side: "away", // TODO: look at typings - this isn't needed for hidden walls
-      },
-      renders: false,
-      type: "wall",
-      state: {
-        position: addXyz(
-          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
-          {
-            z: doorPortalHeight,
-          },
-        ),
-        expires: null,
-        stoodOnBy: emptySet,
-        disappear: null,
-      },
-      aabb: blockXyzToFineXyz({
-        [axis]: 2,
-        [crossAxis]: 0.5,
-        z: 999,
-      }),
     },
   };
 

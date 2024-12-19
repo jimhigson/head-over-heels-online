@@ -88,8 +88,8 @@ const frames = {
   ...backgroundFrames("jail", 512, 76, ""),
   ...backgroundFrames("market", 440, 386, ".dark"), // same really
   ...backgroundFrames("market", 440, 386, ""),
-  ...backgroundFrames("moonbase", 472, 301, ".dark"), // actually different
-  ...backgroundFrames("moonbase", 472, 229, ""),
+  ...backgroundFrames("moonbase", 453, 305, ".dark"), // actually different
+  ...backgroundFrames("moonbase", 453, 233, ""),
   ...backgroundFrames("penitentiary", 372, 389, ".dark"), // same really
   ...backgroundFrames("penitentiary", 372, 389, ""),
   ...backgroundFrames("safari", 544, 386, ".dark"), // same really

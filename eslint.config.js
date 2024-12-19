@@ -22,7 +22,7 @@ export default tseslint.config(
       "unused-imports": unusedImports,
     },
     rules: {
-//    "no-shadow": "error",
+      //    "no-shadow": "error",
       "no-console": "warn",
       "no-useless-rename": "error",
       ...reactHooks.configs.recommended.rules,
