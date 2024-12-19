@@ -179,13 +179,27 @@ export const Cheats = <RoomId extends string>({
             </GoToRoomButton>
           </div>
           <div className="flex flex-row items-center">
-            <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId} />
-            <GoToRoomButton gameApi={gameApi} roomId={"safari1" as RoomId} />
-            <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId} />
+            <GoToRoomButton
+              gameApi={gameApi}
+              roomId={"blacktooth45market" as RoomId}
+            >
+              Market
+            </GoToRoomButton>
+            <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId}>
+              Egyptus
+            </GoToRoomButton>
+            <GoToRoomButton gameApi={gameApi} roomId={"safari1" as RoomId}>
+              Safari
+            </GoToRoomButton>
+            <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId}>
+              Bookworld
+            </GoToRoomButton>
             <GoToRoomButton
               gameApi={gameApi}
               roomId={"penitentiary1" as RoomId}
-            />
+            >
+              Penitentiary
+            </GoToRoomButton>
           </div>
           <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">
