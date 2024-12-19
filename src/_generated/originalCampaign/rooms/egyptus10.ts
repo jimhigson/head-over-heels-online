@@ -5,7 +5,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   floor: "egyptus",
-  floorSkip: [],
   id: "egyptus10",
   items: {
     "block@7,2,0:95uHj": {

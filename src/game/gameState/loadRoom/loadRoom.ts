@@ -123,7 +123,7 @@ const itemsInItemObjectMap = <
 export const loadRoom = <P extends PlanetName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
-  extraItems: RoomStateItems<P, RoomId> = {},
+  //extraItems: RoomStateItems<P, RoomId> = {},
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
@@ -158,7 +158,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     roomJson,
     items: {
       ...loadedItems,
-      ...extraItems,
+      //...extraItems,
     },
   };
 

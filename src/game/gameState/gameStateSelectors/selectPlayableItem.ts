@@ -17,14 +17,14 @@ export const selectPlayableItem = <
   gameState: GameState<RoomId>,
   character: C,
 ): PlayableItem<C, RoomId> | undefined => {
-  return gameState.characterRooms[character]?.room.items[character] as
+  return gameState.characterRooms[character]?.items[character] as
     | PlayableItem<C, RoomId>
     | undefined;
 };
 
 export const selectCurrentPlayableItem = <RoomId extends string>(
   gameState: GameState<RoomId>,
-): PlayableItem =>
+): PlayableItem<CharacterName, RoomId> =>
   // assuming both players haven't lost all their lives, or this is not reliable!
   selectPlayableItem(gameState, gameState.currentCharacterName)!;
 
@@ -63,6 +63,10 @@ export const _selectAbilities = <RoomId extends string>(
       "headOverHeels"
     : individualCharacterName,
   ) as PlayableItem;
+
+  if (playable === undefined) {
+    return undefined;
+  }
 
   if (individualCharacterName === "head" && isHead(playable)) {
     return playable.state;

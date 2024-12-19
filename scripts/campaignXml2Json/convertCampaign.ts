@@ -3,7 +3,6 @@ import { readMapToJson, roomNameFromXmlFilename } from "./readToJson";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
-import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
 import type { Direction4Xy } from "../../src/utils/vectors/vectors";
 import type { AnyRoomJson } from "../../src/model/modelTypes";
 import { convertRoom } from "./convertRoom";
@@ -91,18 +90,6 @@ export const convertRoomColour = (color: string) => {
     hue: match[1] as ZxSpectrumRoomHue,
     shade: (match[2] === undefined ? "basic" : "dimmed") as Shade,
   };
-};
-
-export const convertFloorSkip = (
-  roomXmlJson: Xml2JsonRoom,
-  sidesWithDoors: SidesWithDoors,
-) => {
-  return (
-    roomXmlJson.nofloor?.map((nf) => ({
-      x: convertX(nf._attributes.x, roomXmlJson, sidesWithDoors),
-      y: convertX(nf._attributes.y, roomXmlJson, sidesWithDoors),
-    })) ?? []
-  );
 };
 
 const rooms: Record<string, AnyRoomJson> = {};

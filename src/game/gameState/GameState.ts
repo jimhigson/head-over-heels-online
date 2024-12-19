@@ -3,29 +3,19 @@ import {
   type RoomState,
   type CharacterName,
   type Campaign,
-  otherIndividualCharacterName,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
-import type { PlayableItem } from "../physics/itemPredicates";
-import type { EntryState } from "./EntryState";
+import type { PlayableEntryState } from "./PlayableEntryState";
 
-export const currentRoom = <RoomId extends string>(
+export const selectCurrentRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ): RoomState<PlanetName, RoomId> =>
-  // assuming both players haven't lost all their lives, or this is not reliable!
-  gameState.characterRooms[gameState.currentCharacterName]!.room;
-
-/** gets the playable item for the non-current character */
-export const otherPlayableItem = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-): PlayableItem | undefined => {
-  const name = otherIndividualCharacterName(gameState.currentCharacterName);
-  return gameState.characterRooms[name]?.room.items[name];
-};
+  // use a ! here because so long as a game is in progress, there should be a current room
+  gameState.characterRooms[gameState.currentCharacterName]!;
 
 export type RoomPickupsCollected = Record<string, true>;
 
@@ -34,12 +24,14 @@ export type PickupsCollected<RoomId extends string> = Record<
   RoomPickupsCollected
 >;
 
-type CharacterRooms<RoomId extends string> = Partial<{
-  [C in CharacterName]: {
-    room: RoomState<PlanetName, RoomId>;
-    entryState: EntryState;
-  };
-}>;
+type CharacterRooms<RoomId extends string> =
+  /**
+   * partial here because character can have lost all lives, or headOverHeels doesn't initially exist
+   * - all 3 can never exist at the same time
+   */
+  Partial<{
+    [C in CharacterName]: RoomState<PlanetName, RoomId>;
+  }>;
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
@@ -52,8 +44,17 @@ export type GameState<RoomId extends string> = {
   previousPlayable?: IndividualCharacterName;
   inputState: InputState;
 
-  /** partial because character can have lost all lives */
   characterRooms: CharacterRooms<RoomId>;
+  /**
+   * Some of the state describing how their current room was entered for each character.
+   * this could include characters that are not currently in play; for example, if headOverHeels
+   * enters and splits, the entry state for headOverHeels will be retained since if a player
+   * loses a life they need to re-enter the room in the same way
+   */
+  entryState: Partial<{
+    [C in CharacterName]: PlayableEntryState;
+  }>;
+
   renderOptions: RenderOptions<RoomId>;
   /** TODO: is this really state? */
   events: Emitter<GameEvents<RoomId>>;

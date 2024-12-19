@@ -8,10 +8,10 @@ import type { RoomState } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { selectCurrentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopPlayables } from "../gameState/mutators/swopCharacters";
-import { characterLosesLife } from "../gameState/mutators/characterLosesLife";
+import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { objectEntriesIter } from "@/utils/entries";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { xyzEqual, isExactIntegerXyz, roundXyz } from "@/utils/vectors/vectors";
@@ -105,7 +105,7 @@ export const _progressGameState = <RoomId extends string>(
 ): MovedItems => {
   const { inputState } = gameState;
 
-  const room = currentRoom(gameState);
+  const room = selectCurrentRoom(gameState);
 
   // take a snapshot of item positions before any physics ticks so we
   // can check later what has moved. DOne per physics tick, not render-tick
@@ -128,7 +128,7 @@ export const _progressGameState = <RoomId extends string>(
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, gameState)) {
       if (isPlayableItem(item)) {
-        characterLosesLife(gameState);
+        playableLosesLife(gameState, item);
         // now we let the room play through normally on the assumption it isn't harmful to do so
       }
       deleteItemFromRoom({ room, item });

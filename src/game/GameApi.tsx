@@ -8,6 +8,7 @@ import type { InputState } from "./input/InputState";
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
   scrollOpened: { markdown: string };
+  gameOver: undefined;
   /** emitted when input changes - only really so react/dom bits can close when some input happens */
   inputStateChanged: InputState;
 };

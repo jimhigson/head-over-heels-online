@@ -116,3 +116,6 @@ export const isDeadlyItem = <RoomId extends string>(
 ): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.deadly);
+
+export const isPortal = isItemType("portal");
+export const isTeleporter = isItemType("teleporter");

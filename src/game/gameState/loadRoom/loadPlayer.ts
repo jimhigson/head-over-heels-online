@@ -9,6 +9,7 @@ import type { CharacterName } from "@/model/modelTypes";
 import type { PlayableState } from "@/model/ItemStateMap";
 import { defaultBaseState, defaultFreeItemState } from "./loadItem";
 import { emptyObject } from "@/utils/empty";
+import { startingLives } from "@/game/physics/mechanicsConstants";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -47,7 +48,7 @@ export const loadPlayer = <RoomId extends string>(
         ...defaultPlayerState(),
         hasHooter: false,
         fastSteps: 0,
-        lives: 8,
+        lives: startingLives,
         donuts: 0,
         donutLastFireTime: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
@@ -66,7 +67,7 @@ export const loadPlayer = <RoomId extends string>(
         carrying: null,
         hasBag: false,
         bigJumps: 0,
-        lives: 8,
+        lives: startingLives,
         position: positionCentredInBlock(jsonItem),
       },
     };

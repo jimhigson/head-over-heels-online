@@ -12,8 +12,9 @@ export const characterNames = [
 ] as const;
 export type IndividualCharacterName = (typeof individualCharacterNames)[number];
 export type CharacterName = (typeof characterNames)[number];
-export const otherIndividualCharacterName = (name: CharacterName) =>
-  name === "head" ? "heels" : "head";
+export const otherIndividualCharacterName = (
+  name: IndividualCharacterName,
+): IndividualCharacterName => (name === "head" ? "heels" : "head");
 export const isCharacterName = (name: string): name is CharacterName =>
   name === "head" || name === "heels";
 

@@ -65,14 +65,14 @@ export function RoomSelect<RoomId extends string>({
                     setOpen(false);
                   }}
                 >
-                  {gameApi.gameState.characterRooms.head?.room.id === r && (
+                  {gameApi.gameState.characterRooms.head?.id === r && (
                     <ImgSprite
                       textureId="head.walking.towards.2"
                       scale={2}
                       className="m-1"
                     />
                   )}
-                  {gameApi.gameState.characterRooms.heels?.room.id === r && (
+                  {gameApi.gameState.characterRooms.heels?.id === r && (
                     <ImgSprite
                       textureId="heels.walking.towards.2"
                       scale={2}

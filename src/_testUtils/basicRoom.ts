@@ -22,7 +22,6 @@ const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
   floor: "blacktooth",
-  floorSkip: [],
   items: {},
   size: { x: 8, y: 8 },
   walls: {
@@ -97,7 +96,10 @@ export const basicGameState = ({
       },
     },
   };
-  const gameState = initGameState<TestRoomId>(campaign, basicRenderOptions);
+  const gameState = initGameState<TestRoomId>({
+    campaign,
+    renderOptions: basicRenderOptions,
+  });
 
   return gameStateWithInput(gameState, inputState);
 };

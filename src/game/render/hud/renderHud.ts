@@ -1,5 +1,5 @@
 import type { GameState } from "@/game/gameState/GameState";
-import { currentRoom } from "@/game/gameState/GameState";
+import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
 import type { TextureId } from "@/sprites/spriteSheet";
@@ -24,6 +24,7 @@ import {
   selectAbilities,
   selectPlayableItem,
 } from "@/game/gameState/gameStateSelectors/selectPlayableItem";
+import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -58,6 +59,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
   const uncurrentSpriteFilter = new RevertColouriseFilter();
+  const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();
 
   const makeText = (doubleHeight: boolean = false) => {
     const yScaleFactor = doubleHeight ? 2 : 1;
@@ -147,7 +149,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.carrying.container);
 
   return (gameState: GameState<RoomId>, screenSize: Xy) => {
-    const room = currentRoom(gameState);
+    const room = selectCurrentRoom(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
     } = getColorScheme(room.color);
@@ -195,7 +197,19 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
         currentCharacterName === characterName ||
         currentCharacterName === "headOverHeels";
       const characterSprite = hudElements[characterName].sprite;
-      characterSprite.filters = isCurrent ? noFilters : uncurrentSpriteFilter;
+
+      if (isCurrent) {
+        characterSprite.filters = noFilters;
+      } else {
+        const highlight = selectCanCombine(gameState);
+
+        if (highlight) {
+          uncurrentButHighlightedSpriteFilter.targetColor = dimmedShade.basic;
+          characterSprite.filters = uncurrentButHighlightedSpriteFilter;
+        } else {
+          characterSprite.filters = uncurrentSpriteFilter;
+        }
+      }
 
       characterSprite.x =
         (screenSize.x >> 1) +

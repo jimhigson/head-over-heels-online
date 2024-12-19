@@ -142,8 +142,6 @@ export const ItemRenderer = <
       const hasMoved = renderContext.movedItems.has(item);
 
       if (hasMoved) {
-        console.log("ItemRenderer for", item.id, "will position rendering");
-
         // current position of item doesn't match its current rendered position
         moveContainerToItemPosition(item, mainContainer);
       }

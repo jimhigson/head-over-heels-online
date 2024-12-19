@@ -1,12 +1,10 @@
 import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
-import { Disappear } from "@/model/ItemInPlay.ts";
 
 export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   floor: "deadly",
-  floorSkip: [],
   id: "blacktooth6",
   items: {
     "baddie@3,0,1:Z1rA6U9": {
@@ -93,11 +91,11 @@ the doughnut icon at the bottom left of the screen.
             right: { activated: false },
           },
           "block@0,7,0:Z1AdJxh": {
-            left: { disappear: "onStand" satisfies Disappear },
+            left: { disappear: "onStand" },
             right: { disappear: null },
           },
           "block@3,7,0:Z1AdJxh": {
-            left: { disappear: "onStand" satisfies Disappear },
+            left: { disappear: "onStand" },
             right: { disappear: null },
           },
         },

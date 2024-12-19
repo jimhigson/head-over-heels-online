@@ -44,6 +44,7 @@ export function teleporting<RoomId extends string>(
     case "out":
       if (newTimeRemaining === 0) {
         changeCharacterRoom({
+          playableItem,
           gameState,
           toRoomId:
             teleporting.toRoom as RoomId /* TODO: propertly type in state */,

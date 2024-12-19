@@ -6,15 +6,13 @@ import type { CharacterName } from "@/model/modelTypes";
  * if a player loses a life and comes into a room again, the part of their state that
  * is restored
  */
-
-export type EntryState = Pick<
+export type PlayableEntryState = Pick<
   ItemState<CharacterName, string>,
   "position" | "facing" | "autoWalk" | "action"
 >;
-
 export const entryState = ({
   state: { position, facing, autoWalk, action },
-}: PlayableItem): EntryState => ({
+}: PlayableItem): PlayableEntryState => ({
   position,
   facing,
   autoWalk,

@@ -1,5 +1,6 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import { isItemType } from "@/game/physics/itemPredicates";
+import type { PlayableItem } from "@/game/physics/itemPredicates";
+import { isItemType, isPortal } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
@@ -12,7 +13,8 @@ import {
 } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
-import { entryState } from "../EntryState";
+import { entryState } from "../PlayableEntryState";
+import type { CharacterName, RoomState } from "@/model/modelTypes";
 import { otherIndividualCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
@@ -25,42 +27,82 @@ export type ChangeType = "teleport" | "portal" | "level-select";
 type ChangeCharacterRoomOptions<RoomId extends string> =
   | {
       gameState: GameState<RoomId>;
-      toRoomId: NoInfer<RoomId>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
+      changeType: "portal";
+      toRoomId: NoInfer<NoInfer<RoomId>>;
       /* position relative to the portal in the source room */
-      sourcePortal: ItemInPlay<"portal", PlanetName, RoomId>;
+      sourcePortal: ItemInPlay<"portal", PlanetName, NoInfer<RoomId>>;
       positionRelativeToSourcePortal: Xyz;
       /* if true, the position in the source and destimation room will be exactly maintained */
-      changeType: "portal";
     }
   | {
       gameState: GameState<RoomId>;
-      toRoomId: NoInfer<RoomId>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
+      changeType: "teleport" | "level-select";
+      toRoomId: NoInfer<NoInfer<RoomId>>;
       sourcePortal?: undefined;
       /* position relative to the portal in the source room */
       positionRelativeToSourcePortal?: undefined;
       /* if true, the position in the source and destimation room will be exactly maintained */
-      changeType: "teleport" | "level-select";
     };
 
+const findDestinationPortal = <RoomId extends string>(
+  changeType: "portal" | "level-select",
+  toRoom: RoomState<PlanetName, RoomId>,
+  fromRoom: RoomState<PlanetName, RoomId>,
+): ItemInPlay<"portal", PlanetName, RoomId> | undefined => {
+  switch (changeType) {
+    case "portal":
+      return iterate(objectValues(toRoom.items)).find(
+        (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+          isPortal(i) && i.config.toRoom === fromRoom.id,
+      );
+
+    case "level-select":
+      return (
+        // find a door in the right direction:
+        iterate(objectValues(toRoom.items)).find(
+          (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+            isPortal(i) &&
+            // any horizontal portal (ie, not floor/ceiling)
+            (directions4Xy as Readonly<Direction4Xyz[]>).includes(
+              i.config.direction,
+            ),
+          // fall back to horizontal/vertical portal:
+        ) || iterate(objectValues(toRoom.items)).find(isPortal)
+      );
+
+    default:
+      changeType satisfies never;
+  }
+};
+
 export const changeCharacterRoom = <RoomId extends string>({
+  playableItem,
   gameState,
   toRoomId,
   positionRelativeToSourcePortal = originXyz,
   changeType,
   sourcePortal,
 }: ChangeCharacterRoomOptions<RoomId>) => {
-  const { currentCharacterName } = gameState;
-  const leavingRoom = gameState.characterRooms[currentCharacterName]!.room;
+  const leavingRoom = gameState.characterRooms[playableItem.id];
 
-  /*if (toRoomId === leavingRoom.id) {
+  if (leavingRoom === undefined) {
+    throw new Error(`${playableItem.id} is not in a room on the gameState`);
+  }
+
+  if (toRoomId === leavingRoom.id) {
     throw new Error(
-      `Can't move to the same room "${toRoomId}" from "${leavingRoom.id}"`,
+      `Can't move ${playableItem.id} to the same room "${toRoomId}""`,
     );
-  }*/
+  }
 
-  const otherName = otherIndividualCharacterName(currentCharacterName);
+  const otherCharacterLoadedRoom =
+    playableItem.type === "headOverHeels" ?
+      // if in symbiosis, there is no other player so no other player's room:
+      undefined
+    : gameState.characterRooms[otherIndividualCharacterName(playableItem.id)];
 
-  const otherCharacterLoadedRoom = gameState.characterRooms[otherName]?.room;
   const toRoomJson = gameState.campaign.rooms[toRoomId];
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
@@ -70,42 +112,20 @@ export const changeCharacterRoom = <RoomId extends string>({
       otherCharacterLoadedRoom
     : loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]);
 
-  const character = leavingRoom.items[currentCharacterName];
-
-  if (character === undefined) {
-    throw new Error(
-      `Couldn't find character ${currentCharacterName} in room ${leavingRoom.id} - can't move them to new room ${toRoomId}`,
-    );
-  }
-
   // take the character out of the previous room:
-  deleteItemFromRoom({ room: leavingRoom, item: character });
+  deleteItemFromRoom({ room: leavingRoom, item: playableItem });
 
   if (changeType !== "teleport") {
-    const isPortal = isItemType("portal");
     // find the door (etc) in the new room to enter in:
-    const destinationPortal =
-      iterate(objectValues(toRoom.items)).find(
-        (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
-          isPortal(i) && i.config.toRoom === leavingRoom.id,
-      ) ||
-      // if we can't find a portal to this room, just use the first portal we find
-      // - this is only valid if level select was used. Preferentially choose doors:
-      (changeType === "level-select" ?
-        iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
-            isPortal(i) &&
-            (directions4Xy as Readonly<Direction4Xyz[]>).includes(
-              i.config.direction,
-            ),
-        ) ||
-        // if no doors, any portal (but could be a ceiling):
-        iterate(objectValues(toRoom.items)).find(isPortal)
-      : undefined);
+    const destinationPortal = findDestinationPortal(
+      changeType,
+      toRoom,
+      leavingRoom,
+    );
 
     console.log(
       "putting",
-      currentCharacterName,
+      playableItem.id,
       "into",
       toRoomId,
       "at portal",
@@ -117,10 +137,12 @@ export const changeCharacterRoom = <RoomId extends string>({
     );
 
     if (destinationPortal === undefined) {
-      throw new Error(`trying to enter room id=${toRoomId} with no portals`);
+      throw new Error(
+        `trying to move ${playableItem.id} from ${leavingRoom.id} --to-> ${toRoomId} but no portal back the other way to locate with`,
+      );
     }
 
-    character.state.position = addXyz(
+    playableItem.state.position = addXyz(
       destinationPortal.state.position,
       destinationPortal.config.relativePoint,
       positionRelativeToSourcePortal,
@@ -131,12 +153,12 @@ export const changeCharacterRoom = <RoomId extends string>({
       : {},
     );
 
-    const heelsAbilities = selectHeelsAbilities(character);
+    const heelsAbilities = selectHeelsAbilities(playableItem);
     if (heelsAbilities !== undefined) {
       // can't carry items through rooms
       heelsAbilities.carrying = null;
     }
-    if (character.type === "head" || character.type === "headOverHeels") {
+    if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
       const hushPuppyInRoomIter = iterate(objectValues(toRoom.items)).filter(
         isItemType("hushPuppy"),
       );
@@ -148,7 +170,7 @@ export const changeCharacterRoom = <RoomId extends string>({
 
     console.log(
       "character put down at",
-      character.state.position,
+      playableItem.state.position,
       "which is relative to",
       "destination portal position",
       destinationPortal.state.position,
@@ -168,30 +190,31 @@ export const changeCharacterRoom = <RoomId extends string>({
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
       // TODO: maybe this should be side-effect free
-      character.state.autoWalk = true;
-      if (character.state.action === "idle") character.state.action = "moving";
+      playableItem.state.autoWalk = true;
+      if (playableItem.state.action === "idle")
+        playableItem.state.action = "moving";
 
       if (changeType === "level-select") {
-        character.state.facing = oppositeDirection(portalDirectionXy);
+        playableItem.state.facing = oppositeDirection(portalDirectionXy);
       }
     }
   }
-  // when we put the character in their new room, they won't be standing on anything yet (or will
+  // when we put the playableItem in their new room, they won't be standing on anything yet (or will
   // still have their standing on set to an item in the previous room) - for example, they might
   // be already on the floor or a teleporter in the new room. By setting this to null, gravity will
   // apply to them and they will collide with the item below them and get standingOn set:
-  character.state.standingOn = null;
+  playableItem.state.standingOn = null;
 
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
   // by default):
-  deleteItemFromRoom({ room: toRoom, item: character });
+  deleteItemFromRoom({ room: toRoom, item: playableItem });
 
   // but the character into the (probably newly loaded) room:
-  (toRoom.items[currentCharacterName] as typeof character) = character;
+  (toRoom.items[playableItem.id] as typeof playableItem) = playableItem;
 
   const collisionsInDestinationRoom = collision1toMany(
-    character,
+    playableItem,
     objectValues(toRoom.items),
   );
   if (collisionsInDestinationRoom.length > 0) {
@@ -199,17 +222,34 @@ export const changeCharacterRoom = <RoomId extends string>({
       "on entering room",
       toRoomId,
       "character",
-      currentCharacterName,
+      playableItem.id,
+      "at",
+      playableItem.state.position,
       "collides with",
       collisionsInDestinationRoom,
     );
   }
 
   // update game state to know which room this character is now in:
-  gameState.characterRooms[currentCharacterName] = {
-    room: toRoom,
-    entryState: entryState(character),
-  };
+  gameState.characterRooms[playableItem.id] = toRoom;
+  gameState.entryState[playableItem.id] = entryState(playableItem);
+
+  // delete entry states that no longer apply:
+  if (playableItem.id === "headOverHeels") {
+    // both players are now in a different room (in symbiosis) so their old
+    // entry states are no longer relevant:
+    delete gameState.entryState.head;
+    delete gameState.entryState.heels;
+  } else {
+    // individual character moving out of the room:
+    // there may be an issue here if it leaves the character that didn't move
+    // into the new room without an entrystate.
+    if (!gameState.entryState[otherIndividualCharacterName(playableItem.id)]) {
+      gameState.entryState[otherIndividualCharacterName(playableItem.id)] =
+        gameState.entryState.headOverHeels;
+    }
+    delete gameState.entryState.headOverHeels;
+  }
 
   gameState.events.emit("roomChange", toRoomId);
 };

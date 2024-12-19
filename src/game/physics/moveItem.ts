@@ -11,7 +11,6 @@ import {
 } from "@/utils/vectors/vectors";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
 import { mtv } from "./slidingCollision";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
@@ -21,6 +20,8 @@ import {
   removeStandingOn,
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
+import type { RoomState } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
 
 const log = 0;
 
@@ -31,6 +32,7 @@ type MoveItemOptions<RoomId extends string> = {
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
    */;
+  room: RoomState<PlanetName, RoomId>;
   pusher?: AnyItemInPlay;
   deltaMS: number;
   /**
@@ -56,6 +58,7 @@ export const moveItem = <RoomId extends string>({
   subjectItem,
   posDelta,
   gameState,
+  room,
   pusher,
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
@@ -69,7 +72,6 @@ export const moveItem = <RoomId extends string>({
     throw new Error("this probably means a non-terminating issue");
   }
 
-  const room = currentRoom(gameState);
   const {
     state: { position: originalPosition },
   } = subjectItem;
@@ -193,6 +195,7 @@ export const moveItem = <RoomId extends string>({
         posDelta: forwardPushVector,
         pusher: subjectItem,
         gameState,
+        room,
         deltaMS,
         forceful,
         recursionDepth: recursionDepth + 1,

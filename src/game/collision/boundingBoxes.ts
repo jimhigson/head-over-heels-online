@@ -135,7 +135,7 @@ export const boundingBoxForItem = (
         : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
 
     default:
-      console.warn("giving default aabb for item", item);
+      //console.warn("giving default aabb for item", item);
       return { aabb: mediumItemAabb };
   }
 };
