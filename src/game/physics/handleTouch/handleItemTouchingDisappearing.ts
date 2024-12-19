@@ -30,7 +30,10 @@ export const handleItemTouchingDissapearing = <RoomId extends string>(
     if (movingIsFreeItemAndStandingOn && movingItemIsPlayable(e)) {
       //give one last chance to jump off this item as it disappears - 'stand' on it
       //(but it will be removed very soon and this property will be gone):
-      setStandingOn({ above: e.movingItem, below: e.touchedItem as UnknownItemInPlay<RoomId> });
+      setStandingOn({
+        above: e.movingItem,
+        below: e.touchedItem as UnknownItemInPlay<RoomId>,
+      });
       const controlMechanicalResults = [
         jumping(e.movingItem, e.gameState),
         // jumping is no use without also walking - eg, heels needs to be able to head forward at the
