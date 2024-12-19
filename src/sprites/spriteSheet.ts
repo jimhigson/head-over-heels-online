@@ -9,7 +9,6 @@ import {
 import {
   wallTileSize,
   floorTileSize,
-  doorTextureSize,
   largeItemTextureSize,
   smallItemTextureSize,
   smallItemOutlineTextureSize,
@@ -19,6 +18,7 @@ import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
 import { shadowSpritesheetData } from "./shadowSpritesheetData";
+import { doorSpritesheetData } from "./doorSpritesheetData";
 
 let spritesTexture: Texture;
 try {
@@ -59,12 +59,6 @@ const frames = {
   },
   "generic.door.legs.base": {
     frame: { x: 237, y: 104, w: wallTileSize.w, h: 9 },
-  },
-  "generic.door.front.y": {
-    frame: { x: 178, y: 9, ...doorTextureSize },
-  },
-  "generic.door.back.y": {
-    frame: { x: 195, y: 2, ...doorTextureSize },
   },
   "generic.door.legs.threshold.double.x": {
     frame: { x: 221, y: 68, w: wallTileSize.w * 2, h: 24 },
@@ -108,41 +102,11 @@ const frames = {
   "generic.door.platform.towards": {
     frame: { x: 317, y: 219, w: 32, h: 32 },
   },
-  "generic.door.front.x": {
-    frame: { x: 238, y: 9, ...doorTextureSize },
-  },
-  "generic.door.back.x": {
-    frame: { x: 221, y: 2, ...doorTextureSize },
-  },
 
   "generic.door.platform.left": {
     frame: { x: 282, y: 189, w: 32, h: 28 },
   },
 
-  "moonbase.door.front.y": {
-    frame: { x: 433 - 1, y: 248, ...doorTextureSize },
-  },
-  "moonbase.door.back.y": {
-    frame: { x: 450 - 1, y: 241, ...doorTextureSize },
-  },
-  "moonbase.door.front.x": {
-    frame: { x: 618 - 1, y: 248, ...doorTextureSize },
-  },
-  "moonbase.door.back.x": {
-    frame: { x: 601 - 1, y: 241, ...doorTextureSize },
-  },
-  "moonbase.dark.door.front.y": {
-    frame: { x: 433 - 1, y: 320, ...doorTextureSize },
-  },
-  "moonbase.dark.door.back.y": {
-    frame: { x: 450 - 1, y: 313, ...doorTextureSize },
-  },
-  "moonbase.dark.door.front.x": {
-    frame: { x: 618 - 1, y: 320, ...doorTextureSize },
-  },
-  "moonbase.dark.door.back.x": {
-    frame: { x: 601 - 1, y: 313, ...doorTextureSize },
-  },
   teleporter: {
     frame: { x: 2, y: 478, ...largeItemTextureSize },
   },
@@ -353,12 +317,6 @@ const frames = {
   ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
 
   ...seriesOfAnimationFrameTextures(
-    "bubbles",
-    3,
-    { x: 4, y: 107 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfAnimationFrameTextures(
     "bubbles.cold",
     2,
     { x: 79, y: 4 },
@@ -435,6 +393,7 @@ const frames = {
   ...scenerySpritesheetData.frames,
   ...hudSpritesheetData.frames,
   ...shadowSpritesheetData.frames,
+  ...doorSpritesheetData.frames,
 };
 
 const spritesheetData = {
@@ -454,7 +413,6 @@ const spritesheetData = {
       "helicopter-bug.3",
       "helicopter-bug.4",
     ],
-    bubbles: ["bubbles.1", "bubbles.2" /*, "bubbles.3"*/],
     "bubbles.cold": ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/],
     "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
     "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],

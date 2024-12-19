@@ -3,7 +3,6 @@ import { createSprite } from "../createSprite";
 import { doorTexture } from "./doorTexture";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import type { UnknownRoomState } from "../../../model/modelTypes";
-import { doorTexturePivot } from "../../../sprites/spritePivots";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
@@ -124,7 +123,6 @@ function* doorFrameGenerator(
   // draw the actual door frame
   yield createSprite({
     texture: doorTexture(room, axis, nearness),
-    pivot: doorTexturePivot[nearness][axis],
     filter: mainPaletteSwapFilter(room),
   });
 }

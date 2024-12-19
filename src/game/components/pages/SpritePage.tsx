@@ -11,16 +11,19 @@ export const SpritePage = () => {
         return (
           <div
             key={textureId}
-            className="border-metallicBlue bg-shadow border border-4 m-1"
+            className="border-midGrey bg-shadow border border-4 m-1 p-1"
           >
             <ImgSprite
               textureId={textureId}
               scale={5}
-              className="bg-shadow hover:bg-metallicBlue hover:border-pink border-shadow border border-4 m-1 box-content"
+              className="bg-shadow hover:bg-metallicBlue hover:border-pink border-shadow border border-4 mb-1 box-content"
             />
-            <div className="text-lightGrey ml-1">{textureId}</div>
-            <div className="text-midGrey ml-1 mb-1">
-              ({frame.w}&nbsp;x&nbsp;{frame.h})
+            <div className="text-moss">{textureId}</div>
+            <div className="text-lightGrey">
+              {frame.w}&nbsp;x&nbsp;{frame.h}
+            </div>
+            <div className="text-midGrey">
+              ({frame.x},{frame.y})
             </div>
           </div>
         );

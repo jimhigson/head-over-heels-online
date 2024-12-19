@@ -64,12 +64,6 @@ const frames = {
   "head.blinking.right": {
     frame: { x: 130, y: 291, ...smallItemTextureSize },
   },
-  ...seriesOfAnimationFrameTextures(
-    "head.idle.right",
-    2,
-    { x: 4, y: 329 },
-    smallItemTextureSize,
-  ),
   "head.falling.towards": {
     frame: { x: 29, y: 291, ...smallItemTextureSize },
   },
