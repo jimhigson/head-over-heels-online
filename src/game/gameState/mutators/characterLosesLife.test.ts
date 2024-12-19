@@ -95,7 +95,7 @@ const testCampaign = {
         },
         doorToHeadStartingRoom: {
           type: "door",
-          position: { x: 2, y: 5, z: 0 },
+          position: { x: 1, y: 5, z: 0 },
           config: { toRoom: "headStartingRoom", direction: "away" },
         },
       },

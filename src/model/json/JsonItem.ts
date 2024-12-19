@@ -55,7 +55,7 @@ export type DoorFrameConfig<RoomId extends string> = {
   toRoom: RoomId;
 
   /** is this the near post of the doorframe, or the far one? */
-  nearness: "near" | "far";
+  part: "near" | "far" | "top";
 };
 export type DoorLegsConfig = {
   direction: Direction4Xy;

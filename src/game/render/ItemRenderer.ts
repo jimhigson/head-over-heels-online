@@ -13,7 +13,6 @@ import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { RenderContext } from "./roomRenderer";
-import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -28,7 +27,7 @@ const assignMouseActions = <RoomId extends string>(
       });
     }
 
-    container.on("pointerenter", () => {
+    /*container.on("pointerenter", () => {
       container!.filters = new RevertColouriseFilter(
         // don't have the room here and this doesn't really matter so arbitrary choose yellow
         "white",
@@ -37,7 +36,7 @@ const assignMouseActions = <RoomId extends string>(
 
     container.on("pointerleave", () => {
       container!.filters = [];
-    });
+    });*/
   }
 };
 

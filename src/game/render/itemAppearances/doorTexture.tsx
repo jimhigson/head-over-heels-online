@@ -8,15 +8,16 @@ export const doorTexture = (
   position: "near" | "far" | "top",
 ): DoorFrameTextureName => {
   const hasWorldSpecificTexture =
-    spriteSheet.textures[`${room.planet}.door.front.${axis}` as TextureId] !==
-    undefined;
+    spriteSheet.textures[
+      `door.frame.${room.planet}.${axis}.near` as TextureId
+    ] !== undefined;
 
   const sceneryName = hasWorldSpecificTexture ? room.planet : "generic";
 
   const useDarkTexture =
     room.color.shade === "dimmed" &&
     spriteSheet.textures[
-      `${sceneryName}.dark.door.front.${axis}` as TextureId
+      `door.frame.${sceneryName}.dark.${axis}.${position}` as TextureId
     ] !== undefined;
 
   return `door.frame.${sceneryName}${useDarkTexture ? ".dark" : ""}.${axis}.${position}` as DoorFrameTextureName;

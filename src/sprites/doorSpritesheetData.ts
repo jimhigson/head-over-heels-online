@@ -62,7 +62,7 @@ const doorFrames = <SN extends SceneryName>(
             y: 6,
             w: 20,
             h: 58,
-            pivot: { x: 9, y: 58 },
+            pivot: { x: 8, y: 58 },
           }),
         },
       },
@@ -71,7 +71,13 @@ const doorFrames = <SN extends SceneryName>(
       `door.frame.${name}.${orientation}.top`,
       {
         frame: {
-          ...maybeMirror({ x: -57, y: 0, w: 15, h: 36, pivot: { x: 0, y: 0 } }),
+          ...maybeMirror({
+            x: -57,
+            y: 0,
+            w: 15,
+            h: 36,
+            pivot: { x: 0, y: 36 },
+          }),
         },
       },
     ];
