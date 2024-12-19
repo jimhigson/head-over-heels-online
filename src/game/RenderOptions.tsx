@@ -15,3 +15,8 @@ export type RenderOptions<RoomId extends string> = {
   showBoundingBoxes: ShowBoundingBoxes;
   showShadowMasks: boolean;
 };
+
+export const defaultRenderOptions: RenderOptions<string> = {
+  showBoundingBoxes: "none",
+  showShadowMasks: false,
+};

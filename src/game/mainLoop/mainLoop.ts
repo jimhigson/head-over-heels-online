@@ -1,7 +1,7 @@
 import type { Application, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { selectCurrentRoom } from "../gameState/GameState";
 
 import { amigaLowResPal } from "@/originalGame";
 import { upscale } from "../render/upscale";
@@ -32,7 +32,7 @@ export const mainLoop = <RoomId extends string>(
   const pauseFilter = new RevertColouriseFilter(spritesheetPalette.shadow);
 
   let roomRenderer = RoomRenderer(
-    currentRoom(gameState),
+    selectCurrentRoom(gameState),
     gameState.renderOptions,
   );
   worldContainer.addChild(roomRenderer.container);
@@ -49,12 +49,12 @@ export const mainLoop = <RoomId extends string>(
     updateHud(gameState, screenEffectiveSize);
 
     if (
-      roomRenderer.room !== currentRoom(gameState) ||
+      roomRenderer.room !== selectCurrentRoom(gameState) ||
       roomRenderer.renderOptions !== gameState.renderOptions
     ) {
       roomRenderer.destroy();
       roomRenderer = RoomRenderer(
-        currentRoom(gameState),
+        selectCurrentRoom(gameState),
         gameState.renderOptions,
       );
       worldContainer.addChild(roomRenderer.container);
@@ -66,7 +66,7 @@ export const mainLoop = <RoomId extends string>(
       roomRenderer.tick({ progression: gameState.progression, movedItems });
     } else {
       app.stage.filters = pauseFilter;
-      const roomColor = currentRoom(gameState).color;
+      const roomColor = selectCurrentRoom(gameState).color;
       pauseFilter.targetColor = getColorScheme(roomColor).main.original;
     }
   };

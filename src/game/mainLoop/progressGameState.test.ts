@@ -4,7 +4,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import type { GameState } from "../gameState/GameState";
-import { currentRoom } from "../gameState/GameState";
+import { selectCurrentRoom } from "../gameState/GameState";
 import type { BasicGameStateOptions, TestRoomId } from "@/_testUtils/basicRoom";
 import {
   basicGameState,
@@ -79,7 +79,7 @@ describe("pickups", () => {
     ).toBe(true);
     // the pickup should have disappeared:
     expect(
-      currentRoom(gameState).items["pickupTwoSquaresFromHead"],
+      selectCurrentRoom(gameState).items["pickupTwoSquaresFromHead"],
     ).toBeUndefined();
     expect(headState(gameState).lives).toBe(10);
 
@@ -90,7 +90,9 @@ describe("pickups", () => {
       ],
     ).toBeFalsy();
     expect(
-      currentRoom(gameState).items["pickupCharactersWillNotGetInThisTest"],
+      selectCurrentRoom(gameState).items[
+        "pickupCharactersWillNotGetInThisTest"
+      ],
     ).not.toBeUndefined();
   });
 
@@ -123,7 +125,9 @@ describe("pickups", () => {
     );
     expect(heelsState(gameState).lives).toBe(10);
     // the pickup should have disappeared:
-    expect(currentRoom(gameState).items["pickupAboveHeels"]).toBeUndefined();
+    expect(
+      selectCurrentRoom(gameState).items["pickupAboveHeels"],
+    ).toBeUndefined();
   });
 
   test.todo(
@@ -336,7 +340,7 @@ describe("doors", () => {
     playGameThrough(gameState, {
       until: 2_000,
     });
-    expect(currentRoom(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoom(gameState).id).toBe("secondRoom");
   });
 });
 
@@ -369,7 +373,7 @@ describe("teleporter", () => {
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.room.id === "secondRoom") {
+        if (gameState.characterRooms.heels?.id === "secondRoom") {
           // stop jumping when gone through the teleporter
           gameState.inputState.jump = false;
         }
@@ -415,11 +419,11 @@ describe("conveyors", () => {
     });
     const {
       items: { portableBlock },
-    } = currentRoom(gameState);
+    } = selectCurrentRoom(gameState);
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOn).toMatchObject({ id: "floor" });
     expect(heelsState(gameState).position).toEqual({
-      x: 2,
+      x: 1,
       y: blockSizePx.d,
       z: 0,
     });
@@ -522,7 +526,7 @@ describe("deadly blocks", () => {
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
     expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
-    expect(currentRoom(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoom(gameState).id).toBe("secondRoom");
   });
 });
 
@@ -550,8 +554,8 @@ describe("snapping stationary items to pixel grid", () => {
     // this should always be an integer position since head has been stopped for more than a frame
     expect(headState(gameState).position).toMatchInlineSnapshot(`
       {
-        "x": 52,
-        "y": 62,
+        "x": 51,
+        "y": 61,
         "z": 0,
       }
     `);

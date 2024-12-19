@@ -1,58 +1,21 @@
+import type { IndividualCharacterName } from "../../model/modelTypes";
 import {
   type RoomState,
   type CharacterName,
   type Campaign,
-  otherCharacterName,
 } from "../../model/modelTypes";
 import type { PlanetName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
-import type { PlayableItem } from "../physics/itemPredicates";
-import type { EntryState } from "./EntryState";
+import type { PlayableEntryState } from "./PlayableEntryState";
 
-export const currentRoom = <RoomId extends string>(
+export const selectCurrentRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ): RoomState<PlanetName, RoomId> =>
-  // assuming both players haven't lost all their lives, or this is not reliable!
-  gameState.characterRooms[gameState.currentCharacterName]!.room;
-
-/*
-  export const pickupCollected = <RoomId extends string>(
-  pickupsCollected: PickupsCollected<RoomId>,
-  roomId: RoomId,
-  pickupItemId: string,
-): boolean => pickupsCollected[roomId][pickupItemId] === true;
-*/
-
-export const currentPlayableItem = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-): PlayableItem =>
-  // assuming both players haven't lost all their lives, or this is not reliable!
-  gameState.characterRooms[gameState.currentCharacterName]!.room.items[
-    gameState.currentCharacterName
-  ]!;
-
-/** gets the playable item for the non-current character */
-export const otherPlayableItem = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-): PlayableItem | undefined => {
-  const name = otherCharacterName(gameState.currentCharacterName);
-  return gameState.characterRooms[name]?.room.items[name];
-};
-
-export const getPlayableItem = <
-  C extends CharacterName,
-  RoomId extends string = string,
->(
-  gameState: GameState<RoomId>,
-  character: C,
-): PlayableItem<C, RoomId> | undefined => {
-  return gameState.characterRooms[character]?.room.items[character] as
-    | PlayableItem<C, RoomId>
-    | undefined;
-};
+  // use a ! here because so long as a game is in progress, there should be a current room
+  gameState.characterRooms[gameState.currentCharacterName]!;
 
 export type RoomPickupsCollected = Record<string, true>;
 
@@ -61,23 +24,37 @@ export type PickupsCollected<RoomId extends string> = Record<
   RoomPickupsCollected
 >;
 
-type CharacterRooms<RoomId extends string> = {
-  [C in CharacterName]:
-    | {
-        room: RoomState<PlanetName, RoomId>;
-        entryState: EntryState;
-      }
-    | undefined;
-};
+type CharacterRooms<RoomId extends string> =
+  /**
+   * partial here because character can have lost all lives, or headOverHeels doesn't initially exist
+   * - all 3 can never exist at the same time
+   */
+  Partial<{
+    [C in CharacterName]: RoomState<PlanetName, RoomId>;
+  }>;
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   keyAssignment: KeyAssignment;
   currentCharacterName: CharacterName;
+  /** 
+    if playing combined, which character was paid immediately before combining?
+    this allows to give the right character control after uncombining
+    */
+  previousPlayable?: IndividualCharacterName;
   inputState: InputState;
 
-  /** partial because character can have lost all lives */
   characterRooms: CharacterRooms<RoomId>;
+  /**
+   * Some of the state describing how their current room was entered for each character.
+   * this could include characters that are not currently in play; for example, if headOverHeels
+   * enters and splits, the entry state for headOverHeels will be retained since if a player
+   * loses a life they need to re-enter the room in the same way
+   */
+  entryState: Partial<{
+    [C in CharacterName]: PlayableEntryState;
+  }>;
+
   renderOptions: RenderOptions<RoomId>;
   /** TODO: is this really state? */
   events: Emitter<GameEvents<RoomId>>;

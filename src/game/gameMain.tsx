@@ -1,12 +1,13 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
-import { currentRoom } from "@/game/gameState/GameState";
+import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
 import type { RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
+import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 
 /**
  * we are now outside of React-land - pure pixi game engine!
@@ -27,7 +28,7 @@ export const gameMain = async <RoomId extends string>(
   const app = new Application();
   await app.init({ background: "#000000", resizeTo: window });
 
-  const gameState = initGameState(campaign, renderOptions);
+  const gameState = initGameState({ campaign, renderOptions });
   const stopListeningForInput = listenForInput({
     keyAssignment: gameState.keyAssignment,
     inputState: gameState.inputState,
@@ -46,13 +47,14 @@ export const gameMain = async <RoomId extends string>(
     },
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({
+        playableItem: selectCurrentPlayableItem(gameState),
         gameState,
         toRoomId: roomId,
         changeType: "level-select",
       });
     },
     get currentRoom() {
-      return currentRoom(gameState);
+      return selectCurrentRoom(gameState);
     },
     get gameState() {
       return gameState;

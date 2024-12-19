@@ -5,10 +5,16 @@ import type { PlanetName, Wall } from "../sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { RoomJson } from "./RoomJson";
 
-export const characterNames = ["head", "heels"] as const;
+export const individualCharacterNames = ["head", "heels"] as const;
+export const characterNames = [
+  ...individualCharacterNames,
+  "headOverHeels",
+] as const;
+export type IndividualCharacterName = (typeof individualCharacterNames)[number];
 export type CharacterName = (typeof characterNames)[number];
-export const otherCharacterName = (name: CharacterName) =>
-  name === "head" ? "heels" : "head";
+export const otherIndividualCharacterName = (
+  name: IndividualCharacterName,
+): IndividualCharacterName => (name === "head" ? "heels" : "head");
 export const isCharacterName = (name: string): name is CharacterName =>
   name === "head" || name === "heels";
 
@@ -35,6 +41,7 @@ export type RoomStateItems<
 > = Record<ItemId, UnknownItemInPlay<RoomId>> & {
   head?: ItemInPlay<"head", P, RoomId, "head">;
   heels?: ItemInPlay<"heels", P, RoomId, "heels">;
+  headOverHeels?: ItemInPlay<"headOverHeels", P, RoomId, "headOverHeels">;
 };
 
 /**

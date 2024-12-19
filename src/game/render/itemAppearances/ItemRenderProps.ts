@@ -1,14 +1,20 @@
 import type {
   SwitchSetting,
-  PlayableActionState,
   ItemInPlayType,
   Disappear,
 } from "@/model/ItemInPlay";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import type { PlayableActionState } from "@/model/ItemStateMap";
+import type { Direction4Xy } from "@/utils/vectors/vectors";
 import type { EmptyObject } from "type-fest";
 
 type PortableItemRenderProps = {
   highlighted: boolean;
+};
+
+type PlayableRenderProps = {
+  facingXy4: Direction4Xy;
+  action: PlayableActionState;
+  teleportingPhase: "in" | "out" | null;
 };
 
 type ItemRenderPropsMap = {
@@ -31,23 +37,16 @@ type ItemRenderPropsMap = {
 
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change
   baddie: {
-    facingXy4?: DirectionXy4;
+    facingXy4?: Direction4Xy;
     activated: boolean;
     busyLickingDoughnutsOffFace: boolean;
   };
   charles: {
-    facingXy4: DirectionXy4;
+    facingXy4: Direction4Xy;
   };
-  head: {
-    facingXy4: DirectionXy4;
-    action: PlayableActionState;
-    teleportingPhase: "in" | "out" | null;
-  };
-  heels: {
-    facingXy4: DirectionXy4;
-    action: PlayableActionState;
-    teleportingPhase: "in" | "out" | null;
-  };
+  head: PlayableRenderProps;
+  heels: PlayableRenderProps;
+  headOverHeels: PlayableRenderProps;
 };
 
 export type ItemRenderProps<T extends ItemInPlayType> =

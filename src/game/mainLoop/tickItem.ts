@@ -143,6 +143,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     subjectItem: item as UnknownItemInPlay<RoomId>,
     posDelta: accumulatedPosDelta,
     gameState,
+    room,
     deltaMS,
   });
 };

@@ -80,6 +80,7 @@ export const carrying = <RoomId extends string>(
       moveItem({
         subjectItem: heelsItem,
         gameState,
+        room,
         posDelta: {
           x: 0,
           y: 0,

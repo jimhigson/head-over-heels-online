@@ -1,18 +1,18 @@
 import type { SpriteSize } from "@/model/modelTypes";
 import { iterate } from "@/utils/iterate";
-import type { DirectionXy4, Xy } from "@/utils/vectors/vectors";
+import type { Direction4Xy, Xy } from "@/utils/vectors/vectors";
 import { range } from "iter-tools";
 import type { SpritesheetFrameData } from "pixi.js";
 
-type DirectionalTexture<TName extends string> = `${TName}.${DirectionXy4}`;
+type DirectionalTexture<TName extends string> = `${TName}.${Direction4Xy}`;
 export const fourDirections = <TName extends string>(
   name: TName,
 
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
-): Record<`${TName}.${DirectionXy4}`, SpritesheetFrameData> => {
+): Record<`${TName}.${Direction4Xy}`, SpritesheetFrameData> => {
   function* generator(): Generator<
-    [`${TName}.${DirectionXy4}`, SpritesheetFrameData]
+    [`${TName}.${Direction4Xy}`, SpritesheetFrameData]
   > {
     yield [`${name}.left`, { frame: { x: startX, y: startY, ...textureSize } }];
     yield [

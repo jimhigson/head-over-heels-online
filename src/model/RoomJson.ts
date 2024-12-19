@@ -1,6 +1,5 @@
 import type { ZxSpectrumRoomColour } from "@/originalGame";
 import type { PlanetName } from "@/sprites/planets";
-import type { Xy } from "@/utils/vectors/vectors";
 import type { UnknownJsonItem } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 
@@ -22,7 +21,7 @@ export type RoomJson<
   };
   planet: P;
   floor: Floor;
-  floorSkip: Xy[];
+  //floorSkip: Xy[];
   roomAbove?: RoomId;
   roomBelow?: RoomId;
   walls: RoomWalls<P>;

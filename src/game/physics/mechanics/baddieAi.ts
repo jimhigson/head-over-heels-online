@@ -1,13 +1,12 @@
-import type { ItemInPlayType } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
+import type { Direction8Xy, Xyz } from "@/utils/vectors/vectors";
 import {
-  directionsXy8,
+  directions8Xy,
   directionsXyDiagonal,
   distanceXySquared,
   originXy,
@@ -21,7 +20,7 @@ import {
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
-import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "../handleTouch/ItemTouchEvent";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -123,7 +122,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
-  directions: Readonly<Array<DirectionXy8>>,
+  directions: Readonly<Array<Direction8Xy>>,
 ): MechanicResult<"baddie", RoomId> => {
   if (standingOn === null) {
     return notWalking;
@@ -219,7 +218,7 @@ export const tickBaddie = <RoomId extends string>(
         room,
         gameState,
         deltaMS,
-        directionsXy8,
+        directions8Xy,
       );
     }
     case "cyberman": {
@@ -242,7 +241,7 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
       aabb: touchedItemAabb,
     },
     deltaMS,
-  }: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+  }: ItemTouchEventByItemType<RoomId, "baddie">,
   { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
 ) => {
   const {
@@ -285,7 +284,7 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
       aabb: touchedItemAabb,
     },
     deltaMS,
-  }: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+  }: ItemTouchEventByItemType<RoomId, "baddie">,
   { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
 ) => {
   const {
@@ -319,7 +318,7 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
 };
 
 export const handleBaddieTouchingItem = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId, "baddie", ItemInPlayType>,
+  e: ItemTouchEventByItemType<RoomId, "baddie">,
 ) => {
   const { movingItem: baddieItem } = e;
 

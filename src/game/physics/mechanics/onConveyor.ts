@@ -21,9 +21,6 @@ const resetConveyorStateForItem = {
   vels: {
     movingFloor: originXyz,
   },
-  stateDelta: {
-    activeConveyor: null,
-  },
 } satisfies MechanicResult<FreeItemTypes, string>;
 
 /**
@@ -72,9 +69,6 @@ export const onConveyor = <RoomId extends string>(
     movementType: "vel",
     vels: {
       movingFloor: conveyorVelocity,
-    },
-    stateDelta: {
-      activeConveyor: standingOn,
     },
   };
 };

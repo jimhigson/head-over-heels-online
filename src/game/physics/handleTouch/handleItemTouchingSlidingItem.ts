@@ -9,12 +9,12 @@ import {
 } from "@/utils/vectors/vectors";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 export const handleItemTouchingSlidingItem = <RoomId extends string>({
   movingItem: touchingItem,
   touchedItem: slidingItem,
-}: ItemTouchEvent<RoomId, ItemInPlayType, SlidingItemTypes>) => {
+}: ItemTouchEventByItemType<RoomId, ItemInPlayType, SlidingItemTypes>) => {
   if (!isSolid(touchingItem)) return;
 
   const {
@@ -44,7 +44,7 @@ export const handleSlidingItemTouchingAnyItem = <RoomId extends string>({
   movingItem: slidingItem,
   /** the item that touched this sliding item */
   touchedItem,
-}: ItemTouchEvent<RoomId, SlidingItemTypes, ItemInPlayType>) => {
+}: ItemTouchEventByItemType<RoomId, SlidingItemTypes, ItemInPlayType>) => {
   if (!isSolid(touchedItem)) return;
 
   const slidingVel = slidingItem.state.vels.sliding;

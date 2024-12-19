@@ -49,8 +49,11 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
 
   // where we render all the items in the room
   const itemRenderers: Map<
-    string,
-    ItemRenderer<ItemInPlayType, RoomId, ItemId>
+    ItemId,
+    | ItemRenderer<ItemInPlayType, RoomId, ItemId>
+    /** an explicit null value means ItemRenderer explicitly declined to create
+    an instance for this item */
+    | null
   > = new Map();
 
   return {
@@ -71,8 +74,19 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
           }
         : givenRenderContext;
 
+      /*if (renderContext.movedItems.size > 0)
+        console.log(
+          "roomrenderer.tick: movedItems are",
+          renderContext.movedItems,
+        );
+        */
+
       for (const item of objectValues(room.items)) {
-        let itemRenderer = itemRenderers.get(item.id);
+        let itemRenderer = itemRenderers.get(item.id as ItemId);
+        if (itemRenderer === null) {
+          // ItemRenderer decided not to render this item
+          continue;
+        }
 
         if (itemRenderer === undefined) {
           // don't already have a renderer for this item so make one
@@ -82,16 +96,22 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
             room,
             renderOptions,
           );
-          itemRenderers.set(item.id, itemRenderer);
+          if (itemRenderer === undefined) {
+            // ItemRenderer declined to render this item
+            itemRenderers.set(item.id as ItemId, null);
+            continue;
+          }
+          itemRenderers.set(item.id as ItemId, itemRenderer);
           itemsContainer.addChild(itemRenderer.container);
         }
         itemRenderer.tick(renderContext);
       }
       // remove any renderers for items that no longer exist in the room:
-      for (const itemRenderer of itemRenderers.values()) {
-        if (!room.items[itemRenderer.item.id]) {
-          itemRenderers.delete(itemRenderer.item.id);
-          itemRenderer.destroy();
+      for (const [itemId, itemRenderer] of itemRenderers.entries()) {
+        if (room.items[itemId] === undefined) {
+          if (itemRenderer !== null) itemRenderer.destroy();
+
+          itemRenderers.delete(itemId as ItemId);
         }
       }
       if (isFirstRender || renderContext.movedItems.size > 0) {
@@ -102,13 +122,13 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
         );
 
         for (let i = 0; i < order.length; i++) {
-          const itemRenderer = itemRenderers.get(order[i]);
+          const itemRenderer = itemRenderers.get(order[i] as ItemId);
           if (itemRenderer === undefined) {
             throw new Error(
               `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,
             );
           }
-          itemRenderer.container.zIndex = order.length - i;
+          itemRenderer!.container.zIndex = order.length - i;
         }
       }
       isFirstRender = false;
@@ -116,7 +136,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
     destroy() {
       roomContainer.destroy({ children: true });
       itemRenderers.forEach((itemRenderer) => {
-        itemRenderer.destroy();
+        if (itemRenderer !== null) itemRenderer.destroy();
       });
     },
     get renderOptions() {

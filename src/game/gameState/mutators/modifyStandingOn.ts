@@ -10,10 +10,13 @@ export const removeStandingOn = <RoomId extends string>(
   }
   item.state.standingOn = null;
 };
-export const setStandingOn = <RoomId extends string>(
-  item: FreeItem<PlanetName, RoomId>,
-  standingOn: UnknownItemInPlay<RoomId>,
-) => {
-  item.state.standingOn = standingOn;
-  standingOn.state.stoodOnBy.add(item);
+export const setStandingOn = <RoomId extends string>({
+  above,
+  below,
+}: {
+  above: FreeItem<PlanetName, RoomId>;
+  below: UnknownItemInPlay<RoomId>;
+}) => {
+  above.state.standingOn = below;
+  below.state.stoodOnBy.add(above);
 };

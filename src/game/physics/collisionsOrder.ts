@@ -104,8 +104,10 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   switch: 3,
   charles: 3,
   conveyor: 3,
-  head: 3,
-  heels: 3,
+
+  head: 4,
+  heels: 4,
+  headOverHeels: 4,
 
   pickup: 8,
 

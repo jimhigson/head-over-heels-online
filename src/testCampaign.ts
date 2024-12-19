@@ -80,7 +80,6 @@ const colourRooms = () => {
                 y: [1, 2, 4, 5],
               }),
               color: { hue, shade },
-              floorSkip: [] as Xy[],
               floor: p,
               planet: p,
               items: keyItems([
@@ -155,7 +154,7 @@ const rooms = {
     color: { hue: "yellow", shade: "dimmed" },
     walls: generateWalls({ x: 4, y: 4 }, "safari"),
     floor: "safari",
-    floorSkip: [] as Xy[],
+
     id: "lift",
     items: keyItems([
       // {
@@ -197,7 +196,7 @@ const rooms = {
     color: { hue: "yellow", shade: "dimmed" },
     walls: generateWalls({ x: 18, y: 14 }, "egyptus", { x: [5, 6], y: [] }),
     floor: "egyptus",
-    floorSkip: [] as Xy[],
+
     id: "laboratory",
     items: keyItems([
       {
@@ -891,7 +890,7 @@ const rooms = {
     size: { x: 18, y: 18 },
     walls: generateWalls({ x: 18, y: 18 }, "bookworld"),
     floor: "bookworld",
-    floorSkip: [] as Xy[],
+
     id: "renderEverything",
     items: keyItems([
       {

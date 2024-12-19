@@ -1,5 +1,5 @@
 import type { Floor, AnyRoomJson } from "../../src/model/modelTypes";
-import { map, convertFloorSkip, convertRoomColour } from "./convertCampaign";
+import { map, convertRoomColour } from "./convertCampaign";
 import { convertItems } from "./convertItems";
 import { convertPlanetName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
@@ -38,7 +38,7 @@ export const convertRoom = async (xmlRoomName: string) => {
   const room: AnyRoomJson = {
     id: convertRoomId(xmlRoomName),
     floor: floorMap[jsonFloorKind],
-    floorSkip: convertFloorSkip(roomXmlJson, roomSidesWithDoors),
+    //floorSkip: convertFloorSkip(roomXmlJson, roomSidesWithDoors),
     planet,
     roomBelow:
       roomOnMap["below"] &&

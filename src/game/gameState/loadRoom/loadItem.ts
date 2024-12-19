@@ -1,5 +1,10 @@
 import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
-import type { ShadowMaskOptions, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type {
+  BaseItemState,
+  ShadowMaskOptions,
+  UnknownItemInPlay,
+} from "@/model/ItemInPlay";
+import type { FreeItem } from "@/game/physics/itemPredicates";
 import { freeItemTypes, slidingItemTypes } from "@/game/physics/itemPredicates";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
@@ -11,6 +16,8 @@ import { directionAxis, originXyz } from "@/utils/vectors/vectors";
 import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
+import type { FreeItemState } from "@/model/ItemStateMap";
+import type { PlanetName } from "@/sprites/planets";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -200,12 +207,28 @@ const shadowCast = (
   }
 };
 
+export const defaultBaseState = <RoomId extends string>() =>
+  ({
+    expires: null,
+    stoodOnBy: new Set<FreeItem<PlanetName, RoomId>>(),
+    disappear: null,
+  }) satisfies Partial<BaseItemState>;
+
+export const defaultFreeItemState = () =>
+  ({
+    standingOn: null,
+    vels: {
+      gravity: originXyz,
+      movingFloor: originXyz,
+    },
+    latentMovement: [],
+  }) satisfies Partial<FreeItemState>;
+
 const initialState = (jsonItem: UnknownJsonItem) => {
   const free = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
-    expires: null,
-    stoodOnBy: new Set(),
+    ...defaultBaseState(),
     position: positionCentredInBlock(jsonItem as UnknownJsonItem),
     ...(free ?
       {
@@ -217,7 +240,6 @@ const initialState = (jsonItem: UnknownJsonItem) => {
             { sliding: originXyz }
           : {}),
         },
-        activeConveyor: null,
         latentMovement: [],
       }
     : {}),

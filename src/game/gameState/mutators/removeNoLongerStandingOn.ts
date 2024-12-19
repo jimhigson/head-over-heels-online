@@ -49,7 +49,7 @@ export const removeNoLongerStandingOn = <RoomId extends string>(
           objectValues(room.items),
         );
         if (newStandingOn !== undefined) {
-          setStandingOn(stander, newStandingOn);
+          setStandingOn({ above: stander, below: newStandingOn });
         }
       }
     }

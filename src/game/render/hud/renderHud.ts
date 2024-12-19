@@ -1,5 +1,5 @@
 import type { GameState } from "@/game/gameState/GameState";
-import { getPlayableItem, currentRoom } from "@/game/gameState/GameState";
+import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
 import type { TextureId } from "@/sprites/spriteSheet";
@@ -8,7 +8,9 @@ import {
   hudCharTextureSize,
   smallItemTextureSize,
 } from "@/sprites/textureSizes";
-import { characterNames, type CharacterName } from "@/model/modelTypes";
+import type { IndividualCharacterName } from "@/model/modelTypes";
+import { individualCharacterNames } from "@/model/modelTypes";
+import { type CharacterName } from "@/model/modelTypes";
 import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
@@ -18,6 +20,11 @@ import { shieldDuration } from "@/game/physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { assertIsTextureId } from "@/sprites/assertIsTextureId";
 import { iterateToContainer } from "@/game/iterateToContainer";
+import {
+  selectAbilities,
+  selectPlayableItem,
+} from "@/game/gameState/gameStateSelectors/selectPlayableItem";
+import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -52,6 +59,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
   const uncurrentSpriteFilter = new RevertColouriseFilter();
+  const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();
 
   const makeText = (doubleHeight: boolean = false) => {
     const yScaleFactor = doubleHeight ? 2 : 1;
@@ -61,7 +69,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     return text;
   };
 
-  const characterSprite = (characterName: CharacterName) => {
+  const characterSprite = (characterName: IndividualCharacterName) => {
     const characterSprite = new Sprite(
       spriteSheet.textures[
         `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
@@ -129,7 +137,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     },
   };
 
-  for (const character of characterNames) {
+  for (const character of individualCharacterNames) {
     hudContainer.addChild(hudElements[character].livesText);
     hudContainer.addChild(hudElements[character].sprite);
     hudContainer.addChild(hudElements[character].shield.container);
@@ -141,13 +149,13 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   hudContainer.addChild(hudElements.heels.carrying.container);
 
   return (gameState: GameState<RoomId>, screenSize: Xy) => {
-    const room = currentRoom(gameState);
+    const room = selectCurrentRoom(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
     } = getColorScheme(room.color);
 
-    const updateIcons = (characterName: CharacterName) => {
-      const playableItem = getPlayableItem(gameState, characterName);
+    const updateIcons = (characterName: IndividualCharacterName) => {
+      const playableItem = selectPlayableItem(gameState, characterName);
       const shieldCollectedAt = playableItem?.state.shieldCollectedAt ?? null;
 
       const { text: shieldText, container: shieldContainer } =
@@ -183,10 +191,25 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       skillContainer.y = screenSize.y - 24;
     };
 
-    const updateCharacterSprite = (characterName: CharacterName) => {
-      const isCurrent = gameState.currentCharacterName === characterName;
+    const updateCharacterSprite = (characterName: IndividualCharacterName) => {
+      const { currentCharacterName } = gameState;
+      const isCurrent =
+        currentCharacterName === characterName ||
+        currentCharacterName === "headOverHeels";
       const characterSprite = hudElements[characterName].sprite;
-      characterSprite.filters = isCurrent ? noFilters : uncurrentSpriteFilter;
+
+      if (isCurrent) {
+        characterSprite.filters = noFilters;
+      } else {
+        const highlight = selectCanCombine(gameState);
+
+        if (highlight) {
+          uncurrentButHighlightedSpriteFilter.targetColor = dimmedShade.basic;
+          characterSprite.filters = uncurrentButHighlightedSpriteFilter;
+        } else {
+          characterSprite.filters = uncurrentSpriteFilter;
+        }
+      }
 
       characterSprite.x =
         (screenSize.x >> 1) +
@@ -194,9 +217,10 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
 
       characterSprite.y = screenSize.y - smallItemTextureSize.h;
     };
-    const updateLivesText = (characterName: CharacterName) => {
-      const playableItem = getPlayableItem(gameState, characterName);
-      const lives = playableItem?.state.lives ?? 0;
+    const updateLivesText = (characterName: IndividualCharacterName) => {
+      const abilities = selectAbilities(gameState, characterName);
+
+      const lives = abilities?.lives ?? 0;
 
       const text = hudElements[characterName].livesText;
       text.x =
@@ -233,7 +257,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     textFilter.targetColor = dimmedShade.basic;
     iconFilter.targetColor = iconShade.basic;
 
-    for (const character of characterNames) {
+    for (const character of individualCharacterNames) {
       updateLivesText(character);
       updateCharacterSprite(character);
       updateIcons(character);
@@ -251,21 +275,21 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     hudElements.heels.bag.container.y = hudElements.head.hooter.container.y =
       screenSize.y - 8;
 
-    const headItem = getPlayableItem(gameState, "head");
+    const headAbilities = selectAbilities(gameState, "head");
 
-    const hasHooter = headItem?.state.hasHooter ?? false;
+    const hasHooter = headAbilities?.hasHooter ?? false;
     hudElements.head.hooter.icon.filters =
       hasHooter ? noFilters : uncurrentSpriteFilter;
-    const donutCount = headItem?.state.donuts ?? 0;
+    const donutCount = headAbilities?.donuts ?? 0;
     hudElements.head.donuts.icon.filters =
       donutCount !== 0 ? noFilters : uncurrentSpriteFilter;
     showNumberInContainer(hudElements.head.donuts.text, donutCount);
     //hudElements.head.donuts.text.text = `${donutCount}`;
 
-    const heelsItem = getPlayableItem(gameState, "heels");
-    const hasBag = heelsItem?.state.hasBag ?? false;
+    const heelsAbilities = selectAbilities(gameState, "heels");
+    const hasBag = heelsAbilities?.hasBag ?? false;
 
-    updateCarrying(heelsItem?.state.carrying ?? null);
+    updateCarrying(heelsAbilities?.carrying ?? null);
 
     hudElements.heels.bag.icon.filters =
       hasBag ? noFilters : uncurrentSpriteFilter;

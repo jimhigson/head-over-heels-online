@@ -1,4 +1,3 @@
-import type { Filter } from "pixi.js";
 import { Container } from "pixi.js";
 import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
@@ -17,7 +16,7 @@ import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import type { Direction4Xy } from "@/utils/vectors/vectors";
 import {
   directionAxis,
   originXy,
@@ -33,27 +32,10 @@ import {
   greyFilter,
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
-
-const itemRidingOnBubblesSpritesOptions = {
-  frames: spriteSheet.animations["bubbles.cold"],
-  animationSpeed: 0.25,
-};
-const stackedSprites = ({
-  head,
-  body = "headless-base",
-  filter,
-}: {
-  head: CreateSpriteOptions;
-  body?: CreateSpriteOptions;
-  filter?: Filter;
-}): Container => {
-  const container = new Container({ filters: filter });
-  container.addChild(createSprite(body));
-  const headSprite = createSprite(head);
-  headSprite.y = -12;
-  container.addChild(headSprite);
-  return container;
-};
+import {
+  stackedSprites,
+  itemRidingOnBubblesSpritesOptions,
+} from "./stackedSprites";
 
 type OutlineTextureId = Extract<TextureId, `${string}.outline`>;
 type TextureWithOutline =
@@ -112,6 +94,7 @@ export const itemAppearances: {
 } = {
   head: playableAppearance,
   heels: playableAppearance,
+  headOverHeels: playableAppearance,
   doorFrame: doorFrameAppearance,
   doorLegs: doorLegsAppearance,
 
@@ -378,7 +361,13 @@ export const itemAppearances: {
       item: {
         config: { which },
       },
-    }) => createSprite(`${which}.walking.towards.2`),
+    }) =>
+      which === "headOverHeels" ?
+        stackedSprites({
+          top: `head.walking.towards.2`,
+          bottom: `heels.walking.towards.2`,
+        })
+      : createSprite(`${which}.walking.towards.2`),
   ),
 
   charles({
@@ -397,13 +386,13 @@ export const itemAppearances: {
       return;
     }
     return {
-      container: stackedSprites({ head: `charles.${facingXy4}` }),
+      container: stackedSprites({ top: `charles.${facingXy4}` }),
       renderProps: { facingXy4 },
     };
   },
 
   baddie({ item: { config, state }, room, currentlyRenderedProps }) {
-    let startingDirection: DirectionXy4 | undefined = undefined;
+    let startingDirection: Direction4Xy | undefined = undefined;
     const { activated, busyLickingDoughnutsOffFace } = state;
 
     const filter =
@@ -476,11 +465,11 @@ export const itemAppearances: {
               container:
                 state.activated || state.busyLickingDoughnutsOffFace ?
                   stackedSprites({
-                    head: {
+                    top: {
                       texture: `${config.which}.${facingXy4}`,
                       filter: filter || mainPaletteSwapFilter(room),
                     },
-                    body: itemRidingOnBubblesSpritesOptions,
+                    bottom: itemRidingOnBubblesSpritesOptions,
                   })
                   // charging on a toaster
                 : createSprite({
@@ -495,7 +484,7 @@ export const itemAppearances: {
             // directional, not animated, stacked (base)
             return {
               container: stackedSprites({
-                head: `${config.which}.${facingXy4}`,
+                top: `${config.which}.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -561,7 +550,7 @@ export const itemAppearances: {
             //not directional, animated, stacked (base):
             return {
               container: stackedSprites({
-                head: itemRidingOnBubblesSpritesOptions,
+                top: itemRidingOnBubblesSpritesOptions,
                 filter,
               }),
               renderProps,
@@ -571,8 +560,8 @@ export const itemAppearances: {
             //not directional, stacked (bubbles):
             return {
               container: stackedSprites({
-                head: `ball`,
-                body: itemRidingOnBubblesSpritesOptions,
+                top: `ball`,
+                bottom: itemRidingOnBubblesSpritesOptions,
                 filter,
               }),
               renderProps,

@@ -1,90 +1,74 @@
 import type { JsonItem } from "@/model/json/JsonItem";
 import { positionCentredInBlock } from "./positionCentredInBlock";
-import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
+import { smallItemAabb } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { PlanetName } from "@/sprites/planets";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
 import { originXyz } from "@/utils/vectors/vectors";
 import type { CharacterName } from "@/model/modelTypes";
+import type { PlayableState } from "@/model/ItemStateMap";
+import { defaultBaseState, defaultFreeItemState } from "./loadItem";
+import { emptyObject } from "@/utils/empty";
+import { startingLives } from "@/game/physics/mechanicsConstants";
+
+export const defaultPlayableRootAttributes = {
+  config: emptyObject,
+  shadowCastTexture: "shadow.smallRound",
+  // head's nose is rendered outside of his bb in the original
+  aabb: smallItemAabb,
+} satisfies Partial<PlayableItem<CharacterName, string>>;
+
+export const defaultPlayerState = () =>
+  ({
+    action: "idle",
+    jumped: false,
+    teleporting: null,
+    autoWalk: false,
+    facing: "towards",
+    shieldCollectedAt: Number.NEGATIVE_INFINITY,
+    vels: {
+      walking: originXyz,
+      gravity: originXyz,
+      movingFloor: originXyz,
+    },
+  }) satisfies Partial<PlayableState<string>>;
 
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", PlanetName, RoomId>,
 ): PlayableItem<CharacterName, RoomId> => {
   if (jsonItem.config.which === "head") {
     return {
+      id: "head",
       type: "head",
-      config: {},
       ...defaultItemProperties,
-      ...boundingBoxForItem(jsonItem),
-      shadowCastTexture: "shadow.smallRound",
-      ...{
-        id: "head",
-        state: {
-          facing: "towards",
-          action: "idle",
-          jumpEndTime: -1, // jump has already finished - ie, we are not jumping
-          hasHooter: false,
-          disappear: null,
-          fastSteps: 0,
-          shieldCollectedAt: Number.NEGATIVE_INFINITY,
-          standingOn: null,
-          stoodOnBy: new Set(),
-          activeConveyor: null,
-          vels: {
-            walking: originXyz,
-            gravity: originXyz,
-            movingFloor: originXyz,
-            jumping: originXyz,
-          },
-          jumped: false,
-          lives: 8,
-          donuts: 0,
-          donutLastFireTime: Number.NEGATIVE_INFINITY,
-          autoWalk: false,
-          teleporting: null,
-          position: positionCentredInBlock(jsonItem),
-          expires: null,
-          latentMovement: [],
-        },
-        falls: true,
+      ...defaultPlayableRootAttributes,
+      state: {
+        ...defaultBaseState<RoomId>(),
+        ...defaultFreeItemState(),
+        ...defaultPlayerState(),
+        hasHooter: false,
+        fastSteps: 0,
+        lives: startingLives,
+        donuts: 0,
+        donutLastFireTime: Number.NEGATIVE_INFINITY,
+        position: positionCentredInBlock(jsonItem),
       },
     };
   } else {
     return {
+      id: "heels",
       type: "heels",
-      config: {},
       ...defaultItemProperties,
-      ...boundingBoxForItem(jsonItem),
-      shadowCastTexture: "shadow.smallRound",
-      ...{
-        id: "heels",
-        state: {
-          facing: "towards",
-          action: "idle",
-          disappear: null,
-          carrying: null,
-          hasBag: false,
-          bigJumps: 0,
-          shieldCollectedAt: Number.NEGATIVE_INFINITY,
-          standingOn: null,
-          stoodOnBy: new Set(),
-          activeConveyor: null,
-          vels: {
-            walking: originXyz,
-            gravity: originXyz,
-            movingFloor: originXyz,
-            jumping: originXyz,
-          },
-          jumped: false,
-          lives: 8,
-          autoWalk: false,
-          jumpEndTime: -1, // jump has already finished - ie, we are not jumping
-          teleporting: null,
-          position: positionCentredInBlock(jsonItem),
-          expires: null,
-          latentMovement: [],
-        },
-        falls: true,
+      ...defaultPlayableRootAttributes,
+      state: {
+        ...defaultBaseState<RoomId>(),
+        ...defaultFreeItemState(),
+        ...defaultPlayerState(),
+        carrying: null,
+        hasBag: false,
+        bigJumps: 0,
+        lives: startingLives,
+        position: positionCentredInBlock(jsonItem),
       },
     };
   }

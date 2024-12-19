@@ -10,7 +10,7 @@ import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import type { Direction4Xy } from "@/utils/vectors/vectors";
 import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/itemPredicates";
@@ -38,7 +38,7 @@ function* gatherConveyors<RoomId extends string>(
   for (const [d, directionConveyors] of objectEntriesIter(
     conveyorsByDirection,
   )) {
-    const axisOfConveyorTravel = directionAxis(d as DirectionXy4);
+    const axisOfConveyorTravel = directionAxis(d as Direction4Xy);
     const axisCrossingConveyorTravel =
       perpendicularAxisXy(axisOfConveyorTravel);
     const byOrdinal = Object.groupBy(
@@ -123,7 +123,7 @@ const itemsInItemObjectMap = <
 export const loadRoom = <P extends PlanetName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
-  extraItems: RoomStateItems<P, RoomId> = {},
+  //extraItems: RoomStateItems<P, RoomId> = {},
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
@@ -158,7 +158,7 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
     roomJson,
     items: {
       ...loadedItems,
-      ...extraItems,
+      //...extraItems,
     },
   };
 

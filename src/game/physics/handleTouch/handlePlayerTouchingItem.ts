@@ -3,15 +3,16 @@ import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
-import type { CharacterName } from "@/model/modelTypes";
 import { touchedItemIsType, type ItemTouchEvent } from "./ItemTouchEvent";
+import type { PlayableItem } from "../itemPredicates";
 import { deadlyItemTypes } from "../itemPredicates";
+import type { CharacterName } from "@/model/modelTypes";
 
 /**
  * @returns true is the physics needs to halt after this handler
  */
 export const handlePlayerTouchingItem = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId, CharacterName>,
+  e: ItemTouchEvent<RoomId, PlayableItem<CharacterName, RoomId>>,
 ) => {
   switch (true) {
     case touchedItemIsType(e, "stopAutowalk"):

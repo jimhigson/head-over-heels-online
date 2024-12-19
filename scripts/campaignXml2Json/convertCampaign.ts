@@ -3,8 +3,7 @@ import { readMapToJson, roomNameFromXmlFilename } from "./readToJson";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
-import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
-import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
+import type { Direction4Xy } from "../../src/utils/vectors/vectors";
 import type { AnyRoomJson } from "../../src/model/modelTypes";
 import { convertRoom } from "./convertRoom";
 import type { Shade, ZxSpectrumRoomHue } from "../../src/originalGame";
@@ -19,7 +18,7 @@ const allRoomNames = (await readdir("gamedata-map-xml"))
  * a door map that can be used to just know if there is a door on a side, not necessarily
  * to have the door object
  */
-export type LooseDoorMap = Partial<Record<DirectionXy4, true>>;
+export type LooseDoorMap = Partial<Record<Direction4Xy, true>>;
 
 export const convertX = (
   xmlX: number | string,
@@ -91,18 +90,6 @@ export const convertRoomColour = (color: string) => {
     hue: match[1] as ZxSpectrumRoomHue,
     shade: (match[2] === undefined ? "basic" : "dimmed") as Shade,
   };
-};
-
-export const convertFloorSkip = (
-  roomXmlJson: Xml2JsonRoom,
-  sidesWithDoors: SidesWithDoors,
-) => {
-  return (
-    roomXmlJson.nofloor?.map((nf) => ({
-      x: convertX(nf._attributes.x, roomXmlJson, sidesWithDoors),
-      y: convertX(nf._attributes.y, roomXmlJson, sidesWithDoors),
-    })) ?? []
-  );
 };
 
 const rooms: Record<string, AnyRoomJson> = {};

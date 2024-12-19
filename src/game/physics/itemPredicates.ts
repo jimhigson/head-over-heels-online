@@ -4,7 +4,7 @@ import type {
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import { type AnyItemInPlay } from "@/model/ItemInPlay";
-import type { CharacterName } from "@/model/modelTypes";
+import { characterNames, type CharacterName } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 
 type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
@@ -58,7 +58,11 @@ export const isPortable = isItemType(...portableItemTypes);
 export const isPlayableItem = <RoomId extends string = string>(
   item: AnyItemInPlay<RoomId>,
 ): item is PlayableItem<CharacterName, RoomId> => {
-  return item.type === "head" || item.type === "heels";
+  return (
+    item.type === "head" ||
+    item.type === "heels" ||
+    item.type === "headOverHeels"
+  );
 };
 export function isFreeItem<
   P extends PlanetName = PlanetName,
@@ -70,16 +74,18 @@ export type PlayableItem<
   C extends CharacterName = CharacterName,
   RoomId extends string = string,
 > =
-  C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head">
-  : never | C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
-  : never;
+  | (C extends "headOverHeels" ?
+      ItemInPlay<"headOverHeels", PlanetName, RoomId, "headOverHeels">
+    : never)
+  | (C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head"> : never)
+  | (C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
+    : never);
 
 export const freeItemTypes = [
+  ...characterNames,
   "baddie",
   "ball",
   "charles",
-  "head",
-  "heels",
   "movableBlock",
   "moveableDeadly",
   "pickup",
@@ -110,3 +116,6 @@ export const isDeadlyItem = <RoomId extends string>(
 ): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.deadly);
+
+export const isPortal = isItemType("portal");
+export const isTeleporter = isItemType("teleporter");

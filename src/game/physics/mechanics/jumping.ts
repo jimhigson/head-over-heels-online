@@ -35,11 +35,15 @@ const getJumpInitialVelocity = (
   characterName: CharacterName,
   onSpring: boolean,
 ) => {
-  return jumpInitialVelocities[`${characterName}${onSpring ? "OnSpring" : ""}`];
+  const effectiveCharacterName =
+    characterName === "headOverHeels" ? "head" : characterName;
+  return jumpInitialVelocities[
+    `${effectiveCharacterName}${onSpring ? "OnSpring" : ""}`
+  ];
 };
 
 export const jumping = <RoomId extends string>(
-  { type, state: { standingOn } }: PlayableItem,
+  { type: characterName, state: { standingOn } }: PlayableItem,
   gameState: GameState<RoomId>,
   //_deltaMS: number,
 ): MechanicResult<CharacterName, RoomId> => {
@@ -70,7 +74,7 @@ export const jumping = <RoomId extends string>(
   }
 
   const standingOnSpring = isItemType("spring")(standingOn);
-  const velZ = getJumpInitialVelocity(type, standingOnSpring);
+  const velZ = getJumpInitialVelocity(characterName, standingOnSpring);
 
   // handled this input but don't set jump input flat off - it is
   // ok to keep jump pressed to keep jumping

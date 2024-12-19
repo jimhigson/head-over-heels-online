@@ -2,18 +2,18 @@ import type { FreeItem } from "@/game/physics/itemPredicates";
 import type { PlanetName } from "../sprites/planets";
 import type {
   Aabb,
-  DirectionXy4,
+  Direction4Xy,
   Direction4Xyz,
   Xyz,
 } from "../utils/vectors/vectors";
-import type { FreeItemState, ItemStateMap } from "./ItemStateMap";
+import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
+import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
-  | "head"
-  | "heels"
+  | CharacterName
   | "doorFrame"
   | "stopAutowalk"
   | "portal"
@@ -21,53 +21,6 @@ export type ItemInPlayType =
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
   | "firedDonut";
-
-export type PlayableActionState =
-  | "moving"
-  | "idle"
-  | "falling"
-  /** death animation is playing - character will have had expired set  */
-  | "death";
-
-export type EitherPlayableState<RoomId extends string> =
-  FreeItemState<RoomId> & {
-    facing: DirectionXy4;
-    action: PlayableActionState;
-
-    lives: number;
-    // the time a shield was collected at, or null if no shield. The hud should show
-    // seconds remaining based off of this value
-    shieldCollectedAt: number;
-
-    // Number of pixels the player will walk forward regardless of input. This
-    // puts players properly inside a room when they enter via a door
-    autoWalk: boolean;
-
-    vels: {
-      gravity: Xyz;
-      /** allows the walking mechanic to keep track of its own velocities */
-      walking: Xyz;
-      movingFloor: Xyz;
-    };
-
-    /**
-     * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
-     * we fall (vertical falling, no forward motion)
-     */
-    jumped: boolean;
-
-    teleporting:
-      | {
-          phase: "out";
-          timeRemaining: number;
-          toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
-        }
-      | {
-          phase: "in";
-          timeRemaining: number;
-        }
-      | null;
-  };
 
 export type SwitchSetting = "left" | "right";
 
@@ -84,7 +37,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     direction: Direction4Xyz;
   };
   conveyor: {
-    direction: DirectionXy4;
+    direction: Direction4Xy;
     count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;
@@ -110,7 +63,7 @@ export type ItemInPlayConfig<
 
 export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
 
-type BaseItemState<RoomId extends string> = {
+export type BaseItemState<RoomId extends string = string> = {
   position: Readonly<Xyz>;
 
   /**

@@ -8,11 +8,12 @@ import {
 } from "./handleItemTouchingSlidingItem";
 import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
 import {
+  movingItemIsPlayable,
   movingItemIsType,
+  touchedItemIsPlayable,
   touchedItemIsType,
   type ItemTouchEvent,
 } from "./ItemTouchEvent";
-import { characterNames } from "@/model/modelTypes";
 import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
 import { handleFiredDonutTouchingBaddie } from "./handleFiredDonutTouchingBaddie";
 
@@ -23,12 +24,12 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   e: ItemTouchEvent<RoomId>,
 ) => {
   // if the player moved into something, we handle that:
-  if (movingItemIsType(e, ...characterNames)) {
+  if (movingItemIsPlayable(e)) {
     handlePlayerTouchingItem(e);
   }
 
   // if something moved into the player, we flip it and handle like the player moved into it:
-  if (touchedItemIsType(e, ...characterNames)) {
+  if (touchedItemIsPlayable(e)) {
     handlePlayerTouchingItem({
       ...e,
       movingItem: e.touchedItem,
