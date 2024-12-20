@@ -59,6 +59,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
     type: "headOverHeels",
     id: "headOverHeels",
     ...defaultItemProperties,
+    shadowCastTexture: heels.shadowCastTexture,
     config: emptyObject,
     aabb: doubleHeightCharacter,
     state: {
