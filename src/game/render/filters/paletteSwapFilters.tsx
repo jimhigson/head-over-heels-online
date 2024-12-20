@@ -24,7 +24,7 @@ export const greyFilter = (room: UnknownRoomState) =>
     moss: spritesheetPalette.lightGrey,
     midRed: spritesheetPalette.midGrey,
     highlightBeige: spritesheetPalette.lightGrey,
-    white: spritesheetPalette.lightGrey,
+    //white: spritesheetPalette.lightGrey,
     ...replaceMapForRoom(room),
   });
 

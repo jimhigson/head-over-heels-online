@@ -49,7 +49,71 @@ export const initBaddieWalk = (
   }
 };
 
-export const walkTowardsPlayer = <RoomId extends string>(
+export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
+  {
+    state: {
+      position,
+      standingOn,
+      vels: { walking },
+    },
+  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  _gameState: GameState<RoomId>,
+  _deltaMS: number,
+): MechanicResult<"baddie", RoomId> => {
+  const speed = moveSpeedPixPerMs["headless-base"];
+
+  if (standingOn === null) {
+    return notWalking;
+  }
+
+  if (!xyEqual(walking, originXy)) {
+    return {
+      movementType: "steady",
+    };
+  }
+
+  const {
+    items: { head: headInRoom, heels: heelsInRoom },
+  } = room;
+
+  for (const player of [headInRoom, heelsInRoom]) {
+    if (player === undefined) continue;
+
+    const vectorXyToPlayer = subXy(player.state.position, position);
+
+    if (Math.abs(vectorXyToPlayer.y) < 1) {
+      return {
+        movementType: "vel",
+        vels: {
+          walking: {
+            x: vectorXyToPlayer.x > 0 ? speed : -speed,
+            y: 0,
+            z: 0,
+          },
+        },
+      };
+    }
+
+    if (Math.abs(vectorXyToPlayer.x) < 1) {
+      return {
+        movementType: "vel",
+        vels: {
+          walking: {
+            x: 0,
+            y: vectorXyToPlayer.y > 0 ? speed : -speed,
+            z: 0,
+          },
+        },
+      };
+    }
+  }
+  return {
+    movementType: "steady",
+  };
+};
+
+export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
   { state: { position, standingOn } }: ItemInPlay<"baddie", PlanetName, RoomId>,
   room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
@@ -221,9 +285,16 @@ export const tickBaddie = <RoomId extends string>(
         directions8Xy,
       );
     }
-    case "cyberman": {
-      return walkTowardsPlayer(item, room, gameState, deltaMS);
-    }
+    case "headless-base":
+      return rushTowardsPlayerInCardinalDirections(
+        item,
+        room,
+        gameState,
+        deltaMS,
+      );
+    case "cyberman":
+      return walkOnShortestAisTowardsPlayer(item, room, gameState, deltaMS);
+
     case "turtle":
     case "american-football-head": {
       return keepWalkingInSameDirection(item, room, gameState, deltaMS);
@@ -272,6 +343,12 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
 
   baddieItem.state.vels.walking = newWalking;
   baddieItem.state.durationOfTouch = 0;
+};
+
+const handleBaddieTouchingItemByStopping = <RoomId extends string>({
+  movingItem: baddieItem,
+}: ItemTouchEventByItemType<RoomId, "baddie">) => {
+  baddieItem.state.vels.walking = originXyz;
 };
 
 const handleBaddieTouchingItemByTurningToOppositeDirection = <
@@ -332,10 +409,12 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
       });
       break;
     }
+    case "headless-base":
+      handleBaddieTouchingItemByStopping(e);
+      break;
     case "turtle":
       handleBaddieTouchingItemByTurningClockwise(e, {
         touchDurationBeforeTurn: 150,
       });
   }
-  return false;
 };
