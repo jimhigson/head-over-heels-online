@@ -34,6 +34,8 @@ const itemHasExpired = <RoomId extends string>(
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   room: RoomState<PlanetName, RoomId>,
   startingPositions: Record<string, Xyz>,
+  /** the items which are snapped will be added to this set */
+  movedItems: Set<AnyItemInPlay>,
 ) => {
   for (const item of objectValues(room.items)) {
     const startingPosition: Xyz | undefined = startingPositions[item.id];
@@ -49,6 +51,7 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
     if (shouldSnap) {
       console.log(`snapping item ${item.id} to pixel grid`);
       item.state.position = roundXyz(item.state.position);
+      movedItems.add(item);
     }
   }
 };
@@ -164,7 +167,7 @@ export const _progressGameState = <RoomId extends string>(
     ),
   );
   assignLatentMovement(movedItems, gameState, startingPositions);
-  snapStationaryItemsToPixelGrid(room, startingPositions);
+  snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 
   gameState.progression++;
   gameState.gameTime += deltaMS;
