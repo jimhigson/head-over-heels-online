@@ -442,11 +442,12 @@ export const itemAppearances: {
               }),
               renderProps,
             };
-          case "turtle":
+          case "turtle": {
             // directional, anim:
+            const animate = activated && !busyLickingDoughnutsOffFace;
             return {
               container:
-                activated ?
+                animate ?
                   createSprite({
                     frames:
                       spriteSheet.animations[`${config.which}.${facingXy4}`],
@@ -459,6 +460,7 @@ export const itemAppearances: {
                   }),
               renderProps,
             };
+          }
           case "cyberman":
             // directional, animated, stacked (bubbles):
             return {
@@ -502,6 +504,8 @@ export const itemAppearances: {
         // these baddies never re-render since they are not directional
         const render =
           currentlyRenderedProps === undefined ||
+          busyLickingDoughnutsOffFace !==
+            currentlyRenderedProps.busyLickingDoughnutsOffFace ||
           activated !== currentlyRenderedProps.activated;
 
         if (!render) {
@@ -518,10 +522,11 @@ export const itemAppearances: {
           case "helicopter-bug":
           case "dalek": {
             const frames = spriteSheet.animations[config.which];
+            const animate = activated && !busyLickingDoughnutsOffFace;
             // not directional, animated
             return {
               container: createSprite(
-                activated ?
+                animate ?
                   {
                     frames,
                     animationSpeed: 0.5,

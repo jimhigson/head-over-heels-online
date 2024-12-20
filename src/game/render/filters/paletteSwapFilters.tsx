@@ -29,13 +29,13 @@ export const greyFilter = (room: UnknownRoomState) =>
   });
 
 export const doughnuttedFilter = new PaletteSwapFilter({
-  shadow: spritesheetPalette.redShadow,
+  //shadow: spritesheetPalette.redShadow,
   midGrey: spritesheetPalette.midRed,
   lightGrey: spritesheetPalette.lightBeige,
   white: spritesheetPalette.highlightBeige,
-  metallicBlue: spritesheetPalette.midRed,
-  pink: spritesheetPalette.lightBeige,
-  moss: spritesheetPalette.lightBeige,
+  metallicBlue: spritesheetPalette.redShadow,
+  pink: spritesheetPalette.midRed,
+  moss: spritesheetPalette.midRed,
   replaceDark: spritesheetPalette.midRed,
   replaceLight: spritesheetPalette.lightBeige,
 });
