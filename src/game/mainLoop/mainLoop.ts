@@ -13,7 +13,7 @@ import { RoomRenderer } from "../render/roomRenderer";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const hudBottomMargin = 0;
-const worldBottomMargin = 56;
+const worldBottomMargin = 24;
 
 export const mainLoop = <RoomId extends string>(
   app: Application,

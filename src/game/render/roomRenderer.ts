@@ -19,10 +19,9 @@ const centreRoomInRendering = (
   );
 
   const renderingMedianX = (rightSide.x + leftSide.x) / 2;
-  const renderingMedianY = (top + frontSide.y) / 2;
 
   container.x = -renderingMedianX;
-  container.y = -renderingMedianY;
+  container.y = -frontSide.y - Math.abs(renderingMedianX / 2);
 };
 
 export type RenderContext = {
