@@ -13,7 +13,7 @@ import { type Xyz } from "@/utils/vectors/vectors";
  * overwhelmed by the constant bias. A weight works better - a value of 0.5 was found experimentally
  * to allow getting into small gaps and not snagging
  */
-const zWeight = 0.5;
+const zWeight = 1;
 
 /**
  * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem

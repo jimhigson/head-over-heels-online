@@ -3,7 +3,6 @@ import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
 
-import { amigaLowResPal } from "@/originalGame";
 import { upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
@@ -13,7 +12,8 @@ import { noFilters } from "../render/filters/paletteSwapFilters";
 import { RoomRenderer } from "../render/roomRenderer";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 
-const hudBottomMargin = 4;
+const hudBottomMargin = 0;
+const worldBottomMargin = 56;
 
 export const mainLoop = <RoomId extends string>(
   app: Application,
@@ -21,11 +21,10 @@ export const mainLoop = <RoomId extends string>(
 ) => {
   const worldContainer = new Container();
   worldContainer.label = "world";
-  worldContainer.y = amigaLowResPal.height * 0.7;
   app.stage.addChild(worldContainer);
 
   const hudContainer = new Container();
-  // pull the hud up from the bottom of the screen; after this, anything else can render right up to the container's bottom edge
+  // pull the hud up from the bottom of the screen
   hudContainer.y = -hudBottomMargin;
   app.stage.addChild(hudContainer);
 
@@ -37,7 +36,7 @@ export const mainLoop = <RoomId extends string>(
   );
   worldContainer.addChild(roomRenderer.container);
 
-  const updateHud = renderHud<RoomId>(hudContainer);
+  const tickHud = renderHud<RoomId>(hudContainer);
 
   const upscaler = upscale(app);
   const handleTick = ({ deltaMS }: Ticker) => {
@@ -46,7 +45,8 @@ export const mainLoop = <RoomId extends string>(
 
     const paused = gameState.gameSpeed === 0;
 
-    updateHud(gameState, screenEffectiveSize);
+    worldContainer.y = screenEffectiveSize.y - worldBottomMargin;
+    tickHud(gameState, screenEffectiveSize);
 
     const tickRoom = selectCurrentRoom(gameState);
     if (
