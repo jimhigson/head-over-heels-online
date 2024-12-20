@@ -54,7 +54,10 @@ export const listenForInput = ({
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
   onInputStateChange?: (inputState: InputState) => void;
 }) => {
-  const keyDownHandler = ({ key }: KeyboardEvent): void => {
+  const keyDownHandler = ({ key, repeat }: KeyboardEvent): void => {
+    // ignore key repeat from OS (holding down key makes multiple keypresses)
+    if (repeat) return;
+
     const stdKey = standardiseCase(key);
 
     if (!isKey(stdKey)) {
