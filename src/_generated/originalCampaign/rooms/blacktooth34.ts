@@ -37,7 +37,7 @@ export const room = inferRoomJson({
 
 Jumping from a spring will give extra height to your jump.
 
-**Head Over Heels Manual**
+**> head over heels manual**
 `,
       },
       position: { x: 2, y: 7, z: 1 },

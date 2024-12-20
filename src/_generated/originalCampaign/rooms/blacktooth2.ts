@@ -35,7 +35,7 @@ symbiotic animals that have adapted to operate either independently or, to their
 mutual advantage, join together as one - Head saddled on Heels, and indeed these
 ARE their names and both are highly trained spies.
 
-*Head Over Heels Manual*
+*> head over heels manual*
 `,
       },
       position: { x: 1, y: 0, z: 0 },

@@ -175,7 +175,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## HUSH PUPPIES\n\n![Hush Puppy](hushPuppy)\n\nThese are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## HUSH PUPPIES\n\n![Hush Puppy](hushPuppy)\n\nThese are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 3, "y": 1, "z": 0 },
       "type": "pickup"
@@ -201,7 +201,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## HUSH PUPPIES\n\n![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## HUSH PUPPIES\n\n![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 7, "y": 5, "z": 0 },
       "type": "pickup"
@@ -502,7 +502,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*> head over heels manual*\n"
       },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "pickup"
@@ -606,7 +606,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n### BLACKTOOTH\n\n![](ball) This planet has a large moon with three lunar space stations on it, the larger\nof these, Moon Station HQ, is the main teleport center for the empire, with a\ndirect teleport to all the slave planets. Sometime after the Egyptus episode,\nthe latest Emperor sent out a craft to find that same strange planet, and after\nmuch exploration, it was finally located, and the craft landed. However, the\ncrew found the people had changed: instead of pyramids they used castles,\ninstead of wrapping corpses up in cloth, they wrapped living men in metal and\nthen tried to turn them into corpses with sharp metal sticks.\n\nThe Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and\nused it as his headquarters. The castle is surrounded by a small market, and\nthen a range of impassable mountains. The only way to leave is via teleport to\none of the three lunar space stations.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n### BLACKTOOTH\n\n![](ball) This planet has a large moon with three lunar space stations on it, the larger\nof these, Moon Station HQ, is the main teleport center for the empire, with a\ndirect teleport to all the slave planets. Sometime after the Egyptus episode,\nthe latest Emperor sent out a craft to find that same strange planet, and after\nmuch exploration, it was finally located, and the craft landed. However, the\ncrew found the people had changed: instead of pyramids they used castles,\ninstead of wrapping corpses up in cloth, they wrapped living men in metal and\nthen tried to turn them into corpses with sharp metal sticks.\n\nThe Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and\nused it as his headquarters. The castle is surrounded by a small market, and\nthen a range of impassable mountains. The only way to leave is via teleport to\none of the three lunar space stations.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 1, "y": 6, "z": 0 },
       "type": "pickup"
@@ -643,7 +643,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## SWITCHES\n\n![](switch.left)\n\nSimply push the switch to switch things off and on!  \n**WARNING**: Switching a deadly monster off will stop him moving but he will\nstill be deadly to touch.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## SWITCHES\n\n![](switch.left)\n\nSimply push the switch to switch things off and on!  \n**WARNING**: Switching a deadly monster off will stop him moving but he will\nstill be deadly to touch.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 4, "y": 5, "z": 0 },
       "type": "pickup"
@@ -660,7 +660,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## SPRINGS\n\n![](spring.compressed)\n\nJumping from a spring will give extra height to your jump.\n\n**Head Over Heels Manual**\n"
+        "markdown": "\n## SPRINGS\n\n![](spring.compressed)\n\nJumping from a spring will give extra height to your jump.\n\n**> head over heels manual**\n"
       },
       "position": { "x": 2, "y": 7, "z": 1 },
       "type": "pickup"
@@ -712,7 +712,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## BAG\n\n![](bag)The bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag’s icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\n![](cube)![](drum)![](spring.compressed)![](sticks)\n\n**Head Over Heels Manual**\n"
+        "markdown": "\n## BAG\n\n![](bag)The bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag’s icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\n![](cube)![](drum)![](spring.compressed)![](sticks)\n\n**> head over heels manual**\n"
       },
       "position": { "x": 4, "y": 0, "z": 1 },
       "type": "pickup"
@@ -733,7 +733,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## REINCARNATION FISH\n\n![](fish.1) The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*> head over heels manual*\n"
       },
       "position": { "x": 0, "y": 7, "z": 0 },
       "type": "pickup"
@@ -750,7 +750,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## CONVEYOR BELTS\n\n![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the\nopposite direction you have to jump along.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## CONVEYOR BELTS\n\n![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the\nopposite direction you have to jump along.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 3, "y": 5, "z": 0 },
       "type": "pickup"
@@ -832,7 +832,7 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "markdown": "\n## HISTORY OF THE BLACKTOOTH EMPIRE\n\n![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four\nworlds enslaved by the planet Blacktooth. All of the slave worlds bubble with\nunrest, but due to the oppressive nature of their rulers they never reach\nboiling point, they all lack a leader to draw the masses of population together.\n\nBlacktooth itself is not any better, a world rigidly controlled by its dynastic\nleaders for so long that the populace do not ever think about revolution. The\npeoples of the neighbouring stars are getting very worried about signs of\nmilitary expansion from Blacktooth and have sent a spy from the planet Freedom\nto see if he can push the slave planets into full rebellion by finding the\ncrowns lost when Blacktooth took over.\n\nThe creatures of Freedom are very strange in that they are formed from a pair of\nsymbiotic animals that have adapted to operate either independently or, to their\nmutual advantage, join together as one - Head saddled on Heels, and indeed these\nARE their names and both are highly trained spies.\n\n*Head Over Heels Manual*\n"
+        "markdown": "\n## HISTORY OF THE BLACKTOOTH EMPIRE\n\n![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four\nworlds enslaved by the planet Blacktooth. All of the slave worlds bubble with\nunrest, but due to the oppressive nature of their rulers they never reach\nboiling point, they all lack a leader to draw the masses of population together.\n\nBlacktooth itself is not any better, a world rigidly controlled by its dynastic\nleaders for so long that the populace do not ever think about revolution. The\npeoples of the neighbouring stars are getting very worried about signs of\nmilitary expansion from Blacktooth and have sent a spy from the planet Freedom\nto see if he can push the slave planets into full rebellion by finding the\ncrowns lost when Blacktooth took over.\n\nThe creatures of Freedom are very strange in that they are formed from a pair of\nsymbiotic animals that have adapted to operate either independently or, to their\nmutual advantage, join together as one - Head saddled on Heels, and indeed these\nARE their names and both are highly trained spies.\n\n*> head over heels manual*\n"
       },
       "position": { "x": 1, "y": 0, "z": 0 },
       "type": "pickup"

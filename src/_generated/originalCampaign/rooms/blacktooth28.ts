@@ -131,7 +131,7 @@ press the CARRY key. It is not possible to drop an object in a doorway.
 
 ![](cube)![](drum)![](spring.compressed)![](sticks)
 
-**Head Over Heels Manual**
+**> head over heels manual**
 `,
       },
       position: { x: 4, y: 0, z: 1 },

@@ -37,7 +37,7 @@ used it as his headquarters. The castle is surrounded by a small market, and
 then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
 
-*Head Over Heels Manual*
+*> head over heels manual*
 `,
       },
       position: { x: 1, y: 6, z: 0 },

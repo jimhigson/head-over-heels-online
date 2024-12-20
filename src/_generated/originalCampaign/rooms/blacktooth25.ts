@@ -36,7 +36,7 @@ export const room = inferRoomJson({
 ![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the
 opposite direction you have to jump along.
 
-*Head Over Heels Manual*
+*> head over heels manual*
 `,
       },
       position: { x: 3, y: 5, z: 0 },
