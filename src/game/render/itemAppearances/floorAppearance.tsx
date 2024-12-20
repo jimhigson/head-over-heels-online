@@ -15,7 +15,7 @@ import { renderOnce } from "./appearanceUtils";
 export type SidesWithDoors = Partial<Record<Direction4Xy, true>>;
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
-  ({ room }) => {
+  ({ item, room }) => {
     const { blockXMin, blockYMin, blockXMax, blockYMax, sidesWithDoors } =
       floorRenderExtent(room.roomJson);
     const blockXExtent = blockXMax - blockXMin;
@@ -174,6 +174,8 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     mainContainer.addChild(towardsEdge);
     mainContainer.addChild(rightEdge);
     mainContainer.mask = floorMask;
+    // render on the top surface of the floor:
+    mainContainer.y = -item.aabb.z;
 
     return mainContainer;
   },

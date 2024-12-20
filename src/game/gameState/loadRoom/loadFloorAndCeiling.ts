@@ -6,15 +6,15 @@ import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
-import { addXyz, originXyz } from "@/utils/vectors/vectors";
+import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
 ): Generator<UnknownItemInPlay<RoomId>> {
-  const roomNaturalFootprintAabb = {
-    ...blockXyzToFineXyz(roomJson.size),
-    z: 0,
-  };
+  const roomNaturalFootprintAabb = blockXyzToFineXyz({
+    ...roomJson.size,
+    z: 1,
+  });
 
   const roomRenderExtent = floorRenderExtent(roomJson);
 
@@ -22,15 +22,15 @@ export function* loadFloorAndCeiling<RoomId extends string>(
   const roomExtendedFootprintAabb = blockXyzToFineXyz({
     x: roomRenderExtent.blockXMax - roomRenderExtent.blockXMin,
     y: roomRenderExtent.blockYMax - roomRenderExtent.blockYMin,
-    z: 0,
+    z: 1,
   });
 
-  const floorPosition = blockXyzToFineXyz(originXyz);
+  const floorPosition = blockXyzToFineXyz({ ...originXy, z: -1 });
 
-  const roomExtendedPositionAabb = blockXyzToFineXyz({
+  const roomExtendedPosition = blockXyzToFineXyz({
     x: roomRenderExtent.blockXMin,
     y: roomRenderExtent.blockYMin,
-    z: 0,
+    z: -1,
   });
 
   if (roomJson.floor === "none" && roomJson.roomBelow !== undefined) {
@@ -92,7 +92,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         aabb: roomExtendedFootprintAabb,
         shadowMask: { relativeTo: "origin" },
         state: {
-          position: roomExtendedPositionAabb,
+          position: roomExtendedPosition,
           expires: null,
           stoodOnBy: new Set(),
           disappear: null,
