@@ -1,12 +1,32 @@
 import type { Application } from "pixi.js";
 import { zxSpectrumResolution } from "../../originalGame";
 import type { Xy } from "@/utils/vectors/vectors";
+import type { Emitter } from "mitt";
+import type { GameEvents } from "../GameApi";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
 //const targetSize = amigaLowResPal;
 const targetSize = zxSpectrumResolution;
 
-export const upscale = (app: Application) => {
+const calculateUpscale = (modernScreenSize: Xy, originalScreenSize: Xy) => {
+  const scaleFactor = Math.floor(
+    Math.min(
+      modernScreenSize.x / originalScreenSize.x,
+      modernScreenSize.y / originalScreenSize.y,
+    ),
+  );
+  const effectiveSize = {
+    x: Math.round(modernScreenSize.x / scaleFactor),
+    y: Math.round(modernScreenSize.y / scaleFactor),
+  };
+
+  return { scaleFactor, effectiveSize };
+};
+
+export const Upscale = <RoomId extends string>(
+  app: Application,
+  events: Emitter<GameEvents<RoomId>>,
+) => {
   let curUpscale = 1;
 
   return {
@@ -22,41 +42,18 @@ export const upscale = (app: Application) => {
         // not ready yet - size not known - this shouldn't happen
         throw new Error();
 
-      const scaleFactor = Math.floor(
-        Math.min(
-          app.renderer.width / targetSize.width,
-          app.renderer.height / targetSize.height,
-        ),
+      const { effectiveSize, scaleFactor } = calculateUpscale(
+        { x: app.renderer.width, y: app.renderer.height },
+        targetSize,
       );
-      const effectiveSize = {
-        x: Math.round(app.renderer.width / scaleFactor),
-        y: Math.round(app.renderer.height / scaleFactor),
-      };
 
-      if (curUpscale === scaleFactor) {
-        return effectiveSize;
+      if (curUpscale !== scaleFactor) {
+        curUpscale = scaleFactor;
+        events.emit("scaleFactorChanged", scaleFactor);
+        console.log("scale factor changed to:", scaleFactor);
+
+        app.stage.scale = scaleFactor;
       }
-      curUpscale = scaleFactor;
-      console.log("scale factor changed to:", scaleFactor);
-      /*
-      app.stage.filters = [
-        new CRTFilter({
-          lineWidth: 0.25,
-          lineContrast: 0.2,
-          curvature: 0,
-          noise: 0,
-          vignetting: 0.3,
-        }),
-        new HslAdjustmentFilter({
-          saturation: 0.2,
-          hue: 0,
-          lightness: 0,
-          colorize: false,
-          alpha: 1,
-        }),
-      ];
-      */
-      app.stage.scale = scaleFactor;
       return effectiveSize;
     },
   };

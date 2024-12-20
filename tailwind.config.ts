@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 import spritesheetPalette from "./gfx/spritesheetPalette.json";
+import { zxSpectrumResolution } from "./src/originalGame";
 
 export default {
   darkMode: ["class"],
@@ -15,6 +16,9 @@ export default {
     },
     {
       pattern: /bg-/,
+    },
+    {
+      pattern: /max-w-dialog\d+/,
     },
   ],
   theme: {
@@ -58,8 +62,24 @@ export default {
         double: "2",
       },
       maxWidth: {
-        // suitable for dialogs opened for game menus
-        mostOfScreen: "76rem",
+        // Built around scaled-up text of size 8x8px - 32 is number of attribute cells
+        // horizontally on the ZX Spectrum resolution
+        dialog1: `${1 * zxSpectrumResolution.x}px`,
+        dialog2: `${2 * zxSpectrumResolution.x}px`,
+        dialog3: `${3 * zxSpectrumResolution.x}px`,
+        dialog4: `${4 * zxSpectrumResolution.x}px`,
+        dialog5: `${5 * zxSpectrumResolution.x}px`,
+        dialog6: `${6 * zxSpectrumResolution.x}px`,
+        dialog7: `${7 * zxSpectrumResolution.x}px`,
+        dialog8: `${8 * zxSpectrumResolution.x}px`,
+        dialog9: `${9 * zxSpectrumResolution.x}px`,
+        dialog10: `${10 * zxSpectrumResolution.x}px`,
+        dialog11: `${11 * zxSpectrumResolution.x}px`,
+        dialog12: `${12 * zxSpectrumResolution.x}px`,
+        dialog13: `${13 * zxSpectrumResolution.x}px`,
+        dialog14: `${14 * zxSpectrumResolution.x}px`,
+        dialog15: `${15 * zxSpectrumResolution.x}px`,
+        dialog16: `${16 * zxSpectrumResolution.x}px`,
       },
     },
   },

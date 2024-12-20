@@ -2,7 +2,8 @@ import { BlockyMarkdown } from "./BlockyMarkdown";
 import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { textScale } from "./dialogScales";
+import { useContext } from "react";
+import { ScaleFactorContext } from "./GameOverlayDialogs";
 
 export type ScrollContentProps = {
   markdown: string;
@@ -13,14 +14,16 @@ export const ScrollContent = ({
   markdown,
   keyAssignment,
 }: ScrollContentProps) => {
+  const scaleFactor = useContext(ScaleFactorContext);
+
   return (
     <div className="bg-highlightBeige">
       <BlockyMarkdown
-        className={`p-${textScale} pb-0`}
+        className={`p-${scaleFactor} pb-0`}
         markdown={markdown}
       ></BlockyMarkdown>
       <PressToContinue
-        className={`px-${textScale} sticky bottom-0 bg-lightBeige`}
+        className={`px-${scaleFactor} sticky bottom-0 bg-lightBeige`}
         action="jump"
         keyAssignment={keyAssignment}
         keyColor={spritesheetPalette.midRed}

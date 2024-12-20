@@ -1,19 +1,22 @@
 import { BitmapText } from "./Sprite";
-import { textScale } from "./dialogScales";
 import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { useContext } from "react";
 
 export const HoldBanner = ({
   keyAssignment,
 }: {
   keyAssignment: KeyAssignment;
 }) => {
+  const scaleFactor = useContext(ScaleFactorContext);
+
   return (
     <div className="text-center bg-pureBlack">
       <div>
         <BitmapText
-          scale={textScale}
+          scale={scaleFactor}
           doubleHeight
           color={spritesheetPalette.moss}
         >

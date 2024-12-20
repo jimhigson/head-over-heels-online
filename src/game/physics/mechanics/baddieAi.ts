@@ -53,7 +53,6 @@ export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
   {
     state: {
       position,
-      standingOn,
       vels: { walking },
     },
   }: ItemInPlay<"baddie", PlanetName, RoomId>,
@@ -62,10 +61,6 @@ export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
   const speed = moveSpeedPixPerMs["headless-base"];
-
-  if (standingOn === null) {
-    return notWalking;
-  }
 
   if (!xyEqual(walking, originXy)) {
     return {
@@ -82,7 +77,7 @@ export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
 
     const vectorXyToPlayer = subXy(player.state.position, position);
 
-    if (Math.abs(vectorXyToPlayer.y) < 1) {
+    if (Math.abs(vectorXyToPlayer.y) < 2) {
       return {
         movementType: "vel",
         vels: {
@@ -95,7 +90,7 @@ export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
       };
     }
 
-    if (Math.abs(vectorXyToPlayer.x) < 1) {
+    if (Math.abs(vectorXyToPlayer.x) < 2) {
       return {
         movementType: "vel",
         vels: {

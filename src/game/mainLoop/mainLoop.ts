@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
 
-import { upscale } from "../render/upscale";
+import { Upscale } from "../render/upscale";
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
@@ -38,7 +38,7 @@ export const mainLoop = <RoomId extends string>(
 
   const tickHud = renderHud<RoomId>(hudContainer);
 
-  const upscaler = upscale(app);
+  const upscaler = Upscale(app, gameState.events);
   const handleTick = ({ deltaMS }: Ticker) => {
     const screenEffectiveSize = upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;

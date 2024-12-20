@@ -11,6 +11,7 @@ export type GameEvents<RoomId extends string> = {
   gameOver: undefined;
   /** emitted when input changes - only really so react/dom bits can close when some input happens */
   inputStateChanged: InputState;
+  scaleFactorChanged: number;
 };
 
 export type GameApi<RoomId extends string> = {

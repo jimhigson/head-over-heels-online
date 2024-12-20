@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import type { GameApi } from "../GameApi";
 import type { InputState } from "../input/InputState";
 import { GameDialog } from "./GameDialog";
@@ -9,6 +9,8 @@ export type GameOverlayDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
 };
 
+export const ScaleFactorContext = createContext<number>(1);
+
 export const GameOverlayDialogs = <RoomId extends string>({
   gameApi,
 }: GameOverlayDialogsProps<RoomId>) => {
@@ -16,6 +18,7 @@ export const GameOverlayDialogs = <RoomId extends string>({
     string | null
   >(null);
   const [paused, setPaused] = useState<boolean>(false);
+  const [scaleFactor, setScaleFactor] = useState<number>(1);
 
   useEffect(
     function listenForScrollOpen() {
@@ -23,11 +26,16 @@ export const GameOverlayDialogs = <RoomId extends string>({
         setDisplayedScrollContent(markdown);
         gameApi.gameState.gameSpeed = 0;
       };
+      const handleScaleFactorChanged = (newScaleFactor: number) => {
+        setScaleFactor(newScaleFactor);
+      };
 
       gameApi.events.on("scrollOpened", handleScrollOpened);
+      gameApi.events.on("scaleFactorChanged", handleScaleFactorChanged);
 
       return () => {
         gameApi.events.off("scrollOpened", handleScrollOpened);
+        gameApi.events.off("scaleFactorChanged", handleScaleFactorChanged);
       };
     },
     [gameApi],
@@ -71,19 +79,23 @@ export const GameOverlayDialogs = <RoomId extends string>({
   );
 
   return (
-    displayedScrollContent !== null ?
-      <GameDialog
-        content={
-          <ScrollContent
-            markdown={displayedScrollContent}
-            keyAssignment={gameApi.gameState.keyAssignment}
-          />
-        }
-      />
-    : paused ?
-      <GameDialog
-        content={<HoldBanner keyAssignment={gameApi.gameState.keyAssignment} />}
-      />
-    : null
+    <ScaleFactorContext.Provider value={scaleFactor}>
+      {displayedScrollContent !== null ?
+        <GameDialog
+          content={
+            <ScrollContent
+              markdown={displayedScrollContent}
+              keyAssignment={gameApi.gameState.keyAssignment}
+            />
+          }
+        />
+      : paused ?
+        <GameDialog
+          content={
+            <HoldBanner keyAssignment={gameApi.gameState.keyAssignment} />
+          }
+        />
+      : null}
+    </ScaleFactorContext.Provider>
   );
 };

@@ -59,6 +59,8 @@ const punctuation2 = [
   "ArrowRight",
   "ArrowUp",
   "ArrowDown",
+  "EnterFullscreen",
+  "ExitFullscreen",
 ] as const;
 
 const charFrames = <Char extends string>(

@@ -1,11 +1,11 @@
-import type { PropsWithChildren } from "react";
+import { useContext, type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsSprites } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
-import { imageScale, textScale } from "./dialogScales";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { ScaleFactorContext } from "./GameOverlayDialogs";
 
 export interface BlockyMarkdownProps {
   markdown: string;
@@ -13,75 +13,98 @@ export interface BlockyMarkdownProps {
 }
 
 const markdownComponents: Components = {
-  h2: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h2 className={`text-metallicBlue mb-${textScale}`}>
+  h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
+      <h2 className={`text-metallicBlue mb-${scaleFactor}`}>
+        <RenderTextChildrenAsSprites
+          imgSpriteTextProps={{
+            doubleHeight: true,
+            color: spritesheetPalette.metallicBlue,
+            scale: scaleFactor,
+          }}
+        >
+          {children}
+        </RenderTextChildrenAsSprites>
+      </h2>
+    );
+  },
+  h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
+      <h3 className={`text-metallicBlue mt-${scaleFactor} mb-${scaleFactor}`}>
+        <RenderTextChildrenAsSprites
+          imgSpriteTextProps={{
+            color: spritesheetPalette.metallicBlue,
+            scale: scaleFactor,
+          }}
+        >
+          {children}
+        </RenderTextChildrenAsSprites>
+      </h3>
+    );
+  },
+  p: function P({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
+      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
+        <RenderTextChildrenAsSprites
+          imgSpriteTextProps={{ scale: scaleFactor }}
+        >
+          {children}
+        </RenderTextChildrenAsSprites>
+      </p>
+    );
+  },
+  li: function Li({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
+      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
+        <RenderTextChildrenAsSprites
+          imgSpriteTextProps={{ scale: scaleFactor }}
+        >
+          {children}
+        </RenderTextChildrenAsSprites>
+      </p>
+    );
+  },
+  strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
-          doubleHeight: true,
-          color: spritesheetPalette.metallicBlue,
-          scale: textScale,
+          scale: scaleFactor,
+          color: spritesheetPalette.midRed,
         }}
       >
         {children}
       </RenderTextChildrenAsSprites>
-    </h2>
-  ),
-  h3: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <h3 className={`text-metallicBlue mt-${textScale} mb-${textScale}`}>
+    );
+  },
+  em: function Em({ children }: PropsWithChildren<EmptyObject>) {
+    const scaleFactor = useContext(ScaleFactorContext);
+    return (
       <RenderTextChildrenAsSprites
         imgSpriteTextProps={{
-          color: spritesheetPalette.metallicBlue,
-          scale: textScale,
+          scale: scaleFactor,
+          color: spritesheetPalette.moss,
         }}
       >
         {children}
       </RenderTextChildrenAsSprites>
-    </h3>
-  ),
-  p: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <p className={`mb-${textScale} leading-${textScale} clear-both`}>
-      <RenderTextChildrenAsSprites imgSpriteTextProps={{ scale: textScale }}>
-        {children}
-      </RenderTextChildrenAsSprites>
-    </p>
-  ),
-  li: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <p className={`mb-${textScale} leading-${textScale} clear-both`}>
-      <RenderTextChildrenAsSprites imgSpriteTextProps={{ scale: textScale }}>
-        {children}
-      </RenderTextChildrenAsSprites>
-    </p>
-  ),
-  strong: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <RenderTextChildrenAsSprites
-      imgSpriteTextProps={{
-        scale: textScale,
-        color: spritesheetPalette.midRed,
-      }}
-    >
-      {children}
-    </RenderTextChildrenAsSprites>
-  ),
-  em: ({ children }: PropsWithChildren<EmptyObject>) => (
-    <RenderTextChildrenAsSprites
-      imgSpriteTextProps={{
-        scale: textScale,
-        color: spritesheetPalette.moss,
-      }}
-    >
-      {children}
-    </RenderTextChildrenAsSprites>
-  ),
-  img({ src }: JSX.IntrinsicElements["img"]) {
+    );
+  },
+  img: function Img({ src }: JSX.IntrinsicElements["img"]) {
+    const scaleFactor = useContext(ScaleFactorContext);
     if (src === undefined) return null;
 
     assertIsTextureId(src);
 
     return (
       <ImgSprite
-        scale={imageScale}
+        scale={2 * scaleFactor}
         textureId={src}
-        className={`float-left mr-${textScale} mb-${textScale} w-1/5 mb-2`}
+        className={`float-left mr-${scaleFactor} mb-${scaleFactor} w-1/5 mb-2`}
       />
     );
   },
