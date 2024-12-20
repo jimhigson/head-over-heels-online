@@ -89,9 +89,13 @@ function* gatherConveyors<RoomId extends string>(
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
+  isFirstLoad: boolean,
 ): Generator<UnknownItemInPlay<RoomId>> {
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
+    if (item.type === "player" && !isFirstLoad) {
+      continue;
+    }
     yield* loadItemFromJson(id, item, roomPickupsCollected);
   }
 }
@@ -123,13 +127,17 @@ const itemsInItemObjectMap = <
 export const loadRoom = <P extends PlanetName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
-  //extraItems: RoomStateItems<P, RoomId> = {},
+  isFirstLoad = false,
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(loadWalls(roomJson)),
     ...itemsInItemObjectMap(
-      /*gatherConveyors(*/ loadItems(roomJson, roomPickupsCollected) /*)*/,
+      /*gatherConveyors(*/ loadItems(
+        roomJson,
+        roomPickupsCollected,
+        isFirstLoad,
+      ) /*)*/,
     ),
   };
 

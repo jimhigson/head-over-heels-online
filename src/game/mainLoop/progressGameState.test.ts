@@ -1011,7 +1011,10 @@ describe("dissapearing items", () => {
     });
 
     playGameThrough(
-      { ...gameState, inputState: { ...createEmptyInput(), jump: true, away: true } },
+      {
+        ...gameState,
+        inputState: { ...createEmptyInput(), jump: true, away: true },
+      },
       {
         frameCallbacks(gameState) {
           // should not lose any lives. If this happens, was not able to jump off pickups as they are collected

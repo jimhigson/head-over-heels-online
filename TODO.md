@@ -101,10 +101,16 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] can't jump off of collected powerups    
 
 [x] head can fire donuts
+[ ] bug: can make a character fall off the world if on top of other character while they go through a portal
+    [?] or push through door by other char?
+    [?] should portals only work for the current char/
+    [?] make portals solid?
+[ ] each player needs their own gametime, so iron pills don't run down while the other
+    is in play
 [ ] fast walk for head
 [ ] big jump for heels
-[ ] head and heels can combine
-[ ] death of char A after char B moved into room splits off into two room states
+[x] head and heels can combine
+[x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
 [ ] viewport sliding
     [ ] hud readable over game
