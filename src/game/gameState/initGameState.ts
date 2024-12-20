@@ -9,7 +9,7 @@ import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
-import { noInput } from "../input/InputState";
+import { createEmptyInput } from "../input/InputState";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -80,7 +80,7 @@ export const initGameState = <RoomId extends string>({
           entryState(heelsRoom.items.heels!)
         ),
     },
-    inputState: noInput(),
+    inputState: createEmptyInput(),
     renderOptions,
     campaign,
     events: mitt<GameEvents<RoomId>>(),

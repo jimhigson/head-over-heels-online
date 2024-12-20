@@ -201,6 +201,11 @@ export const moveItem = <RoomId extends string>({
         recursionDepth: recursionDepth + 1,
       });
 
+      // it is possible we pushed the other item out of the room:
+      if (room.items[collision.id] === undefined) {
+        continue;
+      }
+
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee
       subjectItem.state.position = addXyz(

@@ -48,16 +48,15 @@ export const mainLoop = <RoomId extends string>(
 
     updateHud(gameState, screenEffectiveSize);
 
+    const tickRoom = selectCurrentRoom(gameState);
     if (
-      roomRenderer.room !== selectCurrentRoom(gameState) ||
+      roomRenderer.room !== tickRoom ||
       roomRenderer.renderOptions !== gameState.renderOptions
     ) {
       roomRenderer.destroy();
-      roomRenderer = RoomRenderer(
-        selectCurrentRoom(gameState),
-        gameState.renderOptions,
-      );
+      roomRenderer = RoomRenderer(tickRoom, gameState.renderOptions);
       worldContainer.addChild(roomRenderer.container);
+      gameState.events.emit("roomChange", tickRoom.id);
     }
 
     if (!paused) {
@@ -66,7 +65,7 @@ export const mainLoop = <RoomId extends string>(
       roomRenderer.tick({ progression: gameState.progression, movedItems });
     } else {
       app.stage.filters = pauseFilter;
-      const roomColor = selectCurrentRoom(gameState).color;
+      const roomColor = tickRoom.color;
       pauseFilter.targetColor = getColorScheme(roomColor).main.original;
     }
   };

@@ -21,6 +21,7 @@ import { collision1toMany } from "@/game/collision/aabbCollision";
 import { makeItemFadeOut } from "./makeItemFadeOut";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
+import { removeStandingOn } from "./modifyStandingOn";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -162,7 +163,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       const hushPuppyInRoomIter = iterate(objectValues(toRoom.items)).filter(
         isItemType("hushPuppy"),
       );
-      // can't carry items through rooms
+      // hush puppies don't like head:
       for (const hushPuppyBye of hushPuppyInRoomIter) {
         makeItemFadeOut({ touchedItem: hushPuppyBye, gameState, room: toRoom });
       }
@@ -191,19 +192,53 @@ export const changeCharacterRoom = <RoomId extends string>({
       //  - only doors)
       // TODO: maybe this should be side-effect free
       playableItem.state.autoWalk = true;
+
+      // face the character the way they should have walked through the portal - this
+      // is usually a no-op since they had to be walking that way to get through, but
+      // it is possible they were pushed through and the autowalk needs to go in
+      // the right direction
+      playableItem.state.facing = oppositeDirection(portalDirectionXy);
+
+      // if the new position collides with the other character, back off some more so we can push them into
+      // the room - serves them right for standing in the way:
+      /*
+      // this isn't quite right and is causing bugs - should only actually move by the amount of the overlap
+      // alternatively, make the floor bigger and start futher back
+      const collisionsWithPlayers = collision1toMany(
+        playableItem,
+        objectValues(toRoom.items),
+      ).filter(isPlayableItem);
+      for (const otherPlayer of collisionsWithPlayers) {
+        console.log(
+          "pushing other player in doorway by",
+          scaleXyz(unitVectors[portalDirectionXy], playableItem.aabb.x),
+        );        
+        moveItem({
+          gameState,
+          room: toRoom,
+          subjectItem: otherPlayer,
+          pusher: playableItem,
+          forceful: true,
+          deltaMS: 15,
+          posDelta: scaleXyz(
+            unitVectors[oppositeDirection(portalDirectionXy)],
+            playableItem.aabb.x,
+          ),
+        });
+      }*/
+
       if (playableItem.state.action === "idle")
         playableItem.state.action = "moving";
-
-      if (changeType === "level-select") {
-        playableItem.state.facing = oppositeDirection(portalDirectionXy);
-      }
     }
   }
   // when we put the playableItem in their new room, they won't be standing on anything yet (or will
   // still have their standing on set to an item in the previous room) - for example, they might
   // be already on the floor or a teleporter in the new room. By setting this to null, gravity will
   // apply to them and they will collide with the item below them and get standingOn set:
-  playableItem.state.standingOn = null;
+  removeStandingOn(playableItem);
+  for (const standerOn of playableItem.state.stoodOnBy) {
+    removeStandingOn(standerOn);
+  }
 
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
@@ -250,6 +285,4 @@ export const changeCharacterRoom = <RoomId extends string>({
     }
     delete gameState.entryState.headOverHeels;
   }
-
-  gameState.events.emit("roomChange", toRoomId);
 };

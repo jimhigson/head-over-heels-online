@@ -18,7 +18,9 @@ export type KeyAssignment = Record<Action, Key[]>;
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & { windowFocus: boolean };
 
-export const noInput = (): InputState => ({
+export const createEmptyInput = (): InputState => ({
   ...fromAllEntries(actions.map((action) => [action, false])),
   windowFocus: true,
 });
+
+export const emptyInput = Object.freeze(createEmptyInput());

@@ -46,18 +46,21 @@ function* itemMechanicResultGen<
     >;
   }
 
-  if (isPlayableItem(item) && item.type === gameState.currentCharacterName) {
-    // user controls:
-    yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+  if (isPlayableItem(item)) {
+    // walking is allowed if not current for autowalking:
     yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
 
-    yield jumping(item, gameState /*, deltaMS*/) as MechanicResult<T, RoomId>;
+    if (item.id === gameState.currentCharacterName) {
+      // user controls:
+      yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+      yield jumping(item, gameState /*, deltaMS*/) as MechanicResult<T, RoomId>;
 
-    if (isItemType("heels")(item)) {
-      carrying(item, room, gameState, deltaMS);
-    }
-    if (isItemType("head")(item)) {
-      firing(item, room, gameState, deltaMS);
+      if (isItemType("heels")(item)) {
+        carrying(item, room, gameState, deltaMS);
+      }
+      if (isItemType("head")(item)) {
+        firing(item, room, gameState, deltaMS);
+      }
     }
   }
 

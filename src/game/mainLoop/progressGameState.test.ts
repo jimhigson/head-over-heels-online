@@ -25,7 +25,7 @@ import {
   roomHeightBlocks,
 } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
-import { noInput } from "../input/InputState";
+import { createEmptyInput } from "../input/InputState";
 
 const testFrameRates = [
   25, // original game, PAL
@@ -173,7 +173,7 @@ describe("jumping", () => {
         frameCallbacks: [
           function startJumpingSoonAfterTheStart(gameState) {
             const inputState = {
-              ...noInput(),
+              ...createEmptyInput(),
               towards: true,
               jump:
                 gameState.gameTime > 100 &&
@@ -935,7 +935,7 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputState: { ...noInput(), jump: true, away: true },
+        inputState: { ...createEmptyInput(), jump: true, away: true },
       },
       {
         frameCallbacks(gameState) {
@@ -953,7 +953,7 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputState: { ...noInput(), away: true /* not jumping */ },
+        inputState: { ...createEmptyInput(), away: true /* not jumping */ },
       },
       {
         until(gameState) {
@@ -1011,7 +1011,7 @@ describe("dissapearing items", () => {
     });
 
     playGameThrough(
-      { ...gameState, inputState: { ...noInput(), jump: true, away: true } },
+      { ...gameState, inputState: { ...createEmptyInput(), jump: true, away: true } },
       {
         frameCallbacks(gameState) {
           // should not lose any lives. If this happens, was not able to jump off pickups as they are collected

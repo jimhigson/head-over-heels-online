@@ -19,6 +19,7 @@ import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { accelerateToSpeed } from "@/utils/vectors/accelerateUpToSpeed";
+import { emptyInput } from "@/game/input/InputState";
 
 const stopWalking = {
   movementType: "vel",
@@ -30,7 +31,7 @@ const stopWalking = {
  */
 export const walking = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
-  { inputState }: GameState<RoomId>,
+  { inputState: gameStateInputState, currentCharacterName }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId> => {
   const {
@@ -45,13 +46,19 @@ export const walking = <RoomId extends string>(
     },
   } = playableItem;
 
+  const isCurrentCharacter = currentCharacterName === playableItem.id;
+  // we allow autowalking when character isn't current, so the walking should still be run,
+  // but the input is always empty so all other walking should be cut off"
+  const effectiveInputState =
+    isCurrentCharacter ? gameStateInputState : emptyInput;
+
   // heels does the walking for headOverHeels, so we need to use the heels walking speed:
   const effectiveWalkingCharacter = type === "headOverHeels" ? "heels" : type;
 
   const directionOfWalk =
     autoWalk ? facing : (
       directions4Xy.find((d) => {
-        return inputState[d] === true;
+        return effectiveInputState[d] === true;
       })
     );
 
@@ -81,7 +88,7 @@ export const walking = <RoomId extends string>(
         return stopWalking;
       }
     } else {
-      if (inputState.jump) {
+      if (effectiveInputState.jump) {
         const jumpDirection = directionOfWalk ?? facing;
         const isStandingOnSpring = isItemType("spring")(standingOn);
         const walkJumpFraction =
