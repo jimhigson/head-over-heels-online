@@ -79,7 +79,7 @@ export const GameOverlayDialogs = <RoomId extends string>({
   );
 
   return (
-    <ScaleFactorContext.Provider value={scaleFactor}>
+    <ScaleFactorContext value={scaleFactor}>
       {displayedScrollContent !== null ?
         <GameDialog
           content={
@@ -96,6 +96,6 @@ export const GameOverlayDialogs = <RoomId extends string>({
           }
         />
       : null}
-    </ScaleFactorContext.Provider>
+    </ScaleFactorContext>
   );
 };
