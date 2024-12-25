@@ -1,14 +1,15 @@
 import type { Application } from "pixi.js";
 import { zxSpectrumResolution } from "../../originalGame";
 import type { Xy } from "@/utils/vectors/vectors";
-import type { Emitter } from "mitt";
-import type { GameEvents } from "../GameApi";
 //import { CRTFilter, HslAdjustmentFilter } from "pixi-filters";
 
 //const targetSize = amigaLowResPal;
 const targetSize = zxSpectrumResolution;
 
-const calculateUpscale = (modernScreenSize: Xy, originalScreenSize: Xy) => {
+export const calculateUpscale = (
+  modernScreenSize: Xy,
+  originalScreenSize: Xy,
+) => {
   const scaleFactor = Math.floor(
     Math.min(
       modernScreenSize.x / originalScreenSize.x,
@@ -23,10 +24,7 @@ const calculateUpscale = (modernScreenSize: Xy, originalScreenSize: Xy) => {
   return { scaleFactor, effectiveSize };
 };
 
-export const Upscale = <RoomId extends string>(
-  app: Application,
-  events: Emitter<GameEvents<RoomId>>,
-) => {
+export const Upscale = (app: Application) => {
   let curUpscale = 1;
 
   return {
@@ -49,7 +47,6 @@ export const Upscale = <RoomId extends string>(
 
       if (curUpscale !== scaleFactor) {
         curUpscale = scaleFactor;
-        events.emit("scaleFactorChanged", scaleFactor);
         console.log("scale factor changed to:", scaleFactor);
 
         app.stage.scale = scaleFactor;

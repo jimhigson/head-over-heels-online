@@ -38,7 +38,7 @@ export const mainLoop = <RoomId extends string>(
 
   const tickHud = renderHud<RoomId>(hudContainer);
 
-  const upscaler = Upscale(app, gameState.events);
+  const upscaler = Upscale(app);
   const handleTick = ({ deltaMS }: Ticker) => {
     const screenEffectiveSize = upscaler.rescale();
     worldContainer.x = app.renderer.width / upscaler.curUpscale / 2;

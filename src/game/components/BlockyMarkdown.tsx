@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { useContext, type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";

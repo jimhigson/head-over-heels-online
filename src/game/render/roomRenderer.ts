@@ -14,9 +14,7 @@ const centreRoomInRendering = (
   room: UnknownRoomState,
   container: Container,
 ): void => {
-  const { leftSide, rightSide, frontSide, top } = floorRenderExtent(
-    room.roomJson,
-  );
+  const { leftSide, rightSide, frontSide } = floorRenderExtent(room.roomJson);
 
   const renderingMedianX = (rightSide.x + leftSide.x) / 2;
 
