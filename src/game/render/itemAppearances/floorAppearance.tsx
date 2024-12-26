@@ -177,6 +177,9 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     // render on the top surface of the floor:
     mainContainer.y = -item.aabb.z;
 
+    // the floor never changes rendering so can cache to optimise:
+    mainContainer.cacheAsTexture(true);
+
     return mainContainer;
   },
 );
