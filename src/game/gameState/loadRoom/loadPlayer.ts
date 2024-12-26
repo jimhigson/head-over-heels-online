@@ -25,7 +25,6 @@ export const defaultPlayerState = () =>
     teleporting: null,
     autoWalk: false,
     facing: "towards",
-    shieldCollectedAt: Number.NEGATIVE_INFINITY,
     vels: {
       walking: originXyz,
       gravity: originXyz,
@@ -49,9 +48,11 @@ export const loadPlayer = <RoomId extends string>(
         hasHooter: false,
         fastSteps: 0,
         lives: startingLives,
+        shieldCollectedAt: Number.NEGATIVE_INFINITY,
         donuts: 0,
         donutLastFireTime: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
+        gameTime: 0,
       },
     };
   } else {
@@ -68,7 +69,9 @@ export const loadPlayer = <RoomId extends string>(
         hasBag: false,
         bigJumps: 0,
         lives: startingLives,
+        shieldCollectedAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
+        gameTime: 0,
       },
     };
   }

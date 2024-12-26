@@ -30,7 +30,7 @@ export const firing = <RoomId extends string>(
     fireInput &&
     hasHooter &&
     donuts > 0 &&
-    donutLastFireTime + maxFireRate < gameState.gameTime
+    donutLastFireTime + maxFireRate < headItem.state.gameTime
   ) {
     const firedDonut: ItemInPlay<"firedDonut", PlanetName, RoomId> = {
       type: "firedDonut",
@@ -58,7 +58,7 @@ export const firing = <RoomId extends string>(
     });
 
     headItem.state.donuts -= 1;
-    headItem.state.donutLastFireTime = gameState.gameTime;
+    headItem.state.donutLastFireTime = headItem.state.gameTime;
 
     gameState.inputState.fire = false; //handled this input
   }

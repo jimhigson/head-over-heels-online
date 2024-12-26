@@ -25,7 +25,6 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       ...defaultPlayerState(),
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
-      shieldCollectedAt: headOverHeels.state.shieldCollectedAt,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
     },
   };
@@ -40,7 +39,6 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       ...defaultPlayerState(),
       ...headOverHeels.state.heels,
       facing: headOverHeels.state.facing,
-      shieldCollectedAt: headOverHeels.state.shieldCollectedAt,
       position: addXyz(headOverHeels.state.position),
     },
   };
@@ -79,8 +77,18 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
         "donutLastFireTime",
         "fastSteps",
         "lives",
+        "gameTime",
+        "shieldCollectedAt",
       ),
-      heels: pick(heels.state, "hasBag", "bigJumps", "carrying", "lives"),
+      heels: pick(
+        heels.state,
+        "hasBag",
+        "bigJumps",
+        "carrying",
+        "lives",
+        "gameTime",
+        "shieldCollectedAt",
+      ),
     },
   };
 };

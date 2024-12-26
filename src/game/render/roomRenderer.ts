@@ -19,7 +19,11 @@ const centreRoomInRendering = (
   const renderingMedianX = (rightSide.x + leftSide.x) / 2;
 
   container.x = -renderingMedianX;
-  container.y = -frontSide.y - Math.abs(renderingMedianX / 2);
+  container.y =
+    -frontSide.y -
+    /* moving up by half the x offset preserves movement in 2:1 ratio of isometric projection
+       - while also avoiding the hud elements */
+    Math.abs(renderingMedianX >> 1);
 };
 
 export type RenderContext = {

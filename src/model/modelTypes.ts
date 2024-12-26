@@ -58,6 +58,11 @@ export type RoomState<
     items: RoomStateItems<P, RoomId, ItemId>;
     /** the json this room was loaded from */
     roomJson: RoomJson<P, RoomId, ItemId>;
+    /**
+     * how long (in ms) this room has been in play for - only advanced while the room
+     * is the current room
+     */
+    roomTime: number;
   }
 >;
 export type UnknownRoomState = RoomState<PlanetName, string>;

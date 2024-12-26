@@ -41,5 +41,5 @@ export const makeItemFadeOut = <RoomId extends string>({
   );
 
   // remove bubbles after a time:
-  bubblesItem.state.expires = gameState.gameTime + fadeInOrOutDuration;
+  bubblesItem.state.expires = room.roomTime + fadeInOrOutDuration;
 };

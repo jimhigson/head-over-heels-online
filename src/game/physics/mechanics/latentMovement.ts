@@ -4,6 +4,7 @@ import { type MechanicResult } from "../MechanicResult";
 
 import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
+import type { RoomState } from "@/model/modelTypes";
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -13,12 +14,13 @@ import type { PlanetName } from "@/sprites/planets";
  */
 export function* latentMovement<RoomId extends string>(
   item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): Generator<MechanicResult<FreeItemTypes, RoomId>> {
   while (
-    (item.state.latentMovement.at(0)?.moveAtGameTime ??
-      Number.POSITIVE_INFINITY) < gameState.gameTime
+    (item.state.latentMovement.at(0)?.moveAtRoomTime ??
+      Number.POSITIVE_INFINITY) < room.roomTime
   ) {
     const { positionDelta } = item.state.latentMovement.shift()!;
     yield { movementType: "position", posDelta: positionDelta };

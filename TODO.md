@@ -104,9 +104,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] bug: can make a character fall off the world if on top of other character while they go through a portal
     [?] or push through door by other char?
     [?] should portals only work for the current char/
-    [?] make portals solid?
+    [?] make portals solid?    
 [ ] each player needs their own gametime, so iron pills don't run down while the other
     is in play
+[ ] should be able to hire doughnuts as headOverHeels    
 [ ] fast walk for head
 [ ] big jump for heels
 [x] head and heels can combine

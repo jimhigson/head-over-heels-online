@@ -1,11 +1,12 @@
 import { originalFramePeriod } from "@/game/render/animationTimings";
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
+import type { RoomState } from "@/model/modelTypes";
+import type { PlanetName } from "@/sprites/planets";
 import { type Xyz, subXyz, xyzEqual, originXyz } from "@/utils/vectors/vectors";
-import type { GameState } from "../GameState";
 
 export const assignLatentMovement = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,
-  gameState: GameState<RoomId>,
+  room: RoomState<PlanetName, RoomId>,
   startingPositions: Record<string, Xyz>,
 ) => {
   /**
@@ -32,7 +33,7 @@ export const assignLatentMovement = <RoomId extends string>(
         stander.state.latentMovement.push({
           // since the original game pushes items every other frame, the practical latency
           // for standing-on items is two frames
-          moveAtGameTime: gameState.gameTime + 2 * originalFramePeriod,
+          moveAtRoomTime: room.roomTime + 2 * originalFramePeriod,
           positionDelta: latentMovement,
         });
       }

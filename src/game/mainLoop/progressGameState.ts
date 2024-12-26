@@ -4,7 +4,10 @@ import type {
   AnyItemInPlay,
 } from "@/model/ItemInPlay";
 import { isPlayableItem } from "../physics/itemPredicates";
-import type { RoomState } from "@/model/modelTypes";
+import {
+  otherIndividualCharacterName,
+  type RoomState,
+} from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
@@ -19,12 +22,15 @@ import { iterate } from "@/utils/iterate";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
 import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import {
+  selectCurrentPlayableItem,
+  selectPlayableItem,
+} from "../gameState/gameStateSelectors/selectPlayableItem";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
-  gameState: GameState<RoomId>,
-) => item.state.expires !== null && item.state.expires < gameState.gameTime;
+  room: RoomState<PlanetName, RoomId>,
+) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
  * snap all items that haven't moved to the pixel grid - sub-pixel locations are
@@ -129,7 +135,7 @@ export const _progressGameState = <RoomId extends string>(
   }
 
   for (const item of objectValues(room.items)) {
-    if (itemHasExpired(item, gameState)) {
+    if (itemHasExpired(item, room)) {
       deleteItemFromRoom({ room, item });
       if (isPlayableItem(item)) {
         // playableLosesLife may put the playable character back into the room,
@@ -166,11 +172,42 @@ export const _progressGameState = <RoomId extends string>(
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
   );
-  assignLatentMovement(movedItems, gameState, startingPositions);
+  assignLatentMovement(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 
-  gameState.progression++;
-  gameState.gameTime += deltaMS;
+  advanceTime(gameState, room, deltaMS);
 
   return movedItems;
+};
+
+const advanceTime = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  deltaMS: number,
+) => {
+  gameState.progression++;
+  gameState.gameTime += deltaMS;
+  room.roomTime += deltaMS;
+  const playable = selectCurrentPlayableItem(gameState);
+
+  if (playable.type === "headOverHeels") {
+    playable.state.head.gameTime += deltaMS;
+    playable.state.heels.gameTime += deltaMS;
+  } else {
+    playable.state.gameTime += deltaMS;
+
+    const charactersInSameRoom =
+      gameState.characterRooms.head === gameState.characterRooms.heels;
+
+    if (charactersInSameRoom) {
+      // advance the other character's time too since they're both in play:
+      const other = selectPlayableItem(
+        gameState,
+        otherIndividualCharacterName(playable.type),
+      );
+      if (other !== undefined) {
+        other.state.gameTime += deltaMS;
+      }
+    }
+  }
 };

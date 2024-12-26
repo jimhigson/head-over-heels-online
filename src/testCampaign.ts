@@ -384,6 +384,11 @@ const rooms = {
       {
         type: "joystick",
         config: { controls: ["ch2"] },
+        position: { x: 5, y: 3, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial", disappearing: false },
         position: { x: 4, y: 3, z: 0 },
       },
       // baddies that push the joysticks!

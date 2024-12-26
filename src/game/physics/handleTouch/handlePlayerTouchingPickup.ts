@@ -61,7 +61,12 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     }
 
     case "shield": {
-      player.state.shieldCollectedAt = gameState.gameTime;
+      if (player.type === "headOverHeels") {
+        player.state.head.shieldCollectedAt = player.state.head.gameTime;
+        player.state.heels.shieldCollectedAt = player.state.heels.gameTime;
+      } else {
+        player.state.shieldCollectedAt = player.state.gameTime;
+      }
       break;
     }
 

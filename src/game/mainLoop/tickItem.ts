@@ -41,7 +41,7 @@ function* itemMechanicResultGen<
   if (isFreeItem(item)) {
     yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
     yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
-    yield* latentMovement(item, gameState, deltaMS) as Generator<
+    yield* latentMovement(item, room, gameState, deltaMS) as Generator<
       MechanicResult<T, RoomId>
     >;
   }

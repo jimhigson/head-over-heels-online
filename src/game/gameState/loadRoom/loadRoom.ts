@@ -168,9 +168,8 @@ export const loadRoom = <P extends PlanetName, RoomId extends string>(
       ...loadedItems,
       //...extraItems,
     },
+    roomTime: 0,
   };
-
-  //setStandingOnForAllItemsInRoom(roomState, 0);
 
   return roomState;
 };

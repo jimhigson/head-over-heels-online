@@ -31,7 +31,7 @@ export type FreeItemState<RoomId extends string = string> = {
   standingOn: UnknownItemInPlay<RoomId> | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<{ moveAtGameTime: number; positionDelta: Xyz }>;
+  latentMovement: Array<{ moveAtRoomTime: number; positionDelta: Xyz }>;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */
@@ -73,10 +73,6 @@ export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
   facing: Direction4Xy;
   action: PlayableActionState;
 
-  // the time a shield was collected at, or null if no shield. The hud should show
-  // seconds remaining based off of this value
-  shieldCollectedAt: number;
-
   // Number of pixels the player will walk forward regardless of input. This
   // puts players properly inside a room when they enter via a door
   autoWalk: boolean;
@@ -104,6 +100,10 @@ export type HeadAbilities = {
   donutLastFireTime: number;
   fastSteps: number;
   lives: number;
+  gameTime: number;
+  // the time a shield was collected at, or null if no shield. The hud should show
+  // seconds remaining based off of this value
+  shieldCollectedAt: number;
 };
 
 export type HeelsAbilities<RoomId extends string> = {
@@ -112,6 +112,10 @@ export type HeelsAbilities<RoomId extends string> = {
   bigJumps: number;
   carrying: CarriedItem<RoomId> | null;
   lives: number;
+  gameTime: number;
+  // the time a shield was collected at, or null if no shield. The hud should show
+  // seconds remaining based off of this value
+  shieldCollectedAt: number;
 };
 
 export type ItemStateMap<RoomId extends string> = {

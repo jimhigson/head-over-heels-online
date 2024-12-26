@@ -20,11 +20,9 @@ import { shieldDuration } from "@/game/physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { assertIsTextureId } from "@/sprites/assertIsTextureId";
 import { iterateToContainer } from "@/game/iterateToContainer";
-import {
-  selectAbilities,
-  selectPlayableItem,
-} from "@/game/gameState/gameStateSelectors/selectPlayableItem";
+import { selectAbilities } from "@/game/gameState/gameStateSelectors/selectPlayableItem";
 import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
+import type { HeadAbilities, HeelsAbilities } from "@/model/ItemStateMap";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -155,8 +153,8 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     } = getColorScheme(room.color);
 
     const updateIcons = (characterName: IndividualCharacterName) => {
-      const playableItem = selectPlayableItem(gameState, characterName);
-      const shieldCollectedAt = playableItem?.state.shieldCollectedAt ?? null;
+      const abilities = selectAbilities(gameState, characterName);
+      const shieldCollectedAt = abilities?.shieldCollectedAt ?? null;
 
       const { text: shieldText, container: shieldContainer } =
         hudElements[characterName].shield;
@@ -167,25 +165,27 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
         (screenSize.x >> 1) +
         sideMultiplier(characterName) * smallIconsFromCentre;
 
+      const hasShield =
+        abilities !== undefined &&
+        shieldCollectedAt !== null &&
+        abilities?.gameTime <= shieldCollectedAt + shieldDuration;
+
       const shieldRemaining =
-        (
-          shieldCollectedAt === null ||
-          gameState.gameTime > shieldCollectedAt + shieldDuration
-        ) ?
-          0
-        : 100 -
+        hasShield ?
+          100 -
           Math.ceil(
-            (gameState.gameTime - shieldCollectedAt) / (shieldDuration / 100),
-          );
+            (abilities.gameTime - shieldCollectedAt) / (shieldDuration / 100),
+          )
+        : 0;
 
       showNumberInContainer(shieldText, shieldRemaining);
       shieldContainer.y = screenSize.y;
 
       showNumberInContainer(
         skillText,
-        playableItem === undefined ? 0
-        : playableItem.type === "head" ? playableItem.state.fastSteps
-        : playableItem.state.bigJumps,
+        abilities === undefined ? 0
+        : characterName === "head" ? (abilities as HeadAbilities).fastSteps
+        : (abilities as HeelsAbilities<RoomId>).bigJumps,
       );
 
       skillContainer.y = screenSize.y - 24;

@@ -61,8 +61,13 @@ export type GameState<RoomId extends string> = {
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;
-  /** how many ms has this game been played for? */
+
+  /**
+   * How many ms has this game been played for? For most purposes the room time
+   * or player time is more useful
+   */
   gameTime: number;
+
   /**
    * an incrementing number of how many times we have progressed the game engine
    * each progression having its own unique number
