@@ -3,7 +3,12 @@ import type {
   ItemInPlayType,
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
-import { isDeadlyItem, isItemType } from "../physics/itemPredicates";
+import {
+  isCarrier,
+  isDeadlyItem,
+  isFirer,
+  isItemType,
+} from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
@@ -55,10 +60,10 @@ function* itemMechanicResultGen<
       yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
       yield jumping(item, gameState /*, deltaMS*/) as MechanicResult<T, RoomId>;
 
-      if (isItemType("heels")(item)) {
+      if (isCarrier(item)) {
         carrying(item, room, gameState, deltaMS);
       }
-      if (isItemType("head")(item)) {
+      if (isFirer(item)) {
         firing(item, room, gameState, deltaMS);
       }
     }

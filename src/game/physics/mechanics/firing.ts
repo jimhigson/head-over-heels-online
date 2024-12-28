@@ -6,13 +6,13 @@ import type { PlanetName } from "@/sprites/planets";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { emptyObject } from "@/utils/empty";
-import { addXyz, scaleXyz } from "@/utils/vectors/vectors";
+import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 export const firing = <RoomId extends string>(
-  headItem: PlayableItem<"head">,
+  firer: PlayableItem<"head" | "headOverHeels", RoomId>,
   room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
@@ -20,9 +20,13 @@ export const firing = <RoomId extends string>(
   const {
     inputState: { fire: fireInput },
   } = gameState;
+
+  const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
+
+  const { donuts, hasHooter, donutLastFireTime, gameTime } = headAbilities;
   const {
-    state: { donuts, hasHooter, position, facing, donutLastFireTime },
-  } = headItem;
+    state: { position, facing },
+  } = firer;
 
   const maxFireRate = 500;
 
@@ -30,7 +34,7 @@ export const firing = <RoomId extends string>(
     fireInput &&
     hasHooter &&
     donuts > 0 &&
-    donutLastFireTime + maxFireRate < headItem.state.gameTime
+    donutLastFireTime + maxFireRate < gameTime
   ) {
     const firedDonut: ItemInPlay<"firedDonut", PlanetName, RoomId> = {
       type: "firedDonut",
@@ -42,6 +46,7 @@ export const firing = <RoomId extends string>(
         position: addXyz(
           position,
           scaleXyz(unitVectors[facing], blockSizePx.w),
+          firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
         ),
         vels: {
           fired: scaleXyz(unitVectors[facing], moveSpeedPixPerMs.firedDonut),
@@ -57,8 +62,8 @@ export const firing = <RoomId extends string>(
       item: firedDonut,
     });
 
-    headItem.state.donuts -= 1;
-    headItem.state.donutLastFireTime = headItem.state.gameTime;
+    headAbilities.donuts -= 1;
+    headAbilities.donutLastFireTime = headAbilities.gameTime;
 
     gameState.inputState.fire = false; //handled this input
   }

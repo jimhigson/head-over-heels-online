@@ -1,6 +1,6 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import { type ItemInPlay } from "@/model/ItemInPlay";
-import type { PortableItemType } from "../itemPredicates";
+import type { PlayableItem, PortableItemType } from "../itemPredicates";
 import { isPortable } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import type { GameState } from "@/game/gameState/GameState";
@@ -14,22 +14,27 @@ import { moveItem } from "../moveItem";
 import { iterate } from "@/utils/iterate";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
 import { deleteItemFromRoom } from "@/game/gameState/mutators/deleteItemFromRoom";
-import type { CarriedItem } from "@/model/ItemStateMap";
+import type { CarriedItem, HeelsAbilities } from "@/model/ItemStateMap";
 import { addItemFromJsonToRoom } from "@/game/gameState/mutators/addItemToRoom";
 
 /**
  * walking, but also gliding and changing direction mid-air
  */
 export const carrying = <RoomId extends string>(
-  heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
+  carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
   room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
   const { inputState } = gameState;
+
+  const heelsAbilities =
+    carrier.type === "heels" ? carrier.state : carrier.state.heels;
+
+  const { carrying, hasBag } = heelsAbilities;
   const {
-    state: { carrying, position: heelsPosition, hasBag },
-  } = heelsItem;
+    state: { position: carrierPosition },
+  } = carrier;
 
   if (!hasBag) {
     return;
@@ -39,7 +44,7 @@ export const carrying = <RoomId extends string>(
     isPortable,
   );
   const itemToPickup =
-    carrying === null ? findItemToPickup(heelsItem, room) : undefined;
+    carrying === null ? findItemToPickup(carrier, room) : undefined;
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
@@ -54,10 +59,10 @@ export const carrying = <RoomId extends string>(
         return;
       }
 
-      pickUpItem(room, heelsItem, itemToPickup);
+      pickUpItem(room, heelsAbilities, itemToPickup);
     } else {
       // trying to put down
-      if (heelsItem.state.standingOn === null) {
+      if (carrier.state.standingOn === null) {
         // can't put down mid-air
         return;
       }
@@ -65,7 +70,7 @@ export const carrying = <RoomId extends string>(
       // check if there is space above heels (and any items standing on heels):
       // really the ideal here would be do the move and roll back if ti can't be done.
       // that would need a stateless/reducer based approach to updating the world
-      if (!checkSpaceAvailableToPutDown(heelsItem, objectValues(room.items))) {
+      if (!checkSpaceAvailableToPutDown(carrier, objectValues(room.items))) {
         return;
       }
 
@@ -74,11 +79,11 @@ export const carrying = <RoomId extends string>(
         room,
         itemType: carrying.type,
         config: carrying.config,
-        position: heelsPosition,
+        position: carrierPosition,
       });
 
       moveItem({
-        subjectItem: heelsItem,
+        subjectItem: carrier,
         gameState,
         room,
         posDelta: {
@@ -86,7 +91,7 @@ export const carrying = <RoomId extends string>(
           y: 0,
           z: carryingItem.aabb.z,
         },
-        pusher: heelsItem,
+        pusher: carrier,
         forceful: true,
         deltaMS,
       });
@@ -95,7 +100,7 @@ export const carrying = <RoomId extends string>(
       // will sort that out from the main loop
 
       // put down
-      heelsItem.state.carrying = null;
+      heelsAbilities.carrying = null;
     }
     inputState.carry = false; // handled this input
   }
@@ -103,24 +108,24 @@ export const carrying = <RoomId extends string>(
 
 const pickUpItem = <RoomId extends string, T extends PortableItemType>(
   room: RoomState<PlanetName, RoomId>,
-  heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
+  heelsAbilities: HeelsAbilities<RoomId>,
   itemToPickup: ItemInPlay<T, PlanetName, RoomId>,
 ) => {
   const carrying = {
     type: itemToPickup.type,
     config: itemToPickup.config,
   } as CarriedItem<RoomId>;
-  heelsItem.state.carrying = carrying;
+  heelsAbilities.carrying = carrying;
 
   deleteItemFromRoom({ room, item: itemToPickup });
 };
 
 const findItemToPickup = <RoomId extends string>(
-  heelsItem: ItemInPlay<"heels", PlanetName, RoomId>,
+  carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
   room: RoomState<PlanetName, RoomId>,
 ) => {
   return findStandingOnWithHighestPriorityAndMostOverlap(
-    heelsItem,
+    carrier,
     iterate(objectValues(room.items)).filter(isPortable),
   );
 };

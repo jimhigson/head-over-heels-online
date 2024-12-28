@@ -119,3 +119,7 @@ export const isDeadlyItem = <RoomId extends string>(
 
 export const isPortal = isItemType("portal");
 export const isTeleporter = isItemType("teleporter");
+export const isHeels = isItemType("heels");
+export const isHead = isItemType("head");
+export const isCarrier = isItemType("heels", "headOverHeels");
+export const isFirer = isItemType("head", "headOverHeels");
