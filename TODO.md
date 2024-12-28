@@ -105,9 +105,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
-[ ] each player needs their own gametime, so iron pills don't run down while the other
+[x] each player needs their own gametime, so iron pills don't run down while the other
     is in play
-[ ] should be able to hire doughnuts as headOverHeels    
+[x] can't pick items up as hoh    
+[x] should be able to fire doughnuts as headOverHeels    
 [ ] fast walk for head
 [ ] big jump for heels
 [x] head and heels can combine
@@ -120,8 +121,8 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] acel for player normal walking
 [ ] playable on mame joystick
 [ ] ELERI
-[ ] extra abilities pickups work
-[ ] scrolls/text
+[x] scrolls/text
+    [ ] tailwind plugin for blocky text
 [ ] can shoot donuts
     [ ] pixel shader (donut colours or grey) for disabled baddies
 [ ] PAUSED text
@@ -254,6 +255,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # bookworld6
 [ ] sliding book doesn't slide
+
+# bookworld34
+[ ] immediate crash! - items in collision
 
 # penitentiary6
 [ ] anvil needs to move
