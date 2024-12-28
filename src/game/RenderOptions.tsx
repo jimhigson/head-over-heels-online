@@ -14,9 +14,11 @@ export type RenderOptions<RoomId extends string> = {
   onItemClick?: (item: AnyItemInPlay<RoomId>, container: Container) => void;
   showBoundingBoxes: ShowBoundingBoxes;
   showShadowMasks: boolean;
+  scaleFactor: number;
 };
 
 export const defaultRenderOptions: RenderOptions<string> = {
   showBoundingBoxes: "none",
   showShadowMasks: false,
+  scaleFactor: 1,
 };

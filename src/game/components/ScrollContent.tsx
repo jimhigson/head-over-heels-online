@@ -3,7 +3,7 @@ import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useContext } from "react";
-import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { ScaleFactorContext } from "./ScaleFactorContext";
 
 export type ScrollContentProps = {
   markdown: string;

@@ -9,6 +9,7 @@ import type {
   ItemRenderProps,
 } from "./ItemRenderProps";
 import { emptyObject } from "@/utils/empty";
+import type { RenderOptions } from "@/game/RenderOptions";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -35,6 +36,8 @@ export type ItemAppearanceOptions<
    * the props have changed, and decline to render if it has not
    */
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
+
+  renderOptions: RenderOptions<RoomId>;
 };
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({
@@ -67,10 +70,10 @@ export const renderOnce =
     ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({ item, room, currentlyRenderedProps }) => {
+  ({ item, room, currentlyRenderedProps, renderOptions }) => {
     if (currentlyRenderedProps === undefined) {
       return {
-        container: renderWith({ item, room }),
+        container: renderWith({ item, room, renderOptions }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };
     }

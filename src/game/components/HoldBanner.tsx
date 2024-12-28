@@ -2,7 +2,7 @@ import { BitmapText } from "./Sprite";
 import { PressToContinue } from "./PressToContinue";
 import type { KeyAssignment } from "../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { ScaleFactorContext } from "./ScaleFactorContext";
 import { useContext } from "react";
 
 export const HoldBanner = ({

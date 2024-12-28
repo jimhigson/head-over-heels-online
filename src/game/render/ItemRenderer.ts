@@ -116,7 +116,7 @@ export const ItemRenderer = <
     tick(renderContext: RenderContext) {
       const rendering =
         item.renders ?
-          appearance({ item, room, currentlyRenderedProps })
+          appearance({ item, room, currentlyRenderedProps, renderOptions })
         : undefined;
       if (rendering !== undefined) {
         // the appearance decided to update:

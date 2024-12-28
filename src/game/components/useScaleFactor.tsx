@@ -1,4 +1,4 @@
-import { zxSpectrumResolution } from "@/originalGame";
+import { zxSpectrumResolution as originalSystemRes } from "@/originalGame";
 import { useState, useLayoutEffect } from "react";
 import { calculateUpscale } from "../render/upscale";
 
@@ -6,7 +6,7 @@ export function useScaleFactor() {
   const [scaleFactor, setScaleFactor] = useState<number>(() => {
     const { scaleFactor } = calculateUpscale(
       { x: window.innerWidth, y: window.innerHeight },
-      zxSpectrumResolution,
+      originalSystemRes,
     );
     return scaleFactor;
   });
@@ -14,7 +14,7 @@ export function useScaleFactor() {
     const updateSize = () => {
       const { scaleFactor } = calculateUpscale(
         { x: window.innerWidth, y: window.innerHeight },
-        zxSpectrumResolution,
+        originalSystemRes,
       );
       setScaleFactor(scaleFactor);
     };

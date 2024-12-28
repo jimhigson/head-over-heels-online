@@ -36,10 +36,8 @@ import {
   stackedSprites,
   itemRidingOnBubblesSpritesOptions,
 } from "./stackedSprites";
-
-type OutlineTextureId = Extract<TextureId, `${string}.outline`>;
-type TextureWithOutline =
-  OutlineTextureId extends `${infer T}.outline` ? T : never;
+import { OutlineFilter } from "@/filters/colorReplace/outlineFilter";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const blockTextureId = (
   isDark: boolean,
@@ -52,31 +50,7 @@ const blockTextureId = (
   return `block.${style}${disappear ? ".disappearing" : ""}`;
 };
 
-const maybeHighlighted = (
-  texture: TextureWithOutline,
-  highlighted: boolean,
-) => {
-  return highlighted ?
-      new Container({
-        children: [
-          createSprite({
-            texture,
-            pivot: {
-              x: smallItemTextureSize.w / 2,
-              y: smallItemTextureSize.h,
-            },
-          }),
-          createSprite({
-            texture: `${texture}.outline`,
-            pivot: {
-              x: smallItemTextureSize.w / 2 + 1,
-              y: smallItemTextureSize.h + 1,
-            },
-          }),
-        ],
-      })
-    : createSprite(texture);
-};
+const carryableOutlineColour = spritesheetPalette.moss;
 
 const singleRenderWithStyleAsTexture = renderOnce<
   "deadlyBlock" | "slidingDeadly" | "slidingBlock",
@@ -597,6 +571,7 @@ export const itemAppearances: {
       state: { wouldPickUpNext },
     },
     currentlyRenderedProps,
+    renderOptions,
   }) {
     const highlighted = wouldPickUpNext;
 
@@ -608,8 +583,16 @@ export const itemAppearances: {
       return;
     }
 
+    const filter =
+      highlighted ?
+        new OutlineFilter(carryableOutlineColour, renderOptions.scaleFactor)
+      : undefined;
+
     return {
-      container: maybeHighlighted(style, highlighted),
+      container: createSprite({
+        texture: style,
+        filter,
+      }),
       renderProps: { highlighted },
     };
   },
@@ -619,6 +602,7 @@ export const itemAppearances: {
       state: { stoodOnBy, wouldPickUpNext },
     },
     currentlyRenderedProps,
+    renderOptions,
   }) {
     const compressed = stoodOnBy.size > 0;
     const highlighted = wouldPickUpNext;
@@ -635,15 +619,23 @@ export const itemAppearances: {
     const currentlyRenderedCompressed =
       currentlyRenderedProps?.compressed ?? false;
 
+    const filter =
+      highlighted ?
+        new OutlineFilter(carryableOutlineColour, renderOptions.scaleFactor)
+      : undefined;
+
     return {
       container:
         !compressed && currentlyRenderedCompressed ?
           createSprite({
             frames: spriteSheet.animations["spring.bounce"],
             playOnce: "and-stop",
+            filter,
           })
-        : compressed ? maybeHighlighted("spring.compressed", highlighted)
-        : maybeHighlighted("spring.released", highlighted),
+        : createSprite({
+            texture: compressed ? "spring.compressed" : "spring.released",
+            filter,
+          }),
 
       renderProps: { compressed, highlighted },
     };

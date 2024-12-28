@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useContext, type ReactNode } from "react";
-import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { ScaleFactorContext } from "./ScaleFactorContext";
 
 export type GameDialogProps = {
   content: ReactNode;

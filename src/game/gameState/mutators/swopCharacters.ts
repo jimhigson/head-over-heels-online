@@ -5,14 +5,12 @@ import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 
-import { addXyz } from "@/utils/vectors/vectors";
 import { setStandingOn } from "./modifyStandingOn";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import {
   uncombinePlayablesFromSymbiosis,
   combinePlayablesInSymbiosis,
 } from "./symbiosis";
-import { uncombineLittleJumpPxHeight } from "@/game/physics/mechanicsConstants";
 
 const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -49,20 +47,6 @@ const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
 
   const { head, heels } = uncombinePlayablesFromSymbiosis(headOverHeels);
 
-  // little jump to make it obvious who we switched to:
-  if (switchingToCharacter === "head") {
-    head.state.position = addXyz(head.state.position, {
-      z: uncombineLittleJumpPxHeight,
-    });
-  } else {
-    head.state.position = addXyz(head.state.position, {
-      z: uncombineLittleJumpPxHeight,
-    });
-    heels.state.position = addXyz(heels.state.position, {
-      z: uncombineLittleJumpPxHeight,
-    });
-  }
-
   deleteItemFromRoom({ room, item: "headOverHeels" });
   addItemToRoom({ room, item: head });
   addItemToRoom({ room, item: heels });
@@ -76,6 +60,21 @@ const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
   };
   // note: head and heels entryState is not added to because joining does not
   // change how they entered this room
+};
+
+const highlightCurrentPlayable = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+) => {
+  const current = selectPlayableItem(gameState, gameState.currentCharacterName);
+  if (current === undefined) {
+    return;
+  }
+  if (current.type === "headOverHeels") {
+    current.state.head.switchedToAt = current.state.head.gameTime;
+    current.state.heels.switchedToAt = current.state.heels.gameTime;
+  } else {
+    current.state.switchedToAt = current?.state.gameTime;
+  }
 };
 
 export const swopPlayables = <RoomId extends string>(
@@ -97,11 +96,12 @@ export const swopPlayables = <RoomId extends string>(
       return;
     }
 
-    // TODO: don't allow to swop if the other character has zero lives
     // TODO: don't allow to swop if the current character is playing death animation
 
     gameState.currentCharacterName = otherIndividualCharacterName(
       gameState.currentCharacterName,
     );
   }
+
+  highlightCurrentPlayable(gameState);
 };

@@ -5,7 +5,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import type { Color } from "pixi.js";
 import { cx } from "class-variance-authority";
 import { useContext } from "react";
-import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { ScaleFactorContext } from "./ScaleFactorContext";
 
 export const PressToContinue = ({
   action,

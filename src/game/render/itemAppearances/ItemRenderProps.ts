@@ -15,6 +15,7 @@ type PlayableRenderProps = {
   facingXy4: Direction4Xy;
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
+  highlighted: boolean;
 };
 
 type ItemRenderPropsMap = {

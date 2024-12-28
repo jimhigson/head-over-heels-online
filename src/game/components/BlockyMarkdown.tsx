@@ -6,7 +6,7 @@ import { ImgSprite, RenderTextChildrenAsSprites } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { ScaleFactorContext } from "./GameOverlayDialogs";
+import { ScaleFactorContext } from "./ScaleFactorContext";
 
 export interface BlockyMarkdownProps {
   markdown: string;

@@ -1,16 +1,13 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import type { GameApi } from "../GameApi";
 import type { InputState } from "../input/InputState";
 import { GameDialog } from "./GameDialog";
 import { ScrollContent } from "./ScrollContent";
 import { HoldBanner } from "./HoldBanner";
-import { useScaleFactor } from "./useScaleFactor";
 
 export type GameOverlayDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
 };
-
-export const ScaleFactorContext = createContext<number>(1);
 
 export const GameOverlayDialogs = <RoomId extends string>({
   gameApi,
@@ -19,7 +16,6 @@ export const GameOverlayDialogs = <RoomId extends string>({
     string | null
   >(null);
   const [paused, setPaused] = useState<boolean>(false);
-  const scaleFactor = useScaleFactor();
 
   useEffect(
     function listenForScrollOpen() {
@@ -75,7 +71,7 @@ export const GameOverlayDialogs = <RoomId extends string>({
   );
 
   return (
-    <ScaleFactorContext value={scaleFactor}>
+    <>
       {displayedScrollContent !== null ?
         <GameDialog
           content={
@@ -92,6 +88,6 @@ export const GameOverlayDialogs = <RoomId extends string>({
           }
         />
       : null}
-    </ScaleFactorContext>
+    </>
   );
 };

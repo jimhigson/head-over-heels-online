@@ -59,6 +59,7 @@ const basicEmptyRoomWithItems = (
 const basicRenderOptions: RenderOptions<TestRoomId> = {
   showBoundingBoxes: "none",
   showShadowMasks: false,
+  scaleFactor: 1,
 };
 
 const gameStateWithInput = (

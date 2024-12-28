@@ -4,7 +4,7 @@ import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
-import type { RenderOptions } from "./RenderOptions";
+import { defaultRenderOptions, type RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
@@ -15,10 +15,7 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): Promise<GameApi<RoomId>> => {
-  const renderOptions: RenderOptions<RoomId> = {
-    showBoundingBoxes: "none",
-    showShadowMasks: false,
-  };
+  const renderOptions: RenderOptions<RoomId> = defaultRenderOptions;
 
   // the viewing room isn't necessarily the room of the curren playable character,
   // but only because I allow click-through for debugging

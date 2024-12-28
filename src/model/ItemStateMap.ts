@@ -104,6 +104,7 @@ export type HeadAbilities = {
   // the time a shield was collected at, or null if no shield. The hud should show
   // seconds remaining based off of this value
   shieldCollectedAt: number;
+  switchedToAt: number;
 };
 
 export type HeelsAbilities<RoomId extends string> = {
@@ -116,6 +117,7 @@ export type HeelsAbilities<RoomId extends string> = {
   // the time a shield was collected at, or null if no shield. The hud should show
   // seconds remaining based off of this value
   shieldCollectedAt: number;
+  switchedToAt: number;
 };
 
 export type ItemStateMap<RoomId extends string> = {

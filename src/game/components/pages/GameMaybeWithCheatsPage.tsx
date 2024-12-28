@@ -6,6 +6,8 @@ import type { RenderOptions, ShowBoundingBoxes } from "../../RenderOptions.tsx";
 import { isItemType } from "../../physics/itemPredicates.ts";
 
 import { Cheats } from "../Cheats.tsx";
+import { useScaleFactor } from "../useScaleFactor.tsx";
+import { ScaleFactorContext } from "../ScaleFactorContext.tsx";
 
 const useShowBoundingBoxes = (): [
   ShowBoundingBoxes,
@@ -51,16 +53,19 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   );
   const [showBoundingBoxes, setShowBoundingBoxes] = useShowBoundingBoxes();
   const [showShadowMasks, setShowShadowMask] = useShowShadowMasks();
+  const scaleFactor = useScaleFactor();
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)
       return {
         showBoundingBoxes,
+        scaleFactor,
         showShadowMasks,
       };
 
     return {
       showBoundingBoxes,
+      scaleFactor,
       showShadowMasks,
       onItemClick(item, container) {
         if (isItemType("teleporter", "doorFrame")(item)) {
@@ -93,12 +98,12 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
         (window as any).item = item;
       },
     };
-  }, [gameApi, showBoundingBoxes, showShadowMasks]);
+  }, [gameApi, scaleFactor, showBoundingBoxes, showShadowMasks]);
 
   const CampaignGame = useRef(Game(campaign)).current;
 
   return (
-    <>
+    <ScaleFactorContext value={scaleFactor}>
       {useCheatsEnabled() && gameApi !== undefined && (
         <Cheats
           gameApi={gameApi}
@@ -112,6 +117,6 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
         renderOptions={renderOptions}
         ref={(api) => setGameApi(api ?? undefined)}
       />
-    </>
+    </ScaleFactorContext>
   );
 };

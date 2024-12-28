@@ -26,6 +26,7 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
+      switchedToAt: Number.NEGATIVE_INFINITY,
     },
   };
   const heels: PlayableItem<"heels", RoomId> = {
@@ -40,6 +41,7 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       ...headOverHeels.state.heels,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position),
+      switchedToAt: Number.NEGATIVE_INFINITY,
     },
   };
 
@@ -70,25 +72,31 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
       teleporting: null,
       autoWalk: false,
       facing: heels.state.facing,
-      head: pick(
-        head.state,
-        "hasHooter",
-        "donuts",
-        "donutLastFireTime",
-        "fastSteps",
-        "lives",
-        "gameTime",
-        "shieldCollectedAt",
-      ),
-      heels: pick(
-        heels.state,
-        "hasBag",
-        "bigJumps",
-        "carrying",
-        "lives",
-        "gameTime",
-        "shieldCollectedAt",
-      ),
+      head: {
+        ...pick(
+          head.state,
+          "hasHooter",
+          "donuts",
+          "donutLastFireTime",
+          "fastSteps",
+          "lives",
+          "gameTime",
+          "shieldCollectedAt",
+        ),
+        switchedToAt: Number.NEGATIVE_INFINITY,
+      },
+      heels: {
+        ...pick(
+          heels.state,
+          "hasBag",
+          "bigJumps",
+          "carrying",
+          "lives",
+          "gameTime",
+          "shieldCollectedAt",
+        ),
+        switchedToAt: Number.NEGATIVE_INFINITY,
+      },
     },
   };
 };
