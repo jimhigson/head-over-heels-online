@@ -99,14 +99,6 @@ const frames = {
       pivot: { x: 8, y: 20 },
     },
   },
-  "generic.door.platform.towards": {
-    frame: { x: 317, y: 219, w: 32, h: 32 },
-  },
-
-  "generic.door.platform.left": {
-    frame: { x: 282, y: 189, w: 32, h: 28 },
-  },
-
   teleporter: {
     frame: { x: 2, y: 478, ...largeItemTextureSize },
   },
@@ -118,10 +110,10 @@ const frames = {
   ),
 
   "barrier.x": {
-    frame: { x: 335, y: 241, ...smallItemTextureSize, pivot: { x: 18, y: 22 } },
+    frame: { x: 335, y: 241, ...smallItemTextureSize, pivot: { x: 18, y: 23 } },
   },
   "barrier.y": {
-    frame: { x: 310, y: 241, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
+    frame: { x: 310, y: 241, ...smallItemTextureSize, pivot: { x: 6, y: 23 } },
   },
   "shadowMask.barrier.y": {
     frame: { x: 310, y: 216, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },

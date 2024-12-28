@@ -34,7 +34,7 @@ export const room = inferRoomJson({
     },
     head: {
       config: { which: "head" },
-      position: { x: 3.5, y: 3.5, z: 0 },
+      position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
     "pickup@5,0,7:1MkQY2": {

@@ -99,7 +99,7 @@ export const itemAppearances: {
         ),
         // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
         // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
-        y: 2,
+        y: 1,
         pivot:
           side === "away" ?
             {

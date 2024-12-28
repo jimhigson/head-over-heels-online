@@ -65,7 +65,7 @@ const backgroundFrames = <
       {
         frame: {
           x: startX + lastI * w,
-          y: startY - lastI * yStep + h + 1,
+          y: startY - lastI * yStep + h,
           ...floorTileSize,
         },
       },

@@ -9,12 +9,7 @@ import {
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
 import type { Xy } from "../../../utils/vectors/vectors";
-import {
-  perpendicularAxisXy,
-  doorAlongAxis,
-  originXy,
-  addXy,
-} from "../../../utils/vectors/vectors";
+import { doorAlongAxis, originXy, addXy } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
 import type { ItemAppearance } from "./appearanceUtils";
@@ -27,9 +22,12 @@ function* doorLegsGenerator(
   const axis = doorAlongAxis(direction);
 
   // drag legs etc
-  const pivotX = axis === "y" ? 0 : 16;
+  const pivotX = axis === "y" ? 1 : 16;
 
-  function* legGenerator(offset: Xy): Generator<Container> {
+  function* legGenerator(
+    /** an offset, since doors have two legs and they can't render in exactly the same place */
+    offset: Xy,
+  ): Generator<Container> {
     if (inHiddenWall) {
       if (height !== 0) {
         //draw the 'floating' (no legs) threshold:
@@ -50,11 +48,9 @@ function* doorLegsGenerator(
       }
     } else {
       yield createSprite({
-        pivot: { x: pivotX, y: 12 },
+        pivot: { x: pivotX, y: 9 },
         texture: "generic.door.legs.base",
-        ...addXy(offset, {
-          y: height,
-        }),
+        ...addXy(offset, {}),
       });
 
       for (let h = 1; h < height; h++) {
@@ -92,33 +88,10 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
 );
 
 function* doorFrameGenerator(
-  {
-    config: { direction, inHiddenWall, part },
-    state: { position },
-  }: ItemInPlay<"doorFrame">,
+  { config: { direction, part } }: ItemInPlay<"doorFrame">,
   room: UnknownRoomState,
 ): Generator<Container> {
   const axis = doorAlongAxis(direction);
-  const { z } = position;
-
-  if (!inHiddenWall) {
-    // in a drawn wall:
-    if (z === 0) {
-      const offset = projectBlockXyzToScreenXy({
-        [perpendicularAxisXy(axis)]: 0.5,
-      });
-
-      if (part === "far") {
-        // hide the floor behind the door
-        yield createSprite({
-          anchor: { x: 0, y: 1 },
-          flipX: axis === "x",
-          texture: "generic.wall.overdraw",
-          ...offset,
-        });
-      }
-    }
-  }
 
   // draw the actual door frame
   yield createSprite({

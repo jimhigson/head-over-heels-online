@@ -152,7 +152,8 @@ export type XyMaybeZ = {
   y: number;
   z?: number;
 };
-export type AxisXy = "x" | "y";
+export const axesXy = ["x", "y"] as const;
+export type AxisXy = (typeof axesXy)[number];
 
 export const axesXyz = ["x", "y", "z"] as const;
 export type AxisXyz = (typeof axesXyz)[number];

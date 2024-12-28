@@ -8,11 +8,90 @@ import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
 import { floorRenderExtent } from "../renderExtent";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
-import { originXy, type Direction4Xy } from "@/utils/vectors/vectors";
+import type { Xy } from "@/utils/vectors/vectors";
+import {
+  axesXy,
+  originXy,
+  perpendicularAxisXy,
+  type Direction4Xy,
+} from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
+import { objectValues } from "iter-tools";
+import { iterate } from "@/utils/iterate";
+import type { UnknownRoomState } from "@/model/modelTypes";
+import { iterateToContainer } from "@/game/iterateToContainer";
 
 export type SidesWithDoors = Partial<Record<Direction4Xy, true>>;
+
+function* generateFloorCutOffs(
+  room: UnknownRoomState,
+  blockMin: Xy,
+  sidesWithDoors: SidesWithDoors,
+): Generator<Container> {
+  for (const axis of axesXy) {
+    const crossAxis = perpendicularAxisXy(axis);
+
+    const nearSide = axis === "x" ? "towards" : "right";
+    const farSide = axis === "x" ? "away" : "left";
+
+    // render the right-angle cutting off of the floor tiles along the back
+    // walls. In the original game this was rendered by the walls
+    // themselves, but it breaks our z-ordering if the walls over-render
+    // their bounding boxes by so much
+    for (let ia = 0; ia <= room.size[axis]; ia++) {
+      let overdrawType: "corner-on-floor" | "behind-door" | "none";
+
+      if (room.walls[farSide][ia] === "none") {
+        const doorJsonAtLocation = iterate(
+          objectValues(room.roomJson.items),
+        ).find(
+          (item) =>
+            item.type === "door" &&
+            item.config.direction === farSide &&
+            (item.position[axis] === ia || item.position[axis] + 1 === ia) &&
+            item.position[crossAxis] === room.size[crossAxis],
+        );
+
+        if (doorJsonAtLocation === undefined) {
+          overdrawType = "none";
+        } else if (doorJsonAtLocation.position.z === 0) {
+          overdrawType = "behind-door";
+        } else {
+          overdrawType = "corner-on-floor";
+        }
+      } else {
+        // normal wall
+        overdrawType = "corner-on-floor";
+      }
+
+      if (overdrawType !== "none") {
+        yield moveContainerToBlockXyz(
+          {
+            [axis]: ia - blockMin[axis],
+            [crossAxis]:
+              room.size[crossAxis] +
+              (sidesWithDoors[nearSide] ? 0.5 : 0) +
+              (overdrawType === "behind-door" ? 0.5 : 0),
+          } as Xy,
+          createSprite(
+            overdrawType === "behind-door" ?
+              {
+                anchor: { x: 0, y: 1 },
+                texture: "generic.wall.overdraw",
+                flipX: axis === "x",
+              }
+            : {
+                anchor: { x: 0, y: 1 },
+                texture: "generic.floor.overdraw",
+                flipX: axis === "x",
+              },
+          ),
+        );
+      }
+    }
+  }
+}
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ item, room }) => {
@@ -54,45 +133,14 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
           );
         }
       }
-      // render the right-angle cutting off of the floor tiles along the back
-      // walls. In the original game this was rendered by the walls
-      // themselves, but it breaks our z-ordering if the walls over-render
-      // their bounding boxes by so much
-      for (let ix = 0; ix <= room.size.x; ix++) {
-        if (room.walls.away[ix] === "none") {
-          continue;
-        }
-        tilesContainer.addChild(
-          moveContainerToBlockXyz(
-            {
-              x: ix - blockXMin,
-              y: room.size.y + (sidesWithDoors.towards ? 0.5 : 0),
-            },
-            createSprite({
-              anchor: { x: 0, y: 1 },
-              texture: "generic.floor.overdraw",
-              flipX: true,
-            }),
-          ),
-        );
-      }
-      for (let iy = 0; iy <= room.size.y; iy++) {
-        if (room.walls.left[iy] === "none") {
-          continue;
-        }
-        tilesContainer.addChild(
-          moveContainerToBlockXyz(
-            {
-              x: room.size.x + (sidesWithDoors.right ? 0.5 : 0),
-              y: iy - blockYMin,
-            },
-            createSprite({
-              anchor: { x: 0, y: 1 },
-              texture: "generic.floor.overdraw",
-            }),
-          ),
-        );
-      }
+      iterateToContainer(
+        generateFloorCutOffs(
+          room,
+          { x: blockXMin, y: blockYMin },
+          sidesWithDoors,
+        ),
+        tilesContainer,
+      );
 
       const tilesMask = new Graphics()
         // Add the rectangular area to show
