@@ -17,11 +17,9 @@ export const mainLoop = <RoomId extends string>(
   app: Application,
   gameState: GameState<RoomId>,
 ) => {
-  const worldContainer = new Container();
-  worldContainer.label = "world";
+  const worldContainer = new Container({ label: "world" });
+  const hudContainer = new Container({ label: "hud" });
   app.stage.addChild(worldContainer);
-
-  const hudContainer = new Container();
   app.stage.addChild(hudContainer);
 
   const pauseFilter = new RevertColouriseFilter(spritesheetPalette.shadow);

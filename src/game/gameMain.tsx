@@ -8,6 +8,7 @@ import { defaultRenderOptions, type RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
+import { initDevtools } from "@pixi/devtools";
 
 /**
  * we are now outside of React-land - pure pixi game engine!
@@ -17,12 +18,10 @@ export const gameMain = async <RoomId extends string>(
 ): Promise<GameApi<RoomId>> => {
   const renderOptions: RenderOptions<RoomId> = defaultRenderOptions;
 
-  // the viewing room isn't necessarily the room of the curren playable character,
-  // but only because I allow click-through for debugging
-
-  // can set: {resizeTo: document.querySelector('.pixi-container')} to resize the app in a different container
-  // (ie, a div created by react) and also {resolution:4} to do some resolution scaling
   const app = new Application();
+  if (import.meta.env.MODE === "development") {
+    initDevtools({ app });
+  }
   await app.init({ background: "#000000", resizeTo: window });
 
   const gameState = initGameState({ campaign, renderOptions });
