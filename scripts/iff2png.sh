@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "🤖 converting iff -> png"
+echo "⏱️ at $(date)"
 
 # curves are trying to approximate the iff colour space transition to png:
 # https://chatgpt.com/share/6720c751-1dfc-8007-815f-6b1d156962ef
