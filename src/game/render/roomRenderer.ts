@@ -37,8 +37,8 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
 ) => {
   // nothing in a room can ever be under the floor, so we can render
   // it outside of the normal object loop
-  const roomContainer = new Container({ label: `room(${room.id})` });
-  const itemsContainer = new Container({ label: `items(room(${room.id}))` });
+  const roomContainer = new Container({ label: `RoomRenderer(${room.id})` });
+  const itemsContainer = new Container({ label: `items` });
 
   let isFirstRender = true;
   // store the edges of the behind/front graph between frames so we can incrementally update it

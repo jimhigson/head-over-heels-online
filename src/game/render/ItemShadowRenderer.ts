@@ -31,7 +31,7 @@ export const ItemShadowRenderer = <
   }
 
   const mainShadowsContainer: Container = new Container({
-    label: "mainShadows",
+    label: "ItemShadowRenderer",
   });
   const shadowsContainer: Container = new Container({
     label: "shadows",

@@ -75,7 +75,7 @@ export const ItemRenderer = <
   }
 
   const mainContainer: Container = new Container({
-    label: `item(${item.id})`,
+    label: `ItemRenderer(${item.id})`,
   });
   mainContainer.addChild(renderContainer);
   if (item.fixedZIndex !== undefined) {
