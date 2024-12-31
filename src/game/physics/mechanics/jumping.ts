@@ -81,7 +81,7 @@ export const jumping = <RoomId extends string>(
 
   return {
     movementType: "vel",
-    vels: { gravity: { z: velZ } },
+    vels: { gravity: { x: 0, y: 0, z: velZ } },
     stateDelta: {
       action: "moving",
       jumped: true,

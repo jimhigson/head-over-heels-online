@@ -16,27 +16,26 @@ export const whiteShades = {
 };
 export const yellowShades = {
   original: new Color("rgb(255, 255, 0)"),
-  basic: new Color("hsl(50,58%,70%)"),
+  basic: new Color("hsl(50,65%,70%)"),
   dimmed: spritesheetPalette.redShadow,
   //dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
 export const magentaShades = {
   original: new Color("rgb(255, 0, 255)"),
   basic: spritesheetPalette.pink,
-  //basic: new Color("hsl(290,25%,60%)"),
-  dimmed: new Color("hsl(290,25%,40%)"),
+  //basic: new Color("hsl(290,50%, 50%)"),
+  dimmed: new Color("hsl(290,35%,38%)"),
 };
 export const cyanShades = {
   original: new Color("rgb(0, 255, 255)"),
-  basic: new Color("hsl(183, 28%, 50%)"),
+  basic: new Color("hsl(183, 50%, 50%)"),
   //dimmed: spritesheetPalette.shadow,
-  dimmed: new Color("hsl(183, 28%,39%)"), // trying to be halfway between basic and spritesheet shadow
+  dimmed: new Color("hsl(183, 50%, 25%)"), // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
   original: new Color("rgb(0, 255, 0)"),
   basic: spritesheetPalette.moss,
-  //basic: new Color("hsl(73,35%,48%)"),
-  dimmed: new Color("hsl(73,35%,35%)"),
+  dimmed: new Color("hsl(73,50%,25%)"),
 };
 
 export const shades = {

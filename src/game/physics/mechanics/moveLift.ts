@@ -88,7 +88,7 @@ export function moveLift<RoomId extends string>(
 
   return {
     movementType: "vel",
-    vels: { lift: { z: velocity } },
+    vels: { lift: { x: 0, y: 0, z: velocity } },
     stateDelta: {
       direction: mewDirection,
     },

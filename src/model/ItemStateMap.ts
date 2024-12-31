@@ -48,6 +48,7 @@ type SlidingItemState<RoomId extends string> = FreeItemState<RoomId> & {
 };
 
 type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
+  /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
   wouldPickUpNext: boolean;
 };
 
@@ -88,6 +89,14 @@ export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
   };
 
   /**
+   * how many pixels have we walked since we were last not walking? Ie, in this run of
+   * walking?
+   *
+   * Used to impose a minimum walk distance of a pixel
+   */
+  walkDistance: number;
+
+  /**
    * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
    * we fall (vertical falling, no forward motion)
    */
@@ -101,7 +110,11 @@ export type HeadAbilities = {
   donuts: number;
   /** time in ms donut was last fired, used to limit rate of fire */
   donutLastFireTime: number;
-  fastSteps: number;
+  /** how far have we walked ever, total? Head tracks this to maintain the fast steps */
+  totalWalkDistance: number;
+  /** how far (what totalWalkDistance) we'd walked when we got the fast steps? */
+  fastStepsStartedAtDistance: number;
+
   lives: number;
   gameTime: number;
   // the time a shield was collected at, or null if no shield. The hud should show

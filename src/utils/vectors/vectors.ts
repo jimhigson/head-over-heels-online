@@ -74,11 +74,9 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   z: xy.z * scale,
 });
 
-export const xyzMagnitude = ({ x, y, z }: Xyz) =>
-  Math.sqrt(x * x + y * y + z * z);
+export const xyzLength = ({ x, y, z }: Xyz) => Math.sqrt(x * x + y * y + z * z);
 
-export const unitVector = (xyz: Xyz): Xyz =>
-  scaleXyz(xyz, 1 / xyzMagnitude(xyz));
+export const unitVector = (xyz: Xyz): Xyz => scaleXyz(xyz, 1 / xyzLength(xyz));
 
 /**
  * clockwise rotation of the xy component

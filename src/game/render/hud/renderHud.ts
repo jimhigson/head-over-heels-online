@@ -23,6 +23,7 @@ import { iterateToContainer } from "@/game/iterateToContainer";
 import { selectAbilities } from "@/game/gameState/gameStateSelectors/selectPlayableItem";
 import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
 import type { HeadAbilities, HeelsAbilities } from "@/model/ItemStateMap";
+import { blockSizePx } from "@/sprites/spritePivots";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -52,6 +53,28 @@ function showNumberInContainer(container: Container, n: number) {
   }
   iterateToContainer(numberSprites(n), container);
 }
+
+const fastStepsRemaining = (abilities: HeadAbilities) => {
+  // how far a quick steps rabbit lets us walk fast:
+  const quickStepsDistance = 100 * blockSizePx.w;
+
+  const hasFastSteps =
+    abilities.totalWalkDistance <=
+    abilities.fastStepsStartedAtDistance + quickStepsDistance;
+
+  if (!hasFastSteps) {
+    return 0;
+  }
+
+  const fastStepsRemaining =
+    100 -
+    Math.ceil(
+      (abilities.totalWalkDistance - abilities.fastStepsStartedAtDistance) /
+        blockSizePx.w,
+    );
+
+  return fastStepsRemaining;
+};
 
 export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
@@ -184,7 +207,8 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       showNumberInContainer(
         skillText,
         abilities === undefined ? 0
-        : characterName === "head" ? (abilities as HeadAbilities).fastSteps
+        : characterName === "head" ?
+          fastStepsRemaining(abilities as HeadAbilities)
         : (abilities as HeelsAbilities<RoomId>).bigJumps,
       );
 

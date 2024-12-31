@@ -10,14 +10,14 @@ import { blockSizePx } from "@/sprites/spritePivots";
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
 export const playerWalkAcceldPixPerMsSq = {
-  head: 0.000_2,
+  head: 0.000_15,
   heels: 0.000_15,
 };
 
 /** deceleration of playables when input stops */
 export const playerWalkStopAccelPixPerMsSq = {
-  head: 0.000_35,
-  heels: 0.000_4,
+  head: 0.000_5,
+  heels: 0.000_5,
 };
 
 /** 

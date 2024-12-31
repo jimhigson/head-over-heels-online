@@ -164,6 +164,7 @@ export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
     movementType: "vel",
     vels: {
       walking: {
+        ...originXyz,
         [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
       },
     },

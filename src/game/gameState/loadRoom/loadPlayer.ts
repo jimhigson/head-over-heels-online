@@ -26,6 +26,7 @@ export const defaultPlayerState = () =>
     teleporting: null,
     autoWalk: false,
     facing: unitVectors["towards"],
+    walkDistance: 0,
     vels: {
       walking: originXyz,
       gravity: originXyz,
@@ -47,7 +48,8 @@ export const loadPlayer = <RoomId extends string>(
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         hasHooter: false,
-        fastSteps: 0,
+        totalWalkDistance: 0,
+        fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
         lives: startingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
         donuts: 0,

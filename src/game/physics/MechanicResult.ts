@@ -19,7 +19,7 @@ export type MechanicResult<T extends ItemInPlayType, RoomId extends string> =
     }
   | {
       movementType: "vel";
-      vels: { [mechanic in VelocitiesForItem<T>]?: Partial<Xyz> };
+      vels: { [mechanic in VelocitiesForItem<T>]?: Xyz };
       stateDelta?: Partial<ItemState<T, RoomId>>;
     }
   | {
