@@ -7,7 +7,6 @@ import type { ItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { emptyObject } from "@/utils/empty";
 import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { blockSizePx } from "@/sprites/spritePivots";
 
@@ -45,11 +44,11 @@ export const firing = <RoomId extends string>(
       state: {
         position: addXyz(
           position,
-          scaleXyz(unitVectors[facing], blockSizePx.w),
+          scaleXyz(facing, blockSizePx.w),
           firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
         ),
         vels: {
-          fired: scaleXyz(unitVectors[facing], moveSpeedPixPerMs.firedDonut),
+          fired: scaleXyz(facing, moveSpeedPixPerMs.firedDonut),
         },
         disappear: "onTouch",
         expires: null,

@@ -10,6 +10,7 @@ import type { PlayableState } from "@/model/ItemStateMap";
 import { defaultBaseState, defaultFreeItemState } from "./loadItem";
 import { emptyObject } from "@/utils/empty";
 import { startingLives } from "@/game/physics/mechanicsConstants";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -24,7 +25,7 @@ export const defaultPlayerState = () =>
     jumped: false,
     teleporting: null,
     autoWalk: false,
-    facing: "towards",
+    facing: unitVectors["towards"],
     vels: {
       walking: originXyz,
       gravity: originXyz,

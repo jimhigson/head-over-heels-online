@@ -6,6 +6,7 @@ import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
@@ -66,7 +67,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         config: {
           toRoom: roomJson.roomBelow,
           relativePoint: originXyz,
-          direction: "down",
+          direction: unitVectors["down"],
         },
 
         aabb: roomNaturalFootprintAabb,
@@ -114,7 +115,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         config: {
           toRoom: roomJson.roomAbove,
           relativePoint: { x: 0, y: 0, z: -blockSizePx.h },
-          direction: "up",
+          direction: unitVectors["up"],
         },
 
         aabb: roomNaturalFootprintAabb,

@@ -1,5 +1,5 @@
 import type { PlanetName } from "@/sprites/planets";
-import type { Xyz, Xy, Direction4Xy } from "@/utils/vectors/vectors";
+import type { Xyz, Xy } from "@/utils/vectors/vectors";
 import type {
   EmptyObject,
   SwitchSetting,
@@ -70,7 +70,10 @@ export type CarriedItem<
 }[Types];
 
 export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
-  facing: Direction4Xy;
+  /**
+   * z will always be zero, but is included to make easier to translate into 3-space velocities later
+   */
+  facing: Xyz;
   action: PlayableActionState;
 
   // Number of pixels the player will walk forward regardless of input. This

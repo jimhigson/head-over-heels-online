@@ -166,7 +166,7 @@ export function* loadDoor<RoomId extends string>(
           ...originXyz,
           [crossAxis]: inHiddenWall ? 0.25 : -0.25,
         }),
-        direction,
+        direction: unitVectors[direction],
       },
       renders: false,
       state: {

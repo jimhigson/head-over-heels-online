@@ -26,6 +26,7 @@ import {
 } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
 import { createEmptyInput } from "../input/InputState";
+import { unitVectors } from "@/utils/vectors/unitVectors";
 
 const testFrameRates = [
   25, // original game, PAL
@@ -65,7 +66,7 @@ describe("pickups", () => {
           },
         },
       },
-      inputState: { left: true },
+      inputState: { direction: unitVectors.left },
     });
 
     expect(headState(gameState).lives).toBe(8);
@@ -164,7 +165,7 @@ describe("jumping", () => {
             config: { style: "organic", disappearing: false },
           },
         },
-        inputState: { towards: true },
+        inputState: { direction: unitVectors.towards },
       });
 
       playGameThrough(gameState, {
@@ -174,7 +175,7 @@ describe("jumping", () => {
           function startJumpingSoonAfterTheStart(gameState) {
             const inputState = {
               ...createEmptyInput(),
-              towards: true,
+              direction: unitVectors.towards,
               jump:
                 gameState.gameTime > 100 &&
                 headState(gameState).position.z === 0,
@@ -230,7 +231,7 @@ describe("jumping", () => {
             config: { style: "organic", disappearing: false },
           },
         },
-        inputState: { towards: true, jump: true },
+        inputState: { direction: unitVectors.towards, jump: true },
       });
 
       playGameThrough(gameState, {
@@ -274,7 +275,7 @@ describe("jumping", () => {
             config: { style: "organic", disappearing: false },
           },
         },
-        inputState: { towards: true },
+        inputState: { direction: unitVectors.towards },
       });
 
       // TODO: test that standing on is ull all the way though the fall - should never be a block
@@ -334,7 +335,7 @@ describe("doors", () => {
           config: { direction: "left", toRoom: firstRoomId },
         },
       },
-      inputState: { right: true },
+      inputState: { direction: unitVectors.right },
     });
 
     playGameThrough(gameState, {
@@ -543,7 +544,7 @@ describe("snapping stationary items to pixel grid", () => {
           },
         },
       },
-      inputState: { away: true },
+      inputState: { direction: unitVectors.away },
     });
 
     playGameThrough(gameState, {
@@ -818,7 +819,7 @@ describe("pushing", () => {
         },
       },
     },
-    inputState: { away: true },
+    inputState: { direction: unitVectors.away },
   };
 
   test("player pushes a block until reaching an obstruction", () => {
@@ -935,7 +936,11 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputState: { ...createEmptyInput(), jump: true, away: true },
+        inputState: {
+          ...createEmptyInput(),
+          jump: true,
+          direction: unitVectors.away,
+        },
       },
       {
         frameCallbacks(gameState) {
@@ -953,7 +958,10 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputState: { ...createEmptyInput(), away: true /* not jumping */ },
+        inputState: {
+          ...createEmptyInput(),
+          direction: unitVectors.away /* not jumping */,
+        },
       },
       {
         until(gameState) {
@@ -1013,7 +1021,11 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameState,
-        inputState: { ...createEmptyInput(), jump: true, away: true },
+        inputState: {
+          ...createEmptyInput(),
+          jump: true,
+          direction: unitVectors.away,
+        },
       },
       {
         frameCallbacks(gameState) {

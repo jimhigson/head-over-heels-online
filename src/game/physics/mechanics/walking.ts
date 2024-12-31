@@ -1,11 +1,11 @@
 import {
-  directions4Xy,
+  originXy,
   originXyz,
   scaleXyz,
   subXyz,
+  xyEqual,
   xyzMagnitude,
 } from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
 import {
   heelsJumpForwardSpeedFraction,
   heelsJumpForwardDecel,
@@ -55,12 +55,7 @@ export const walking = <RoomId extends string>(
   // heels does the walking for headOverHeels, so we need to use the heels walking speed:
   const effectiveWalkingCharacter = type === "headOverHeels" ? "heels" : type;
 
-  const directionOfWalk =
-    autoWalk ? facing : (
-      directions4Xy.find((d) => {
-        return effectiveInputState[d] === true;
-      })
-    );
+  const walkVector = autoWalk ? facing : effectiveInputState.direction;
 
   const maxWalkSpeed = moveSpeedPixPerMs[effectiveWalkingCharacter];
 
@@ -89,7 +84,8 @@ export const walking = <RoomId extends string>(
       }
     } else {
       if (effectiveInputState.jump) {
-        const jumpDirection = directionOfWalk ?? facing;
+        const jumpDirectionXy =
+          xyEqual(walkVector, originXy) ? facing : walkVector;
         const isStandingOnSpring = isItemType("spring")(standingOn);
         const walkJumpFraction =
           isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
@@ -97,11 +93,11 @@ export const walking = <RoomId extends string>(
           movementType: "vel",
           vels: {
             walking: scaleXyz(
-              unitVectors[jumpDirection],
+              { ...jumpDirectionXy, z: 0 },
               maxWalkSpeed * walkJumpFraction,
             ),
           },
-          stateDelta: { facing: jumpDirection },
+          //stateDelta: { facing: jumpDirection },
         };
       }
     }
@@ -109,17 +105,17 @@ export const walking = <RoomId extends string>(
 
   const isFalling = standingOn === null && gravityVel.z < 0;
 
-  if (directionOfWalk !== undefined) {
+  if (!xyEqual(walkVector, originXyz)) {
     if (isFalling) {
       // head's 'walking' to glide while falling - this has no accel
       // and is always max walking speed (to help get into small gaps):
       return {
         movementType: "vel",
         vels: {
-          walking: scaleXyz(unitVectors[directionOfWalk], maxWalkSpeed),
+          walking: scaleXyz({ ...walkVector, z: 0 }, maxWalkSpeed),
         },
         stateDelta: {
-          facing: directionOfWalk,
+          facing: walkVector,
           action: "falling",
         },
       };
@@ -133,14 +129,14 @@ export const walking = <RoomId extends string>(
             acc: playerWalkAcceldPixPerMsSq[effectiveWalkingCharacter],
             deltaMS,
             maxSpeed: maxWalkSpeed,
-            unitD: unitVectors[directionOfWalk],
+            unitD: walkVector,
             crossComponentFade:
               playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter],
             minVelocity: walkMinSpeedPixPerMs[effectiveWalkingCharacter],
           }),
         },
         stateDelta: {
-          facing: directionOfWalk,
+          facing: walkVector,
           action: "moving",
         },
       };

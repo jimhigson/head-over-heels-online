@@ -13,6 +13,7 @@ import {
   oppositeDirection,
   originXyz,
   scaleXyz,
+  vectorClosestDirectionXy4,
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
@@ -55,10 +56,12 @@ export const onConveyor = <RoomId extends string>(
    * characters can only just stay still when walking against them, regardless of how
    * fast the character walks
    */
+
   const heelsWalkingAgainst =
     isItemType("heels")(item) &&
     item.state.action === "moving" &&
-    item.state.facing === oppositeDirection(direction);
+    vectorClosestDirectionXy4(item.state.facing) ===
+      oppositeDirection(direction);
 
   const conveyorSpeed =
     heelsWalkingAgainst ? moveSpeedPixPerMs.heels : conveyorSpeedPixPerMs;

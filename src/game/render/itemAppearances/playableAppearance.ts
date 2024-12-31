@@ -11,7 +11,10 @@ import type {
   ItemAppearanceReturn,
 } from "./appearanceUtils";
 
-import type { Direction4Xy } from "@/utils/vectors/vectors";
+import {
+  vectorClosestDirectionXy4,
+  type Direction4Xy,
+} from "@/utils/vectors/vectors";
 import { stackedSprites } from "./stackedSprites";
 import type {
   PlayableActionState,
@@ -24,14 +27,14 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 const renderSprite = ({
   name,
   action,
-  facing,
+  facingXy4,
   teleporting,
   highlighted,
   scaleFactor,
 }: {
   name: IndividualCharacterName;
   action: PlayableActionState;
-  facing: Direction4Xy;
+  facingXy4: Direction4Xy;
   teleporting: PlayableTeleportingState | null;
   highlighted: boolean;
   scaleFactor: number;
@@ -68,23 +71,23 @@ const renderSprite = ({
 
   if (action === "moving") {
     return {
-      frames: spriteSheet.animations[`${name}.walking.${facing}`],
+      frames: spriteSheet.animations[`${name}.walking.${facingXy4}`],
       filter,
     };
   } else if (
     action === "falling" &&
     name === "head" &&
-    (facing === "towards" || facing === "right")
+    (facingXy4 === "towards" || facingXy4 === "right")
   ) {
-    return { texture: `head.falling.${facing}`, filter };
+    return { texture: `head.falling.${facingXy4}`, filter };
   } else {
-    if (name === "head" && (facing === "towards" || facing === "right")) {
+    if (name === "head" && (facingXy4 === "towards" || facingXy4 === "right")) {
       return {
-        frames: spriteSheet.animations[`head.idle.${facing}`],
+        frames: spriteSheet.animations[`head.idle.${facingXy4}`],
         filter,
       };
     }
-    return { texture: `${name}.walking.${facing}.2`, filter };
+    return { texture: `${name}.walking.${facingXy4}.2`, filter };
   }
 };
 
@@ -106,6 +109,8 @@ export const playableAppearance = <C extends CharacterName>({
     state: { action, facing, teleporting },
   } = item;
 
+  const facingXy4 = vectorClosestDirectionXy4(facing);
+
   const highlighted =
     item.type === "headOverHeels" ?
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
@@ -116,7 +121,7 @@ export const playableAppearance = <C extends CharacterName>({
   const render =
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
-    currentlyRenderedProps.facingXy4 !== facing ||
+    currentlyRenderedProps.facingXy4 !== facingXy4 ||
     currentlyRenderedProps.teleportingPhase !== (teleporting?.phase ?? null) ||
     currentlyRenderedProps.highlighted !== highlighted;
 
@@ -131,7 +136,7 @@ export const playableAppearance = <C extends CharacterName>({
           top: renderSprite({
             name: "head",
             action,
-            facing,
+            facingXy4,
             teleporting,
             highlighted,
             scaleFactor: renderOptions.scaleFactor,
@@ -139,7 +144,7 @@ export const playableAppearance = <C extends CharacterName>({
           bottom: renderSprite({
             name: "heels",
             action,
-            facing,
+            facingXy4,
             teleporting,
             highlighted,
             scaleFactor: renderOptions.scaleFactor,
@@ -149,7 +154,7 @@ export const playableAppearance = <C extends CharacterName>({
           renderSprite({
             name: type,
             action,
-            facing,
+            facingXy4,
             teleporting,
             highlighted,
             scaleFactor: renderOptions.scaleFactor,
@@ -157,7 +162,7 @@ export const playableAppearance = <C extends CharacterName>({
         ),
     renderProps: {
       action,
-      facingXy4: facing,
+      facingXy4,
       teleportingPhase: teleporting?.phase ?? null,
       highlighted,
     },

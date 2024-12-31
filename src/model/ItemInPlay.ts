@@ -1,11 +1,6 @@
 import type { FreeItem } from "@/game/physics/itemPredicates";
 import type { PlanetName } from "../sprites/planets";
-import type {
-  Aabb,
-  Direction4Xy,
-  Direction4Xyz,
-  Xyz,
-} from "../utils/vectors/vectors";
+import type { Aabb, Direction4Xy, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
@@ -28,13 +23,15 @@ type ItemInPlayConfigMap<RoomId extends string> = {
   floor: { deadly: boolean };
   portal: {
     toRoom: RoomId;
-    /* 
-      when moving through portals, the position of the character relative to this point is
-      taken, and preserved to be relative to the relativePoint of the portal in the new room
-    */
+    /**
+     * when moving through portals, the position of the character relative to this point is
+     * taken, and preserved to be relative to the relativePoint of the portal in the new room
+     */
     relativePoint: Xyz;
-    // the direction this portal has to be hit in to be walked through
-    direction: Direction4Xyz;
+    /**
+     * the direction this portal has to be hit (with a dot product in) to be walked through
+     */
+    direction: Xyz;
   };
   conveyor: {
     direction: Direction4Xy;

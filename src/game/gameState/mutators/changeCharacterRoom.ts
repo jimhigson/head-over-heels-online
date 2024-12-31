@@ -4,12 +4,11 @@ import { isItemType, isPortal } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
-import type { Direction4Xy, Direction4Xyz, Xyz } from "@/utils/vectors/vectors";
+import type { Xyz } from "@/utils/vectors/vectors";
 import {
   addXyz,
-  directions4Xy,
-  oppositeDirection,
   originXyz,
+  scaleXyz,
 } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
@@ -66,9 +65,7 @@ const findDestinationPortal = <RoomId extends string>(
           (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
             isPortal(i) &&
             // any horizontal portal (ie, not floor/ceiling)
-            (directions4Xy as Readonly<Direction4Xyz[]>).includes(
-              i.config.direction,
-            ),
+            i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) || iterate(objectValues(toRoom.items)).find(isPortal)
       );
@@ -149,7 +146,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       positionRelativeToSourcePortal,
       // an extra boost of one block when travelling up - this is because the room above won't have a floor
       // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
-      changeType === "portal" && sourcePortal.config.direction === "up" ?
+      changeType === "portal" && sourcePortal.config.direction.z > 0 ?
         { z: blockSizePx.h }
       : {},
     );
@@ -184,9 +181,9 @@ export const changeCharacterRoom = <RoomId extends string>({
     } = destinationPortal;
     if (
       // portal is horizontal - not up or down
-      (directions4Xy as Readonly<Direction4Xyz[]>).includes(portalDirection)
+      portalDirection.z === 0
     ) {
-      const portalDirectionXy = portalDirection as Direction4Xy;
+      const portalDirectionXy = portalDirection;
       // automatically walk forward a short way in the new room to put character properly
       // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
       //  - only doors)
@@ -197,7 +194,7 @@ export const changeCharacterRoom = <RoomId extends string>({
       // is usually a no-op since they had to be walking that way to get through, but
       // it is possible they were pushed through and the autowalk needs to go in
       // the right direction
-      playableItem.state.facing = oppositeDirection(portalDirectionXy);
+      playableItem.state.facing = scaleXyz(portalDirectionXy, -1);
 
       // if the new position collides with the other character, back off some more so we can push them into
       // the room - serves them right for standing in the way:
