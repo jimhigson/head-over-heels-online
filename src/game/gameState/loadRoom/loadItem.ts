@@ -164,6 +164,8 @@ const shadowMask = (
         default:
           return undefined;
       }
+    case "joystick":
+      return { spriteOptions: "shadowMask.joystick", relativeTo: "origin" };
   }
 };
 

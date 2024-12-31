@@ -241,6 +241,9 @@ const frames = {
   joystick: {
     frame: { x: 2, y: 374, ...smallItemTextureSize },
   },
+  "shadowMask.joystick": {
+    frame: { x: 2, y: 349, ...smallItemTextureSize },
+  },
   anvil: {
     frame: { x: 252, y: 366, ...largeItemTextureSize },
   },
