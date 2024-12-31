@@ -2,7 +2,6 @@ import type { Campaign, CharacterName } from "@/model/modelTypes";
 import type { RoomJson } from "@/model/RoomJson";
 import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
-import { defaultKeyAssignments } from "../input/listenForInput";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
@@ -10,6 +9,7 @@ import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import { createEmptyInput } from "../input/InputState";
+import { keyAssignmentPresets } from "../input/keyAssignmentPresets";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -69,7 +69,7 @@ export const initGameState = <RoomId extends string>({
       );
 
   return {
-    keyAssignment: defaultKeyAssignments,
+    keyAssignment: keyAssignmentPresets.default,
     // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {

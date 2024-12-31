@@ -5,11 +5,7 @@ import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { PlanetName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
-import {
-  addXyz,
-  originXyz,
-  scaleXyz,
-} from "@/utils/vectors/vectors";
+import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../PlayableEntryState";

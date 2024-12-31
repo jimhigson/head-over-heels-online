@@ -7,30 +7,6 @@ import type { Direction4Xy } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
-const originalKeyAssignment: KeyAssignment = {
-  right: ["P"],
-  towards: ["A"],
-  left: ["O"],
-  away: ["Q"],
-  jump: [" ", "M"],
-  carry: ["C", "M"],
-  fire: ["N"],
-  swop: ["Enter", "S"],
-  hold: ["H"],
-};
-
-export const defaultKeyAssignments: KeyAssignment = {
-  right: ["ArrowRight", ...originalKeyAssignment.right],
-  towards: ["ArrowDown", ...originalKeyAssignment.towards],
-  left: ["ArrowLeft", ...originalKeyAssignment.left],
-  away: ["ArrowUp", ...originalKeyAssignment.away],
-  jump: ["`", ...originalKeyAssignment.jump],
-  carry: ["Shift", "`", ...originalKeyAssignment.carry],
-  fire: ["D", ...originalKeyAssignment.fire],
-  swop: originalKeyAssignment.swop,
-  hold: ["F8", ...originalKeyAssignment.hold],
-};
-
 // returns the action for a given keyboard key, or undefined if none was found
 function* keyToAction(
   keyAssignment: KeyAssignment,

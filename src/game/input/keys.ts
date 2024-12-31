@@ -72,6 +72,7 @@ const keys = [
   "Enter",
   "Shift",
   "Control",
+  "Alt",
   "`",
   "~",
   "Tab",
