@@ -3,8 +3,9 @@ import {
   originXyz,
   scaleXyz,
   subXyz,
+  unitVector,
   xyEqual,
-  xyzMagnitude,
+  xyzLength,
 } from "@/utils/vectors/vectors";
 import {
   heelsJumpForwardSpeedFraction,
@@ -15,10 +16,10 @@ import {
   walkMinSpeedPixPerMs,
 } from "../mechanicsConstants";
 import { isItemType, type PlayableItem } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
-import { accelerateToSpeed } from "@/utils/vectors/accelerateUpToSpeed";
+import { accelerateToSpeed2 } from "@/utils/vectors/accelerateUpToSpeed";
 import { emptyInput } from "@/game/input/InputState";
 
 const stopWalking = {
@@ -26,10 +27,42 @@ const stopWalking = {
   vels: { walking: originXyz },
 } as const satisfies MechanicResult<CharacterName, string>;
 
+export const walking = <RoomId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+): MechanicResult<CharacterName, RoomId> => {
+  const result = _walking(playableItem, gameState, deltaMS);
+
+  if (result.movementType === "vel" && result.vels.walking !== undefined) {
+    const speed = xyzLength(result.vels.walking);
+
+    result.stateDelta = Object.assign(result.stateDelta || {}, {
+      walkDistance:
+        speed === 0 ? 0 : playableItem.state.walkDistance + speed * deltaMS,
+    });
+
+    if (
+      playableItem.type === "head" &&
+      // head's walk distance is only counted when standing on something,
+      // since this is only really collected for the sake of counting down
+      // fast steps, and they don't tick down while in the air:
+      playableItem.state.standingOn !== null
+    ) {
+      result.stateDelta = Object.assign(result.stateDelta || {}, {
+        totalWalkDistance:
+          playableItem.state.totalWalkDistance + speed * deltaMS,
+      });
+    }
+  }
+
+  return result;
+};
+
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export const walking = <RoomId extends string>(
+const _walking = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
   { inputState: gameStateInputState, currentCharacterName }: GameState<RoomId>,
   deltaMS: number,
@@ -42,6 +75,7 @@ export const walking = <RoomId extends string>(
       standingOn,
       facing,
       teleporting,
+      walkDistance,
       vels: { walking: previousWalkingVel, gravity: gravityVel },
     },
   } = playableItem;
@@ -84,6 +118,7 @@ export const walking = <RoomId extends string>(
       }
     } else {
       if (effectiveInputState.jump) {
+        // standing on something and jumping
         const jumpDirectionXy =
           xyEqual(walkVector, originXy) ? facing : walkVector;
         const isStandingOnSpring = isItemType("spring")(standingOn);
@@ -97,7 +132,7 @@ export const walking = <RoomId extends string>(
               maxWalkSpeed * walkJumpFraction,
             ),
           },
-          //stateDelta: { facing: jumpDirection },
+          stateDelta: { facing: unitVector(jumpDirectionXy) },
         };
       }
     }
@@ -105,7 +140,9 @@ export const walking = <RoomId extends string>(
 
   const isFalling = standingOn === null && gravityVel.z < 0;
 
-  if (!xyEqual(walkVector, originXyz)) {
+  const hasWalkVector = xyzLength(walkVector) !== 0;
+
+  if (hasWalkVector) {
     if (isFalling) {
       // head's 'walking' to glide while falling - this has no accel
       // and is always max walking speed (to help get into small gaps):
@@ -124,15 +161,14 @@ export const walking = <RoomId extends string>(
       return {
         movementType: "vel",
         vels: {
-          walking: accelerateToSpeed({
+          walking: accelerateToSpeed2({
             vel: previousWalkingVel,
             acc: playerWalkAcceldPixPerMsSq[effectiveWalkingCharacter],
             deltaMS,
             maxSpeed: maxWalkSpeed,
             unitD: walkVector,
-            crossComponentFade:
-              playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter],
-            minVelocity: walkMinSpeedPixPerMs[effectiveWalkingCharacter],
+            minSpeed: 0,
+            //minSpeed: walkMinSpeedPixPerMs[effectiveWalkingCharacter],
           }),
         },
         stateDelta: {
@@ -144,11 +180,29 @@ export const walking = <RoomId extends string>(
   }
 
   // no direction pressed - we are not walking. Fade the velocity.
-  const previousSpeed = xyzMagnitude(previousWalkingVel);
+  const previousSpeed = xyzLength(previousWalkingVel);
+
+  // going from not moving to not moving - simple case:
+  if (previousSpeed === 0) {
+    return unitMechanicalResult;
+  }
+
+  if (walkDistance > 0 && walkDistance < 1) {
+    // stopped walking, having moved some distance but less than a pixel - one pixel
+    // is the minimum move distance so add on the remaining to round up to a pixel:
+    return {
+      movementType: "position",
+      posDelta: scaleXyz(facing, 1 - walkDistance),
+      stateDelta: { action: isFalling ? "falling" : "idle", walkDistance: 0 },
+    };
+  }
+
   const previousDirection =
     previousSpeed === 0 ? originXyz : (
       scaleXyz(previousWalkingVel, 1 / previousSpeed)
     );
+
+  // decelerate down towards stationary:
   const newSpeed = Math.max(
     previousSpeed -
       playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter] * deltaMS,

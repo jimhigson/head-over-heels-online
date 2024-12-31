@@ -7,10 +7,7 @@ export class OutlineFilter extends Filter {
   /**
    * @param options - Options for the OutlineFilter constructor.
    */
-  constructor(
-    outlineColor: Color,
-    private upscale: number,
-  ) {
+  constructor(outlineColor: Color, upscale: number) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
@@ -51,8 +48,4 @@ export class OutlineFilter extends Filter {
     //this.resolution = 1 / upscale;
     //this.padding = 1;
   }
-
-  /*setUpscale(upscale: number) {
-    
-  }*/
 }

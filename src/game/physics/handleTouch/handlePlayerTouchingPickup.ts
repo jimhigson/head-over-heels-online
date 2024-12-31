@@ -73,7 +73,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     case "fast": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
-        toModify.fastSteps = 99;
+        toModify.fastStepsStartedAtDistance = toModify.totalWalkDistance;
       }
       break;
     }

@@ -182,6 +182,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # blacktooth20
 [ ] corder of room not shown in shadow
 
+# blacktooth24
+[ ] on heels coming back into room, misses stop autowalk collision and keeps walking on floor
+
 # blacktooth25
 
 [x] lift is too slow when character is on it
