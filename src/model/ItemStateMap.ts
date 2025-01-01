@@ -153,6 +153,7 @@ export type ItemStateMap<RoomId extends string> = {
   baddie: FreeItemState<RoomId> & {
     activated: boolean;
     busyLickingDoughnutsOffFace: boolean;
+    facing: Xyz;
     vels: {
       walking: Xyz;
     };

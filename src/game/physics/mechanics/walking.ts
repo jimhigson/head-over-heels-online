@@ -180,7 +180,6 @@ const _walking = <RoomId extends string>(
             maxSpeed: maxWalkSpeed,
             unitD: walkVector,
             minSpeed: 0,
-            //minSpeed: walkMinSpeedPixPerMs[effectiveWalkingCharacter],
           }),
         },
         stateDelta: {
