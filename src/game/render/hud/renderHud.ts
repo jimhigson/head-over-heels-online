@@ -16,14 +16,16 @@ import { noFilters } from "../filters/paletteSwapFilters";
 import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
 import { type Xy } from "@/utils/vectors/vectors";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { shieldDuration } from "@/game/physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { assertIsTextureId } from "@/sprites/assertIsTextureId";
 import { iterateToContainer } from "@/game/iterateToContainer";
 import { selectAbilities } from "@/game/gameState/gameStateSelectors/selectPlayableItem";
 import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
 import type { HeadAbilities, HeelsAbilities } from "@/model/ItemStateMap";
-import { blockSizePx } from "@/sprites/spritePivots";
+import {
+  fastStepsRemaining,
+  shieldRemaining,
+} from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -53,28 +55,6 @@ function showNumberInContainer(container: Container, n: number) {
   }
   iterateToContainer(numberSprites(n), container);
 }
-
-const fastStepsRemaining = (abilities: HeadAbilities) => {
-  // how far a quick steps rabbit lets us walk fast:
-  const quickStepsDistance = 100 * blockSizePx.w;
-
-  const hasFastSteps =
-    abilities.totalWalkDistance <=
-    abilities.fastStepsStartedAtDistance + quickStepsDistance;
-
-  if (!hasFastSteps) {
-    return 0;
-  }
-
-  const fastStepsRemaining =
-    100 -
-    Math.ceil(
-      (abilities.totalWalkDistance - abilities.fastStepsStartedAtDistance) /
-        blockSizePx.w,
-    );
-
-  return fastStepsRemaining;
-};
 
 export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
@@ -177,7 +157,6 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
 
     const updateIcons = (characterName: IndividualCharacterName) => {
       const abilities = selectAbilities(gameState, characterName);
-      const shieldCollectedAt = abilities?.shieldCollectedAt ?? null;
 
       const { text: shieldText, container: shieldContainer } =
         hudElements[characterName].shield;
@@ -188,20 +167,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
         (screenSize.x >> 1) +
         sideMultiplier(characterName) * smallIconsFromCentre;
 
-      const hasShield =
-        abilities !== undefined &&
-        shieldCollectedAt !== null &&
-        abilities?.gameTime <= shieldCollectedAt + shieldDuration;
-
-      const shieldRemaining =
-        hasShield ?
-          100 -
-          Math.ceil(
-            (abilities.gameTime - shieldCollectedAt) / (shieldDuration / 100),
-          )
-        : 0;
-
-      showNumberInContainer(shieldText, shieldRemaining);
+      showNumberInContainer(shieldText, shieldRemaining(abilities));
       shieldContainer.y = screenSize.y;
 
       showNumberInContainer(

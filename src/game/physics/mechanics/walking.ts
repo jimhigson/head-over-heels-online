@@ -16,11 +16,12 @@ import {
   walkMinSpeedPixPerMs,
 } from "../mechanicsConstants";
 import { isItemType, type PlayableItem } from "../itemPredicates";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { accelerateToSpeed2 } from "@/utils/vectors/accelerateUpToSpeed";
 import { emptyInput } from "@/game/input/InputState";
+import { fastStepsRemaining } from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
 
 const stopWalking = {
   movementType: "vel",
@@ -86,12 +87,23 @@ const _walking = <RoomId extends string>(
   const effectiveInputState =
     isCurrentCharacter ? gameStateInputState : emptyInput;
 
-  // heels does the walking for headOverHeels, so we need to use the heels walking speed:
-  const effectiveWalkingCharacter = type === "headOverHeels" ? "heels" : type;
+  const useSpeedOfCharacter =
+    type === "headOverHeels" ?
+      // heels does the walking for headOverHeels, so we need to use the heels walking speed:
+      "heels"
+    : (
+      type === "head" &&
+      fastStepsRemaining(playableItem.state) > 0 &&
+      standingOn !== null
+    ) ?
+      // head fast-walking is effectively heels:
+      "heels"
+      // no special-case, use player's natural speed:
+    : type;
 
   const walkVector = autoWalk ? facing : effectiveInputState.direction;
 
-  const maxWalkSpeed = moveSpeedPixPerMs[effectiveWalkingCharacter];
+  const maxWalkSpeed = moveSpeedPixPerMs[useSpeedOfCharacter];
 
   if (teleporting !== null || action === "death") {
     // do no walking while teleporting or showing dying animation:
@@ -163,7 +175,7 @@ const _walking = <RoomId extends string>(
         vels: {
           walking: accelerateToSpeed2({
             vel: previousWalkingVel,
-            acc: playerWalkAcceldPixPerMsSq[effectiveWalkingCharacter],
+            acc: playerWalkAcceldPixPerMsSq[useSpeedOfCharacter],
             deltaMS,
             maxSpeed: maxWalkSpeed,
             unitD: walkVector,
@@ -181,11 +193,6 @@ const _walking = <RoomId extends string>(
 
   // no direction pressed - we are not walking. Fade the velocity.
   const previousSpeed = xyzLength(previousWalkingVel);
-
-  // going from not moving to not moving - simple case:
-  if (previousSpeed === 0) {
-    return unitMechanicalResult;
-  }
 
   if (walkDistance > 0 && walkDistance < 1) {
     // stopped walking, having moved some distance but less than a pixel - one pixel
@@ -205,7 +212,7 @@ const _walking = <RoomId extends string>(
   // decelerate down towards stationary:
   const newSpeed = Math.max(
     previousSpeed -
-      playerWalkStopAccelPixPerMsSq[effectiveWalkingCharacter] * deltaMS,
+      playerWalkStopAccelPixPerMsSq[useSpeedOfCharacter] * deltaMS,
     0,
   );
   return {
@@ -213,9 +220,7 @@ const _walking = <RoomId extends string>(
     vels: {
       walking: scaleXyz(
         previousDirection,
-        newSpeed < walkMinSpeedPixPerMs[effectiveWalkingCharacter] ?
-          0
-        : newSpeed,
+        newSpeed < walkMinSpeedPixPerMs[useSpeedOfCharacter] ? 0 : newSpeed,
       ),
     },
     stateDelta: { action: isFalling ? "falling" : "idle" },

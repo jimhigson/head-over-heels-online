@@ -109,8 +109,8 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     is in play
 [x] can't pick items up as hoh    
 [x] should be able to fire doughnuts as headOverHeels    
-[ ] fast walk for head
-[ ] big jump for heels
+[x] fast walk for head
+[x] big jump for heels
 [x] head and heels can combine
 [x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet

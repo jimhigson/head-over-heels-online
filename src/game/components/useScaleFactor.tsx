@@ -1,4 +1,4 @@
-import { amigaLowResPal as originalSystemRes } from "@/originalGame";
+import { zxSpectrumResolution as originalSystemRes } from "@/originalGame";
 import { useState, useLayoutEffect } from "react";
 import { calculateUpscale } from "../render/upscale";
 
