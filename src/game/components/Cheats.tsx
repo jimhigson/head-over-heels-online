@@ -117,7 +117,7 @@ export const GoToRoomButton = <RoomId extends string>({
 };
 
 const Heading = ({ children }: { children: string }) => {
-  return <h4 className="bg-shadow pl-2">{children}</h4>;
+  return <h4 className="bg-redShadow pl-2">{children}</h4>;
 };
 
 export const Cheats = <RoomId extends string>({
@@ -202,7 +202,7 @@ export const Cheats = <RoomId extends string>({
             </GoToRoomButton>
           </div>
           <Heading>render:</Heading>
-          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-redShadow text-white">
+          <div className="flex flex-row items-center gap-x-2 justify-center pb-2 pt-2 bg-shadow text-white">
             <Switch
               id="showbbs"
               checked={showBoundingBoxes !== "none"}
