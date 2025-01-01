@@ -4,7 +4,7 @@ import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { Direction8Xy, Xyz } from "@/utils/vectors/vectors";
+import type { Direction8Xy } from "@/utils/vectors/vectors";
 import {
   directions8Xy,
   directionsXyDiagonal,
@@ -14,12 +14,12 @@ import {
   perpendicularAxisXy,
   scaleXyz,
   subXy,
+  unitVector,
   xyEqual,
   xyzEqual,
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
-import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { ItemTouchEventByItemType } from "../handleTouch/ItemTouchEvent";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
@@ -29,25 +29,6 @@ const notWalking = Object.freeze({
   movementType: "vel",
   vels: { walking: originXyz },
 } as const satisfies MechanicResult<"baddie", string>);
-
-export const initBaddieWalk = (
-  config: JsonItemConfig<"baddie", PlanetName, string>,
-): Xyz => {
-  switch (config.which) {
-    case "dalek":
-    case "bubble-robot":
-      return scaleXyz(unitVectors.towards, moveSpeedPixPerMs[config.which]);
-    case "turtle":
-    case "american-football-head":
-      return scaleXyz(
-        unitVectors[config.startDirection],
-        moveSpeedPixPerMs[config.which],
-      );
-
-    default:
-      return originXyz;
-  }
-};
 
 export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
   {
@@ -220,17 +201,20 @@ export const randomlyChangeDirection = <RoomId extends string>(
 };
 
 export const keepWalkingInSameDirection = <RoomId extends string>(
-  {
-    state: {
-      vels: { walking },
-      standingOn,
-    },
-    config,
-  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
+  const {
+    state: {
+      facing,
+      vels: { walking },
+      standingOn,
+    },
+    config,
+  } = baddieItem;
+
   if (standingOn === null) {
     return notWalking;
   }
@@ -241,7 +225,7 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
         vels: {
           walking:
             // ie, we might have fallen and landed and not be walking:
-            initBaddieWalk(config),
+            scaleXyz(facing, moveSpeedPixPerMs[config.which]),
         },
       }
     : unitMechanicalResult;
@@ -338,6 +322,7 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   };
 
   baddieItem.state.vels.walking = newWalking;
+  baddieItem.state.facing = unitVector(newWalking);
   baddieItem.state.durationOfTouch = 0;
 };
 
@@ -387,6 +372,7 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   };
 
   baddieItem.state.vels.walking = newWalking;
+  baddieItem.state.facing = unitVector(newWalking);
   baddieItem.state.durationOfTouch = 0;
 };
 

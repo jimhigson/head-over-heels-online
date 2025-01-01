@@ -13,7 +13,6 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { directionAxis, originXyz } from "@/utils/vectors/vectors";
-import { initBaddieWalk } from "@/game/physics/mechanics/baddieAi";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
 import type { FreeItemState } from "@/model/ItemStateMap";
@@ -249,9 +248,18 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         vels: {
           gravity: originXyz,
           movingFloor: originXyz,
-          walking: initBaddieWalk(jsonItem.config),
+          walking: originXyz,
         },
         activated: jsonItem.config.activated,
+        ...((
+          jsonItem.config.which === "american-football-head" ||
+          jsonItem.config.which === "turtle" ||
+          jsonItem.config.which === "cyberman"
+        ) ?
+          {
+            facing: unitVectors[jsonItem.config.startDirection],
+          }
+        : { facing: unitVectors.towards }),
       }
     : {}),
     ...(jsonItem.type === "pickup" ?

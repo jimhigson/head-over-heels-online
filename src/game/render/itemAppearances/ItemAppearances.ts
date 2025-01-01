@@ -16,12 +16,9 @@ import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
-import type { Direction4Xy } from "@/utils/vectors/vectors";
 import {
   directionAxis,
-  originXy,
   vectorClosestDirectionXy4,
-  xyEqual,
 } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
@@ -366,7 +363,6 @@ export const itemAppearances: {
   },
 
   baddie({ item: { config, state }, room, currentlyRenderedProps }) {
-    let startingDirection: Direction4Xy | undefined = undefined;
     const { activated, busyLickingDoughnutsOffFace } = state;
 
     const filter =
@@ -378,16 +374,10 @@ export const itemAppearances: {
       case "american-football-head":
       case "turtle":
       case "cyberman":
-        // have a starting direction
-        startingDirection = config.startDirection;
-      // eslint-disable-next-line no-fallthrough
       case "computer-bot":
       case "elephant":
       case "monkey": {
-        const facingXy4 =
-          xyEqual(state.vels.walking, originXy) ?
-            (startingDirection ?? "towards")
-          : vectorClosestDirectionXy4(state.vels.walking);
+        const facingXy4 = vectorClosestDirectionXy4(state.facing);
 
         const render =
           currentlyRenderedProps === undefined ||
