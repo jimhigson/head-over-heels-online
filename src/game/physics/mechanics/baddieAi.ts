@@ -141,13 +141,17 @@ export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
       axisOfShortestDistance
     : perpendicularAxisXy(axisOfShortestDistance);
 
+  const walkVelocity = {
+    ...originXyz,
+    [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
+  };
   return {
     movementType: "vel",
     vels: {
-      walking: {
-        ...originXyz,
-        [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
-      },
+      walking: walkVelocity,
+    },
+    stateDelta: {
+      facing: unitVector(walkVelocity),
     },
   };
 };
