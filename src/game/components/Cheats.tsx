@@ -397,3 +397,5 @@ export const Cheats = <RoomId extends string>({
     </Collapsible>
   );
 };
+
+export default Cheats;

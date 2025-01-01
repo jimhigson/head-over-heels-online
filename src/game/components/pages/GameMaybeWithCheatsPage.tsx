@@ -1,13 +1,14 @@
 import { Game } from "../Game.tsx";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { GameApi } from "../../GameApi.tsx";
 import type { Campaign } from "../../../model/modelTypes.ts";
 import type { RenderOptions, ShowBoundingBoxes } from "../../RenderOptions.tsx";
 import { isItemType } from "../../physics/itemPredicates.ts";
-
-import { Cheats } from "../Cheats.tsx";
+import type { Cheats } from "../Cheats.tsx";
 import { useScaleFactor } from "../useScaleFactor.tsx";
 import { ScaleFactorContext } from "../ScaleFactorContext.tsx";
+
+const LazyCheats = lazy(() => import("../Cheats.tsx")) as typeof Cheats;
 
 const useShowBoundingBoxes = (): [
   ShowBoundingBoxes,
@@ -105,13 +106,15 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   return (
     <ScaleFactorContext value={scaleFactor}>
       {useCheatsEnabled() && gameApi !== undefined && (
-        <Cheats
-          gameApi={gameApi}
-          showBoundingBoxes={showBoundingBoxes}
-          setShowBoundingBoxes={setShowBoundingBoxes}
-          showShadowMasks={showShadowMasks}
-          setShowShadowMasks={setShowShadowMask}
-        />
+        <Suspense fallback={null}>
+          <LazyCheats
+            gameApi={gameApi}
+            showBoundingBoxes={showBoundingBoxes}
+            setShowBoundingBoxes={setShowBoundingBoxes}
+            showShadowMasks={showShadowMasks}
+            setShowShadowMasks={setShowShadowMask}
+          />
+        </Suspense>
       )}
       <CampaignGame
         renderOptions={renderOptions}
