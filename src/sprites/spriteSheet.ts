@@ -108,6 +108,9 @@ const frames = {
     { x: 35, y: 478 },
     largeItemTextureSize,
   ),
+  "shadowMask.teleporter": {
+    frame: { x: 101, y: 478, ...largeItemTextureSize },
+  },
 
   "barrier.x": {
     frame: { x: 335, y: 241, ...smallItemTextureSize, pivot: { x: 18, y: 23 } },
@@ -152,7 +155,7 @@ const frames = {
     frame: { x: 193, y: 449, ...largeItemTextureSize },
   },
   toaster: {
-    frame: { x: 101, y: 478, ...largeItemTextureSize },
+    frame: { x: 226, y: 449, ...largeItemTextureSize },
   },
   spikes: {
     frame: { x: 333, y: 427, ...largeItemTextureSize },

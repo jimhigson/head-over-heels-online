@@ -114,8 +114,7 @@ const shadowMask = (
         relativeTo: "origin",
       };
     case "teleporter":
-      // just happens to be the right shape:
-      return { spriteOptions: "teleporter.flashing.1", relativeTo: "origin" };
+      return { spriteOptions: "shadowMask.teleporter", relativeTo: "origin" };
     case "hushPuppy":
       // just happens to be the right shape:
       return { spriteOptions: "shadowMask.hushPuppy", relativeTo: "origin" };
