@@ -82,6 +82,7 @@ export const carrying = <RoomId extends string>(
         position: carrierPosition,
       });
 
+      // move the player up on top of the item they just put down:
       moveItem({
         subjectItem: carrier,
         gameState,
