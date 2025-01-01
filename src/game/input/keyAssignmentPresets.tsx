@@ -89,5 +89,3 @@ export const keyAssignmentPresets = {
   mameP1P2: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
 };
-
-console.log(keyAssignmentPresets);

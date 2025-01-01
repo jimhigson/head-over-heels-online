@@ -123,3 +123,5 @@ export const isHeels = isItemType("heels");
 export const isHead = isItemType("head");
 export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
+export const isLift = isItemType("lift");
+export const isBaddie = isItemType("baddie");

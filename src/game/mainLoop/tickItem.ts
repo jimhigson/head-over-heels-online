@@ -4,10 +4,12 @@ import type {
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import {
+  isBaddie,
   isCarrier,
   isDeadlyItem,
   isFirer,
   isItemType,
+  isLift,
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
@@ -19,7 +21,12 @@ import { jumping } from "../physics/mechanics/jumping";
 import { walking } from "../physics/mechanics/walking";
 import { moveLift } from "../physics/mechanics/moveLift";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { originXyz, addXyz, scaleXyz } from "@/utils/vectors/vectors";
+import {
+  originXyz,
+  addXyz,
+  scaleXyz,
+  xyzLength,
+} from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
@@ -33,6 +40,12 @@ import { iterate } from "@/utils/iterate";
 import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { firing } from "../physics/mechanics/firing";
+
+/**
+ * biggest movement (in pixels) allowed in one tick - movement of more than this will be
+ * split into multiple sub-ticks
+ */
+const maxMovementPerTick = 2;
 
 function* itemMechanicResultGen<
   RoomId extends string,
@@ -69,11 +82,11 @@ function* itemMechanicResultGen<
     }
   }
 
-  if (isItemType("lift")(item)) {
+  if (isLift(item)) {
     yield moveLift(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
   }
 
-  if (isItemType("baddie")(item)) {
+  if (isBaddie(item)) {
     yield tickBaddie(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId
@@ -119,6 +132,10 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     ...itemMechanicResultGen(item, room, gameState, deltaMS),
   ];
 
+  if (mechanicsResults.length === 0) {
+    return;
+  }
+
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
   // by walking onto it from another item, there would have been no collision with it
   // to set the standing on property
@@ -147,13 +164,20 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     );
   }
 
-  moveItem({
-    subjectItem: item as UnknownItemInPlay<RoomId>,
-    posDelta: accumulatedPosDelta,
-    gameState,
-    room,
-    deltaMS,
-  });
+  const subTickCount = Math.ceil(
+    xyzLength(accumulatedPosDelta) / maxMovementPerTick,
+  );
+  const movementPerSubTick = scaleXyz(accumulatedPosDelta, 1 / subTickCount);
+
+  for (let i = 0; i < subTickCount; i++) {
+    moveItem({
+      subjectItem: item as UnknownItemInPlay<RoomId>,
+      posDelta: movementPerSubTick,
+      gameState,
+      room,
+      deltaMS,
+    });
+  }
 };
 
 export const applyMechanicsResults = <

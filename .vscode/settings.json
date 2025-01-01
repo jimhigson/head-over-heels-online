@@ -23,6 +23,7 @@
     "Glsl",
     "griditem",
     "immer",
+    "mame",
     "moonbase",
     "Morties",
     "pickupable",
@@ -51,6 +52,7 @@
     "unsolid",
     "upscaler",
     "vels",
+    "wasd",
     "xyzs"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",

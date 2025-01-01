@@ -143,7 +143,7 @@ describe("pickups", () => {
 
 describe("jumping", () => {
   test.each(testFrameRates)(
-    "head can jump between two blocks forming a ladder (%iHz)",
+    "head can jump between two blocks forming a ladder (%fHz)",
     (frameRate) => {
       const gameState: GameState<TestRoomId> = basicGameState({
         firstRoomItems: {
@@ -556,7 +556,7 @@ describe("snapping stationary items to pixel grid", () => {
     expect(headState(gameState).position).toMatchInlineSnapshot(`
       {
         "x": 51,
-        "y": 61,
+        "y": 59,
         "z": 0,
       }
     `);
