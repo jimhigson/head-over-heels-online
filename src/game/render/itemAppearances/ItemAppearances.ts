@@ -575,7 +575,10 @@ export const itemAppearances: {
 
     const filter =
       highlighted ?
-        new OutlineFilter(carryableOutlineColour, renderOptions.scaleFactor)
+        new OutlineFilter(
+          carryableOutlineColour,
+          renderOptions.upscale.scaleFactor,
+        )
       : undefined;
 
     return {
@@ -611,7 +614,10 @@ export const itemAppearances: {
 
     const filter =
       highlighted ?
-        new OutlineFilter(carryableOutlineColour, renderOptions.scaleFactor)
+        new OutlineFilter(
+          carryableOutlineColour,
+          renderOptions.upscale.scaleFactor,
+        )
       : undefined;
 
     return {

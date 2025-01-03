@@ -5,7 +5,7 @@ import {
   addXyz,
   subXyz,
   perpendicularXyz,
-  xyzLength,
+  lengthXyz,
 } from "@/utils/vectors/vectors";
 import { componentInDirection } from "./componentInDirection";
 
@@ -92,7 +92,7 @@ export const accelerateToSpeed2 = ({
   maxSpeed: number;
   deltaMS: number;
 }): Xyz => {
-  const existingSpeed = xyzLength(vel);
+  const existingSpeed = lengthXyz(vel);
 
   const targetSpeedInDirection = Math.max(
     minSpeed,

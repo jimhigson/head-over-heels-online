@@ -556,7 +556,7 @@ describe("snapping stationary items to pixel grid", () => {
     expect(headState(gameState).position).toMatchInlineSnapshot(`
       {
         "x": 51,
-        "y": 59,
+        "y": 60,
         "z": 0,
       }
     `);

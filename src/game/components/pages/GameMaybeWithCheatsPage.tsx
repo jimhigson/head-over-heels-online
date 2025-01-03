@@ -54,19 +54,19 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   );
   const [showBoundingBoxes, setShowBoundingBoxes] = useShowBoundingBoxes();
   const [showShadowMasks, setShowShadowMask] = useShowShadowMasks();
-  const scaleFactor = useScaleFactor();
+  const upscale = useScaleFactor();
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)
       return {
         showBoundingBoxes,
-        scaleFactor,
+        upscale,
         showShadowMasks,
       };
 
     return {
       showBoundingBoxes,
-      scaleFactor,
+      upscale,
       showShadowMasks,
       onItemClick(item, container) {
         if (isItemType("teleporter", "doorFrame")(item)) {
@@ -99,12 +99,12 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
         (window as any).item = item;
       },
     };
-  }, [gameApi, scaleFactor, showBoundingBoxes, showShadowMasks]);
+  }, [gameApi, upscale, showBoundingBoxes, showShadowMasks]);
 
   const CampaignGame = useRef(Game(campaign)).current;
 
   return (
-    <ScaleFactorContext value={scaleFactor}>
+    <ScaleFactorContext value={upscale.scaleFactor}>
       {useCheatsEnabled() && gameApi !== undefined && (
         <Suspense fallback={null}>
           <LazyCheats
