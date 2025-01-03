@@ -8,7 +8,6 @@ import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRo
 import { playableLosesLife } from "@/game/gameState/mutators/characterLosesLife";
 import { setStandingOn } from "@/game/gameState/mutators/modifyStandingOn";
 import { swopPlayables } from "@/game/gameState/mutators/swopCharacters";
-import { defaultRenderOptions } from "@/game/RenderOptions";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { PlayableActionState } from "@/model/ItemStateMap";
 import type {
@@ -17,6 +16,7 @@ import type {
   IndividualCharacterName,
   CharacterName,
 } from "@/model/modelTypes";
+import { zxSpectrumResolution } from "@/originalGame";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { iterate } from "@/utils/iterate";
@@ -101,7 +101,14 @@ export const testCampaign = {
 export const mutatorsTestHarness = () => {
   const gameState = initGameState({
     campaign: testCampaign,
-    renderOptions: defaultRenderOptions,
+    renderOptions: {
+      showBoundingBoxes: "none",
+      showShadowMasks: false,
+      upscale: {
+        scaleFactor: 1,
+        effectiveSize: zxSpectrumResolution,
+      },
+    },
   });
 
   const gameOverFn = vi.fn();

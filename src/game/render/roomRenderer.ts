@@ -1,7 +1,5 @@
-import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
-import type { RenderOptions } from "../RenderOptions";
+import type { RoomState } from "@/model/modelTypes";
 import { Container } from "pixi.js";
-import { floorRenderExtent } from "./renderExtent";
 import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { PlanetName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
@@ -9,44 +7,38 @@ import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
-
-const centreRoomInRendering = (
-  room: UnknownRoomState,
-  container: Container,
-): void => {
-  const { leftSide, rightSide, frontSide } = floorRenderExtent(room.roomJson);
-
-  const renderingMedianX = (rightSide.x + leftSide.x) / 2;
-
-  container.x = -renderingMedianX;
-  container.y =
-    -frontSide.y -
-    /* moving up by half the x offset preserves movement in 2:1 ratio of isometric projection
-       - while also avoiding the hud elements */
-    Math.abs(renderingMedianX / 2);
-};
+import type { GameState } from "../gameState/GameState";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { positionRoom, showRoomScrollBounds } from "./positionRoom";
 
 export type RenderContext = {
   movedItems: MovedItems;
   progression: number;
+  deltaMS: number;
 };
 
 export const RoomRenderer = <RoomId extends string, ItemId extends string>(
+  gameState: GameState<RoomId>,
   room: RoomState<PlanetName, RoomId, ItemId>,
-  renderOptions: RenderOptions<RoomId>,
 ) => {
+  // stash a reference to the render options this room renderer is using - if these change it is not
+  // our responsibility to react to that change
+  const { renderOptions } = gameState;
+
   // nothing in a room can ever be under the floor, so we can render
   // it outside of the normal object loop
   const roomContainer = new Container({ label: `RoomRenderer(${room.id})` });
-  const itemsContainer = new Container({ label: `items` });
 
-  let isFirstRender = true;
+  if (gameState.renderOptions.showBoundingBoxes !== "none") {
+    // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
+    // any more switches:
+    roomContainer.addChild(showRoomScrollBounds(room.roomJson));
+  }
+
+  let everRendered = false;
+
   // store the edges of the behind/front graph between frames so we can incrementally update it
   const incrementalZEdges: GraphEdges<string> = new Map();
-
-  roomContainer.addChild(itemsContainer);
-
-  centreRoomInRendering(room, roomContainer);
 
   // where we render all the items in the room
   const itemRenderers: Map<
@@ -68,12 +60,20 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
     tick(givenRenderContext: RenderContext) {
       /* for the first render, we consider that all items have moved */
       const renderContext =
-        isFirstRender ?
+        everRendered ? givenRenderContext : (
           {
+            ...givenRenderContext,
             movedItems: new Set(objectValues(room.items)),
-            progression: 0,
           }
-        : givenRenderContext;
+        );
+      positionRoom(
+        selectCurrentPlayableItem(gameState),
+        room,
+        roomContainer,
+        gameState.renderOptions.upscale.effectiveSize,
+        !everRendered,
+        renderContext.deltaMS,
+      );
 
       /*if (renderContext.movedItems.size > 0)
         console.log(
@@ -103,7 +103,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
             continue;
           }
           itemRenderers.set(item.id as ItemId, itemRenderer);
-          itemsContainer.addChild(itemRenderer.container);
+          roomContainer.addChild(itemRenderer.container);
         }
         itemRenderer.tick(renderContext);
       }
@@ -115,7 +115,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
           itemRenderers.delete(itemId as ItemId);
         }
       }
-      if (isFirstRender || renderContext.movedItems.size > 0) {
+      if (!everRendered || renderContext.movedItems.size > 0) {
         // something has moved so re-sort the room's items:
         const { order } = sortByZPairs(
           zEdges(room.items, renderContext.movedItems, incrementalZEdges),
@@ -132,7 +132,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
           itemRenderer!.container.zIndex = order.length - i;
         }
       }
-      isFirstRender = false;
+      everRendered = true;
     },
     destroy() {
       roomContainer.destroy({ children: true });
@@ -142,6 +142,9 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
     },
     get renderOptions() {
       return renderOptions;
+    },
+    get everRendered() {
+      return everRendered;
     },
   };
 };

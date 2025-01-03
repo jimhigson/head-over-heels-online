@@ -1,6 +1,6 @@
 import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import { floorRenderExtent } from "@/game/render/renderExtent";
+import { floorBlockMinMax } from "@/game/render/renderExtent";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
@@ -17,20 +17,21 @@ export function* loadFloorAndCeiling<RoomId extends string>(
     z: 1,
   });
 
-  const roomRenderExtent = floorRenderExtent(roomJson);
+  const { blockXMax, blockXMin, blockYMax, blockYMin } =
+    floorBlockMinMax(roomJson);
 
   /** room footprint made a bit bigger for the area under doors: */
   const roomExtendedFootprintAabb = blockXyzToFineXyz({
-    x: roomRenderExtent.blockXMax - roomRenderExtent.blockXMin,
-    y: roomRenderExtent.blockYMax - roomRenderExtent.blockYMin,
+    x: blockXMax - blockXMin,
+    y: blockYMax - blockYMin,
     z: 1,
   });
 
   const floorPosition = blockXyzToFineXyz({ ...originXy, z: -1 });
 
   const roomExtendedPosition = blockXyzToFineXyz({
-    x: roomRenderExtent.blockXMin,
-    y: roomRenderExtent.blockYMin,
+    x: blockXMin,
+    y: blockYMin,
     z: -1,
   });
 

@@ -95,8 +95,15 @@ function* generateFloorCutOffs(
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ item, room }) => {
-    const { blockXMin, blockYMin, blockXMax, blockYMax, sidesWithDoors } =
-      floorRenderExtent(room.roomJson);
+    const {
+      blockXMin,
+      blockYMin,
+      blockXMax,
+      blockYMax,
+      sidesWithDoors,
+      edgeLeftX,
+      edgeRightX,
+    } = floorRenderExtent(room.roomJson);
     const blockXExtent = blockXMax - blockXMin;
     const blockYExtent = blockYMax - blockYMin;
 
@@ -193,26 +200,16 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     }
     rightEdge.filters = edgePaletteSwapFilters(room, "right");
 
-    // track the points where the left-most and right-most visible walls will be rendered:
-    const edgeLeft = projectBlockXyzToScreenXy({
-      x: room.size.x + (sidesWithDoors.right ? 0.5 : 0),
-      y: -blockYMin,
-    }).x;
-    const edgeRight = projectBlockXyzToScreenXy({
-      x: -blockXMin,
-      y: room.size.y + (sidesWithDoors.towards ? 0.5 : 0),
-    }).x;
-
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
     const floorMask = new Graphics()
       // Add the rectangular area to show
       .poly(
         [
-          { x: edgeLeft, y: 16 },
-          { x: edgeLeft, y: -999 },
-          { x: edgeRight, y: -999 },
-          { x: edgeRight, y: 16 },
+          { x: edgeLeftX, y: 16 },
+          { x: edgeLeftX, y: -999 },
+          { x: edgeRightX, y: -999 },
+          { x: edgeRightX, y: 16 },
         ],
         true,
       )

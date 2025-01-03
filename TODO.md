@@ -144,12 +144,13 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] donuts don't do anything when collected - no hud
 
 # (head) blacktooth8fish
-[ ] [minor] legs on far side not rendered correctly
+[x] legs on far side not rendered correctly
 [x] fish solid after connected
 [x] baddie can kill player when player on spring
 
 # blacktooth10
-[ ] [minor] overdraw on far door not showing - renders floor behind the door
+[x] overdraw on far door not showing - renders floor behind the door
+[x] no scrolling (this is the first multi-render room in original game)
 
 # blacktooth11
 [x] currently has 238 front/back relationships when rendering - reduce this!
@@ -180,10 +181,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] lift doesn't correctly take us up
 
 # blacktooth20
-[ ] corder of room not shown in shadow
+[ ] corner of room not shown in shadow
 
 # blacktooth24
-[ ] on heels coming back into room, misses stop autowalk collision and keeps walking on floor
+[x] on heels coming back into room, misses stop autowalk collision and keeps walking on floor
+    - was actually a different bug with walk dynamics not going to idle in general, unrelated to autowalk
 
 # blacktooth25
 
@@ -218,13 +220,13 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] heels spontaneuously dies when getting off lift (why??) - probably coliding with item from
     previous room
 
-# (heels) balcktooth35
+# (heels) blacktooth35
 [ ] level overlaps hud
 
 # (heels) blacktooth37
 [x] football heads don't move right
 [x] ball doesn't roll
-[ ] heads always look right after being stopped
+[x] heads always look right after being stopped
 
 # (heels) blacktooth39
 [x] baddie doesn't push blocks (at all)
@@ -250,6 +252,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] first jump not possible (actually, is possible but very difficult)
     - needs a test specially for a jump to 2 across, 1 up
 
+# safari18
+[ ] doesn't work without y-scrolling
+# safari6triple and #safari7
+[ ] we can't handle two doors between same two rooms
+
 # bookworld2
 [ ] vanishing conveyors don't vanish
 
@@ -264,6 +271,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # penitentiary6
 [ ] anvil needs to move
+
+# moonbase33triple
+[ ] doesn't scroll in y
+[ ] monsters don't wake up
+[ ] hidden wall shouldn't render
 
 # Problems with force/accel based model:
 

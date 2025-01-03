@@ -21,6 +21,7 @@ import {
 import { mtv } from "../slidingCollision";
 import type { RoomState } from "@/model/modelTypes";
 import type { ItemTouchEventByItemType } from "../handleTouch/ItemTouchEvent";
+import { isSolid } from "../itemPredicates";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -383,7 +384,10 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
 export const handleBaddieTouchingItem = <RoomId extends string>(
   e: ItemTouchEventByItemType<RoomId, "baddie">,
 ) => {
-  const { movingItem: baddieItem } = e;
+  const { movingItem: baddieItem, touchedItem } = e;
+
+  //eg, baddies shouldn't change direction on touching a stopAutowalk item:
+  if (!isSolid(touchedItem)) return;
 
   switch (baddieItem.config.which) {
     case "dalek":

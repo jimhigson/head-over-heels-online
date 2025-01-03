@@ -1,6 +1,7 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { Container } from "pixi.js";
 import type { SetRequired } from "type-fest";
+import type { Upscale } from "./render/upscale";
 
 export const hasItemClick = <RoomId extends string>(
   options: RenderOptions<RoomId>,
@@ -14,11 +15,5 @@ export type RenderOptions<RoomId extends string> = {
   onItemClick?: (item: AnyItemInPlay<RoomId>, container: Container) => void;
   showBoundingBoxes: ShowBoundingBoxes;
   showShadowMasks: boolean;
-  scaleFactor: number;
-};
-
-export const defaultRenderOptions: RenderOptions<string> = {
-  showBoundingBoxes: "none",
-  showShadowMasks: false,
-  scaleFactor: 1,
+  upscale: Upscale;
 };

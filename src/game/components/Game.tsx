@@ -6,6 +6,7 @@ import { GameOverlayDialogs } from "./GameOverlayDialogs";
 
 // this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { TextureStyle } from "pixi.js";
+import { gameMain } from "../gameMain";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const useGame = <RoomId extends string>(
@@ -15,15 +16,11 @@ const useGame = <RoomId extends string>(
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
 
   useEffect(
-    function createGameWhenAssetsLoaded() {
+    function createGame() {
       let stopped = false;
       let thisEffectGameApi: GameApi<RoomId> | undefined;
       const go = async () => {
-        // we don't import the game until we know the assets are loaded - it is
-        // not safe to do so since some modules gameMain loads
-        // have top-level imports that rely on them
-        const { gameMain } = await import("../gameMain");
-        thisEffectGameApi = await gameMain(campaign);
+        thisEffectGameApi = await gameMain(campaign, renderOptions);
         if (stopped) {
           thisEffectGameApi.stop();
           return;
@@ -38,6 +35,7 @@ const useGame = <RoomId extends string>(
         stopped = true;
       };
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want to recreate the whole game every time renderOptions changes, only when the campaign changes. New renderopions are passed to the gameApi in an effect below
     [campaign],
   );
 

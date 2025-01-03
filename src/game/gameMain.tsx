@@ -4,7 +4,7 @@ import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
-import { defaultRenderOptions, type RenderOptions } from "./RenderOptions";
+import { type RenderOptions } from "./RenderOptions";
 import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
@@ -15,9 +15,8 @@ import { initDevtools } from "@pixi/devtools";
  */
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
+  renderOptions: RenderOptions<RoomId>,
 ): Promise<GameApi<RoomId>> => {
-  const renderOptions: RenderOptions<RoomId> = defaultRenderOptions;
-
   const app = new Application();
   if (import.meta.env.MODE === "development") {
     initDevtools({ app });

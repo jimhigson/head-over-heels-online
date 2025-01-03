@@ -25,7 +25,7 @@ import {
   originXyz,
   addXyz,
   scaleXyz,
-  xyzLength,
+  lengthXyz,
 } from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
@@ -132,9 +132,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     ...itemMechanicResultGen(item, room, gameState, deltaMS),
   ];
 
-  if (mechanicsResults.length === 0) {
-    return;
-  }
+  // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired donut)
 
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
   // by walking onto it from another item, there would have been no collision with it
@@ -165,7 +163,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   }
 
   const subTickCount = Math.ceil(
-    xyzLength(accumulatedPosDelta) / maxMovementPerTick,
+    lengthXyz(accumulatedPosDelta) / maxMovementPerTick,
   );
   const movementPerSubTick = scaleXyz(accumulatedPosDelta, 1 / subTickCount);
 

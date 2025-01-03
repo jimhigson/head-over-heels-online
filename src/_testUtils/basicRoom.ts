@@ -3,6 +3,7 @@ import { initGameState } from "@/game/gameState/initGameState";
 import type { InputState } from "@/game/input/InputState";
 import type { RenderOptions } from "@/game/RenderOptions";
 import type { RoomJson } from "@/model/RoomJson";
+import { zxSpectrumResolution } from "@/originalGame";
 import { produce } from "immer";
 
 /**
@@ -59,7 +60,10 @@ const basicEmptyRoomWithItems = (
 const basicRenderOptions: RenderOptions<TestRoomId> = {
   showBoundingBoxes: "none",
   showShadowMasks: false,
-  scaleFactor: 1,
+  upscale: {
+    scaleFactor: 1,
+    effectiveSize: zxSpectrumResolution,
+  },
 };
 
 const gameStateWithInput = (

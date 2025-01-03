@@ -10,8 +10,7 @@ import { getColorScheme } from "@/hintColours";
 import { noFilters } from "../render/filters/paletteSwapFilters";
 import { RoomRenderer } from "../render/roomRenderer";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-
-const worldBottomMargin = 16;
+import { emptySet } from "@/utils/empty";
 
 export const mainLoop = <RoomId extends string>(
   app: Application,
@@ -24,27 +23,20 @@ export const mainLoop = <RoomId extends string>(
 
   const pauseFilter = new RevertColouriseFilter(spritesheetPalette.shadow);
 
-  let roomRenderer = RoomRenderer(
-    selectCurrentRoom(gameState),
-    gameState.renderOptions,
-  );
+  let roomRenderer = RoomRenderer(gameState, selectCurrentRoom(gameState));
   worldContainer.addChild(roomRenderer.container);
 
-  const tickHud = renderHud<RoomId>(hudContainer);
+  const tickHud = renderHud<RoomId>(
+    hudContainer,
+    gameState.renderOptions.upscale,
+  );
 
   const handleTick = ({ deltaMS }: Ticker) => {
-    worldContainer.x =
-      app.renderer.width / gameState.renderOptions.scaleFactor / 2;
+    //worldContainer.x = gameState.renderOptions.upscale.effectiveSize.x / 2;
 
     const paused = gameState.gameSpeed === 0;
 
-    const screenEffectiveSize = {
-      x: Math.floor(app.renderer.width / gameState.renderOptions.scaleFactor),
-      y: Math.floor(app.renderer.height / gameState.renderOptions.scaleFactor),
-    };
-
-    worldContainer.y = screenEffectiveSize.y - worldBottomMargin;
-    tickHud(gameState, screenEffectiveSize);
+    tickHud(gameState, gameState.renderOptions.upscale.effectiveSize);
 
     const tickRoom = selectCurrentRoom(gameState);
     if (
@@ -52,20 +44,31 @@ export const mainLoop = <RoomId extends string>(
       roomRenderer.renderOptions !== gameState.renderOptions
     ) {
       roomRenderer.destroy();
-      roomRenderer = RoomRenderer(tickRoom, gameState.renderOptions);
+      roomRenderer = RoomRenderer(gameState, tickRoom);
       worldContainer.addChild(roomRenderer.container);
       gameState.events.emit("roomChange", tickRoom.id);
-      app.stage.scale = gameState.renderOptions.scaleFactor;
+      app.stage.scale = gameState.renderOptions.upscale.scaleFactor;
     }
 
     if (!paused) {
       app.stage.filters = noFilters;
       const movedItems = progressGameState(gameState, deltaMS);
-      roomRenderer.tick({ progression: gameState.progression, movedItems });
+      roomRenderer.tick({
+        progression: gameState.progression,
+        movedItems,
+        deltaMS,
+      });
     } else {
       app.stage.filters = pauseFilter;
-      const roomColor = tickRoom.color;
-      pauseFilter.targetColor = getColorScheme(roomColor).main.original;
+      pauseFilter.targetColor = getColorScheme(tickRoom.color).main.original;
+      // render while paused only if the room hasn't been rendered before:
+      if (!roomRenderer.everRendered) {
+        roomRenderer.tick({
+          progression: gameState.progression,
+          movedItems: emptySet,
+          deltaMS,
+        });
+      }
     }
   };
 

@@ -5,7 +5,7 @@ import {
   subXyz,
   unitVector,
   xyEqual,
-  xyzLength,
+  lengthXyz,
 } from "@/utils/vectors/vectors";
 import {
   heelsJumpForwardSpeedFraction,
@@ -36,7 +36,7 @@ export const walking = <RoomId extends string>(
   const result = _walking(playableItem, gameState, deltaMS);
 
   if (result.movementType === "vel" && result.vels.walking !== undefined) {
-    const speed = xyzLength(result.vels.walking);
+    const speed = lengthXyz(result.vels.walking);
 
     result.stateDelta = Object.assign(result.stateDelta || {}, {
       walkDistance:
@@ -152,7 +152,7 @@ const _walking = <RoomId extends string>(
 
   const isFalling = standingOn === null && gravityVel.z < 0;
 
-  const hasWalkVector = xyzLength(walkVector) !== 0;
+  const hasWalkVector = lengthXyz(walkVector) !== 0;
 
   if (hasWalkVector) {
     if (isFalling) {
@@ -191,7 +191,7 @@ const _walking = <RoomId extends string>(
   }
 
   // no direction pressed - we are not walking. Fade the velocity.
-  const previousSpeed = xyzLength(previousWalkingVel);
+  const previousSpeed = lengthXyz(previousWalkingVel);
 
   if (walkDistance > 0 && walkDistance < 1) {
     // stopped walking, having moved some distance but less than a pixel - one pixel
