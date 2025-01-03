@@ -114,8 +114,8 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] head and heels can combine
 [x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
-[ ] viewport sliding
-    [ ] hud readable over game
+[x] viewport sliding
+    [ x hud readable over game
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [x] acel for player normal walking
@@ -123,9 +123,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] ELERI
 [x] scrolls/text
     [ ] tailwind plugin for blocky text
-[ ] can shoot donuts
-    [ ] pixel shader (donut colours or grey) for disabled baddies
-[ ] PAUSED text
+[x] can shoot donuts
+    [x] pixel shader (donut colours or grey) for disabled baddies
+[x] PAUSED text
 [ ] re-render on HMR: https://vite.dev/guide/api-hmr.html
 
 # Rooms
@@ -181,7 +181,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] lift doesn't correctly take us up
 
 # blacktooth20
-[ ] corner of room not shown in shadow
+[ ] [MINOR] corner of room not shown in shadow
 
 # blacktooth24
 [x] on heels coming back into room, misses stop autowalk collision and keeps walking on floor
@@ -271,6 +271,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # penitentiary6
 [ ] anvil needs to move
+
+# penitentiary29
+[ ] crash on drop down to next room
+ - seems to be a room missing - the room right below this one and above 32
 
 # moonbase33triple
 [ ] doesn't scroll in y

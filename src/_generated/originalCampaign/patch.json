@@ -215,6 +215,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary13/walls/left/2",
+    "value": "skeleton"
+  },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary12/color/hue",
     "value": "magenta"
   },
