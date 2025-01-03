@@ -23,13 +23,10 @@ const scrollSpeedPxPerMs = moveSpeedPixPerMs.heels;
  * it would have been put onto the screen in the original game
  */
 export const positionRoom = (
-  playable: PlayableItem,
   room: UnknownRoomState,
   container: Container,
   effectiveScreenSize: Xy,
-  snapInstantly: boolean,
-  deltaMS: number,
-): void => {
+) => {
   const { edgeLeftX, edgeRightX, frontSide, topEdgeY } = floorRenderExtent(
     room.roomJson,
   );
@@ -38,10 +35,6 @@ export const positionRoom = (
   const edgeRightXTranslated = edgeRightX + frontSide.x;
 
   const renderingMedianX = (edgeRightX + edgeLeftX) / 2;
-
-  const characterProjectionInRoom = projectWorldXyzToScreenXy(
-    playable.state.position,
-  );
 
   // the position the room 'wants' to be at - where it would be (roughly) in the original game without any scrolling
   const roomHomePosition = {
@@ -55,11 +48,6 @@ export const positionRoom = (
       Math.abs(renderingMedianX / 2),
   };
 
-  const combinedProjectedPositionAtRoomHome = addXyz(
-    characterProjectionInRoom,
-    roomHomePosition,
-  );
-
   // is there content off the left edge when the room is in its home position?
   const scrollableLeft = roomHomePosition.x + edgeLeftXTranslated < 0;
   // is there content off the right edge when the room is in its home position?
@@ -69,66 +57,80 @@ export const positionRoom = (
   // scrollable up in y if the top of the room is off the top of the screen when in the home position:
   const scrollableUp = roomHomePosition.y + topEdgeY - wallHeight < 0;
 
-  const targetRoomPositionWithScrolling = {
-    x:
-      (
-        scrollableLeft &&
-        combinedProjectedPositionAtRoomHome.x <
-          effectiveScreenSize.x * scrollLimit
-      ) ?
-        // scrolling to show more of the left side of the room
-        Math.min(
-          // x with left-edge of the room on the left edge of the screen:
-          -edgeLeftXTranslated,
-          // put player on scrollLimit proportion of effective width:
-          effectiveScreenSize.x * scrollLimit - characterProjectionInRoom.x,
-        )
-      : (
-        scrollableRight &&
-        combinedProjectedPositionAtRoomHome.x >
-          effectiveScreenSize.x * (1 - scrollLimit)
-      ) ?
-        // scrolling to show more of the right side of the room
-        Math.max(
-          // x with right-edge of the room on the right edge of the screen:
-          effectiveScreenSize.x - edgeRightXTranslated,
-          // x that puts the player on the (1-scrollLimit) proportion of the screen:
-          effectiveScreenSize.x * (1 - scrollLimit) -
-            characterProjectionInRoom.x,
-        )
-      : roomHomePosition.x,
-    y:
-      (
-        scrollableUp &&
-        combinedProjectedPositionAtRoomHome.y <
-          effectiveScreenSize.y * scrollLimit
-      ) ?
-        effectiveScreenSize.y * scrollLimit - characterProjectionInRoom.y
-      : roomHomePosition.y,
-  };
+  return (playable: PlayableItem, deltaMS: number, snapInstantly: boolean) => {
+    const characterProjectionInRoom = projectWorldXyzToScreenXy(
+      playable.state.position,
+    );
 
-  // ease towards from current rendering:
-  if (snapInstantly) {
-    container.x = targetRoomPositionWithScrolling.x;
-    container.y = targetRoomPositionWithScrolling.y;
-  } else {
-    const maxScrollDelta = scrollSpeedPxPerMs * deltaMS;
-    const targetScrollDelta = subXy(container, targetRoomPositionWithScrolling);
-    const targetScrollDeltaLength = lengthXy(targetScrollDelta);
+    const combinedProjectedPositionAtRoomHome = addXyz(
+      characterProjectionInRoom,
+      roomHomePosition,
+    );
 
-    if (targetScrollDeltaLength > maxScrollDelta) {
-      const scrollDirectionUnitVector = {
-        x: targetScrollDelta.x / targetScrollDeltaLength,
-        y: targetScrollDelta.y / targetScrollDeltaLength,
-      };
+    const targetRoomPositionWithScrolling = {
+      x:
+        (
+          scrollableLeft &&
+          combinedProjectedPositionAtRoomHome.x <
+            effectiveScreenSize.x * scrollLimit
+        ) ?
+          // scrolling to show more of the left side of the room
+          Math.min(
+            // x with left-edge of the room on the left edge of the screen:
+            -edgeLeftXTranslated,
+            // put player on scrollLimit proportion of effective width:
+            effectiveScreenSize.x * scrollLimit - characterProjectionInRoom.x,
+          )
+        : (
+          scrollableRight &&
+          combinedProjectedPositionAtRoomHome.x >
+            effectiveScreenSize.x * (1 - scrollLimit)
+        ) ?
+          // scrolling to show more of the right side of the room
+          Math.max(
+            // x with right-edge of the room on the right edge of the screen:
+            effectiveScreenSize.x - edgeRightXTranslated,
+            // x that puts the player on the (1-scrollLimit) proportion of the screen:
+            effectiveScreenSize.x * (1 - scrollLimit) -
+              characterProjectionInRoom.x,
+          )
+        : roomHomePosition.x,
+      y:
+        (
+          scrollableUp &&
+          combinedProjectedPositionAtRoomHome.y <
+            effectiveScreenSize.y * scrollLimit
+        ) ?
+          effectiveScreenSize.y * scrollLimit - characterProjectionInRoom.y
+        : roomHomePosition.y,
+    };
 
-      container.x -= scrollDirectionUnitVector.x * maxScrollDelta;
-      container.y -= scrollDirectionUnitVector.y * maxScrollDelta;
-    } else {
+    // ease towards from current rendering:
+    if (snapInstantly) {
       container.x = targetRoomPositionWithScrolling.x;
       container.y = targetRoomPositionWithScrolling.y;
+    } else {
+      const maxScrollDelta = scrollSpeedPxPerMs * deltaMS;
+      const targetScrollDelta = subXy(
+        container,
+        targetRoomPositionWithScrolling,
+      );
+      const targetScrollDeltaLength = lengthXy(targetScrollDelta);
+
+      if (targetScrollDeltaLength > maxScrollDelta) {
+        const scrollDirectionUnitVector = {
+          x: targetScrollDelta.x / targetScrollDeltaLength,
+          y: targetScrollDelta.y / targetScrollDeltaLength,
+        };
+
+        container.x -= scrollDirectionUnitVector.x * maxScrollDelta;
+        container.y -= scrollDirectionUnitVector.y * maxScrollDelta;
+      } else {
+        container.x = targetRoomPositionWithScrolling.x;
+        container.y = targetRoomPositionWithScrolling.y;
+      }
     }
-  }
+  };
 };
 
 /**
