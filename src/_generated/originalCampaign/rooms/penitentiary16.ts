@@ -3,7 +3,7 @@ import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
-  color: { hue: "white", shade: "basic" },
+  color: { hue: "yellow", shade: "basic" },
   floor: "none",
   id: "penitentiary16",
   items: {
