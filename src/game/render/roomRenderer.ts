@@ -49,6 +49,12 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
     | null
   > = new Map();
 
+  const scrollRoom = positionRoom(
+    room,
+    roomContainer,
+    gameState.renderOptions.upscale.effectiveSize,
+  );
+
   return {
     get container() {
       return roomContainer;
@@ -66,13 +72,11 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
             movedItems: new Set(objectValues(room.items)),
           }
         );
-      positionRoom(
+
+      scrollRoom(
         selectCurrentPlayableItem(gameState),
-        room,
-        roomContainer,
-        gameState.renderOptions.upscale.effectiveSize,
-        !everRendered,
         renderContext.deltaMS,
+        !everRendered,
       );
 
       /*if (renderContext.movedItems.size > 0)
