@@ -92,6 +92,6 @@ export const room = inferRoomJson({
       "loop",
       "loop",
     ],
-    left: ["loop", "loop", "loop", "loop"],
+    left: ["loop", "loop", "skeleton", "loop"],
   },
 }) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;
