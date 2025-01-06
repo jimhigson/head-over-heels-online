@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth82",
   items: {
-    "baddie@2,2,0:Z21Y5FU": {
+    "baddie@2,2,0:qtd5E": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "towards",
         style: "starsAndStripes",
         which: "american-football-head",
@@ -17,9 +18,10 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 0 },
       type: "baddie",
     },
-    "baddie@5,3,0:1eMnEb": {
+    "baddie@5,3,0:Z1feWja": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "towards",
         style: "greenAndPink",
         which: "american-football-head",

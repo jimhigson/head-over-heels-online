@@ -7,18 +7,30 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase5",
   items: {
-    "baddie@0,4,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@0,4,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 0, y: 4, z: 0 },
       type: "baddie",
     },
-    "baddie@3,2,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@3,2,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 3, y: 2, z: 0 },
       type: "baddie",
     },
-    "baddie@3,6,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@3,6,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 3, y: 6, z: 0 },
       type: "baddie",
     },

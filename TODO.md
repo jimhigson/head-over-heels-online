@@ -115,18 +115,20 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
 [x] viewport sliding
-    [ x hud readable over game
+    [x] hud readable over game
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [x] acel for player normal walking
 [ ] playable on mame joystick
+    [ ] time to do a config screen?
 [ ] ELERI
 [x] scrolls/text
     [ ] tailwind plugin for blocky text
 [x] can shoot donuts
     [x] pixel shader (donut colours or grey) for disabled baddies
 [x] PAUSED text
-[ ] re-render on HMR: https://vite.dev/guide/api-hmr.html
+[ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
+[ ] room floor edge with attribute clash, hud in original colours
 
 # Rooms
 
@@ -221,7 +223,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     previous room
 
 # (heels) blacktooth35
-[ ] level overlaps hud
+[ ] room positioning on screen is poor
 
 # (heels) blacktooth37
 [x] football heads don't move right
@@ -233,6 +235,11 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # blacktooth53market
 [ ] baddie doesn't move like in original game
+    original has "behavior of waiting hunter in eight directions"
+    https://www.youtube.com/watch?v=PdRuvdvLbjg#14:25
+    * move towards when inside an area of 5x5 blocks centered on the monster
+    * then move in xy8 directions towards player
+    * moves at head's speed, but faster on diagonals (seems to be moving at sqrt(2) x  the normal speed)
 
 # blacktooth61
 [x] hush pupplies not vanishing on head enter
@@ -299,3 +306,18 @@ Pros:
 
 musicxml for game music: https://github.com/dougmencken/HeadOverHeels/blob/master/gamedata/music/safari.xml
 musicxml player in browser: https://blog.karimratib.me/demos/musicxml/
+
+Rename:
+baddie -> monster
+headless-base -> homing-bot
+anvil -> step-stool
+flying ball -> the-guardian # add from manual THE EMPEROR'S GUARDIAN scroll
+planet -> scenery
+donut -> doughnut
+bunny -> rabbit (?)
+dalek -> ???
+american-football-head -> skier
+kebab-case -> camelCase
+scripts -> src
+pause -> hold
+directions8Xy -> directionsXy8 /4 etc

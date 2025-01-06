@@ -577,9 +577,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 4, "y": 3, "z": 2 }
         },
-        "baddie@7,2,0:ZVblgD": {
+        "baddie@7,2,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 7, "y": 2, "z": 0 }
         },
         "barrier@4,2,0:fbso8": {
@@ -700,14 +704,22 @@
         ]
       },
       "items": {
-        "baddie@7,7,0:Z1WWFt6": {
+        "baddie@7,7,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
-        "baddie@0,7,0:Z1WWFt6": {
+        "baddie@0,7,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
         "slidingDeadly@4,4,0:Z1tM18t": {
@@ -720,9 +732,13 @@
           "config": { "style": "puck" },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "baddie@7,0,0:Z1WWFt6": {
+        "baddie@7,0,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
         "door@8,3,0:Z2iBTr0": {
@@ -949,9 +965,13 @@
           "config": { "gives": "shield" },
           "position": { "x": 3, "y": 9, "z": 0 }
         },
-        "baddie@3,0,0:ZVblgD": {
+        "baddie@3,0,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
         "door@6,8,0:ZUD36Y": {
@@ -1001,13 +1021,14 @@
           "config": { "slider": false },
           "position": { "x": 3, "y": 3, "z": 1 }
         },
-        "baddie@4,3,0:1eMnEb": {
+        "baddie@4,3,0:Z1feWja": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
@@ -1097,19 +1118,19 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 6, "y": 2, "z": 2 }
         },
-        "movableBlock@5,2,4:Z15GVb5": {
+        "movableBlock@5,2,4:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 5, "y": 2, "z": 4 }
         },
-        "movableBlock@4,2,4:Z15GVb5": {
+        "movableBlock@4,2,4:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 4, "y": 2, "z": 4 }
         },
-        "movableBlock@3,2,4:Z15GVb5": {
+        "movableBlock@3,2,4:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 3, "y": 2, "z": 4 }
         },
         "block@2,2,0:Z1V7JSA": {
@@ -1502,14 +1523,14 @@
           "config": { "toRoom": "blacktooth24" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "movableBlock@1,4,1:Z15GVb5": {
+        "movableBlock@1,4,1:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 1, "y": 4, "z": 1 }
         },
-        "movableBlock@1,3,1:Z15GVb5": {
+        "movableBlock@1,3,1:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 1, "y": 3, "z": 1 }
         },
         "barrier@4,7,0:fbso8": {
@@ -1798,9 +1819,9 @@
         ]
       },
       "items": {
-        "movableBlock@2,3,0:Z15GVb5": {
+        "movableBlock@2,3,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
         "pickup@2,3,1:ZPJAGD": {
@@ -1997,12 +2018,13 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 0, "y": 7, "z": 7 }
         },
-        "baddie@0,6,0:zoxNb": {
+        "baddie@0,6,0:1wBzeB": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
@@ -2323,17 +2345,22 @@
           "config": { "gives": "jumps" },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "baddie@7,4,0:Z1rA6U9": {
+        "baddie@7,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 7, "y": 4, "z": 0 }
         },
-        "baddie@0,3,0:zoxNb": {
+        "baddie@0,3,0:1wBzeB": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
@@ -2520,33 +2547,36 @@
           "config": { "activates": {} },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "baddie@0,5,0:Z2jz06D": {
+        "baddie@0,5,0:1LpDOD": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "starsAndStripes"
+            "style": "starsAndStripes",
+            "movement": "back-forth"
           },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@2,4,0:ZiWCzO": {
+        "baddie@2,4,0:Z1Bw2gF": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "baddie@3,3,0:Z2jz06D": {
+        "baddie@3,3,0:1LpDOD": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "starsAndStripes"
+            "style": "starsAndStripes",
+            "movement": "back-forth"
           },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
@@ -2618,9 +2648,13 @@
           "config": { "style": "cube" },
           "position": { "x": 1, "y": 4, "z": 0 }
         },
-        "baddie@3,3,0:Z1rA6U9": {
+        "baddie@3,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
         "portableBlock@4,1,0:Z1UEQTQ": {
@@ -2905,13 +2939,14 @@
         "left": ["none", "none"]
       },
       "items": {
-        "baddie@3,1,0:1eMnEb": {
+        "baddie@3,1,0:Z1feWja": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 3, "y": 1, "z": 0 }
         },
@@ -3444,23 +3479,32 @@
         ]
       },
       "items": {
-        "baddie@4,7,0:zoxNb": {
+        "baddie@4,7,0:1wBzeB": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 4, "y": 7, "z": 0 }
         },
-        "baddie@7,0,0:ZVblgD": {
+        "baddie@7,0,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "baddie@0,0,0:ZVblgD": {
+        "baddie@0,0,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
         "door@8,3,0:RLEqE": {
@@ -3662,9 +3706,13 @@
           "config": { "style": "spikes" },
           "position": { "x": 2, "y": 1, "z": 0 }
         },
-        "baddie@2,4,0:ZVblgD": {
+        "baddie@2,4,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
         "door@2,8,0:xRLVF": {
@@ -4234,14 +4282,22 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "baddie@4,9,1:2dbvGC": {
+        "baddie@4,9,1:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 4, "y": 9, "z": 1 }
         },
-        "baddie@7,3,1:2dbvGC": {
+        "baddie@7,3,1:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 7, "y": 3, "z": 1 }
         },
         "pickup@13,5,1:Zu0Fv": {
@@ -4477,9 +4533,13 @@
           "config": { "activates": {} },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@3,0,1:Z1rA6U9": {
+        "baddie@3,0,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
         "door@0,3,1:b0091": {
@@ -4721,9 +4781,13 @@
           "config": { "style": "drum" },
           "position": { "x": 3, "y": 7, "z": 0 }
         },
-        "baddie@3,7,1:Z1rA6U9": {
+        "baddie@3,7,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 7, "z": 1 }
         },
         "door@1,8,5:Z1izE3v": {
@@ -5003,9 +5067,13 @@
           "config": { "gives": "jumps" },
           "position": { "x": 5, "y": 1, "z": 3 }
         },
-        "baddie@4,1,0:ZVblgD": {
+        "baddie@4,1,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
         "door@8,0,5:Z19nuqW": {
@@ -5078,11 +5146,12 @@
         ]
       },
       "items": {
-        "baddie@1,4,0:Z8uA9O": {
+        "baddie@1,4,0:1ttQvM": {
           "type": "baddie",
           "config": {
             "which": "turtle",
             "startDirection": "right",
+            "movement": "clockwise",
             "activated": true
           },
           "position": { "x": 1, "y": 4, "z": 0 }
@@ -5605,9 +5674,13 @@
           "config": { "style": "cube" },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@2,3,0:Z1rA6U9": {
+        "baddie@2,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
         "door@3,6,0:xS2qU": {
@@ -5662,14 +5735,22 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 7, "y": 3, "z": 2 }
         },
-        "baddie@0,5,0:Z1rA6U9": {
+        "baddie@0,5,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@7,4,0:Z1rA6U9": {
+        "baddie@7,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 7, "y": 4, "z": 0 }
         },
         "door@8,2,4:ZUChmu": {
@@ -5887,9 +5968,13 @@
           "config": { "gives": "donuts" },
           "position": { "x": 5, "y": 3, "z": 5 }
         },
-        "baddie@3,3,0:Z1ubuHg": {
+        "baddie@3,3,0:ZaUBJ7": {
           "type": "baddie",
-          "config": { "which": "monkey", "activated": true },
+          "config": {
+            "which": "monkey",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
         "portableBlock@0,2,0:Z1UEQTQ": {
@@ -6004,14 +6089,22 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "baddie@4,4,0:Z1rA6U9": {
+        "baddie@4,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
-        "baddie@1,3,0:Z1rA6U9": {
+        "baddie@1,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
         "door@2,8,2:xS2Wq": {
@@ -6120,22 +6213,24 @@
           "config": { "style": "volcano" },
           "position": { "x": 2, "y": 1, "z": 0 }
         },
-        "baddie@2,7,0:Z8uA9O": {
+        "baddie@2,7,0:1ttQvM": {
           "type": "baddie",
           "config": {
             "which": "turtle",
             "startDirection": "right",
+            "movement": "clockwise",
             "activated": true
           },
           "position": { "x": 2, "y": 7, "z": 0 }
         },
-        "baddie@2,2,0:ZiWCzO": {
+        "baddie@2,2,0:K2f7o": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "clockwise"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
@@ -6261,9 +6356,9 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 4, "y": 1, "z": 5 }
         },
-        "movableBlock@3,1,0:Z15GVb5": {
+        "movableBlock@3,1,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 3, "y": 1, "z": 0 }
         },
         "barrier@4,0,0:fbso8": {
@@ -6398,9 +6493,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@4,4,0:Z1rA6U9": {
+        "baddie@4,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
         "lift@1,1,0:ZTwqnv": {
@@ -6408,14 +6507,18 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "movableBlock@1,1,1:Z15GVb5": {
+        "movableBlock@1,1,1:1QSXFH": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": {
+            "style": "anvil",
+            "movement": "back-forth",
+            "startDirection": "right"
+          },
           "position": { "x": 1, "y": 1, "z": 1 }
         },
-        "movableBlock@0,1,1:Z15GVb5": {
+        "movableBlock@0,1,1:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
         "door@3,8,5:xS9UM": {
@@ -6587,13 +6690,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "baddie@2,4,0:1eMnEb": {
+        "baddie@2,4,0:Z1YiFTL": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "clockwise"
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
@@ -6683,14 +6787,22 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "movableBlock@6,7,0:Z15GVb5": {
+        "movableBlock@6,7,0:Z1lxgK4": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": {
+            "style": "anvil",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 6, "y": 7, "z": 0 }
         },
-        "baddie@6,7,1:Z1rA6U9": {
+        "baddie@6,7,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
         "charles@0,7,3:13y": {
@@ -6810,23 +6922,25 @@
           "config": { "style": "volcano" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "baddie@5,3,0:1eMnEb": {
+        "baddie@5,3,0:Z1feWja": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 5, "y": 3, "z": 0 }
         },
-        "baddie@2,2,0:Z21Y5FU": {
+        "baddie@2,2,0:qtd5E": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "starsAndStripes"
+            "style": "starsAndStripes",
+            "movement": "back-forth"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
@@ -7143,9 +7257,13 @@
           "config": { "style": "cube" },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "baddie@0,7,1:Z1ubuHg": {
+        "baddie@0,7,1:ZaUBJ7": {
           "type": "baddie",
-          "config": { "which": "monkey", "activated": true },
+          "config": {
+            "which": "monkey",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
         "block@3,4,2:Z1V7JSA": {
@@ -7190,9 +7308,13 @@
         ]
       },
       "items": {
-        "baddie@1,3,0:1Sur9": {
+        "baddie@1,3,0:279T08": {
           "type": "baddie",
-          "config": { "which": "flying-ball", "activated": true },
+          "config": {
+            "which": "flying-ball",
+            "activated": true,
+            "movement": "towards-when-in-square-xy8"
+          },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
         "door@1,8,0:xSbdy": {
@@ -7296,9 +7418,22 @@
           "config": { "gives": "crown" },
           "position": { "x": 7, "y": 3, "z": 0 }
         },
-        "baddie@3,3,0:Z1rA6U9": {
+        "baddie@6,3,1:1EyDjH": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "emperor",
+            "activated": true,
+            "movement": "towards-when-in-square-xy8"
+          },
+          "position": { "x": 6, "y": 3, "z": 1 }
+        },
+        "baddie@3,3,0:Z2awALk": {
+          "type": "baddie",
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
         "door@3,8,1:xSbtj": {
@@ -7333,9 +7468,13 @@
           "config": {},
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "baddie@3,3,1:Z1rA6U9": {
+        "baddie@3,3,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 3, "z": 1 }
         },
         "block@3,0,0:Z1V7JSA": {
@@ -7602,9 +7741,13 @@
         ]
       },
       "items": {
-        "baddie@2,4,0:Z1ubuHg": {
+        "baddie@2,4,0:ZqCNoC": {
           "type": "baddie",
-          "config": { "which": "monkey", "activated": true },
+          "config": {
+            "which": "monkey",
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
+          },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
         "door@6,3,1:1AnU6S": {
@@ -7721,9 +7864,9 @@
           "config": { "gives": "reincarnation" },
           "position": { "x": 0, "y": 7, "z": 5 }
         },
-        "movableBlock@3,4,0:Z15GVb5": {
+        "movableBlock@3,4,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 3, "y": 4, "z": 0 }
         },
         "door@0,3,0:286lMP": {
@@ -7854,9 +7997,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 6, "y": 4, "z": 2 }
         },
-        "baddie@4,4,0:Z1rA6U9": {
+        "baddie@4,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
         "barrier@6,3,0:fbso8": {
@@ -7874,9 +8021,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 6, "y": 3, "z": 2 }
         },
-        "baddie@3,3,0:Z1rA6U9": {
+        "baddie@3,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
         "barrier@7,2,0:k1F7u": {
@@ -8029,14 +8180,22 @@
         "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
-        "baddie@0,3,0:Z1rA6U9": {
+        "baddie@0,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "baddie@3,2,0:Z1rA6U9": {
+        "baddie@3,2,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
         "spring@2,2,0:13y": {
@@ -8173,13 +8332,14 @@
           "config": { "style": "toaster" },
           "position": { "x": 1, "y": 2, "z": 0 }
         },
-        "baddie@0,6,0:1eMnEb": {
+        "baddie@0,6,0:Z1feWja": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
@@ -8473,9 +8633,13 @@
           "config": { "slider": false },
           "position": { "x": 6, "y": 2, "z": 0 }
         },
-        "baddie@0,4,0:2dbvGC": {
+        "baddie@0,4,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
         "door@3,8,0:Z2k1lKP": {
@@ -8655,9 +8819,13 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "movableBlock@7,2,0:1EfFpg": {
+        "movableBlock@7,2,0:ZmR3G6": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 7, "y": 2, "z": 0 }
         },
         "door@8,2,2:Z1lPM3U": {
@@ -8744,9 +8912,13 @@
           "config": { "slider": false },
           "position": { "x": 3, "y": 0, "z": 4 }
         },
-        "baddie@3,7,0:Z1rA6U9": {
+        "baddie@3,7,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 7, "z": 0 }
         },
         "pickup@3,0,5:Z2prF0G": {
@@ -9285,14 +9457,22 @@
         "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
-        "baddie@3,5,0:Z1ubuHg": {
+        "baddie@3,5,0:ZaUBJ7": {
           "type": "baddie",
-          "config": { "which": "monkey", "activated": true },
+          "config": {
+            "which": "monkey",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "baddie@4,0,0:Z1ubuHg": {
+        "baddie@4,0,0:ZaUBJ7": {
           "type": "baddie",
-          "config": { "which": "monkey", "activated": true },
+          "config": {
+            "which": "monkey",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
         "door@8,2,0:1AnSiB": {
@@ -9327,14 +9507,22 @@
         "left": ["book", "none", "none", "book"]
       },
       "items": {
-        "baddie@3,2,0:Z1rA6U9": {
+        "baddie@3,2,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "baddie@4,1,0:Z1rA6U9": {
+        "baddie@4,1,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
         "door@8,1,2:Z1lPKvo": {
@@ -9467,13 +9655,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "baddie@11,0,0:Z2jz06D": {
+        "baddie@11,0,0:ZLFquq": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "starsAndStripes"
+            "style": "starsAndStripes",
+            "movement": "clockwise"
           },
           "position": { "x": 11, "y": 0, "z": 0 }
         },
@@ -9929,9 +10118,13 @@
           "config": { "style": "sticks" },
           "position": { "x": 3, "y": 1, "z": 0 }
         },
-        "baddie@1,0,0:Z1rA6U9": {
+        "baddie@1,0,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
         "door@3,6,5:ZXTJFs": {
@@ -10262,9 +10455,13 @@
           "config": { "style": "sticks" },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
-        "baddie@4,4,0:Z1rA6U9": {
+        "baddie@4,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
         "barrier@3,4,0:fbso8": {
@@ -10282,9 +10479,13 @@
           "config": { "slider": true },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "baddie@0,4,0:Z1rA6U9": {
+        "baddie@0,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
         "portableBlock@0,0,0:Z14c3Fl": {
@@ -10319,14 +10520,22 @@
         ]
       },
       "items": {
-        "baddie@2,4,0:ZVblgD": {
+        "baddie@2,4,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
-        "baddie@1,3,0:ZVblgD": {
+        "baddie@1,3,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
         "door@1,8,0:Z2k1n3B": {
@@ -10376,14 +10585,14 @@
           "config": { "style": "toaster" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "movableBlock@2,5,0:Z15GVb5": {
+        "movableBlock@2,5,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 2, "y": 5, "z": 0 }
         },
-        "movableBlock@2,4,0:Z15GVb5": {
+        "movableBlock@2,4,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
         "book@1,3,1:1g3d60": {
@@ -10841,9 +11050,9 @@
           "config": { "style": "volcano" },
           "position": { "x": 7, "y": 1, "z": 3 }
         },
-        "movableBlock@6,4,4:1EfFpg": {
+        "movableBlock@6,4,4:2wCrgI": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": { "style": "sandwich", "movement": "free" },
           "position": { "x": 6, "y": 4, "z": 4 }
         },
         "joystick@3,4,1:Z1ncwev": {
@@ -10963,9 +11172,9 @@
           "config": {},
           "position": { "x": 7, "y": 0, "z": 7 }
         },
-        "movableBlock@1,0,0:Z15GVb5": {
+        "movableBlock@1,0,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 1, "y": 0, "z": 0 }
         },
         "lift@0,0,2:Z1mTXpf": {
@@ -11355,11 +11564,12 @@
           "config": { "style": "sticks" },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@5,1,0:2eI3Ll": {
+        "baddie@5,1,0:Z1te9Jq": {
           "type": "baddie",
           "config": {
             "which": "turtle",
             "startDirection": "away",
+            "movement": "clockwise",
             "activated": true
           },
           "position": { "x": 5, "y": 1, "z": 0 }
@@ -11565,9 +11775,13 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "baddie@2,4,0:Z1rA6U9": {
+        "baddie@2,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
         "spring@6,3,4:13y": {
@@ -11575,9 +11789,13 @@
           "config": {},
           "position": { "x": 6, "y": 3, "z": 4 }
         },
-        "baddie@2,3,0:Z1rA6U9": {
+        "baddie@2,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
         "door@8,3,5:Z1mcXI8": {
@@ -11763,9 +11981,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 2, "y": 3, "z": 2 }
         },
-        "baddie@4,2,0:ZVblgD": {
+        "baddie@4,2,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
         "barrier@2,2,0:fbso8": {
@@ -11783,9 +12005,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 2, "y": 2, "z": 2 }
         },
-        "baddie@4,0,0:Z1rA6U9": {
+        "baddie@4,0,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
         "door@3,6,0:Z1yHXKU": {
@@ -12245,9 +12471,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "baddie@7,5,1:Z1rA6U9": {
+        "baddie@7,5,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 7, "y": 5, "z": 1 }
         },
         "pickup@7,3,1:1MkQY2": {
@@ -12593,9 +12823,13 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "baddie@2,0,0:Z1WWFt6": {
+        "baddie@2,0,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
         "door@0,3,0:2rMDLC": {
@@ -12743,9 +12977,13 @@
           "config": { "gives": "reincarnation" },
           "position": { "x": 0, "y": 7, "z": 5 }
         },
-        "baddie@5,4,0:Z1rA6U9": {
+        "baddie@5,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 5, "y": 4, "z": 0 }
         },
         "ball@0,2,1:13y": {
@@ -13185,9 +13423,13 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 3, "y": 3, "z": 2 }
         },
-        "baddie@3,7,0:Z1rA6U9": {
+        "baddie@3,7,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 7, "z": 0 }
         },
         "pickup@4,3,7:2fxkqv": {
@@ -13200,9 +13442,13 @@
           "config": { "style": "cube" },
           "position": { "x": 3, "y": 3, "z": 3 }
         },
-        "baddie@3,0,0:Z1rA6U9": {
+        "baddie@3,0,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
         "door@0,3,0:2rMFk9": {
@@ -13479,19 +13725,19 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 4, "y": 3, "z": 2 }
         },
-        "movableBlock@4,3,3:1EfFpg": {
+        "movableBlock@4,3,3:2wCrgI": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": { "style": "sandwich", "movement": "free" },
           "position": { "x": 4, "y": 3, "z": 3 }
         },
-        "movableBlock@2,2,0:1EfFpg": {
+        "movableBlock@2,2,0:2wCrgI": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": { "style": "sandwich", "movement": "free" },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "movableBlock@2,2,1:1EfFpg": {
+        "movableBlock@2,2,1:2wCrgI": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": { "style": "sandwich", "movement": "free" },
           "position": { "x": 2, "y": 2, "z": 1 }
         },
         "door@3,8,5:2p0xht": {
@@ -13661,14 +13907,22 @@
           "config": {},
           "position": { "x": 1, "y": 6, "z": 3 }
         },
-        "baddie@4,5,0:Z1rA6U9": {
+        "baddie@4,5,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 5, "z": 0 }
         },
-        "baddie@4,2,0:Z1rA6U9": {
+        "baddie@4,2,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
         "block@6,1,0:Z1V7JSA": {
@@ -13904,9 +14158,13 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 1, "y": 2, "z": 1 }
         },
-        "movableBlock@0,2,0:Z15GVb5": {
+        "movableBlock@0,2,0:Z1lxgK4": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": {
+            "style": "anvil",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
         "block@0,2,1:20S0Rw": {
@@ -13918,6 +14176,131 @@
           "type": "block",
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 7, "y": 1, "z": 0 }
+        },
+        "sceneryPlayer@9,7,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 9, "y": 7, "z": 0 }
+        },
+        "sceneryPlayer@8,7,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 8, "y": 7, "z": 0 }
+        },
+        "sceneryPlayer@7,7,1:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 7, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@6,7,1:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 6, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@5,7,1:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 5, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@4,7,1:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 4, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@3,7,1:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 3, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@2,7,1:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 2, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@1,7,1:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 1, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@0,7,1:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 0, "y": 7, "z": 1 }
+        },
+        "sceneryPlayer@7,6,0:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 7, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@6,6,0:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 6, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@5,6,0:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 5, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@4,6,0:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 4, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@3,6,0:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 3, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@2,6,0:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 2, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@1,6,0:JwJT2": {
+          "type": "sceneryPlayer",
+          "config": { "which": "head" },
+          "position": { "x": 1, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@0,6,0:Z2h3J70": {
+          "type": "sceneryPlayer",
+          "config": { "which": "heels" },
+          "position": { "x": 0, "y": 6, "z": 0 }
+        },
+        "sceneryPlayer@0,3,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 0, "y": 3, "z": 0 }
+        },
+        "sceneryPlayer@11,5,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 5, "z": 0 }
+        },
+        "sceneryPlayer@11,4,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 4, "z": 0 }
+        },
+        "sceneryPlayer@11,3,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 3, "z": 0 }
+        },
+        "sceneryPlayer@11,2,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 2, "z": 0 }
+        },
+        "sceneryPlayer@11,1,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 1, "z": 0 }
+        },
+        "sceneryPlayer@11,0,0:Z1SkXXR": {
+          "type": "sceneryPlayer",
+          "config": { "which": "headOverHeels" },
+          "position": { "x": 11, "y": 0, "z": 0 }
         }
       },
       "color": { "hue": "white", "shade": "basic" }
@@ -14030,111 +14413,135 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -14394,39 +14801,47 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "baddie@0,5,1:2q6IfP": {
+        "baddie@0,5,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 5, "z": 1 }
         },
-        "baddie@0,4,1:2q6IfP": {
+        "baddie@0,4,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 4, "z": 1 }
         },
-        "baddie@0,3,1:2q6IfP": {
+        "baddie@0,3,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 3, "z": 1 }
         },
-        "baddie@0,2,1:2q6IfP": {
+        "baddie@0,2,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
@@ -14487,44 +14902,56 @@
           "config": { "style": "toaster" },
           "position": { "x": 5, "y": 2, "z": 0 }
         },
-        "baddie@2,7,0:2dbvGC": {
+        "baddie@2,7,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 2, "y": 7, "z": 0 }
         },
-        "baddie@5,5,1:1rpQ64": {
+        "baddie@5,5,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 5, "z": 1 }
         },
-        "baddie@5,4,1:1rpQ64": {
+        "baddie@5,4,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 4, "z": 1 }
         },
-        "baddie@5,3,1:1rpQ64": {
+        "baddie@5,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 3, "z": 1 }
         },
-        "baddie@5,2,1:1rpQ64": {
+        "baddie@5,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 2, "z": 1 }
         },
@@ -14711,9 +15138,13 @@
           "config": { "gives": "shield" },
           "position": { "x": 11, "y": 5, "z": 0 }
         },
-        "baddie@11,0,0:ZjbVd9": {
+        "baddie@11,0,0:Gssin": {
           "type": "baddie",
-          "config": { "which": "computer-bot", "activated": true },
+          "config": {
+            "which": "computer-bot",
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
+          },
           "position": { "x": 11, "y": 0, "z": 0 }
         },
         "door@0,2,1:Z1kG4Aw": {
@@ -14839,30 +15270,36 @@
           "config": { "style": "toaster" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@4,0,1:Z1xC3bd": {
+        "baddie@4,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 4, "y": 0, "z": 1 }
         },
-        "baddie@3,0,1:Z1xC3bd": {
+        "baddie@3,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
@@ -14933,44 +15370,56 @@
           "config": { "style": "toaster" },
           "position": { "x": 7, "y": 1, "z": 0 }
         },
-        "baddie@0,5,0:Z1rA6U9": {
+        "baddie@0,5,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@7,4,1:1rpQ64": {
+        "baddie@7,4,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 4, "z": 1 }
         },
-        "baddie@7,3,1:1rpQ64": {
+        "baddie@7,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 3, "z": 1 }
         },
-        "baddie@7,2,1:1rpQ64": {
+        "baddie@7,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 2, "z": 1 }
         },
-        "baddie@7,1,1:1rpQ64": {
+        "baddie@7,1,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 1, "z": 1 }
         },
@@ -15160,57 +15609,69 @@
           "config": { "toRoom": "safari1" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@4,7,1:1AulfA": {
+        "baddie@4,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 4, "y": 7, "z": 1 }
         },
-        "baddie@3,7,1:1AulfA": {
+        "baddie@3,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 3, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
@@ -15291,57 +15752,69 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@4,0,1:Z1xC3bd": {
+        "baddie@4,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 4, "y": 0, "z": 1 }
         },
-        "baddie@3,0,1:Z1xC3bd": {
+        "baddie@3,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -15565,111 +16038,135 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -15789,111 +16286,135 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -15944,30 +16465,36 @@
           "config": { "style": "toaster" },
           "position": { "x": 2, "y": 0, "z": 0 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@4,0,1:Z1xC3bd": {
+        "baddie@4,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 4, "y": 0, "z": 1 }
         },
-        "baddie@3,0,1:Z1xC3bd": {
+        "baddie@3,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
@@ -16046,12 +16573,13 @@
           "config": {},
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "baddie@0,5,0:zoxNb": {
+        "baddie@0,5,0:1wBzeB": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
@@ -16176,111 +16704,135 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -16390,9 +16942,13 @@
           "config": {},
           "position": { "x": 4, "y": 7, "z": 0 }
         },
-        "movableBlock@0,7,0:1EfFpg": {
+        "movableBlock@0,7,0:Z10NM75": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "towards"
+          },
           "position": { "x": 0, "y": 7, "z": 0 }
         },
         "joystick@2,2,1:2x1Kv5": {
@@ -16597,111 +17153,135 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -16938,210 +17518,256 @@
           "config": { "side": "left", "style": "coil" },
           "position": { "x": 5, "y": 0, "z": 0 }
         },
-        "baddie@6,2,1:2q6IfP": {
+        "baddie@6,2,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 2, "z": 1 }
         },
-        "baddie@6,4,1:2q6IfP": {
+        "baddie@6,4,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 4, "z": 1 }
         },
-        "baddie@11,1,1:1rpQ64": {
+        "baddie@11,1,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 1, "z": 1 }
         },
-        "baddie@11,3,1:1rpQ64": {
+        "baddie@11,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 3, "z": 1 }
         },
-        "baddie@11,5,1:1rpQ64": {
+        "baddie@11,5,1:1nEwug": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 5, "z": 1 }
         },
-        "baddie@0,11,1:2q6IfP": {
+        "baddie@0,11,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 11, "z": 1 }
         },
-        "baddie@0,13,1:2q6IfP": {
+        "baddie@0,13,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 13, "z": 1 }
         },
-        "baddie@5,11,1:1rpQ64": {
+        "baddie@5,11,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 11, "z": 1 }
         },
-        "baddie@5,13,1:1rpQ64": {
+        "baddie@5,13,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 13, "z": 1 }
         },
-        "baddie@6,11,1:2q6IfP": {
+        "baddie@6,11,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 11, "z": 1 }
         },
-        "baddie@6,13,1:2q6IfP": {
+        "baddie@6,13,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 13, "z": 1 }
         },
-        "baddie@11,14,1:1rpQ64": {
+        "baddie@11,14,1:1nEwug": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 14, "z": 1 }
         },
-        "baddie@11,9,1:1rpQ64": {
+        "baddie@11,9,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 9, "z": 1 }
         },
-        "baddie@6,12,1:2q6IfP": {
+        "baddie@6,12,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 12, "z": 1 }
         },
-        "baddie@6,10,1:2q6IfP": {
+        "baddie@6,10,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 10, "z": 1 }
         },
-        "baddie@5,12,1:1rpQ64": {
+        "baddie@5,12,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 12, "z": 1 }
         },
-        "baddie@5,10,1:1rpQ64": {
+        "baddie@5,10,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 10, "z": 1 }
         },
-        "baddie@0,12,1:2q6IfP": {
+        "baddie@0,12,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 12, "z": 1 }
         },
-        "baddie@0,10,1:2q6IfP": {
+        "baddie@0,10,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 10, "z": 1 }
         },
-        "baddie@11,4,1:1rpQ64": {
+        "baddie@11,4,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 4, "z": 1 }
         },
-        "baddie@11,2,1:1rpQ64": {
+        "baddie@11,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 11, "y": 2, "z": 1 }
         },
-        "baddie@6,5,1:2q6IfP": {
+        "baddie@6,5,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 5, "z": 1 }
         },
-        "baddie@6,3,1:2q6IfP": {
+        "baddie@6,3,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 3, "z": 1 }
         },
@@ -17202,39 +17828,47 @@
           "config": { "style": "toaster" },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "baddie@7,3,1:1rpQ64": {
+        "baddie@7,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 3, "z": 1 }
         },
-        "baddie@7,2,1:1rpQ64": {
+        "baddie@7,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 2, "z": 1 }
         },
-        "baddie@7,1,1:1rpQ64": {
+        "baddie@7,1,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 1, "z": 1 }
         },
-        "baddie@7,0,1:1rpQ64": {
+        "baddie@7,0,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
@@ -17321,75 +17955,91 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "baddie@5,4,1:1rpQ64": {
+        "baddie@5,4,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 4, "z": 1 }
         },
-        "baddie@0,4,1:2q6IfP": {
+        "baddie@0,4,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 4, "z": 1 }
         },
-        "baddie@5,3,1:1rpQ64": {
+        "baddie@5,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 3, "z": 1 }
         },
-        "baddie@0,3,1:2q6IfP": {
+        "baddie@0,3,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 3, "z": 1 }
         },
-        "baddie@5,2,1:1rpQ64": {
+        "baddie@5,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 2, "z": 1 }
         },
-        "baddie@0,2,1:2q6IfP": {
+        "baddie@0,2,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "baddie@5,1,1:1rpQ64": {
+        "baddie@5,1,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 1, "z": 1 }
         },
-        "baddie@0,1,1:2q6IfP": {
+        "baddie@0,1,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
@@ -17471,75 +18121,91 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
-        "baddie@5,4,1:1rpQ64": {
+        "baddie@5,4,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 4, "z": 1 }
         },
-        "baddie@0,4,1:2q6IfP": {
+        "baddie@0,4,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 4, "z": 1 }
         },
-        "baddie@5,3,1:1rpQ64": {
+        "baddie@5,3,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 3, "z": 1 }
         },
-        "baddie@0,3,1:2q6IfP": {
+        "baddie@0,3,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 3, "z": 1 }
         },
-        "baddie@5,2,1:1rpQ64": {
+        "baddie@5,2,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 2, "z": 1 }
         },
-        "baddie@0,2,1:2q6IfP": {
+        "baddie@0,2,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 2, "z": 1 }
         },
-        "baddie@5,1,1:1rpQ64": {
+        "baddie@5,1,1:1CHVMy": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "right",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 1, "z": 1 }
         },
-        "baddie@0,1,1:2q6IfP": {
+        "baddie@0,1,1:ZIuv2D": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "left",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 1, "z": 1 }
         },
@@ -17684,14 +18350,22 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 7, "y": 0, "z": 0 }
         },
-        "baddie@2,5,0:ZjbVd9": {
+        "baddie@2,5,0:1A86MQ": {
           "type": "baddie",
-          "config": { "which": "computer-bot", "activated": true },
+          "config": {
+            "which": "computer-bot",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 2, "y": 5, "z": 0 }
         },
-        "baddie@5,2,0:ZjbVd9": {
+        "baddie@5,2,0:1A86MQ": {
           "type": "baddie",
-          "config": { "which": "computer-bot", "activated": true },
+          "config": {
+            "which": "computer-bot",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 5, "y": 2, "z": 0 }
         },
         "door@3,8,5:Z2q5jjv": {
@@ -17726,19 +18400,31 @@
         ]
       },
       "items": {
-        "baddie@3,6,0:2dbvGC": {
+        "baddie@3,6,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 3, "y": 6, "z": 0 }
         },
-        "baddie@0,4,0:2dbvGC": {
+        "baddie@0,4,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
-        "baddie@3,2,0:2dbvGC": {
+        "baddie@3,2,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
         "door@1,8,0:Z2q5j3K": {
@@ -17837,9 +18523,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "baddie@7,5,0:2dbvGC": {
+        "baddie@7,5,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 7, "y": 5, "z": 0 }
         },
         "pickup@0,5,0:1MkQY2": {
@@ -17847,9 +18537,13 @@
           "config": { "gives": "extra-life" },
           "position": { "x": 0, "y": 5, "z": 0 }
         },
-        "baddie@0,4,0:2dbvGC": {
+        "baddie@0,4,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
         "door@3,8,0:Z2q5iN0": {
@@ -17943,57 +18637,69 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 2, "y": 0, "z": 3 }
         },
-        "baddie@7,7,1:1AulfA": {
+        "baddie@7,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:1AulfA": {
+        "baddie@6,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 7, "z": 1 }
         },
-        "baddie@5,7,1:1AulfA": {
+        "baddie@5,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 7, "z": 1 }
         },
-        "baddie@2,7,1:1AulfA": {
+        "baddie@2,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 7, "z": 1 }
         },
-        "baddie@1,7,1:1AulfA": {
+        "baddie@1,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 7, "z": 1 }
         },
-        "baddie@0,7,1:1AulfA": {
+        "baddie@0,7,1:ZECNoc": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 7, "z": 1 }
         },
@@ -18113,57 +18819,69 @@
           "config": { "style": "toaster" },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,0,1:Z1xC3bd": {
+        "baddie@7,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 0, "z": 1 }
         },
-        "baddie@6,0,1:Z1xC3bd": {
+        "baddie@6,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 6, "y": 0, "z": 1 }
         },
-        "baddie@5,0,1:Z1xC3bd": {
+        "baddie@5,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 5, "y": 0, "z": 1 }
         },
-        "baddie@2,0,1:Z1xC3bd": {
+        "baddie@2,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 2, "y": 0, "z": 1 }
         },
-        "baddie@1,0,1:Z1xC3bd": {
+        "baddie@1,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 1, "y": 0, "z": 1 }
         },
-        "baddie@0,0,1:Z1xC3bd": {
+        "baddie@0,0,1:ZfJWcr": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "away",
-            "activated": false
+            "activated": false,
+            "wakes": false,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
@@ -18884,11 +19602,12 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "baddie@7,7,1:Z8uA9O": {
+        "baddie@7,7,1:1ttQvM": {
           "type": "baddie",
           "config": {
             "which": "turtle",
             "startDirection": "right",
+            "movement": "clockwise",
             "activated": true
           },
           "position": { "x": 7, "y": 7, "z": 1 }
@@ -19275,9 +19994,13 @@
         ]
       },
       "items": {
-        "baddie@2,4,0:Z1rA6U9": {
+        "baddie@2,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
         "portableBlock@2,3,0:Z1SKpmn": {
@@ -19285,9 +20008,13 @@
           "config": { "style": "drum" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "baddie@1,3,0:Z1rA6U9": {
+        "baddie@1,3,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
         "door@1,8,3:ZtKq6p": {
@@ -19396,9 +20123,13 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "baddie@6,3,2:Z1rA6U9": {
+        "baddie@6,3,2:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 6, "y": 3, "z": 2 }
         },
         "door@3,8,5:ZtKxAh": {
@@ -19445,9 +20176,13 @@
           "config": { "style": "cube" },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "baddie@2,3,1:Z1rA6U9": {
+        "baddie@2,3,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 3, "z": 1 }
         },
         "portableBlock@3,2,0:Z1UEQTQ": {
@@ -19703,11 +20438,12 @@
           "config": { "style": "drum" },
           "position": { "x": 7, "y": 7, "z": 1 }
         },
-        "baddie@6,7,1:Z8uA9O": {
+        "baddie@6,7,1:1ttQvM": {
           "type": "baddie",
           "config": {
             "which": "turtle",
             "startDirection": "right",
+            "movement": "clockwise",
             "activated": true
           },
           "position": { "x": 6, "y": 7, "z": 1 }
@@ -20258,9 +20994,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 4, "y": 0, "z": 0 }
         },
-        "movableBlock@4,1,0:1EfFpg": {
+        "movableBlock@4,1,0:Z1QiSif": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "away"
+          },
           "position": { "x": 4, "y": 1, "z": 0 }
         },
         "door@0,3,1:1QJLWh": {
@@ -20320,9 +21060,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
-        "movableBlock@6,0,0:1EfFpg": {
+        "movableBlock@6,0,0:ZmR3G6": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 6, "y": 0, "z": 0 }
         },
         "door@8,0,2:2uC3Bo": {
@@ -20580,9 +21324,13 @@
           "config": { "activates": {} },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
-        "movableBlock@0,1,0:1EfFpg": {
+        "movableBlock@0,1,0:Z10NM75": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "towards"
+          },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
         "switch@0,0,0:V4krG": {
@@ -20874,9 +21622,13 @@
           "config": { "style": "puck" },
           "position": { "x": 2, "y": 1, "z": 5 }
         },
-        "baddie@0,1,0:Z1rA6U9": {
+        "baddie@0,1,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 1, "z": 0 }
         },
         "slidingDeadly@2,0,5:Z1tM18t": {
@@ -21121,9 +21873,9 @@
           "config": { "style": "sticks" },
           "position": { "x": 0, "y": 7, "z": 3 }
         },
-        "movableBlock@7,3,5:1EfFpg": {
+        "movableBlock@7,3,5:2wCrgI": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": { "style": "sandwich", "movement": "free" },
           "position": { "x": 7, "y": 3, "z": 5 }
         },
         "pickup@0,0,6:2fxkqv": {
@@ -21289,9 +22041,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "movableBlock@3,0,1:Z15GVb5": {
+        "movableBlock@3,0,1:1uA6UO": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": {
+            "style": "anvil",
+            "movement": "clockwise",
+            "startDirection": "towards"
+          },
           "position": { "x": 3, "y": 0, "z": 1 }
         },
         "door@6,2,3:2d0qB5": {
@@ -21336,14 +22092,22 @@
           "config": { "style": "artificial", "disappearing": false },
           "position": { "x": 4, "y": 5, "z": 3 }
         },
-        "baddie@5,5,0:Z1WWFt6": {
+        "baddie@5,5,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 5, "y": 5, "z": 0 }
         },
-        "baddie@3,5,0:Z1WWFt6": {
+        "baddie@3,5,0:5k1cB": {
           "type": "baddie",
-          "config": { "which": "bubble-robot", "activated": true },
+          "config": {
+            "which": "bubble-robot",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
         "door@3,6,5:2r8kBv": {
@@ -21636,24 +22400,40 @@
         "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
-        "baddie@3,5,0:gzuaR": {
+        "baddie@3,5,0:1FXh6W": {
           "type": "baddie",
-          "config": { "which": "elephant-head", "activated": true },
+          "config": {
+            "which": "elephant-head",
+            "activated": true,
+            "movement": "unmoving"
+          },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "baddie@2,3,0:gzuaR": {
+        "baddie@2,3,0:1FXh6W": {
           "type": "baddie",
-          "config": { "which": "elephant-head", "activated": true },
+          "config": {
+            "which": "elephant-head",
+            "activated": true,
+            "movement": "unmoving"
+          },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "baddie@3,1,0:gzuaR": {
+        "baddie@3,1,0:1FXh6W": {
           "type": "baddie",
-          "config": { "which": "elephant-head", "activated": true },
+          "config": {
+            "which": "elephant-head",
+            "activated": true,
+            "movement": "unmoving"
+          },
           "position": { "x": 3, "y": 1, "z": 0 }
         },
-        "baddie@0,0,0:Z2qiM0z": {
+        "baddie@0,0,0:QyAMt": {
           "type": "baddie",
-          "config": { "which": "elephant", "activated": true },
+          "config": {
+            "which": "elephant",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 0, "y": 0, "z": 0 }
         },
         "door@6,2,0:Z140OgI": {
@@ -21704,9 +22484,13 @@
           "config": { "top": 9, "bottom": 0 },
           "position": { "x": 7, "y": 5, "z": 0 }
         },
-        "baddie@5,5,0:Z1rA6U9": {
+        "baddie@5,5,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 5, "y": 5, "z": 0 }
         },
         "barrier@4,5,0:fbso8": {
@@ -22033,39 +22817,46 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
-        "baddie@2,2,0:ZiWCzO": {
+        "baddie@2,2,0:Z1Bw2gF": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 2, "y": 2, "z": 0 }
         },
-        "baddie@1,4,0:ZiWCzO": {
+        "baddie@1,4,0:Z1Bw2gF": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 1, "y": 4, "z": 0 }
         },
-        "baddie@0,6,0:ZiWCzO": {
+        "baddie@0,6,0:Z1Bw2gF": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 0, "y": 6, "z": 0 }
         },
-        "baddie@2,12,1:Z1rA6U9": {
+        "baddie@2,12,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 2, "y": 12, "z": 1 }
         },
         "door@1,16,0:Z2mYrkN": {
@@ -22160,13 +22951,14 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "baddie@2,6,0:1eMnEb": {
+        "baddie@2,6,0:Z1feWja": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "towards",
             "activated": true,
-            "style": "greenAndPink"
+            "style": "greenAndPink",
+            "movement": "back-forth"
           },
           "position": { "x": 2, "y": 6, "z": 0 }
         },
@@ -22682,9 +23474,13 @@
           "config": { "axis": "y", "disappearing": false },
           "position": { "x": 13, "y": 0, "z": 1 }
         },
-        "baddie@12,0,0:Z1rA6U9": {
+        "baddie@12,0,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 12, "y": 0, "z": 0 }
         },
         "door@3,10,0:Z2mYjAb": {
@@ -22803,9 +23599,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 0, "z": 1 }
         },
-        "movableBlock@7,1,0:1EfFpg": {
+        "movableBlock@7,1,0:Z1QiSif": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "away"
+          },
           "position": { "x": 7, "y": 1, "z": 0 }
         },
         "door@3,8,3:1Sooxy": {
@@ -22911,24 +23711,40 @@
           "config": { "gives": "donuts" },
           "position": { "x": 0, "y": 7, "z": 5 }
         },
-        "baddie@2,5,0:2dbvGC": {
+        "baddie@2,5,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 2, "y": 5, "z": 0 }
         },
-        "baddie@5,4,0:2dbvGC": {
+        "baddie@5,4,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 5, "y": 4, "z": 0 }
         },
-        "baddie@4,4,0:Z1rA6U9": {
+        "baddie@4,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
-        "baddie@3,2,0:2dbvGC": {
+        "baddie@3,2,0:Z1Gv2Js": {
           "type": "baddie",
-          "config": { "which": "headless-base", "activated": true },
+          "config": {
+            "which": "headless-base",
+            "activated": true,
+            "movement": "towards-tripped-on-axis-xy4"
+          },
           "position": { "x": 3, "y": 2, "z": 0 }
         },
         "door@0,3,0:Z2p4BRY": {
@@ -22988,9 +23804,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
-        "baddie@0,4,0:Z1rA6U9": {
+        "baddie@0,4,0:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 0, "y": 4, "z": 0 }
         },
         "door@0,8,0:Z2mYk6G": {
@@ -23153,9 +23973,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 4, "y": 0, "z": 1 }
         },
-        "movableBlock@0,2,0:1EfFpg": {
+        "movableBlock@0,2,0:27pS8N": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "left"
+          },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
         "door@8,2,3:Z140G0A": {
@@ -23526,19 +24350,31 @@
         "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
-        "baddie@4,3,0:Z2qiM0z": {
+        "baddie@4,3,0:QyAMt": {
           "type": "baddie",
-          "config": { "which": "elephant", "activated": true },
+          "config": {
+            "which": "elephant",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 4, "y": 3, "z": 0 }
         },
-        "baddie@3,3,0:ZVblgD": {
+        "baddie@3,3,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 3, "y": 3, "z": 0 }
         },
-        "baddie@4,2,0:ZVblgD": {
+        "baddie@4,2,0:ZazYQL": {
           "type": "baddie",
-          "config": { "which": "helicopter-bug", "activated": true },
+          "config": {
+            "which": "helicopter-bug",
+            "activated": true,
+            "movement": "patrol-randomly-xy8"
+          },
           "position": { "x": 4, "y": 2, "z": 0 }
         },
         "spring@3,2,0:13y": {
@@ -23653,12 +24489,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 3, "y": 0, "z": 0 }
         },
-        "baddie@7,7,0:zoxNb": {
+        "baddie@7,7,0:1wBzeB": {
           "type": "baddie",
           "config": {
             "which": "cyberman",
             "startDirection": "towards",
-            "activated": true
+            "activated": true,
+            "movement": "towards-on-shortest-axis-xy4"
           },
           "position": { "x": 7, "y": 7, "z": 0 }
         },
@@ -24031,14 +24868,18 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 7, "y": 3, "z": 2 }
         },
-        "baddie@4,4,0:Z2qiM0z": {
+        "baddie@4,4,0:QyAMt": {
           "type": "baddie",
-          "config": { "which": "elephant", "activated": true },
+          "config": {
+            "which": "elephant",
+            "activated": true,
+            "movement": "patrol-randomly-xy4"
+          },
           "position": { "x": 4, "y": 4, "z": 0 }
         },
-        "movableBlock@1,1,0:Z15GVb5": {
+        "movableBlock@1,1,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 1, "y": 1, "z": 0 }
         },
         "door@3,8,5:ZqJYTY": {
@@ -24275,9 +25116,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 3, "z": 0 }
         },
-        "movableBlock@7,5,1:1EfFpg": {
+        "movableBlock@7,5,1:ZmR3G6": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 7, "y": 5, "z": 1 }
         },
         "door@0,3,1:Z2p4sk5": {
@@ -24513,9 +25358,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 0, "y": 2, "z": 0 }
         },
-        "movableBlock@0,7,6:Z15GVb5": {
+        "movableBlock@0,7,6:Z1lxgK4": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": {
+            "style": "anvil",
+            "movement": "clockwise",
+            "startDirection": "right"
+          },
           "position": { "x": 0, "y": 7, "z": 6 }
         },
         "pickup@0,7,7:2fxkqv": {
@@ -24523,9 +25372,9 @@
           "config": { "gives": "crown" },
           "position": { "x": 0, "y": 7, "z": 7 }
         },
-        "movableBlock@3,5,0:Z15GVb5": {
+        "movableBlock@3,5,0:1TpLUC": {
           "type": "movableBlock",
-          "config": { "style": "anvil" },
+          "config": { "style": "anvil", "movement": "free" },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
         "portableBlock@7,3,1:Z1SKpmn": {
@@ -24548,13 +25397,14 @@
           "config": { "style": "tower", "disappearing": false },
           "position": { "x": 6, "y": 3, "z": 2 }
         },
-        "baddie@7,2,1:Z2jz06D": {
+        "baddie@7,2,1:1LpDOD": {
           "type": "baddie",
           "config": {
             "which": "american-football-head",
             "startDirection": "right",
             "activated": true,
-            "style": "starsAndStripes"
+            "style": "starsAndStripes",
+            "movement": "back-forth"
           },
           "position": { "x": 7, "y": 2, "z": 1 }
         },
@@ -24629,9 +25479,13 @@
           "config": { "style": "organic", "disappearing": false },
           "position": { "x": 7, "y": 3, "z": 2 }
         },
-        "baddie@7,4,1:Z1rA6U9": {
+        "baddie@7,4,1:Z2awALk": {
           "type": "baddie",
-          "config": { "which": "dalek", "activated": true },
+          "config": {
+            "which": "dalek",
+            "activated": true,
+            "movement": "patrol-randomly-diagonal"
+          },
           "position": { "x": 7, "y": 4, "z": 1 }
         },
         "door@3,8,5:Z2mYqOi": {
@@ -25115,9 +25969,13 @@
           "config": { "style": "volcano" },
           "position": { "x": 0, "y": 1, "z": 2 }
         },
-        "movableBlock@0,1,3:1EfFpg": {
+        "movableBlock@0,1,3:27pS8N": {
           "type": "movableBlock",
-          "config": { "style": "sandwich" },
+          "config": {
+            "style": "sandwich",
+            "movement": "clockwise",
+            "startDirection": "left"
+          },
           "position": { "x": 0, "y": 1, "z": 3 }
         },
         "door@8,2,5:Z140NKd": {

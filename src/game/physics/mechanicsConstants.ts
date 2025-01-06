@@ -10,8 +10,8 @@ import { blockSizePx } from "@/sprites/spritePivots";
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
 export const playerWalkAcceldPixPerMsSq = {
-  head: 0.000_15,
-  heels: 0.000_15,
+  head: 0.000_2,
+  heels: 0.000_2,
 };
 
 /** deceleration of playables when input stops */
@@ -67,6 +67,7 @@ export const moveSpeedPixPerMs = {
   monkey: onePxPerFrameInOriginalGamePxPerMs,
   elephant: onePxPerFrameInOriginalGamePxPerMs,
   "elephant-head": 0,
+  emperor: onePxPerFrameInOriginalGamePxPerMs,
   "flying-ball": onePxPerFrameInOriginalGamePxPerMs,
   ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
   ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,

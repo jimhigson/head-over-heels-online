@@ -172,6 +172,16 @@ export const room = inferRoomJson({
       position: { x: 3.5, y: 3.5, z: 0 },
       type: "player",
     },
+    "movableBlock@1,3,1:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
+      position: { x: 1, y: 3, z: 1 },
+      type: "movableBlock",
+    },
+    "movableBlock@1,4,1:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
+      position: { x: 1, y: 4, z: 1 },
+      type: "movableBlock",
+    },
     scroll: {
       config: {
         gives: "scroll",

@@ -7,13 +7,21 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary7",
   items: {
-    "baddie@3,5,0:Z1WWFt6": {
-      config: { activated: true, which: "bubble-robot" },
+    "baddie@3,5,0:5k1cB": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubble-robot",
+      },
       position: { x: 3, y: 5, z: 0 },
       type: "baddie",
     },
-    "baddie@5,5,0:Z1WWFt6": {
-      config: { activated: true, which: "bubble-robot" },
+    "baddie@5,5,0:5k1cB": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubble-robot",
+      },
       position: { x: 5, y: 5, z: 0 },
       type: "baddie",
     },

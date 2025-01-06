@@ -7,8 +7,12 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary20",
   items: {
-    "baddie@2,3,1:Z1rA6U9": {
-      config: { activated: true, which: "dalek" },
+    "baddie@2,3,1:Z2awALk": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
       position: { x: 2, y: 3, z: 1 },
       type: "baddie",
     },

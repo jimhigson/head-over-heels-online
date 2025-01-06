@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld31",
   items: {
-    "baddie@11,0,0:Z2jz06D": {
+    "baddie@11,0,0:ZLFquq": {
       config: {
         activated: true,
+        movement: "clockwise",
         startDirection: "right",
         style: "starsAndStripes",
         which: "american-football-head",

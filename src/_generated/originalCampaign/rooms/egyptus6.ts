@@ -32,18 +32,18 @@ export const room = inferRoomJson({
       position: { x: 3, y: 8, z: 5 },
       type: "door",
     },
-    "movableBlock@2,2,0:1EfFpg": {
-      config: { style: "sandwich" },
+    "movableBlock@2,2,0:2wCrgI": {
+      config: { movement: "free", style: "sandwich" },
       position: { x: 2, y: 2, z: 0 },
       type: "movableBlock",
     },
-    "movableBlock@2,2,1:1EfFpg": {
-      config: { style: "sandwich" },
+    "movableBlock@2,2,1:2wCrgI": {
+      config: { movement: "free", style: "sandwich" },
       position: { x: 2, y: 2, z: 1 },
       type: "movableBlock",
     },
-    "movableBlock@4,3,3:1EfFpg": {
-      config: { style: "sandwich" },
+    "movableBlock@4,3,3:2wCrgI": {
+      config: { movement: "free", style: "sandwich" },
       position: { x: 4, y: 3, z: 3 },
       type: "movableBlock",
     },

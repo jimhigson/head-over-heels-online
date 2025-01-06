@@ -62,8 +62,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    "movableBlock@7,5,1:1EfFpg": {
-      config: { style: "sandwich" },
+    "movableBlock@7,5,1:ZmR3G6": {
+      config: {
+        movement: "clockwise",
+        startDirection: "right",
+        style: "sandwich",
+      },
       position: { x: 7, y: 5, z: 1 },
       type: "movableBlock",
     },

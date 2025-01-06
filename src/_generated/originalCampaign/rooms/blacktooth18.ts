@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth18",
   items: {
-    "baddie@4,3,0:1eMnEb": {
+    "baddie@4,3,0:Z1feWja": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "towards",
         style: "greenAndPink",
         which: "american-football-head",

@@ -460,6 +460,7 @@ export const itemAppearances: {
       }
 
       case "helicopter-bug":
+      case "emperor":
       case "dalek":
       case "headless-base":
       case "elephant-head":
@@ -531,6 +532,15 @@ export const itemAppearances: {
               container: stackedSprites({
                 top: `ball`,
                 bottom: itemRidingOnBubblesSpritesOptions,
+                filter,
+              }),
+              renderProps,
+            };
+
+          case "emperor":
+            return {
+              container: createSprite({
+                texture: "bubbles.cold.1",
                 filter,
               }),
               renderProps,

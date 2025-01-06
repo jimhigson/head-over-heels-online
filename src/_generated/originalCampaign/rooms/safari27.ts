@@ -7,18 +7,30 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari27",
   items: {
-    "baddie@3,3,0:ZVblgD": {
-      config: { activated: true, which: "helicopter-bug" },
+    "baddie@3,3,0:ZazYQL": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "helicopter-bug",
+      },
       position: { x: 3, y: 3, z: 0 },
       type: "baddie",
     },
-    "baddie@4,2,0:ZVblgD": {
-      config: { activated: true, which: "helicopter-bug" },
+    "baddie@4,2,0:ZazYQL": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "helicopter-bug",
+      },
       position: { x: 4, y: 2, z: 0 },
       type: "baddie",
     },
-    "baddie@4,3,0:Z2qiM0z": {
-      config: { activated: true, which: "elephant" },
+    "baddie@4,3,0:QyAMt": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy4",
+        which: "elephant",
+      },
       position: { x: 4, y: 3, z: 0 },
       type: "baddie",
     },

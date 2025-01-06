@@ -7,8 +7,12 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth6",
   items: {
-    "baddie@3,0,1:Z1rA6U9": {
-      config: { activated: true, which: "dalek" },
+    "baddie@3,0,1:Z2awALk": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
       position: { x: 3, y: 0, z: 1 },
       type: "baddie",
     },
@@ -86,7 +90,7 @@ the doughnut icon at the bottom left of the screen.
     "switch@6,0,1:V4krG": {
       config: {
         activates: {
-          "baddie@3,0,1:Z1rA6U9": {
+          "baddie@3,0,1:Z2awALk": {
             left: { activated: true },
             right: { activated: false },
           },

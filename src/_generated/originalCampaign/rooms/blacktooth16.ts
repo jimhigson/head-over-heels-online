@@ -7,18 +7,30 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth16",
   items: {
-    "baddie@0,7,0:Z1WWFt6": {
-      config: { activated: true, which: "bubble-robot" },
+    "baddie@0,7,0:5k1cB": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubble-robot",
+      },
       position: { x: 0, y: 7, z: 0 },
       type: "baddie",
     },
-    "baddie@7,0,0:Z1WWFt6": {
-      config: { activated: true, which: "bubble-robot" },
+    "baddie@7,0,0:5k1cB": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubble-robot",
+      },
       position: { x: 7, y: 0, z: 0 },
       type: "baddie",
     },
-    "baddie@7,7,0:Z1WWFt6": {
-      config: { activated: true, which: "bubble-robot" },
+    "baddie@7,7,0:5k1cB": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubble-robot",
+      },
       position: { x: 7, y: 7, z: 0 },
       type: "baddie",
     },

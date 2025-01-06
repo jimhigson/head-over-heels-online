@@ -7,23 +7,39 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari21",
   items: {
-    "baddie@2,5,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@2,5,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 2, y: 5, z: 0 },
       type: "baddie",
     },
-    "baddie@3,2,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@3,2,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 3, y: 2, z: 0 },
       type: "baddie",
     },
-    "baddie@4,4,0:Z1rA6U9": {
-      config: { activated: true, which: "dalek" },
+    "baddie@4,4,0:Z2awALk": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
       position: { x: 4, y: 4, z: 0 },
       type: "baddie",
     },
-    "baddie@5,4,0:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@5,4,0:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 5, y: 4, z: 0 },
       type: "baddie",
     },
