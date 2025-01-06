@@ -7,28 +7,56 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase2",
   items: {
-    "baddie@0,5,0:Z1rA6U9": {
-      config: { activated: true, which: "dalek" },
+    "baddie@0,5,0:Z2awALk": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
       position: { x: 0, y: 5, z: 0 },
       type: "baddie",
     },
-    "baddie@7,1,1:1rpQ64": {
-      config: { activated: false, startDirection: "right", which: "cyberman" },
+    "baddie@7,1,1:1CHVMy": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 7, y: 1, z: 1 },
       type: "baddie",
     },
-    "baddie@7,2,1:1rpQ64": {
-      config: { activated: false, startDirection: "right", which: "cyberman" },
+    "baddie@7,2,1:1CHVMy": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 7, y: 2, z: 1 },
       type: "baddie",
     },
-    "baddie@7,3,1:1rpQ64": {
-      config: { activated: false, startDirection: "right", which: "cyberman" },
+    "baddie@7,3,1:1CHVMy": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 7, y: 3, z: 1 },
       type: "baddie",
     },
-    "baddie@7,4,1:1rpQ64": {
-      config: { activated: false, startDirection: "right", which: "cyberman" },
+    "baddie@7,4,1:1CHVMy": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 7, y: 4, z: 1 },
       type: "baddie",
     },

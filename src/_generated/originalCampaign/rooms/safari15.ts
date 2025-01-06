@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari15",
   items: {
-    "baddie@0,6,0:ZiWCzO": {
+    "baddie@0,6,0:Z1Bw2gF": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
         which: "american-football-head",
@@ -17,9 +18,10 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "baddie",
     },
-    "baddie@1,4,0:ZiWCzO": {
+    "baddie@1,4,0:Z1Bw2gF": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
         which: "american-football-head",
@@ -27,14 +29,19 @@ export const room = inferRoomJson({
       position: { x: 1, y: 4, z: 0 },
       type: "baddie",
     },
-    "baddie@2,12,1:Z1rA6U9": {
-      config: { activated: true, which: "dalek" },
+    "baddie@2,12,1:Z2awALk": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
       position: { x: 2, y: 12, z: 1 },
       type: "baddie",
     },
-    "baddie@2,2,0:ZiWCzO": {
+    "baddie@2,2,0:Z1Bw2gF": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
         which: "american-football-head",

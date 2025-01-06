@@ -7,33 +7,69 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase22topenitentiary",
   items: {
-    "baddie@0,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@0,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 0, y: 0, z: 1 },
       type: "baddie",
     },
-    "baddie@1,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@1,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 1, y: 0, z: 1 },
       type: "baddie",
     },
-    "baddie@2,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@2,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 2, y: 0, z: 1 },
       type: "baddie",
     },
-    "baddie@3,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@3,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 3, y: 0, z: 1 },
       type: "baddie",
     },
-    "baddie@4,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@4,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 4, y: 0, z: 1 },
       type: "baddie",
     },
-    "baddie@5,0,1:Z1xC3bd": {
-      config: { activated: false, startDirection: "away", which: "cyberman" },
+    "baddie@5,0,1:ZfJWcr": {
+      config: {
+        activated: false,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+        wakes: false,
+        which: "cyberman",
+      },
       position: { x: 5, y: 0, z: 1 },
       type: "baddie",
     },

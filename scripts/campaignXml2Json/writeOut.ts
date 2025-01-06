@@ -21,7 +21,7 @@ function convertMultilineToTemplate(jsonString: string): string {
       .replace(/\\\\/g, "\\") // Unescape backslashes
       .replace(/\\n/g, "\n"); // Convert escaped \n to real newlines
 
-    // Wrap in backticks for JavaScript template literal
+    // Wrap in backticks for multi-line JavaScript template literals
     return `\`${unescapedContent.replace(/`/g, "\\`")}\``; // Escape backticks
   });
 }

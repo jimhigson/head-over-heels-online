@@ -9,6 +9,20 @@ import type {
 
 export type BlockStyle = "organic" | "artificial" | "tower";
 
+export type JsonMovement =
+  | "free"
+  | "unmoving"
+  | "clockwise"
+  | "back-forth"
+  | "towards-on-shortest-axis-xy4"
+  | "towards-when-in-square-xy8"
+  | "towards-tripped-on-axis-xy4"
+  | "patrol-randomly-diagonal"
+  | "patrol-randomly-xy4"
+  | "patrol-randomly-xy8";
+// to validate a union as a subset of JsonMovement
+type Movements<U extends JsonMovement> = U;
+
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
 export type ItemConfigMap<
@@ -91,27 +105,67 @@ export type ItemConfigMap<
     bottom: number;
   };
   bubbles: { style: "fish" | "taupe" | "white" };
-  baddie: { activated: boolean } & (
+  baddie: {
+    activated: boolean;
+  } & (
     | {
-        which:
-          | "dalek"
-          | "helicopter-bug"
-          | "headless-base"
-          | "monkey"
-          | "elephant"
-          | "elephant-head"
-          | "flying-ball"
-          | "bubble-robot"
-          | "computer-bot";
+        which: "flying-ball" | "emperor";
+        movement: Movements<"towards-when-in-square-xy8">;
       }
     | {
-        // with a starting direction
-        which: "turtle" | "cyberman";
+        which: "elephant";
+        movement: Movements<"patrol-randomly-xy4">;
+      }
+    | {
+        which: "elephant-head";
+        movement: Movements<"unmoving">;
+      }
+    | {
+        which: "computer-bot" | "monkey";
+        movement: Movements<
+          "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
+        >;
+      }
+    | {
+        which: "bubble-robot";
+        movement: Movements<"patrol-randomly-xy8">;
+      }
+    | {
+        which: "dalek";
+        movement: Movements<"patrol-randomly-diagonal">;
+      }
+    | {
+        which: "headless-base";
+        movement: Movements<"towards-tripped-on-axis-xy4">;
+      }
+    | {
+        which: "helicopter-bug";
+        movement: Movements<
+          "patrol-randomly-xy8" | "towards-when-in-square-xy8"
+        >;
+      }
+    | {
+        which: "turtle";
+        movement: Movements<"clockwise">;
         startDirection: Direction4Xy;
       }
     | {
-        // with a starting direction
+        which: "cyberman";
+        activated: true;
+        movement: Movements<"towards-on-shortest-axis-xy4">;
+        startDirection: Direction4Xy;
+      }
+    | {
+        which: "cyberman";
+        activated: false;
+        movement: Movements<"towards-on-shortest-axis-xy4">;
+        // if true, the cyberman can wake up from charging
+        wakes: boolean;
+        startDirection: Direction4Xy;
+      }
+    | {
         which: "american-football-head";
+        movement: Movements<"clockwise" | "back-forth">;
         startDirection: Direction4Xy;
         style: "greenAndPink" | "starsAndStripes";
       }
@@ -121,7 +175,15 @@ export type ItemConfigMap<
   };
   movableBlock: {
     style: "anvil" | "sandwich";
-  };
+  } & (
+    | {
+        movement: Movements<"free">;
+      }
+    | {
+        movement: Movements<"clockwise" | "back-forth">;
+        startDirection: Direction4Xy;
+      }
+  );
   slidingBlock: {
     style: "puck";
   };
@@ -145,3 +207,11 @@ export type ItemConfigMap<
     controls: ItemId[];
   };
 };
+
+export type UnknownItemConfigMap = ItemConfigMap<PlanetName, string, string>;
+
+export type AllowedBaddieMovements<
+  Which extends UnknownItemConfigMap["baddie"]["which"],
+> = (UnknownItemConfigMap["baddie"] & {
+  which: Which;
+})["movement"];

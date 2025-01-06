@@ -7,8 +7,12 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase16",
   items: {
-    "baddie@11,0,0:ZjbVd9": {
-      config: { activated: true, which: "computer-bot" },
+    "baddie@11,0,0:Gssin": {
+      config: {
+        activated: true,
+        movement: "towards-on-shortest-axis-xy4",
+        which: "computer-bot",
+      },
       position: { x: 11, y: 0, z: 0 },
       type: "baddie",
     },

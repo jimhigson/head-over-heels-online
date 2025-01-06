@@ -7,18 +7,31 @@ export const room = inferRoomJson({
   floor: "market",
   id: "blacktooth50market",
   items: {
-    "baddie@0,0,0:ZVblgD": {
-      config: { activated: true, which: "helicopter-bug" },
+    "baddie@0,0,0:ZazYQL": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "helicopter-bug",
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "baddie",
     },
-    "baddie@4,7,0:zoxNb": {
-      config: { activated: true, startDirection: "towards", which: "cyberman" },
+    "baddie@4,7,0:1wBzeB": {
+      config: {
+        activated: true,
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "towards",
+        which: "cyberman",
+      },
       position: { x: 4, y: 7, z: 0 },
       type: "baddie",
     },
-    "baddie@7,0,0:ZVblgD": {
-      config: { activated: true, which: "helicopter-bug" },
+    "baddie@7,0,0:ZazYQL": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "helicopter-bug",
+      },
       position: { x: 7, y: 0, z: 0 },
       type: "baddie",
     },

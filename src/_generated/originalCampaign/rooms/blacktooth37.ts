@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth37",
   items: {
-    "baddie@0,5,0:Z2jz06D": {
+    "baddie@0,5,0:1LpDOD": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
         which: "american-football-head",
@@ -17,9 +18,10 @@ export const room = inferRoomJson({
       position: { x: 0, y: 5, z: 0 },
       type: "baddie",
     },
-    "baddie@2,4,0:ZiWCzO": {
+    "baddie@2,4,0:Z1Bw2gF": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
         which: "american-football-head",
@@ -27,9 +29,10 @@ export const room = inferRoomJson({
       position: { x: 2, y: 4, z: 0 },
       type: "baddie",
     },
-    "baddie@3,3,0:Z2jz06D": {
+    "baddie@3,3,0:1LpDOD": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
         which: "american-football-head",
@@ -55,15 +58,15 @@ export const room = inferRoomJson({
     "switch@0,7,0:V4krG": {
       config: {
         activates: {
-          "baddie@0,5,0:Z2jz06D": {
+          "baddie@0,5,0:1LpDOD": {
             left: { activated: true },
             right: { activated: false },
           },
-          "baddie@2,4,0:ZiWCzO": {
+          "baddie@2,4,0:Z1Bw2gF": {
             left: { activated: true },
             right: { activated: false },
           },
-          "baddie@3,3,0:Z2jz06D": {
+          "baddie@3,3,0:1LpDOD": {
             left: { activated: true },
             right: { activated: false },
           },

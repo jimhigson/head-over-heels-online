@@ -7,8 +7,12 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari33",
   items: {
-    "baddie@4,4,0:Z2qiM0z": {
-      config: { activated: true, which: "elephant" },
+    "baddie@4,4,0:QyAMt": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy4",
+        which: "elephant",
+      },
       position: { x: 4, y: 4, z: 0 },
       type: "baddie",
     },
@@ -42,8 +46,8 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 5 },
       type: "door",
     },
-    "movableBlock@1,1,0:Z15GVb5": {
-      config: { style: "anvil" },
+    "movableBlock@1,1,0:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
       position: { x: 1, y: 1, z: 0 },
       type: "movableBlock",
     },

@@ -72,13 +72,20 @@ export const listenForInput = ({
       return;
     }
 
+    let foundMapping = false;
     for (const action of keyToAction(keyAssignment, stdKey)) {
+      foundMapping = true;
       if (isDirectionAction(action)) {
         directionsPressed[action] = directionPressNumber++;
       } else {
         inputState[action] = true;
       }
     }
+
+    if (!foundMapping) {
+      console.log("no mapping for key: ", stdKey);
+    }
+
     updateDirection();
     onInputStateChange?.(inputState);
   };

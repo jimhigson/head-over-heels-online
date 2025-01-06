@@ -59,7 +59,13 @@ const colourRooms = () => {
     },
     {
       type: "baddie",
-      config: { which: "cyberman", activated: false, startDirection: "away" },
+      config: {
+        which: "cyberman",
+        movement: "towards-on-shortest-axis-xy4",
+        activated: false,
+        wakes: false,
+        startDirection: "away",
+      },
       position: { x: 6, y: 0, z: 0 },
     },
   ];
@@ -253,32 +259,32 @@ const rooms = {
       // stack of items to test pushing stacks:
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 0 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 1 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 2 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 3 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 4 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 10, y: 7, z: 5 },
       },
       // to test disappearing barriers:
@@ -312,6 +318,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           activated: true,
           startDirection: "left",
           style: "starsAndStripes",
@@ -396,6 +403,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
           activated: true,
@@ -406,6 +414,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
           activated: true,
@@ -485,7 +494,12 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { which: "cyberman", activated: true, startDirection: "away" },
+        config: {
+          which: "cyberman",
+          movement: "towards-on-shortest-axis-xy4",
+          activated: true,
+          startDirection: "away",
+        },
         position: { x: 4, y: 8, z: 5 },
       },
       {
@@ -559,6 +573,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           startDirection: "right",
           style: "starsAndStripes",
           activated: true,
@@ -569,6 +584,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           startDirection: "right",
           style: "greenAndPink",
           activated: true,
@@ -579,6 +595,7 @@ const rooms = {
         type: "baddie",
         config: {
           which: "american-football-head",
+          movement: "back-forth",
           startDirection: "away",
           style: "starsAndStripes",
           activated: true,
@@ -589,6 +606,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "anvil",
+          movement: "free",
         },
         position: { x: 2, y: 6, z: 0 },
       },
@@ -596,6 +614,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "anvil",
+          movement: "free",
         },
         position: { x: 2, y: 9, z: 0 },
       },
@@ -603,6 +622,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "anvil",
+          movement: "free",
         },
         position: { x: 1, y: 6, z: 0 },
       },
@@ -610,6 +630,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "sandwich",
+          movement: "free",
         },
         position: { x: 1, y: 6, z: 1 },
       },
@@ -617,6 +638,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "sandwich",
+          movement: "free",
         },
         position: { x: 1, y: 6, z: 2 },
       },
@@ -624,6 +646,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "sandwich",
+          movement: "free",
         },
         position: { x: 2, y: 6, z: 1 },
       },
@@ -631,6 +654,7 @@ const rooms = {
         type: "movableBlock",
         config: {
           style: "sandwich",
+          movement: "free",
         },
         position: { x: 2, y: 6, z: 2 },
       },
@@ -816,6 +840,7 @@ const rooms = {
         id: "t2",
         config: {
           which: "turtle",
+          movement: "clockwise",
           startDirection: "left",
           activated: true,
         },
@@ -826,6 +851,7 @@ const rooms = {
         id: "t1",
         config: {
           which: "turtle",
+          movement: "clockwise",
           startDirection: "towards",
           activated: false,
         },
@@ -920,12 +946,20 @@ const rooms = {
       },
       {
         type: "baddie",
-        config: { activated: true, which: "dalek" },
+        config: {
+          activated: true,
+          which: "dalek",
+          movement: "patrol-randomly-diagonal",
+        },
         position: { x: 1, y: 1, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "bubble-robot" },
+        config: {
+          activated: true,
+          which: "bubble-robot",
+          movement: "patrol-randomly-xy8",
+        },
         position: { x: 1, y: 10, z: 0 },
       },
 
@@ -934,6 +968,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          movement: "back-forth",
           style: "greenAndPink",
           startDirection: "away",
         },
@@ -944,6 +979,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          movement: "back-forth",
           style: "starsAndStripes",
           startDirection: "right",
         },
@@ -954,6 +990,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          movement: "back-forth",
           style: "greenAndPink",
           startDirection: "left",
         },
@@ -964,6 +1001,7 @@ const rooms = {
         config: {
           activated: true,
           which: "american-football-head",
+          movement: "back-forth",
 
           style: "starsAndStripes",
           startDirection: "towards",
@@ -975,6 +1013,7 @@ const rooms = {
         config: {
           activated: true,
           which: "cyberman",
+          movement: "towards-on-shortest-axis-xy4",
           startDirection: "towards",
         },
         position: { x: 6, y: 7, z: 0 },
@@ -993,54 +1032,104 @@ const rooms = {
         type: "baddie",
         config: {
           activated: false,
+          wakes: false,
           which: "cyberman",
+          movement: "towards-on-shortest-axis-xy4",
           startDirection: "towards",
         },
         position: { x: 4, y: 10, z: 1 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "turtle", startDirection: "away" },
+        config: {
+          activated: true,
+          which: "turtle",
+          movement: "clockwise",
+          startDirection: "away",
+        },
         position: { x: 0, y: 8, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "turtle", startDirection: "towards" },
+        config: {
+          activated: true,
+          which: "turtle",
+          movement: "clockwise",
+          startDirection: "towards",
+        },
         position: { x: 0, y: 6, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "turtle", startDirection: "left" },
+        config: {
+          activated: true,
+          which: "turtle",
+          movement: "clockwise",
+          startDirection: "left",
+        },
         position: { x: 0, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "helicopter-bug" },
+        config: {
+          activated: true,
+          which: "helicopter-bug",
+          movement: "patrol-randomly-xy8",
+        },
         position: { x: 0, y: 1, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "headless-base" },
+        config: {
+          activated: true,
+          which: "headless-base",
+          movement: "towards-tripped-on-axis-xy4",
+        },
         position: { x: 10, y: 4, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "monkey" },
+        config: {
+          activated: true,
+          which: "monkey",
+          movement: "patrol-randomly-xy4",
+        },
         position: { x: 9, y: 2, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "elephant" },
+        config: {
+          activated: true,
+          which: "elephant",
+          movement: "patrol-randomly-xy4",
+        },
         position: { x: 9, y: 10, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "flying-ball" },
+        config: {
+          activated: true,
+          which: "flying-ball",
+          movement: "towards-when-in-square-xy8",
+        },
         position: { x: 0, y: 10, z: 0 },
       },
       {
         type: "baddie",
-        config: { activated: true, which: "computer-bot" },
+        config: {
+          activated: true,
+          which: "emperor",
+          movement: "towards-when-in-square-xy8",
+        },
+        position: { x: 0, y: 10, z: 4 },
+      },
+      {
+        type: "baddie",
+        config: {
+          activated: true,
+          which: "computer-bot",
+          movement: "patrol-randomly-xy4",
+        },
         position: { x: 6, y: 0, z: 0 },
       },
       {
@@ -1080,7 +1169,7 @@ const rooms = {
       },
       {
         type: "movableBlock",
-        config: { style: "anvil" },
+        config: { style: "anvil", movement: "free" },
         position: { x: 9, y: 7, z: 0 },
       },
       {
@@ -1095,7 +1184,7 @@ const rooms = {
       },
       {
         type: "movableBlock",
-        config: { style: "sandwich" },
+        config: { style: "sandwich", movement: "free" },
         position: { x: 10, y: 9, z: 0 },
       },
       {

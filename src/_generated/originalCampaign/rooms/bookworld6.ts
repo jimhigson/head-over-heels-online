@@ -37,13 +37,13 @@ export const room = inferRoomJson({
       position: { x: 4, y: 3, z: 3 },
       type: "door",
     },
-    "movableBlock@2,4,0:Z15GVb5": {
-      config: { style: "anvil" },
+    "movableBlock@2,4,0:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
       position: { x: 2, y: 4, z: 0 },
       type: "movableBlock",
     },
-    "movableBlock@2,5,0:Z15GVb5": {
-      config: { style: "anvil" },
+    "movableBlock@2,5,0:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
       position: { x: 2, y: 5, z: 0 },
       type: "movableBlock",
     },

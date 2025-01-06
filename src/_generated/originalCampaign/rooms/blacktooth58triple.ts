@@ -7,13 +7,21 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth58triple",
   items: {
-    "baddie@4,9,1:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@4,9,1:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 4, y: 9, z: 1 },
       type: "baddie",
     },
-    "baddie@7,3,1:2dbvGC": {
-      config: { activated: true, which: "headless-base" },
+    "baddie@7,3,1:Z1Gv2Js": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "headless-base",
+      },
       position: { x: 7, y: 3, z: 1 },
       type: "baddie",
     },

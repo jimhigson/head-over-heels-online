@@ -6,6 +6,7 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { Direction8Xy } from "@/utils/vectors/vectors";
 import {
+  directions4Xy,
   directions8Xy,
   directionsXyDiagonal,
   distanceXySquared,
@@ -31,7 +32,7 @@ const notWalking = Object.freeze({
   vels: { walking: originXyz },
 } as const satisfies MechanicResult<"baddie", string>);
 
-export const rushTowardsPlayerInCardinalDirections = <RoomId extends string>(
+export const rushTowardPlayerXy4 = <RoomId extends string>(
   {
     state: {
       position,
@@ -236,59 +237,6 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
     : unitMechanicalResult;
 };
 
-/**
- * 'ai' is maybe a bit much :-)
- */
-export const tickBaddie = <RoomId extends string>(
-  item: ItemInPlay<"baddie", PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
-  gameState: GameState<RoomId>,
-  deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
-  if (!item.state.activated || item.state.busyLickingDoughnutsOffFace)
-    return notWalking;
-
-  switch (item.config.which) {
-    case "dalek": {
-      // randomly move in 4 diagonals::
-      return randomlyChangeDirection(
-        item,
-        room,
-        gameState,
-        deltaMS,
-        directionsXyDiagonal,
-      );
-    }
-    case "bubble-robot":
-    case "helicopter-bug": {
-      // randomly move in 8 directions:
-      return randomlyChangeDirection(
-        item,
-        room,
-        gameState,
-        deltaMS,
-        directions8Xy,
-      );
-    }
-    case "headless-base":
-      return rushTowardsPlayerInCardinalDirections(
-        item,
-        room,
-        gameState,
-        deltaMS,
-      );
-    case "cyberman":
-      return walkOnShortestAisTowardsPlayer(item, room, gameState, deltaMS);
-
-    case "turtle":
-    case "american-football-head": {
-      return keepWalkingInSameDirection(item, room, gameState, deltaMS);
-    }
-    default:
-      return notWalking;
-  }
-};
-
 const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   {
     movingItem: baddieItem,
@@ -381,6 +329,68 @@ const handleBaddieTouchingItemByTurningToOppositeDirection = <
   baddieItem.state.durationOfTouch = 0;
 };
 
+/**
+ * 'ai' is maybe a bit much :-)
+ */
+export const tickBaddie = <RoomId extends string>(
+  item: ItemInPlay<"baddie", PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+): MechanicResult<"baddie", RoomId> => {
+  if (!item.state.activated || item.state.busyLickingDoughnutsOffFace)
+    return notWalking;
+
+  switch (item.config.movement) {
+    case "patrol-randomly-diagonal": {
+      return randomlyChangeDirection(
+        item,
+        room,
+        gameState,
+        deltaMS,
+        directionsXyDiagonal,
+      );
+    }
+    case "patrol-randomly-xy8": {
+      return randomlyChangeDirection(
+        item,
+        room,
+        gameState,
+        deltaMS,
+        directions8Xy,
+      );
+    }
+    case "patrol-randomly-xy4": {
+      return randomlyChangeDirection(
+        item,
+        room,
+        gameState,
+        deltaMS,
+        directions4Xy,
+      );
+    }
+    case "towards-tripped-on-axis-xy4":
+      return rushTowardPlayerXy4(item, room, gameState, deltaMS);
+    case "towards-on-shortest-axis-xy4":
+      return walkOnShortestAisTowardsPlayer(item, room, gameState, deltaMS);
+
+    case "back-forth":
+    case "clockwise": {
+      return keepWalkingInSameDirection(item, room, gameState, deltaMS);
+    }
+    case "unmoving":
+      return notWalking;
+
+    case "towards-when-in-square-xy8":
+      // TODO!
+      return notWalking;
+
+    default:
+      item.config satisfies never;
+      throw new Error("this should be unreachable");
+  }
+};
+
 export const handleBaddieTouchingItem = <RoomId extends string>(
   e: ItemTouchEventByItemType<RoomId, "baddie">,
 ) => {
@@ -389,22 +399,32 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
   //eg, baddies shouldn't change direction on touching a stopAutowalk item:
   if (!isSolid(touchedItem)) return;
 
-  switch (baddieItem.config.which) {
-    case "dalek":
-    case "helicopter-bug":
-    case "bubble-robot":
-    case "american-football-head": {
+  switch (baddieItem.config.movement) {
+    case "back-forth":
+    case "patrol-randomly-diagonal":
+    case "patrol-randomly-xy4":
+    case "patrol-randomly-xy8": {
       handleBaddieTouchingItemByTurningToOppositeDirection(e, {
         touchDurationBeforeTurn: 150,
       });
       break;
     }
-    case "headless-base":
+    case "towards-tripped-on-axis-xy4":
       handleBaddieTouchingItemByStopping(e);
       break;
-    case "turtle":
+    case "clockwise":
       handleBaddieTouchingItemByTurningClockwise(e, {
         touchDurationBeforeTurn: 150,
       });
+      break;
+    case "towards-on-shortest-axis-xy4":
+    case "towards-when-in-square-xy8":
+    case "unmoving":
+      // these don't need anything on touching:
+      return;
+
+    default:
+      baddieItem.config satisfies never;
+      throw new Error("this should be unreachable");
   }
 };

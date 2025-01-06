@@ -7,9 +7,10 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari37crown",
   items: {
-    "baddie@7,2,1:Z2jz06D": {
+    "baddie@7,2,1:1LpDOD": {
       config: {
         activated: true,
+        movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
         which: "american-football-head",
@@ -152,13 +153,17 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "movableBlock@0,7,6:Z15GVb5": {
-      config: { style: "anvil" },
+    "movableBlock@0,7,6:Z1lxgK4": {
+      config: {
+        movement: "clockwise",
+        startDirection: "right",
+        style: "anvil",
+      },
       position: { x: 0, y: 7, z: 6 },
       type: "movableBlock",
     },
-    "movableBlock@3,5,0:Z15GVb5": {
-      config: { style: "anvil" },
+    "movableBlock@3,5,0:1TpLUC": {
+      config: { movement: "free", style: "anvil" },
       position: { x: 3, y: 5, z: 0 },
       type: "movableBlock",
     },
