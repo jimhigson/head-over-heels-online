@@ -3,7 +3,7 @@ import { isKey } from "./keys";
 import { entries, objectEntriesIter } from "@/utils/entries";
 import type { InputState } from "./InputState";
 import { type KeyAssignment, type Action, booleanActions } from "./InputState";
-import type { Direction4Xy } from "@/utils/vectors/vectors";
+import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
@@ -11,7 +11,7 @@ import { unitVectors } from "@/utils/vectors/unitVectors";
 function* keyToAction(
   keyAssignment: KeyAssignment,
   pressedKey: Key,
-): Generator<Action | Direction4Xy> {
+): Generator<Action | DirectionXy4> {
   for (const [action, assignedKeys] of entries(keyAssignment)) {
     if (assignedKeys.includes(pressedKey)) {
       yield action;
@@ -22,8 +22,8 @@ const standardiseCase = (k: string): string =>
   k.length === 1 ? k.toUpperCase() : k;
 
 const isDirectionAction = (
-  input: Action | Direction4Xy,
-): input is Direction4Xy =>
+  input: Action | DirectionXy4,
+): input is DirectionXy4 =>
   input === "away" ||
   input === "towards" ||
   input === "left" ||
@@ -42,11 +42,11 @@ export const listenForInput = ({
 }) => {
   let directionPressNumber = 0;
   // map the direction key to the order of its press, if it is currently being pressed
-  const directionsPressed: Partial<Record<Direction4Xy, number>> = {};
+  const directionsPressed: Partial<Record<DirectionXy4, number>> = {};
 
   const updateDirection = (): void => {
     let mostRecentDirectionPressNumber = -1;
-    let mostRecentDirection: Direction4Xy | undefined = undefined;
+    let mostRecentDirection: DirectionXy4 | undefined = undefined;
     // get only the most recently pressed direction:
     for (const [iDir, iPressNumber] of objectEntriesIter(directionsPressed)) {
       if (iPressNumber > mostRecentDirectionPressNumber) {

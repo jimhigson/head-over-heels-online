@@ -13,7 +13,7 @@ import {
   axesXy,
   originXy,
   perpendicularAxisXy,
-  type Direction4Xy,
+  type DirectionXy4,
 } from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
@@ -22,7 +22,7 @@ import { iterate } from "@/utils/iterate";
 import type { UnknownRoomState } from "@/model/modelTypes";
 import { iterateToContainer } from "@/game/iterateToContainer";
 
-export type SidesWithDoors = Partial<Record<Direction4Xy, true>>;
+export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
 function* generateFloorCutOffs(
   room: UnknownRoomState,

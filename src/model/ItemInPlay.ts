@@ -1,6 +1,6 @@
 import type { FreeItem } from "@/game/physics/itemPredicates";
 import type { PlanetName } from "../sprites/planets";
-import type { Aabb, Direction4Xy, Xyz } from "../utils/vectors/vectors";
+import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
@@ -34,7 +34,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     direction: Xyz;
   };
   conveyor: {
-    direction: Direction4Xy;
+    direction: DirectionXy4;
     count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;

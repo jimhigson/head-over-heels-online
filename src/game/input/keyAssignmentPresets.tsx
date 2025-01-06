@@ -2,27 +2,27 @@ import type { KeyAssignment } from "./InputState";
 import type { Key } from "./keys";
 
 const originalKeyAssignment: KeyAssignment = {
-  right: ["P"],
-  towards: ["A"],
-  left: ["O"],
-  away: ["Q"],
-  jump: [" ", "M"],
-  carry: ["C", "M"],
-  fire: ["N"],
-  swop: ["Enter", "S"],
+  right: ["P", "7"],
+  towards: ["A", "8"],
+  left: ["O", "6"],
+  away: ["Q", "9"],
+  jump: [" ", "M", "N", "B"],
+  carry: [" ", "Enter", "L", "K", "J"],
+  fire: ["Shift", "Z", "X", "C", "V"],
+  swop: ["S", "D", "F", "G"],
   hold: ["H"],
 };
 
 const updatedOriginal: KeyAssignment = {
-  right: ["ArrowRight", ...originalKeyAssignment.right],
-  towards: ["ArrowDown", ...originalKeyAssignment.towards],
-  left: ["ArrowLeft", ...originalKeyAssignment.left],
-  away: ["ArrowUp", ...originalKeyAssignment.away],
-  jump: ["`", ...originalKeyAssignment.jump],
-  carry: ["Shift", "`", ...originalKeyAssignment.carry],
-  fire: ["D", ...originalKeyAssignment.fire],
-  swop: originalKeyAssignment.swop,
-  hold: ["F8", ...originalKeyAssignment.hold],
+  right: ["ArrowRight"],
+  towards: ["ArrowDown"],
+  left: ["ArrowLeft"],
+  away: ["ArrowUp"],
+  jump: [" ", "`"],
+  carry: ["Shift", "`"],
+  fire: ["D"],
+  swop: ["Enter"],
+  hold: ["F8", "H"],
 };
 
 // left hand on wasd, right hand (optionally) on IOP

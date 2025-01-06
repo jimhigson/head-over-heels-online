@@ -1,5 +1,5 @@
 import type { UnknownJsonItem } from "../../src/model/json/JsonItem";
-import type { Direction4Xy } from "../../src/utils/vectors/vectors";
+import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
 import { perpendicularAxisXy, addXy } from "../../src/utils/vectors/vectors";
 import { autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
@@ -26,7 +26,7 @@ export const convertDoor = (
   const roomOnMap = map[roomName];
   const toRoom = convertRoomId(roomNameFromXmlFilename(roomOnMap[item.where]!));
 
-  const direction: Direction4Xy = convertDirection(item.where);
+  const direction: DirectionXy4 = convertDirection(item.where);
   // this is unreliable - east and west can be used interchangeably in the xml(!).
   // ie, foo-door-west will sometimes be used to go wast (!) - presumably because they look
   // similar
