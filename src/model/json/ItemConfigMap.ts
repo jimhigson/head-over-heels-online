@@ -1,5 +1,5 @@
 import type { PlanetName, Wall } from "@/sprites/planets";
-import type { Direction4Xy, Xyz, AxisXy } from "@/utils/vectors/vectors";
+import type { DirectionXy4, Xyz, AxisXy } from "@/utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
   DoorFrameConfig,
@@ -33,7 +33,7 @@ export type ItemConfigMap<
   door: {
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
-    direction: Direction4Xy;
+    direction: DirectionXy4;
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
@@ -47,7 +47,7 @@ export type ItemConfigMap<
   };
   wall: {
     style: Wall<P>;
-    side: Direction4Xy;
+    side: DirectionXy4;
   };
   teleporter: {
     toRoom: RoomId;
@@ -74,7 +74,7 @@ export type ItemConfigMap<
     style: "puck";
   };
   conveyor: {
-    direction: Direction4Xy;
+    direction: DirectionXy4;
   };
   pickup:
     | {
@@ -147,13 +147,13 @@ export type ItemConfigMap<
     | {
         which: "turtle";
         movement: Movements<"clockwise">;
-        startDirection: Direction4Xy;
+        startDirection: DirectionXy4;
       }
     | {
         which: "cyberman";
         activated: true;
         movement: Movements<"towards-on-shortest-axis-xy4">;
-        startDirection: Direction4Xy;
+        startDirection: DirectionXy4;
       }
     | {
         which: "cyberman";
@@ -161,12 +161,12 @@ export type ItemConfigMap<
         movement: Movements<"towards-on-shortest-axis-xy4">;
         // if true, the cyberman can wake up from charging
         wakes: boolean;
-        startDirection: Direction4Xy;
+        startDirection: DirectionXy4;
       }
     | {
         which: "american-football-head";
         movement: Movements<"clockwise" | "back-forth">;
-        startDirection: Direction4Xy;
+        startDirection: DirectionXy4;
         style: "greenAndPink" | "starsAndStripes";
       }
   );
@@ -181,7 +181,7 @@ export type ItemConfigMap<
       }
     | {
         movement: Movements<"clockwise" | "back-forth">;
-        startDirection: Direction4Xy;
+        startDirection: DirectionXy4;
       }
   );
   slidingBlock: {

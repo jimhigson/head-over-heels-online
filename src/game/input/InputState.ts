@@ -1,7 +1,7 @@
 import { fromAllEntries } from "@/utils/entries";
 import type { Key } from "./keys";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { type Direction4Xy } from "@/utils/vectors/vectors";
+import { type DirectionXy4 } from "@/utils/vectors/vectors";
 
 export const booleanActions = [
   "jump",
@@ -13,7 +13,7 @@ export const booleanActions = [
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
-export type KeyAssignment = Record<Action | Direction4Xy, Key[]>;
+export type KeyAssignment = Record<Action | DirectionXy4, Key[]>;
 
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {

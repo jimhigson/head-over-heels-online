@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 import type { PlanetName } from "../../sprites/planets";
-import type { Direction4Xy, Xyz } from "../../utils/vectors/vectors";
+import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { ItemConfigMap } from "./ItemConfigMap";
 
 export type JsonItemType =
@@ -50,7 +50,7 @@ export const doorIsInHiddenWall = ({
   (direction === "towards" && position.y === 0);
 
 export type DoorFrameConfig<RoomId extends string> = {
-  direction: Direction4Xy;
+  direction: DirectionXy4;
   inHiddenWall: boolean;
   toRoom: RoomId;
 
@@ -58,7 +58,7 @@ export type DoorFrameConfig<RoomId extends string> = {
   part: "near" | "far" | "top";
 };
 export type DoorLegsConfig = {
-  direction: Direction4Xy;
+  direction: DirectionXy4;
   inHiddenWall: boolean;
   // equal to the z of the door
   height: number;

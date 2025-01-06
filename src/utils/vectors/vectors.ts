@@ -1,5 +1,5 @@
-export const directions4Xy = ["away", "towards", "left", "right"] as const;
-export type Direction4Xy = (typeof directions4Xy)[number];
+export const directionsXy4 = ["away", "towards", "left", "right"] as const;
+export type DirectionXy4 = (typeof directionsXy4)[number];
 
 export const directionsXyDiagonal = [
   "awayRight",
@@ -11,10 +11,10 @@ export const directionsXyDiagonal = [
 export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
 
 export const directions8Xy = [
-  ...directions4Xy,
+  ...directionsXy4,
   ...directionsXyDiagonal,
 ] as const;
-export type Direction8Xy = (typeof directions8Xy)[number];
+export type DirectionXy8 = (typeof directions8Xy)[number];
 
 // prettier-ignore
 type Matrix3x3 = [
@@ -23,10 +23,10 @@ type Matrix3x3 = [
   number, number, number, // Row 3
 ];
 
-export const directionAxis = (direction: Direction4Xy): AxisXy =>
+export const directionAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
-export const oppositeDirection = (direction: Direction4Xy): Direction4Xy =>
+export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
   direction === "away" ? "towards"
   : direction === "towards" ? "away"
   : direction === "left" ? "right"
@@ -35,12 +35,12 @@ export const oppositeDirection = (direction: Direction4Xy): Direction4Xy =>
 /**
  * doors sit along the axis perpendicular to their direction
  */
-export const doorAlongAxis = (doorDirection: Direction4Xy): AxisXy =>
+export const doorAlongAxis = (doorDirection: DirectionXy4): AxisXy =>
   perpendicularAxisXy(directionAxis(doorDirection));
 
 export type DirectionZ = "down" | "up";
-export type Direction4Xyz = Direction4Xy | DirectionZ;
-export type Direction8Xyz = Direction8Xy | DirectionZ;
+export type Direction4Xyz = DirectionXy4 | DirectionZ;
+export type Direction8Xyz = DirectionXy8 | DirectionZ;
 
 export type Xy = {
   x: number;
@@ -183,7 +183,7 @@ export const xyOnlyMatrix : Matrix3x3 = [
   0, 0, 0, // Row 3
 ];
 
-export const vectorClosestDirectionXy4 = ({ x, y }: Xy): Direction4Xy => {
+export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
   if (y > x) {
     if (y > -x) {
       return "away";
@@ -199,9 +199,34 @@ export const vectorClosestDirectionXy4 = ({ x, y }: Xy): Direction4Xy => {
   }
 };
 
-export const distanceXySquared = (
+const directionsXy8Octants: DirectionXy8[] = [
+  "right",
+  "rightTowards",
+  "towards",
+  "towardsLeft",
+  "left",
+  "leftAway",
+  "away",
+  "awayRight",
+];
+
+export const vectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 => {
+  const angle = Math.atan2(-y, x); // Flip the y-axis for angle calculation
+  const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
+
+  return directionsXy8Octants[octant];
+};
+
+export const distanceSquaredXy = (
   { x: x1, y: y1 }: Xyz,
   { x: x2, y: y2 }: Xyz,
 ) => {
   return Math.abs(x2 - x1) ** 2 + Math.abs(y2 - y1) ** 2;
+};
+
+export const manhattanDistanceXy = (
+  { x: x1, y: y1 }: Xyz,
+  { x: x2, y: y2 }: Xyz,
+) => {
+  return Math.abs(x2 - x1) + Math.abs(y2 - y1);
 };

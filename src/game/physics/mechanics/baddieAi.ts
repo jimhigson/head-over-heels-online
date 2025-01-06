@@ -4,12 +4,12 @@ import type { GameState } from "@/game/gameState/GameState";
 import type { PlanetName } from "@/sprites/planets";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { Direction8Xy } from "@/utils/vectors/vectors";
+import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
 import {
-  directions4Xy,
+  directionsXy4,
   directions8Xy,
   directionsXyDiagonal,
-  distanceXySquared,
+  distanceSquaredXy,
   originXy,
   originXyz,
   perpendicularAxisXy,
@@ -18,11 +18,13 @@ import {
   unitVector,
   xyEqual,
   xyzEqual,
+  lengthXy,
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
-import type { RoomState } from "@/model/modelTypes";
+import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { ItemTouchEventByItemType } from "../handleTouch/ItemTouchEvent";
 import { isSolid } from "../itemPredicates";
+import { blockSizePx } from "@/sprites/spritePivots";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -91,36 +93,47 @@ export const rushTowardPlayerXy4 = <RoomId extends string>(
   };
 };
 
-export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
-  { state: { position, standingOn } }: ItemInPlay<"baddie", PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
-  _gameState: GameState<RoomId>,
-  _deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
-  const speed = moveSpeedPixPerMs.cyberman;
-
-  if (standingOn === null) {
-    return notWalking;
-  }
-
+const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
   // find closest player in the room:
   const {
     items: { head: headInRoom, heels: heelsInRoom },
   } = room;
+
+  if (room.items.headOverHeels !== undefined) {
+    return room.items.headOverHeels;
+  }
+
   const headDistance =
     headInRoom === undefined ? undefined : (
-      distanceXySquared(headInRoom.state.position, position)
+      distanceSquaredXy(headInRoom.state.position, position)
     );
   const heelsDistance =
     heelsInRoom === undefined ? undefined : (
-      distanceXySquared(heelsInRoom.state.position, position)
+      distanceSquaredXy(heelsInRoom.state.position, position)
     );
 
-  const closestPlayable =
+  return (
     headDistance === undefined ? heelsInRoom
     : heelsDistance === undefined ? headInRoom
     : headDistance < heelsDistance ? headInRoom
-    : heelsInRoom;
+    : heelsInRoom
+  );
+};
+
+export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
+  {
+    state: { position, standingOn },
+    config: { which },
+  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  _gameState: GameState<RoomId>,
+  _deltaMS: number,
+): MechanicResult<"baddie", RoomId> => {
+  if (standingOn === null) {
+    return notWalking;
+  }
+
+  const closestPlayable = findClosestPlayable(position, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
@@ -143,10 +156,74 @@ export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
       axisOfShortestDistance
     : perpendicularAxisXy(axisOfShortestDistance);
 
+  const speed = moveSpeedPixPerMs[which];
+
   const walkVelocity = {
     ...originXyz,
     [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
   };
+  return {
+    movementType: "vel",
+    vels: {
+      walking: walkVelocity,
+    },
+    stateDelta: {
+      facing: unitVector(walkVelocity),
+    },
+  };
+};
+
+export const walkTowardIfInSquare = <RoomId extends string>(
+  {
+    state: { position: baddiePosition, standingOn },
+    config: { which },
+  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  _gameState: GameState<RoomId>,
+  _deltaMS: number,
+): MechanicResult<"baddie", RoomId> => {
+  if (standingOn === null) {
+    return notWalking;
+  }
+
+  const closestPlayable = findClosestPlayable(baddiePosition, room);
+
+  if (closestPlayable === undefined) {
+    // no players in this room; stay still - not expecting this in normal play
+    return notWalking;
+  }
+
+  const playablePosition = closestPlayable.state.position;
+
+  const radius = blockSizePx.w * 3;
+  const inSquare =
+    baddiePosition.x > playablePosition.x - radius &&
+    baddiePosition.x < playablePosition.x + radius &&
+    baddiePosition.y > playablePosition.y - radius &&
+    baddiePosition.y < playablePosition.y + radius;
+
+  if (!inSquare) {
+    // outside of a 5x5 square around the baddie
+    return notWalking;
+  }
+
+  const vectorXyToClosestPlayer = subXy(
+    closestPlayable?.state.position,
+    baddiePosition,
+  );
+
+  const baddieSpeed = moveSpeedPixPerMs[which];
+  // we allow movement here in arbitrary directions, not in the xy8 directions.
+  // in the original game, the baddie would move at their normal speed in axis-aligned directions, and sqrt(2) times that
+  // in diagonal directions [ie, moving in vector (0,2) or (2,2) pixels in (x,y)]. Instead, I always move the average of these
+  // two to keep the end result about the same without any strange-looking speed changes:
+  const adjustedSpeed = (baddieSpeed * (1 + Math.sqrt(2))) / 2;
+
+  const walkVelocity = scaleXyz(
+    { ...vectorXyToClosestPlayer, z: 0 },
+    adjustedSpeed / lengthXy(vectorXyToClosestPlayer),
+  );
+
   return {
     movementType: "vel",
     vels: {
@@ -169,7 +246,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
-  directions: Readonly<Array<Direction8Xy>>,
+  directionNames: Readonly<Array<DirectionXy8>>,
 ): MechanicResult<"baddie", RoomId> => {
   if (standingOn === null) {
     return notWalking;
@@ -177,31 +254,23 @@ export const randomlyChangeDirection = <RoomId extends string>(
 
   const produceNewWalk =
     xyzEqual(walking, originXyz) || Math.random() < deltaMS / 1000;
-  const newWalking =
-    produceNewWalk ?
-      scaleXyz(
-        unitVectors[randomFromArray(directions)],
-        moveSpeedPixPerMs[which],
-      )
-    : walking;
 
-  /*walking: accelerateToSpeed({
-        acc: 0.000_1,
-        crossComponentFade: 0.000_1,
-        deltaMS,
-        maxSpeed: walkSpeedPixPerMs[which],
-        minVelocity: walkSpeedPixPerMs[which] / 4,
-        unitD:
-          produceNewWalk ?
-            unitVectors[randomFromArray(directions)]
-          : unitVector(walking),
-        vel: walking,
-      }),*/
+  if (!produceNewWalk) {
+    return unitMechanicalResult;
+  }
+
+  const newDirectionName = randomFromArray(directionNames);
 
   return {
     movementType: "vel",
     vels: {
-      walking: newWalking,
+      walking: scaleXyz(
+        unitVectors[newDirectionName],
+        moveSpeedPixPerMs[which],
+      ),
+    },
+    stateDelta: {
+      facing: unitVectors[newDirectionName],
     },
   };
 };
@@ -237,7 +306,38 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
     : unitMechanicalResult;
 };
 
-const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
+type TurnStrategy = "opposite" | "perpendicular" | "clockwise";
+
+const turnedWalkVector = (
+  walkVector: Xyz,
+  mtv: Xyz,
+  strategy: TurnStrategy,
+) => {
+  switch (strategy) {
+    case "opposite":
+      return {
+        x: mtv.x === 0 ? walkVector.x : -walkVector.x,
+        y: mtv.y === 0 ? walkVector.y : -walkVector.y,
+        z: 0,
+      };
+    case "clockwise":
+      return {
+        x: -walkVector.y,
+        y: walkVector.x,
+        z: 0,
+      };
+    case "perpendicular": {
+      const randomSign = randomFromArray([-1, 1]);
+      return {
+        x: mtv.x === 0 ? randomSign * walkVector.y : 0,
+        y: mtv.y === 0 ? randomSign * walkVector.x : 0,
+        z: 0,
+      };
+    }
+  }
+};
+
+const handleBaddieTouchingItemByTurning = <RoomId extends string>(
   {
     movingItem: baddieItem,
     touchedItem: {
@@ -246,7 +346,10 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
     },
     deltaMS,
   }: ItemTouchEventByItemType<RoomId, "baddie">,
-  { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
+  {
+    touchDurationBeforeTurn,
+    turnStrategy,
+  }: { touchDurationBeforeTurn: number; turnStrategy: TurnStrategy },
 ) => {
   const {
     state: {
@@ -268,11 +371,7 @@ const handleBaddieTouchingItemByTurningClockwise = <RoomId extends string>(
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) return;
 
-  const newWalking = {
-    x: -walking.y,
-    y: walking.x,
-    z: 0,
-  };
+  const newWalking = turnedWalkVector(walking, m, turnStrategy);
 
   baddieItem.state.vels.walking = newWalking;
   baddieItem.state.facing = unitVector(newWalking);
@@ -283,50 +382,6 @@ const handleBaddieTouchingItemByStopping = <RoomId extends string>({
   movingItem: baddieItem,
 }: ItemTouchEventByItemType<RoomId, "baddie">) => {
   baddieItem.state.vels.walking = originXyz;
-};
-
-const handleBaddieTouchingItemByTurningToOppositeDirection = <
-  RoomId extends string,
->(
-  {
-    movingItem: baddieItem,
-    touchedItem: {
-      state: { position: touchedItemPosition },
-      aabb: touchedItemAabb,
-    },
-    deltaMS,
-  }: ItemTouchEventByItemType<RoomId, "baddie">,
-  { touchDurationBeforeTurn }: { touchDurationBeforeTurn: number },
-) => {
-  const {
-    state: {
-      position,
-      vels: { walking },
-      activated,
-    },
-    aabb,
-  } = baddieItem;
-
-  if (!activated) return;
-
-  baddieItem.state.durationOfTouch += deltaMS;
-
-  if (baddieItem.state.durationOfTouch < touchDurationBeforeTurn) return;
-
-  const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
-
-  // purely vertical touches don't change direction:
-  if (m.x === 0 && m.y === 0) return;
-
-  const newWalking = {
-    x: m.x === 0 ? walking.x : -walking.x,
-    y: m.y === 0 ? walking.y : -walking.y,
-    z: 0,
-  };
-
-  baddieItem.state.vels.walking = newWalking;
-  baddieItem.state.facing = unitVector(newWalking);
-  baddieItem.state.durationOfTouch = 0;
 };
 
 /**
@@ -366,7 +421,7 @@ export const tickBaddie = <RoomId extends string>(
         room,
         gameState,
         deltaMS,
-        directions4Xy,
+        directionsXy4,
       );
     }
     case "towards-tripped-on-axis-xy4":
@@ -382,8 +437,7 @@ export const tickBaddie = <RoomId extends string>(
       return notWalking;
 
     case "towards-when-in-square-xy8":
-      // TODO!
-      return notWalking;
+      return walkTowardIfInSquare(item, room, gameState, deltaMS);
 
     default:
       item.config satisfies never;
@@ -400,22 +454,28 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
   if (!isSolid(touchedItem)) return;
 
   switch (baddieItem.config.movement) {
+    case "patrol-randomly-xy4":
+      handleBaddieTouchingItemByTurning(e, {
+        touchDurationBeforeTurn: 150,
+        turnStrategy: "perpendicular",
+      });
+      break;
     case "back-forth":
     case "patrol-randomly-diagonal":
-    case "patrol-randomly-xy4":
-    case "patrol-randomly-xy8": {
-      handleBaddieTouchingItemByTurningToOppositeDirection(e, {
+    case "patrol-randomly-xy8":
+      handleBaddieTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
+        turnStrategy: "opposite",
       });
-      break;
-    }
-    case "towards-tripped-on-axis-xy4":
-      handleBaddieTouchingItemByStopping(e);
       break;
     case "clockwise":
-      handleBaddieTouchingItemByTurningClockwise(e, {
+      handleBaddieTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
+        turnStrategy: "clockwise",
       });
+      break;
+    case "towards-tripped-on-axis-xy4":
+      handleBaddieTouchingItemByStopping(e);
       break;
     case "towards-on-shortest-axis-xy4":
     case "towards-when-in-square-xy8":

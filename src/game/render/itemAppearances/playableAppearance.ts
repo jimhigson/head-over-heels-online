@@ -13,7 +13,7 @@ import type {
 
 import {
   vectorClosestDirectionXy4,
-  type Direction4Xy,
+  type DirectionXy4,
 } from "@/utils/vectors/vectors";
 import { stackedSprites } from "./stackedSprites";
 import type {
@@ -34,7 +34,7 @@ const renderSprite = ({
 }: {
   name: IndividualCharacterName;
   action: PlayableActionState;
-  facingXy4: Direction4Xy;
+  facingXy4: DirectionXy4;
   teleporting: PlayableTeleportingState | null;
   highlighted: boolean;
   scaleFactor: number;

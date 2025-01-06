@@ -3706,12 +3706,12 @@
           "config": { "style": "spikes" },
           "position": { "x": 2, "y": 1, "z": 0 }
         },
-        "baddie@2,4,0:ZazYQL": {
+        "baddie@2,4,0:Z2v2gav": {
           "type": "baddie",
           "config": {
             "which": "helicopter-bug",
             "activated": true,
-            "movement": "patrol-randomly-xy8"
+            "movement": "towards-when-in-square-xy8"
           },
           "position": { "x": 2, "y": 4, "z": 0 }
         },
@@ -5067,12 +5067,12 @@
           "config": { "gives": "jumps" },
           "position": { "x": 5, "y": 1, "z": 3 }
         },
-        "baddie@4,1,0:ZazYQL": {
+        "baddie@4,1,0:Z2v2gav": {
           "type": "baddie",
           "config": {
             "which": "helicopter-bug",
             "activated": true,
-            "movement": "patrol-randomly-xy8"
+            "movement": "towards-when-in-square-xy8"
           },
           "position": { "x": 4, "y": 1, "z": 0 }
         },

@@ -16,7 +16,7 @@ import type { Xml2JsonItem, XmlItemBaddieBehaviour } from "./Xml2JsonItem";
 import { itemKey, keyItems } from "../../src/utils/keyItems";
 import type { UnknownJsonItem } from "../../src/model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
-import type { Direction4Xy } from "../../src/utils/vectors/vectors";
+import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
 import type {
   AllowedBaddieMovements,
   ItemConfigMap,
@@ -97,7 +97,7 @@ const convertItemsArray = (
 
 type ConvertItemParams = {
   xml2JsonRoom: Xml2JsonRoom;
-  doorMap: Partial<Record<Direction4Xy, true>>;
+  doorMap: Partial<Record<DirectionXy4, true>>;
   map: MapJson;
   roomName: string;
   xml2JsonItem: Xml2JsonItem;
@@ -506,16 +506,34 @@ const convertItem = ({
         position,
       };
 
-    case "helicopter-bug":
+    case "helicopter-bug": {
+      const movement =
+        (
+          xml2JsonItem.behavior ===
+          "behavior of random patroling in eight directions"
+        ) ?
+          "patrol-randomly-xy8"
+        : (
+          xml2JsonItem.behavior ===
+          "behavior of waiting hunter in eight directions"
+        ) ?
+          "towards-when-in-square-xy8"
+        : null;
+
+      if (movement === null) {
+        throw new Error("unknown helicopter-bug behaviour");
+      }
+
       return {
         type: "baddie",
         config: {
           which: "helicopter-bug",
           activated: true,
-          movement: "patrol-randomly-xy8",
+          movement,
         },
         position,
       };
+    }
 
     case "emperor":
     case "throne-guard":
