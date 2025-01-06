@@ -1121,7 +1121,7 @@ const rooms = {
           which: "emperor",
           movement: "towards-when-in-square-xy8",
         },
-        position: { x: 0, y: 10, z: 4 },
+        position: { x: 0, y: 14, z: 4 },
       },
       {
         type: "baddie",
