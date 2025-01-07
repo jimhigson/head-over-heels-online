@@ -7,52 +7,52 @@ export const room = inferRoomJson({
   floor: "none",
   id: "egyptus14",
   items: {
-    "block@2,7,1:95uHj": {
+    "block@2,7,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 7, z: 1 },
       type: "block",
     },
-    "block@3,7,1:95uHj": {
+    "block@3,7,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 7, z: 1 },
       type: "block",
     },
-    "block@4,7,1:95uHj": {
+    "block@4,7,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 7, z: 1 },
       type: "block",
     },
-    "block@7,0,0:95uHj": {
+    "block@7,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,0,4:95uHj": {
+    "block@7,0,4": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 0, z: 4 },
       type: "block",
     },
-    "block@7,0,6:95uHj": {
+    "block@7,0,6": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 0, z: 6 },
       type: "block",
     },
-    "block@7,1,7:95uHj": {
+    "block@7,1,7": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 1, z: 7 },
       type: "block",
     },
-    "block@7,3,2:95uHj": {
+    "block@7,3,2": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 3, z: 2 },
       type: "block",
     },
-    "door@3,8,3:Z1yI5tw": {
+    "door@3,8,3": {
       config: { direction: "away", toRoom: "egyptus18" },
       position: { x: 3, y: 8, z: 3 },
       type: "door",
     },
-    "lift@0,7,0:ZTwqnv": {
+    "lift@0,7,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 0, y: 7, z: 0 },
       type: "lift",

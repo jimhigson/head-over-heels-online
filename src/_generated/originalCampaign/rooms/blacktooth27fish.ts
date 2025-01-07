@@ -7,32 +7,32 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth27fish",
   items: {
-    "door@0,3,0:uMBGP": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "blacktooth28" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@1,0,0:Z1V82CQ": {
+    "door@1,0,0": {
       config: { direction: "towards", toRoom: "blacktooth26" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,3:xRpdj": {
+    "door@1,8,3": {
       config: { direction: "away", toRoom: "blacktooth29" },
       position: { x: 1, y: 8, z: 3 },
       type: "door",
     },
-    "movableBlock@2,3,0:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@2,3,0": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 2, y: 3, z: 0 },
       type: "movableBlock",
     },
-    "pickup@2,3,1:ZPJAGD": {
+    "pickup@2,3,1": {
       config: { gives: "reincarnation" },
       position: { x: 2, y: 3, z: 1 },
       type: "pickup",
     },
-    "portableBlock@0,0,0:Z1SKpmn": {
+    "portableBlock@0,0,0": {
       config: { style: "drum" },
       position: { x: 0, y: 0, z: 0 },
       type: "portableBlock",

@@ -3,10 +3,10 @@ import { readMapToJson, roomNameFromXmlFilename } from "./readToJson";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
 import { writeOut } from "./writeOut";
-import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
-import type { AnyRoomJson } from "../../src/model/modelTypes";
+import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { convertRoom } from "./convertRoom";
-import type { Shade, ZxSpectrumRoomHue } from "../../src/originalGame";
+import type { ZxSpectrumRoomHue, ZxSpectrumShade } from "../originalGame";
+import type { AnyRoomJson } from "@/model/RoomJson";
 
 export const map = await readMapToJson();
 
@@ -88,7 +88,7 @@ export const convertRoomColour = (color: string) => {
   const match = /([^.]*)(\.reduced)?/.exec(color)!;
   return {
     hue: match[1] as ZxSpectrumRoomHue,
-    shade: (match[2] === undefined ? "basic" : "dimmed") as Shade,
+    shade: (match[2] === undefined ? "basic" : "dimmed") as ZxSpectrumShade,
   };
 };
 

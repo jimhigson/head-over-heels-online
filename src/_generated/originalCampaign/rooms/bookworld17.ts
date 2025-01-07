@@ -7,30 +7,30 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld17",
   items: {
-    "baddie@0,3,0:Z2awALk": {
+    "door@8,2,4": {
+      config: { direction: "left", toRoom: "bookworld16" },
+      position: { x: 8, y: 2, z: 4 },
+      type: "door",
+    },
+    "monster@0,3,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 0, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,2,0:Z2awALk": {
+    "monster@3,2,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 3, y: 2, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "door@8,2,4:Z1lPTi2": {
-      config: { direction: "left", toRoom: "bookworld16" },
-      position: { x: 8, y: 2, z: 4 },
-      type: "door",
-    },
-    "spring@2,2,0:13y": {
+    "spring@2,2,0": {
       config: {},
       position: { x: 2, y: 2, z: 0 },
       type: "spring",

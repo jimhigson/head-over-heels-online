@@ -7,44 +7,44 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari27",
   items: {
-    "baddie@3,3,0:ZazYQL": {
+    "door@0,2,4": {
+      config: { direction: "right", toRoom: "safari26" },
+      position: { x: 0, y: 2, z: 4 },
+      type: "door",
+    },
+    "door@8,2,4": {
+      config: { direction: "left", toRoom: "safari28" },
+      position: { x: 8, y: 2, z: 4 },
+      type: "door",
+    },
+    "monster@3,3,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy8",
-        which: "helicopter-bug",
+        which: "helicopterBug",
       },
       position: { x: 3, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,2,0:ZazYQL": {
+    "monster@4,2,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy8",
-        which: "helicopter-bug",
+        which: "helicopterBug",
       },
       position: { x: 4, y: 2, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,3,0:QyAMt": {
+    "monster@4,3,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy4",
         which: "elephant",
       },
       position: { x: 4, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "door@0,2,4:Z2p4Aks": {
-      config: { direction: "right", toRoom: "safari26" },
-      position: { x: 0, y: 2, z: 4 },
-      type: "door",
-    },
-    "door@8,2,4:Z140EHO": {
-      config: { direction: "left", toRoom: "safari28" },
-      position: { x: 8, y: 2, z: 4 },
-      type: "door",
-    },
-    "spring@3,2,0:13y": {
+    "spring@3,2,0": {
       config: {},
       position: { x: 3, y: 2, z: 0 },
       type: "spring",

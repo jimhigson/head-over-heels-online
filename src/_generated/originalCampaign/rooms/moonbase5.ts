@@ -7,42 +7,42 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase5",
   items: {
-    "baddie@0,4,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 0, y: 4, z: 0 },
-      type: "baddie",
-    },
-    "baddie@3,2,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 3, y: 2, z: 0 },
-      type: "baddie",
-    },
-    "baddie@3,6,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 3, y: 6, z: 0 },
-      type: "baddie",
-    },
-    "door@1,0,0:Z1iR2DA": {
+    "door@1,0,0": {
       config: { direction: "towards", toRoom: "moonbase4" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0:Z2q5j3K": {
+    "door@1,8,0": {
       config: { direction: "away", toRoom: "moonbase6" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
+    },
+    "monster@0,4,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 0, y: 4, z: 0 },
+      type: "monster",
+    },
+    "monster@3,2,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 3, y: 2, z: 0 },
+      type: "monster",
+    },
+    "monster@3,6,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 3, y: 6, z: 0 },
+      type: "monster",
     },
   },
   planet: "moonbase",

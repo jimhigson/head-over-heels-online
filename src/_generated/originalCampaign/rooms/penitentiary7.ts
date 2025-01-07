@@ -7,48 +7,48 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary7",
   items: {
-    "baddie@3,5,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 3, y: 5, z: 0 },
-      type: "baddie",
-    },
-    "baddie@5,5,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 5, y: 5, z: 0 },
-      type: "baddie",
-    },
-    "block@4,5,0:20S0Rw": {
+    "block@4,5,0": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
-    "block@4,5,1:20S0Rw": {
+    "block@4,5,1": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 4, y: 5, z: 1 },
       type: "block",
     },
-    "block@4,5,3:20S0Rw": {
+    "block@4,5,3": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 4, y: 5, z: 3 },
       type: "block",
     },
-    "door@0,2,0:RGN6D": {
+    "door@0,2,0": {
       config: { direction: "right", toRoom: "penitentiary6" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "door@3,6,5:2r8kBv": {
+    "door@3,6,5": {
       config: { direction: "away", toRoom: "penitentiary8" },
       position: { x: 3, y: 6, z: 5 },
       type: "door",
+    },
+    "monster@3,5,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 3, y: 5, z: 0 },
+      type: "monster",
+    },
+    "monster@5,5,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 5, y: 5, z: 0 },
+      type: "monster",
     },
   },
   planet: "penitentiary",

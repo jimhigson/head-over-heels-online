@@ -7,93 +7,93 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus22",
   items: {
-    "baddie@4,0,0:Z2awALk": {
+    "barrier@2,2,0": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 2, z: 0 },
+      type: "barrier",
+    },
+    "barrier@2,2,1": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 2, z: 1 },
+      type: "barrier",
+    },
+    "barrier@2,2,2": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 2, z: 2 },
+      type: "barrier",
+    },
+    "barrier@2,3,0": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 3, z: 0 },
+      type: "barrier",
+    },
+    "barrier@2,3,1": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 3, z: 1 },
+      type: "barrier",
+    },
+    "barrier@2,3,2": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 3, z: 2 },
+      type: "barrier",
+    },
+    "barrier@2,4,0": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 4, z: 0 },
+      type: "barrier",
+    },
+    "barrier@2,4,1": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 4, z: 1 },
+      type: "barrier",
+    },
+    "barrier@2,4,2": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 4, z: 2 },
+      type: "barrier",
+    },
+    "barrier@2,5,0": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 5, z: 0 },
+      type: "barrier",
+    },
+    "barrier@2,5,1": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 5, z: 1 },
+      type: "barrier",
+    },
+    "barrier@2,5,2": {
+      config: { axis: "y", disappearing: false },
+      position: { x: 2, y: 5, z: 2 },
+      type: "barrier",
+    },
+    "door@0,2,0": {
+      config: { direction: "right", toRoom: "egyptus21" },
+      position: { x: 0, y: 2, z: 0 },
+      type: "door",
+    },
+    "door@3,6,0": {
+      config: { direction: "away", toRoom: "egyptus23" },
+      position: { x: 3, y: 6, z: 0 },
+      type: "door",
+    },
+    "monster@4,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 4, y: 0, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,2,0:ZazYQL": {
+    "monster@4,2,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy8",
-        which: "helicopter-bug",
+        which: "helicopterBug",
       },
       position: { x: 4, y: 2, z: 0 },
-      type: "baddie",
-    },
-    "barrier@2,2,0:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 2, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,2,1:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 2, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,2,2:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 2, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,3,0:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,3,1:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,3,2:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,4,0:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 4, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,4,1:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 4, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,4,2:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 4, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,5,0:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 5, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,5,1:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 5, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,5,2:fbso8": {
-      config: { axis: "y", disappearing: false },
-      position: { x: 2, y: 5, z: 2 },
-      type: "barrier",
-    },
-    "door@0,2,0:2rMvvu": {
-      config: { direction: "right", toRoom: "egyptus21" },
-      position: { x: 0, y: 2, z: 0 },
-      type: "door",
-    },
-    "door@3,6,0:Z1yHXKU": {
-      config: { direction: "away", toRoom: "egyptus23" },
-      position: { x: 3, y: 6, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "egyptus",

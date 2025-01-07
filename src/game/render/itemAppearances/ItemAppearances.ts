@@ -6,7 +6,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
-import type { PlanetName } from "../../../sprites/planets";
+import type { SceneryName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { type ItemInPlayType } from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/game/physics/itemPredicates";
@@ -296,7 +296,7 @@ export const itemAppearances: {
       room,
     }) => {
       const pickupIcons: Record<
-        ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
+        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"],
         CreateSpriteOptions
       > = {
         shield: "bunny",
@@ -304,7 +304,7 @@ export const itemAppearances: {
         fast: "bunny",
         "extra-life": "bunny",
         bag: "bag",
-        donuts: "donuts",
+        doughnuts: "doughnuts",
         hooter: "hooter",
         crown: "crown",
         scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
@@ -362,7 +362,7 @@ export const itemAppearances: {
     };
   },
 
-  baddie({ item: { config, state }, room, currentlyRenderedProps }) {
+  monster({ item: { config, state }, room, currentlyRenderedProps }) {
     const { activated, busyLickingDoughnutsOffFace } = state;
 
     const filter =
@@ -371,12 +371,12 @@ export const itemAppearances: {
       : undefined;
 
     switch (config.which) {
-      case "american-football-head":
+      case "skiHead":
       case "turtle":
       case "cyberman":
-      case "computer-bot":
+      case "computerBot":
       case "elephant":
-      case "elephant-head":
+      case "elephantHead":
       case "monkey": {
         const facingXy4 = vectorClosestDirectionXy4(state.facing);
 
@@ -390,7 +390,7 @@ export const itemAppearances: {
         if (!render) {
           return;
         }
-        const renderProps: ItemRenderProps<"baddie"> = {
+        const renderProps: ItemRenderProps<"monster"> = {
           facingXy4,
           activated,
           busyLickingDoughnutsOffFace,
@@ -398,7 +398,7 @@ export const itemAppearances: {
 
         // rendering is directional (xy4)
         switch (config.which) {
-          case "american-football-head":
+          case "skiHead":
             // directional, style, no anim
             return {
               container: createSprite({
@@ -407,7 +407,7 @@ export const itemAppearances: {
               }),
               renderProps,
             };
-          case "elephant-head":
+          case "elephantHead":
             // directional, no style, no anim
             return {
               container: createSprite({
@@ -454,7 +454,7 @@ export const itemAppearances: {
                   }),
               renderProps,
             };
-          case "computer-bot":
+          case "computerBot":
           case "elephant":
           case "monkey":
             // directional, not animated, stacked (base)
@@ -471,12 +471,12 @@ export const itemAppearances: {
         break;
       }
 
-      case "helicopter-bug":
+      case "helicopterBug":
       case "emperor":
       case "dalek":
-      case "headless-base":
-      case "bubble-robot":
-      case "flying-ball": {
+      case "homingBot":
+      case "bubbleRobot":
+      case "emperorsGuardian": {
         // not directional
         const render =
           currentlyRenderedProps === undefined ||
@@ -488,14 +488,14 @@ export const itemAppearances: {
           return;
         }
 
-        const renderProps: ItemRenderProps<"baddie"> = {
+        const renderProps: ItemRenderProps<"monster"> = {
           activated,
           busyLickingDoughnutsOffFace,
         };
 
         // rendering is uni-directional
         switch (config.which) {
-          case "helicopter-bug":
+          case "helicopterBug":
           case "dalek": {
             const frames = spriteSheet.animations[config.which];
             const animate = activated && !busyLickingDoughnutsOffFace;
@@ -513,7 +513,7 @@ export const itemAppearances: {
               renderProps,
             };
           }
-          case "headless-base":
+          case "homingBot":
             // not directional, not animated
             return {
               filter,
@@ -521,7 +521,7 @@ export const itemAppearances: {
               renderProps,
             };
 
-          case "bubble-robot":
+          case "bubbleRobot":
             //not directional, animated, stacked (base):
             return {
               container: stackedSprites({
@@ -531,7 +531,7 @@ export const itemAppearances: {
               renderProps,
             };
 
-          case "flying-ball":
+          case "emperorsGuardian":
             //not directional, stacked (bubbles):
             return {
               container: stackedSprites({
@@ -559,7 +559,7 @@ export const itemAppearances: {
 
       default:
         config satisfies never;
-        throw new Error(`unexpected baddie ${config}`);
+        throw new Error(`unexpected monster ${config}`);
     }
   },
 
@@ -676,8 +676,8 @@ export const itemAppearances: {
       });
     },
   ),
-  firedDonut: staticSpriteAppearance({
-    frames: spriteSheet.animations["bubbles.donut"],
+  firedDoughnut: staticSpriteAppearance({
+    frames: spriteSheet.animations["bubbles.doughnut"],
   }),
 
   ball: staticSpriteAppearance("ball"),

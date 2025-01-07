@@ -7,37 +7,37 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "safari3",
   items: {
-    "block@1,0,0:95uHj": {
+    "block@1,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 0, z: 0 },
       type: "block",
     },
-    "block@1,7,0:95uHj": {
+    "block@1,7,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
-    "block@2,0,0:95uHj": {
+    "block@2,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
-    "block@2,7,0:95uHj": {
+    "block@2,7,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 7, z: 0 },
       type: "block",
     },
-    "door@1,0,5:Zj81x8": {
+    "door@1,0,5": {
       config: { direction: "towards", toRoom: "safari2" },
       position: { x: 1, y: 0, z: 5 },
       type: "door",
     },
-    "door@1,8,5:1SooNj": {
+    "door@1,8,5": {
       config: { direction: "away", toRoom: "safari4" },
       position: { x: 1, y: 8, z: 5 },
       type: "door",
     },
-    "lift@1,4,0:ZTwqo1": {
+    "lift@1,4,0": {
       config: { bottom: 0, top: 8 },
       position: { x: 1, y: 4, z: 0 },
       type: "lift",

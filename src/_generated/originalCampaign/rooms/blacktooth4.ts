@@ -7,12 +7,12 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth4",
   items: {
-    "door@3,0,0:Z1cQbhi": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "blacktooth5" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "lift@3,5,0:ZTwqnv": {
+    "lift@3,5,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 3, y: 5, z: 0 },
       type: "lift",

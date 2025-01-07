@@ -15,7 +15,7 @@ import {
   type ItemTouchEvent,
 } from "./ItemTouchEvent";
 import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
-import { handleFiredDonutTouchingBaddie } from "./handleFiredDonutTouchingBaddie";
+import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchingMonster";
 
 /**
  * same old - Morties touching Morties
@@ -46,13 +46,13 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   }
 
   if (
-    (movingItemIsType(e, "baddie") && touchedItemIsType(e, "firedDonut")) ||
-    (movingItemIsType(e, "firedDonut") && touchedItemIsType(e, "baddie"))
+    (movingItemIsType(e, "monster") && touchedItemIsType(e, "firedDoughnut")) ||
+    (movingItemIsType(e, "firedDoughnut") && touchedItemIsType(e, "monster"))
   ) {
-    handleFiredDonutTouchingBaddie(e);
+    handleFiredDoughnutTouchingMonster(e);
   }
 
-  if (movingItemIsType(e, "baddie") || movingItemIsType(e, "movableBlock")) {
+  if (movingItemIsType(e, "monster") || movingItemIsType(e, "movableBlock")) {
     handleItemWithMovementTouchingItem(e);
   }
 
@@ -71,7 +71,7 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   // flip and treat like it is the thing that was touched):
   if (
     e.movingItem.state.disappear &&
-    // solid check: eg, firedDonuts don't disappear on touching the stopAutowalk in front of a door
+    // solid check: eg, firedDoughnuts don't disappear on touching the stopAutowalk in front of a door
     isSolid(e.touchedItem)
   ) {
     handleItemTouchingDissapearing({

@@ -7,47 +7,47 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary28",
   items: {
-    "block@0,3,0:95uHj": {
+    "block@0,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@0,3,1:95uHj": {
+    "block@0,3,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 1 },
       type: "block",
     },
-    "block@0,3,3:95uHj": {
+    "block@0,3,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
-    "door@0,3,4:1QJMsM": {
+    "door@0,3,4": {
       config: { direction: "right", toRoom: "penitentiary29" },
       position: { x: 0, y: 3, z: 4 },
       type: "door",
     },
-    "door@3,0,4:Z4XP19": {
+    "door@3,0,4": {
       config: { direction: "towards", toRoom: "penitentiary30" },
       position: { x: 3, y: 0, z: 4 },
       type: "door",
     },
-    "door@8,3,0:2uC3R9": {
+    "door@8,3,0": {
       config: { direction: "left", toRoom: "penitentiary27" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "hushPuppy@2,0,0:13y": {
+    "hushPuppy@2,0,0": {
       config: {},
       position: { x: 2, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@3,0,1:13y": {
+    "hushPuppy@3,0,1": {
       config: {},
       position: { x: 3, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@4,0,2:13y": {
+    "hushPuppy@4,0,2": {
       config: {},
       position: { x: 4, y: 0, z: 2 },
       type: "hushPuppy",

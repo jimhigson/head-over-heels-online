@@ -8,7 +8,7 @@ import {
   otherIndividualCharacterName,
   type RoomState,
 } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
@@ -29,7 +29,7 @@ import {
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
@@ -38,7 +38,7 @@ const itemHasExpired = <RoomId extends string>(
  */
 
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   startingPositions: Record<string, Xyz>,
   /** the items which are snapped will be added to this set */
   movedItems: Set<AnyItemInPlay>,
@@ -75,7 +75,7 @@ const itemTickOrderComparator = (
     lift: -4, // <- highest priority
     head: -3,
     heels: -3,
-    baddie: -2,
+    monster: -2,
     // everything else goes here
     block: 1, // <- lowest priority
     deadlyBlock: 1, // <- lowest priority
@@ -182,7 +182,7 @@ export const _progressGameState = <RoomId extends string>(
 
 const advanceTime = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   deltaMS: number,
 ) => {
   gameState.progression++;

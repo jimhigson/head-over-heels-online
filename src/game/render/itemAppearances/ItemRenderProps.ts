@@ -37,7 +37,7 @@ type ItemRenderPropsMap = {
   };
 
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change
-  baddie: {
+  monster: {
     facingXy4?: DirectionXy4;
     activated: boolean;
     busyLickingDoughnutsOffFace: boolean;

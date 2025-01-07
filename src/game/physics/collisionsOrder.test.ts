@@ -81,31 +81,31 @@ describe("sort order of items with same type", () => {
   });
 });
 
-describe("blocks protext from baddies by colliding first", () => {
-  const baddieAndBlock: SortableObstacle[] = [
+describe("blocks protext from monsters by colliding first", () => {
+  const monsterAndBlock: SortableObstacle[] = [
     lowBlock,
     {
-      type: "baddie",
-      id: "baddie",
+      type: "monster",
+      id: "monster",
       state: { position: { x: 0, y: 0, z: 0 } }, // next to the low block
       aabb: { x: 1, y: 1, z: 1 },
     },
   ];
 
-  test("blocks come before baddies", () => {
+  test("blocks come before monsters", () => {
     const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.down,
       // if sort is working properly, reversing the input should not matter
-      baddieAndBlock,
+      monsterAndBlock,
     );
-    expect(result.map((r) => r.id)).toEqual(["lowBlock", "baddie"]);
+    expect(result.map((r) => r.id)).toEqual(["lowBlock", "monster"]);
   });
-  test("blocks come before baddies (reversed input)", () => {
+  test("blocks come before monsters (reversed input)", () => {
     const result = sortObstaclesAboutPriorityAndVector(
       unitVectors.down,
       // if sort is working properly, reversing the input should not matter
-      baddieAndBlock.toReversed(),
+      monsterAndBlock.toReversed(),
     );
-    expect(result.map((r) => r.id)).toEqual(["lowBlock", "baddie"]);
+    expect(result.map((r) => r.id)).toEqual(["lowBlock", "monster"]);
   });
 });

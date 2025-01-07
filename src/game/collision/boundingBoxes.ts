@@ -50,7 +50,7 @@ export const boundingBoxForItem = (
     case "portableBlock":
     case "moveableDeadly":
     case "slidingDeadly":
-    case "firedDonut":
+    case "firedDoughnut":
     case "slidingBlock":
       return { aabb: smallItemAabb };
     case "lift":
@@ -88,16 +88,16 @@ export const boundingBoxForItem = (
           throw new Error("unknown block style");
       }
     }
-    case "baddie": // TODO: make different size for different baddies
+    case "monster": // TODO: make different size for different monsters
       switch (item.config.which) {
-        case "american-football-head":
-        case "bubble-robot":
+        case "skiHead":
+        case "bubbleRobot":
         case "cyberman":
         case "elephant":
-        case "flying-ball":
-        case "computer-bot":
+        case "emperorsGuardian":
+        case "computerBot":
           return { aabb: doubleHeightCharacter };
-        case "helicopter-bug":
+        case "helicopterBug":
         case "dalek":
           return { aabb: smallItemAabb };
         default:

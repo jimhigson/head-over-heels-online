@@ -1,12 +1,12 @@
 import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
-import type { Subset } from "../../src/utils/subset";
+import type { Subset } from "../utils/subset";
 
 // just the behavio(u)rs that we care to parse
 export type DisappearingBehavior =
   | "behavior of disappearance on jump into"
   | "behavior of disappearance on touch";
 
-export type XmlItemBaddieBehaviour =
+export type XmlItemMonsterBehaviour =
   | "behavior of random patroling in four primary directions" // [sic]
   | "behavior of random patroling in four secondary directions" // [sic]
   | "behavior of random patroling in eight directions" // [sic]
@@ -71,7 +71,7 @@ export type Xml2JsonItem = {
       class: "freeitem";
     }
   | {
-      kind: "sandwich" | "stool"; // anvil/step-stool
+      kind: "sandwich" | "stool";
       class: "freeitem";
       orientation?: CompassDirectionsNESW;
       behavior:
@@ -89,7 +89,7 @@ export type Xml2JsonItem = {
       kind: "bighead-robot" | "monkey";
       class: "freeitem";
       behavior: Subset<
-        XmlItemBaddieBehaviour,
+        XmlItemMonsterBehaviour,
         | "behavior of hunter in four directions"
         | "behavior of random patroling in four primary directions"
       >;
@@ -98,7 +98,7 @@ export type Xml2JsonItem = {
       kind: "emperor" | "throne-guard";
       class: "freeitem";
       behavior: Subset<
-        XmlItemBaddieBehaviour,
+        XmlItemMonsterBehaviour,
         "behavior of waiting hunter in eight directions"
       >;
     }
@@ -111,7 +111,7 @@ export type Xml2JsonItem = {
         | "imperial-guard"
         | "siren"; // daleks!
       class: "freeitem";
-      behavior: XmlItemBaddieBehaviour;
+      behavior: XmlItemMonsterBehaviour;
     }
   | {
       kind: "elephant-head";
@@ -121,7 +121,7 @@ export type Xml2JsonItem = {
   | {
       kind: "imperial-guard-head" | "diver" | "turtle" | "book";
       class: "freeitem";
-      behavior: XmlItemBaddieBehaviour;
+      behavior: XmlItemMonsterBehaviour;
       orientation: CompassDirectionsNESW;
     }
   | {

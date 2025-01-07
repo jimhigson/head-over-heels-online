@@ -1,6 +1,6 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { isFreeItem } from "@/game/physics/itemPredicates";
 
 export const deleteItemFromRoom = <
@@ -10,7 +10,7 @@ export const deleteItemFromRoom = <
   room,
   item: itemParam,
 }: {
-  room: RoomState<PlanetName, RoomId, ItemId>;
+  room: RoomState<SceneryName, RoomId, ItemId>;
   item: AnyItemInPlay<RoomId, ItemId> | ItemId;
 }) => {
   const item =

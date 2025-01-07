@@ -9,12 +9,12 @@ import {
   findStandingOnWithHighestPriorityAndMostOverlap,
 } from "@/game/collision/checkStandingOn";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
 
 export const removeNoLongerStandingOn = <RoomId extends string>(
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
 ) => {
   /**
    * standing on updated here for all - because, eg, if a lift moves down with a player on it,

@@ -7,27 +7,27 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary1",
   items: {
-    "door@2,8,0:2r8j3Y": {
+    "door@2,8,0": {
       config: { direction: "away", toRoom: "penitentiary2" },
       position: { x: 2, y: 8, z: 0 },
       type: "door",
     },
-    "teleporter@2,3,0:12JxNl": {
+    "teleporter@2,3,0": {
       config: { toRoom: "moonbase22topenitentiary" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@2,4,0:12JxNl": {
+    "teleporter@2,4,0": {
       config: { toRoom: "moonbase22topenitentiary" },
       position: { x: 2, y: 4, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,3,0:12JxNl": {
+    "teleporter@3,3,0": {
       config: { toRoom: "moonbase22topenitentiary" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,4,0:12JxNl": {
+    "teleporter@3,4,0": {
       config: { toRoom: "moonbase22topenitentiary" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",

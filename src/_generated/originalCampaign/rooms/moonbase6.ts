@@ -7,90 +7,90 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase6",
   items: {
-    "baddie@0,4,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 0, y: 4, z: 0 },
-      type: "baddie",
-    },
-    "baddie@7,5,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 7, y: 5, z: 0 },
-      type: "baddie",
-    },
-    "deadlyBlock@0,3,0:ZWGEjo": {
+    "deadlyBlock@0,3,0": {
       config: { style: "volcano" },
       position: { x: 0, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,3,0:ZWGEjo": {
+    "deadlyBlock@1,3,0": {
       config: { style: "volcano" },
       position: { x: 1, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,5,0:ZWGEjo": {
+    "deadlyBlock@1,5,0": {
       config: { style: "volcano" },
       position: { x: 1, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,7,0:ZWGEjo": {
+    "deadlyBlock@2,7,0": {
       config: { style: "volcano" },
       position: { x: 2, y: 7, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,3,0:ZWGEjo": {
+    "deadlyBlock@3,3,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,4,0:ZWGEjo": {
+    "deadlyBlock@3,4,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,5,0:ZWGEjo": {
+    "deadlyBlock@3,5,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,6,0:ZWGEjo": {
+    "deadlyBlock@4,6,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 6, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@5,4,0:ZWGEjo": {
+    "deadlyBlock@5,4,0": {
       config: { style: "volcano" },
       position: { x: 5, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@5,6,0:ZWGEjo": {
+    "deadlyBlock@5,6,0": {
       config: { style: "volcano" },
       position: { x: 5, y: 6, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,4,0:ZWGEjo": {
+    "deadlyBlock@7,4,0": {
       config: { style: "volcano" },
       position: { x: 7, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "door@3,0,0:Z1iR2nP": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "moonbase5" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,0:Z2q5iN0": {
+    "door@3,8,0": {
       config: { direction: "away", toRoom: "moonbase7" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "pickup@0,5,0:1MkQY2": {
+    "monster@0,4,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 0, y: 4, z: 0 },
+      type: "monster",
+    },
+    "monster@7,5,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 7, y: 5, z: 0 },
+      type: "monster",
+    },
+    "pickup@0,5,0": {
       config: { gives: "extra-life" },
       position: { x: 0, y: 5, z: 0 },
       type: "pickup",

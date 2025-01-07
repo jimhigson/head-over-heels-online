@@ -47,9 +47,11 @@ export type CompassDirections =
   | CompassDirectionsNS;
 
 export type XmlScenery =
-  | "moon"
+  | "blacktooth"
+  | "byblos" /* huh? */
   | "egyptus"
-  | /* huh? */ "byblos"
+  | "market"
+  | "moon"
   | "penitentiary"
   | "safari";
 

@@ -3,7 +3,7 @@ import type { PlayableItem } from "@/game/physics/itemPredicates";
 import { isItemType, isPortal } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
 import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
@@ -27,7 +27,7 @@ type ChangeCharacterRoomOptions<RoomId extends string> =
       changeType: "portal";
       toRoomId: NoInfer<NoInfer<RoomId>>;
       /* position relative to the portal in the source room */
-      sourcePortal: ItemInPlay<"portal", PlanetName, NoInfer<RoomId>>;
+      sourcePortal: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
       positionRelativeToSourcePortal: Xyz;
       /* if true, the position in the source and destimation room will be exactly maintained */
     }
@@ -44,13 +44,13 @@ type ChangeCharacterRoomOptions<RoomId extends string> =
 
 const findDestinationPortal = <RoomId extends string>(
   changeType: "portal" | "level-select",
-  toRoom: RoomState<PlanetName, RoomId>,
-  fromRoom: RoomState<PlanetName, RoomId>,
-): ItemInPlay<"portal", PlanetName, RoomId> | undefined => {
+  toRoom: RoomState<SceneryName, RoomId>,
+  fromRoom: RoomState<SceneryName, RoomId>,
+): ItemInPlay<"portal", SceneryName, RoomId> | undefined => {
   switch (changeType) {
     case "portal":
       return iterate(objectValues(toRoom.items)).find(
-        (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+        (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
           isPortal(i) && i.config.toRoom === fromRoom.id,
       );
 
@@ -58,7 +58,7 @@ const findDestinationPortal = <RoomId extends string>(
       return (
         // find a door in the right direction:
         iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", PlanetName, RoomId> =>
+          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
             isPortal(i) &&
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,

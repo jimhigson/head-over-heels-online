@@ -7,24 +7,24 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus31",
   items: {
-    "baddie@2,0,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 2, y: 0, z: 0 },
-      type: "baddie",
-    },
-    "door@0,3,0:2rMDLC": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "egyptus32" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "lift@5,0,0:ZTwqnv": {
+    "lift@5,0,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 0, z: 0 },
       type: "lift",
+    },
+    "monster@2,0,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 2, y: 0, z: 0 },
+      type: "monster",
     },
   },
   planet: "egyptus",

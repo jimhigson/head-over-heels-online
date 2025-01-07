@@ -7,7 +7,72 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase7",
   items: {
-    "baddie@0,7,1:ZECNoc": {
+    "block@2,0,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 0, z: 0 },
+      type: "block",
+    },
+    "block@2,0,1": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 0, z: 1 },
+      type: "block",
+    },
+    "block@2,0,3": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 0, z: 3 },
+      type: "block",
+    },
+    "block@3,0,3": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 3, y: 0, z: 3 },
+      type: "block",
+    },
+    "deadlyBlock@0,7,0": {
+      config: { style: "toaster" },
+      position: { x: 0, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,7,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,7,0": {
+      config: { style: "toaster" },
+      position: { x: 2, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,7,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@6,7,0": {
+      config: { style: "toaster" },
+      position: { x: 6, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@7,7,0": {
+      config: { style: "toaster" },
+      position: { x: 7, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "moonbase8" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@3,0,4": {
+      config: { direction: "towards", toRoom: "moonbase6" },
+      position: { x: 3, y: 0, z: 4 },
+      type: "door",
+    },
+    "door@8,3,0": {
+      config: { direction: "left", toRoom: "moonbase15" },
+      position: { x: 8, y: 3, z: 0 },
+      type: "door",
+    },
+    "monster@0,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -16,9 +81,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 0, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@1,7,1:ZECNoc": {
+    "monster@1,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -27,9 +92,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 1, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@2,7,1:ZECNoc": {
+    "monster@2,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -38,9 +103,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 2, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,7,1:ZECNoc": {
+    "monster@5,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -49,9 +114,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@6,7,1:ZECNoc": {
+    "monster@6,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -60,9 +125,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 6, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@7,7,1:ZECNoc": {
+    "monster@7,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -71,72 +136,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 7, y: 7, z: 1 },
-      type: "baddie",
-    },
-    "block@2,0,0:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@2,0,1:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 2, y: 0, z: 1 },
-      type: "block",
-    },
-    "block@2,0,3:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 2, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@3,0,3:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 3, y: 0, z: 3 },
-      type: "block",
-    },
-    "deadlyBlock@0,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 2, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 7, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,3,0:1AqcfF": {
-      config: { direction: "right", toRoom: "moonbase8" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@3,0,4:Z1iR285": {
-      config: { direction: "towards", toRoom: "moonbase6" },
-      position: { x: 3, y: 0, z: 4 },
-      type: "door",
-    },
-    "door@8,3,0:Z8uXpk": {
-      config: { direction: "left", toRoom: "moonbase15" },
-      position: { x: 8, y: 3, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "moonbase",

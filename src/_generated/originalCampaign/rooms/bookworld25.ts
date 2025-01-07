@@ -7,12 +7,12 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld25",
   items: {
-    "door@0,0,0:286uzt": {
+    "door@0,0,0": {
       config: { direction: "right", toRoom: "bookworld26" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,0:Z1lPLNa": {
+    "door@8,0,0": {
       config: { direction: "left", toRoom: "bookworld24" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",

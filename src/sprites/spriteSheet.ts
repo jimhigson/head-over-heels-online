@@ -187,7 +187,7 @@ const frames = {
   "shadow.scroll": {
     frame: { x: 2, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
   },
-  donuts: {
+  doughnuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
   },
   crown: {
@@ -218,8 +218,6 @@ const frames = {
     frame: { x: 253, y: 451, ...smallItemTextureSize },
   },
 
-  // Head
-  // ------------
   ...seriesOfAnimationFrameTextures(
     "lift",
     4,
@@ -238,7 +236,7 @@ const frames = {
     frame: { x: 4, y: 29, ...smallItemTextureSize },
   },
 
-  "headless-base": {
+  homingBot: {
     frame: { x: 93, y: 102, ...smallItemTextureSize },
   },
   joystick: {
@@ -247,10 +245,10 @@ const frames = {
   "shadowMask.joystick": {
     frame: { x: 2, y: 349, ...smallItemTextureSize },
   },
-  anvil: {
+  stepStool: {
     frame: { x: 252, y: 366, ...largeItemTextureSize },
   },
-  "shadowMask.anvil": {
+  "shadowMask.stepStool": {
     frame: { x: 285, y: 366, ...largeItemTextureSize },
   },
   "book.x": {
@@ -290,12 +288,12 @@ const frames = {
     frame: { x: 77, y: 428, ...smallItemTextureSize },
   },
   ...fourDirections(
-    "american-football-head.starsAndStripes",
+    "skiHead.starsAndStripes",
     { x: 274, y: 131 },
     { w: 24, h: 32 },
   ),
   ...fourDirections(
-    "american-football-head.greenAndPink",
+    "skiHead.greenAndPink",
     { x: 224, y: 131 },
     { w: 24, h: 32 },
   ),
@@ -312,7 +310,7 @@ const frames = {
   ...fourDirections("cyberman", { x: 29, y: 29 }, smallItemTextureSize),
   ...fourDirections("monkey", { x: 118, y: 90 }, smallItemTextureSize),
   ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
-  ...fourDirections("computer-bot", { x: 173, y: 146 }, smallItemTextureSize),
+  ...fourDirections("computerBot", { x: 173, y: 146 }, smallItemTextureSize),
 
   ...seriesOfAnimationFrameTextures(
     "bubbles.cold",
@@ -365,7 +363,7 @@ const frames = {
   ),
 
   ...seriesOfAnimationFrameTextures(
-    "helicopter-bug",
+    "helicopterBug",
     4,
     { x: 4, y: 188 },
     smallItemTextureSize,
@@ -405,16 +403,16 @@ const spritesheetData = {
     "turtle.away": ["turtle.away.1", "turtle.away.2"],
     "turtle.towards": ["turtle.towards.1", "turtle.towards.2"],
     "turtle.right": ["turtle.right.1", "turtle.right.2"],
-    "helicopter-bug": [
-      "helicopter-bug.1",
-      "helicopter-bug.2",
-      "helicopter-bug.3",
-      "helicopter-bug.4",
+    helicopterBug: [
+      "helicopterBug.1",
+      "helicopterBug.2",
+      "helicopterBug.3",
+      "helicopterBug.4",
     ],
     "bubbles.cold": ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/],
     "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
     "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],
-    "bubbles.donut": ["bubbles.taupe.1", "bubbles.taupe.2"],
+    "bubbles.doughnut": ["bubbles.taupe.1", "bubbles.taupe.2"],
     "bubbles.fish": ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"],
     "conveyor.x": seriesOfAnimationFrameTextureIds("conveyor.x", 7),
     "conveyor.y": seriesOfAnimationFrameTextureIds("conveyor.y", 7),

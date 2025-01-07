@@ -7,22 +7,22 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld9",
   items: {
-    "book@3,2,0:1g3d60": {
+    "book@3,2,0": {
       config: { slider: true },
       position: { x: 3, y: 2, z: 0 },
       type: "book",
     },
-    "door@0,1,0:286l1z": {
+    "door@0,1,0": {
       config: { direction: "right", toRoom: "bookworld10" },
       position: { x: 0, y: 1, z: 0 },
       type: "door",
     },
-    "door@3,0,0:JfhQo": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "bookworld21" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,1,0:1AnTQ8": {
+    "door@8,1,0": {
       config: { direction: "left", toRoom: "bookworld8" },
       position: { x: 8, y: 1, z: 0 },
       type: "door",

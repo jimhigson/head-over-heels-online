@@ -7,42 +7,42 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase15",
   items: {
-    "door@0,0,0:1AqbYU": {
+    "door@0,0,0": {
       config: { direction: "right", toRoom: "moonbase7" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,4:Z8uXF5": {
+    "door@8,0,4": {
       config: { direction: "left", toRoom: "moonbase14" },
       position: { x: 8, y: 0, z: 4 },
       type: "door",
     },
-    "hushPuppy@5,0,0:13y": {
+    "hushPuppy@5,0,0": {
       config: {},
       position: { x: 5, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@5,1,0:13y": {
+    "hushPuppy@5,1,0": {
       config: {},
       position: { x: 5, y: 1, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,0,1:13y": {
+    "hushPuppy@6,0,1": {
       config: {},
       position: { x: 6, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,1,1:13y": {
+    "hushPuppy@6,1,1": {
       config: {},
       position: { x: 6, y: 1, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,0,2:13y": {
+    "hushPuppy@7,0,2": {
       config: {},
       position: { x: 7, y: 0, z: 2 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,1,2:13y": {
+    "hushPuppy@7,1,2": {
       config: {},
       position: { x: 7, y: 1, z: 2 },
       type: "hushPuppy",

@@ -7,7 +7,17 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth33",
   items: {
-    "baddie@0,3,0:1wBzeB": {
+    "door@3,0,0": {
+      config: { direction: "towards", toRoom: "blacktooth32" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "door",
+    },
+    "lift@7,7,0": {
+      config: { bottom: 0, top: 11 },
+      position: { x: 7, y: 7, z: 0 },
+      type: "lift",
+    },
+    "monster@0,3,0": {
       config: {
         activated: true,
         movement: "towards-on-shortest-axis-xy4",
@@ -15,28 +25,18 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 0, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@7,4,0:Z2awALk": {
+    "monster@7,4,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 7, y: 4, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "door@3,0,0:Z1V7UEu": {
-      config: { direction: "towards", toRoom: "blacktooth32" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "door",
-    },
-    "lift@7,7,0:ZTwqnv": {
-      config: { bottom: 0, top: 11 },
-      position: { x: 7, y: 7, z: 0 },
-      type: "lift",
-    },
-    "pickup@0,7,0:Zs6lvR": {
+    "pickup@0,7,0": {
       config: { gives: "jumps" },
       position: { x: 0, y: 7, z: 0 },
       type: "pickup",

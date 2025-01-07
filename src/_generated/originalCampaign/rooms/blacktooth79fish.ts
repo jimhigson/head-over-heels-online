@@ -7,57 +7,57 @@ export const room = inferRoomJson({
   floor: "none",
   id: "blacktooth79fish",
   items: {
-    "block@1,0,0:95uHj": {
+    "block@1,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 0, z: 0 },
       type: "block",
     },
-    "block@1,1,0:95uHj": {
+    "block@1,1,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
-    "block@1,2,0:95uHj": {
+    "block@1,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 2, z: 0 },
       type: "block",
     },
-    "block@1,3,0:95uHj": {
+    "block@1,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 3, z: 0 },
       type: "block",
     },
-    "block@1,4,0:95uHj": {
+    "block@1,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 4, z: 0 },
       type: "block",
     },
-    "block@1,5,0:95uHj": {
+    "block@1,5,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    "block@1,6,0:95uHj": {
+    "block@1,6,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 6, z: 0 },
       type: "block",
     },
-    "block@1,7,0:95uHj": {
+    "block@1,7,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
-    "block@6,0,0:Z1AdJxh": {
+    "block@6,0,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 6, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,0,0:95uHj": {
+    "block@7,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "pickup@7,0,1:ZPJAGD": {
+    "pickup@7,0,1": {
       config: { gives: "reincarnation" },
       position: { x: 7, y: 0, z: 1 },
       type: "pickup",

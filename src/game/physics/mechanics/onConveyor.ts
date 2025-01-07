@@ -8,7 +8,7 @@ import {
   moveSpeedPixPerMs,
 } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import {
   oppositeDirection,
   originXyz,
@@ -31,7 +31,7 @@ const resetConveyorStateForItem = {
  * The item can be anything - a player, a pickup etc
  */
 export const onConveyor = <RoomId extends string>(
-  item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
+  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId> => {

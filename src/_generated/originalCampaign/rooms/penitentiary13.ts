@@ -7,72 +7,72 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary13",
   items: {
-    "block@0,3,5:20S0Rw": {
+    "block@0,3,5": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 3, z: 5 },
       type: "block",
     },
-    "block@1,0,1:20S0Rw": {
+    "block@1,0,1": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 1, y: 0, z: 1 },
       type: "block",
     },
-    "block@1,3,4:20S0Rw": {
+    "block@1,3,4": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 1, y: 3, z: 4 },
       type: "block",
     },
-    "block@2,0,1:20S0Rw": {
+    "block@2,0,1": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 2, y: 0, z: 1 },
       type: "block",
     },
-    "block@2,3,6:20S0Rw": {
+    "block@2,3,6": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 2, y: 3, z: 6 },
       type: "block",
     },
-    "block@3,3,3:20S0Rw": {
+    "block@3,3,3": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 3, y: 3, z: 3 },
       type: "block",
     },
-    "block@4,3,2:20S0Rw": {
+    "block@4,3,2": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 4, y: 3, z: 2 },
       type: "block",
     },
-    "block@5,3,1:20S0Rw": {
+    "block@5,3,1": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 5, y: 3, z: 1 },
       type: "block",
     },
-    "block@7,3,0:20S0Rw": {
+    "block@7,3,0": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "deadlyBlock@1,0,0:2u1uHB": {
+    "deadlyBlock@1,0,0": {
       config: { style: "toaster" },
       position: { x: 1, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,0,0:2u1uHB": {
+    "deadlyBlock@2,0,0": {
       config: { style: "toaster" },
       position: { x: 2, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,3,0:2u1uHB": {
+    "deadlyBlock@4,3,0": {
       config: { style: "toaster" },
       position: { x: 4, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "door@3,0,0:1sSHQ3": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "penitentiary2" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "spring@2,3,7:13y": {
+    "spring@2,3,7": {
       config: {},
       position: { x: 2, y: 3, z: 7 },
       type: "spring",

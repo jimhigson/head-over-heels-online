@@ -1,11 +1,11 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { PlanetName, Wall } from "./planets";
-import { planets } from "./planets";
+import type { SceneryName, Wall } from "./planets";
+import { scenery } from "./planets";
 import { wallTileSize, floorTileSize } from "./textureSizes";
 
 export type WallTextureId<
-  PS extends PlanetName,
+  PS extends SceneryName,
   TDark extends "" | ".dark",
 > = string &
   {
@@ -15,12 +15,12 @@ export type WallTextureId<
   }[PS][TDark];
 
 export type BackgroundTextureId<
-  TPlanet extends PlanetName,
+  TPlanet extends SceneryName,
   TDark extends "" | ".dark",
 > = WallTextureId<TPlanet, TDark> | `${TPlanet}${TDark}.floor`;
 
 const backgroundFrames = <
-  TPlanet extends PlanetName,
+  TPlanet extends SceneryName,
   TDark extends "" | ".dark",
 >(
   planet: TPlanet,
@@ -28,12 +28,12 @@ const backgroundFrames = <
   startY: number,
   isDark: TDark,
 ): Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData> => {
-  function* backgroundFramesGenerator<TPlanet extends PlanetName>(
+  function* backgroundFramesGenerator<TPlanet extends SceneryName>(
     planet: TPlanet,
     startX: number,
     startY: number,
   ): Generator<[BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData]> {
-    const { walls } = planets[planet];
+    const { walls } = scenery[planet];
 
     const { w, h } = wallTileSize;
     const yStep = w >> 1;

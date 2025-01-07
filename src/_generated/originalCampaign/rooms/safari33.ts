@@ -7,47 +7,47 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari33",
   items: {
-    "baddie@4,4,0:QyAMt": {
+    "block@7,3,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 3, z: 0 },
+      type: "block",
+    },
+    "block@7,3,1": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 3, z: 1 },
+      type: "block",
+    },
+    "block@7,3,2": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 7, y: 3, z: 2 },
+      type: "block",
+    },
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "safari32" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@3,8,5": {
+      config: { direction: "away", toRoom: "safari37crown" },
+      position: { x: 3, y: 8, z: 5 },
+      type: "door",
+    },
+    "door@8,3,5": {
+      config: { direction: "left", toRoom: "safari34" },
+      position: { x: 8, y: 3, z: 5 },
+      type: "door",
+    },
+    "monster@4,4,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy4",
         which: "elephant",
       },
       position: { x: 4, y: 4, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "block@7,3,0:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@7,3,1:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@7,3,2:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 3, z: 2 },
-      type: "block",
-    },
-    "door@0,3,0:Z2p4tm6": {
-      config: { direction: "right", toRoom: "safari32" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@3,8,5:ZqJYTY": {
-      config: { direction: "away", toRoom: "safari37crown" },
-      position: { x: 3, y: 8, z: 5 },
-      type: "door",
-    },
-    "door@8,3,5:Z140xJs": {
-      config: { direction: "left", toRoom: "safari34" },
-      position: { x: 8, y: 3, z: 5 },
-      type: "door",
-    },
-    "movableBlock@1,1,0:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@1,1,0": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 1, z: 0 },
       type: "movableBlock",
     },

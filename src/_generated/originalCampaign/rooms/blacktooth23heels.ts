@@ -7,162 +7,162 @@ export const room = inferRoomJson({
   floor: "jail",
   id: "blacktooth23heels",
   items: {
-    "barrier@4,0,0:fbso8": {
+    "barrier@4,0,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 0, z: 0 },
       type: "barrier",
     },
-    "barrier@4,0,1:fbso8": {
+    "barrier@4,0,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 0, z: 1 },
       type: "barrier",
     },
-    "barrier@4,0,2:fbso8": {
+    "barrier@4,0,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 0, z: 2 },
       type: "barrier",
     },
-    "barrier@4,1,0:fbso8": {
+    "barrier@4,1,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 1, z: 0 },
       type: "barrier",
     },
-    "barrier@4,1,1:fbso8": {
+    "barrier@4,1,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 1, z: 1 },
       type: "barrier",
     },
-    "barrier@4,1,2:fbso8": {
+    "barrier@4,1,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 1, z: 2 },
       type: "barrier",
     },
-    "barrier@4,2,0:fbso8": {
+    "barrier@4,2,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 2, z: 0 },
       type: "barrier",
     },
-    "barrier@4,2,1:fbso8": {
+    "barrier@4,2,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 2, z: 1 },
       type: "barrier",
     },
-    "barrier@4,2,2:fbso8": {
+    "barrier@4,2,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 2, z: 2 },
       type: "barrier",
     },
-    "barrier@4,3,0:fbso8": {
+    "barrier@4,3,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 3, z: 0 },
       type: "barrier",
     },
-    "barrier@4,3,1:fbso8": {
+    "barrier@4,3,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 3, z: 1 },
       type: "barrier",
     },
-    "barrier@4,3,2:fbso8": {
+    "barrier@4,3,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 3, z: 2 },
       type: "barrier",
     },
-    "barrier@4,4,0:fbso8": {
+    "barrier@4,4,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 4, z: 0 },
       type: "barrier",
     },
-    "barrier@4,4,1:fbso8": {
+    "barrier@4,4,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 4, z: 1 },
       type: "barrier",
     },
-    "barrier@4,4,2:fbso8": {
+    "barrier@4,4,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 4, z: 2 },
       type: "barrier",
     },
-    "barrier@4,5,0:fbso8": {
+    "barrier@4,5,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 5, z: 0 },
       type: "barrier",
     },
-    "barrier@4,5,1:fbso8": {
+    "barrier@4,5,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 5, z: 1 },
       type: "barrier",
     },
-    "barrier@4,5,2:fbso8": {
+    "barrier@4,5,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 5, z: 2 },
       type: "barrier",
     },
-    "barrier@4,6,0:fbso8": {
+    "barrier@4,6,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 6, z: 0 },
       type: "barrier",
     },
-    "barrier@4,6,1:fbso8": {
+    "barrier@4,6,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 6, z: 1 },
       type: "barrier",
     },
-    "barrier@4,6,2:fbso8": {
+    "barrier@4,6,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 6, z: 2 },
       type: "barrier",
     },
-    "barrier@4,7,0:fbso8": {
+    "barrier@4,7,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 7, z: 0 },
       type: "barrier",
     },
-    "barrier@4,7,1:fbso8": {
+    "barrier@4,7,1": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 7, z: 1 },
       type: "barrier",
     },
-    "barrier@4,7,2:fbso8": {
+    "barrier@4,7,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 4, y: 7, z: 2 },
       type: "barrier",
     },
-    "conveyor@0,1,0:24hKaE": {
+    "conveyor@0,1,0": {
       config: { direction: "away" },
       position: { x: 0, y: 1, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,2,0:24hKaE": {
+    "conveyor@0,2,0": {
       config: { direction: "away" },
       position: { x: 0, y: 2, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,3,0:24hKaE": {
+    "conveyor@0,3,0": {
       config: { direction: "away" },
       position: { x: 0, y: 3, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,4,0:24hKaE": {
+    "conveyor@0,4,0": {
       config: { direction: "away" },
       position: { x: 0, y: 4, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,5,0:24hKaE": {
+    "conveyor@0,5,0": {
       config: { direction: "away" },
       position: { x: 0, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,6,0:24hKaE": {
+    "conveyor@0,6,0": {
       config: { direction: "away" },
       position: { x: 0, y: 6, z: 0 },
       type: "conveyor",
     },
-    "deadlyBlock@0,7,0:ZWGEjo": {
+    "deadlyBlock@0,7,0": {
       config: { style: "volcano" },
       position: { x: 0, y: 7, z: 0 },
       type: "deadlyBlock",
     },
-    "door@8,3,0:Z1u78lr": {
+    "door@8,3,0": {
       config: { direction: "left", toRoom: "blacktooth1head" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
@@ -172,13 +172,13 @@ export const room = inferRoomJson({
       position: { x: 3.5, y: 3.5, z: 0 },
       type: "player",
     },
-    "movableBlock@1,3,1:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@1,3,1": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 3, z: 1 },
       type: "movableBlock",
     },
-    "movableBlock@1,4,1:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@1,4,1": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 4, z: 1 },
       type: "movableBlock",
     },
@@ -216,7 +216,7 @@ become very powerful. Heels can jump his own height and can also run very fast.
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },
-    "teleporter@0,0,0:Z1GqgNT": {
+    "teleporter@0,0,0": {
       config: { toRoom: "blacktooth24" },
       position: { x: 0, y: 0, z: 0 },
       type: "teleporter",

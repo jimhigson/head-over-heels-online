@@ -7,62 +7,62 @@ export const room = inferRoomJson({
   floor: "none",
   id: "safari35",
   items: {
-    "block@0,3,0:95uHj": {
+    "block@0,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,7,0:95uHj": {
+    "block@7,7,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
-    "deadlyBlock@0,5,0:ZWGEjo": {
+    "deadlyBlock@0,5,0": {
       config: { style: "volcano" },
       position: { x: 0, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,5,0:ZWGEjo": {
+    "deadlyBlock@1,5,0": {
       config: { style: "volcano" },
       position: { x: 1, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,5,0:ZWGEjo": {
+    "deadlyBlock@2,5,0": {
       config: { style: "volcano" },
       position: { x: 2, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,5,0:ZWGEjo": {
+    "deadlyBlock@3,5,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,5,0:ZWGEjo": {
+    "deadlyBlock@4,5,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@5,5,0:ZWGEjo": {
+    "deadlyBlock@5,5,0": {
       config: { style: "volcano" },
       position: { x: 5, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@6,5,0:ZWGEjo": {
+    "deadlyBlock@6,5,0": {
       config: { style: "volcano" },
       position: { x: 6, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,5,0:ZWGEjo": {
+    "deadlyBlock@7,5,0": {
       config: { style: "volcano" },
       position: { x: 7, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,3,1:Z2p4sk5": {
+    "door@0,3,1": {
       config: { direction: "right", toRoom: "safari36" },
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    "movableBlock@7,5,1:28GVaT": {
+    "movableBlock@7,5,1": {
       config: {
         activated: "onStand",
         movement: "clockwise",

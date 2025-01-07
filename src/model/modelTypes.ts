@@ -1,7 +1,7 @@
 import type { SpritesheetFrameData } from "pixi.js";
 import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
-import type { PlanetName, Wall } from "../sprites/planets";
+import type { SceneryName, Wall } from "../sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import type { RoomJson } from "./RoomJson";
 
@@ -18,15 +18,15 @@ export const otherIndividualCharacterName = (
 export const isCharacterName = (name: string): name is CharacterName =>
   name === "head" || name === "heels";
 
-export type Floor = "deadly" | "none" | `${PlanetName}`;
+export type Floor = "deadly" | "none" | `${SceneryName}`;
 
-export type AnyWall = Wall<PlanetName>;
+export type AnyWall = Wall<SceneryName>;
 
 export const floorThickness = blockSizePx.h;
 export const wallThickness = blockSizePx.w / 2;
 
 /* which graphics to use for all the walls in a room? */
-export type RoomWalls<P extends PlanetName> = {
+export type RoomWalls<P extends SceneryName> = {
   left: Wall<P>[];
   away: Wall<P>[];
 };
@@ -35,7 +35,7 @@ export type RoomWalls<P extends PlanetName> = {
  * a map of items-in-play in a room
  **/
 export type RoomStateItems<
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = Record<ItemId, UnknownItemInPlay<RoomId>> & {
@@ -50,7 +50,7 @@ export type RoomStateItems<
  * room)
  */
 export type RoomState<
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = Simplify<
@@ -65,10 +65,10 @@ export type RoomState<
     roomTime: number;
   }
 >;
-export type UnknownRoomState = RoomState<PlanetName, string>;
+export type UnknownRoomState = RoomState<SceneryName, string>;
 
 export type Campaign<RoomId extends string> = {
-  rooms: Record<RoomId, RoomJson<PlanetName, RoomId>>;
+  rooms: Record<RoomId, RoomJson<SceneryName, RoomId>>;
 };
 
 export type UnknownCampaign = Campaign<string>;
@@ -76,7 +76,7 @@ export type UnknownCampaign = Campaign<string>;
 export type CampaignRoomId<C extends UnknownCampaign> = string &
   keyof C["rooms"];
 export type CampaignRoom<C extends UnknownCampaign> =
-  C extends Campaign<infer RoomId> ? RoomJson<PlanetName, RoomId> : never;
+  C extends Campaign<infer RoomId> ? RoomJson<SceneryName, RoomId> : never;
 
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;

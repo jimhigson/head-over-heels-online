@@ -7,57 +7,57 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus15",
   items: {
-    "block@0,5,2:95uHj": {
+    "block@0,5,2": {
       config: { disappearing: true, style: "organic" },
       position: { x: 0, y: 5, z: 2 },
       type: "block",
     },
-    "block@0,5,6:95uHj": {
+    "block@0,5,6": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 5, z: 6 },
       type: "block",
     },
-    "block@1,5,1:95uHj": {
+    "block@1,5,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 5, z: 1 },
       type: "block",
     },
-    "block@1,5,5:95uHj": {
+    "block@1,5,5": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 5, z: 5 },
       type: "block",
     },
-    "block@2,5,3:95uHj": {
+    "block@2,5,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 5, z: 3 },
       type: "block",
     },
-    "block@3,5,1:95uHj": {
+    "block@3,5,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 5, z: 1 },
       type: "block",
     },
-    "block@3,5,4:95uHj": {
+    "block@3,5,4": {
       config: { disappearing: true, style: "organic" },
       position: { x: 3, y: 5, z: 4 },
       type: "block",
     },
-    "block@5,5,0:95uHj": {
+    "block@5,5,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
-    "deadlyBlock@0,5,0:ZaRhUQ": {
+    "deadlyBlock@0,5,0": {
       config: { style: "spikes" },
       position: { x: 0, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "door@2,0,0:ZruPBS": {
+    "door@2,0,0": {
       config: { direction: "towards", toRoom: "egyptus10" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
-    "spring@0,5,7:13y": {
+    "spring@0,5,7": {
       config: {},
       position: { x: 0, y: 5, z: 7 },
       type: "spring",

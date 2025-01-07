@@ -7,62 +7,62 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "safari7",
   items: {
-    "block@0,3,0:95uHj": {
+    "block@0,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@1,3,0:95uHj": {
+    "block@1,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 3, z: 0 },
       type: "block",
     },
-    "block@2,0,0:95uHj": {
+    "block@2,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
-    "block@2,1,0:Z1AdJxh": {
+    "block@2,1,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 2, y: 1, z: 0 },
       type: "block",
     },
-    "block@2,2,0:95uHj": {
+    "block@2,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 2, z: 0 },
       type: "block",
     },
-    "block@2,3,0:95uHj": {
+    "block@2,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 3, z: 0 },
       type: "block",
     },
-    "block@3,3,0:95uHj": {
+    "block@3,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    "block@4,3,0:95uHj": {
+    "block@4,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
-    "block@5,3,0:95uHj": {
+    "block@5,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
-    "door@0,2,1:G95F0": {
+    "door@0,2,1": {
       config: { direction: "right", toRoom: "safari6triple" },
       position: { x: 0, y: 2, z: 1 },
       type: "door",
     },
-    "door@2,0,1:1hl1rq": {
+    "door@2,0,1": {
       config: { direction: "towards", toRoom: "safari6triple" },
       position: { x: 2, y: 0, z: 1 },
       type: "door",
     },
-    "door@6,2,2:LV3sr": {
+    "door@6,2,2": {
       config: { direction: "left", toRoom: "safari8" },
       position: { x: 6, y: 2, z: 2 },
       type: "door",

@@ -7,57 +7,57 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth84",
   items: {
-    "block@0,0,0:95uHj": {
+    "block@0,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "block@0,3,3:95uHj": {
+    "block@0,3,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
-    "block@0,4,3:95uHj": {
+    "block@0,4,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
-    "block@4,0,0:Z1AdJxh": {
+    "block@4,0,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 4, y: 0, z: 0 },
       type: "block",
     },
-    "block@4,3,0:Z1AdJxh": {
+    "block@4,3,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
-    "block@4,3,1:Z1AdJxh": {
+    "block@4,3,1": {
       config: { disappearing: true, style: "organic" },
       position: { x: 4, y: 3, z: 1 },
       type: "block",
     },
-    "block@7,3,0:95uHj": {
+    "block@7,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,4,0:95uHj": {
+    "block@7,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 4, z: 0 },
       type: "block",
     },
-    "door@0,3,4:uNnWP": {
+    "door@0,3,4": {
       config: { direction: "right", toRoom: "blacktooth85" },
       position: { x: 0, y: 3, z: 4 },
       type: "door",
     },
-    "door@8,3,2:ZUCgkt": {
+    "door@8,3,2": {
       config: { direction: "left", toRoom: "blacktooth77" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
     },
-    "portableBlock@4,7,0:Z1UEQTQ": {
+    "portableBlock@4,7,0": {
       config: { style: "cube" },
       position: { x: 4, y: 7, z: 0 },
       type: "portableBlock",

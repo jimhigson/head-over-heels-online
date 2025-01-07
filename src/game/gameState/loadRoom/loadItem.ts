@@ -16,7 +16,7 @@ import { directionAxis, originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
 import type { FreeItemState } from "@/model/ItemStateMap";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -107,8 +107,8 @@ const shadowMask = (
     case "movableBlock":
       return {
         spriteOptions:
-          jsonItem.config.style === "anvil" ?
-            "shadowMask.anvil"
+          jsonItem.config.style === "stepStool" ?
+            "shadowMask.stepStool"
           : "shadowMask.fullBlock",
         relativeTo: "origin",
       };
@@ -155,7 +155,7 @@ const shadowMask = (
         : undefined;
     case "slidingDeadly":
       return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
-    case "baddie":
+    case "monster":
       switch (jsonItem.config.which) {
         case "dalek":
           return { spriteOptions: "shadowMask.dalek", relativeTo: "origin" };
@@ -202,7 +202,7 @@ const shadowCast = (
       return jsonItem.config.gives === "scroll" ?
           "shadow.scroll"
         : "shadow.smallRound";
-    case "baddie":
+    case "monster":
       return "shadow.smallRound";
   }
 };
@@ -210,7 +210,7 @@ const shadowCast = (
 export const defaultBaseState = <RoomId extends string>() =>
   ({
     expires: null,
-    stoodOnBy: new Set<FreeItem<PlanetName, RoomId>>(),
+    stoodOnBy: new Set<FreeItem<SceneryName, RoomId>>(),
     disappear: null,
   }) satisfies Partial<BaseItemState>;
 
@@ -243,7 +243,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         latentMovement: [],
       }
     : {}),
-    ...(jsonItem.type === "baddie" ?
+    ...(jsonItem.type === "monster" ?
       {
         vels: {
           gravity: originXyz,
@@ -252,9 +252,9 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         },
         activated: jsonItem.config.activated,
         ...((
-          jsonItem.config.which === "american-football-head" ||
+          jsonItem.config.which === "skiHead" ||
           jsonItem.config.which === "turtle" ||
-          jsonItem.config.which === "elephant-head" ||
+          jsonItem.config.which === "elephantHead" ||
           jsonItem.config.which === "cyberman"
         ) ?
           {

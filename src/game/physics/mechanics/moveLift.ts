@@ -1,6 +1,6 @@
 import type { GameState } from "@/game/gameState/GameState";
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { MechanicResult } from "../MechanicResult";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
@@ -65,7 +65,7 @@ export function moveLift<RoomId extends string>(
       direction,
       position: { z },
     },
-  }: ItemInPlay<"lift", PlanetName, RoomId>,
+  }: ItemInPlay<"lift", SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"lift", RoomId> {

@@ -1,20 +1,20 @@
 import type { Campaign } from "./model/modelTypes.ts";
 import { type RoomWalls } from "./model/modelTypes.ts";
 import { type RoomJson } from "./model/RoomJson.ts";
-import type { PlanetName, Wall } from "./sprites/planets.ts";
-import { planetNames, planets } from "./sprites/planets.ts";
+import type { SceneryName, Wall } from "./sprites/planets.ts";
+import { sceneryNames, scenery } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
 
-const generateWalls = <P extends PlanetName>(
+const generateWalls = <P extends SceneryName>(
   roomSize: Xy,
   planet: P,
   skip?: Record<AxisXy, number[]>,
 ): RoomWalls<P> => {
-  const { walls } = planets[planet];
+  const { walls } = scenery[planet];
 
   function* gen(axis: AxisXy): Generator<Wall<P>> {
     const n = walls.length;
@@ -31,7 +31,7 @@ const generateWalls = <P extends PlanetName>(
   };
 };
 
-type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
+type ColorRoomIds = `${SceneryName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
 export type TestCampaignRoomId =
   | "laboratory"
@@ -41,7 +41,7 @@ export type TestCampaignRoomId =
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
-  type Entry<P extends PlanetName> = [
+  type Entry<P extends SceneryName> = [
     ColorRoomIds,
     RoomJson<P, TestCampaignRoomId, string>,
   ];
@@ -58,7 +58,7 @@ const colourRooms = () => {
       position: { x: 4, y: 6, z: 0 },
     },
     {
-      type: "baddie",
+      type: "monster",
       config: {
         which: "cyberman",
         movement: "towards-on-shortest-axis-xy4",
@@ -70,9 +70,9 @@ const colourRooms = () => {
     },
   ];
 
-  function* room(): Generator<Entry<PlanetName>> {
-    for (let iPlanet = 0; iPlanet < planetNames.length; iPlanet++) {
-      const p = planetNames[iPlanet];
+  function* room(): Generator<Entry<SceneryName>> {
+    for (let iPlanet = 0; iPlanet < sceneryNames.length; iPlanet++) {
+      const p = sceneryNames[iPlanet];
       for (let iHue = 0; iHue < zxSpectrumRoomHue.length; iHue++) {
         const hue = zxSpectrumRoomHue[iHue];
         for (let iShade = 0; iShade < zxSpectrumShades.length; iShade++) {
@@ -119,7 +119,7 @@ const colourRooms = () => {
                   position: { x: 0, y: 4, z: 3 },
                   config: {
                     direction: "right",
-                    toRoom: `${planetNames[(planetNames.length + iPlanet - 1) % planetNames.length]}-${hue}-${shade}`,
+                    toRoom: `${sceneryNames[(sceneryNames.length + iPlanet - 1) % sceneryNames.length]}-${hue}-${shade}`,
                   },
                 },
                 {
@@ -127,7 +127,7 @@ const colourRooms = () => {
                   position: { x: 8, y: 4, z: 4 },
                   config: {
                     direction: "left",
-                    toRoom: `${planetNames[(planetNames.length + iPlanet + 1) % planetNames.length]}-${hue}-${shade}`,
+                    toRoom: `${sceneryNames[(sceneryNames.length + iPlanet + 1) % sceneryNames.length]}-${hue}-${shade}`,
                   },
                 },
                 {
@@ -149,7 +149,7 @@ const colourRooms = () => {
   }
   return Object.fromEntries(room()) as Record<
     ColorRoomIds,
-    RoomJson<PlanetName, ColorRoomIds, string>
+    RoomJson<SceneryName, ColorRoomIds, string>
   >;
 };
 
@@ -259,32 +259,32 @@ const rooms = {
       // stack of items to test pushing stacks:
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 0 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 1 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 2 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 3 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 4 },
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 10, y: 7, z: 5 },
       },
       // to test disappearing barriers:
@@ -315,9 +315,9 @@ const rooms = {
         position: { x: 0, y: 4, z: 3 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           activated: true,
           startDirection: "left",
@@ -335,7 +335,7 @@ const rooms = {
       },
       {
         type: "pickup",
-        config: { gives: "donuts" },
+        config: { gives: "doughnuts" },
         position: { x: 0, y: 4, z: 9 },
       },
       {
@@ -398,11 +398,11 @@ const rooms = {
         config: { style: "artificial", disappearing: false },
         position: { x: 4, y: 3, z: 0 },
       },
-      // baddies that push the joysticks!
+      // monsters that push the joysticks!
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
@@ -411,9 +411,9 @@ const rooms = {
         position: { x: 4, y: 2, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
@@ -493,7 +493,7 @@ const rooms = {
         position: { x: 4, y: 6, z: 5 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "cyberman",
           movement: "towards-on-shortest-axis-xy4",
@@ -570,9 +570,9 @@ const rooms = {
       },
 
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           startDirection: "right",
           style: "starsAndStripes",
@@ -581,9 +581,9 @@ const rooms = {
         position: { x: 1, y: 7, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           startDirection: "right",
           style: "greenAndPink",
@@ -592,9 +592,9 @@ const rooms = {
         position: { x: 2, y: 8, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           startDirection: "away",
           style: "starsAndStripes",
@@ -605,7 +605,7 @@ const rooms = {
       {
         type: "movableBlock",
         config: {
-          style: "anvil",
+          style: "stepStool",
           movement: "free",
         },
         position: { x: 2, y: 6, z: 0 },
@@ -613,7 +613,7 @@ const rooms = {
       {
         type: "movableBlock",
         config: {
-          style: "anvil",
+          style: "stepStool",
           movement: "free",
         },
         position: { x: 2, y: 9, z: 0 },
@@ -621,7 +621,7 @@ const rooms = {
       {
         type: "movableBlock",
         config: {
-          style: "anvil",
+          style: "stepStool",
           movement: "free",
         },
         position: { x: 1, y: 6, z: 0 },
@@ -836,7 +836,7 @@ const rooms = {
         position: { x: 10, y: 4, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         id: "t2",
         config: {
           which: "turtle",
@@ -847,7 +847,7 @@ const rooms = {
         position: { x: 12, y: 12, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         id: "t1",
         config: {
           which: "turtle",
@@ -945,7 +945,7 @@ const rooms = {
         position: { x: 2, y: 10, z: 3 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "dalek",
@@ -954,20 +954,20 @@ const rooms = {
         position: { x: 1, y: 1, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "bubble-robot",
+          which: "bubbleRobot",
           movement: "patrol-randomly-xy8",
         },
         position: { x: 1, y: 10, z: 0 },
       },
 
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           style: "greenAndPink",
           startDirection: "away",
@@ -975,10 +975,10 @@ const rooms = {
         position: { x: 1, y: 3, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           style: "starsAndStripes",
           startDirection: "right",
@@ -986,10 +986,10 @@ const rooms = {
         position: { x: 1, y: 5, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
           style: "greenAndPink",
           startDirection: "left",
@@ -997,10 +997,10 @@ const rooms = {
         position: { x: 3, y: 5, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "american-football-head",
+          which: "skiHead",
           movement: "back-forth",
 
           style: "starsAndStripes",
@@ -1009,7 +1009,7 @@ const rooms = {
         position: { x: 3, y: 7, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "cyberman",
@@ -1029,7 +1029,7 @@ const rooms = {
         position: { x: 2, y: 10, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: false,
           wakes: false,
@@ -1040,7 +1040,7 @@ const rooms = {
         position: { x: 4, y: 10, z: 1 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "turtle",
@@ -1050,7 +1050,7 @@ const rooms = {
         position: { x: 0, y: 8, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "turtle",
@@ -1060,7 +1060,7 @@ const rooms = {
         position: { x: 0, y: 6, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "turtle",
@@ -1070,25 +1070,25 @@ const rooms = {
         position: { x: 0, y: 4, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "helicopter-bug",
+          which: "helicopterBug",
           movement: "patrol-randomly-xy8",
         },
         position: { x: 0, y: 1, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "headless-base",
+          which: "homingBot",
           movement: "towards-tripped-on-axis-xy4",
         },
         position: { x: 10, y: 4, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "monkey",
@@ -1097,7 +1097,7 @@ const rooms = {
         position: { x: 9, y: 2, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "elephant",
@@ -1106,16 +1106,16 @@ const rooms = {
         position: { x: 9, y: 10, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "flying-ball",
+          which: "emperorsGuardian",
           movement: "towards-when-in-square-xy8",
         },
         position: { x: 0, y: 10, z: 0 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
           which: "emperor",
@@ -1124,10 +1124,10 @@ const rooms = {
         position: { x: 0, y: 14, z: 4 },
       },
       {
-        type: "baddie",
+        type: "monster",
         config: {
           activated: true,
-          which: "computer-bot",
+          which: "computerBot",
           movement: "patrol-randomly-xy4",
         },
         position: { x: 6, y: 0, z: 0 },
@@ -1169,7 +1169,7 @@ const rooms = {
       },
       {
         type: "movableBlock",
-        config: { style: "anvil", movement: "free" },
+        config: { style: "stepStool", movement: "free" },
         position: { x: 9, y: 7, z: 0 },
       },
       {
@@ -1209,7 +1209,7 @@ const rooms = {
       },
       {
         type: "pickup",
-        config: { gives: "donuts" },
+        config: { gives: "doughnuts" },
         position: { x: 7, y: 3, z: 0 },
       },
       {

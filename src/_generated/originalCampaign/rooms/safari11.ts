@@ -7,54 +7,54 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari11",
   items: {
-    "baddie@0,0,0:QyAMt": {
+    "door@0,2,0": {
+      config: { direction: "right", toRoom: "safari10" },
+      position: { x: 0, y: 2, z: 0 },
+      type: "door",
+    },
+    "door@6,2,0": {
+      config: { direction: "left", toRoom: "safari12" },
+      position: { x: 6, y: 2, z: 0 },
+      type: "door",
+    },
+    "monster@0,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy4",
         which: "elephant",
       },
       position: { x: 0, y: 0, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@2,3,0:1O5YG7": {
+    "monster@2,3,0": {
       config: {
         activated: true,
         movement: "unmoving",
         startDirection: "right",
-        which: "elephant-head",
+        which: "elephantHead",
       },
       position: { x: 2, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,1,0:1O5YG7": {
+    "monster@3,1,0": {
       config: {
         activated: true,
         movement: "unmoving",
         startDirection: "right",
-        which: "elephant-head",
+        which: "elephantHead",
       },
       position: { x: 3, y: 1, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,5,0:1O5YG7": {
+    "monster@3,5,0": {
       config: {
         activated: true,
         movement: "unmoving",
         startDirection: "right",
-        which: "elephant-head",
+        which: "elephantHead",
       },
       position: { x: 3, y: 5, z: 0 },
-      type: "baddie",
-    },
-    "door@0,2,0:Z2p4JSm": {
-      config: { direction: "right", toRoom: "safari10" },
-      position: { x: 0, y: 2, z: 0 },
-      type: "door",
-    },
-    "door@6,2,0:Z140OgI": {
-      config: { direction: "left", toRoom: "safari12" },
-      position: { x: 6, y: 2, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "safari",

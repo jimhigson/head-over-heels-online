@@ -1,4 +1,4 @@
-import type { PlanetName, Wall } from "../../src/sprites/planets";
+import type { SceneryName, Wall } from "../sprites/planets";
 
 /**
  * the walls are numbered in the xml - convert from the numbers to my names (which
@@ -6,7 +6,7 @@ import type { PlanetName, Wall } from "../../src/sprites/planets";
  *
  * based on: https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata/gfx
  */
-export const wallNumbers: { [P in PlanetName]: Array<Wall<P>> } = {
+export const wallNumbers: { [P in SceneryName]: Array<Wall<P>> } = {
   blacktooth: ["plain", "shield", "armour"],
   bookworld: ["book", "person"],
   egyptus: ["hieroglyphics", "sarcophagus"],

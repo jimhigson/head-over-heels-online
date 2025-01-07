@@ -7,47 +7,47 @@ export const room = inferRoomJson({
   floor: "none",
   id: "blacktooth26",
   items: {
-    "conveyor@2,5,0:cVr4l": {
+    "conveyor@2,5,0": {
       config: { direction: "right" },
       position: { x: 2, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@3,5,0:cVr4l": {
+    "conveyor@3,5,0": {
       config: { direction: "right" },
       position: { x: 3, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,5,0:cVr4l": {
+    "conveyor@4,5,0": {
       config: { direction: "right" },
       position: { x: 4, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@5,2,0:24hKaE": {
+    "conveyor@5,2,0": {
       config: { direction: "away" },
       position: { x: 5, y: 2, z: 0 },
       type: "conveyor",
     },
-    "conveyor@5,3,0:24hKaE": {
+    "conveyor@5,3,0": {
       config: { direction: "away" },
       position: { x: 5, y: 3, z: 0 },
       type: "conveyor",
     },
-    "conveyor@5,4,0:24hKaE": {
+    "conveyor@5,4,0": {
       config: { direction: "away" },
       position: { x: 5, y: 4, z: 0 },
       type: "conveyor",
     },
-    "conveyor@5,5,0:cVr4l": {
+    "conveyor@5,5,0": {
       config: { direction: "right" },
       position: { x: 5, y: 5, z: 0 },
       type: "conveyor",
     },
-    "door@2,6,2:LBLtR": {
+    "door@2,6,2": {
       config: { direction: "away", toRoom: "blacktooth27fish" },
       position: { x: 2, y: 6, z: 2 },
       type: "door",
     },
-    "lift@5,0,0:ZTwqow": {
+    "lift@5,0,0": {
       config: { bottom: 0, top: 7 },
       position: { x: 5, y: 0, z: 0 },
       type: "lift",

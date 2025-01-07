@@ -1,7 +1,7 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import {
   selectHeadAbilities,
@@ -12,7 +12,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
   e: ItemTouchEvent<
     RoomId,
     PlayableItem<CharacterName, RoomId>,
-    ItemInPlay<"pickup", PlanetName, RoomId>
+    ItemInPlay<"pickup", SceneryName, RoomId>
   >,
 ) => {
   const {
@@ -43,10 +43,10 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
       break;
     }
 
-    case "donuts": {
+    case "doughnuts": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
-        toModify.donuts += 6;
+        toModify.doughnuts += 6;
       }
       break;
     }

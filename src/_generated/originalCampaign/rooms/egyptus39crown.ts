@@ -7,85 +7,85 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus39crown",
   items: {
-    "baddie@3,0,0:Z2awALk": {
+    "block@3,3,0": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 3, y: 3, z: 0 },
+      type: "block",
+    },
+    "block@3,3,1": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 3, y: 3, z: 1 },
+      type: "block",
+    },
+    "block@3,3,2": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 3, y: 3, z: 2 },
+      type: "block",
+    },
+    "block@4,3,0": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 0 },
+      type: "block",
+    },
+    "block@4,3,1": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 1 },
+      type: "block",
+    },
+    "block@4,3,2": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 2 },
+      type: "block",
+    },
+    "block@4,3,3": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 3 },
+      type: "block",
+    },
+    "block@4,3,4": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@4,3,5": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 5 },
+      type: "block",
+    },
+    "block@4,3,6": {
+      config: { disappearing: false, style: "artificial" },
+      position: { x: 4, y: 3, z: 6 },
+      type: "block",
+    },
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "egyptus38" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "monster@3,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 3, y: 0, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,7,0:Z2awALk": {
+    "monster@3,7,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 3, y: 7, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "block@3,3,0:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 3, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@3,3,1:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 3, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@3,3,2:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 3, y: 3, z: 2 },
-      type: "block",
-    },
-    "block@4,3,0:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@4,3,1:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@4,3,2:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 2 },
-      type: "block",
-    },
-    "block@4,3,3:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 3 },
-      type: "block",
-    },
-    "block@4,3,4:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@4,3,5:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 5 },
-      type: "block",
-    },
-    "block@4,3,6:20S0Rw": {
-      config: { disappearing: false, style: "artificial" },
-      position: { x: 4, y: 3, z: 6 },
-      type: "block",
-    },
-    "door@0,3,0:2rMFk9": {
-      config: { direction: "right", toRoom: "egyptus38" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "pickup@4,3,7:13Qb4n": {
+    "pickup@4,3,7": {
       config: { gives: "crown", planet: "egyptus" },
       position: { x: 4, y: 3, z: 7 },
       type: "pickup",
     },
-    "portableBlock@3,3,3:Z1UEQTQ": {
+    "portableBlock@3,3,3": {
       config: { style: "cube" },
       position: { x: 3, y: 3, z: 3 },
       type: "portableBlock",

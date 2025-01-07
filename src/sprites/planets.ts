@@ -1,4 +1,6 @@
-export const planets = {
+import type { Subset } from "@/utils/subset";
+
+export const scenery = {
   jail: { walls: ["bars"] },
   blacktooth: { walls: ["armour", "shield", "plain"] },
   bookworld: { walls: ["person", "book"] },
@@ -9,14 +11,19 @@ export const planets = {
   safari: { walls: ["window", "shield", "wall"] },
 } as const satisfies Record<string, { walls: string[] }>;
 
-export type PlanetName = keyof typeof planets;
-export const planetNames = Object.keys(planets) as PlanetName[];
+export type SceneryName = keyof typeof scenery;
+export const sceneryNames = Object.keys(scenery) as SceneryName[];
 
-export type AllPlanets = typeof planets;
-export type Wall<P extends PlanetName> =
-  | AllPlanets[P]["walls"][number]
+export type PlanetName = Subset<
+  SceneryName,
+  "blacktooth" | "penitentiary" | "bookworld" | "egyptus" | "safari"
+>;
+
+export type AllScenery = typeof scenery;
+export type Wall<P extends SceneryName> =
+  | AllScenery[P]["walls"][number]
   /**
    * none means render nothing in this space - if this is a mistake in the xml,
-   * overide it with jsonpatch
+   * override it with jsonpatch
    */
   | "none";

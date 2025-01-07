@@ -7,7 +7,42 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase21tosafari",
   items: {
-    "baddie@0,7,1:ZECNoc": {
+    "deadlyBlock@0,7,0": {
+      config: { style: "toaster" },
+      position: { x: 0, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,7,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,7,0": {
+      config: { style: "toaster" },
+      position: { x: 2, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@3,7,0": {
+      config: { style: "toaster" },
+      position: { x: 3, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@4,7,0": {
+      config: { style: "toaster" },
+      position: { x: 4, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,7,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    "door@2,0,0": {
+      config: { direction: "towards", toRoom: "moonbase20" },
+      position: { x: 2, y: 0, z: 0 },
+      type: "door",
+    },
+    "monster@0,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -16,9 +51,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 0, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@1,7,1:ZECNoc": {
+    "monster@1,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -27,9 +62,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 1, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@2,7,1:ZECNoc": {
+    "monster@2,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -38,9 +73,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 2, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,7,1:ZECNoc": {
+    "monster@3,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -49,9 +84,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 3, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,7,1:ZECNoc": {
+    "monster@4,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -60,9 +95,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 4, y: 7, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,7,1:ZECNoc": {
+    "monster@5,7,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -71,42 +106,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 7, z: 1 },
-      type: "baddie",
-    },
-    "deadlyBlock@0,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 2, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 3, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 4, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,7,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@2,0,0:5CAiM": {
-      config: { direction: "towards", toRoom: "moonbase20" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "door",
+      type: "monster",
     },
     scroll: {
       config: {
@@ -123,22 +123,22 @@ forts in the jungle, beware traps!
       position: { x: 1, y: 3, z: 0 },
       type: "pickup",
     },
-    "teleporter@2,3,0:1mtSsV": {
+    "teleporter@2,3,0": {
       config: { toRoom: "safari1" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@2,4,0:1mtSsV": {
+    "teleporter@2,4,0": {
       config: { toRoom: "safari1" },
       position: { x: 2, y: 4, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,3,0:1mtSsV": {
+    "teleporter@3,3,0": {
       config: { toRoom: "safari1" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,4,0:1mtSsV": {
+    "teleporter@3,4,0": {
       config: { toRoom: "safari1" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",

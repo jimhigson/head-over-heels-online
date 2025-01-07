@@ -1,12 +1,12 @@
-import patch from "../../src/_generated/originalCampaign/patch.json";
+import patch from "../_generated/originalCampaign/patch.json";
 import type { Operation } from "fast-json-patch";
 import fastJsonPatch from "fast-json-patch";
 import { writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
 import { objectValues } from "iter-tools";
-import { iterate } from "../../src/utils/iterate";
+import { iterate } from "../utils/iterate";
 import { orderBy } from "natural-orderby";
-import type { AnyRoomJson } from "../../src/model/RoomJson";
+import type { AnyRoomJson } from "../model/RoomJson";
 
 /* multi-line string are easier to read than single-line strings with \n */
 function convertMultilineToTemplate(jsonString: string): string {

@@ -7,27 +7,27 @@ export const room = inferRoomJson({
   floor: "jail",
   id: "blacktooth1head",
   items: {
-    "barrier@5,0,0:fbso8": {
+    "barrier@5,0,0": {
       config: { axis: "y", disappearing: false },
       position: { x: 5, y: 0, z: 0 },
       type: "barrier",
     },
-    "barrier@5,0,2:fbso8": {
+    "barrier@5,0,2": {
       config: { axis: "y", disappearing: false },
       position: { x: 5, y: 0, z: 2 },
       type: "barrier",
     },
-    "barrier@5,0,4:fbso8": {
+    "barrier@5,0,4": {
       config: { axis: "y", disappearing: false },
       position: { x: 5, y: 0, z: 4 },
       type: "barrier",
     },
-    "barrier@5,0,6:fbso8": {
+    "barrier@5,0,6": {
       config: { axis: "y", disappearing: false },
       position: { x: 5, y: 0, z: 6 },
       type: "barrier",
     },
-    "door@0,3,0:vSkOv": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "blacktooth23heels" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
@@ -37,7 +37,7 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
-    "pickup@5,0,7:1MkQY2": {
+    "pickup@5,0,7": {
       config: { gives: "extra-life" },
       position: { x: 5, y: 0, z: 7 },
       type: "pickup",
@@ -94,7 +94,7 @@ accolade, and unfortunately, almost certain suicide.
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },
-    "teleporter@5,7,0:Z12mRwL": {
+    "teleporter@5,7,0": {
       config: { toRoom: "blacktooth2" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",

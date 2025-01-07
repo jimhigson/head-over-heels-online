@@ -7,66 +7,62 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth37",
   items: {
-    "baddie@0,5,0:1LpDOD": {
+    "ball@0,1,0": { config: {}, position: { x: 0, y: 1, z: 0 }, type: "ball" },
+    "door@1,0,0": {
+      config: { direction: "towards", toRoom: "blacktooth36" },
+      position: { x: 1, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@1,8,0": {
+      config: { direction: "away", toRoom: "blacktooth38" },
+      position: { x: 1, y: 8, z: 0 },
+      type: "door",
+    },
+    "monster@0,5,0": {
       config: {
         activated: true,
         movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 0, y: 5, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@2,4,0:Z1Bw2gF": {
+    "monster@2,4,0": {
       config: {
         activated: true,
         movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 2, y: 4, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@3,3,0:1LpDOD": {
+    "monster@3,3,0": {
       config: {
         activated: true,
         movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 3, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "ball@0,1,0:13y": {
-      config: {},
-      position: { x: 0, y: 1, z: 0 },
-      type: "ball",
-    },
-    "door@1,0,0:Z1V7TCt": {
-      config: { direction: "towards", toRoom: "blacktooth36" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@1,8,0:xRwWV": {
-      config: { direction: "away", toRoom: "blacktooth38" },
-      position: { x: 1, y: 8, z: 0 },
-      type: "door",
-    },
-    "switch@0,7,0:V4krG": {
+    "switch@0,7,0": {
       config: {
         activates: {
-          "baddie@0,5,0:1LpDOD": {
+          "monster@0,5,0": {
             left: { activated: true },
             right: { activated: false },
           },
-          "baddie@2,4,0:Z1Bw2gF": {
+          "monster@2,4,0": {
             left: { activated: true },
             right: { activated: false },
           },
-          "baddie@3,3,0:1LpDOD": {
+          "monster@3,3,0": {
             left: { activated: true },
             right: { activated: false },
           },

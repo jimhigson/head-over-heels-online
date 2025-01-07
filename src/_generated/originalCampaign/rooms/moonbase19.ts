@@ -7,7 +7,32 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase19",
   items: {
-    "baddie@3,0,1:ZfJWcr": {
+    "deadlyBlock@3,0,0": {
+      config: { style: "toaster" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@4,0,0": {
+      config: { style: "toaster" },
+      position: { x: 4, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,0,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    "door@0,0,0": {
+      config: { direction: "right", toRoom: "moonbase11" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@8,0,0": {
+      config: { direction: "left", toRoom: "moonbase20" },
+      position: { x: 8, y: 0, z: 0 },
+      type: "door",
+    },
+    "monster@3,0,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -16,9 +41,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 3, y: 0, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,0,1:ZfJWcr": {
+    "monster@4,0,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -27,9 +52,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 4, y: 0, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,0,1:ZfJWcr": {
+    "monster@5,0,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -38,32 +63,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 0, z: 1 },
-      type: "baddie",
-    },
-    "deadlyBlock@3,0,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,0,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,0,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,0:Z1kG572": {
-      config: { direction: "right", toRoom: "moonbase11" },
-      position: { x: 0, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@8,0,0:Z8uQGI": {
-      config: { direction: "left", toRoom: "moonbase20" },
-      position: { x: 8, y: 0, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "moonbase",

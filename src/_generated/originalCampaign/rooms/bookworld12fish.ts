@@ -7,52 +7,52 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld12fish",
   items: {
-    "book@0,7,0:Z213BvY": {
+    "book@0,7,0": {
       config: { slider: false },
       position: { x: 0, y: 7, z: 0 },
       type: "book",
     },
-    "book@0,7,1:Z213BvY": {
+    "book@0,7,1": {
       config: { slider: false },
       position: { x: 0, y: 7, z: 1 },
       type: "book",
     },
-    "book@0,7,2:Z213BvY": {
+    "book@0,7,2": {
       config: { slider: false },
       position: { x: 0, y: 7, z: 2 },
       type: "book",
     },
-    "book@0,7,3:Z213BvY": {
+    "book@0,7,3": {
       config: { slider: false },
       position: { x: 0, y: 7, z: 3 },
       type: "book",
     },
-    "book@0,7,4:Z213BvY": {
+    "book@0,7,4": {
       config: { slider: false },
       position: { x: 0, y: 7, z: 4 },
       type: "book",
     },
-    "door@0,3,0:286lMP": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "bookworld13" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@2,0,0:1OwlOC": {
+    "door@2,0,0": {
       config: { direction: "towards", toRoom: "bookworld4" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
-    "movableBlock@3,4,0:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@3,4,0": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 3, y: 4, z: 0 },
       type: "movableBlock",
     },
-    "pickup@0,7,5:ZPJAGD": {
+    "pickup@0,7,5": {
       config: { gives: "reincarnation" },
       position: { x: 0, y: 7, z: 5 },
       type: "pickup",
     },
-    "portableBlock@5,7,0:Z1UEQTQ": {
+    "portableBlock@5,7,0": {
       config: { style: "cube" },
       position: { x: 5, y: 7, z: 0 },
       type: "portableBlock",

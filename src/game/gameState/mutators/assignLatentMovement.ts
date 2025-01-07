@@ -1,12 +1,12 @@
 import { originalFramePeriod } from "@/game/render/animationTimings";
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { type Xyz, subXyz, xyzEqual, originXyz } from "@/utils/vectors/vectors";
 
 export const assignLatentMovement = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   startingPositions: Record<string, Xyz>,
 ) => {
   /**

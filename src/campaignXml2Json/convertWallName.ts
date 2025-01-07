@@ -1,6 +1,6 @@
-import type { AnyWall } from "../../src/model/modelTypes";
-import type { AxisXy } from "../../src/utils/vectors";
-import type { PlanetName } from "../../src/sprites/planets";
+import type { AxisXy } from "@/utils/vectors/vectors";
+import type { AnyWall } from "../model/modelTypes";
+import type { SceneryName } from "../sprites/planets";
 import { wallNumbers } from "./wallNumbers";
 
 // .png must be optional - it is given in <wall> elements in the xml
@@ -29,7 +29,7 @@ export const parseXmlWallName = (
 };
 
 export const convertWallName = (
-  planetName: PlanetName,
+  planetName: SceneryName,
   pictureName: string,
 ): AnyWall => {
   // the remake I got the xml from has special tree walls for the final room, but the original

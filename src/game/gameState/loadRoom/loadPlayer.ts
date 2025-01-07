@@ -2,7 +2,7 @@ import type { JsonItem } from "@/model/json/JsonItem";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { smallItemAabb } from "@/game/collision/boundingBoxes";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
 import { originXyz } from "@/utils/vectors/vectors";
 import type { CharacterName } from "@/model/modelTypes";
@@ -35,7 +35,7 @@ export const defaultPlayerState = () =>
   }) satisfies Partial<PlayableState<string>>;
 
 export const loadPlayer = <RoomId extends string>(
-  jsonItem: JsonItem<"player", PlanetName, RoomId>,
+  jsonItem: JsonItem<"player", SceneryName, RoomId>,
 ): PlayableItem<CharacterName, RoomId> => {
   if (jsonItem.config.which === "head") {
     return {
@@ -52,8 +52,8 @@ export const loadPlayer = <RoomId extends string>(
         fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
         lives: startingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
-        donuts: 0,
-        donutLastFireTime: Number.NEGATIVE_INFINITY,
+        doughnuts: 0,
+        doughnutLastFireTime: Number.NEGATIVE_INFINITY,
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
         gameTime: 0,

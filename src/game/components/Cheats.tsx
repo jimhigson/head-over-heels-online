@@ -18,7 +18,7 @@ import { ImgSprite } from "./Sprite";
 import type { GameApi } from "../GameApi";
 import type { ShowBoundingBoxes } from "../RenderOptions";
 import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { addItemFromJsonToRoom } from "../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import { Switch } from "@/components/ui/switch";
@@ -139,7 +139,7 @@ export const Cheats = <RoomId extends string>({
 
   const summonItem = <T extends JsonItemType>(
     itemType: T,
-    config: JsonItemConfig<T, PlanetName, RoomId>,
+    config: JsonItemConfig<T, SceneryName, RoomId>,
   ) => {
     const { gameState } = gameApi;
     const playable = selectCurrentPlayableItem(gameState);
@@ -161,7 +161,7 @@ export const Cheats = <RoomId extends string>({
         className="absolute bottom-0 right-0 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <ImgSprite textureId="helicopter-bug.1" scale={4} />
+        <ImgSprite textureId="helicopterBug.1" scale={4} />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="absolute bottom-[48px] right-0 flex flex-col w-[500px]">
@@ -262,11 +262,11 @@ export const Cheats = <RoomId extends string>({
             <Button
               className="flex-1"
               onClick={(e) => {
-                summonItem("pickup", { gives: "donuts" });
+                summonItem("pickup", { gives: "doughnuts" });
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="donuts" />
+              <ImgSprite textureId="doughnuts" />
             </Button>
           </div>
           <div className="flex flex-row items-center">

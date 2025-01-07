@@ -4,7 +4,7 @@ import type { ItemInPlayType } from "@/model/ItemInPlay";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
@@ -61,25 +61,25 @@ export const moveSpeedPixPerMs = {
   charles: onePxPerFrameInOriginalGamePxPerMs,
   dalek: 2 * onePxPerFrameInOriginalGamePxPerMs,
   cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
-  ["american-football-head"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["helicopter-bug"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["headless-base"]: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  skiHead: onePxPerFrameInOriginalGamePxPerMs,
+  helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
+  homingBot: 2 * onePxPerFrameInOriginalGamePxPerMs,
   monkey: onePxPerFrameInOriginalGamePxPerMs,
   elephant: onePxPerFrameInOriginalGamePxPerMs,
-  "elephant-head": 0,
+  elephantHead: 0,
   emperor: onePxPerFrameInOriginalGamePxPerMs,
-  "flying-ball": onePxPerFrameInOriginalGamePxPerMs,
-  ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
+  emperorsGuardian: onePxPerFrameInOriginalGamePxPerMs,
+  bubbleRobot: onePxPerFrameInOriginalGamePxPerMs,
+  computerBot: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  firedDonut: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  firedDoughnut: 2 * onePxPerFrameInOriginalGamePxPerMs,
   movableBlock: onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Partial<
   Record<
     | CharacterName
     | ItemInPlayType
-    | JsonItemConfig<"baddie", PlanetName, string>["which"],
+    | JsonItemConfig<"monster", SceneryName, string>["which"],
     number
   >
 >;

@@ -2,7 +2,7 @@ import { addItemToRoom } from "@/game/gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { type GameState } from "@/game/gameState/GameState";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { emptyObject } from "@/utils/empty";
@@ -12,7 +12,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 
 export const firing = <RoomId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
@@ -22,7 +22,8 @@ export const firing = <RoomId extends string>(
 
   const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
 
-  const { donuts, hasHooter, donutLastFireTime, gameTime } = headAbilities;
+  const { doughnuts, hasHooter, doughnutLastFireTime, gameTime } =
+    headAbilities;
   const {
     state: { position, facing },
   } = firer;
@@ -32,14 +33,14 @@ export const firing = <RoomId extends string>(
   if (
     fireInput &&
     hasHooter &&
-    donuts > 0 &&
-    donutLastFireTime + maxFireRate < gameTime
+    doughnuts > 0 &&
+    doughnutLastFireTime + maxFireRate < gameTime
   ) {
-    const firedDonut: ItemInPlay<"firedDonut", PlanetName, RoomId> = {
-      type: "firedDonut",
+    const firedDoughnut: ItemInPlay<"firedDoughnut", SceneryName, RoomId> = {
+      type: "firedDoughnut",
       ...defaultItemProperties,
       config: emptyObject,
-      id: `firedDonut/${gameState.progression}`,
+      id: `firedDoughnut/${gameState.progression}`,
       shadowCastTexture: "shadow.smallRound",
       state: {
         position: addXyz(
@@ -48,7 +49,7 @@ export const firing = <RoomId extends string>(
           firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
         ),
         vels: {
-          fired: scaleXyz(facing, moveSpeedPixPerMs.firedDonut),
+          fired: scaleXyz(facing, moveSpeedPixPerMs.firedDoughnut),
         },
         disappear: "onTouch",
         expires: null,
@@ -58,11 +59,11 @@ export const firing = <RoomId extends string>(
 
     addItemToRoom({
       room,
-      item: firedDonut,
+      item: firedDoughnut,
     });
 
-    headAbilities.donuts -= 1;
-    headAbilities.donutLastFireTime = headAbilities.gameTime;
+    headAbilities.doughnuts -= 1;
+    headAbilities.doughnutLastFireTime = headAbilities.gameTime;
 
     gameState.inputState.fire = false; //handled this input
   }

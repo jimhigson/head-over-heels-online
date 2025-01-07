@@ -7,22 +7,22 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari28",
   items: {
-    "deadlyBlock@4,3,0:ZWGEjo": {
+    "deadlyBlock@4,3,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,3,0:Z2p4A4H": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "safari27" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@8,3,0:Z140Es4": {
+    "door@8,3,0": {
       config: { direction: "left", toRoom: "safari29" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "moveableDeadly@4,3,1:Z1nr7Y3": {
+    "moveableDeadly@4,3,1": {
       config: { style: "deadFish" },
       position: { x: 4, y: 3, z: 1 },
       type: "moveableDeadly",

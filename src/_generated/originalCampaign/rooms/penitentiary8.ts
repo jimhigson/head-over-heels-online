@@ -7,47 +7,47 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary8",
   items: {
-    "block@0,4,7:20S0Rw": {
+    "block@0,4,7": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 4, z: 7 },
       type: "block",
     },
-    "block@0,5,6:20S0Rw": {
+    "block@0,5,6": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 5, z: 6 },
       type: "block",
     },
-    "block@0,6,4:20S0Rw": {
+    "block@0,6,4": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 6, z: 4 },
       type: "block",
     },
-    "block@0,7,4:20S0Rw": {
+    "block@0,7,4": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 7, z: 4 },
       type: "block",
     },
-    "block@1,2,2:20S0Rw": {
+    "block@1,2,2": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 1, y: 2, z: 2 },
       type: "block",
     },
-    "door@0,0,0:1sSJ8O": {
+    "door@0,0,0": {
       config: { direction: "towards", toRoom: "penitentiary7" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "portableBlock@1,2,0:Z1SKpmn": {
+    "portableBlock@1,2,0": {
       config: { style: "drum" },
       position: { x: 1, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@1,2,1:Z1SKpmn": {
+    "portableBlock@1,2,1": {
       config: { style: "drum" },
       position: { x: 1, y: 2, z: 1 },
       type: "portableBlock",
     },
-    "portableBlock@1,2,3:Z1SKpmn": {
+    "portableBlock@1,2,3": {
       config: { style: "drum" },
       position: { x: 1, y: 2, z: 3 },
       type: "portableBlock",

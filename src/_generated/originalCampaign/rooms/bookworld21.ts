@@ -7,49 +7,49 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld21",
   items: {
-    "baddie@0,4,0:Z1Gv2Js": {
-      config: {
-        activated: true,
-        movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
-      },
-      position: { x: 0, y: 4, z: 0 },
-      type: "baddie",
-    },
-    "book@1,5,0:Z213BvY": {
+    "book@1,5,0": {
       config: { slider: false },
       position: { x: 1, y: 5, z: 0 },
       type: "book",
     },
-    "book@1,6,0:Z213BvY": {
+    "book@1,6,0": {
       config: { slider: false },
       position: { x: 1, y: 6, z: 0 },
       type: "book",
     },
-    "book@3,3,0:Z213BvY": {
+    "book@3,3,0": {
       config: { slider: false },
       position: { x: 3, y: 3, z: 0 },
       type: "book",
     },
-    "book@6,2,0:Z213BvY": {
+    "book@6,2,0": {
       config: { slider: false },
       position: { x: 6, y: 2, z: 0 },
       type: "book",
     },
-    "book@7,5,0:Z213BvY": {
+    "book@7,5,0": {
       config: { slider: false },
       position: { x: 7, y: 5, z: 0 },
       type: "book",
     },
-    "door@3,0,0:Jfi79": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "bookworld22" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,0:Z2k1lKP": {
+    "door@3,8,0": {
       config: { direction: "away", toRoom: "bookworld9" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
+    },
+    "monster@0,4,0": {
+      config: {
+        activated: true,
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 0, y: 4, z: 0 },
+      type: "monster",
     },
   },
   planet: "bookworld",
