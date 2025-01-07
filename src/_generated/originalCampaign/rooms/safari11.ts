@@ -16,18 +16,33 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "baddie",
     },
-    "baddie@2,3,0:1FXh6W": {
-      config: { activated: true, movement: "unmoving", which: "elephant-head" },
+    "baddie@2,3,0:1O5YG7": {
+      config: {
+        activated: true,
+        movement: "unmoving",
+        startDirection: "right",
+        which: "elephant-head",
+      },
       position: { x: 2, y: 3, z: 0 },
       type: "baddie",
     },
-    "baddie@3,1,0:1FXh6W": {
-      config: { activated: true, movement: "unmoving", which: "elephant-head" },
+    "baddie@3,1,0:1O5YG7": {
+      config: {
+        activated: true,
+        movement: "unmoving",
+        startDirection: "right",
+        which: "elephant-head",
+      },
       position: { x: 3, y: 1, z: 0 },
       type: "baddie",
     },
-    "baddie@3,5,0:1FXh6W": {
-      config: { activated: true, movement: "unmoving", which: "elephant-head" },
+    "baddie@3,5,0:1O5YG7": {
+      config: {
+        activated: true,
+        movement: "unmoving",
+        startDirection: "right",
+        which: "elephant-head",
+      },
       position: { x: 3, y: 5, z: 0 },
       type: "baddie",
     },

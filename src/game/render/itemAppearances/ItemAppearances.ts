@@ -376,6 +376,7 @@ export const itemAppearances: {
       case "cyberman":
       case "computer-bot":
       case "elephant":
+      case "elephant-head":
       case "monkey": {
         const facingXy4 = vectorClosestDirectionXy4(state.facing);
 
@@ -398,10 +399,19 @@ export const itemAppearances: {
         // rendering is directional (xy4)
         switch (config.which) {
           case "american-football-head":
-            // directional, no anim
+            // directional, style, no anim
             return {
               container: createSprite({
                 texture: `${config.which}.${config.style}.${facingXy4}`,
+                filter,
+              }),
+              renderProps,
+            };
+          case "elephant-head":
+            // directional, no style, no anim
+            return {
+              container: createSprite({
+                texture: `elephant.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -455,6 +465,8 @@ export const itemAppearances: {
               }),
               renderProps,
             };
+          default:
+            config satisfies never;
         }
         break;
       }
@@ -463,10 +475,9 @@ export const itemAppearances: {
       case "emperor":
       case "dalek":
       case "headless-base":
-      case "elephant-head":
       case "bubble-robot":
       case "flying-ball": {
-        // these baddies never re-render since they are not directional
+        // not directional
         const render =
           currentlyRenderedProps === undefined ||
           busyLickingDoughnutsOffFace !==
@@ -509,12 +520,6 @@ export const itemAppearances: {
               container: createSprite({ texture: config.which, filter }),
               renderProps,
             };
-          case "elephant-head":
-            // not directional, not animated
-            return {
-              container: createSprite({ texture: "elephant.towards", filter }),
-              renderProps,
-            };
 
           case "bubble-robot":
             //not directional, animated, stacked (base):
@@ -545,6 +550,8 @@ export const itemAppearances: {
               }),
               renderProps,
             };
+          default:
+            config satisfies never;
         }
         break;
       }

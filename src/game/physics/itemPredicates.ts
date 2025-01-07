@@ -7,7 +7,7 @@ import { type AnyItemInPlay } from "@/model/ItemInPlay";
 import { characterNames, type CharacterName } from "@/model/modelTypes";
 import type { PlanetName } from "@/sprites/planets";
 
-type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
+export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
   [TI in T]: ItemInPlay<TI, PlanetName, RoomId>;
 }[T];
 
@@ -19,7 +19,9 @@ export const isItemType =
     return (types as Array<string>).includes(item.type);
   };
 
-const isUnsolid = isItemType("bubbles", "portal", "stopAutowalk", "firedDonut");
+const isUnsolid = (item: AnyItemInPlay) =>
+  isItemType("bubbles", "portal", "stopAutowalk", "firedDonut")(item) ||
+  (isFloor(item) && item.config.type === "none");
 
 /**
  * Returns true iff the given @param mover should consider a collision with the
@@ -111,11 +113,11 @@ export const deadlyItemTypes = [
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
-export const isDeadlyItem = <RoomId extends string>(
+export const isDeadly = <RoomId extends string>(
   item: UnknownItemInPlay<RoomId>,
 ): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
   isItemType(...deadlyItemTypes)(item) ||
-  (item.type === "floor" && item.config.deadly);
+  (item.type === "floor" && item.config.type === "deadly");
 
 export const isPortal = isItemType("portal");
 export const isTeleporter = isItemType("teleporter");
@@ -125,6 +127,7 @@ export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
 export const isBaddie = isItemType("baddie");
+export const isFloor = isItemType("floor");
 export const isMovableBlock = isItemType("movableBlock");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("baddie", "movableBlock");

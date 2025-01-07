@@ -254,6 +254,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         ...((
           jsonItem.config.which === "american-football-head" ||
           jsonItem.config.which === "turtle" ||
+          jsonItem.config.which === "elephant-head" ||
           jsonItem.config.which === "cyberman"
         ) ?
           {
@@ -269,7 +270,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
       jsonItem.type === "movableBlock" && jsonItem.config.movement !== "free"
     ) ?
       {
-        activated: jsonItem.config.activated,
+        activated: jsonItem.config.activated === true,
         facing: unitVectors[jsonItem.config.startDirection],
       }
     : {}),

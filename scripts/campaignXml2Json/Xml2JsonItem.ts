@@ -106,13 +106,17 @@ export type Xml2JsonItem = {
       kind:
         | "bomb"
         | "bubble-robot"
-        | "elephant-head"
         | "elephant"
         | "helicopter-bug"
         | "imperial-guard"
         | "siren"; // daleks!
       class: "freeitem";
       behavior: XmlItemBaddieBehaviour;
+    }
+  | {
+      kind: "elephant-head";
+      class: "freeitem";
+      orientation: CompassDirectionsNESW;
     }
   | {
       kind: "imperial-guard-head" | "diver" | "turtle" | "book";

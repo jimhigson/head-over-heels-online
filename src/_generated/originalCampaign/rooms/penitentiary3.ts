@@ -65,13 +65,13 @@ export const room = inferRoomJson({
     "switch@0,0,0:V4krG": {
       config: {
         activates: {
-          "switch@7,7,0:V4krG": {
-            left: { setting: "left" },
-            right: { setting: "right" },
-          },
           "movableBlock@0,1,0:Z2adEMR": {
             left: { activated: false },
             right: { activated: true },
+          },
+          "switch@7,7,0:V4krG": {
+            left: { setting: "left" },
+            right: { setting: "right" },
           },
         },
       },
@@ -81,13 +81,13 @@ export const room = inferRoomJson({
     "switch@7,7,0:V4krG": {
       config: {
         activates: {
-          "switch@0,0,0:V4krG": {
-            left: { setting: "left" },
-            right: { setting: "right" },
-          },
           "movableBlock@0,1,0:Z2adEMR": {
             left: { activated: false },
             right: { activated: true },
+          },
+          "switch@0,0,0:V4krG": {
+            left: { setting: "left" },
+            right: { setting: "right" },
           },
         },
       },

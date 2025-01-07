@@ -20,7 +20,9 @@ export type ItemInPlayType =
 export type SwitchSetting = "left" | "right";
 
 type ItemInPlayConfigMap<RoomId extends string> = {
-  floor: { deadly: boolean };
+  floor: {
+    type: "deadly" | /** can fall through to room below */ "none" | "standable";
+  };
   portal: {
     toRoom: RoomId;
     /**

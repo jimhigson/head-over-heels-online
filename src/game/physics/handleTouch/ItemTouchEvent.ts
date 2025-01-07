@@ -3,10 +3,15 @@ import type {
   AnyItemInPlay,
   ItemInPlay,
   ItemInPlayType,
+  UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import type { Xyz } from "@/utils/vectors/vectors";
-import type { PlayableItem } from "../itemPredicates";
-import { isItemType, isPlayableItem } from "../itemPredicates";
+import type {
+  DeadlyItemType,
+  ItemTypeUnion,
+  PlayableItem,
+} from "../itemPredicates";
+import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
 import type { PlanetName } from "@/sprites/planets";
 import type { CharacterName, RoomState } from "@/model/modelTypes";
 
@@ -90,4 +95,17 @@ export const touchedItemIsPlayable = <
   PlayableItem<CharacterName, RoomId>
 > => {
   return isPlayableItem(e.touchedItem);
+};
+
+export const touchedItemIsDeadly = <
+  RoomId extends string,
+  MovingItem extends AnyItemInPlay<RoomId>,
+>(
+  e: ItemTouchEvent<RoomId, MovingItem, AnyItemInPlay<RoomId>>,
+): e is ItemTouchEvent<
+  RoomId,
+  MovingItem,
+  ItemTypeUnion<"floor" | DeadlyItemType, RoomId>
+> => {
+  return isDeadly(e.touchedItem as UnknownItemInPlay<RoomId>);
 };

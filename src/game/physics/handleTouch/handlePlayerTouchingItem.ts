@@ -3,9 +3,12 @@ import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
-import { touchedItemIsType, type ItemTouchEvent } from "./ItemTouchEvent";
+import {
+  touchedItemIsDeadly,
+  touchedItemIsType,
+  type ItemTouchEvent,
+} from "./ItemTouchEvent";
 import type { PlayableItem } from "../itemPredicates";
-import { deadlyItemTypes } from "../itemPredicates";
 import type { CharacterName } from "@/model/modelTypes";
 
 /**
@@ -19,8 +22,7 @@ export const handlePlayerTouchingItem = <RoomId extends string>(
       handlePlayerTouchingStopAutowalk<RoomId>(e);
       break;
 
-    case touchedItemIsType(e, ...deadlyItemTypes) ||
-      (touchedItemIsType(e, "floor") && e.touchedItem.config.deadly):
+    case touchedItemIsDeadly(e):
       handlePlayerTouchingDeadly<RoomId>(e);
       break;
 

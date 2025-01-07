@@ -262,12 +262,18 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] first jump not possible (actually, is possible but very difficult)
     - needs a test specially for a jump to 2 across, 1 up
 
+# safari9
+[ ] sandwich falling out of world goes in front of room edge
 # safari15
 [ ] dalek can get out of its zone
 # safari18
 [x] doesn't work without y-scrolling
 # safari6triple and #safari7
 [ ] we can't handle two doors between same two rooms
+
+# safari35
+[ ] sandwich starts moving on stand on
+[ ] sandwich falls between gap between blocks
 
 # bookworld2
 [ ] vanishing conveyors don't vanish
@@ -280,6 +286,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # bookworld34
 [ ] immediate crash! - items in collision
+
+# penitentiary2
+[ ] this room shouldn't scroll horizontally
 
 # penitentiary6
 [x] anvil needs to move

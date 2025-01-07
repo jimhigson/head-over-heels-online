@@ -122,7 +122,7 @@ Just kidding, they’ll never get this far!
 *> Your humble minion*
 `,
       },
-      position: { x: 0, y: 0, z: 0 },
+      position: { x: 3, y: 6, z: 0 },
       type: "pickup",
     },
     "teleporter@3,3,0:1mtSsV": {
