@@ -22409,30 +22409,33 @@
         "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
-        "baddie@3,5,0:1FXh6W": {
+        "baddie@3,5,0:1O5YG7": {
           "type": "baddie",
           "config": {
             "which": "elephant-head",
             "activated": true,
-            "movement": "unmoving"
+            "movement": "unmoving",
+            "startDirection": "right"
           },
           "position": { "x": 3, "y": 5, "z": 0 }
         },
-        "baddie@2,3,0:1FXh6W": {
+        "baddie@2,3,0:1O5YG7": {
           "type": "baddie",
           "config": {
             "which": "elephant-head",
             "activated": true,
-            "movement": "unmoving"
+            "movement": "unmoving",
+            "startDirection": "right"
           },
           "position": { "x": 2, "y": 3, "z": 0 }
         },
-        "baddie@3,1,0:1FXh6W": {
+        "baddie@3,1,0:1O5YG7": {
           "type": "baddie",
           "config": {
             "which": "elephant-head",
             "activated": true,
-            "movement": "unmoving"
+            "movement": "unmoving",
+            "startDirection": "right"
           },
           "position": { "x": 3, "y": 1, "z": 0 }
         },

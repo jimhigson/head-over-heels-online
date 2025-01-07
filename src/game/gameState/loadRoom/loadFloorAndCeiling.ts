@@ -2,7 +2,7 @@ import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
 import { floorBlockMinMax } from "@/game/render/renderExtent";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { UnknownItemInPlay, ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
 import type { PlanetName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
@@ -11,7 +11,10 @@ import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   roomJson: RoomJson<PlanetName, RoomId>,
-): Generator<UnknownItemInPlay<RoomId>> {
+): Generator<
+  | ItemInPlay<"floor", PlanetName, RoomId>
+  | ItemInPlay<"portal", PlanetName, RoomId>
+> {
   const roomNaturalFootprintAabb = blockXyzToFineXyz({
     ...roomJson.size,
     z: 1,
@@ -43,7 +46,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         type: "floor",
         id: "floor",
         config: {
-          deadly: false,
+          type: "none",
         },
 
         aabb: roomNaturalFootprintAabb,
@@ -88,7 +91,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         type: "floor",
         id: "floor",
         config: {
-          deadly: roomJson.floor === "deadly",
+          type: roomJson.floor === "deadly" ? "deadly" : "standable",
         },
 
         aabb: roomExtendedFootprintAabb,

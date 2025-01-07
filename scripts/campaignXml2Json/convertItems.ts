@@ -485,6 +485,7 @@ const convertItem = ({
           which: "elephant-head",
           activated: true,
           movement: "unmoving",
+          startDirection: convertDirection(xml2JsonItem.orientation),
         },
         position,
       };

@@ -5,7 +5,7 @@ import type {
 } from "@/model/ItemInPlay";
 import {
   isCarrier,
-  isDeadlyItem,
+  isDeadly,
   isFirer,
   isItemType,
   isLift,
@@ -94,6 +94,33 @@ function* itemMechanicResultGen<
   }
 }
 
+const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
+  item: ItemInPlay<T, PlanetName, RoomId>,
+  room: RoomState<PlanetName, RoomId>,
+  gameState: GameState<RoomId>,
+) => {
+  // handle standing on an item with dissppear='onStand' - eg, if got onto this item
+  // by walking onto it from another item, there would have been no collision with it
+  // to set the standing on property
+  if (
+    isFreeItem(item) &&
+    item.state.standingOn !== null &&
+    item.state.standingOn.state.disappear === "onStand"
+  ) {
+    makeItemFadeOut({ touchedItem: item.state.standingOn, gameState, room });
+  }
+  // walking onto a platform that is activate on stand
+  if (
+    isPlayableItem(item) &&
+    item.state.standingOn !== null &&
+    item.state.standingOn.type === "movableBlock" &&
+    item.state.standingOn.config.movement !== "free" &&
+    item.state.standingOn.config.activated === "onStand"
+  ) {
+    item.state.standingOn.state.activated = true;
+  }
+};
+
 /**
  * ticks all items THAT CAN DO THINGS in the world
  * - this may also cause movements in other items (eg pushing)
@@ -109,7 +136,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   if (
     isPlayableItem(item) &&
     item.state.standingOn !== null &&
-    isDeadlyItem(item.state.standingOn)
+    isDeadly(item.state.standingOn)
   ) {
     // the player has a shield that has only just expired - if they are standing on a deadly
     // item, it should kill them. This would normally have already killed them, but it is possible
@@ -132,18 +159,9 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     ...itemMechanicResultGen(item, room, gameState, deltaMS),
   ];
 
-  // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired donut)
+  tickItemStandingOn(item, room, gameState);
 
-  // handle standing on an item with dissppear='onStand' - eg, if got onto this item
-  // by walking onto it from another item, there would have been no collision with it
-  // to set the standing on property
-  if (
-    isFreeItem(item) &&
-    item.state.standingOn !== null &&
-    item.state.standingOn.state.disappear === "onStand"
-  ) {
-    makeItemFadeOut({ touchedItem: item.state.standingOn, gameState, room });
-  }
+  // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired donut)
 
   let accumulatedPosDelta = applyMechanicsResults(item, mechanicsResults);
 

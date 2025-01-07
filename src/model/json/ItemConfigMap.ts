@@ -22,7 +22,7 @@ export type JsonMovement =
   | "patrol-randomly-xy4"
   | "patrol-randomly-xy8";
 // to validate a union as a subset of JsonMovement
-type Movements<U extends JsonMovement> = U;
+type MovementsSubset<U extends JsonMovement> = U;
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
@@ -117,62 +117,63 @@ export type ItemConfigMap<
   } & (
     | {
         which: "flying-ball" | "emperor";
-        movement: Movements<"towards-when-in-square-xy8">;
+        movement: MovementsSubset<"towards-when-in-square-xy8">;
       }
     | {
         which: "elephant";
-        movement: Movements<"patrol-randomly-xy4">;
+        movement: MovementsSubset<"patrol-randomly-xy4">;
       }
     | {
         which: "elephant-head";
-        movement: Movements<"unmoving">;
+        movement: MovementsSubset<"unmoving">;
+        startDirection: DirectionXy4;
       }
     | {
         which: "computer-bot" | "monkey";
-        movement: Movements<
+        movement: MovementsSubset<
           "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
         >;
       }
     | {
         which: "bubble-robot";
-        movement: Movements<"patrol-randomly-xy8">;
+        movement: MovementsSubset<"patrol-randomly-xy8">;
       }
     | {
         which: "dalek";
-        movement: Movements<"patrol-randomly-diagonal">;
+        movement: MovementsSubset<"patrol-randomly-diagonal">;
       }
     | {
         which: "headless-base";
-        movement: Movements<"towards-tripped-on-axis-xy4">;
+        movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
       }
     | {
         which: "helicopter-bug";
-        movement: Movements<
+        movement: MovementsSubset<
           "patrol-randomly-xy8" | "towards-when-in-square-xy8"
         >;
       }
     | {
         which: "turtle";
-        movement: Movements<"clockwise">;
+        movement: MovementsSubset<"clockwise">;
         startDirection: DirectionXy4;
       }
     | {
         which: "cyberman";
         activated: true;
-        movement: Movements<"towards-on-shortest-axis-xy4">;
+        movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
         startDirection: DirectionXy4;
       }
     | {
         which: "cyberman";
         activated: false;
-        movement: Movements<"towards-on-shortest-axis-xy4">;
+        movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
         // if true, the cyberman can wake up from charging
         wakes: boolean;
         startDirection: DirectionXy4;
       }
     | {
         which: "american-football-head";
-        movement: Movements<"clockwise" | "back-forth">;
+        movement: MovementsSubset<"clockwise" | "back-forth">;
         startDirection: DirectionXy4;
         style: "greenAndPink" | "starsAndStripes";
       }
@@ -184,12 +185,12 @@ export type ItemConfigMap<
     style: "anvil" | "sandwich";
   } & (
     | {
-        movement: Movements<"free">;
+        movement: MovementsSubset<"free">;
       }
     | {
-        movement: Movements<"clockwise" | "back-forth">;
+        movement: MovementsSubset<"clockwise" | "back-forth">;
         /* if this item starts initially activated */
-        activated: boolean;
+        activated: boolean | "onStand";
         startDirection: DirectionXy4;
       }
   );
