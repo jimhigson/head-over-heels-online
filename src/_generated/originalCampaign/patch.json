@@ -53,6 +53,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary6/items/movableBlock@3,0,1:1Wgi1c/config/activated",
+    "value": true
+  },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary5/color/hue",
     "value": "green"
   },
@@ -102,6 +107,31 @@
     "op": "replace",
     "path": "/rooms/penitentiary3/color/hue",
     "value": "cyan"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/switch@7,7,0:V4krG",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary3/items/movableBlock@0,1,0:Z2adEMR/config/startDirection",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/switch@0,0,0:V4krG",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
   },
   {
     "op": "replace",

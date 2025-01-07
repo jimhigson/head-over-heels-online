@@ -125,3 +125,6 @@ export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
 export const isBaddie = isItemType("baddie");
+export const isMovableBlock = isItemType("movableBlock");
+// items that can move clockwise/back-forth or in any other pattern:
+export const isMoving = isItemType("baddie", "movableBlock");

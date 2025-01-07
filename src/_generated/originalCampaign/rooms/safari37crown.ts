@@ -153,8 +153,9 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "movableBlock@0,7,6:Z1lxgK4": {
+    "movableBlock@0,7,6:1ugNRW": {
       config: {
+        activated: false,
         movement: "clockwise",
         startDirection: "right",
         style: "anvil",
@@ -167,8 +168,8 @@ export const room = inferRoomJson({
       position: { x: 3, y: 5, z: 0 },
       type: "movableBlock",
     },
-    "pickup@0,7,7:2fxkqv": {
-      config: { gives: "crown" },
+    "pickup@0,7,7:Z1ktW5S": {
+      config: { gives: "crown", planet: "safari" },
       position: { x: 0, y: 7, z: 7 },
       type: "pickup",
     },

@@ -265,6 +265,14 @@ const initialState = (jsonItem: UnknownJsonItem) => {
     ...(jsonItem.type === "pickup" ?
       { collected: false, disappear: "onTouchByPlayer" }
     : {}),
+    ...((
+      jsonItem.type === "movableBlock" && jsonItem.config.movement !== "free"
+    ) ?
+      {
+        activated: jsonItem.config.activated,
+        facing: unitVectors[jsonItem.config.startDirection],
+      }
+    : {}),
     ...(jsonItem.type === "switch" ?
       { setting: "left", touchedOnProgression: -1 }
     : {}),

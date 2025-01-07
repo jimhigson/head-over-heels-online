@@ -80,8 +80,8 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "pickup@4,3,7:2fxkqv": {
-      config: { gives: "crown" },
+    "pickup@4,3,7:13Qb4n": {
+      config: { gives: "crown", planet: "egyptus" },
       position: { x: 4, y: 3, z: 7 },
       type: "pickup",
     },

@@ -6,6 +6,7 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
+import type { Subset } from "@/utils/subset";
 
 export type BlockStyle = "organic" | "artificial" | "tower";
 
@@ -85,13 +86,19 @@ export type ItemConfigMap<
           | "shield"
           | "donuts"
           | "bag"
-          | "crown"
           | "hooter"
           | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
       }
     | {
         gives: "scroll";
         markdown: string;
+      }
+    | {
+        gives: "crown";
+        planet: Subset<
+          PlanetName,
+          "blacktooth" | "penitentiary" | "bookworld" | "egyptus" | "safari"
+        >;
       };
   player: {
     which: CharacterName;
@@ -181,6 +188,8 @@ export type ItemConfigMap<
       }
     | {
         movement: Movements<"clockwise" | "back-forth">;
+        /* if this item starts initially activated */
+        activated: boolean;
         startDirection: DirectionXy4;
       }
   );

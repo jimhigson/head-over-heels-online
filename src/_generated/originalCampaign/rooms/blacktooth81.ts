@@ -96,9 +96,10 @@ export const room = inferRoomJson({
       position: { x: 4, y: 5, z: 0 },
       type: "joystick",
     },
-    "movableBlock@6,7,0:Z1lxgK4": {
+    "movableBlock@6,7,0:Z1kdKdB": {
       config: {
-        movement: "clockwise",
+        activated: false,
+        movement: "back-forth",
         startDirection: "right",
         style: "anvil",
       },

@@ -4,12 +4,12 @@ import type {
   UnknownItemInPlay,
 } from "@/model/ItemInPlay";
 import {
-  isBaddie,
   isCarrier,
   isDeadlyItem,
   isFirer,
   isItemType,
   isLift,
+  isMoving,
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
@@ -30,7 +30,7 @@ import {
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
-import { tickBaddie } from "../physics/mechanics/baddieAi";
+import { tickMovement } from "../physics/mechanics/movement";
 import { carrying } from "../physics/mechanics/carrying";
 import type { RoomState } from "@/model/modelTypes";
 import { objectEntriesIter } from "@/utils/entries";
@@ -86,8 +86,8 @@ function* itemMechanicResultGen<
     yield moveLift(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
   }
 
-  if (isBaddie(item)) {
-    yield tickBaddie(item, room, gameState, deltaMS) as MechanicResult<
+  if (isMoving(item)) {
+    yield tickMovement(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId
     >;

@@ -385,7 +385,7 @@ const rooms = {
       {
         type: "pickup",
         // a coronation!
-        config: { gives: "crown" },
+        config: { gives: "crown", planet: "penitentiary" },
         position: { x: 3, y: 5, z: 11 },
       },
       {
@@ -519,7 +519,7 @@ const rooms = {
       },
       {
         type: "pickup",
-        config: { gives: "crown" },
+        config: { gives: "crown", planet: "egyptus" },
         position: { x: 4, y: 6, z: 1 },
       },
       {
