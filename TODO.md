@@ -114,6 +114,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] head and heels can combine
 [x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
+[ ] move conversions under src
 [x] viewport sliding
     [x] hud readable over game
 [ ] if heads dies in a room, and the room re-loads, hush puppies don't
