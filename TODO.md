@@ -116,12 +116,15 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
 [x] viewport sliding
     [x] hud readable over game
+[ ] if heads dies in a room, and the room re-loads, hush puppies don't
+    vanish a second time (test on #penitentiary2)
+[ ] baddies can fall out of the room via doors (test on #penitentiary2 at high speed)    
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [x] acel for player normal walking
 [ ] playable on mame joystick
     [ ] time to do a config screen?
-[ ] ELERI
+[ ] ELERI cheat
 [x] scrolls/text
     [ ] tailwind plugin for blocky text
 [x] can shoot donuts
@@ -234,7 +237,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] baddie doesn't push blocks (at all)
 
 # blacktooth53market
-[ ] baddie doesn't move like in original game
+[x] baddie doesn't move like in original game
     original has "behavior of waiting hunter in eight directions"
     https://www.youtube.com/watch?v=PdRuvdvLbjg#14:25
     * move towards when inside an area of 5x5 blocks centered on the monster
@@ -259,8 +262,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] first jump not possible (actually, is possible but very difficult)
     - needs a test specially for a jump to 2 across, 1 up
 
+# safari15
+[ ] dalek can get out of its zone
 # safari18
-[ ] doesn't work without y-scrolling
+[x] doesn't work without y-scrolling
 # safari6triple and #safari7
 [ ] we can't handle two doors between same two rooms
 
@@ -277,14 +282,15 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] immediate crash! - items in collision
 
 # penitentiary6
-[ ] anvil needs to move
+[x] anvil needs to move
 
 # penitentiary29
 [ ] crash on drop down to next room
  - seems to be a room missing - the room right below this one and above 32
 
 # moonbase33triple
-[ ] doesn't scroll in y
+[x] doesn't scroll in y
+    [ ] does but scrolling is poor
 [ ] monsters don't wake up
 [ ] hidden wall shouldn't render
 

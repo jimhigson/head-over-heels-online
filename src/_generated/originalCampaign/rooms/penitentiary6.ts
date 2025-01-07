@@ -47,9 +47,10 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 3 },
       type: "door",
     },
-    "movableBlock@3,0,1:1uA6UO": {
+    "movableBlock@3,0,1:1Wgi1c": {
       config: {
-        movement: "clockwise",
+        activated: true,
+        movement: "back-forth",
         startDirection: "towards",
         style: "anvil",
       },

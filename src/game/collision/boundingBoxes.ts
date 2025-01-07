@@ -60,7 +60,7 @@ export const boundingBoxForItem = (
 
     case "switch": {
       return {
-        aabb: { ...smallItemAabb, z: smallItemAabb.z - 2 },
+        aabb: { ...smallItemAabb, z: smallItemAabb.z },
       };
     }
 

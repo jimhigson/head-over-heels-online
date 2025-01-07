@@ -38,6 +38,4 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
 
     affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
   }
-
-  return false;
 };

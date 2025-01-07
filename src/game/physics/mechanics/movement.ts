@@ -22,25 +22,40 @@ import {
 } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
 import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
-import type { ItemTouchEventByItemType } from "../handleTouch/ItemTouchEvent";
-import { isSolid } from "../itemPredicates";
+import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
+import { isBaddie, isSolid } from "../itemPredicates";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
+type ItemWithMovement<RoomId extends string> =
+  | ItemInPlay<"baddie", PlanetName, RoomId>
+  | ItemInPlay<"movableBlock", PlanetName, RoomId>;
+
 const notWalking = Object.freeze({
   movementType: "vel",
   vels: { walking: originXyz },
-} as const satisfies MechanicResult<"baddie", string>);
+} as const satisfies MechanicResult<"baddie", string> satisfies MechanicResult<
+  "movableBlock",
+  string
+>);
 
-export const rushTowardPlayerXy4 = <RoomId extends string>(
+const speedForItem = (itemWithMovement: ItemWithMovement<string>) => {
+  if (isBaddie(itemWithMovement)) {
+    return moveSpeedPixPerMs[itemWithMovement.config.which];
+  } else {
+    return moveSpeedPixPerMs[itemWithMovement.type];
+  }
+};
+
+const rushTowardPlayerXy4 = <RoomId extends string>(
   {
     state: {
       position,
       vels: { walking },
     },
-  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+  }: ItemWithMovement<RoomId>,
   room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
@@ -120,15 +135,16 @@ const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
   );
 };
 
-export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
-  {
-    state: { position, standingOn },
-    config: { which },
-  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId>,
   room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
+  const {
+    state: { position, standingOn },
+  } = itemWithMovement;
+
   if (standingOn === null) {
     return notWalking;
   }
@@ -156,7 +172,7 @@ export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
       axisOfShortestDistance
     : perpendicularAxisXy(axisOfShortestDistance);
 
-  const speed = moveSpeedPixPerMs[which];
+  const speed = speedForItem(itemWithMovement);
 
   const walkVelocity = {
     ...originXyz,
@@ -173,15 +189,16 @@ export const walkOnShortestAisTowardsPlayer = <RoomId extends string>(
   };
 };
 
-export const walkTowardIfInSquare = <RoomId extends string>(
-  {
-    state: { position: baddiePosition, standingOn },
-    config: { which },
-  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+const walkTowardIfInSquare = <RoomId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId>,
   room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
+  const {
+    state: { position: baddiePosition, standingOn },
+  } = itemWithMovement;
+
   if (standingOn === null) {
     return notWalking;
   }
@@ -212,12 +229,13 @@ export const walkTowardIfInSquare = <RoomId extends string>(
     baddiePosition,
   );
 
-  const baddieSpeed = moveSpeedPixPerMs[which];
+  const baddieSpeed = speedForItem(itemWithMovement);
   // we allow movement here in arbitrary directions, not in the xy8 directions.
   // in the original game, the baddie would move at their normal speed in axis-aligned directions, and sqrt(2) times that
   // in diagonal directions [ie, moving in vector (0,2) or (2,2) pixels in (x,y)]. Instead, I always move the average of these
   // two to keep the end result about the same without any strange-looking speed changes:
-  const adjustedSpeed = (baddieSpeed * (1 + Math.sqrt(2))) / 2;
+  const adjustCoefficient = (1 + Math.sqrt(2)) / 2;
+  const adjustedSpeed = baddieSpeed * adjustCoefficient;
 
   const walkVelocity = scaleXyz(
     { ...vectorXyToClosestPlayer, z: 0 },
@@ -235,19 +253,20 @@ export const walkTowardIfInSquare = <RoomId extends string>(
   };
 };
 
-export const randomlyChangeDirection = <RoomId extends string>(
-  {
-    state: {
-      vels: { walking },
-      standingOn,
-    },
-    config: { which },
-  }: ItemInPlay<"baddie", PlanetName, RoomId>,
+const randomlyChangeDirection = <RoomId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
 ): MechanicResult<"baddie", RoomId> => {
+  const {
+    state: {
+      vels: { walking },
+      standingOn,
+    },
+  } = itemWithMovement;
+
   if (standingOn === null) {
     return notWalking;
   }
@@ -266,7 +285,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
     vels: {
       walking: scaleXyz(
         unitVectors[newDirectionName],
-        moveSpeedPixPerMs[which],
+        speedForItem(itemWithMovement),
       ),
     },
     stateDelta: {
@@ -276,7 +295,7 @@ export const randomlyChangeDirection = <RoomId extends string>(
 };
 
 export const keepWalkingInSameDirection = <RoomId extends string>(
-  baddieItem: ItemInPlay<"baddie", PlanetName, RoomId>,
+  itemWithMovement: ItemWithMovement<RoomId>,
   _room: RoomState<PlanetName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
@@ -287,8 +306,7 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
       vels: { walking },
       standingOn,
     },
-    config,
-  } = baddieItem;
+  } = itemWithMovement;
 
   if (standingOn === null) {
     return notWalking;
@@ -300,7 +318,7 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
         vels: {
           walking:
             // ie, we might have fallen and landed and not be walking:
-            scaleXyz(facing, moveSpeedPixPerMs[config.which]),
+            scaleXyz(facing, speedForItem(itemWithMovement)),
         },
       }
     : unitMechanicalResult;
@@ -339,13 +357,13 @@ const turnedWalkVector = (
 
 const handleBaddieTouchingItemByTurning = <RoomId extends string>(
   {
-    movingItem: baddieItem,
+    movingItem: itemWithMovement,
     touchedItem: {
       state: { position: touchedItemPosition },
       aabb: touchedItemAabb,
     },
     deltaMS,
-  }: ItemTouchEventByItemType<RoomId, "baddie">,
+  }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>,
   {
     touchDurationBeforeTurn,
     turnStrategy,
@@ -358,13 +376,13 @@ const handleBaddieTouchingItemByTurning = <RoomId extends string>(
       activated,
     },
     aabb,
-  } = baddieItem;
+  } = itemWithMovement;
 
   if (!activated) return;
 
-  baddieItem.state.durationOfTouch += deltaMS;
+  itemWithMovement.state.durationOfTouch += deltaMS;
 
-  if (baddieItem.state.durationOfTouch < touchDurationBeforeTurn) return;
+  if (itemWithMovement.state.durationOfTouch < touchDurationBeforeTurn) return;
 
   const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
 
@@ -373,33 +391,37 @@ const handleBaddieTouchingItemByTurning = <RoomId extends string>(
 
   const newWalking = turnedWalkVector(walking, m, turnStrategy);
 
-  baddieItem.state.vels.walking = newWalking;
-  baddieItem.state.facing = unitVector(newWalking);
-  baddieItem.state.durationOfTouch = 0;
+  itemWithMovement.state.vels.walking = newWalking;
+  itemWithMovement.state.facing = unitVector(newWalking);
+  itemWithMovement.state.durationOfTouch = 0;
 };
 
 const handleBaddieTouchingItemByStopping = <RoomId extends string>({
-  movingItem: baddieItem,
-}: ItemTouchEventByItemType<RoomId, "baddie">) => {
-  baddieItem.state.vels.walking = originXyz;
+  movingItem: itemWithMovement,
+}: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>) => {
+  itemWithMovement.state.vels.walking = originXyz;
 };
 
 /**
  * 'ai' is maybe a bit much :-)
  */
-export const tickBaddie = <RoomId extends string>(
-  item: ItemInPlay<"baddie", PlanetName, RoomId>,
+export const tickMovement = <RoomId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId>,
   room: RoomState<PlanetName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
-  if (!item.state.activated || item.state.busyLickingDoughnutsOffFace)
+  if (
+    !itemWithMovement.state.activated ||
+    (isBaddie(itemWithMovement) &&
+      itemWithMovement.state.busyLickingDoughnutsOffFace)
+  )
     return notWalking;
 
-  switch (item.config.movement) {
+  switch (itemWithMovement.config.movement) {
     case "patrol-randomly-diagonal": {
       return randomlyChangeDirection(
-        item,
+        itemWithMovement,
         room,
         gameState,
         deltaMS,
@@ -408,7 +430,7 @@ export const tickBaddie = <RoomId extends string>(
     }
     case "patrol-randomly-xy8": {
       return randomlyChangeDirection(
-        item,
+        itemWithMovement,
         room,
         gameState,
         deltaMS,
@@ -417,7 +439,7 @@ export const tickBaddie = <RoomId extends string>(
     }
     case "patrol-randomly-xy4": {
       return randomlyChangeDirection(
-        item,
+        itemWithMovement,
         room,
         gameState,
         deltaMS,
@@ -425,35 +447,46 @@ export const tickBaddie = <RoomId extends string>(
       );
     }
     case "towards-tripped-on-axis-xy4":
-      return rushTowardPlayerXy4(item, room, gameState, deltaMS);
+      return rushTowardPlayerXy4(itemWithMovement, room, gameState, deltaMS);
     case "towards-on-shortest-axis-xy4":
-      return walkOnShortestAisTowardsPlayer(item, room, gameState, deltaMS);
+      return walkAlongShortestAxisTowardsPlayer(
+        itemWithMovement,
+        room,
+        gameState,
+        deltaMS,
+      );
 
     case "back-forth":
     case "clockwise": {
-      return keepWalkingInSameDirection(item, room, gameState, deltaMS);
+      return keepWalkingInSameDirection(
+        itemWithMovement,
+        room,
+        gameState,
+        deltaMS,
+      );
     }
     case "unmoving":
+    case "free":
       return notWalking;
 
     case "towards-when-in-square-xy8":
-      return walkTowardIfInSquare(item, room, gameState, deltaMS);
+      return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
 
     default:
-      item.config satisfies never;
+      itemWithMovement.config satisfies never;
       throw new Error("this should be unreachable");
   }
 };
 
-export const handleBaddieTouchingItem = <RoomId extends string>(
-  e: ItemTouchEventByItemType<RoomId, "baddie">,
+export const handleItemWithMovementTouchingItem = <RoomId extends string>(
+  e: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>,
 ) => {
-  const { movingItem: baddieItem, touchedItem } = e;
+  const { movingItem: itemWithMovement, touchedItem } = e;
 
   //eg, baddies shouldn't change direction on touching a stopAutowalk item:
   if (!isSolid(touchedItem)) return;
 
-  switch (baddieItem.config.movement) {
+  switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":
       handleBaddieTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
@@ -480,11 +513,12 @@ export const handleBaddieTouchingItem = <RoomId extends string>(
     case "towards-on-shortest-axis-xy4":
     case "towards-when-in-square-xy8":
     case "unmoving":
+    case "free":
       // these don't need anything on touching:
       return;
 
     default:
-      baddieItem.config satisfies never;
+      itemWithMovement.config satisfies never;
       throw new Error("this should be unreachable");
   }
 };

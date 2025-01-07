@@ -52,22 +52,45 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 2 },
       type: "door",
     },
-    "movableBlock@0,1,0:Z10NM75": {
+    "movableBlock@0,1,0:Z2adEMR": {
       config: {
+        activated: false,
         movement: "clockwise",
-        startDirection: "towards",
+        startDirection: "left",
         style: "sandwich",
       },
       position: { x: 0, y: 1, z: 0 },
       type: "movableBlock",
     },
     "switch@0,0,0:V4krG": {
-      config: { activates: {} },
+      config: {
+        activates: {
+          "switch@7,7,0:V4krG": {
+            left: { setting: "left" },
+            right: { setting: "right" },
+          },
+          "movableBlock@0,1,0:Z2adEMR": {
+            left: { activated: false },
+            right: { activated: true },
+          },
+        },
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "switch",
     },
     "switch@7,7,0:V4krG": {
-      config: { activates: {} },
+      config: {
+        activates: {
+          "switch@0,0,0:V4krG": {
+            left: { setting: "left" },
+            right: { setting: "right" },
+          },
+          "movableBlock@0,1,0:Z2adEMR": {
+            left: { activated: false },
+            right: { activated: true },
+          },
+        },
+      },
       position: { x: 7, y: 7, z: 0 },
       type: "switch",
     },

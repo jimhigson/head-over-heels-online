@@ -74,6 +74,7 @@ export const moveSpeedPixPerMs = {
   turtle: onePxPerFrameInOriginalGamePxPerMs,
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
   firedDonut: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  movableBlock: onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Partial<
   Record<
     | CharacterName

@@ -233,9 +233,18 @@ const convertItem = ({
       };
     }
 
+    case "crown":
+      return {
+        type: "pickup",
+        config: {
+          gives: "crown",
+          planet: convertPlanetName(xml2JsonRoom.scenery),
+        },
+        position,
+      };
+
     case "extra-life":
     case "high-jumps":
-    case "crown":
     case "quick-steps":
     case "donuts":
     case "horn":
@@ -251,7 +260,6 @@ const convertItem = ({
         donuts: "donuts",
         "quick-steps": "fast",
         "reincarnation-fish": "reincarnation",
-        crown: "crown",
       } as const satisfies Record<
         typeof xml2JsonItem.kind,
         ItemConfigMap<PlanetName, string, string>["pickup"]["gives"]
@@ -351,13 +359,21 @@ const convertItem = ({
             { movement: "free" }
           : {
               movement:
-                xml2JsonItem.behavior === "behavior of flying there and back" ?
+                (
+                  xml2JsonItem.behavior ===
+                    "behavior of flying there and back" ||
+                  xml2JsonItem.behavior === "behavior of there and back"
+                ) ?
                   "back-forth"
                 : "clockwise",
               startDirection: convertDirection(
                 // blacktooth 78 xml has a back and forth without a direction
                 xml2JsonItem.orientation || "south",
               ),
+              // I don't know where in the xml this is stored - think it might not be
+              // at all - this needs to be changed in a patch on the room where items are
+              // moving on first entry
+              activated: false,
             }),
         },
         position,

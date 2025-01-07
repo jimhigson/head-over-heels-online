@@ -1,6 +1,6 @@
 import { isSolid, slidingItemTypes } from "../itemPredicates";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
-import { handleBaddieTouchingItem } from "../mechanics/baddieAi";
+import { handleItemWithMovementTouchingItem } from "../mechanics/movement";
 import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
 import {
   handleItemTouchingSlidingItem,
@@ -52,8 +52,8 @@ export const handleItemsTouchingItems = <RoomId extends string>(
     handleFiredDonutTouchingBaddie(e);
   }
 
-  if (movingItemIsType(e, "baddie")) {
-    handleBaddieTouchingItem(e);
+  if (movingItemIsType(e, "baddie") || movingItemIsType(e, "movableBlock")) {
+    handleItemWithMovementTouchingItem(e);
   }
 
   if (touchedItemIsType(e, "switch")) {

@@ -77,6 +77,7 @@ export type Xml2JsonItem = {
       behavior:
         | "behavior of thing able to move by pushing"
         | "behavior of flying there and back"
+        | "behavior of there and back"
         | "behavior of move then turn right and move";
     }
   | {

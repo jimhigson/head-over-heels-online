@@ -145,7 +145,15 @@ export type ItemStateMap<RoomId extends string> = {
   };
   spring: PortableItemState<RoomId>;
   portableBlock: PortableItemState<RoomId>;
-  movableBlock: FreeItemState<RoomId>;
+  movableBlock: FreeItemState<RoomId> & {
+    activated: boolean; // ie, can be turned on/off by a switch
+    facing: Xyz; // used for moving platforms
+    vels: {
+      // for movable blocks that function as movable platforms, these are treated as 'walking':
+      walking: Xyz;
+    };
+    durationOfTouch: number;
+  };
   moveableDeadly: FreeItemState<RoomId>;
   slidingDeadly: SlidingItemState<RoomId>;
   slidingBlock: SlidingItemState<RoomId>;
