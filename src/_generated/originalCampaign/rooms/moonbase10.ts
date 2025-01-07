@@ -7,37 +7,37 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "moonbase10",
   items: {
-    "block@0,3,3:20S0Rw": {
+    "block@0,3,3": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
-    "block@0,7,3:20S0Rw": {
+    "block@0,7,3": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
-    "block@0,7,5:20S0Rw": {
+    "block@0,7,5": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 0, y: 7, z: 5 },
       type: "block",
     },
-    "block@4,7,3:20S0Rw": {
+    "block@4,7,3": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 4, y: 7, z: 3 },
       type: "block",
     },
-    "deadlyBlock@0,7,6:2u1uHB": {
+    "deadlyBlock@0,7,6": {
       config: { style: "toaster" },
       position: { x: 0, y: 7, z: 6 },
       type: "deadlyBlock",
     },
-    "door@0,3,5:1Aqcvq": {
+    "door@0,3,5": {
       config: { direction: "right", toRoom: "moonbase9" },
       position: { x: 0, y: 3, z: 5 },
       type: "door",
     },
-    "door@3,8,5:11gRtR": {
+    "door@3,8,5": {
       config: { direction: "away", toRoom: "moonbase11" },
       position: { x: 3, y: 8, z: 5 },
       type: "door",

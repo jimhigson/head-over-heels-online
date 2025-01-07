@@ -7,51 +7,51 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld36",
   items: {
-    "baddie@1,0,0:Z2awALk": {
+    "book@7,2,0": {
+      config: { slider: false },
+      position: { x: 7, y: 2, z: 0 },
+      type: "book",
+    },
+    "book@7,2,1": {
+      config: { slider: false },
+      position: { x: 7, y: 2, z: 1 },
+      type: "book",
+    },
+    "book@7,2,2": {
+      config: { slider: false },
+      position: { x: 7, y: 2, z: 2 },
+      type: "book",
+    },
+    "door@3,6,5": {
+      config: { direction: "away", toRoom: "bookworld37" },
+      position: { x: 3, y: 6, z: 5 },
+      type: "door",
+    },
+    "door@8,2,5": {
+      config: { direction: "left", toRoom: "bookworld35" },
+      position: { x: 8, y: 2, z: 5 },
+      type: "door",
+    },
+    "monster@1,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 1, y: 0, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "book@7,2,0:Z213BvY": {
-      config: { slider: false },
-      position: { x: 7, y: 2, z: 0 },
-      type: "book",
-    },
-    "book@7,2,1:Z213BvY": {
-      config: { slider: false },
-      position: { x: 7, y: 2, z: 1 },
-      type: "book",
-    },
-    "book@7,2,2:Z213BvY": {
-      config: { slider: false },
-      position: { x: 7, y: 2, z: 2 },
-      type: "book",
-    },
-    "door@3,6,5:ZXTJFs": {
-      config: { direction: "away", toRoom: "bookworld37" },
-      position: { x: 3, y: 6, z: 5 },
-      type: "door",
-    },
-    "door@8,2,5:Z1lPDx2": {
-      config: { direction: "left", toRoom: "bookworld35" },
-      position: { x: 8, y: 2, z: 5 },
-      type: "door",
-    },
-    "portableBlock@1,5,0:Z14c3Fl": {
+    "portableBlock@1,5,0": {
       config: { style: "sticks" },
       position: { x: 1, y: 5, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,1,0:Z14c3Fl": {
+    "portableBlock@3,1,0": {
       config: { style: "sticks" },
       position: { x: 3, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,3,0:Z14c3Fl": {
+    "portableBlock@4,3,0": {
       config: { style: "sticks" },
       position: { x: 4, y: 3, z: 0 },
       type: "portableBlock",

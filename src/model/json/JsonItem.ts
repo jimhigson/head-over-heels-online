@@ -26,7 +26,7 @@ export type JsonItemType =
   | "slidingDeadly"
   | "slidingBlock"
   | "player"
-  | "baddie"
+  | "monster"
   | "lift"
   | "joystick"
   | "charles"

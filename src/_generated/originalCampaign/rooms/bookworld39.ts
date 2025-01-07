@@ -7,47 +7,47 @@ export const room = inferRoomJson({
   floor: "none",
   id: "bookworld39",
   items: {
-    "conveyor@0,0,0:2pPzNa": {
+    "conveyor@0,0,0": {
       config: { direction: "left" },
       position: { x: 0, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@1,0,0:2pPzNa": {
+    "conveyor@1,0,0": {
       config: { direction: "left" },
       position: { x: 1, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@2,0,0:2pPzNa": {
+    "conveyor@2,0,0": {
       config: { direction: "left" },
       position: { x: 2, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@3,0,0:2pPzNa": {
+    "conveyor@3,0,0": {
       config: { direction: "left" },
       position: { x: 3, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,0,0:2pPzNa": {
+    "conveyor@4,0,0": {
       config: { direction: "left" },
       position: { x: 4, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@5,0,0:2pPzNa": {
+    "conveyor@5,0,0": {
       config: { direction: "left" },
       position: { x: 5, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@6,0,0:2pPzNa": {
+    "conveyor@6,0,0": {
       config: { direction: "left" },
       position: { x: 6, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@7,0,0:24hKaE": {
+    "conveyor@7,0,0": {
       config: { direction: "away" },
       position: { x: 7, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@7,1,0:24hKaE": {
+    "conveyor@7,1,0": {
       config: { direction: "away" },
       position: { x: 7, y: 1, z: 0 },
       type: "conveyor",
@@ -75,12 +75,12 @@ Just kidding, they’ll never get this far!
       position: { x: 0, y: 0, z: 10 },
       type: "pickup",
     },
-    "teleporter@7,3,0:Z8cIGu": {
+    "teleporter@7,3,0": {
       config: { toRoom: "bookworld1" },
       position: { x: 7, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@7,4,0:Z8cIGu": {
+    "teleporter@7,4,0": {
       config: { toRoom: "bookworld1" },
       position: { x: 7, y: 4, z: 0 },
       type: "teleporter",

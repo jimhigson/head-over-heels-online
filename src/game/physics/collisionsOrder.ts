@@ -111,12 +111,12 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   pickup: 8,
 
-  firedDonut: 9,
+  firedDoughnut: 9,
 
   slidingDeadly: 10,
   moveableDeadly: 10,
   deadlyBlock: 10,
-  baddie: 10, // most impactful to touch
+  monster: 10, // most impactful to touch
 };
 
 export const collisionsPriorityComparator = <I extends SortableObstacle>(
@@ -134,7 +134,7 @@ export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
     /*
      * the most important factor in this sort is the type of the items collided with. Less impactful items are moved
      * to the start of the ordering so that they 'protect' against more impactful ones. Eg, if landing simultaneously
-     * on a block and a baddie, the block should be processed first so that the baddie is not touched (and the block
+     * on a block and a monster, the block should be processed first so that the monster is not touched (and the block
      * becomes the `.standingOn` property of the player)
      */
     const priorityOrder = collisionsPriorityComparator(obsA, obsB);

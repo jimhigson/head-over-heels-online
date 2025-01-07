@@ -7,7 +7,32 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase28",
   items: {
-    "baddie@0,5,0:1wBzeB": {
+    "door@2,0,0": {
+      config: { direction: "towards", toRoom: "moonbase27" },
+      position: { x: 2, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@6,2,4": {
+      config: { direction: "left", toRoom: "moonbase29" },
+      position: { x: 6, y: 2, z: 4 },
+      type: "door",
+    },
+    "hushPuppy@3,3,0": {
+      config: {},
+      position: { x: 3, y: 3, z: 0 },
+      type: "hushPuppy",
+    },
+    "hushPuppy@4,3,1": {
+      config: {},
+      position: { x: 4, y: 3, z: 1 },
+      type: "hushPuppy",
+    },
+    "hushPuppy@5,3,2": {
+      config: {},
+      position: { x: 5, y: 3, z: 2 },
+      type: "hushPuppy",
+    },
+    "monster@0,5,0": {
       config: {
         activated: true,
         movement: "towards-on-shortest-axis-xy4",
@@ -15,32 +40,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 0, y: 5, z: 0 },
-      type: "baddie",
-    },
-    "door@2,0,0:5CC74": {
-      config: { direction: "towards", toRoom: "moonbase27" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@6,2,4:Z8uOmV": {
-      config: { direction: "left", toRoom: "moonbase29" },
-      position: { x: 6, y: 2, z: 4 },
-      type: "door",
-    },
-    "hushPuppy@3,3,0:13y": {
-      config: {},
-      position: { x: 3, y: 3, z: 0 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@4,3,1:13y": {
-      config: {},
-      position: { x: 4, y: 3, z: 1 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@5,3,2:13y": {
-      config: {},
-      position: { x: 5, y: 3, z: 2 },
-      type: "hushPuppy",
+      type: "monster",
     },
   },
   planet: "moonbase",

@@ -1,6 +1,7 @@
 # Ignore artifacts:
 build
 coverage
+package.json
 pnpm-lock.yaml
 build-stats.html
 *.frag

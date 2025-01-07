@@ -350,8 +350,8 @@ describe("cyclic dependencies", () => {
         },
         renders: true,
       },
-      baddie: {
-        id: "baddie",
+      monster: {
+        id: "monster",
         state: {
           position: {
             x: 32.5,
@@ -395,12 +395,12 @@ describe("cyclic dependencies", () => {
     expect(relations).toMatchInlineSnapshot(`
       Map {
         "movableBlock" => Set {
-          "baddie",
+          "monster",
         },
         "pickup" => Set {
           "movableBlock",
         },
-        "baddie" => Set {
+        "monster" => Set {
           "pickup",
         },
       }

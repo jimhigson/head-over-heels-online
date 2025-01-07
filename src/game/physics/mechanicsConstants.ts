@@ -61,25 +61,25 @@ export const moveSpeedPixPerMs = {
   charles: onePxPerFrameInOriginalGamePxPerMs,
   dalek: 2 * onePxPerFrameInOriginalGamePxPerMs,
   cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
-  ["american-football-head"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["helicopter-bug"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["headless-base"]: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  skiHead: onePxPerFrameInOriginalGamePxPerMs,
+  helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
+  homingBot: 2 * onePxPerFrameInOriginalGamePxPerMs,
   monkey: onePxPerFrameInOriginalGamePxPerMs,
   elephant: onePxPerFrameInOriginalGamePxPerMs,
-  "elephant-head": 0,
+  elephantHead: 0,
   emperor: onePxPerFrameInOriginalGamePxPerMs,
-  "flying-ball": onePxPerFrameInOriginalGamePxPerMs,
-  ["bubble-robot"]: onePxPerFrameInOriginalGamePxPerMs,
-  ["computer-bot"]: onePxPerFrameInOriginalGamePxPerMs,
+  emperorsGuardian: onePxPerFrameInOriginalGamePxPerMs,
+  bubbleRobot: onePxPerFrameInOriginalGamePxPerMs,
+  computerBot: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  firedDonut: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  firedDoughnut: 2 * onePxPerFrameInOriginalGamePxPerMs,
   movableBlock: onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Partial<
   Record<
     | CharacterName
     | ItemInPlayType
-    | JsonItemConfig<"baddie", SceneryName, string>["which"],
+    | JsonItemConfig<"monster", SceneryName, string>["which"],
     number
   >
 >;

@@ -23,26 +23,26 @@ import {
 import { mtv } from "../slidingCollision";
 import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
-import { isBaddie, isSolid } from "../itemPredicates";
+import { isMonster, isSolid } from "../itemPredicates";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
 type ItemWithMovement<RoomId extends string> =
-  | ItemInPlay<"baddie", SceneryName, RoomId>
+  | ItemInPlay<"monster", SceneryName, RoomId>
   | ItemInPlay<"movableBlock", SceneryName, RoomId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
   vels: { walking: originXyz },
-} as const satisfies MechanicResult<"baddie", string> satisfies MechanicResult<
+} as const satisfies MechanicResult<"monster", string> satisfies MechanicResult<
   "movableBlock",
   string
 >);
 
 const speedForItem = (itemWithMovement: ItemWithMovement<string>) => {
-  if (isBaddie(itemWithMovement)) {
+  if (isMonster(itemWithMovement)) {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
   } else {
     return moveSpeedPixPerMs[itemWithMovement.type];
@@ -59,8 +59,8 @@ const rushTowardPlayerXy4 = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
-  const speed = moveSpeedPixPerMs["headless-base"];
+): MechanicResult<"monster", RoomId> => {
+  const speed = moveSpeedPixPerMs["homingBot"];
 
   if (!xyEqual(walking, originXy)) {
     return {
@@ -140,7 +140,7 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
+): MechanicResult<"monster", RoomId> => {
   const {
     state: { position, standingOn },
   } = itemWithMovement;
@@ -194,16 +194,16 @@ const walkTowardIfInSquare = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
+): MechanicResult<"monster", RoomId> => {
   const {
-    state: { position: baddiePosition, standingOn },
+    state: { position: monsterPosition, standingOn },
   } = itemWithMovement;
 
   if (standingOn === null) {
     return notWalking;
   }
 
-  const closestPlayable = findClosestPlayable(baddiePosition, room);
+  const closestPlayable = findClosestPlayable(monsterPosition, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
@@ -214,28 +214,28 @@ const walkTowardIfInSquare = <RoomId extends string>(
 
   const radius = blockSizePx.w * 3;
   const inSquare =
-    baddiePosition.x > playablePosition.x - radius &&
-    baddiePosition.x < playablePosition.x + radius &&
-    baddiePosition.y > playablePosition.y - radius &&
-    baddiePosition.y < playablePosition.y + radius;
+    monsterPosition.x > playablePosition.x - radius &&
+    monsterPosition.x < playablePosition.x + radius &&
+    monsterPosition.y > playablePosition.y - radius &&
+    monsterPosition.y < playablePosition.y + radius;
 
   if (!inSquare) {
-    // outside of a 5x5 square around the baddie
+    // outside of a 5x5 square around the monster
     return notWalking;
   }
 
   const vectorXyToClosestPlayer = subXy(
     closestPlayable?.state.position,
-    baddiePosition,
+    monsterPosition,
   );
 
-  const baddieSpeed = speedForItem(itemWithMovement);
+  const monsterSpeed = speedForItem(itemWithMovement);
   // we allow movement here in arbitrary directions, not in the xy8 directions.
-  // in the original game, the baddie would move at their normal speed in axis-aligned directions, and sqrt(2) times that
+  // in the original game, the monster would move at their normal speed in axis-aligned directions, and sqrt(2) times that
   // in diagonal directions [ie, moving in vector (0,2) or (2,2) pixels in (x,y)]. Instead, I always move the average of these
   // two to keep the end result about the same without any strange-looking speed changes:
   const adjustCoefficient = (1 + Math.sqrt(2)) / 2;
-  const adjustedSpeed = baddieSpeed * adjustCoefficient;
+  const adjustedSpeed = monsterSpeed * adjustCoefficient;
 
   const walkVelocity = scaleXyz(
     { ...vectorXyToClosestPlayer, z: 0 },
@@ -259,7 +259,7 @@ const randomlyChangeDirection = <RoomId extends string>(
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
-): MechanicResult<"baddie", RoomId> => {
+): MechanicResult<"monster", RoomId> => {
   const {
     state: {
       vels: { walking },
@@ -299,7 +299,7 @@ export const keepWalkingInSameDirection = <RoomId extends string>(
   _room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
+): MechanicResult<"monster", RoomId> => {
   const {
     state: {
       facing,
@@ -355,7 +355,7 @@ const turnedWalkVector = (
   }
 };
 
-const handleBaddieTouchingItemByTurning = <RoomId extends string>(
+const handleMonsterTouchingItemByTurning = <RoomId extends string>(
   {
     movingItem: itemWithMovement,
     touchedItem: {
@@ -396,7 +396,7 @@ const handleBaddieTouchingItemByTurning = <RoomId extends string>(
   itemWithMovement.state.durationOfTouch = 0;
 };
 
-const handleBaddieTouchingItemByStopping = <RoomId extends string>({
+const handleMonsterTouchingItemByStopping = <RoomId extends string>({
   movingItem: itemWithMovement,
 }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>) => {
   itemWithMovement.state.vels.walking = originXyz;
@@ -410,10 +410,10 @@ export const tickMovement = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<"baddie", RoomId> => {
+): MechanicResult<"monster", RoomId> => {
   if (
     !itemWithMovement.state.activated ||
-    (isBaddie(itemWithMovement) &&
+    (isMonster(itemWithMovement) &&
       itemWithMovement.state.busyLickingDoughnutsOffFace)
   )
     return notWalking;
@@ -483,12 +483,12 @@ export const handleItemWithMovementTouchingItem = <RoomId extends string>(
 ) => {
   const { movingItem: itemWithMovement, touchedItem } = e;
 
-  //eg, baddies shouldn't change direction on touching a stopAutowalk item:
+  //eg, monsters shouldn't change direction on touching a stopAutowalk item:
   if (!isSolid(touchedItem)) return;
 
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":
-      handleBaddieTouchingItemByTurning(e, {
+      handleMonsterTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
         turnStrategy: "perpendicular",
       });
@@ -496,19 +496,19 @@ export const handleItemWithMovementTouchingItem = <RoomId extends string>(
     case "back-forth":
     case "patrol-randomly-diagonal":
     case "patrol-randomly-xy8":
-      handleBaddieTouchingItemByTurning(e, {
+      handleMonsterTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
         turnStrategy: "opposite",
       });
       break;
     case "clockwise":
-      handleBaddieTouchingItemByTurning(e, {
+      handleMonsterTouchingItemByTurning(e, {
         touchDurationBeforeTurn: 150,
         turnStrategy: "clockwise",
       });
       break;
     case "towards-tripped-on-axis-xy4":
-      handleBaddieTouchingItemByStopping(e);
+      handleMonsterTouchingItemByStopping(e);
       break;
     case "towards-on-shortest-axis-xy4":
     case "towards-when-in-square-xy8":

@@ -161,7 +161,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 
   tickItemStandingOn(item, room, gameState);
 
-  // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired donut)
+  // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired doughnut)
 
   let accumulatedPosDelta = applyMechanicsResults(item, mechanicsResults);
 
@@ -170,7 +170,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
   if (
     isFreeItem(item) ||
     isItemType("lift")(item) ||
-    isItemType("firedDonut")(item)
+    isItemType("firedDoughnut")(item)
   ) {
     accumulatedPosDelta = addXyz(
       accumulatedPosDelta,

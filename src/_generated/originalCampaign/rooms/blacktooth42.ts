@@ -7,28 +7,28 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth42",
   items: {
-    "baddie@3,1,0:Z1feWja": {
+    "door@0,0,0": {
+      config: { direction: "right", toRoom: "blacktooth41" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@8,0,0": {
+      config: { direction: "left", toRoom: "blacktooth43" },
+      position: { x: 8, y: 0, z: 0 },
+      type: "door",
+    },
+    "monster@3,1,0": {
       config: {
         activated: true,
         movement: "back-forth",
         startDirection: "towards",
         style: "greenAndPink",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 3, y: 1, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "door@0,0,0:uMPTj": {
-      config: { direction: "right", toRoom: "blacktooth41" },
-      position: { x: 0, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@8,0,0:ZUCFnC": {
-      config: { direction: "left", toRoom: "blacktooth43" },
-      position: { x: 8, y: 0, z: 0 },
-      type: "door",
-    },
-    "spring@1,1,0:13y": {
+    "spring@1,1,0": {
       config: {},
       position: { x: 1, y: 1, z: 0 },
       type: "spring",

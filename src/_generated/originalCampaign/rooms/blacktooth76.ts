@@ -7,18 +7,93 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth76",
   items: {
-    "baddie@2,2,0:K2f7o": {
+    "deadlyBlock@1,2,0": {
+      config: { style: "volcano" },
+      position: { x: 1, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,1,0": {
+      config: { style: "volcano" },
+      position: { x: 2, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,6,0": {
+      config: { style: "volcano" },
+      position: { x: 2, y: 6, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,6,1": {
+      config: { style: "volcano" },
+      position: { x: 2, y: 6, z: 1 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@2,7,1": {
+      config: { style: "volcano" },
+      position: { x: 2, y: 7, z: 1 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@3,4,0": {
+      config: { style: "volcano" },
+      position: { x: 3, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@4,3,0": {
+      config: { style: "volcano" },
+      position: { x: 4, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,1,0": {
+      config: { style: "volcano" },
+      position: { x: 5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,6,0": {
+      config: { style: "volcano" },
+      position: { x: 5, y: 6, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@6,2,0": {
+      config: { style: "volcano" },
+      position: { x: 6, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@6,2,1": {
+      config: { style: "volcano" },
+      position: { x: 6, y: 2, z: 1 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@6,5,0": {
+      config: { style: "volcano" },
+      position: { x: 6, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@7,2,1": {
+      config: { style: "volcano" },
+      position: { x: 7, y: 2, z: 1 },
+      type: "deadlyBlock",
+    },
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "blacktooth68" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@3,8,0": {
+      config: { direction: "away", toRoom: "blacktooth75" },
+      position: { x: 3, y: 8, z: 0 },
+      type: "door",
+    },
+    "monster@2,2,0": {
       config: {
         activated: true,
         movement: "clockwise",
         startDirection: "right",
         style: "greenAndPink",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 2, y: 2, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@2,7,0:1ttQvM": {
+    "monster@2,7,0": {
       config: {
         activated: true,
         movement: "clockwise",
@@ -26,82 +101,7 @@ export const room = inferRoomJson({
         which: "turtle",
       },
       position: { x: 2, y: 7, z: 0 },
-      type: "baddie",
-    },
-    "deadlyBlock@1,2,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,1,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,6,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 6, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,6,1:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 6, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,7,1:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 7, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,4,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,3,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,1,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,6,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 6, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,2,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,2,1:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 2, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,0:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,2,1:ZWGEjo": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 2, z: 1 },
-      type: "deadlyBlock",
-    },
-    "door@0,3,0:uN8Il": {
-      config: { direction: "right", toRoom: "blacktooth68" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@3,8,0:xS3db": {
-      config: { direction: "away", toRoom: "blacktooth75" },
-      position: { x: 3, y: 8, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "blacktooth",

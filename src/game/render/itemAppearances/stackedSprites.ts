@@ -8,7 +8,7 @@ export const itemRidingOnBubblesSpritesOptions = {
 };
 export const stackedSprites = ({
   top,
-  bottom = "headless-base",
+  bottom = "homingBot",
   filter,
 }: {
   top: CreateSpriteOptions;

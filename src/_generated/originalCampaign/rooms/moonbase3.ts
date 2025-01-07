@@ -7,102 +7,102 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "moonbase3",
   items: {
-    "block@1,1,0:95uHj": {
+    "block@1,1,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
-    "block@2,0,0:95uHj": {
+    "block@2,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
-    "block@2,1,0:95uHj": {
+    "block@2,1,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 1, z: 0 },
       type: "block",
     },
-    "block@2,2,0:95uHj": {
+    "block@2,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 2, z: 0 },
       type: "block",
     },
-    "block@2,4,0:95uHj": {
+    "block@2,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 4, z: 0 },
       type: "block",
     },
-    "block@3,0,0:95uHj": {
+    "block@3,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,1,0:95uHj": {
+    "block@3,1,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 1, z: 0 },
       type: "block",
     },
-    "block@4,0,0:95uHj": {
+    "block@4,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 0, z: 0 },
       type: "block",
     },
-    "charles@7,7,1:13y": {
+    "charles@7,7,1": {
       config: {},
       position: { x: 7, y: 7, z: 1 },
       type: "charles",
     },
-    "deadlyBlock@0,1,0:ZaRhUQ": {
+    "deadlyBlock@0,1,0": {
       config: { style: "spikes" },
       position: { x: 0, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,4,1:ZaRhUQ": {
+    "deadlyBlock@1,4,1": {
       config: { style: "spikes" },
       position: { x: 1, y: 4, z: 1 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,4,1:ZaRhUQ": {
+    "deadlyBlock@2,4,1": {
       config: { style: "spikes" },
       position: { x: 2, y: 4, z: 1 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,7,0:ZaRhUQ": {
+    "deadlyBlock@7,7,0": {
       config: { style: "spikes" },
       position: { x: 7, y: 7, z: 0 },
       type: "deadlyBlock",
     },
-    "door@3,0,1:Z1iR3a6": {
+    "door@3,0,1": {
       config: { direction: "towards", toRoom: "moonbase2" },
       position: { x: 3, y: 0, z: 1 },
       type: "door",
     },
-    "door@3,8,2:11gS0n": {
+    "door@3,8,2": {
       config: { direction: "away", toRoom: "moonbase13" },
       position: { x: 3, y: 8, z: 2 },
       type: "door",
     },
-    "joystick@1,1,1:2x1Kv5": {
-      config: { controls: ["charles@7,7,1:13y"] },
+    "joystick@1,1,1": {
+      config: { controls: ["charles@7,7,1"] },
       position: { x: 1, y: 1, z: 1 },
       type: "joystick",
     },
-    "joystick@2,0,1:2x1Kv5": {
-      config: { controls: ["charles@7,7,1:13y"] },
+    "joystick@2,0,1": {
+      config: { controls: ["charles@7,7,1"] },
       position: { x: 2, y: 0, z: 1 },
       type: "joystick",
     },
-    "joystick@2,2,1:2x1Kv5": {
-      config: { controls: ["charles@7,7,1:13y"] },
+    "joystick@2,2,1": {
+      config: { controls: ["charles@7,7,1"] },
       position: { x: 2, y: 2, z: 1 },
       type: "joystick",
     },
-    "joystick@3,1,1:2x1Kv5": {
-      config: { controls: ["charles@7,7,1:13y"] },
+    "joystick@3,1,1": {
+      config: { controls: ["charles@7,7,1"] },
       position: { x: 3, y: 1, z: 1 },
       type: "joystick",
     },
-    "movableBlock@0,7,0:Z2adEMR": {
+    "movableBlock@0,7,0": {
       config: {
         activated: false,
         movement: "clockwise",
@@ -112,7 +112,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 7, z: 0 },
       type: "movableBlock",
     },
-    "spring@4,7,0:13y": {
+    "spring@4,7,0": {
       config: {},
       position: { x: 4, y: 7, z: 0 },
       type: "spring",

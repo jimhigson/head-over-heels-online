@@ -7,22 +7,22 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth25",
   items: {
-    "conveyor@1,5,1:cVr4l": {
+    "conveyor@1,5,1": {
       config: { direction: "right" },
       position: { x: 1, y: 5, z: 1 },
       type: "conveyor",
     },
-    "deadlyBlock@0,5,0:ZWGEjo": {
+    "deadlyBlock@0,5,0": {
       config: { style: "volcano" },
       position: { x: 0, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,2,0:uMAEO": {
+    "door@0,2,0": {
       config: { direction: "right", toRoom: "blacktooth24" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "lift@5,0,7:ZTwqnv": {
+    "lift@5,0,7": {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 0, z: 7 },
       type: "lift",

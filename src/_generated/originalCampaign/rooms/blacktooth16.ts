@@ -7,49 +7,49 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth16",
   items: {
-    "baddie@0,7,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 0, y: 7, z: 0 },
-      type: "baddie",
-    },
-    "baddie@7,0,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 7, y: 0, z: 0 },
-      type: "baddie",
-    },
-    "baddie@7,7,0:5k1cB": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-xy8",
-        which: "bubble-robot",
-      },
-      position: { x: 7, y: 7, z: 0 },
-      type: "baddie",
-    },
-    "door@3,0,0:Z1V8aSY": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "blacktooth15" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,3,0:Z2iBTr0": {
+    "door@8,3,0": {
       config: { direction: "left", toRoom: "blacktooth17triple" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "slidingDeadly@3,3,0:Z1tM18t": {
+    "monster@0,7,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 0, y: 7, z: 0 },
+      type: "monster",
+    },
+    "monster@7,0,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 7, y: 0, z: 0 },
+      type: "monster",
+    },
+    "monster@7,7,0": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-xy8",
+        which: "bubbleRobot",
+      },
+      position: { x: 7, y: 7, z: 0 },
+      type: "monster",
+    },
+    "slidingDeadly@3,3,0": {
       config: { style: "puck" },
       position: { x: 3, y: 3, z: 0 },
       type: "slidingDeadly",
     },
-    "slidingDeadly@4,4,0:Z1tM18t": {
+    "slidingDeadly@4,4,0": {
       config: { style: "puck" },
       position: { x: 4, y: 4, z: 0 },
       type: "slidingDeadly",

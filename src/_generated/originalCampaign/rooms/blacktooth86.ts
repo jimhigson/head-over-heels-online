@@ -7,24 +7,24 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth86",
   items: {
-    "baddie@1,3,0:279T08": {
-      config: {
-        activated: true,
-        movement: "towards-when-in-square-xy8",
-        which: "flying-ball",
-      },
-      position: { x: 1, y: 3, z: 0 },
-      type: "baddie",
-    },
-    "door@1,0,0:1CAEsF": {
+    "door@1,0,0": {
       config: { direction: "towards", toRoom: "blacktooth87crown" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0:xSbdy": {
+    "door@1,8,0": {
       config: { direction: "away", toRoom: "blacktooth85" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
+    },
+    "monster@1,3,0": {
+      config: {
+        activated: true,
+        movement: "towards-when-in-square-xy8",
+        which: "emperorsGuardian",
+      },
+      position: { x: 1, y: 3, z: 0 },
+      type: "monster",
     },
   },
   planet: "blacktooth",

@@ -12,18 +12,18 @@ import {
 import type { MapJson, Xml2JsonRoom } from "./readToJson";
 import { roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
-import type { Xml2JsonItem, XmlItemBaddieBehaviour } from "./Xml2JsonItem";
+import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 import { itemKey, keyItems } from "../utils/keyItems";
 import type { UnknownJsonItem } from "../model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
 import type {
-  AllowedBaddieMovements,
+  AllowedMonsterMovements,
   ItemConfigMap,
   JsonMovement,
 } from "../model/json/ItemConfigMap";
 
-const baddieBehaviourConversions = {
+const monsterBehaviourConversions = {
   "behavior of detector": "towards-tripped-on-axis-xy4",
   "behavior of hunter in four directions": "towards-on-shortest-axis-xy4",
   "behavior of random patroling in four primary directions":
@@ -38,26 +38,26 @@ const baddieBehaviourConversions = {
     "towards-on-shortest-axis-xy4",
   "behavior of move then turn left and move": "clockwise",
   "behavior of there and back": "back-forth",
-} as const satisfies Record<XmlItemBaddieBehaviour, JsonMovement>;
+} as const satisfies Record<XmlItemMonsterBehaviour, JsonMovement>;
 
-const baddieConversions = {
-  "helicopter-bug": "helicopter-bug",
+const monsterConversions = {
+  "helicopter-bug": "helicopterBug",
   "imperial-guard": "cyberman",
   "imperial-guard-head": "cyberman",
   siren: "dalek",
-  bomb: "headless-base",
-  diver: "american-football-head",
-  "bubble-robot": "bubble-robot",
+  bomb: "homingBot",
+  diver: "skiHead",
+  "bubble-robot": "bubbleRobot",
   monkey: "monkey",
   elephant: "elephant",
-  "elephant-head": "elephant-head",
+  "elephant-head": "elephantHead",
   turtle: "turtle",
-  "throne-guard": "flying-ball",
-  "bighead-robot": "computer-bot",
+  "throne-guard": "emperorsGuardian",
+  "bighead-robot": "computerBot",
   emperor: "emperor",
 } as const satisfies Record<
   string,
-  ItemConfigMap<SceneryName, string, string>["baddie"]["which"]
+  ItemConfigMap<SceneryName, string, string>["monster"]["which"]
 >;
 
 export const convertItems = (
@@ -90,6 +90,7 @@ const convertItemsArray = (
         map,
         roomName,
         xml2JsonItem,
+        xml2JsonItems: xml2JsonRoom.items,
       }),
     )
     .filter((x): x is UnknownJsonItem => x !== undefined);
@@ -101,6 +102,7 @@ type ConvertItemParams = {
   map: MapJson;
   roomName: string;
   xml2JsonItem: Xml2JsonItem;
+  xml2JsonItems: Xml2JsonItem[];
 };
 
 const convertItem = ({
@@ -109,6 +111,7 @@ const convertItem = ({
   map,
   roomName,
   xml2JsonItem,
+  xml2JsonItems,
 }: ConvertItemParams): UnknownJsonItem | undefined => {
   const position = convertXYZ(xml2JsonItem, xml2JsonRoom, doorMap);
 
@@ -257,7 +260,7 @@ const convertItem = ({
         "high-jumps": "jumps",
         "extra-life": "extra-life",
         shield: "shield",
-        donuts: "donuts",
+        donuts: "doughnuts",
         "quick-steps": "fast",
         "reincarnation-fish": "reincarnation",
       } as const satisfies Record<
@@ -323,10 +326,11 @@ const convertItem = ({
         map,
         roomName,
         xml2JsonItem: charlesXml2Json,
+        xml2JsonItems,
       })!;
       return {
         type: "joystick",
-        config: { controls: [itemKey(charlesJson)] },
+        config: { controls: [itemKey(charlesJson, [charlesJson])] },
         position,
       };
     }
@@ -344,7 +348,7 @@ const convertItem = ({
         typeof xml2JsonItem.kind,
         ItemConfigMap<SceneryName, string, string>["movableBlock"]["style"]
       > = {
-        stool: "anvil",
+        stool: "stepStool",
         sandwich: "sandwich",
       };
 
@@ -427,21 +431,21 @@ const convertItem = ({
 
     case "imperial-guard":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "cyberman",
           startDirection: "towards",
           activated: true,
-          movement: baddieBehaviourConversions[
+          movement: monsterBehaviourConversions[
             xml2JsonItem.behavior
-          ] as AllowedBaddieMovements<"cyberman">,
+          ] as AllowedMonsterMovements<"cyberman">,
         },
         position,
       };
 
     case "imperial-guard-head":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "cyberman",
           startDirection: convertDirection(xml2JsonItem.orientation),
@@ -458,20 +462,20 @@ const convertItem = ({
     case "monkey":
     case "bighead-robot": {
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: baddieConversions[xml2JsonItem.kind],
+          which: monsterConversions[xml2JsonItem.kind],
           activated: true,
-          movement: baddieBehaviourConversions[xml2JsonItem.behavior],
+          movement: monsterBehaviourConversions[xml2JsonItem.behavior],
         },
         position,
       };
     }
     case "bomb":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "headless-base",
+          which: "homingBot",
           activated: true,
           movement: "towards-tripped-on-axis-xy4",
         },
@@ -480,9 +484,9 @@ const convertItem = ({
 
     case "elephant-head":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "elephant-head",
+          which: "elephantHead",
           activated: true,
           movement: "unmoving",
           startDirection: convertDirection(xml2JsonItem.orientation),
@@ -492,7 +496,7 @@ const convertItem = ({
 
     case "siren":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "dalek",
           activated: true,
@@ -503,7 +507,7 @@ const convertItem = ({
 
     case "elephant":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "elephant",
           activated: true,
@@ -514,9 +518,9 @@ const convertItem = ({
 
     case "bubble-robot":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "bubble-robot",
+          which: "bubbleRobot",
           activated: true,
           movement: "patrol-randomly-xy8",
         },
@@ -538,13 +542,13 @@ const convertItem = ({
         : null;
 
       if (movement === null) {
-        throw new Error("unknown helicopter-bug behaviour");
+        throw new Error("unknown helicopterBug behaviour");
       }
 
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: "helicopter-bug",
+          which: "helicopterBug",
           activated: true,
           movement,
         },
@@ -555,9 +559,9 @@ const convertItem = ({
     case "emperor":
     case "throne-guard":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: baddieConversions[xml2JsonItem.kind],
+          which: monsterConversions[xml2JsonItem.kind],
           activated: true,
           movement: "towards-when-in-square-xy8",
         },
@@ -566,7 +570,7 @@ const convertItem = ({
 
     case "turtle":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
           which: "turtle",
           startDirection: convertDirection(xml2JsonItem.orientation),
@@ -578,9 +582,9 @@ const convertItem = ({
 
     case "diver":
       return {
-        type: "baddie",
+        type: "monster",
         config: {
-          which: baddieConversions[xml2JsonItem.kind],
+          which: monsterConversions[xml2JsonItem.kind],
           startDirection: convertDirection(xml2JsonItem.orientation),
           activated: true,
           style:

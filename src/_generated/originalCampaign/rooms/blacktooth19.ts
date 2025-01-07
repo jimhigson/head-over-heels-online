@@ -7,88 +7,88 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth19",
   items: {
-    "block@2,2,0:Z1V7JSA": {
+    "block@2,2,0": {
       config: { disappearing: false, style: "tower" },
       position: { x: 2, y: 2, z: 0 },
       type: "block",
     },
-    "block@2,2,1:Z1V7JSA": {
+    "block@2,2,1": {
       config: { disappearing: false, style: "tower" },
       position: { x: 2, y: 2, z: 1 },
       type: "block",
     },
-    "block@2,2,2:Z1V7JSA": {
+    "block@2,2,2": {
       config: { disappearing: false, style: "tower" },
       position: { x: 2, y: 2, z: 2 },
       type: "block",
     },
-    "block@2,2,3:95uHj": {
+    "block@2,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 2, z: 3 },
       type: "block",
     },
-    "block@3,2,3:95uHj": {
+    "block@3,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 2, z: 3 },
       type: "block",
     },
-    "block@4,2,3:95uHj": {
+    "block@4,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 2, z: 3 },
       type: "block",
     },
-    "block@5,2,3:95uHj": {
+    "block@5,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 2, z: 3 },
       type: "block",
     },
-    "block@6,2,0:Z1V7JSA": {
+    "block@6,2,0": {
       config: { disappearing: false, style: "tower" },
       position: { x: 6, y: 2, z: 0 },
       type: "block",
     },
-    "block@6,2,1:Z1V7JSA": {
+    "block@6,2,1": {
       config: { disappearing: false, style: "tower" },
       position: { x: 6, y: 2, z: 1 },
       type: "block",
     },
-    "block@6,2,2:Z1V7JSA": {
+    "block@6,2,2": {
       config: { disappearing: false, style: "tower" },
       position: { x: 6, y: 2, z: 2 },
       type: "block",
     },
-    "conveyor@6,2,3:24hKaE": {
+    "conveyor@6,2,3": {
       config: { direction: "away" },
       position: { x: 6, y: 2, z: 3 },
       type: "conveyor",
     },
-    "door@0,3,0:F8e3o": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "blacktooth17triple" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@3,8,5:xRmSw": {
+    "door@3,8,5": {
       config: { direction: "away", toRoom: "blacktooth20" },
       position: { x: 3, y: 8, z: 5 },
       type: "door",
     },
-    "lift@1,2,0:ZTwqow": {
+    "lift@1,2,0": {
       config: { bottom: 0, top: 7 },
       position: { x: 1, y: 2, z: 0 },
       type: "lift",
     },
-    "movableBlock@3,2,4:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@3,2,4": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 3, y: 2, z: 4 },
       type: "movableBlock",
     },
-    "movableBlock@4,2,4:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@4,2,4": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 4, y: 2, z: 4 },
       type: "movableBlock",
     },
-    "movableBlock@5,2,4:1TpLUC": {
-      config: { movement: "free", style: "anvil" },
+    "movableBlock@5,2,4": {
+      config: { movement: "free", style: "stepStool" },
       position: { x: 5, y: 2, z: 4 },
       type: "movableBlock",
     },

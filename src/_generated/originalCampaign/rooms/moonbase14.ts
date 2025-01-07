@@ -7,16 +7,46 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase14",
   items: {
-    "baddie@2,7,0:Z1Gv2Js": {
+    "deadlyBlock@5,2,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,3,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,4,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@5,5,0": {
+      config: { style: "toaster" },
+      position: { x: 5, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "moonbase15" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@2,0,0": {
+      config: { direction: "towards", toRoom: "moonbase13" },
+      position: { x: 2, y: 0, z: 0 },
+      type: "door",
+    },
+    "monster@2,7,0": {
       config: {
         activated: true,
         movement: "towards-tripped-on-axis-xy4",
-        which: "headless-base",
+        which: "homingBot",
       },
       position: { x: 2, y: 7, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,2,1:1CHVMy": {
+    "monster@5,2,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -25,9 +55,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 2, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,3,1:1CHVMy": {
+    "monster@5,3,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -36,9 +66,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 3, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,4,1:1CHVMy": {
+    "monster@5,4,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -47,9 +77,9 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 4, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@5,5,1:1CHVMy": {
+    "monster@5,5,1": {
       config: {
         activated: false,
         movement: "towards-on-shortest-axis-xy4",
@@ -58,37 +88,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 5, y: 5, z: 1 },
-      type: "baddie",
-    },
-    "deadlyBlock@5,2,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,3,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,5,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,3,0:Z1kG451": {
-      config: { direction: "right", toRoom: "moonbase15" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@2,0,0:5Ct4F": {
-      config: { direction: "towards", toRoom: "moonbase13" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "moonbase",

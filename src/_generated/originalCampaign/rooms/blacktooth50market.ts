@@ -7,16 +7,31 @@ export const room = inferRoomJson({
   floor: "market",
   id: "blacktooth50market",
   items: {
-    "baddie@0,0,0:ZazYQL": {
+    "door@0,3,0": {
+      config: { direction: "right", toRoom: "blacktooth49market" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "door",
+    },
+    "door@3,0,0": {
+      config: { direction: "towards", toRoom: "blacktooth51" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@8,3,0": {
+      config: { direction: "left", toRoom: "blacktooth52market" },
+      position: { x: 8, y: 3, z: 0 },
+      type: "door",
+    },
+    "monster@0,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy8",
-        which: "helicopter-bug",
+        which: "helicopterBug",
       },
       position: { x: 0, y: 0, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@4,7,0:1wBzeB": {
+    "monster@4,7,0": {
       config: {
         activated: true,
         movement: "towards-on-shortest-axis-xy4",
@@ -24,31 +39,16 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 4, y: 7, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "baddie@7,0,0:ZazYQL": {
+    "monster@7,0,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy8",
-        which: "helicopter-bug",
+        which: "helicopterBug",
       },
       position: { x: 7, y: 0, z: 0 },
-      type: "baddie",
-    },
-    "door@0,3,0:ZHEhmr": {
-      config: { direction: "right", toRoom: "blacktooth49market" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@3,0,0:Z1V7ETu": {
-      config: { direction: "towards", toRoom: "blacktooth51" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@8,3,0:RLEqE": {
-      config: { direction: "left", toRoom: "blacktooth52market" },
-      position: { x: 8, y: 3, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "market",

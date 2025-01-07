@@ -7,56 +7,56 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld19",
   items: {
-    "baddie@0,6,0:Z1feWja": {
+    "deadlyBlock@1,2,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,3,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,3,1": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 3, z: 1 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,4,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,4,1": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 4, z: 1 },
+      type: "deadlyBlock",
+    },
+    "deadlyBlock@1,5,0": {
+      config: { style: "toaster" },
+      position: { x: 1, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    "door@0,0,0": {
+      config: { direction: "towards", toRoom: "bookworld20" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "door",
+    },
+    "door@0,8,0": {
+      config: { direction: "away", toRoom: "bookworld18" },
+      position: { x: 0, y: 8, z: 0 },
+      type: "door",
+    },
+    "monster@0,6,0": {
       config: {
         activated: true,
         movement: "back-forth",
         startDirection: "towards",
         style: "greenAndPink",
-        which: "american-football-head",
+        which: "skiHead",
       },
       position: { x: 0, y: 6, z: 0 },
-      type: "baddie",
-    },
-    "deadlyBlock@1,2,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,3,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,3,1:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 3, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,4,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,4,1:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,5,0:2u1uHB": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,0:JfhAD": {
-      config: { direction: "towards", toRoom: "bookworld20" },
-      position: { x: 0, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@0,8,0:ZXU0qs": {
-      config: { direction: "away", toRoom: "bookworld18" },
-      position: { x: 0, y: 8, z: 0 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "bookworld",

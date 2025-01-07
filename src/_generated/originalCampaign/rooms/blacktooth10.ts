@@ -7,72 +7,72 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth10",
   items: {
-    "deadlyBlock@3,0,0:ZWGEjo": {
+    "deadlyBlock@3,0,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,1,0:ZWGEjo": {
+    "deadlyBlock@3,1,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,2,0:ZWGEjo": {
+    "deadlyBlock@3,2,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,3,0:ZWGEjo": {
+    "deadlyBlock@3,3,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,4,0:ZWGEjo": {
+    "deadlyBlock@3,4,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,5,0:ZWGEjo": {
+    "deadlyBlock@3,5,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,0,0:ZWGEjo": {
+    "deadlyBlock@8,0,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,1,0:ZWGEjo": {
+    "deadlyBlock@8,1,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,2,0:ZWGEjo": {
+    "deadlyBlock@8,2,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,3,0:ZWGEjo": {
+    "deadlyBlock@8,3,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,4,0:ZWGEjo": {
+    "deadlyBlock@8,4,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@8,5,0:ZWGEjo": {
+    "deadlyBlock@8,5,0": {
       config: { style: "volcano" },
       position: { x: 8, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,2,0:b00Ew": {
+    "door@0,2,0": {
       config: { direction: "right", toRoom: "blacktooth7" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "door@12,2,0:ZUD4Ug": {
+    "door@12,2,0": {
       config: { direction: "left", toRoom: "blacktooth11" },
       position: { x: 12, y: 2, z: 0 },
       type: "door",

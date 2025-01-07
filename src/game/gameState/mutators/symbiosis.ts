@@ -76,8 +76,8 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
         ...pick(
           head.state,
           "hasHooter",
-          "donuts",
-          "donutLastFireTime",
+          "doughnuts",
+          "doughnutLastFireTime",
           "fastStepsStartedAtDistance",
           "totalWalkDistance",
           "lives",

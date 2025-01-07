@@ -75,7 +75,7 @@ const itemTickOrderComparator = (
     lift: -4, // <- highest priority
     head: -3,
     heels: -3,
-    baddie: -2,
+    monster: -2,
     // everything else goes here
     block: 1, // <- lowest priority
     deadlyBlock: 1, // <- lowest priority

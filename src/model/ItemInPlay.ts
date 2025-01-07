@@ -15,7 +15,7 @@ export type ItemInPlayType =
   | "floor"
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
-  | "firedDonut";
+  | "firedDoughnut";
 
 export type SwitchSetting = "left" | "right";
 
@@ -40,7 +40,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
     count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;
-  // disappearing can be turned off (blacktooth 6 for donuts) so it is state, not config
+  // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", SceneryName, RoomId>, "disappearing">;
 };
 

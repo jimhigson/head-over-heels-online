@@ -7,142 +7,142 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth40fish",
   items: {
-    "block@2,0,0:95uHj": {
+    "block@2,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,0,0:95uHj": {
+    "block@3,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,15,0:95uHj": {
+    "block@3,15,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 15, z: 0 },
       type: "block",
     },
-    "block@4,15,0:95uHj": {
+    "block@4,15,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 15, z: 0 },
       type: "block",
     },
-    "block@5,15,0:95uHj": {
+    "block@5,15,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 15, z: 0 },
       type: "block",
     },
-    "conveyor@0,1,0:2pPzNa": {
+    "conveyor@0,1,0": {
       config: { direction: "left" },
       position: { x: 0, y: 1, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,10,0:24hKaE": {
+    "conveyor@0,10,0": {
       config: { direction: "away" },
       position: { x: 0, y: 10, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,12,0:2pPzNa": {
+    "conveyor@0,12,0": {
       config: { direction: "left" },
       position: { x: 0, y: 12, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,14,0:2pPzNa": {
+    "conveyor@0,14,0": {
       config: { direction: "left" },
       position: { x: 0, y: 14, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,3,0:2pPzNa": {
+    "conveyor@0,3,0": {
       config: { direction: "left" },
       position: { x: 0, y: 3, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,4,0:cVr4l": {
+    "conveyor@0,4,0": {
       config: { direction: "right" },
       position: { x: 0, y: 4, z: 0 },
       type: "conveyor",
     },
-    "conveyor@1,14,0:2pPzNa": {
+    "conveyor@1,14,0": {
       config: { direction: "left" },
       position: { x: 1, y: 14, z: 0 },
       type: "conveyor",
     },
-    "conveyor@2,1,0:cVr4l": {
+    "conveyor@2,1,0": {
       config: { direction: "right" },
       position: { x: 2, y: 1, z: 0 },
       type: "conveyor",
     },
-    "conveyor@2,10,0:2pPzNa": {
+    "conveyor@2,10,0": {
       config: { direction: "left" },
       position: { x: 2, y: 10, z: 0 },
       type: "conveyor",
     },
-    "conveyor@2,14,0:2pPzNa": {
+    "conveyor@2,14,0": {
       config: { direction: "left" },
       position: { x: 2, y: 14, z: 0 },
       type: "conveyor",
     },
-    "conveyor@2,4,0:cVr4l": {
+    "conveyor@2,4,0": {
       config: { direction: "right" },
       position: { x: 2, y: 4, z: 0 },
       type: "conveyor",
     },
-    "conveyor@3,14,0:2pPzNa": {
+    "conveyor@3,14,0": {
       config: { direction: "left" },
       position: { x: 3, y: 14, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,10,0:2pPzNa": {
+    "conveyor@4,10,0": {
       config: { direction: "left" },
       position: { x: 4, y: 10, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,4,0:24hKaE": {
+    "conveyor@4,4,0": {
       config: { direction: "away" },
       position: { x: 4, y: 4, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,5,0:24hKaE": {
+    "conveyor@4,5,0": {
       config: { direction: "away" },
       position: { x: 4, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,6,0:24hKaE": {
+    "conveyor@4,6,0": {
       config: { direction: "away" },
       position: { x: 4, y: 6, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,7,0:24hKaE": {
+    "conveyor@4,7,0": {
       config: { direction: "away" },
       position: { x: 4, y: 7, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,8,0:24hKaE": {
+    "conveyor@4,8,0": {
       config: { direction: "away" },
       position: { x: 4, y: 8, z: 0 },
       type: "conveyor",
     },
-    "conveyor@4,9,0:24hKaE": {
+    "conveyor@4,9,0": {
       config: { direction: "away" },
       position: { x: 4, y: 9, z: 0 },
       type: "conveyor",
     },
-    "door@2,0,1:Z1V7SQd": {
+    "door@2,0,1": {
       config: { direction: "towards", toRoom: "blacktooth39" },
       position: { x: 2, y: 0, z: 1 },
       type: "door",
     },
-    "pickup@3,15,1:1MkQY2": {
+    "pickup@3,15,1": {
       config: { gives: "extra-life" },
       position: { x: 3, y: 15, z: 1 },
       type: "pickup",
     },
-    "pickup@4,15,1:DHWsf": {
+    "pickup@4,15,1": {
       config: { gives: "shield" },
       position: { x: 4, y: 15, z: 1 },
       type: "pickup",
     },
-    "pickup@5,15,1:ZPJAGD": {
+    "pickup@5,15,1": {
       config: { gives: "reincarnation" },
       position: { x: 5, y: 15, z: 1 },
       type: "pickup",

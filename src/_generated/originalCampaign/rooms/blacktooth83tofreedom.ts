@@ -7,122 +7,122 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth83tofreedom",
   items: {
-    "block@0,2,0:95uHj": {
+    "block@0,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 2, z: 0 },
       type: "block",
     },
-    "block@0,3,0:95uHj": {
+    "block@0,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@0,4,0:95uHj": {
+    "block@0,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "block@0,5,0:95uHj": {
+    "block@0,5,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
-    "block@0,7,0:95uHj": {
+    "block@0,7,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "block@0,7,1:95uHj": {
+    "block@0,7,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 7, z: 1 },
       type: "block",
     },
-    "block@0,7,3:95uHj": {
+    "block@0,7,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
-    "block@5,3,0:Z1AdJxh": {
+    "block@5,3,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
-    "block@5,3,1:Z1AdJxh": {
+    "block@5,3,1": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 3, z: 1 },
       type: "block",
     },
-    "block@5,3,2:Z1AdJxh": {
+    "block@5,3,2": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 3, z: 2 },
       type: "block",
     },
-    "block@5,7,0:Z1AdJxh": {
+    "block@5,7,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
-    "block@5,7,1:Z1AdJxh": {
+    "block@5,7,1": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 7, z: 1 },
       type: "block",
     },
-    "block@5,7,2:Z1AdJxh": {
+    "block@5,7,2": {
       config: { disappearing: true, style: "organic" },
       position: { x: 5, y: 7, z: 2 },
       type: "block",
     },
-    "block@6,2,2:20S0Rw": {
+    "block@6,2,2": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 6, y: 2, z: 2 },
       type: "block",
     },
-    "block@7,1,2:20S0Rw": {
+    "block@7,1,2": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 7, y: 1, z: 2 },
       type: "block",
     },
-    "block@7,2,0:95uHj": {
+    "block@7,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 2, z: 0 },
       type: "block",
     },
-    "block@7,3,2:20S0Rw": {
+    "block@7,3,2": {
       config: { disappearing: false, style: "artificial" },
       position: { x: 7, y: 3, z: 2 },
       type: "block",
     },
-    "door@0,3,1:uNnbz": {
+    "door@0,3,1": {
       config: { direction: "right", toRoom: "blacktooth82" },
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    "hushPuppy@0,0,0:13y": {
+    "hushPuppy@0,0,0": {
       config: {},
       position: { x: 0, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@3,0,0:13y": {
+    "hushPuppy@3,0,0": {
       config: {},
       position: { x: 3, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,0,0:13y": {
+    "hushPuppy@6,0,0": {
       config: {},
       position: { x: 6, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,0,0:13y": {
+    "hushPuppy@7,0,0": {
       config: {},
       position: { x: 7, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,0,1:13y": {
+    "hushPuppy@7,0,1": {
       config: {},
       position: { x: 7, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "teleporter@7,2,1:XYoHN": {
+    "teleporter@7,2,1": {
       config: { toRoom: "finalroom" },
       position: { x: 7, y: 2, z: 1 },
       type: "teleporter",

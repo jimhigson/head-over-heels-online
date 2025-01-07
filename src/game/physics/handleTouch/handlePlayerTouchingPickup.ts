@@ -43,10 +43,10 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
       break;
     }
 
-    case "donuts": {
+    case "doughnuts": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
-        toModify.donuts += 6;
+        toModify.doughnuts += 6;
       }
       break;
     }

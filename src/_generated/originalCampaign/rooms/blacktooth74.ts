@@ -7,76 +7,76 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth74",
   items: {
-    "baddie@3,3,0:ZaUBJ7": {
+    "block@0,2,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 2, z: 4 },
+      type: "block",
+    },
+    "block@0,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@1,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 1, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@2,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 2, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@3,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 3, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@4,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 4, y: 3, z: 4 },
+      type: "block",
+    },
+    "block@5,3,4": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 5, y: 3, z: 4 },
+      type: "block",
+    },
+    "door@0,2,5": {
+      config: { direction: "right", toRoom: "blacktooth73" },
+      position: { x: 0, y: 2, z: 5 },
+      type: "door",
+    },
+    "door@2,0,1": {
+      config: { direction: "towards", toRoom: "blacktooth75" },
+      position: { x: 2, y: 0, z: 1 },
+      type: "door",
+    },
+    "monster@3,3,0": {
       config: {
         activated: true,
         movement: "patrol-randomly-xy4",
         which: "monkey",
       },
       position: { x: 3, y: 3, z: 0 },
-      type: "baddie",
+      type: "monster",
     },
-    "block@0,2,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 0, y: 2, z: 4 },
-      type: "block",
-    },
-    "block@0,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 0, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@1,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 1, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@2,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 2, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@3,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 3, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@4,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 4, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@5,3,4:95uHj": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 5, y: 3, z: 4 },
-      type: "block",
-    },
-    "door@0,2,5:uNfqW": {
-      config: { direction: "right", toRoom: "blacktooth73" },
-      position: { x: 0, y: 2, z: 5 },
-      type: "door",
-    },
-    "door@2,0,1:Z1V7nQI": {
-      config: { direction: "towards", toRoom: "blacktooth75" },
-      position: { x: 2, y: 0, z: 1 },
-      type: "door",
-    },
-    "pickup@5,3,5:Z2prF0G": {
-      config: { gives: "donuts" },
+    "pickup@5,3,5": {
+      config: { gives: "doughnuts" },
       position: { x: 5, y: 3, z: 5 },
       type: "pickup",
     },
-    "portableBlock@0,2,0:Z1UEQTQ": {
+    "portableBlock@0,2,0": {
       config: { style: "cube" },
       position: { x: 0, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,5,0:Z1UEQTQ": {
+    "portableBlock@4,5,0": {
       config: { style: "cube" },
       position: { x: 4, y: 5, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@5,0,0:Z1UEQTQ": {
+    "portableBlock@5,0,0": {
       config: { style: "cube" },
       position: { x: 5, y: 0, z: 0 },
       type: "portableBlock",

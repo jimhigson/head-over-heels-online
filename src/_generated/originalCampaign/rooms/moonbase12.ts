@@ -7,72 +7,72 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase12",
   items: {
-    "block@0,0,3:95uHj": {
+    "block@0,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
-    "block@0,2,3:95uHj": {
+    "block@0,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 2, z: 3 },
       type: "block",
     },
-    "block@0,3,3:95uHj": {
+    "block@0,3,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
-    "block@0,4,3:95uHj": {
+    "block@0,4,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
-    "block@1,0,3:95uHj": {
+    "block@1,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 0, z: 3 },
       type: "block",
     },
-    "block@2,0,3:95uHj": {
+    "block@2,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 3 },
       type: "block",
     },
-    "block@3,0,3:95uHj": {
+    "block@3,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 3 },
       type: "block",
     },
-    "block@4,0,3:95uHj": {
+    "block@4,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 0, z: 3 },
       type: "block",
     },
-    "block@5,0,3:95uHj": {
+    "block@5,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 0, z: 3 },
       type: "block",
     },
-    "door@0,3,4:Z1kG3iK": {
+    "door@0,3,4": {
       config: { direction: "right", toRoom: "moonbase18" },
       position: { x: 0, y: 3, z: 4 },
       type: "door",
     },
-    "door@3,0,0:5Csya": {
+    "door@3,0,0": {
       config: { direction: "towards", toRoom: "moonbase11" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "hushPuppy@5,0,0:13y": {
+    "hushPuppy@5,0,0": {
       config: {},
       position: { x: 5, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,0,1:13y": {
+    "hushPuppy@6,0,1": {
       config: {},
       position: { x: 6, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,0,2:13y": {
+    "hushPuppy@7,0,2": {
       config: {},
       position: { x: 7, y: 0, z: 2 },
       type: "hushPuppy",

@@ -153,7 +153,7 @@ export const renderHud = <RoomId extends string>(
       livesText: makeText({ doubleHeight: true, outline: true }),
       shield: iconWithNumber({ textureId: "hud.shield", outline: true }),
       extraSkill: iconWithNumber({ textureId: "hud.fastSteps", outline: true }),
-      donuts: iconWithNumber({ textureId: "donuts", textOnTop: true }),
+      doughnuts: iconWithNumber({ textureId: "doughnuts", textOnTop: true }),
       hooter: iconWithNumber({
         textureId: "hooter",
         textOnTop: true,
@@ -178,7 +178,7 @@ export const renderHud = <RoomId extends string>(
     hudContainer.addChild(hudElements[character].shield.container);
     hudContainer.addChild(hudElements[character].extraSkill.container);
   }
-  hudContainer.addChild(hudElements.head.donuts.container);
+  hudContainer.addChild(hudElements.head.doughnuts.container);
   hudContainer.addChild(hudElements.head.hooter.container);
   hudContainer.addChild(hudElements.heels.bag.container);
   hudContainer.addChild(hudElements.heels.carrying.container);
@@ -286,9 +286,10 @@ export const renderHud = <RoomId extends string>(
       updateCharacterSprite(character);
       updateIcons(character);
     }
-    hudElements.head.hooter.container.x = hudElements.head.donuts.container.x =
-      (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
-    hudElements.head.donuts.container.y =
+    hudElements.head.hooter.container.x =
+      hudElements.head.doughnuts.container.x =
+        (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
+    hudElements.head.doughnuts.container.y =
       screenSize.y - smallItemTextureSize.h - 8;
     hudElements.heels.carrying.container.y =
       screenSize.y - smallItemTextureSize.h;
@@ -304,11 +305,11 @@ export const renderHud = <RoomId extends string>(
     const hasHooter = headAbilities?.hasHooter ?? false;
     hudElements.head.hooter.icon.filters =
       hasHooter ? noFilters : uncurrentSpriteFilter;
-    const donutCount = headAbilities?.donuts ?? 0;
-    hudElements.head.donuts.icon.filters =
-      donutCount !== 0 ? noFilters : uncurrentSpriteFilter;
-    showNumberInContainer(hudElements.head.donuts.text, donutCount);
-    //hudElements.head.donuts.text.text = `${donutCount}`;
+    const doughnutCount = headAbilities?.doughnuts ?? 0;
+    hudElements.head.doughnuts.icon.filters =
+      doughnutCount !== 0 ? noFilters : uncurrentSpriteFilter;
+    showNumberInContainer(hudElements.head.doughnuts.text, doughnutCount);
+    //hudElements.head.doughnuts.text.text = `${doughnutCount}`;
 
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;

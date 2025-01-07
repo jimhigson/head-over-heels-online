@@ -7,7 +7,7 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth2",
   items: {
-    "door@2,0,0:Z1cQbMN": {
+    "door@2,0,0": {
       config: { direction: "towards", toRoom: "blacktooth3" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
@@ -41,7 +41,7 @@ ARE their names and both are highly trained spies.
       position: { x: 1, y: 0, z: 0 },
       type: "pickup",
     },
-    "teleporter@5,7,0:ZO2t8x": {
+    "teleporter@5,7,0": {
       config: { toRoom: "blacktooth1head" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",

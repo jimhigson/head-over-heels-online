@@ -7,24 +7,24 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld10",
   items: {
-    "baddie@2,4,0:ZqCNoC": {
+    "door@0,3,1": {
+      config: { direction: "right", toRoom: "bookworld11" },
+      position: { x: 0, y: 3, z: 1 },
+      type: "door",
+    },
+    "door@6,3,1": {
+      config: { direction: "left", toRoom: "bookworld9" },
+      position: { x: 6, y: 3, z: 1 },
+      type: "door",
+    },
+    "monster@2,4,0": {
       config: {
         activated: true,
         movement: "towards-on-shortest-axis-xy4",
         which: "monkey",
       },
       position: { x: 2, y: 4, z: 0 },
-      type: "baddie",
-    },
-    "door@0,3,1:286lhk": {
-      config: { direction: "right", toRoom: "bookworld11" },
-      position: { x: 0, y: 3, z: 1 },
-      type: "door",
-    },
-    "door@6,3,1:1AnU6S": {
-      config: { direction: "left", toRoom: "bookworld9" },
-      position: { x: 6, y: 3, z: 1 },
-      type: "door",
+      type: "monster",
     },
   },
   planet: "bookworld",

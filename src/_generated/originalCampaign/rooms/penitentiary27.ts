@@ -7,42 +7,42 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "penitentiary27",
   items: {
-    "block@0,0,0:95uHj": {
+    "block@0,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,0,0:95uHj": {
+    "block@7,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "deadlyBlock@3,0,1:ZWGEjo": {
+    "deadlyBlock@3,0,1": {
       config: { style: "volcano" },
       position: { x: 3, y: 0, z: 1 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,1,0:ZWGEjo": {
+    "deadlyBlock@3,1,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,1,1:ZWGEjo": {
+    "deadlyBlock@3,1,1": {
       config: { style: "volcano" },
       position: { x: 3, y: 1, z: 1 },
       type: "deadlyBlock",
     },
-    "door@0,0,1:1QJMd2": {
+    "door@0,0,1": {
       config: { direction: "right", toRoom: "penitentiary28" },
       position: { x: 0, y: 0, z: 1 },
       type: "door",
     },
-    "door@8,0,2:2uC3Bo": {
+    "door@8,0,2": {
       config: { direction: "left", toRoom: "penitentiary26" },
       position: { x: 8, y: 0, z: 2 },
       type: "door",
     },
-    "movableBlock@6,0,0:28GVaT": {
+    "movableBlock@6,0,0": {
       config: {
         activated: false,
         movement: "clockwise",

@@ -107,9 +107,9 @@ export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
 
 export type HeadAbilities = {
   hasHooter: boolean;
-  donuts: number;
-  /** time in ms donut was last fired, used to limit rate of fire */
-  donutLastFireTime: number;
+  doughnuts: number;
+  /** time in ms doughnut was last fired, used to limit rate of fire */
+  doughnutLastFireTime: number;
   /** how far have we walked ever, total? Head tracks this to maintain the fast steps */
   totalWalkDistance: number;
   /** how far (what totalWalkDistance) we'd walked when we got the fast steps? */
@@ -158,7 +158,7 @@ export type ItemStateMap<RoomId extends string> = {
   slidingDeadly: SlidingItemState<RoomId>;
   slidingBlock: SlidingItemState<RoomId>;
 
-  baddie: FreeItemState<RoomId> & {
+  monster: FreeItemState<RoomId> & {
     activated: boolean;
     busyLickingDoughnutsOffFace: boolean;
     facing: Xyz;
@@ -180,7 +180,7 @@ export type ItemStateMap<RoomId extends string> = {
       lift: Xyz;
     };
   };
-  firedDonut: {
+  firedDoughnut: {
     vels: {
       fired: Xyz;
     };

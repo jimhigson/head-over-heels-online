@@ -7,7 +7,17 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth29",
   items: {
-    "baddie@0,6,0:1wBzeB": {
+    "door@2,0,0": {
+      config: { direction: "towards", toRoom: "blacktooth27fish" },
+      position: { x: 2, y: 0, z: 0 },
+      type: "door",
+    },
+    "lift@0,7,7": {
+      config: { bottom: 0, top: 11 },
+      position: { x: 0, y: 7, z: 7 },
+      type: "lift",
+    },
+    "monster@0,6,0": {
       config: {
         activated: true,
         movement: "towards-on-shortest-axis-xy4",
@@ -15,17 +25,7 @@ export const room = inferRoomJson({
         which: "cyberman",
       },
       position: { x: 0, y: 6, z: 0 },
-      type: "baddie",
-    },
-    "door@2,0,0:ZpVTnF": {
-      config: { direction: "towards", toRoom: "blacktooth27fish" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "door",
-    },
-    "lift@0,7,7:ZTwqnv": {
-      config: { bottom: 0, top: 11 },
-      position: { x: 0, y: 7, z: 7 },
-      type: "lift",
+      type: "monster",
     },
   },
   planet: "blacktooth",

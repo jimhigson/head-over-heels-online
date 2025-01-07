@@ -7,7 +7,7 @@ export const room = inferRoomJson({
   floor: "none",
   id: "egyptus30",
   items: {
-    "lift@5,0,0:ZTwqnv": {
+    "lift@5,0,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 0, z: 0 },
       type: "lift",

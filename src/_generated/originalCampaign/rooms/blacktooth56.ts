@@ -7,57 +7,57 @@ export const room = inferRoomJson({
   floor: "market",
   id: "blacktooth56",
   items: {
-    "block@3,0,0:95uHj": {
+    "block@3,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,0,1:95uHj": {
+    "block@3,0,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 1 },
       type: "block",
     },
-    "block@3,0,3:95uHj": {
+    "block@3,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 0, z: 3 },
       type: "block",
     },
-    "block@3,1,0:95uHj": {
+    "block@3,1,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 1, z: 0 },
       type: "block",
     },
-    "block@3,1,1:95uHj": {
+    "block@3,1,1": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 1, z: 1 },
       type: "block",
     },
-    "block@3,1,2:95uHj": {
+    "block@3,1,2": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 1, z: 2 },
       type: "block",
     },
-    "block@3,1,3:95uHj": {
+    "block@3,1,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 1, z: 3 },
       type: "block",
     },
-    "deadlyBlock@0,0,0:ZaRhUQ": {
+    "deadlyBlock@0,0,0": {
       config: { style: "spikes" },
       position: { x: 0, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@0,1,0:ZaRhUQ": {
+    "deadlyBlock@0,1,0": {
       config: { style: "spikes" },
       position: { x: 0, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,0,4:uN0sd": {
+    "door@0,0,4": {
       config: { direction: "right", toRoom: "blacktooth57" },
       position: { x: 0, y: 0, z: 4 },
       type: "door",
     },
-    "door@8,0,0:ZUCwQJ": {
+    "door@8,0,0": {
       config: { direction: "left", toRoom: "blacktooth55" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",

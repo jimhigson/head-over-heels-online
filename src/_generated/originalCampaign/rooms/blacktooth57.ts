@@ -7,32 +7,32 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "blacktooth57",
   items: {
-    "door@3,8,0:2fuP5S": {
+    "door@3,8,0": {
       config: { direction: "away", toRoom: "blacktooth58triple" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "door@8,3,0:ZUCwAY": {
+    "door@8,3,0": {
       config: { direction: "left", toRoom: "blacktooth56" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "teleporter@3,3,0:Z1GJpGg": {
+    "teleporter@3,3,0": {
       config: { toRoom: "moonbase9" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,4,0:Z1GJpGg": {
+    "teleporter@3,4,0": {
       config: { toRoom: "moonbase9" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
-    "teleporter@4,3,0:Z1GJpGg": {
+    "teleporter@4,3,0": {
       config: { toRoom: "moonbase9" },
       position: { x: 4, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@4,4,0:Z1GJpGg": {
+    "teleporter@4,4,0": {
       config: { toRoom: "moonbase9" },
       position: { x: 4, y: 4, z: 0 },
       type: "teleporter",

@@ -1043,5 +1043,5 @@ describe("dissapearing items", () => {
 });
 
 describe("touching", () => {
-  test("standing overlapping the edge of a block, a baddie on the floor doesn't kill the player", () => {});
+  test("standing overlapping the edge of a block, a monster on the floor doesn't kill the player", () => {});
 });

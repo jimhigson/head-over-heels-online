@@ -83,7 +83,7 @@ export type ItemConfigMap<
           | "fast"
           | "jumps"
           | "shield"
-          | "donuts"
+          | "doughnuts"
           | "bag"
           | "hooter"
           | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
@@ -108,11 +108,11 @@ export type ItemConfigMap<
     bottom: number;
   };
   bubbles: { style: "fish" | "taupe" | "white" };
-  baddie: {
+  monster: {
     activated: boolean;
   } & (
     | {
-        which: "flying-ball" | "emperor";
+        which: "emperorsGuardian" | "emperor";
         movement: MovementsSubset<"towards-when-in-square-xy8">;
       }
     | {
@@ -120,18 +120,18 @@ export type ItemConfigMap<
         movement: MovementsSubset<"patrol-randomly-xy4">;
       }
     | {
-        which: "elephant-head";
+        which: "elephantHead";
         movement: MovementsSubset<"unmoving">;
         startDirection: DirectionXy4;
       }
     | {
-        which: "computer-bot" | "monkey";
+        which: "computerBot" | "monkey";
         movement: MovementsSubset<
           "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
         >;
       }
     | {
-        which: "bubble-robot";
+        which: "bubbleRobot";
         movement: MovementsSubset<"patrol-randomly-xy8">;
       }
     | {
@@ -139,11 +139,11 @@ export type ItemConfigMap<
         movement: MovementsSubset<"patrol-randomly-diagonal">;
       }
     | {
-        which: "headless-base";
+        which: "homingBot";
         movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
       }
     | {
-        which: "helicopter-bug";
+        which: "helicopterBug";
         movement: MovementsSubset<
           "patrol-randomly-xy8" | "towards-when-in-square-xy8"
         >;
@@ -168,7 +168,7 @@ export type ItemConfigMap<
         startDirection: DirectionXy4;
       }
     | {
-        which: "american-football-head";
+        which: "skiHead";
         movement: MovementsSubset<"clockwise" | "back-forth">;
         startDirection: DirectionXy4;
         style: "greenAndPink" | "starsAndStripes";
@@ -178,7 +178,7 @@ export type ItemConfigMap<
     style: "drum" | "sticks" | "cube";
   };
   movableBlock: {
-    style: "anvil" | "sandwich";
+    style: "stepStool" | "sandwich";
   } & (
     | {
         movement: MovementsSubset<"free">;
@@ -216,8 +216,8 @@ export type ItemConfigMap<
 
 export type UnknownItemConfigMap = ItemConfigMap<SceneryName, string, string>;
 
-export type AllowedBaddieMovements<
-  Which extends UnknownItemConfigMap["baddie"]["which"],
-> = (UnknownItemConfigMap["baddie"] & {
+export type AllowedMonsterMovements<
+  Which extends UnknownItemConfigMap["monster"]["which"],
+> = (UnknownItemConfigMap["monster"] & {
   which: Which;
 })["movement"];

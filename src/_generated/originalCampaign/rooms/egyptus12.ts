@@ -7,117 +7,117 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus12",
   items: {
-    "block@2,3,0:95uHj": {
+    "block@2,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 3, z: 0 },
       type: "block",
     },
-    "block@3,2,0:95uHj": {
+    "block@3,2,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 2, z: 0 },
       type: "block",
     },
-    "block@3,3,0:95uHj": {
+    "block@3,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    "block@3,4,0:95uHj": {
+    "block@3,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 4, z: 0 },
       type: "block",
     },
-    "block@4,3,0:95uHj": {
+    "block@4,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
-    "charles@7,2,1:13y": {
+    "charles@7,2,1": {
       config: {},
       position: { x: 7, y: 2, z: 1 },
       type: "charles",
     },
-    "deadlyBlock@6,4,3:ZWGEjo": {
+    "deadlyBlock@6,4,3": {
       config: { style: "volcano" },
       position: { x: 6, y: 4, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,1,0:ZWGEjo": {
+    "deadlyBlock@7,1,0": {
       config: { style: "volcano" },
       position: { x: 7, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,1,3:ZWGEjo": {
+    "deadlyBlock@7,1,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 1, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,2,0:ZWGEjo": {
+    "deadlyBlock@7,2,0": {
       config: { style: "volcano" },
       position: { x: 7, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,2,3:ZWGEjo": {
+    "deadlyBlock@7,2,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 2, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,3,3:ZWGEjo": {
+    "deadlyBlock@7,3,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 3, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,4,3:ZWGEjo": {
+    "deadlyBlock@7,4,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 4, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,5,3:ZWGEjo": {
+    "deadlyBlock@7,5,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 5, z: 3 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,6,3:ZWGEjo": {
+    "deadlyBlock@7,6,3": {
       config: { style: "volcano" },
       position: { x: 7, y: 6, z: 3 },
       type: "deadlyBlock",
     },
-    "door@0,3,0:2rMnv7": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "egyptus11" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@3,8,5:Z1yI6Li": {
+    "door@3,8,5": {
       config: { direction: "away", toRoom: "egyptus13" },
       position: { x: 3, y: 8, z: 5 },
       type: "door",
     },
-    "joystick@2,3,1:Z1ncwev": {
-      config: { controls: ["charles@7,2,1:13y"] },
+    "joystick@2,3,1": {
+      config: { controls: ["charles@7,2,1"] },
       position: { x: 2, y: 3, z: 1 },
       type: "joystick",
     },
-    "joystick@3,2,1:Z1ncwev": {
-      config: { controls: ["charles@7,2,1:13y"] },
+    "joystick@3,2,1": {
+      config: { controls: ["charles@7,2,1"] },
       position: { x: 3, y: 2, z: 1 },
       type: "joystick",
     },
-    "joystick@3,4,1:Z1ncwev": {
-      config: { controls: ["charles@7,2,1:13y"] },
+    "joystick@3,4,1": {
+      config: { controls: ["charles@7,2,1"] },
       position: { x: 3, y: 4, z: 1 },
       type: "joystick",
     },
-    "joystick@4,3,1:Z1ncwev": {
-      config: { controls: ["charles@7,2,1:13y"] },
+    "joystick@4,3,1": {
+      config: { controls: ["charles@7,2,1"] },
       position: { x: 4, y: 3, z: 1 },
       type: "joystick",
     },
-    "lift@7,0,0:ZTwqo1": {
+    "lift@7,0,0": {
       config: { bottom: 0, top: 8 },
       position: { x: 7, y: 0, z: 0 },
       type: "lift",
     },
-    "movableBlock@6,4,4:2wCrgI": {
+    "movableBlock@6,4,4": {
       config: { movement: "free", style: "sandwich" },
       position: { x: 6, y: 4, z: 4 },
       type: "movableBlock",

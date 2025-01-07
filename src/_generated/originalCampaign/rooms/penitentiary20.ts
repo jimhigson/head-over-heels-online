@@ -7,51 +7,51 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary20",
   items: {
-    "baddie@2,3,1:Z2awALk": {
+    "monster@2,3,1": {
       config: {
         activated: true,
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 2, y: 3, z: 1 },
-      type: "baddie",
+      type: "monster",
     },
-    "portableBlock@1,1,0:Z1UEQTQ": {
+    "portableBlock@1,1,0": {
       config: { style: "cube" },
       position: { x: 1, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@1,4,0:Z1UEQTQ": {
+    "portableBlock@1,4,0": {
       config: { style: "cube" },
       position: { x: 1, y: 4, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@2,2,0:Z1UEQTQ": {
+    "portableBlock@2,2,0": {
       config: { style: "cube" },
       position: { x: 2, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@2,3,0:Z1UEQTQ": {
+    "portableBlock@2,3,0": {
       config: { style: "cube" },
       position: { x: 2, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,2,0:Z1UEQTQ": {
+    "portableBlock@3,2,0": {
       config: { style: "cube" },
       position: { x: 3, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,3,0:Z1UEQTQ": {
+    "portableBlock@3,3,0": {
       config: { style: "cube" },
       position: { x: 3, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,1,0:Z1UEQTQ": {
+    "portableBlock@4,1,0": {
       config: { style: "cube" },
       position: { x: 4, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "spring@3,2,1:13y": {
+    "spring@3,2,1": {
       config: {},
       position: { x: 3, y: 2, z: 1 },
       type: "spring",

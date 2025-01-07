@@ -20,7 +20,7 @@ export const isItemType =
   };
 
 const isUnsolid = (item: AnyItemInPlay) =>
-  isItemType("bubbles", "portal", "stopAutowalk", "firedDonut")(item) ||
+  isItemType("bubbles", "portal", "stopAutowalk", "firedDoughnut")(item) ||
   (isFloor(item) && item.config.type === "none");
 
 /**
@@ -85,7 +85,7 @@ export type PlayableItem<
 
 export const freeItemTypes = [
   ...characterNames,
-  "baddie",
+  "monster",
   "ball",
   "charles",
   "movableBlock",
@@ -106,7 +106,7 @@ export type FreeItem<P extends SceneryName, RoomId extends string> = ItemInPlay<
 >;
 
 export const deadlyItemTypes = [
-  "baddie",
+  "monster",
   "deadlyBlock",
   "moveableDeadly",
   "slidingDeadly",
@@ -126,8 +126,8 @@ export const isHead = isItemType("head");
 export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
-export const isBaddie = isItemType("baddie");
+export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isMovableBlock = isItemType("movableBlock");
 // items that can move clockwise/back-forth or in any other pattern:
-export const isMoving = isItemType("baddie", "movableBlock");
+export const isMoving = isItemType("monster", "movableBlock");

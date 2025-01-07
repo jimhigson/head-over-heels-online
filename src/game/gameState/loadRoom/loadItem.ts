@@ -107,8 +107,8 @@ const shadowMask = (
     case "movableBlock":
       return {
         spriteOptions:
-          jsonItem.config.style === "anvil" ?
-            "shadowMask.anvil"
+          jsonItem.config.style === "stepStool" ?
+            "shadowMask.stepStool"
           : "shadowMask.fullBlock",
         relativeTo: "origin",
       };
@@ -155,7 +155,7 @@ const shadowMask = (
         : undefined;
     case "slidingDeadly":
       return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
-    case "baddie":
+    case "monster":
       switch (jsonItem.config.which) {
         case "dalek":
           return { spriteOptions: "shadowMask.dalek", relativeTo: "origin" };
@@ -202,7 +202,7 @@ const shadowCast = (
       return jsonItem.config.gives === "scroll" ?
           "shadow.scroll"
         : "shadow.smallRound";
-    case "baddie":
+    case "monster":
       return "shadow.smallRound";
   }
 };
@@ -243,7 +243,7 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         latentMovement: [],
       }
     : {}),
-    ...(jsonItem.type === "baddie" ?
+    ...(jsonItem.type === "monster" ?
       {
         vels: {
           gravity: originXyz,
@@ -252,9 +252,9 @@ const initialState = (jsonItem: UnknownJsonItem) => {
         },
         activated: jsonItem.config.activated,
         ...((
-          jsonItem.config.which === "american-football-head" ||
+          jsonItem.config.which === "skiHead" ||
           jsonItem.config.which === "turtle" ||
-          jsonItem.config.which === "elephant-head" ||
+          jsonItem.config.which === "elephantHead" ||
           jsonItem.config.which === "cyberman"
         ) ?
           {

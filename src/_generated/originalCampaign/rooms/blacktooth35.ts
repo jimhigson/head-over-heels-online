@@ -7,57 +7,57 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "blacktooth35",
   items: {
-    "block@1,0,0:95uHj": {
+    "block@1,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 0, z: 0 },
       type: "block",
     },
-    "block@1,10,0:Z1AdJxh": {
+    "block@1,10,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 1, y: 10, z: 0 },
       type: "block",
     },
-    "block@1,12,0:95uHj": {
+    "block@1,12,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 12, z: 0 },
       type: "block",
     },
-    "block@1,6,0:95uHj": {
+    "block@1,6,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 6, z: 0 },
       type: "block",
     },
-    "block@1,7,0:Z1AdJxh": {
+    "block@1,7,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
-    "block@1,8,0:95uHj": {
+    "block@1,8,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 1, y: 8, z: 0 },
       type: "block",
     },
-    "block@3,12,0:95uHj": {
+    "block@3,12,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 3, y: 12, z: 0 },
       type: "block",
     },
-    "door@1,0,1:Z1V7U8Y": {
+    "door@1,0,1": {
       config: { direction: "towards", toRoom: "blacktooth34" },
       position: { x: 1, y: 0, z: 1 },
       type: "door",
     },
-    "door@4,11,2:ZUCMBJ": {
+    "door@4,11,2": {
       config: { direction: "left", toRoom: "blacktooth36" },
       position: { x: 4, y: 11, z: 2 },
       type: "door",
     },
-    "spring@1,2,0:13y": {
+    "spring@1,2,0": {
       config: {},
       position: { x: 1, y: 2, z: 0 },
       type: "spring",
     },
-    "spring@1,4,0:13y": {
+    "spring@1,4,0": {
       config: {},
       position: { x: 1, y: 4, z: 0 },
       type: "spring",

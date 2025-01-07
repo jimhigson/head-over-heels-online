@@ -7,97 +7,97 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari34",
   items: {
-    "block@4,0,3:95uHj": {
+    "block@4,0,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 0, z: 3 },
       type: "block",
     },
-    "block@4,1,3:95uHj": {
+    "block@4,1,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 1, z: 3 },
       type: "block",
     },
-    "block@4,2,3:95uHj": {
+    "block@4,2,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 2, z: 3 },
       type: "block",
     },
-    "block@4,3,3:95uHj": {
+    "block@4,3,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 3, z: 3 },
       type: "block",
     },
-    "block@4,4,3:95uHj": {
+    "block@4,4,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 4, z: 3 },
       type: "block",
     },
-    "block@4,5,3:95uHj": {
+    "block@4,5,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 5, z: 3 },
       type: "block",
     },
-    "block@4,6,3:95uHj": {
+    "block@4,6,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 6, z: 3 },
       type: "block",
     },
-    "block@4,7,3:95uHj": {
+    "block@4,7,3": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 7, z: 3 },
       type: "block",
     },
-    "deadlyBlock@4,0,0:ZWGEjo": {
+    "deadlyBlock@4,0,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,1,0:ZWGEjo": {
+    "deadlyBlock@4,1,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,2,0:ZWGEjo": {
+    "deadlyBlock@4,2,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,3,0:ZWGEjo": {
+    "deadlyBlock@4,3,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,4,0:ZWGEjo": {
+    "deadlyBlock@4,4,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 4, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,5,0:ZWGEjo": {
+    "deadlyBlock@4,5,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,6,0:ZWGEjo": {
+    "deadlyBlock@4,6,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 6, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,7,0:ZWGEjo": {
+    "deadlyBlock@4,7,0": {
       config: { style: "volcano" },
       position: { x: 4, y: 7, z: 0 },
       type: "deadlyBlock",
     },
-    "door@0,3,0:Z2p4t6l": {
+    "door@0,3,0": {
       config: { direction: "right", toRoom: "safari33" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "lift@7,7,0:ZTwqnv": {
+    "lift@7,7,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 7, y: 7, z: 0 },
       type: "lift",
     },
-    "portableBlock@1,0,0:Z1SKpmn": {
+    "portableBlock@1,0,0": {
       config: { style: "drum" },
       position: { x: 1, y: 0, z: 0 },
       type: "portableBlock",
@@ -125,12 +125,12 @@ Just kidding, they’ll never get this far!
       position: { x: 3, y: 6, z: 0 },
       type: "pickup",
     },
-    "teleporter@3,3,0:1mtSsV": {
+    "teleporter@3,3,0": {
       config: { toRoom: "safari1" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
-    "teleporter@3,4,0:1mtSsV": {
+    "teleporter@3,4,0": {
       config: { toRoom: "safari1" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",

@@ -7,52 +7,52 @@ export const room = inferRoomJson({
   floor: "none",
   id: "safari36",
   items: {
-    "block@4,3,0:95uHj": {
+    "block@4,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
-    "block@4,4,0:Z1AdJxh": {
+    "block@4,4,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 4, y: 4, z: 0 },
       type: "block",
     },
-    "block@4,5,0:Z1AdJxh": {
+    "block@4,5,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
-    "block@4,6,0:95uHj": {
+    "block@4,6,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 4, y: 6, z: 0 },
       type: "block",
     },
-    "block@5,3,0:95uHj": {
+    "block@5,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
-    "block@6,3,0:Z1AdJxh": {
+    "block@6,3,0": {
       config: { disappearing: true, style: "organic" },
       position: { x: 6, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,3,0:95uHj": {
+    "block@7,3,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,4,0:95uHj": {
+    "block@7,4,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 7, y: 4, z: 0 },
       type: "block",
     },
-    "deadlyBlock@4,3,1:ZaRhUQ": {
+    "deadlyBlock@4,3,1": {
       config: { style: "spikes" },
       position: { x: 4, y: 3, z: 1 },
       type: "deadlyBlock",
     },
-    "door@8,3,2:Z140xtH": {
+    "door@8,3,2": {
       config: { direction: "left", toRoom: "safari35" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
