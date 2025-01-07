@@ -23,14 +23,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "deadlyBlock@8,5,0": {
@@ -214,16 +207,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "none",
-          "none",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
       },
       "items": {
         "block@5,7,0": {
@@ -875,10 +859,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "block@7,1,3": {
@@ -992,22 +973,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "deadlyBlock@4,5,0": {
@@ -1159,14 +1126,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "barrier@4,5,0": {
@@ -1447,10 +1407,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "armour",
@@ -2123,14 +2080,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "book@3,3,0": {
@@ -2460,24 +2410,8 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "teleporter@5,7,0": {
@@ -2577,14 +2511,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
         "left": [
           "plain",
           "armour",
@@ -2635,22 +2562,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "door@2,6,0": {
@@ -2981,22 +2894,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@3,0,0": {
@@ -3060,16 +2959,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "none",
-          "none",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
       },
       "items": {
         "deadlyBlock@0,7,0": {
@@ -3641,22 +3531,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "conveyor@1,5,1": {
@@ -3721,22 +3597,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "none",
-          "none",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "none", "none", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "conveyor@5,5,0": {
@@ -3855,12 +3717,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ],
+        "away": ["shield", "none", "none", "shield"],
         "left": [
           "plain",
           "armour",
@@ -4215,9 +4072,7 @@
         "joystick@6,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@3,4,0"
-            ]
+            "controls": ["charles@3,4,0"]
           },
           "position": {
             "x": 6,
@@ -4253,14 +4108,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
         "left": [
           "plain",
           "armour",
@@ -4337,14 +4185,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@4,5,0": {
@@ -4399,24 +4240,8 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@0,7,0": {
@@ -4542,14 +4367,7 @@
         "y": 12
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
         "left": [
           "plain",
           "shield",
@@ -4839,10 +4657,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "armour",
@@ -5005,16 +4820,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@5,7,0": {
@@ -5080,12 +4886,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "shield",
-          "plain"
-        ],
+        "away": ["plain", "shield", "shield", "plain"],
         "left": [
           "plain",
           "armour",
@@ -5247,22 +5048,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "door@2,6,0": {
@@ -5304,12 +5091,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ],
+        "away": ["shield", "none", "none", "shield"],
         "left": [
           "plain",
           "armour",
@@ -5427,22 +5209,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@3,0,0": {
@@ -5497,22 +5265,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "portableBlock@4,4,0": {
@@ -5634,14 +5388,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "lift@3,5,0": {
@@ -5683,14 +5430,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
         "left": [
           "plain",
           "armour",
@@ -6050,10 +5790,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -6105,10 +5842,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "monster@3,1,0": {
@@ -6175,22 +5909,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@0,3,0": {
@@ -6707,9 +6427,7 @@
         "joystick@6,7,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 6,
@@ -6729,9 +6447,7 @@
         "joystick@7,6,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 7,
@@ -6742,9 +6458,7 @@
         "joystick@5,6,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 5,
@@ -6755,9 +6469,7 @@
         "joystick@6,5,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 6,
@@ -6768,9 +6480,7 @@
         "joystick@1,2,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 1,
@@ -6781,9 +6491,7 @@
         "joystick@2,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 2,
@@ -6794,9 +6502,7 @@
         "joystick@0,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 0,
@@ -6807,9 +6513,7 @@
         "joystick@1,0,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,0"
-            ]
+            "controls": ["charles@0,7,0"]
           },
           "position": {
             "x": 1,
@@ -6856,10 +6560,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "more-fruits",
-          "fruits"
-        ],
+        "away": ["more-fruits", "fruits"],
         "left": [
           "passage",
           "more-fruits",
@@ -6921,10 +6622,7 @@
           "more-fruits",
           "fruits"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "deadlyBlock@4,1,1": {
@@ -7032,10 +6730,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "shield",
@@ -7234,24 +6929,8 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "none",
-          "none",
-          "bars",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "bars", "none", "none", "bars", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "teleporter@3,4,0": {
@@ -7641,14 +7320,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@4,0,0": {
@@ -7713,14 +7385,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "lift@3,0,0": {
@@ -7784,10 +7449,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "block@3,1,0": {
@@ -8867,16 +8529,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "none",
-          "none",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"]
       },
       "items": {
         "book@0,3,0": {
@@ -9736,22 +9389,8 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "bars",
-          "none",
-          "none",
-          "bars"
-        ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "away": ["bars", "none", "none", "bars"],
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "hushPuppy@2,7,0": {
@@ -9871,14 +9510,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ],
+        "away": ["bars", "bars", "bars", "bars", "bars", "bars"],
         "left": [
           "bars",
           "bars",
@@ -10291,10 +9923,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "block@7,1,3": {
@@ -10462,22 +10091,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -10551,10 +10166,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "armour",
@@ -10620,14 +10232,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
         "left": [
           "plain",
           "armour",
@@ -11182,22 +10787,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -11271,10 +10862,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "shield",
@@ -11338,10 +10926,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "plain",
           "armour",
@@ -11543,14 +11128,7 @@
           "shield",
           "plain"
         ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "deadlyBlock@2,5,0": {
@@ -11728,14 +11306,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "block@7,5,0": {
@@ -11861,14 +11432,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "block@7,5,0": {
@@ -12156,22 +11720,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ],
-        "left": [
-          "plain",
-          "armour",
-          "shield",
-          "shield",
-          "armour",
-          "plain"
-        ]
+        "away": ["plain", "armour", "shield", "shield", "armour", "plain"],
+        "left": ["plain", "armour", "shield", "shield", "armour", "plain"]
       },
       "items": {
         "block@5,3,4": {
@@ -12354,14 +11904,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ],
+        "away": ["plain", "shield", "none", "none", "shield", "plain"],
         "left": [
           "plain",
           "armour",
@@ -12836,12 +12379,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ]
+        "left": ["shield", "none", "none", "shield"]
       },
       "items": {
         "barrier@4,3,0": {
@@ -13601,12 +13139,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ],
+        "away": ["shield", "none", "none", "shield"],
         "left": [
           "plain",
           "armour",
@@ -13952,9 +13485,7 @@
         "joystick@4,5,0": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,3"
-            ]
+            "controls": ["charles@0,7,3"]
           },
           "position": {
             "x": 4,
@@ -13965,9 +13496,7 @@
         "joystick@1,5,0": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,3"
-            ]
+            "controls": ["charles@0,7,3"]
           },
           "position": {
             "x": 1,
@@ -13978,9 +13507,7 @@
         "joystick@4,2,0": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,3"
-            ]
+            "controls": ["charles@0,7,3"]
           },
           "position": {
             "x": 4,
@@ -13991,9 +13518,7 @@
         "joystick@1,2,0": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@0,7,3"
-            ]
+            "controls": ["charles@0,7,3"]
           },
           "position": {
             "x": 1,
@@ -14050,14 +13575,7 @@
           "armour",
           "plain"
         ],
-        "left": [
-          "plain",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "plain"
-        ]
+        "left": ["plain", "shield", "none", "none", "shield", "plain"]
       },
       "items": {
         "deadlyBlock@5,5,0": {
@@ -14918,12 +14436,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ],
+        "away": ["shield", "none", "none", "shield"],
         "left": [
           "plain",
           "armour",
@@ -15196,12 +14709,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "shield",
-          "none",
-          "none",
-          "shield"
-        ],
+        "away": ["shield", "none", "none", "shield"],
         "left": [
           "plain",
           "armour",
@@ -15748,14 +15256,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "person",
-          "book",
-          "book",
-          "person",
-          "book"
-        ],
+        "away": ["book", "person", "book", "book", "person", "book"],
         "left": [
           "book",
           "book",
@@ -15830,10 +15331,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "hushPuppy@7,1,2": {
@@ -15902,14 +15400,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "person",
-          "book",
-          "book",
-          "person",
-          "book"
-        ],
+        "away": ["book", "person", "book", "book", "person", "book"],
         "left": [
           "book",
           "book",
@@ -16060,10 +15551,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -16510,12 +15998,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ],
+        "away": ["book", "none", "none", "book"],
         "left": [
           "book",
           "book",
@@ -16589,14 +16072,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "monster@0,3,0": {
@@ -16661,14 +16137,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ],
+        "away": ["book", "book", "none", "none", "book", "book"],
         "left": [
           "book",
           "book",
@@ -16808,10 +16277,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "book",
@@ -16958,14 +16424,7 @@
           "person",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "conveyor@11,5,0": {
@@ -17326,22 +16785,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "away": ["book", "book", "none", "none", "book", "book"],
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "hushPuppy@3,0,2": {
@@ -17551,10 +16996,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "book",
@@ -17716,22 +17158,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "book",
-          "person",
-          "book",
-          "book",
-          "person",
-          "book"
-        ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "away": ["book", "person", "book", "book", "person", "book"],
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "door@6,2,5": {
@@ -17795,14 +17223,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "deadlyBlock@7,5,0": {
@@ -17945,10 +17366,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -17990,12 +17408,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "book",
-          "book",
-          "book"
-        ],
+        "away": ["book", "book", "book", "book"],
         "left": [
           "book",
           "book",
@@ -18115,10 +17528,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "book",
@@ -19201,14 +18611,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "monster@3,5,0": {
@@ -19286,12 +18689,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ]
+        "left": ["book", "none", "none", "book"]
       },
       "items": {
         "monster@3,2,0": {
@@ -19377,14 +18775,7 @@
           "person",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "deadlyBlock@12,5,0": {
@@ -19789,10 +19180,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "person",
@@ -20296,9 +19684,7 @@
         "joystick@6,2,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@5,7,5"
-            ]
+            "controls": ["charles@5,7,5"]
           },
           "position": {
             "x": 6,
@@ -20309,9 +19695,7 @@
         "joystick@7,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@5,7,5"
-            ]
+            "controls": ["charles@5,7,5"]
           },
           "position": {
             "x": 7,
@@ -20322,9 +19706,7 @@
         "joystick@5,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@5,7,5"
-            ]
+            "controls": ["charles@5,7,5"]
           },
           "position": {
             "x": 5,
@@ -20335,9 +19717,7 @@
         "joystick@6,0,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@5,7,5"
-            ]
+            "controls": ["charles@5,7,5"]
           },
           "position": {
             "x": 6,
@@ -20394,14 +19774,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "book",
-          "none",
-          "none",
-          "book",
-          "book"
-        ]
+        "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
         "book@7,2,0": {
@@ -20522,10 +19895,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "book",
@@ -20831,10 +20201,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "book",
           "book",
@@ -20982,14 +20349,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "person",
-          "book",
-          "book",
-          "person",
-          "book"
-        ],
+        "away": ["book", "person", "book", "book", "person", "book"],
         "left": [
           "book",
           "book",
@@ -21167,12 +20527,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ],
+        "away": ["book", "none", "none", "book"],
         "left": [
           "book",
           "book",
@@ -21250,12 +20605,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ],
+        "away": ["book", "none", "none", "book"],
         "left": [
           "book",
           "book",
@@ -21375,12 +20725,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ],
+        "away": ["book", "none", "none", "book"],
         "left": [
           "book",
           "book",
@@ -21596,12 +20941,7 @@
           "book",
           "book"
         ],
-        "left": [
-          "book",
-          "none",
-          "none",
-          "book"
-        ]
+        "left": ["book", "none", "none", "book"]
       },
       "items": {
         "book@3,2,0": {
@@ -21938,10 +21278,7 @@
           "hieroglyphics",
           "hieroglyphics"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -22179,9 +21516,7 @@
         "joystick@3,4,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,2,1"
-            ]
+            "controls": ["charles@7,2,1"]
           },
           "position": {
             "x": 3,
@@ -22192,9 +21527,7 @@
         "joystick@4,3,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,2,1"
-            ]
+            "controls": ["charles@7,2,1"]
           },
           "position": {
             "x": 4,
@@ -22205,9 +21538,7 @@
         "joystick@2,3,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,2,1"
-            ]
+            "controls": ["charles@7,2,1"]
           },
           "position": {
             "x": 2,
@@ -22227,9 +21558,7 @@
         "joystick@3,2,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,2,1"
-            ]
+            "controls": ["charles@7,2,1"]
           },
           "position": {
             "x": 3,
@@ -23787,10 +23116,7 @@
           "hieroglyphics",
           "hieroglyphics"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -24674,12 +24000,7 @@
           "sarcophagus",
           "hieroglyphics"
         ],
-        "left": [
-          "hieroglyphics",
-          "none",
-          "none",
-          "hieroglyphics"
-        ]
+        "left": ["hieroglyphics", "none", "none", "hieroglyphics"]
       },
       "items": {
         "door@3,4,0": {
@@ -25442,10 +24763,7 @@
           "hieroglyphics",
           "hieroglyphics"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "spring@4,1,0": {
@@ -25629,10 +24947,7 @@
           "hieroglyphics",
           "hieroglyphics"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "block@7,1,3": {
@@ -25697,10 +25012,7 @@
           "sarcophagus",
           "hieroglyphics"
         ],
-        "left": [
-          "hieroglyphics",
-          "hieroglyphics"
-        ]
+        "left": ["hieroglyphics", "hieroglyphics"]
       },
       "items": {
         "door@3,2,0": {
@@ -25919,10 +25231,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "hieroglyphics",
-          "hieroglyphics"
-        ],
+        "away": ["hieroglyphics", "hieroglyphics"],
         "left": [
           "hieroglyphics",
           "hieroglyphics",
@@ -26100,10 +25409,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "hieroglyphics",
-          "hieroglyphics"
-        ],
+        "away": ["hieroglyphics", "hieroglyphics"],
         "left": [
           "hieroglyphics",
           "hieroglyphics",
@@ -26240,10 +25546,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "hieroglyphics",
-          "hieroglyphics"
-        ],
+        "away": ["hieroglyphics", "hieroglyphics"],
         "left": [
           "hieroglyphics",
           "sarcophagus",
@@ -27849,12 +27152,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "hieroglyphics",
-          "none",
-          "none",
-          "hieroglyphics"
-        ],
+        "away": ["hieroglyphics", "none", "none", "hieroglyphics"],
         "left": [
           "hieroglyphics",
           "hieroglyphics",
@@ -28061,16 +27359,7 @@
           "bars",
           "bars"
         ],
-        "left": [
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars",
-          "bars"
-        ]
+        "left": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "items": {
         "block@7,7,0": {
@@ -29082,10 +28371,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "window2",
           "coil",
@@ -29345,12 +28631,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "window3",
-          "none",
-          "none",
-          "window1"
-        ],
+        "away": ["window3", "none", "none", "window1"],
         "left": [
           "window2",
           "coil",
@@ -29518,14 +28799,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
         "left": [
           "window2",
           "window1",
@@ -29704,10 +28978,7 @@
           "window2",
           "window1"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "hushPuppy@7,1,2": {
@@ -29817,14 +29088,7 @@
           "coil",
           "window1"
         ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@2,5,0": {
@@ -30066,22 +29330,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "away": ["window3", "window2", "none", "none", "window2", "window1"],
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -30155,22 +29405,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window3", "window2", "none", "none", "window2", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -30254,10 +29490,7 @@
           "window2",
           "window1"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "deadlyBlock@5,0,0": {
@@ -30387,14 +29620,7 @@
           "coil",
           "window1"
         ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "hushPuppy@4,5,2": {
@@ -30775,14 +30001,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
         "left": [
           "window2",
           "window1",
@@ -31022,14 +30241,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ],
+        "away": ["window3", "window2", "none", "none", "window2", "window1"],
         "left": [
           "window2",
           "window1",
@@ -32284,10 +31496,7 @@
           "window2",
           "window1"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "deadlyBlock@5,0,0": {
@@ -32418,10 +31627,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "window2",
           "window1",
@@ -32485,22 +31691,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window3", "window2", "none", "none", "window2", "window1"]
       },
       "items": {
         "hushPuppy@5,3,2": {
@@ -33185,9 +32377,7 @@
         "joystick@2,2,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,7,1"
-            ]
+            "controls": ["charles@7,7,1"]
           },
           "position": {
             "x": 2,
@@ -33198,9 +32388,7 @@
         "joystick@3,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,7,1"
-            ]
+            "controls": ["charles@7,7,1"]
           },
           "position": {
             "x": 3,
@@ -33211,9 +32399,7 @@
         "joystick@1,1,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,7,1"
-            ]
+            "controls": ["charles@7,7,1"]
           },
           "position": {
             "x": 1,
@@ -33224,9 +32410,7 @@
         "joystick@2,0,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@7,7,1"
-            ]
+            "controls": ["charles@7,7,1"]
           },
           "position": {
             "x": 2,
@@ -33273,22 +32457,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ],
-        "left": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ]
+        "away": ["window3", "window2", "none", "none", "window2", "window1"],
+        "left": ["window3", "window2", "none", "none", "window2", "window1"]
       },
       "items": {
         "door@2,6,0": {
@@ -33330,22 +32500,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -34685,12 +33841,7 @@
           "coil",
           "window1"
         ],
-        "left": [
-          "window3",
-          "window2",
-          "window1",
-          "coil"
-        ]
+        "left": ["window3", "window2", "window1", "coil"]
       },
       "items": {
         "deadlyBlock@7,3,0": {
@@ -34836,22 +33987,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@5,4,0": {
@@ -35133,22 +34270,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@5,4,0": {
@@ -35757,12 +34880,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "window3",
-          "none",
-          "none",
-          "window1"
-        ],
+        "away": ["window3", "none", "none", "window1"],
         "left": [
           "window2",
           "window1",
@@ -36642,22 +35760,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "window1",
-          "coil",
-          "window3",
-          "window2",
-          "coil",
-          "window1"
-        ],
-        "left": [
-          "window3",
-          "window2",
-          "none",
-          "none",
-          "window2",
-          "window1"
-        ]
+        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "left": ["window3", "window2", "none", "none", "window2", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -36731,14 +35835,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "loop",
-          "loop",
-          "none",
-          "none",
-          "loop",
-          "loop"
-        ],
+        "away": ["loop", "loop", "none", "none", "loop", "loop"],
         "left": [
           "loop",
           "loop",
@@ -36823,10 +35920,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "loop",
           "loop",
@@ -36902,22 +35996,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "block@5,5,0": {
@@ -37209,12 +36289,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "loop",
-          "loop",
-          "loop",
-          "loop"
-        ]
+        "left": ["loop", "loop", "loop", "loop"]
       },
       "items": {
         "block@7,3,0": {
@@ -37406,14 +36481,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "block@7,5,0": {
@@ -38640,14 +37708,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "loop",
-          "loop",
-          "none",
-          "none",
-          "loop",
-          "loop"
-        ]
+        "left": ["loop", "loop", "none", "none", "loop", "loop"]
       },
       "items": {
         "block@15,4,3": {
@@ -38925,12 +37986,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "loop",
-          "none",
-          "none",
-          "loop"
-        ],
+        "away": ["loop", "none", "none", "loop"],
         "left": [
           "loop",
           "loop",
@@ -39253,22 +38309,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "portableBlock@1,4,0": {
@@ -40884,10 +39926,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "loop",
           "loop",
@@ -41081,10 +40120,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "deadlyBlock@3,1,0": {
@@ -41344,10 +40380,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "block@7,1,0": {
@@ -41732,12 +40765,7 @@
           "skeleton",
           "loop"
         ],
-        "left": [
-          "loop",
-          "loop",
-          "loop",
-          "loop"
-        ]
+        "left": ["loop", "loop", "loop", "loop"]
       },
       "items": {
         "block@5,3,3": {
@@ -41895,10 +40923,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "loop",
-          "loop"
-        ]
+        "left": ["loop", "loop"]
       },
       "items": {
         "block@5,1,0": {
@@ -42126,10 +41151,7 @@
           "loop",
           "loop"
         ],
-        "left": [
-          "loop",
-          "loop"
-        ]
+        "left": ["loop", "loop"]
       },
       "items": {
         "block@7,1,4": {
@@ -42839,22 +41861,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "block@5,5,2": {
@@ -42980,22 +41988,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "block@5,5,2": {
@@ -43086,22 +42080,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ],
-        "left": [
-          "loop",
-          "loop",
-          "none",
-          "none",
-          "loop",
-          "loop"
-        ]
+        "away": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
+        "left": ["loop", "loop", "none", "none", "loop", "loop"]
       },
       "items": {
         "deadlyBlock@3,5,0": {
@@ -43233,14 +42213,7 @@
           "skeleton",
           "loop"
         ],
-        "left": [
-          "loop",
-          "skeleton",
-          "loop",
-          "loop",
-          "skeleton",
-          "loop"
-        ]
+        "left": ["loop", "skeleton", "loop", "loop", "skeleton", "loop"]
       },
       "items": {
         "block@4,5,0": {
@@ -43345,10 +42318,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "loop",
-          "loop"
-        ],
+        "away": ["loop", "loop"],
         "left": [
           "loop",
           "loop",
@@ -43483,10 +42453,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "loop",
-          "loop"
-        ],
+        "away": ["loop", "loop"],
         "left": [
           "loop",
           "loop",
@@ -43526,14 +42493,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ],
+        "away": ["wall", "shield", "none", "none", "shield", "wall"],
         "left": [
           "wall",
           "window",
@@ -43628,14 +42588,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "barrier@4,5,0": {
@@ -43890,22 +42843,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "shield",
-          "wall",
-          "window",
-          "window",
-          "wall",
-          "shield"
-        ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "away": ["shield", "wall", "window", "window", "wall", "shield"],
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "monster@3,5,0": {
@@ -44013,14 +42952,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "shield",
-          "wall",
-          "window",
-          "window",
-          "wall",
-          "shield"
-        ]
+        "left": ["shield", "wall", "window", "window", "wall", "shield"]
       },
       "items": {
         "deadlyBlock@3,1,0": {
@@ -44334,14 +43266,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "shield",
-          "wall",
-          "window",
-          "window",
-          "wall",
-          "shield"
-        ]
+        "left": ["shield", "wall", "window", "window", "wall", "shield"]
       },
       "items": {
         "block@7,5,0": {
@@ -44608,12 +43533,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "wall",
-          "none",
-          "none",
-          "wall"
-        ],
+        "away": ["wall", "none", "none", "wall"],
         "left": [
           "wall",
           "window",
@@ -44841,12 +43761,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "wall",
-          "none",
-          "none",
-          "wall"
-        ],
+        "away": ["wall", "none", "none", "wall"],
         "left": [
           "wall",
           "window",
@@ -45348,10 +44263,7 @@
         "y": 16
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "wall",
           "window",
@@ -46394,12 +45306,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "wall",
-          "none",
-          "none",
-          "wall"
-        ],
+        "away": ["wall", "none", "none", "wall"],
         "left": [
           "wall",
           "shield",
@@ -46623,10 +45530,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "none",
-          "none"
-        ],
+        "away": ["none", "none"],
         "left": [
           "wall",
           "window",
@@ -46757,22 +45661,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "shield",
-          "wall",
-          "window",
-          "window",
-          "wall",
-          "shield"
-        ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "away": ["shield", "wall", "window", "window", "wall", "shield"],
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "deadlyBlock@5,5,0": {
@@ -46968,14 +45858,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "deadlyBlock@4,5,1": {
@@ -47845,14 +46728,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "monster@4,3,0": {
@@ -48133,12 +47009,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "wall",
-          "none",
-          "none",
-          "wall"
-        ],
+        "away": ["wall", "none", "none", "wall"],
         "left": [
           "wall",
           "window",
@@ -48250,10 +47121,7 @@
         "y": 8
       },
       "walls": {
-        "away": [
-          "wall",
-          "wall"
-        ],
+        "away": ["wall", "wall"],
         "left": [
           "wall",
           "window",
@@ -48604,9 +47472,7 @@
         "joystick@1,7,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@6,6,1"
-            ]
+            "controls": ["charles@6,6,1"]
           },
           "position": {
             "x": 1,
@@ -48626,9 +47492,7 @@
         "joystick@2,6,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@6,6,1"
-            ]
+            "controls": ["charles@6,6,1"]
           },
           "position": {
             "x": 2,
@@ -48639,9 +47503,7 @@
         "joystick@0,6,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@6,6,1"
-            ]
+            "controls": ["charles@6,6,1"]
           },
           "position": {
             "x": 0,
@@ -48652,9 +47514,7 @@
         "joystick@1,5,1": {
           "type": "joystick",
           "config": {
-            "controls": [
-              "charles@6,6,1"
-            ]
+            "controls": ["charles@6,6,1"]
           },
           "position": {
             "x": 1,
@@ -48722,10 +47582,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,0": {
@@ -50119,12 +48976,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "wall",
-          "none",
-          "none",
-          "wall"
-        ]
+        "left": ["wall", "none", "none", "wall"]
       },
       "items": {
         "hushPuppy@7,2,2": {
@@ -50710,22 +49562,8 @@
         "y": 6
       },
       "walls": {
-        "away": [
-          "shield",
-          "wall",
-          "window",
-          "window",
-          "wall",
-          "shield"
-        ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "away": ["shield", "wall", "window", "window", "wall", "shield"],
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "block@5,3,0": {
@@ -50897,10 +49735,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "none",
-          "none"
-        ]
+        "left": ["none", "none"]
       },
       "items": {
         "door@8,0,1": {
@@ -50953,14 +49788,7 @@
           "window",
           "wall"
         ],
-        "left": [
-          "wall",
-          "shield",
-          "none",
-          "none",
-          "shield",
-          "wall"
-        ]
+        "left": ["wall", "shield", "none", "none", "shield", "wall"]
       },
       "items": {
         "block@7,2,3": {
