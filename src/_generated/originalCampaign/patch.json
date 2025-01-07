@@ -125,13 +125,13 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/switch@7,7,0:V4krG",
-    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
-    "value": { "left": { "activated": false }, "right": { "activated": true } }
+    "path": "/rooms/penitentiary3/items/switch@0,0,0:V4krG/config/activates/switch@7,7,0:V4krG",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
   },
   {
     "op": "replace",
@@ -140,13 +140,13 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/switch@0,0,0:V4krG",
-    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/movableBlock@0,1,0:Z2adEMR",
-    "value": { "left": { "activated": false }, "right": { "activated": true } }
+    "path": "/rooms/penitentiary3/items/switch@7,7,0:V4krG/config/activates/switch@0,0,0:V4krG",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
   },
   {
     "op": "replace",
@@ -747,6 +747,108 @@
     "op": "replace",
     "path": "/rooms/blacktooth78/items/lift@1,1,0:ZTwqnv/config/top",
     "value": 11
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth72/items/tower0",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 7, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth72/items/tower1",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 7, "y": 3, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth71/items/scroll",
+    "value": {
+      "config": {
+        "gives": "scroll",
+        "markdown": "\n## THE EMPEROR'S GUARDIAN\n\n![](ball) The guardian blocks the door to the throne room in Blacktooth castle. He is very\ndangerous, and he doesn't like doughnuts. Only a true hero may pass the\nguardian.\n\n*> head over heels manual*\n"
+      },
+      "position": { "x": 7, "y": 3, "z": 0 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerA0",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerA1",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerA2",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerA3",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerB0",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerB1",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerB2",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth67/items/towerB3",
+    "value": {
+      "config": { "disappearing": false, "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 3 },
+      "type": "block"
+    }
   },
   {
     "op": "replace",

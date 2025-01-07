@@ -545,7 +545,8 @@ export const itemAppearances: {
           case "emperor":
             return {
               container: createSprite({
-                texture: "bubbles.cold.1",
+                frames: spriteSheet.animations["bubbles.cold"],
+                animationSpeed: 0.25,
                 filter,
               }),
               renderProps,
