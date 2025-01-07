@@ -1,5 +1,5 @@
 import type { EmptyObject } from "type-fest";
-import type { PlanetName } from "../../sprites/planets";
+import type { SceneryName } from "../../sprites/planets";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { ItemConfigMap } from "./ItemConfigMap";
 
@@ -45,7 +45,7 @@ export type RenderItemType = JsonItemType | "door-front" | "door-back";
 export const doorIsInHiddenWall = ({
   config: { direction },
   position,
-}: JsonItem<"door", PlanetName, string>) =>
+}: JsonItem<"door", SceneryName, string>) =>
   (direction === "right" && position.x === 0) ||
   (direction === "towards" && position.y === 0);
 
@@ -69,7 +69,7 @@ export type DeadlyItemStyle = "volcano" | "toaster" | "spikes";
 /** config used in both json and in-play items */
 export type JsonItemConfig<
   T extends JsonItemType,
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > =
@@ -79,7 +79,7 @@ export type JsonItemConfig<
 
 export type JsonItem<
   T extends JsonItemType,
-  P extends PlanetName = PlanetName,
+  P extends SceneryName = SceneryName,
   RoomId extends string = string,
   ItemId extends string = string,
 > = {
@@ -92,5 +92,5 @@ export type UnknownJsonItem<
   RoomId extends string = string,
   ItemId extends string = string,
 > = {
-  [IT in JsonItemType]: JsonItem<IT, PlanetName, RoomId, ItemId>;
+  [IT in JsonItemType]: JsonItem<IT, SceneryName, RoomId, ItemId>;
 }[JsonItemType];

@@ -1,6 +1,6 @@
 import fastJsonPatch from "fast-json-patch";
 import { readFile } from "node:fs/promises";
-import { campaign } from "../../src/_generated/originalCampaign/campaign";
+import { campaign } from "../_generated/originalCampaign/campaign";
 
 const convertedJson = JSON.parse(
   await readFile(

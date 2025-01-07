@@ -4,16 +4,16 @@ import { floorBlockMinMax } from "@/game/render/renderExtent";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomJson } from "@/model/RoomJson";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
-  roomJson: RoomJson<PlanetName, RoomId>,
+  roomJson: RoomJson<SceneryName, RoomId>,
 ): Generator<
-  | ItemInPlay<"floor", PlanetName, RoomId>
-  | ItemInPlay<"portal", PlanetName, RoomId>
+  | ItemInPlay<"floor", SceneryName, RoomId>
+  | ItemInPlay<"portal", SceneryName, RoomId>
 > {
   const roomNaturalFootprintAabb = blockXyzToFineXyz({
     ...roomJson.size,
@@ -61,7 +61,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         renders: true,
         fixedZIndex: -1,
       },
-    } satisfies ItemInPlay<"floor", PlanetName, RoomId>;
+    } satisfies ItemInPlay<"floor", SceneryName, RoomId>;
     // yield a portal for going to the room below:
     yield {
       ...defaultItemProperties,
@@ -83,7 +83,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         },
         renders: false,
       },
-    } satisfies ItemInPlay<"portal", PlanetName, RoomId>;
+    } satisfies ItemInPlay<"portal", SceneryName, RoomId>;
   } else
     yield {
       ...defaultItemProperties,
@@ -105,7 +105,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         renders: true,
         fixedZIndex: -1,
       },
-    } satisfies ItemInPlay<"floor", PlanetName, RoomId>;
+    } satisfies ItemInPlay<"floor", SceneryName, RoomId>;
 
   if (roomJson.roomAbove !== undefined) {
     const ceilingPosition = addXyz(floorPosition, {
@@ -131,6 +131,6 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         },
         renders: false,
       },
-    } satisfies ItemInPlay<"portal", PlanetName, RoomId>;
+    } satisfies ItemInPlay<"portal", SceneryName, RoomId>;
   }
 }

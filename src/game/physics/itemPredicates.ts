@@ -5,10 +5,10 @@ import type {
 } from "@/model/ItemInPlay";
 import { type AnyItemInPlay } from "@/model/ItemInPlay";
 import { characterNames, type CharacterName } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 
 export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
-  [TI in T]: ItemInPlay<TI, PlanetName, RoomId>;
+  [TI in T]: ItemInPlay<TI, SceneryName, RoomId>;
 }[T];
 
 export const isItemType =
@@ -67,7 +67,7 @@ export const isPlayableItem = <RoomId extends string = string>(
   );
 };
 export function isFreeItem<
-  P extends PlanetName = PlanetName,
+  P extends SceneryName = SceneryName,
   RoomId extends string = string,
 >(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
   return (freeItemTypes as ItemInPlayType[]).includes(item.type);
@@ -77,10 +77,10 @@ export type PlayableItem<
   RoomId extends string = string,
 > =
   | (C extends "headOverHeels" ?
-      ItemInPlay<"headOverHeels", PlanetName, RoomId, "headOverHeels">
+      ItemInPlay<"headOverHeels", SceneryName, RoomId, "headOverHeels">
     : never)
-  | (C extends "head" ? ItemInPlay<"head", PlanetName, RoomId, "head"> : never)
-  | (C extends "heels" ? ItemInPlay<"heels", PlanetName, RoomId, "heels">
+  | (C extends "head" ? ItemInPlay<"head", SceneryName, RoomId, "head"> : never)
+  | (C extends "heels" ? ItemInPlay<"heels", SceneryName, RoomId, "heels">
     : never);
 
 export const freeItemTypes = [
@@ -99,7 +99,7 @@ export const freeItemTypes = [
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];
 
-export type FreeItem<P extends PlanetName, RoomId extends string> = ItemInPlay<
+export type FreeItem<P extends SceneryName, RoomId extends string> = ItemInPlay<
   FreeItemTypes,
   P,
   RoomId

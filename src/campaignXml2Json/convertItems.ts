@@ -1,8 +1,8 @@
-import type { PlanetName } from "../../src/sprites/planets";
+import type { SceneryName } from "../sprites/planets";
 import type { LooseDoorMap } from "./convertCampaign";
 import { convertXYZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
-import { convertPlanetName } from "./convertPlanetName";
+import { convertPlanetName, convertSceneryName } from "./convertPlanetName";
 import { convertRoomId } from "./convertRoomId";
 import {
   convertWallName,
@@ -13,15 +13,15 @@ import type { MapJson, Xml2JsonRoom } from "./readToJson";
 import { roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import type { Xml2JsonItem, XmlItemBaddieBehaviour } from "./Xml2JsonItem";
-import { itemKey, keyItems } from "../../src/utils/keyItems";
-import type { UnknownJsonItem } from "../../src/model/json/JsonItem";
+import { itemKey, keyItems } from "../utils/keyItems";
+import type { UnknownJsonItem } from "../model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
-import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
+import type { DirectionXy4 } from "../utils/vectors/vectors";
 import type {
   AllowedBaddieMovements,
   ItemConfigMap,
   JsonMovement,
-} from "../../src/model/json/ItemConfigMap";
+} from "../model/json/ItemConfigMap";
 
 const baddieBehaviourConversions = {
   "behavior of detector": "towards-tripped-on-axis-xy4",
@@ -57,7 +57,7 @@ const baddieConversions = {
   emperor: "emperor",
 } as const satisfies Record<
   string,
-  ItemConfigMap<PlanetName, string, string>["baddie"]["which"]
+  ItemConfigMap<SceneryName, string, string>["baddie"]["which"]
 >;
 
 export const convertItems = (
@@ -123,7 +123,7 @@ const convertItem = ({
   // walls don't use 'kind' like other items - the kind is the name of the
   // picture on the wall tile:
   if (isWallName(xml2JsonItem.kind)) {
-    const planetName = convertPlanetName(xml2JsonRoom.scenery);
+    const planetName = convertSceneryName(xml2JsonRoom.scenery);
     // Xml2JsonWallItem has to be kept out of the wall union since it can have any string value
     // and stops us from discriminating unions properly
     return {
@@ -185,7 +185,7 @@ const convertItem = ({
     case "brick2": {
       const styleConversion: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<PlanetName, string, string>["block"]["style"]
+        ItemConfigMap<SceneryName, string, string>["block"]["style"]
       > = {
         brick1: "artificial",
         brick2: "organic",
@@ -207,7 +207,7 @@ const convertItem = ({
     case "vulcano": {
       const styleConversion: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<PlanetName, string, string>["deadlyBlock"]["style"]
+        ItemConfigMap<SceneryName, string, string>["deadlyBlock"]["style"]
       > = {
         vulcano: "volcano",
         spikes: "spikes",
@@ -262,7 +262,7 @@ const convertItem = ({
         "reincarnation-fish": "reincarnation",
       } as const satisfies Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<PlanetName, string, string>["pickup"]["gives"]
+        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"]
       >;
 
       return {
@@ -342,7 +342,7 @@ const convertItem = ({
     case "stool": {
       const conversions: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<PlanetName, string, string>["movableBlock"]["style"]
+        ItemConfigMap<SceneryName, string, string>["movableBlock"]["style"]
       > = {
         stool: "anvil",
         sandwich: "sandwich",
@@ -392,7 +392,7 @@ const convertItem = ({
     case "another-portable-brick": {
       const conversions: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<PlanetName, string, string>["portableBlock"]["style"]
+        ItemConfigMap<SceneryName, string, string>["portableBlock"]["style"]
       > = {
         drum: "drum",
         "another-portable-brick": "cube",

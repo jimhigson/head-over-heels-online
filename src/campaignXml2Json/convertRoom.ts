@@ -1,7 +1,8 @@
-import type { Floor, AnyRoomJson } from "../../src/model/modelTypes";
+import type { AnyRoomJson } from "@/model/RoomJson";
+import type { Floor } from "../model/modelTypes";
 import { map, convertRoomColour } from "./convertCampaign";
 import { convertItems } from "./convertItems";
-import { convertPlanetName } from "./convertPlanetName";
+import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertRoomId } from "./convertRoomId";
 import { convertWalls } from "./convertWalls";
@@ -27,7 +28,7 @@ export const convertRoom = async (xmlRoomName: string) => {
   const roomDimensions = convertRoomDimensions(roomXmlJson, roomSidesWithDoors);
 
   // the xml calls bookworld "byblos" 🤷‍♂️
-  const planet = convertPlanetName(jsonScenery);
+  const planet = convertSceneryName(jsonScenery);
 
   const floorMap: Record<XmlFloorKind, Floor> = {
     plain: planet,

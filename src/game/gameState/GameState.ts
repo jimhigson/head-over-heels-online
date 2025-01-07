@@ -4,7 +4,7 @@ import {
   type CharacterName,
   type Campaign,
 } from "../../model/modelTypes";
-import type { PlanetName } from "../../sprites/planets";
+import type { SceneryName } from "../../sprites/planets";
 import type { InputState, KeyAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
@@ -13,7 +13,7 @@ import type { PlayableEntryState } from "./PlayableEntryState";
 
 export const selectCurrentRoom = <RoomId extends string>(
   gameState: GameState<RoomId>,
-): RoomState<PlanetName, RoomId> =>
+): RoomState<SceneryName, RoomId> =>
   // use a ! here because so long as a game is in progress, there should be a current room
   gameState.characterRooms[gameState.currentCharacterName]!;
 
@@ -30,7 +30,7 @@ type CharacterRooms<RoomId extends string> =
    * - all 3 can never exist at the same time
    */
   Partial<{
-    [C in CharacterName]: RoomState<PlanetName, RoomId>;
+    [C in CharacterName]: RoomState<SceneryName, RoomId>;
   }>;
 
 export type GameState<RoomId extends string> = {

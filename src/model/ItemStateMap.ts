@@ -1,4 +1,4 @@
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { Xyz, Xy } from "@/utils/vectors/vectors";
 import type {
   EmptyObject,
@@ -66,7 +66,7 @@ export type CarriedItem<
 > = {
   [T in Types]: {
     type: T;
-    config: JsonItemConfig<T, PlanetName, RoomId>;
+    config: JsonItemConfig<T, SceneryName, RoomId>;
   };
 }[Types];
 

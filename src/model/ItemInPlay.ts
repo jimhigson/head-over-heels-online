@@ -1,5 +1,5 @@
 import type { FreeItem } from "@/game/physics/itemPredicates";
-import type { PlanetName } from "../sprites/planets";
+import type { SceneryName } from "../sprites/planets";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
@@ -41,7 +41,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for donuts) so it is state, not config
-  block: Omit<JsonItemConfig<"block", PlanetName, RoomId>, "disappearing">;
+  block: Omit<JsonItemConfig<"block", SceneryName, RoomId>, "disappearing">;
 };
 
 // type-fest's EmptyObject was creating issues
@@ -51,7 +51,7 @@ export type EmptyObject = {
 
 export type ItemInPlayConfig<
   T extends ItemInPlayType,
-  P extends PlanetName = PlanetName,
+  P extends SceneryName = SceneryName,
   RoomId extends string = string,
 > =
   // config type explicitly given for this item type:
@@ -74,7 +74,7 @@ export type BaseItemState<RoomId extends string = string> = {
   expires: number | null;
 
   /** what is standing on this item? */
-  stoodOnBy: Set<FreeItem<PlanetName, RoomId>>;
+  stoodOnBy: Set<FreeItem<SceneryName, RoomId>>;
 
   disappear: Disappear;
 };
@@ -98,7 +98,7 @@ export type ShadowMaskOptions = {
 export type ItemInPlay<
   T extends ItemInPlayType,
   //S extends ItemState<T> = ItemState<T>,
-  P extends PlanetName = PlanetName,
+  P extends SceneryName = SceneryName,
   RoomId extends string = string,
   Itemid extends string = string,
 > = {
@@ -143,11 +143,11 @@ export type UnknownItemInPlay<
   RoomId extends string = string,
   ItemId extends string = string,
 > = {
-  [IT in ItemInPlayType]: ItemInPlay<IT, PlanetName, RoomId, ItemId>;
+  [IT in ItemInPlayType]: ItemInPlay<IT, SceneryName, RoomId, ItemId>;
 }[ItemInPlayType];
 
 /** Non-union version of any item type */
 export type AnyItemInPlay<
   RoomId extends string = string,
   ItemId extends string = string,
-> = ItemInPlay<ItemInPlayType, PlanetName, RoomId, ItemId>;
+> = ItemInPlay<ItemInPlayType, SceneryName, RoomId, ItemId>;

@@ -4,7 +4,7 @@ import type { CharacterName } from "@/model/modelTypes";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 
 /**
  *
@@ -19,7 +19,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
 }: ItemTouchEvent<
   RoomId,
   PlayableItem<CharacterName, RoomId>,
-  ItemInPlay<"portal", PlanetName, RoomId>
+  ItemInPlay<"portal", SceneryName, RoomId>
 >) => {
   const {
     config: { relativePoint, toRoom, direction: portalDirection },

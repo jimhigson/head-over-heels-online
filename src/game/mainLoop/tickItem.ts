@@ -13,7 +13,7 @@ import {
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";
 import { gravity } from "../physics/mechanics/gravity";
@@ -51,8 +51,8 @@ function* itemMechanicResultGen<
   RoomId extends string,
   T extends ItemInPlayType,
 >(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  item: ItemInPlay<T, SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): Generator<MechanicResult<T, RoomId>> {
@@ -95,8 +95,8 @@ function* itemMechanicResultGen<
 }
 
 const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  item: ItemInPlay<T, SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
 ) => {
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
@@ -128,8 +128,8 @@ const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
  * @param returns true if the tick should halt
  */
 export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
-  item: ItemInPlay<T, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  item: ItemInPlay<T, SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
@@ -200,7 +200,7 @@ export const applyMechanicsResults = <
   RoomId extends string,
   T extends ItemInPlayType,
 >(
-  item: ItemInPlay<T, PlanetName, RoomId>,
+  item: ItemInPlay<T, SceneryName, RoomId>,
   mechanicsResults: Array<MechanicResult<T, RoomId>>,
 ) => {
   let accumulatedPosDelta = originXyz;

@@ -1,7 +1,7 @@
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import type { RoomJson } from "@/model/RoomJson";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {
   wallThicknessBlocks,
@@ -17,7 +17,7 @@ import { emptySet } from "@/utils/empty";
  * convert a room's walls into normal items (that can be collided with as with any other item)
  */
 export function* loadWalls<R extends string>(
-  room: RoomJson<PlanetName, R>,
+  room: RoomJson<SceneryName, R>,
 ): Generator<UnknownItemInPlay<R>> {
   // left/right sides:
   for (let yi = room.size.y - 1; yi >= 0; yi--) {

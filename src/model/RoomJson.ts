@@ -1,5 +1,5 @@
 import type { ZxSpectrumRoomColour } from "@/originalGame";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { UnknownJsonItem } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 
@@ -8,7 +8,7 @@ import type { Floor, RoomWalls } from "./modelTypes";
  */
 
 export type RoomJson<
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = {
@@ -35,14 +35,14 @@ export type RoomJson<
    */
   items: Record<ItemId, UnknownJsonItem<RoomId, NoInfer<ItemId>>>;
 };
-export type AnyRoomJson = RoomJson<PlanetName, string, string>;
+export type AnyRoomJson = RoomJson<SceneryName, string, string>;
 
 /*
  * utility function - pass raw json through this to get type checking and type inference.
  * for example, it should fail if a joystick or switch links to an item that isn't in the room
  */
 export const inferRoomJson = <
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string,
 >(

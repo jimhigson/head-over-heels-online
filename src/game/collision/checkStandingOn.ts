@@ -1,7 +1,7 @@
 import { collision1to1 } from "@/game/collision/aabbCollision";
 import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { FreeItem } from "../physics/itemPredicates";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { isSolid } from "../physics/itemPredicates";
 import { iterate } from "@/utils/iterate";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
@@ -10,7 +10,7 @@ import { addXyz } from "@/utils/vectors/vectors";
 import { epsilon } from "@/utils/veryClose";
 
 export const spatiallyCheckStandingOn = <RoomId extends string>(
-  item: FreeItem<PlanetName, RoomId>,
+  item: FreeItem<SceneryName, RoomId>,
   itemMaybeBeingStoodOn: AnyItemInPlay<RoomId>,
   /**
     How much overlap is ok? if not given, an epsilon value is used,
@@ -95,7 +95,7 @@ export const findStandingOnWithHighestPriorityAndMostOverlap = <
   RoomId extends string,
   Item extends UnknownItemInPlay<RoomId>,
 >(
-  item: FreeItem<PlanetName, RoomId>,
+  item: FreeItem<SceneryName, RoomId>,
   itemsMaybeBeingStoodOn: Iterable<Item>,
 ): Item | undefined => {
   const potentiallyStoodOn = iterate(itemsMaybeBeingStoodOn).filter((i) =>

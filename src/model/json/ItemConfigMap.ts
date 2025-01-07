@@ -1,4 +1,4 @@
-import type { PlanetName, Wall } from "@/sprites/planets";
+import type { PlanetName, SceneryName, Wall } from "@/sprites/planets";
 import type { DirectionXy4, Xyz, AxisXy } from "@/utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
@@ -6,7 +6,6 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type { Subset } from "@/utils/subset";
 
 export type BlockStyle = "organic" | "artificial" | "tower";
 
@@ -27,7 +26,7 @@ type MovementsSubset<U extends JsonMovement> = U;
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
 export type ItemConfigMap<
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string,
 > = {
@@ -95,10 +94,7 @@ export type ItemConfigMap<
       }
     | {
         gives: "crown";
-        planet: Subset<
-          PlanetName,
-          "blacktooth" | "penitentiary" | "bookworld" | "egyptus" | "safari"
-        >;
+        planet: PlanetName;
       };
   player: {
     which: CharacterName;
@@ -218,7 +214,7 @@ export type ItemConfigMap<
   };
 };
 
-export type UnknownItemConfigMap = ItemConfigMap<PlanetName, string, string>;
+export type UnknownItemConfigMap = ItemConfigMap<SceneryName, string, string>;
 
 export type AllowedBaddieMovements<
   Which extends UnknownItemConfigMap["baddie"]["which"],

@@ -4,7 +4,7 @@ import type {
   ItemInPlay,
 } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
 import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
@@ -56,8 +56,8 @@ export const ItemRenderer = <
   RoomId extends string,
   ItemId extends string,
 >(
-  item: ItemInPlay<T, PlanetName, RoomId, ItemId>,
-  room: RoomState<PlanetName, RoomId, ItemId>,
+  item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
+  room: RoomState<SceneryName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
   const renderBoundingBoxes =

@@ -4,7 +4,7 @@ import { isItemType } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { isSolid } from "../itemPredicates";
 import { originXyz } from "@/utils/vectors/vectors";
 
@@ -22,7 +22,7 @@ const notFalling = {
  * The item can be anything - a player, a pickup etc
  */
 export const gravity = <RoomId extends string>(
-  item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
+  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId> => {

@@ -2,7 +2,7 @@ import { addItemToRoom } from "@/game/gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { type GameState } from "@/game/gameState/GameState";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { emptyObject } from "@/utils/empty";
@@ -12,7 +12,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 
 export const firing = <RoomId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
@@ -35,7 +35,7 @@ export const firing = <RoomId extends string>(
     donuts > 0 &&
     donutLastFireTime + maxFireRate < gameTime
   ) {
-    const firedDonut: ItemInPlay<"firedDonut", PlanetName, RoomId> = {
+    const firedDonut: ItemInPlay<"firedDonut", SceneryName, RoomId> = {
       type: "firedDonut",
       ...defaultItemProperties,
       config: emptyObject,

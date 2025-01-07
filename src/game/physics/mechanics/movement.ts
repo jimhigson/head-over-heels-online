@@ -1,7 +1,7 @@
 import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
@@ -30,8 +30,8 @@ const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
 type ItemWithMovement<RoomId extends string> =
-  | ItemInPlay<"baddie", PlanetName, RoomId>
-  | ItemInPlay<"movableBlock", PlanetName, RoomId>;
+  | ItemInPlay<"baddie", SceneryName, RoomId>
+  | ItemInPlay<"movableBlock", SceneryName, RoomId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
@@ -56,7 +56,7 @@ const rushTowardPlayerXy4 = <RoomId extends string>(
       vels: { walking },
     },
   }: ItemWithMovement<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
@@ -137,7 +137,7 @@ const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
 
 const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
   itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
@@ -191,7 +191,7 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
 
 const walkTowardIfInSquare = <RoomId extends string>(
   itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
@@ -255,7 +255,7 @@ const walkTowardIfInSquare = <RoomId extends string>(
 
 const randomlyChangeDirection = <RoomId extends string>(
   itemWithMovement: ItemWithMovement<RoomId>,
-  _room: RoomState<PlanetName, RoomId>,
+  _room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
@@ -296,7 +296,7 @@ const randomlyChangeDirection = <RoomId extends string>(
 
 export const keepWalkingInSameDirection = <RoomId extends string>(
   itemWithMovement: ItemWithMovement<RoomId>,
-  _room: RoomState<PlanetName, RoomId>,
+  _room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {
@@ -407,7 +407,7 @@ const handleBaddieTouchingItemByStopping = <RoomId extends string>({
  */
 export const tickMovement = <RoomId extends string>(
   itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"baddie", RoomId> => {

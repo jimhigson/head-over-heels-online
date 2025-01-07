@@ -17,7 +17,7 @@ import type {
   CharacterName,
 } from "@/model/modelTypes";
 import { zxSpectrumResolution } from "@/originalGame";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { iterate } from "@/utils/iterate";
 import { addXyz } from "@/utils/vectors/vectors";
@@ -174,7 +174,7 @@ export const mutatorsTestHarness = () => {
       }
       const sourcePortal = iterate(objectValues(sourceRoom.items)).find(
         (i) => i.type === "portal" && i.config.toRoom === roomId,
-      ) as ItemInPlay<"portal", PlanetName, TestCampaignRoomId>;
+      ) as ItemInPlay<"portal", SceneryName, TestCampaignRoomId>;
 
       if (sourcePortal === undefined) {
         throw new Error(
@@ -241,8 +241,8 @@ export const mutatorsTestHarness = () => {
       thisRoom,
       shouldBeACopyOf,
     }: {
-      shouldBeACopyOf: RoomState<PlanetName, TestCampaignRoomId>;
-      thisRoom: RoomState<PlanetName, TestCampaignRoomId> | undefined;
+      shouldBeACopyOf: RoomState<SceneryName, TestCampaignRoomId>;
+      thisRoom: RoomState<SceneryName, TestCampaignRoomId> | undefined;
     }) {
       expect(thisRoom).toBeDefined();
       expect(thisRoom?.id).toEqual(shouldBeACopyOf.id);
@@ -261,7 +261,7 @@ export const mutatorsTestHarness = () => {
     },
     expectCharacterToBeInRoom(
       playableName: IndividualCharacterName,
-      room: RoomState<PlanetName, TestCampaignRoomId> | undefined,
+      room: RoomState<SceneryName, TestCampaignRoomId> | undefined,
     ) {
       if (room === undefined) {
         expect.fail(
@@ -332,7 +332,7 @@ export const mutatorsTestHarness = () => {
 
       const portal = room.items[portalItemId] as ItemInPlay<
         "portal",
-        PlanetName,
+        SceneryName,
         TestCampaignRoomId
       >;
 

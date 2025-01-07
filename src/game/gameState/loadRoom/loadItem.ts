@@ -16,7 +16,7 @@ import { directionAxis, originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import type { CreateSpriteOptions } from "@/game/render/createSprite";
 import type { FreeItemState } from "@/model/ItemStateMap";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -210,7 +210,7 @@ const shadowCast = (
 export const defaultBaseState = <RoomId extends string>() =>
   ({
     expires: null,
-    stoodOnBy: new Set<FreeItem<PlanetName, RoomId>>(),
+    stoodOnBy: new Set<FreeItem<SceneryName, RoomId>>(),
     disappear: null,
   }) satisfies Partial<BaseItemState>;
 

@@ -91,7 +91,7 @@ guardian.
       },
       position: { x: 7, y: 3, z: 0 },
       type: "pickup",
-    }
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 6 },

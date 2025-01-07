@@ -3,7 +3,7 @@ import { doorIsInHiddenWall, type JsonItem } from "@/model/json/JsonItem";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { blockSizePx } from "@/sprites/spritePivots";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
 import {
   originXyz,
@@ -27,7 +27,7 @@ export const doorPostHeightBlocks = 4;
 export const doorPostHeight = blockSizePx.h * 4;
 
 export function* loadDoor<RoomId extends string>(
-  jsonDoor: JsonItem<"door", PlanetName, RoomId>,
+  jsonDoor: JsonItem<"door", SceneryName, RoomId>,
   id: string,
 ): Generator<UnknownItemInPlay<RoomId>> {
   const {

@@ -1,20 +1,20 @@
 import type { Campaign } from "./model/modelTypes.ts";
 import { type RoomWalls } from "./model/modelTypes.ts";
 import { type RoomJson } from "./model/RoomJson.ts";
-import type { PlanetName, Wall } from "./sprites/planets.ts";
-import { planetNames, planets } from "./sprites/planets.ts";
+import type { SceneryName, Wall } from "./sprites/planets.ts";
+import { sceneryNames, scenery } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
 
-const generateWalls = <P extends PlanetName>(
+const generateWalls = <P extends SceneryName>(
   roomSize: Xy,
   planet: P,
   skip?: Record<AxisXy, number[]>,
 ): RoomWalls<P> => {
-  const { walls } = planets[planet];
+  const { walls } = scenery[planet];
 
   function* gen(axis: AxisXy): Generator<Wall<P>> {
     const n = walls.length;
@@ -31,7 +31,7 @@ const generateWalls = <P extends PlanetName>(
   };
 };
 
-type ColorRoomIds = `${PlanetName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
+type ColorRoomIds = `${SceneryName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
 export type TestCampaignRoomId =
   | "laboratory"
@@ -41,7 +41,7 @@ export type TestCampaignRoomId =
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
-  type Entry<P extends PlanetName> = [
+  type Entry<P extends SceneryName> = [
     ColorRoomIds,
     RoomJson<P, TestCampaignRoomId, string>,
   ];
@@ -70,9 +70,9 @@ const colourRooms = () => {
     },
   ];
 
-  function* room(): Generator<Entry<PlanetName>> {
-    for (let iPlanet = 0; iPlanet < planetNames.length; iPlanet++) {
-      const p = planetNames[iPlanet];
+  function* room(): Generator<Entry<SceneryName>> {
+    for (let iPlanet = 0; iPlanet < sceneryNames.length; iPlanet++) {
+      const p = sceneryNames[iPlanet];
       for (let iHue = 0; iHue < zxSpectrumRoomHue.length; iHue++) {
         const hue = zxSpectrumRoomHue[iHue];
         for (let iShade = 0; iShade < zxSpectrumShades.length; iShade++) {
@@ -119,7 +119,7 @@ const colourRooms = () => {
                   position: { x: 0, y: 4, z: 3 },
                   config: {
                     direction: "right",
-                    toRoom: `${planetNames[(planetNames.length + iPlanet - 1) % planetNames.length]}-${hue}-${shade}`,
+                    toRoom: `${sceneryNames[(sceneryNames.length + iPlanet - 1) % sceneryNames.length]}-${hue}-${shade}`,
                   },
                 },
                 {
@@ -127,7 +127,7 @@ const colourRooms = () => {
                   position: { x: 8, y: 4, z: 4 },
                   config: {
                     direction: "left",
-                    toRoom: `${planetNames[(planetNames.length + iPlanet + 1) % planetNames.length]}-${hue}-${shade}`,
+                    toRoom: `${sceneryNames[(sceneryNames.length + iPlanet + 1) % sceneryNames.length]}-${hue}-${shade}`,
                   },
                 },
                 {
@@ -149,7 +149,7 @@ const colourRooms = () => {
   }
   return Object.fromEntries(room()) as Record<
     ColorRoomIds,
-    RoomJson<PlanetName, ColorRoomIds, string>
+    RoomJson<SceneryName, ColorRoomIds, string>
   >;
 };
 

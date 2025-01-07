@@ -1,5 +1,5 @@
 import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { RoomState } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
@@ -16,7 +16,7 @@ export const makeItemFadeOut = <RoomId extends string>({
   gameState,
 }: {
   touchedItem: AnyItemInPlay<RoomId>;
-  room: RoomState<PlanetName, RoomId>;
+  room: RoomState<SceneryName, RoomId>;
   gameState: GameState<RoomId>;
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });

@@ -1,5 +1,5 @@
 import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
-import type { Subset } from "../../src/utils/subset";
+import type { Subset } from "../utils/subset";
 
 // just the behavio(u)rs that we care to parse
 export type DisappearingBehavior =

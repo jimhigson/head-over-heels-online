@@ -21,7 +21,7 @@ import {
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 
 const log = 0;
 
@@ -32,7 +32,7 @@ type MoveItemOptions<RoomId extends string> = {
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
    */;
-  room: RoomState<PlanetName, RoomId>;
+  room: RoomState<SceneryName, RoomId>;
   pusher?: AnyItemInPlay;
   deltaMS: number;
   /**

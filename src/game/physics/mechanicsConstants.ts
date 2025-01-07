@@ -4,7 +4,7 @@ import type { ItemInPlayType } from "@/model/ItemInPlay";
 import type { JsonItemConfig } from "@/model/json/JsonItem";
 import type { CharacterName } from "@/model/modelTypes";
 import { zxSpectrumFrameRate } from "@/originalGame";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
@@ -79,7 +79,7 @@ export const moveSpeedPixPerMs = {
   Record<
     | CharacterName
     | ItemInPlayType
-    | JsonItemConfig<"baddie", PlanetName, string>["which"],
+    | JsonItemConfig<"baddie", SceneryName, string>["which"],
     number
   >
 >;

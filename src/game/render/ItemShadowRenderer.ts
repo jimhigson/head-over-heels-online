@@ -1,6 +1,6 @@
 import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState } from "@/model/modelTypes";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { subXy } from "@/utils/vectors/vectors";
 import type { Sprite } from "pixi.js";
 import { AlphaFilter, Container } from "pixi.js";
@@ -21,8 +21,8 @@ export const ItemShadowRenderer = <
   ItemId extends string,
 >(
   /** the item currently being rendered for = the one that the shadow is cast on  */
-  shadowSurfaceItem: ItemInPlay<T, PlanetName, RoomId, ItemId>,
-  room: RoomState<PlanetName, RoomId, ItemId>,
+  shadowSurfaceItem: ItemInPlay<T, SceneryName, RoomId, ItemId>,
+  room: RoomState<SceneryName, RoomId, ItemId>,
   renderOptions: RenderOptions<RoomId>,
 ) => {
   if (shadowSurfaceItem.shadowMask === undefined) {

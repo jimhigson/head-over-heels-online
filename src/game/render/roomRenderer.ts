@@ -1,7 +1,7 @@
 import type { RoomState } from "@/model/modelTypes";
 import { Container } from "pixi.js";
 import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
@@ -19,7 +19,7 @@ export type RenderContext = {
 
 export const RoomRenderer = <RoomId extends string, ItemId extends string>(
   gameState: GameState<RoomId>,
-  room: RoomState<PlanetName, RoomId, ItemId>,
+  room: RoomState<SceneryName, RoomId, ItemId>,
 ) => {
   // stash a reference to the render options this room renderer is using - if these change it is not
   // our responsibility to react to that change

@@ -6,7 +6,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
-import type { PlanetName } from "../../../sprites/planets";
+import type { SceneryName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { type ItemInPlayType } from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/game/physics/itemPredicates";
@@ -296,7 +296,7 @@ export const itemAppearances: {
       room,
     }) => {
       const pickupIcons: Record<
-        ItemConfigMap<PlanetName, string, string>["pickup"]["gives"],
+        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"],
         CreateSpriteOptions
       > = {
         shield: "bunny",

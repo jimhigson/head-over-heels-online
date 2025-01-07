@@ -97,42 +97,42 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 5 },
       type: "spring",
     },
-    "towerA0": {
+    towerA0: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "towerA1": {
+    towerA1: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 0, z: 1 },
       type: "block",
     },
-    "towerA2": {
+    towerA2: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 0, z: 2 },
       type: "block",
     },
-    "towerA3": {
+    towerA3: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
-    "towerB0": {
+    towerB0: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "towerB1": {
+    towerB1: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 7, z: 1 },
       type: "block",
     },
-    "towerB2": {
+    towerB2: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 7, z: 2 },
       type: "block",
     },
-    "towerB3": {
+    towerB3: {
       config: { disappearing: false, style: "tower" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",

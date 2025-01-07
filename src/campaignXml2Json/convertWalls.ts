@@ -1,10 +1,10 @@
 import { convertX, convertY } from "./convertCampaign";
-import { convertPlanetName } from "./convertPlanetName";
+import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
 import type { Xml2JsonRoom } from "./readToJson";
 import { type SidesWithDoors } from "./xmlRoomSidesWithDoors";
-import type { AnyWall } from "../../src/model/modelTypes";
+import type { AnyWall } from "../model/modelTypes";
 
 export const convertWalls = (
   roomJson: Xml2JsonRoom,
@@ -15,7 +15,7 @@ export const convertWalls = (
   const wallLength = direction === "away" ? dims.x : dims.y;
 
   const xmlJsonAxis = direction === "left" ? "y" : "x";
-  const planet = convertPlanetName(roomJson.scenery);
+  const planet = convertSceneryName(roomJson.scenery);
   const result: AnyWall[] = new Array(wallLength);
 
   // we expect this to be overwritten:

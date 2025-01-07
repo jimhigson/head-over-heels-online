@@ -4,7 +4,7 @@ import type { PlayableItem, PortableItemType } from "../itemPredicates";
 import { isPortable } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { addXyz } from "@/utils/vectors/vectors";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
@@ -22,7 +22,7 @@ import { addItemFromJsonToRoom } from "@/game/gameState/mutators/addItemToRoom";
  */
 export const carrying = <RoomId extends string>(
   carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
@@ -108,9 +108,9 @@ export const carrying = <RoomId extends string>(
 };
 
 const pickUpItem = <RoomId extends string, T extends PortableItemType>(
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   heelsAbilities: HeelsAbilities<RoomId>,
-  itemToPickup: ItemInPlay<T, PlanetName, RoomId>,
+  itemToPickup: ItemInPlay<T, SceneryName, RoomId>,
 ) => {
   const carrying = {
     type: itemToPickup.type,
@@ -123,7 +123,7 @@ const pickUpItem = <RoomId extends string, T extends PortableItemType>(
 
 const findItemToPickup = <RoomId extends string>(
   carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
 ) => {
   return findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,

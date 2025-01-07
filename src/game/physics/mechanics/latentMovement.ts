@@ -3,7 +3,7 @@ import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 
 import type { GameState } from "@/game/gameState/GameState";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { RoomState } from "@/model/modelTypes";
 
 /**
@@ -13,8 +13,8 @@ import type { RoomState } from "@/model/modelTypes";
  * The item can be anything - a player, a pickup etc
  */
 export function* latentMovement<RoomId extends string>(
-  item: ItemInPlay<FreeItemTypes, PlanetName, RoomId>,
-  room: RoomState<PlanetName, RoomId>,
+  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): Generator<MechanicResult<FreeItemTypes, RoomId>> {

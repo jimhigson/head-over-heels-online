@@ -1,5 +1,5 @@
 import { type ItemInPlayType, type ItemInPlay } from "@/model/ItemInPlay";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { Container } from "pixi.js";
 import type { RoomState } from "@/model/modelTypes";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -29,8 +29,8 @@ export type ItemAppearanceOptions<
   RoomId extends string,
 > = {
   // appearances don't care about the romId generic so give it string
-  item: ItemInPlay<T, PlanetName, RoomId>;
-  room: RoomState<PlanetName, RoomId>;
+  item: ItemInPlay<T, SceneryName, RoomId>;
+  room: RoomState<SceneryName, RoomId>;
   /**
    * the render props that the item rendering is currently rendered with; so the appearance can check if
    * the props have changed, and decline to render if it has not

@@ -1,7 +1,7 @@
 import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState, RoomStateItems } from "@/model/modelTypes";
 import type { RoomJson } from "@/model/RoomJson";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import { entries, objectEntriesIter } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItemFromJson } from "./loadItem";
@@ -23,7 +23,7 @@ function* gatherConveyors<RoomId extends string>(
   const { conveyors = [], others = [] } = Object.groupBy(sorted, (item) =>
     item.type === "conveyor" ? "conveyors" : "others",
   ) as {
-    conveyors: ItemInPlay<"conveyor", PlanetName, RoomId>[] | undefined;
+    conveyors: ItemInPlay<"conveyor", SceneryName, RoomId>[] | undefined;
     others: UnknownItemInPlay<RoomId>[] | undefined;
   };
 
@@ -59,7 +59,7 @@ function* gatherConveyors<RoomId extends string>(
         (a, b) => conveyorPosition(a) - conveyorPosition(b),
       );
 
-      const conveyorBlocks: ItemInPlay<"conveyor", PlanetName, RoomId>[] = [];
+      const conveyorBlocks: ItemInPlay<"conveyor", SceneryName, RoomId>[] = [];
       for (const c of sortedConveyorsInLine) {
         const currentBlock = conveyorBlocks.at(-1);
 
@@ -87,7 +87,7 @@ function* gatherConveyors<RoomId extends string>(
 }
 
 function* loadItems<RoomId extends string>(
-  roomJson: RoomJson<PlanetName, RoomId>,
+  roomJson: RoomJson<SceneryName, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad: boolean,
 ): Generator<UnknownItemInPlay<RoomId>> {
@@ -104,7 +104,7 @@ function* loadItems<RoomId extends string>(
  * convert items from a flat list to an object map, key'd by their ids
  */
 const itemsInItemObjectMap = <
-  P extends PlanetName,
+  P extends SceneryName,
   RoomId extends string,
   ItemId extends string,
 >(
@@ -124,7 +124,7 @@ const itemsInItemObjectMap = <
 /**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
-export const loadRoom = <P extends PlanetName, RoomId extends string>(
+export const loadRoom = <P extends SceneryName, RoomId extends string>(
   roomJson: RoomJson<P, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad = false,

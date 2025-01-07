@@ -12,7 +12,7 @@ import type {
   PlayableItem,
 } from "../itemPredicates";
 import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
-import type { PlanetName } from "@/sprites/planets";
+import type { SceneryName } from "@/sprites/planets";
 import type { CharacterName, RoomState } from "@/model/modelTypes";
 
 export type ItemTouchEvent<
@@ -25,7 +25,7 @@ export type ItemTouchEvent<
   touchedItem: TouchedItem;
   gameState: GameState<RoomId>;
   deltaMS: number;
-  room: RoomState<PlanetName, RoomId>;
+  room: RoomState<SceneryName, RoomId>;
 };
 
 /** simplified version of ItemTouchEvent where generics can be completed with just strings: */
@@ -35,8 +35,8 @@ export type ItemTouchEventByItemType<
   TouchedItemType extends ItemInPlayType = ItemInPlayType,
 > = ItemTouchEvent<
   RoomId,
-  ItemInPlay<MovingItemType, PlanetName, RoomId>,
-  ItemInPlay<TouchedItemType, PlanetName, RoomId>
+  ItemInPlay<MovingItemType, SceneryName, RoomId>,
+  ItemInPlay<TouchedItemType, SceneryName, RoomId>
 >;
 
 export const touchedItemIsType = <
@@ -50,7 +50,7 @@ export const touchedItemIsType = <
   [T in TouchedItemType]: ItemTouchEvent<
     RoomId,
     MovingItem,
-    ItemInPlay<T, PlanetName, RoomId>
+    ItemInPlay<T, SceneryName, RoomId>
   >;
 }[TouchedItemType] => {
   return isItemType(...touchedItemType)(e.touchedItem);
@@ -65,7 +65,7 @@ export const movingItemIsType = <
   ...movingItemType: Array<MovingItemType>
 ): e is ItemTouchEvent<
   RoomId,
-  ItemInPlay<MovingItemType, PlanetName, RoomId>,
+  ItemInPlay<MovingItemType, SceneryName, RoomId>,
   TouchedItem
 > => {
   return isItemType(...movingItemType)(e.movingItem);
