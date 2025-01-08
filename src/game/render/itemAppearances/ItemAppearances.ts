@@ -12,7 +12,6 @@ import { type ItemInPlayType } from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/game/physics/itemPredicates";
 import { playableAppearance } from "./playableAppearance";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
-import { liftBBShortening } from "@/game/physics/mechanicsConstants";
 import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
@@ -242,7 +241,7 @@ export const itemAppearances: {
 
     const pivot = {
       x: smallItemTextureSize.w / 2,
-      y: smallItemTextureSize.h - liftBBShortening,
+      y: smallItemTextureSize.h,
     };
     rendering.addChild(
       createSprite({
