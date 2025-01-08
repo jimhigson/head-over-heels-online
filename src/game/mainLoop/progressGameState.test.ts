@@ -535,7 +535,6 @@ describe("snapping stationary items to pixel grid", () => {
   test("snaps to grid after moving and stopping", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         head: {
           type: "player",
           position: { x: Math.PI, y: Math.PI, z: 0 },
@@ -567,7 +566,6 @@ describe("lifts", () => {
   const liftTop = 3;
   const playerOnALift: BasicGameStateOptions = {
     firstRoomItems: {
-      // two items that will fall (and therefore be marked dirty)
       heels: {
         type: "player",
         position: { x: 0, y: 0, z: 1 },
@@ -628,7 +626,6 @@ describe("lifts", () => {
   test("player under a lift blocks it", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 0, y: 0, z: 0 },
@@ -660,7 +657,6 @@ describe("lifts", () => {
   test("lift can take player to next room vertically", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 5, y: 5, z: 1 },
@@ -705,7 +701,6 @@ describe("lifts", () => {
   test("player partially on lift can be deposited and picked up", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 4.5, y: 5, z: 7 },
@@ -759,7 +754,6 @@ describe("lifts", () => {
   test("player squashed between rising lift and higher block stays in place standing on lift", () => {
     const gameState: GameState<TestRoomId> = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 4.5, y: 5, z: 1 },
@@ -795,7 +789,6 @@ describe("lifts", () => {
 describe("pushing", () => {
   const withBlockToPush: BasicGameStateOptions = {
     firstRoomItems: {
-      // two items that will fall (and therefore be marked dirty)
       heels: {
         type: "player",
         position: { x: 0, y: 0, z: 0 },
@@ -876,7 +869,6 @@ describe("dissapearing items", () => {
   const gameStateWithDisappearingBlocks: GameState<TestRoomId> = basicGameState(
     {
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 0, y: 0, z: 1 },
@@ -974,7 +966,6 @@ describe("dissapearing items", () => {
   test("can jump along a line of pickups, collecting them", () => {
     const gameState = basicGameState({
       firstRoomItems: {
-        // two items that will fall (and therefore be marked dirty)
         heels: {
           type: "player",
           position: { x: 0, y: 0, z: 2 },
@@ -1040,6 +1031,47 @@ describe("dissapearing items", () => {
       },
     );
   });
+});
+
+test("monsters don't fall out of rooms via the doorways", () => {
+  const gameState = basicGameState({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: {
+          which: "heels",
+        },
+      },
+      monster: {
+        type: "monster",
+        // line up on half square to walk through the doorway:
+        position: { x: 0.5, y: 4, z: 0 },
+        config: {
+          which: "skiHead",
+          startDirection: "towards",
+          activated: true,
+          movement: "back-forth",
+          style: "greenAndPink",
+        },
+      },
+      door: {
+        type: "door",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          direction: "towards",
+          toRoom: "secondRoom",
+        },
+      },
+    },
+  });
+  playGameThrough(gameState, { until: 10_000 });
+
+  const monsterPosition =
+    gameState.characterRooms.heels?.items.monster.state.position;
+  // test that the monster is still in the room:
+  expect(monsterPosition?.z).toEqual(0); //didn't fall through the floor
+  expect(monsterPosition?.y).toBeGreaterThan(0); //didn't leave through the door
 });
 
 describe("touching", () => {
