@@ -81,7 +81,7 @@ export type Xml2JsonRoom = {
   nofloor: Xml2JsonNoFloor | undefined;
 };
 
-export const readRoomToJson = async (
+export const readRoomToXmlJson = async (
   roomName: string,
 ): Promise<Xml2JsonRoom> => {
   let roomJson = (await readXmlToJson(roomName)) as any;
@@ -116,9 +116,9 @@ export type MapJsonRoom = Partial<
     string
   >
 >;
-export type MapJson = Record<string, MapJsonRoom>;
+export type MapXml2Json = Record<string, MapJsonRoom>;
 
-export const readMapToJson = async (): Promise<MapJson> => {
+export const readMapToJson = async (): Promise<MapXml2Json> => {
   const roomJson = (await readXmlToJson("map")) as any;
 
   const rooms = roomJson.map.room;
@@ -133,5 +133,5 @@ export const readMapToJson = async (): Promise<MapJson> => {
     }),
   );
 
-  return roomsByName as MapJson;
+  return roomsByName as MapXml2Json;
 };

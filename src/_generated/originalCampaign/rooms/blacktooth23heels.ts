@@ -217,7 +217,7 @@ become very powerful. Heels can jump his own height and can also run very fast.
       type: "pickup",
     },
     "teleporter@0,0,0": {
-      config: { toRoom: "blacktooth24" },
+      config: { toPosition: { x: 0, y: 0, z: 0 }, toRoom: "blacktooth24" },
       position: { x: 0, y: 0, z: 0 },
       type: "teleporter",
     },

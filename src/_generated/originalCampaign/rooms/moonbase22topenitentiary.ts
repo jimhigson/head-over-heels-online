@@ -125,22 +125,22 @@ skill required. The worst place is The Pit, try not to fall into it!
       type: "pickup",
     },
     "teleporter@2,3,0": {
-      config: { toRoom: "penitentiary1" },
+      config: { toPosition: { x: 2, y: 3, z: 0 }, toRoom: "penitentiary1" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@2,4,0": {
-      config: { toRoom: "penitentiary1" },
+      config: { toPosition: { x: 2, y: 4, z: 0 }, toRoom: "penitentiary1" },
       position: { x: 2, y: 4, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,3,0": {
-      config: { toRoom: "penitentiary1" },
+      config: { toPosition: { x: 3, y: 3, z: 0 }, toRoom: "penitentiary1" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,4,0": {
-      config: { toRoom: "penitentiary1" },
+      config: { toPosition: { x: 3, y: 4, z: 0 }, toRoom: "penitentiary1" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },

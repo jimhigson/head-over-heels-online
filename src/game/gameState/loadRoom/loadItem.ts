@@ -77,7 +77,10 @@ const shadowMask = (
   // charles doesn't work because can't (yet) have direction-specific (changing) maps
   switch (jsonItem.type) {
     case "lift":
-      return { spriteOptions: "shadowMask.smallBlock", relativeTo: "origin" };
+      return {
+        spriteOptions: "shadowMask.smallBlock",
+        relativeTo: "origin",
+      };
     case "conveyor":
       return {
         spriteOptions: {

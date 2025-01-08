@@ -9,19 +9,26 @@ import {
   isWallName,
   parseXmlWallName,
 } from "./convertWallName";
-import type { MapJson, Xml2JsonRoom } from "./readToJson";
-import { roomNameFromXmlFilename } from "./readToJson";
+import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
+import { readRoomToXmlJson, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 import { itemKey, keyItems } from "../utils/keyItems";
 import type { UnknownJsonItem } from "../model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
-import type { DirectionXy4 } from "../utils/vectors/vectors";
+import {
+  addXyz,
+  scaleXy,
+  subXy,
+  type DirectionXy4,
+} from "../utils/vectors/vectors";
 import type {
   AllowedMonsterMovements,
   ItemConfigMap,
   JsonMovement,
 } from "../model/json/ItemConfigMap";
+import { convertRoomDimensions } from "./convertRoomDimensions";
+import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
 const monsterBehaviourConversions = {
   "behavior of detector": "towards-tripped-on-axis-xy4",
@@ -60,13 +67,13 @@ const monsterConversions = {
   ItemConfigMap<SceneryName, string, string>["monster"]["which"]
 >;
 
-export const convertItems = (
-  map: MapJson,
+export const convertItems = async (
+  map: MapXml2Json,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): Record<string, UnknownJsonItem> => {
-  const convertedItemsArray = convertItemsArray(
+): Promise<Record<string, UnknownJsonItem>> => {
+  const convertedItemsArray = await convertItemsArray(
     map,
     roomName,
     xml2JsonRoom,
@@ -76,43 +83,45 @@ export const convertItems = (
   return keyItems(convertedItemsArray);
 };
 
-const convertItemsArray = (
-  map: MapJson,
+const convertItemsArray = async (
+  map: MapXml2Json,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): UnknownJsonItem[] => {
-  return xml2JsonRoom.items
-    .map((xml2JsonItem) =>
-      convertItem({
-        xml2JsonRoom,
-        doorMap,
-        map,
-        roomName,
-        xml2JsonItem,
-        xml2JsonItems: xml2JsonRoom.items,
-      }),
+): Promise<UnknownJsonItem[]> => {
+  return (
+    await Promise.all(
+      xml2JsonRoom.items.map((xml2JsonItem) =>
+        convertItem({
+          xml2JsonRoom,
+          doorMap,
+          map,
+          roomName,
+          xml2JsonItem,
+          xml2JsonItems: xml2JsonRoom.items,
+        }),
+      ),
     )
-    .filter((x): x is UnknownJsonItem => x !== undefined);
+  ).filter((x): x is UnknownJsonItem => x !== undefined);
 };
 
 type ConvertItemParams = {
   xml2JsonRoom: Xml2JsonRoom;
   doorMap: Partial<Record<DirectionXy4, true>>;
-  map: MapJson;
+  map: MapXml2Json;
   roomName: string;
   xml2JsonItem: Xml2JsonItem;
   xml2JsonItems: Xml2JsonItem[];
 };
 
-const convertItem = ({
+const convertItem = async ({
   xml2JsonRoom,
   doorMap,
   map,
   roomName,
   xml2JsonItem,
   xml2JsonItems,
-}: ConvertItemParams): UnknownJsonItem | undefined => {
+}: ConvertItemParams): Promise<UnknownJsonItem | undefined> => {
   const position = convertXYZ(xml2JsonItem, xml2JsonRoom, doorMap);
 
   if (
@@ -148,18 +157,68 @@ const convertItem = ({
     case "teleport":
     case "teleport-too": {
       const roomOnMap = map[roomName];
-      const destination =
+      const destinationRoomXmlFilename =
         roomOnMap[xml2JsonItem.kind === "teleport" ? "teleport" : "teleport2"];
 
-      if (destination === undefined) {
+      if (destinationRoomXmlFilename === undefined) {
         throw new Error("teleporter with no destination");
+      }
+      const destinationRoomXmlId = roomNameFromXmlFilename(
+        destinationRoomXmlFilename,
+      );
+
+      /* teleporters locate in the original game relative to the room's
+         centre. In same-size to/from rooms, this is identical to not
+         changing the player's position, but the following as dissimilar sizes
+         and need this:
+            # egyptus9fish <-> egyptus13
+            # blacktooth57 <-> moonbase9,
+            # moonbase1 <-> blacktooth51
+            # moonbase9 <-> blacktooth57
+            # moonbase35 -> blacktooth51
+            # penitentiary18fish (double room) <-> penitentiary30
+            # penitentiary18fish (double room) <-> penitentiary34crown
+      */
+
+      const thisRoomSize = convertRoomDimensions(
+        xml2JsonRoom,
+        xmlRoomSidesWithDoors(xml2JsonRoom),
+      );
+      const thisRoomCentre = scaleXy(thisRoomSize, 0.5);
+      const teleporterPositionVectorFromCentre = {
+        ...subXy(position, thisRoomCentre),
+        z: position.z,
+      };
+
+      const destinationRoomXmlJson =
+        await readRoomToXmlJson(destinationRoomXmlId);
+      const destinationRoomSize = convertRoomDimensions(
+        destinationRoomXmlJson,
+        xmlRoomSidesWithDoors(destinationRoomXmlJson),
+      );
+      const destinationRoomCentre = {
+        ...scaleXy(destinationRoomSize, 0.5),
+        z: 0,
+      };
+      const destinationPosition = addXyz(
+        destinationRoomCentre,
+        teleporterPositionVectorFromCentre,
+      );
+
+      if (
+        !Number.isInteger(destinationPosition.x) ||
+        !Number.isInteger(destinationPosition.y) ||
+        !Number.isInteger(destinationPosition.z)
+      ) {
+        throw new Error("non-integer position for teleporter destination");
       }
 
       return {
         type: "teleporter",
         config: {
           // this is the one item where the generics for RoomId would be useful
-          toRoom: convertRoomId(roomNameFromXmlFilename(destination)),
+          toRoom: convertRoomId(destinationRoomXmlId),
+          toPosition: destinationPosition,
         },
         position,
       };
@@ -320,14 +379,17 @@ const convertItem = ({
       if (charlesXml2Json === undefined) {
         throw new Error("remote control with no Charles");
       }
-      const charlesJson = convertItem({
+      const charlesJson = await convertItem({
         xml2JsonRoom,
         doorMap,
         map,
         roomName,
         xml2JsonItem: charlesXml2Json,
         xml2JsonItems,
-      })!;
+      });
+      if (charlesJson === undefined) {
+        throw new Error("charles didn't convert while converting joystick");
+      }
       return {
         type: "joystick",
         config: { controls: [itemKey(charlesJson, [charlesJson])] },

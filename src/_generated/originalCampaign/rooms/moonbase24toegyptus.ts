@@ -224,22 +224,22 @@ rebuilt the capital city of one of the slave planets to resemble the story.
       type: "pickup",
     },
     "teleporter@3,3,0": {
-      config: { toRoom: "egyptus1" },
+      config: { toPosition: { x: 3, y: 3, z: 0 }, toRoom: "egyptus1" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,4,0": {
-      config: { toRoom: "egyptus1" },
+      config: { toPosition: { x: 3, y: 4, z: 0 }, toRoom: "egyptus1" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
     "teleporter@4,3,0": {
-      config: { toRoom: "egyptus1" },
+      config: { toPosition: { x: 4, y: 3, z: 0 }, toRoom: "egyptus1" },
       position: { x: 4, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@4,4,0": {
-      config: { toRoom: "egyptus1" },
+      config: { toPosition: { x: 4, y: 4, z: 0 }, toRoom: "egyptus1" },
       position: { x: 4, y: 4, z: 0 },
       type: "teleporter",
     },

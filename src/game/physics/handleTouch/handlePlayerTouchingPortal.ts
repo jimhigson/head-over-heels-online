@@ -1,4 +1,4 @@
-import { addXyz, dotProductXyz, subXyz } from "@/utils/vectors/vectors";
+import { dotProductXyz } from "@/utils/vectors/vectors";
 import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
 import type { CharacterName } from "@/model/modelTypes";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
@@ -22,8 +22,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
   ItemInPlay<"portal", SceneryName, RoomId>
 >) => {
   const {
-    config: { relativePoint, toRoom, direction: portalDirection },
-    state: { position: portalPosition },
+    config: { toRoom, direction: portalDirection },
   } = portalItem;
   const movementComponentInDoorDirection = dotProductXyz(
     portalDirection,
@@ -40,11 +39,7 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
     playableItem,
     gameState,
     toRoomId: toRoom,
-    positionRelativeToSourcePortal: subXyz(
-      playableItem.state.position,
-      addXyz(portalPosition, relativePoint),
-    ),
-    sourcePortal: portalItem,
+    sourceItem: portalItem,
     changeType: "portal",
   });
 };

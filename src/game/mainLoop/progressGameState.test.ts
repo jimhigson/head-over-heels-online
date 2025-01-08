@@ -359,7 +359,7 @@ describe("teleporter", () => {
         teleporter: {
           type: "teleporter",
           position: { x: 0, y: 2, z: 0 },
-          config: { toRoom: secondRoomId },
+          config: { toRoom: secondRoomId, toPosition: { x: 0, y: 2, z: 0 } },
         },
       },
       secondRoomItems: {

@@ -5,7 +5,7 @@ import { autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertRoomId } from "./convertRoomId";
 import {
-  type MapJson,
+  type MapXml2Json,
   type CompassDirectionsNESW,
   type CompassDirections,
   type Xml2JsonRoom,
@@ -13,7 +13,7 @@ import {
 } from "./readToJson";
 
 export const convertDoor = (
-  map: MapJson,
+  map: MapXml2Json,
   roomName: string,
   item: { x: string; y: string; z: string } & {
     kind: `${string}-door-${CompassDirectionsNESW}`;

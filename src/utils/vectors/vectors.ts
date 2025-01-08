@@ -68,6 +68,10 @@ export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
     xy,
   );
 
+export const scaleXy = (xy: Xy, scale: number): Xy => ({
+  x: xy.x * scale,
+  y: xy.y * scale,
+});
 export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   x: xy.x * scale,
   y: xy.y * scale,

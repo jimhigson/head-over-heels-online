@@ -141,22 +141,22 @@ export const room = inferRoomJson({
       type: "monster",
     },
     "teleporter@2,2,0": {
-      config: { toRoom: "blacktooth51" },
+      config: { toPosition: { x: 2, y: 3, z: 0 }, toRoom: "blacktooth51" },
       position: { x: 2, y: 2, z: 0 },
       type: "teleporter",
     },
     "teleporter@2,3,0": {
-      config: { toRoom: "blacktooth51" },
+      config: { toPosition: { x: 2, y: 4, z: 0 }, toRoom: "blacktooth51" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,2,0": {
-      config: { toRoom: "blacktooth51" },
+      config: { toPosition: { x: 3, y: 3, z: 0 }, toRoom: "blacktooth51" },
       position: { x: 3, y: 2, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,3,0": {
-      config: { toRoom: "blacktooth51" },
+      config: { toPosition: { x: 3, y: 4, z: 0 }, toRoom: "blacktooth51" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },

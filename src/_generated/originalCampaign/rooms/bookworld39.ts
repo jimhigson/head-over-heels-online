@@ -76,12 +76,12 @@ Just kidding, they’ll never get this far!
       type: "pickup",
     },
     "teleporter@7,3,0": {
-      config: { toRoom: "bookworld1" },
+      config: { toPosition: { x: 7, y: 3, z: 0 }, toRoom: "bookworld1" },
       position: { x: 7, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@7,4,0": {
-      config: { toRoom: "bookworld1" },
+      config: { toPosition: { x: 7, y: 4, z: 0 }, toRoom: "bookworld1" },
       position: { x: 7, y: 4, z: 0 },
       type: "teleporter",
     },

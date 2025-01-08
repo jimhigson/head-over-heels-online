@@ -96,7 +96,14 @@ const colourRooms = () => {
                     y: 2,
                     z: 0,
                   },
-                  config: { toRoom: "laboratory" },
+                  config: {
+                    toRoom: "laboratory",
+                    toPosition: {
+                      x: 2,
+                      y: 2,
+                      z: 0,
+                    },
+                  },
                 },
                 {
                   type: "door",
@@ -207,7 +214,14 @@ const rooms = {
     items: keyItems([
       {
         type: "teleporter",
-        config: { toRoom: "blacktooth-cyan-dimmed" },
+        config: {
+          toRoom: "blacktooth-cyan-dimmed",
+          toPosition: {
+            x: 1,
+            y: 0,
+            z: 0,
+          },
+        },
         position: {
           x: 1,
           y: 0,

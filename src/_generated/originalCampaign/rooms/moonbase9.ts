@@ -13,22 +13,22 @@ export const room = inferRoomJson({
       type: "door",
     },
     "teleporter@2,2,0": {
-      config: { toRoom: "blacktooth57" },
+      config: { toPosition: { x: 3, y: 3, z: 0 }, toRoom: "blacktooth57" },
       position: { x: 2, y: 2, z: 0 },
       type: "teleporter",
     },
     "teleporter@2,3,0": {
-      config: { toRoom: "blacktooth57" },
+      config: { toPosition: { x: 3, y: 4, z: 0 }, toRoom: "blacktooth57" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,2,0": {
-      config: { toRoom: "blacktooth57" },
+      config: { toPosition: { x: 4, y: 3, z: 0 }, toRoom: "blacktooth57" },
       position: { x: 3, y: 2, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,3,0": {
-      config: { toRoom: "blacktooth57" },
+      config: { toPosition: { x: 4, y: 4, z: 0 }, toRoom: "blacktooth57" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },

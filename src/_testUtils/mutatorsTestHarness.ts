@@ -195,8 +195,7 @@ export const mutatorsTestHarness = () => {
         gameState,
         changeType: "portal",
         toRoomId: roomId,
-        sourcePortal,
-        positionRelativeToSourcePortal: { x: 0, y: 0, z: 0 },
+        sourceItem: sourcePortal,
       });
     },
     putIntoSymbiosis() {

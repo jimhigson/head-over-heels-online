@@ -105,22 +105,22 @@ Just kidding, they’ll never get this far!
       type: "pickup",
     },
     "teleporter@3,3,0": {
-      config: { toRoom: "egyptus4" },
+      config: { toPosition: { x: 3, y: 3, z: 0 }, toRoom: "egyptus4" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@3,4,0": {
-      config: { toRoom: "egyptus4" },
+      config: { toPosition: { x: 3, y: 4, z: 0 }, toRoom: "egyptus4" },
       position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
     "teleporter@4,3,0": {
-      config: { toRoom: "egyptus4" },
+      config: { toPosition: { x: 4, y: 3, z: 0 }, toRoom: "egyptus4" },
       position: { x: 4, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@4,4,0": {
-      config: { toRoom: "egyptus4" },
+      config: { toPosition: { x: 4, y: 4, z: 0 }, toRoom: "egyptus4" },
       position: { x: 4, y: 4, z: 0 },
       type: "teleporter",
     },

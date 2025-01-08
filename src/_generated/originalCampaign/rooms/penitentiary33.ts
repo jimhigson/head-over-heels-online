@@ -105,22 +105,22 @@ Just kidding, they’ll never get this far!
       type: "pickup",
     },
     "teleporter@0,3,0": {
-      config: { toRoom: "penitentiary2" },
+      config: { toPosition: { x: 0, y: 3, z: 0 }, toRoom: "penitentiary2" },
       position: { x: 0, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@0,4,0": {
-      config: { toRoom: "penitentiary2" },
+      config: { toPosition: { x: 0, y: 4, z: 0 }, toRoom: "penitentiary2" },
       position: { x: 0, y: 4, z: 0 },
       type: "teleporter",
     },
     "teleporter@1,3,0": {
-      config: { toRoom: "penitentiary2" },
+      config: { toPosition: { x: 1, y: 3, z: 0 }, toRoom: "penitentiary2" },
       position: { x: 1, y: 3, z: 0 },
       type: "teleporter",
     },
     "teleporter@1,4,0": {
-      config: { toRoom: "penitentiary2" },
+      config: { toPosition: { x: 1, y: 4, z: 0 }, toRoom: "penitentiary2" },
       position: { x: 1, y: 4, z: 0 },
       type: "teleporter",
     },

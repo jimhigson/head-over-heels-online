@@ -5,7 +5,7 @@ import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { SceneryName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { addXyz, scaleXyz, xyzEqual } from "@/utils/vectors/vectors";
+import { addXyz, scaleXyz, subXyz, xyzEqual } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../PlayableEntryState";
@@ -17,6 +17,7 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { removeStandingOn } from "./modifyStandingOn";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
+import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -27,29 +28,21 @@ type ChangeCharacterRoomOptions<RoomId extends string> =
       playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
       /* position relative to the portal in the source room */
-      sourcePortal: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
-      positionRelativeToSourcePortal: Xyz;
-      /* if true, the position in the source and destimation room will be exactly maintained */
+      sourceItem: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
     }
   | {
       changeType: "teleport";
       gameState: GameState<RoomId>;
       playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
-      sourcePortal?: undefined;
-      /* position relative to the portal in the source room */
-      positionRelativeToSourcePortal?: undefined;
-      /* if true, the position in the source and destimation room will be exactly maintained */
+      sourceItem: ItemInPlay<"teleporter", SceneryName, NoInfer<RoomId>>;
     }
   | {
       changeType: "level-select";
       gameState: GameState<RoomId>;
       playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
-      sourcePortal?: undefined;
-      /* position relative to the portal in the source room */
-      positionRelativeToSourcePortal?: undefined;
-      /* if true, the position in the source and destimation room will be exactly maintained */
+      sourceItem?: undefined;
     };
 
 const findDestinationPortal = <RoomId extends string>(
@@ -57,7 +50,7 @@ const findDestinationPortal = <RoomId extends string>(
   fromRoom: RoomState<SceneryName, RoomId>,
   {
     changeType,
-    sourcePortal,
+    sourceItem: sourcePortal,
   }: ChangeCharacterRoomOptions<RoomId> & {
     changeType: "portal" | "level-select";
   },
@@ -112,9 +105,9 @@ export const changeCharacterRoom = <RoomId extends string>(
     playableItem,
     gameState,
     toRoomId,
-    positionRelativeToSourcePortal: maybePositionRelativeToSourcePortal,
+    //positionRelativeToSourcePortal: maybePositionRelativeToSourcePortal,
     changeType,
-    sourcePortal,
+    sourceItem,
   } = changeCharacterRoomOptions;
 
   const leavingRoom = gameState.characterRooms[playableItem.id];
@@ -130,23 +123,37 @@ export const changeCharacterRoom = <RoomId extends string>(
   }
 
   let positionRelativeToSourcePortal: Xyz;
-  if (maybePositionRelativeToSourcePortal !== undefined) {
-    positionRelativeToSourcePortal = maybePositionRelativeToSourcePortal;
-  } else {
-    switch (changeType) {
-      case "teleport":
-        positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
-        break;
-      case "level-select":
-        // clear the player of the portal by putting a bit more in the room:
-        positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
-        break;
-      default:
-        changeType satisfies "never";
-        throw new Error(
-          'should not be able to call changeCharacterRoom with changeType "portal" and without a positionRelativeToSourcePortal',
-        );
+
+  switch (changeType) {
+    case "portal": {
+      const {
+        config: { relativePoint },
+        state: { position: portalPosition },
+      } = sourceItem;
+
+      positionRelativeToSourcePortal = subXyz(
+        playableItem.state.position,
+        addXyz(portalPosition, relativePoint),
+      );
+      break;
     }
+    case "teleport": {
+      const {
+        state: { position: teleporterPosition },
+      } = sourceItem;
+      positionRelativeToSourcePortal = subXyz(
+        playableItem.state.position,
+        teleporterPosition,
+      );
+      break;
+    }
+    case "level-select":
+      // clear the player of the portal by putting a bit more in the room:
+      positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
+      break;
+    default:
+      changeType satisfies "never";
+      throw new Error("unknown changeType" + changeType);
   }
 
   const otherCharacterLoadedRoom =
@@ -167,7 +174,16 @@ export const changeCharacterRoom = <RoomId extends string>(
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
 
-  if (changeCharacterRoomOptions.changeType !== "teleport") {
+  if (changeCharacterRoomOptions.changeType === "teleport") {
+    const {
+      config: { toPosition: teleporterToBlockPosition },
+    } = changeCharacterRoomOptions.sourceItem;
+
+    playableItem.state.position = addXyz(
+      blockXyzToFineXyz(teleporterToBlockPosition),
+      positionRelativeToSourcePortal,
+    );
+  } else {
     // find the door (etc) in the new room to enter in:
     const destinationPortal = findDestinationPortal(
       toRoom,
@@ -185,7 +201,7 @@ export const changeCharacterRoom = <RoomId extends string>(
       "because",
       changeType,
       "sourceportal",
-      sourcePortal,
+      sourceItem,
     );
 
     if (destinationPortal === undefined) {
@@ -200,20 +216,10 @@ export const changeCharacterRoom = <RoomId extends string>(
       positionRelativeToSourcePortal,
       // an extra boost of one block when travelling up - this is because the room above won't have a floor
       // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
-      changeType === "portal" && sourcePortal.config.direction.z > 0 ?
+      changeType === "portal" && sourceItem.config.direction.z > 0 ?
         { z: blockSizePx.h }
       : {},
     );
-
-    const heelsAbilities = selectHeelsAbilities(playableItem);
-    if (heelsAbilities !== undefined) {
-      // can't carry items through rooms
-      heelsAbilities.carrying = null;
-    }
-    if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
-      // hush puppies vanish the moment head enters:
-      removeHushPuppiesFromRoom(toRoom, gameState);
-    }
 
     console.log(
       "character put down at",
@@ -286,6 +292,17 @@ export const changeCharacterRoom = <RoomId extends string>(
   removeStandingOn(playableItem);
   for (const standerOn of playableItem.state.stoodOnBy) {
     removeStandingOn(standerOn);
+  }
+
+  // heels can't carry items to different rooms:
+  const heelsAbilities = selectHeelsAbilities(playableItem);
+  if (heelsAbilities !== undefined) {
+    heelsAbilities.carrying = null;
+  }
+
+  // hush puppies vanish the moment head enters:
+  if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
+    removeHushPuppiesFromRoom(toRoom, gameState);
   }
 
   // remove the character from the new room if they're already there - this only really happens
