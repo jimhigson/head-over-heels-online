@@ -83,6 +83,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary34crown/items/teleporter@7,5,4/config/toPosition/x",
+    "value": 15
+  },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary33/color/shade",
     "value": "dimmed"
   },
@@ -112,6 +117,11 @@
     "op": "replace",
     "path": "/rooms/penitentiary30/color/hue",
     "value": "green"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary30/items/teleporter@0,3,4/config/toPosition/x",
+    "value": 0
   },
   {
     "op": "replace",
@@ -222,6 +232,16 @@
     "op": "replace",
     "path": "/rooms/penitentiary18fish/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary18fish/items/teleporter@0,4,4/config/toPosition/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary18fish/items/teleporter@15,4,4/config/toPosition/x",
+    "value": 7
   },
   {
     "op": "replace",
