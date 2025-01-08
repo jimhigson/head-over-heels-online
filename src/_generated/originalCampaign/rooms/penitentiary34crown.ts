@@ -79,7 +79,7 @@ export const room = inferRoomJson({
     },
     "teleporter@7,5,4": {
       config: {
-        toPosition: { x: 11, y: 4, z: 4 },
+        toPosition: { x: 15, y: 4, z: 4 },
         toRoom: "penitentiary18fish",
       },
       position: { x: 7, y: 5, z: 4 },
