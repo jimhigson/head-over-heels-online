@@ -20,7 +20,13 @@ export const isItemType =
   };
 
 const isUnsolid = (item: AnyItemInPlay) =>
-  isItemType("bubbles", "portal", "stopAutowalk", "firedDoughnut")(item) ||
+  isItemType("bubbles", "stopAutowalk", "firedDoughnut")(item) ||
+  /*
+   * portals are usually solid, so baddies don't fall out of the room via doorways,
+   * but the floor portal needs to be unsolid since it is correct that baddies can fall down there.
+   * test in #penitentiary2 and #penitentiary21
+   */
+  (isPortal(item) && item.config.direction.z < 0) ||
   (isFloor(item) && item.config.type === "none");
 
 /**
