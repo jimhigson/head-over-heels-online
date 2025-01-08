@@ -137,7 +137,7 @@ export const moveItem = <RoomId extends string>({
       continue;
     }
 
-    if (!isSolid(collision) || !isSolid(subjectItem)) {
+    if (!isSolid(collision, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,

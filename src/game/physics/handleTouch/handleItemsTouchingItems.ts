@@ -72,7 +72,7 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   if (
     e.movingItem.state.disappear &&
     // solid check: eg, firedDoughnuts don't disappear on touching the stopAutowalk in front of a door
-    isSolid(e.touchedItem)
+    isSolid(e.touchedItem, e.movingItem)
   ) {
     handleItemTouchingDissapearing({
       ...e,

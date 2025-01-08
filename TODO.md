@@ -114,12 +114,13 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] head and heels can combine
 [x] death of char A after char B moved into room splits off into two room states
 [x] use defaultAnchor: { x: number, y: number } property in spritesheet
-[ ] move conversions under src
+[x] move conversions under src
 [x] viewport sliding
     [x] hud readable over game
-[ ] if heads dies in a room, and the room re-loads, hush puppies don't
+[x] if heads dies in a room, and the room re-loads, hush puppies don't
     vanish a second time (test on #penitentiary2)
-[ ] baddies can fall out of the room via doors (test on #penitentiary2 at high speed)    
+[x] baddies can fall out of the room via doors (test on #penitentiary2 at high speed)    
+[ ] if die while jumping (ascending), the velocity is maintained when coming back into the room
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [x] acel for player normal walking
@@ -294,6 +295,14 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # penitentiary6
 [x] anvil needs to move
 
+# penitentiary21
+[x] room floor (edge) is shown not displaced to the left for the door on the left side
+    * it is being put at x,y = 0,0
+    constrast with #blacktooth27fish where it isn't due to left-side door
+
+# penitentiary21 falling into # penitentiary20
+[ ] falling into a room that's smaller means can't locate player if fall off towards the back of the room    
+
 # penitentiary29
 [ ] crash on drop down to next room
  - seems to be a room missing - the room right below this one and above 32
@@ -324,16 +333,16 @@ musicxml for game music: https://github.com/dougmencken/HeadOverHeels/blob/maste
 musicxml player in browser: https://blog.karimratib.me/demos/musicxml/
 
 Rename:
-baddie -> monster
-headless-base -> homing-bot
-anvil -> step-stool
-flying ball -> the-guardian # add from manual THE EMPEROR'S GUARDIAN scroll
-planet -> scenery
-donut -> doughnut
+[x] baddie -> monster
+[x] homingBot -> homingBot
+[x] anvil -> step-stool
+[x] flying ball -> emperors-guardian # add from manual THE EMPEROR'S GUARDIAN scroll
+[x] planet -> scenery
+[x] donut -> doughnut
 bunny -> rabbit (?)
 dalek -> ???
-american-football-head -> skier
-kebab-case -> camelCase
-scripts -> src
-pause -> hold
-directions8Xy -> directionsXy8 /4 etc
+[x] american-football-head -> ski-head
+[x] kebab-case -> camelCase
+[x] scripts -> src
+[ ] pause -> hold
+[x] directions8Xy -> directionsXy8 /4 etc
