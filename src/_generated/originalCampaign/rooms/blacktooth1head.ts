@@ -95,7 +95,7 @@ accolade, and unfortunately, almost certain suicide.
       type: "pickup",
     },
     "teleporter@5,7,0": {
-      config: { toRoom: "blacktooth2" },
+      config: { toPosition: { x: 5, y: 7, z: 0 }, toRoom: "blacktooth2" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },

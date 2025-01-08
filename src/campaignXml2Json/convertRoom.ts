@@ -7,14 +7,14 @@ import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertRoomId } from "./convertRoomId";
 import { convertWalls } from "./convertWalls";
 import {
-  readRoomToJson,
+  readRoomToXmlJson,
   type XmlFloorKind,
   roomNameFromXmlFilename,
 } from "./readToJson";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
 export const convertRoom = async (xmlRoomName: string) => {
-  const roomXmlJson = await readRoomToJson(xmlRoomName);
+  const roomXmlJson = await readRoomToXmlJson(xmlRoomName);
   const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomXmlJson;
 
   const roomSidesWithDoors = xmlRoomSidesWithDoors(roomXmlJson);
@@ -52,7 +52,12 @@ export const convertRoom = async (xmlRoomName: string) => {
       away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
       left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),
     },
-    items: convertItems(map, xmlRoomName, roomXmlJson, roomSidesWithDoors),
+    items: await convertItems(
+      map,
+      xmlRoomName,
+      roomXmlJson,
+      roomSidesWithDoors,
+    ),
     color: convertRoomColour(color),
   };
 

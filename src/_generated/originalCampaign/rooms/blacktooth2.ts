@@ -42,7 +42,7 @@ ARE their names and both are highly trained spies.
       type: "pickup",
     },
     "teleporter@5,7,0": {
-      config: { toRoom: "blacktooth1head" },
+      config: { toPosition: { x: 5, y: 7, z: 0 }, toRoom: "blacktooth1head" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },

@@ -120,7 +120,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] if heads dies in a room, and the room re-loads, hush puppies don't
     vanish a second time (test on #penitentiary2)
 [x] baddies can fall out of the room via doors (test on #penitentiary2 at high speed)    
-[ ] if die while jumping (ascending), the velocity is maintained when coming back into the room
+[x] if die while jumping (ascending), the velocity is maintained when coming back into the room
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [x] acel for player normal walking
@@ -256,9 +256,26 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # egyptus12    
 [x] lift doesn't lift charles up
 
+# egyptus9fish <-> egyptus13
+# blacktooth57 <-> moonbase9,
+# moonbase1 <-> blacktooth51
+# moonbase9 <-> blacktooth57
+# moonbase35 -> blacktooth51
+# penitentiary18fish (double room) <-> penitentiary30
+# penitentiary18fish (double room) <-> penitentiary34crown
+[x] fixed
+* in all of the above teleporter doesn't go to correct space in next room
+* all others go to the correct place (usually room same size on both sides of teleport)
+* in all cases, would be correct if went to same place relative to middle of the room
+    (except double rooms since they're joined into one in my version)
+* solution:
+    * all teleporters have id of destination teleporter (as well as room)
+    * on scraping levels, work out the item relative to centre of the room
+    * for double rooms, use patching to fix
+
+
 # egyptus13
 [x] lift is weirdly slow - maybe becuse it doesn't start at zero?
-[ ] teleporter to [egyptus9] doesn't go to correct space in next room
 
 # egyptus14
 [x] first jump not possible (actually, is possible but very difficult)

@@ -5,6 +5,8 @@ import type { CharacterName } from "@/model/modelTypes";
 import type { GameState } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
 import { fadeInOrOutDuration } from "@/game/render/animationTimings";
+import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { SceneryName } from "@/sprites/planets";
 
 export function teleporting<RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
@@ -14,6 +16,7 @@ export function teleporting<RoomId extends string>(
   const {
     state: { teleporting, standingOn },
   } = playableItem;
+
   const {
     inputState: { jump: jumpInput },
   } = gameState;
@@ -44,11 +47,16 @@ export function teleporting<RoomId extends string>(
     case "out":
       if (newTimeRemaining === 0) {
         changeCharacterRoom({
+          changeType: "teleport",
+          sourceItem: standingOn as ItemInPlay<
+            "teleporter",
+            SceneryName,
+            RoomId
+          >,
           playableItem,
           gameState,
           toRoomId:
             teleporting.toRoom as RoomId /* TODO: propertly type in state */,
-          changeType: "teleport",
         });
         return {
           movementType: "steady",

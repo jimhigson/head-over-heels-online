@@ -28,6 +28,7 @@ type MovementsSubset<U extends JsonMovement> = U;
 export type ItemConfigMap<
   P extends SceneryName,
   RoomId extends string,
+  /** ids of items in this room */
   ItemId extends string,
 > = {
   door: {
@@ -51,6 +52,9 @@ export type ItemConfigMap<
   };
   teleporter: {
     toRoom: RoomId;
+    // where in the destination room this teleporter should go - usually
+    // to atop another teleporter, but could be anywhere
+    toPosition: Xyz;
   };
   barrier: {
     // the axis the barrier runs along
