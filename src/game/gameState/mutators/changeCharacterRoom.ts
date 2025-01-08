@@ -5,7 +5,7 @@ import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { SceneryName } from "@/sprites/planets";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
+import { addXyz, scaleXyz, xyzEqual } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
 import { iterate } from "@/utils/iterate";
 import { entryState } from "../PlayableEntryState";
@@ -43,19 +43,42 @@ type ChangeCharacterRoomOptions<RoomId extends string> =
     };
 
 const findDestinationPortal = <RoomId extends string>(
-  changeType: "portal" | "level-select",
   toRoom: RoomState<SceneryName, RoomId>,
   fromRoom: RoomState<SceneryName, RoomId>,
+  {
+    changeType,
+    sourcePortal,
+  }: ChangeCharacterRoomOptions<RoomId> & {
+    changeType: "portal" | "level-select";
+  },
 ): ItemInPlay<"portal", SceneryName, RoomId> | undefined => {
   switch (changeType) {
     case "portal":
       return iterate(objectValues(toRoom.items)).find(
         (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
-          isPortal(i) && i.config.toRoom === fromRoom.id,
+          isPortal(i) &&
+          i.config.toRoom === fromRoom.id &&
+          // portal is going in the opposite direction - see for example the double-door transition
+          // between #safari6triple and #safari7
+          xyzEqual(
+            scaleXyz(sourcePortal.config.direction, -1),
+            i.config.direction,
+          ),
       );
 
     case "level-select":
       return (
+        iterate(objectValues(toRoom.items)).find(
+          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+            isPortal(i) &&
+            // find a door coming from the right room (if the level select was from
+            // an adjacent room - this is not guaranteed) but makes clicking through
+            // rooms less confusing
+            i.config.toRoom === fromRoom.id &&
+            // horizontal portal (ie, not floor/ceiling)
+            i.config.direction.z === 0,
+          // fall back to horizontal/vertical portal:
+        ) ??
         // find a door in the right direction:
         iterate(objectValues(toRoom.items)).find(
           (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
@@ -63,7 +86,8 @@ const findDestinationPortal = <RoomId extends string>(
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
-        ) || iterate(objectValues(toRoom.items)).find(isPortal)
+        ) ??
+        iterate(objectValues(toRoom.items)).find(isPortal)
       );
 
     default:
@@ -71,14 +95,18 @@ const findDestinationPortal = <RoomId extends string>(
   }
 };
 
-export const changeCharacterRoom = <RoomId extends string>({
-  playableItem,
-  gameState,
-  toRoomId,
-  positionRelativeToSourcePortal = originXyz,
-  changeType,
-  sourcePortal,
-}: ChangeCharacterRoomOptions<RoomId>) => {
+export const changeCharacterRoom = <RoomId extends string>(
+  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId>,
+) => {
+  const {
+    playableItem,
+    gameState,
+    toRoomId,
+    positionRelativeToSourcePortal: maybePositionRelativeToSourcePortal,
+    changeType,
+    sourcePortal,
+  } = changeCharacterRoomOptions;
+
   const leavingRoom = gameState.characterRooms[playableItem.id];
 
   if (leavingRoom === undefined) {
@@ -89,6 +117,26 @@ export const changeCharacterRoom = <RoomId extends string>({
     throw new Error(
       `Can't move ${playableItem.id} to the same room "${toRoomId}""`,
     );
+  }
+
+  let positionRelativeToSourcePortal: Xyz;
+  if (maybePositionRelativeToSourcePortal !== undefined) {
+    positionRelativeToSourcePortal = maybePositionRelativeToSourcePortal;
+  } else {
+    switch (changeType) {
+      case "teleport":
+        positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
+        break;
+      case "level-select":
+        // clear the player of the portal by putting a bit more in the room:
+        positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
+        break;
+      default:
+        changeType satisfies "never";
+        throw new Error(
+          'should not be able to call changeCharacterRoom with changeType "portal" and without a positionRelativeToSourcePortal',
+        );
+    }
   }
 
   const otherCharacterLoadedRoom =
@@ -112,9 +160,9 @@ export const changeCharacterRoom = <RoomId extends string>({
   if (changeType !== "teleport") {
     // find the door (etc) in the new room to enter in:
     const destinationPortal = findDestinationPortal(
-      changeType,
       toRoom,
       leavingRoom,
+      changeCharacterRoomOptions,
     );
 
     console.log(
@@ -132,7 +180,7 @@ export const changeCharacterRoom = <RoomId extends string>({
 
     if (destinationPortal === undefined) {
       throw new Error(
-        `trying to move ${playableItem.id} from ${leavingRoom.id} --to-> ${toRoomId} but no portal back the other way to locate with`,
+        `trying to move ${playableItem.id} from ${leavingRoom.id} --to-> ${toRoomId} but no destination portal found to locate with`,
       );
     }
 
@@ -161,9 +209,11 @@ export const changeCharacterRoom = <RoomId extends string>({
       "character put down at",
       playableItem.state.position,
       "which is relative to",
-      "destination portal position",
+      "destination portal position:",
       destinationPortal.state.position,
+      "relative point:",
       destinationPortal.config.relativePoint,
+      "positionRelativeToSourcePortal:",
       positionRelativeToSourcePortal,
     );
 

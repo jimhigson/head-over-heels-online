@@ -8,13 +8,18 @@ import type { CharacterName } from "@/model/modelTypes";
  */
 export type PlayableEntryState = Pick<
   ItemState<CharacterName, string>,
-  "position" | "facing" | "autoWalk" | "action"
+  "position" | "facing" | "autoWalk" | "action" | "vels"
 >;
 export const entryState = ({
-  state: { position, facing, autoWalk, action },
-}: PlayableItem): PlayableEntryState => ({
-  position,
-  facing,
-  autoWalk,
-  action,
-});
+  state: { position, facing, autoWalk, action, vels },
+}: PlayableItem): PlayableEntryState => {
+  return {
+    position,
+    facing,
+    autoWalk,
+    action,
+    // vels is (unusually) a mutable object on the state, so it needs to be
+    // copied for safety:
+    vels: { ...vels },
+  };
+};

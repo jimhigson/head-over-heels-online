@@ -484,7 +484,7 @@ export const handleItemWithMovementTouchingItem = <RoomId extends string>(
   const { movingItem: itemWithMovement, touchedItem } = e;
 
   //eg, monsters shouldn't change direction on touching a stopAutowalk item:
-  if (!isSolid(touchedItem)) return;
+  if (!isSolid(touchedItem, itemWithMovement)) return;
 
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":

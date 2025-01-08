@@ -19,22 +19,39 @@ export const isItemType =
     return (types as Array<string>).includes(item.type);
   };
 
-const isUnsolid = (item: AnyItemInPlay) =>
-  isItemType("bubbles", "stopAutowalk", "firedDoughnut")(item) ||
-  /*
-   * portals are usually solid, so baddies don't fall out of the room via doorways,
-   * but the floor portal needs to be unsolid since it is correct that baddies can fall down there.
-   * test in #penitentiary2 and #penitentiary21
-   */
-  (isPortal(item) && item.config.direction.z < 0) ||
-  (isFloor(item) && item.config.type === "none");
+/** @internal don't use this directly, use isSolid */
+const isNeverSolidItemType = isItemType(
+  "bubbles",
+  "stopAutowalk",
+  "firedDoughnut",
+);
+const isUnsolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
+  return (
+    isNeverSolidItemType(item) ||
+    /*
+     * portals are usually solid, so baddies and other items don't fall out of the
+     * world via room doorways, but
+     */
+    (isPortal(item) &&
+      // players by design collide with portals while they enter rooms, so it is
+      // unsolid for them
+      ((toucher !== undefined && isPlayableItem(toucher)) ||
+        // the floor portal needs to be unsolid since baddies can fall down there
+        // and out of the world. Test in #penitentiary2 and #penitentiary21.
+        // ceiling portals need to be non-solid to let lifts through
+        item.config.direction.z !== 0)) ||
+    // 'none' floors are not solid - items can fall out of the world this way!
+    (isFloor(item) && item.config.type === "none")
+  );
+};
 
 /**
- * Returns true iff the given @param mover should consider a collision with the
- * given @param item as being solid */
-
-export const isSolid = (item: AnyItemInPlay) => {
-  return !isUnsolid(item);
+ * Returns true iff the given @param toucher should consider a collision with the
+ * given @param item as being solid. If no mover is given, a general answer is returned,
+ * not specific to any mover.
+ */
+export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
+  return !isUnsolid(item, toucher);
 };
 
 export const isPushable = (collisionItem: AnyItemInPlay) => {

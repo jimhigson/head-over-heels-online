@@ -10,7 +10,7 @@ import { addXyz } from "@/utils/vectors/vectors";
 import { epsilon } from "@/utils/veryClose";
 
 export const spatiallyCheckStandingOn = <RoomId extends string>(
-  item: FreeItem<SceneryName, RoomId>,
+  itemMaybeStanding: FreeItem<SceneryName, RoomId>,
   itemMaybeBeingStoodOn: AnyItemInPlay<RoomId>,
   /**
     How much overlap is ok? if not given, an epsilon value is used,
@@ -22,11 +22,11 @@ export const spatiallyCheckStandingOn = <RoomId extends string>(
   */
   zOverlapAllowed: number = 0.001,
 ): boolean => {
-  if (!isSolid(itemMaybeBeingStoodOn)) {
+  if (!isSolid(itemMaybeBeingStoodOn, itemMaybeStanding)) {
     return false;
   }
 
-  if (item.id === itemMaybeBeingStoodOn.id) {
+  if (itemMaybeStanding.id === itemMaybeBeingStoodOn.id) {
     return false; // an item can't be stood on itself
   }
 
@@ -36,7 +36,7 @@ export const spatiallyCheckStandingOn = <RoomId extends string>(
         gravity: { z: gravityVelZ },
       },
     },
-  } = item;
+  } = itemMaybeStanding;
 
   if (gravityVelZ > 0) {
     // we're jumping and can't be standing on anything while travelling upwards
@@ -49,14 +49,14 @@ export const spatiallyCheckStandingOn = <RoomId extends string>(
     // just the bottom of item:
     {
       state: {
-        position: addXyz(item.state.position, {
+        position: addXyz(itemMaybeStanding.state.position, {
           x: 0,
           y: 0,
           z: -epsilon,
         }),
       },
-      aabb: { ...item.aabb, z: zOverlapAllowed + epsilon },
-      id: item.id,
+      aabb: { ...itemMaybeStanding.aabb, z: zOverlapAllowed + epsilon },
+      id: itemMaybeStanding.id,
     },
 
     // just the zero-volume top of itemMaybeBeingStoodOn:
