@@ -22,9 +22,9 @@ export type ChangeType = "teleport" | "portal" | "level-select";
 
 type ChangeCharacterRoomOptions<RoomId extends string> =
   | {
+      changeType: "portal";
       gameState: GameState<RoomId>;
       playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
-      changeType: "portal";
       toRoomId: NoInfer<NoInfer<RoomId>>;
       /* position relative to the portal in the source room */
       sourcePortal: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
@@ -32,9 +32,19 @@ type ChangeCharacterRoomOptions<RoomId extends string> =
       /* if true, the position in the source and destimation room will be exactly maintained */
     }
   | {
+      changeType: "teleport";
       gameState: GameState<RoomId>;
       playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
-      changeType: "teleport" | "level-select";
+      toRoomId: NoInfer<NoInfer<RoomId>>;
+      sourcePortal?: undefined;
+      /* position relative to the portal in the source room */
+      positionRelativeToSourcePortal?: undefined;
+      /* if true, the position in the source and destimation room will be exactly maintained */
+    }
+  | {
+      changeType: "level-select";
+      gameState: GameState<RoomId>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
       sourcePortal?: undefined;
       /* position relative to the portal in the source room */
@@ -157,7 +167,7 @@ export const changeCharacterRoom = <RoomId extends string>(
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
 
-  if (changeType !== "teleport") {
+  if (changeCharacterRoomOptions.changeType !== "teleport") {
     // find the door (etc) in the new room to enter in:
     const destinationPortal = findDestinationPortal(
       toRoom,
