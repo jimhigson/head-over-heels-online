@@ -14,6 +14,7 @@ import {
 } from "./symbiosis";
 import { entryState } from "../PlayableEntryState";
 import { collision1to1 } from "@/game/collision/aabbCollision";
+import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -128,6 +129,10 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
   );
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });
+
+    if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
+      removeHushPuppiesFromRoom(reloadedRoom, gameState);
+    }
   }
 
   return reloadedRoom;
@@ -150,6 +155,9 @@ const resetPlayableToEntryState = <RoomId extends string>(
   playableItem.state = {
     ...playableItem.state,
     ...entryState,
+    // clone vels because otherwise the player will mutate it and change their
+    // entry state:
+    //vels: { ...entryState.vels },
     expires: null,
     standingOn: null,
   };

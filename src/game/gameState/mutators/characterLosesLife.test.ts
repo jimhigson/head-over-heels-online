@@ -342,3 +342,22 @@ describe("while in symbiosis", () => {
     });
   });
 });
+
+describe("hush pupies", () => {
+  test("vanish when head enters", () => {
+    const h = mutatorsTestHarness();
+    h.playableWalksToRoom("head", "thirdRoom");
+    expect(h.selectRoomOfPlayable("head")?.items.hushPuppy).toBeUndefined();
+  });
+  test("remain when heels enters", () => {
+    const h = mutatorsTestHarness();
+    h.playableWalksToRoom("heels", "thirdRoom");
+    expect(h.selectRoomOfPlayable("heels")?.items.hushPuppy).toBeDefined();
+  });
+  test("vanish again when head loses life and room is reloaded", () => {
+    const h = mutatorsTestHarness();
+    h.playableWalksToRoom("head", "thirdRoom");
+    h.playableLosesLife("head");
+    expect(h.selectRoomOfPlayable("head")?.items.hushPuppy).toBeUndefined();
+  });
+});

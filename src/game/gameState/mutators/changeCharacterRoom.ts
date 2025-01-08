@@ -1,6 +1,6 @@
 import type { ItemInPlay } from "@/model/ItemInPlay";
 import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { isItemType, isPortal } from "@/game/physics/itemPredicates";
+import { isPortal } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import type { SceneryName } from "@/sprites/planets";
@@ -13,10 +13,10 @@ import type { CharacterName, RoomState } from "@/model/modelTypes";
 import { otherIndividualCharacterName } from "@/model/modelTypes";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { collision1toMany } from "@/game/collision/aabbCollision";
-import { makeItemFadeOut } from "./makeItemFadeOut";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { removeStandingOn } from "./modifyStandingOn";
+import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -153,13 +153,8 @@ export const changeCharacterRoom = <RoomId extends string>({
       heelsAbilities.carrying = null;
     }
     if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
-      const hushPuppyInRoomIter = iterate(objectValues(toRoom.items)).filter(
-        isItemType("hushPuppy"),
-      );
-      // hush puppies don't like head:
-      for (const hushPuppyBye of hushPuppyInRoomIter) {
-        makeItemFadeOut({ touchedItem: hushPuppyBye, gameState, room: toRoom });
-      }
+      // hush puppies vanish the moment head enters:
+      removeHushPuppiesFromRoom(toRoom, gameState);
     }
 
     console.log(
