@@ -185,8 +185,18 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary27/items/movableBlock@6,0,0/config/activated",
+    "value": "onStand"
+  },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary26/color/shade",
     "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary26/items/movableBlock@4,1,0/config/activated",
+    "value": "onStand"
   },
   {
     "op": "replace",
