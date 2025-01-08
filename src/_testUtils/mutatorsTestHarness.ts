@@ -93,6 +93,11 @@ export const testCampaign = {
           position: { x: 1, y: 5, z: 0 },
           config: { toRoom: "headStartingRoom", direction: "away" },
         },
+        hushPuppy: {
+          type: "hushPuppy",
+          position: { x: 0, y: 0, z: 4 },
+          config: {},
+        },
       },
     },
   },
