@@ -33,12 +33,12 @@ export const floorRenderExtent = (roomJson: AnyRoomJson) => {
     y: roomJson.size.y + (sidesWithDoors.towards ? 0.5 : 0),
   }).x;
   const topEdgeY = projectBlockXyzToScreenXy({
-    x: roomJson.size.x /*+ (sidesWithDoors.right ? 0.5 : 0)*/,
-    y: roomJson.size.y /*+ (sidesWithDoors.towards ? 0.5 : 0)*/,
+    x: roomJson.size.x,
+    y: roomJson.size.y,
   }).y;
 
   const frontSide = projectBlockXyzToScreenXy({ x: blockXMin, y: blockYMin }); // aka the origin, ground-level
-  const backSide = projectBlockXyzToScreenXy({ x: blockXMax, y: blockYMax }); // aka opposite the origin, top of wall
+  const backSide = projectBlockXyzToScreenXy({ x: blockXMax, y: blockYMax }); // aka opposite the origin, ground level
 
   return {
     blockXMin,

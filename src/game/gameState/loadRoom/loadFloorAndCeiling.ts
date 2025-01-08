@@ -8,11 +8,13 @@ import type { SceneryName } from "@/sprites/planets";
 import { blockSizePx } from "@/sprites/spritePivots";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
+import { defaultBaseState } from "./loadItem";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   roomJson: RoomJson<SceneryName, RoomId>,
 ): Generator<
   | ItemInPlay<"floor", SceneryName, RoomId>
+  | ItemInPlay<"floorEdge", SceneryName, RoomId>
   | ItemInPlay<"portal", SceneryName, RoomId>
 > {
   const roomNaturalFootprintAabb = blockXyzToFineXyz({
@@ -37,6 +39,22 @@ export function* loadFloorAndCeiling<RoomId extends string>(
     y: blockYMin,
     z: -1,
   });
+
+  yield {
+    id: "floorEdge",
+    ...defaultItemProperties,
+    type: "floorEdge",
+    state: {
+      ...defaultBaseState<RoomId>(),
+      // unlike the actual floor, the edge is not set down to have some depth:
+      position: { ...roomExtendedPosition, z: 0 },
+    },
+    // zero-volume:
+    aabb: originXyz,
+    config: {},
+    // this is always rendered in front of everything
+    fixedZIndex: 9999,
+  };
 
   if (roomJson.floor === "none" && roomJson.roomBelow !== undefined) {
     // yield a floor purely for the rendering ("no" floor still renders an edge)

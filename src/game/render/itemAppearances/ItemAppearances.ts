@@ -23,7 +23,7 @@ import {
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
-import { floorAppearance } from "./floorAppearance";
+import { floorAppearance, floorEdgeAppearance } from "./floorAppearance";
 import {
   doughnuttedFilter,
   greyFilter,
@@ -683,4 +683,5 @@ export const itemAppearances: {
   ball: staticSpriteAppearance("ball"),
 
   floor: floorAppearance,
+  floorEdge: floorEdgeAppearance,
 };
