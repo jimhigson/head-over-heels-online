@@ -11,7 +11,6 @@ import {
   floorTileSize,
   largeItemTextureSize,
   smallItemTextureSize,
-  smallItemOutlineTextureSize,
 } from "./textureSizes";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -31,11 +30,17 @@ try {
 }
 
 const frames = {
-  "generic.edge.right": {
+  "floorEdge.right": {
     frame: { x: 400, y: 502, w: 8, h: 9 },
   },
-  "generic.edge.towards": {
+  "floorEdge.towards": {
     frame: { x: 391, y: 502, w: 8, h: 9 },
+  },
+  "floorOverdraw.right": {
+    frame: { x: 400, y: 492, w: 8, h: 9 },
+  },
+  "floorOverdraw.towards": {
+    frame: { x: 391, y: 492, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
     frame: { x: 180, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
@@ -208,14 +213,8 @@ const frames = {
   "spring.compressed": {
     frame: { x: 2, y: 453, ...smallItemTextureSize },
   },
-  "spring.compressed.outline": {
-    frame: { x: 226, y: 451, ...smallItemOutlineTextureSize },
-  },
   "spring.released": {
     frame: { x: 27, y: 453, ...smallItemTextureSize },
-  },
-  "spring.released.outline": {
-    frame: { x: 253, y: 451, ...smallItemTextureSize },
   },
 
   ...seriesOfAnimationFrameTextures(
@@ -263,20 +262,11 @@ const frames = {
   sticks: {
     frame: { x: 2, y: 428, ...smallItemTextureSize },
   },
-  "sticks.outline": {
-    frame: { x: 226, y: 424, ...smallItemOutlineTextureSize },
-  },
   cube: {
     frame: { x: 27, y: 428, ...smallItemTextureSize },
   },
-  "cube.outline": {
-    frame: { x: 253, y: 424, ...smallItemOutlineTextureSize },
-  },
   drum: {
     frame: { x: 52, y: 428, ...smallItemTextureSize },
-  },
-  "drum.outline": {
-    frame: { x: 280, y: 424, ...smallItemOutlineTextureSize },
   },
   "switch.left": {
     frame: { x: 52, y: 453, ...smallItemTextureSize },

@@ -23,6 +23,7 @@ export const isItemType =
 const isNeverSolidItemType = isItemType(
   "bubbles",
   "stopAutowalk",
+  "floorEdge", // not even really a thing in the room
   "firedDoughnut",
 );
 const isUnsolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {

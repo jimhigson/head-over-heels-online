@@ -24,7 +24,7 @@ import { iterateToContainer } from "@/game/iterateToContainer";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
-function* generateFloorCutOffs(
+function* generateFloorOverdraws(
   room: UnknownRoomState,
   blockMin: Xy,
   sidesWithDoors: SidesWithDoors,
@@ -93,6 +93,38 @@ function* generateFloorCutOffs(
   }
 }
 
+const edges = (
+  blockXExtent: number,
+  blockYExtent: number,
+  type: "floorOverdraw" | "floorEdge",
+): { right: Container; towards: Container } => {
+  const towards = new Container();
+  for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
+    towards.addChild(
+      moveContainerToBlockXyz(
+        { x: ix, y: 0 },
+        createSprite({
+          pivot: { x: 7, y: 0 },
+          texture: `${type}.towards`,
+        }),
+      ),
+    );
+  }
+  const right = new Container();
+  for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
+    right.addChild(
+      moveContainerToBlockXyz(
+        { x: 0, y: iy },
+        createSprite({
+          pivot: { x: 0, y: 0 },
+          texture: `${type}.right`,
+        }),
+      ),
+    );
+  }
+  return { right, towards };
+};
+
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ item, room }) => {
     const {
@@ -112,7 +144,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       color: { shade },
     } = room;
 
-    const mainContainer = new Container({ label: `floor(${room.id})` });
+    const container = new Container({ label: `floor(${room.id})` });
 
     if (floorType !== "none") {
       const floorTileTexture: TextureId =
@@ -141,7 +173,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
         }
       }
       iterateToContainer(
-        generateFloorCutOffs(
+        generateFloorOverdraws(
           room,
           { x: blockXMin, y: blockYMin },
           sidesWithDoors,
@@ -170,39 +202,21 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       tilesContainer.filters = mainPaletteSwapFilter(room);
       tilesContainer.mask = tilesMask;
 
-      mainContainer.addChild(tilesContainer);
+      container.addChild(tilesContainer);
     }
 
-    const towardsEdge = new Container();
-    for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
-      towardsEdge.addChild(
-        moveContainerToBlockXyz(
-          { x: ix, y: 0 },
-          createSprite({
-            pivot: { x: 7, y: 0 },
-            texture: "generic.edge.towards",
-          }),
-        ),
-      );
-    }
-    towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
-    const rightEdge = new Container();
-    for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
-      rightEdge.addChild(
-        moveContainerToBlockXyz(
-          { x: 0, y: iy },
-          createSprite({
-            pivot: { x: 0, y: 0 },
-            texture: "generic.edge.right",
-          }),
-        ),
-      );
-    }
-    rightEdge.filters = edgePaletteSwapFilters(room, "right");
+    const { towards: towardsOverdraw, right: rightOverdraw } = edges(
+      blockXExtent,
+      blockYExtent,
+      "floorOverdraw",
+    );
+
+    container.addChild(towardsOverdraw);
+    container.addChild(rightOverdraw);
 
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
-    const floorMask = new Graphics()
+    const floorMaskCutOffLeftAndRight = new Graphics()
       // Add the rectangular area to show
       .poly(
         [
@@ -215,16 +229,86 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       )
       .fill(0xffff00);
 
-    mainContainer.addChild(floorMask);
-    mainContainer.addChild(towardsEdge);
-    mainContainer.addChild(rightEdge);
-    mainContainer.mask = floorMask;
+    container.addChild(floorMaskCutOffLeftAndRight);
+    container.mask = floorMaskCutOffLeftAndRight;
+
     // render on the top surface of the floor:
-    mainContainer.y = -item.aabb.z;
+    container.y = -item.aabb.z;
 
     // the floor never changes rendering so can cache to optimise:
-    mainContainer.cacheAsTexture(true);
+    container.cacheAsTexture(true);
 
-    return mainContainer;
+    return container;
+  },
+);
+
+export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
+  ({ room }) => {
+    const {
+      blockXMin,
+      blockYMin,
+      blockXMax,
+      blockYMax,
+      edgeLeftX,
+      edgeRightX,
+    } = floorRenderExtent(room.roomJson);
+    const blockXExtent = blockXMax - blockXMin;
+    const blockYExtent = blockYMax - blockYMin;
+
+    const container = new Container({ label: `floorEdge` });
+
+    const overDrawToHideFallenItems = new Graphics()
+      // Add the rectangular area to show
+      .poly(
+        [
+          projectBlockXyzToScreenXy({ x: blockXExtent, y: 0 }),
+          projectBlockXyzToScreenXy({ x: 0, y: 0 }),
+          projectBlockXyzToScreenXy({ x: 0, y: blockYExtent }),
+          { ...projectBlockXyzToScreenXy({ x: 0, y: blockYExtent }), y: 999 },
+          { ...projectBlockXyzToScreenXy({ x: blockXExtent, y: 0 }), y: 999 },
+        ],
+        true,
+      )
+      .fill(0x000000);
+    // move overdraw down so its edge is hidden under the floor edge sprites:
+    overDrawToHideFallenItems.y = 8;
+    container.addChild(overDrawToHideFallenItems);
+
+    const { towards: towardsEdge, right: rightEdge } = edges(
+      blockXExtent,
+      blockYExtent,
+      "floorEdge",
+    );
+
+    towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
+    rightEdge.filters = edgePaletteSwapFilters(room, "right");
+
+    container.addChild(towardsEdge);
+    container.addChild(rightEdge);
+
+    // render black everywhere below the floor edge - this will mean items that fall out of
+    // the room via the floor will not show under the hud:
+
+    // rendering strategy differs slightly from original here - we don't render floors added in for near-side
+    // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
+    const floorMaskCutOffLeftAndRight = new Graphics()
+      // Add the rectangular area to show
+      .poly(
+        [
+          { x: edgeLeftX, y: 999 },
+          { x: edgeLeftX, y: -999 },
+          { x: edgeRightX, y: -999 },
+          { x: edgeRightX, y: 999 },
+        ],
+        true,
+      )
+      .fill(0xffff00);
+    container.addChild(floorMaskCutOffLeftAndRight);
+    container.mask = floorMaskCutOffLeftAndRight;
+
+    // the floor never changes rendering so can cache to optimise:
+    container.cacheAsTexture(true);
+
+    return container;
   },
 );

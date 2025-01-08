@@ -13,6 +13,7 @@ export type ItemInPlayType =
   | "stopAutowalk"
   | "portal"
   | "floor"
+  | "floorEdge"
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
   | "firedDoughnut";
