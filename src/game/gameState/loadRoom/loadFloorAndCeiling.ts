@@ -53,7 +53,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         // no shadows on a none floor:
         shadowMask: undefined,
         state: {
-          position: floorPosition,
+          position: roomExtendedPosition,
           expires: null,
           stoodOnBy: new Set(),
           disappear: null,
