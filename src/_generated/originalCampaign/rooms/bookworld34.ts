@@ -7,135 +7,120 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld34",
   items: {
-    "book@0,10,-1": {
-      config: { slider: true },
-      position: { x: 0, y: 10, z: -1 },
-      type: "book",
-    },
-    "book@0,10,0": {
-      config: { slider: false },
+    "block@0,10,0": {
+      config: { style: "book" },
       position: { x: 0, y: 10, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,10,2": {
-      config: { slider: false },
+    "block@0,10,2": {
+      config: { style: "book" },
       position: { x: 0, y: 10, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@0,13,-1": {
-      config: { slider: true },
-      position: { x: 0, y: 13, z: -1 },
-      type: "book",
-    },
-    "book@0,13,0": {
-      config: { slider: false },
+    "block@0,13,0": {
+      config: { style: "book" },
       position: { x: 0, y: 13, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,4,0": {
-      config: { slider: false },
+    "block@0,4,0": {
+      config: { style: "book" },
       position: { x: 0, y: 4, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,5,-1": {
-      config: { slider: true },
-      position: { x: 0, y: 5, z: -1 },
-      type: "book",
-    },
-    "book@0,5,0": {
-      config: { slider: false },
+    "block@0,5,0": {
+      config: { style: "book" },
       position: { x: 0, y: 5, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,5,1": {
-      config: { slider: false },
+    "block@0,5,1": {
+      config: { style: "book" },
       position: { x: 0, y: 5, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@0,5,3": {
-      config: { slider: false },
+    "block@0,5,3": {
+      config: { style: "book" },
       position: { x: 0, y: 5, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@0,6,3": {
-      config: { slider: false },
+    "block@0,6,3": {
+      config: { style: "book" },
       position: { x: 0, y: 6, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@0,7,3": {
-      config: { slider: false },
+    "block@0,7,3": {
+      config: { style: "book" },
       position: { x: 0, y: 7, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@0,8,3": {
-      config: { slider: false },
+    "block@0,8,3": {
+      config: { style: "book" },
       position: { x: 0, y: 8, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@0,9,3": {
-      config: { slider: false },
+    "block@0,9,3": {
+      config: { style: "book" },
       position: { x: 0, y: 9, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,10,0": {
-      config: { slider: false },
+    "block@1,10,0": {
+      config: { style: "book" },
       position: { x: 1, y: 10, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@1,10,1": {
-      config: { slider: false },
+    "block@1,10,1": {
+      config: { style: "book" },
       position: { x: 1, y: 10, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@1,10,2": {
-      config: { slider: false },
+    "block@1,10,2": {
+      config: { style: "book" },
       position: { x: 1, y: 10, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@1,10,3": {
-      config: { slider: false },
+    "block@1,10,3": {
+      config: { style: "book" },
       position: { x: 1, y: 10, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,5,0": {
-      config: { slider: false },
+    "block@1,5,0": {
+      config: { style: "book" },
       position: { x: 1, y: 5, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@1,5,1": {
-      config: { slider: false },
+    "block@1,5,1": {
+      config: { style: "book" },
       position: { x: 1, y: 5, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@1,5,2": {
-      config: { slider: false },
+    "block@1,5,2": {
+      config: { style: "book" },
       position: { x: 1, y: 5, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@1,5,3": {
-      config: { slider: false },
+    "block@1,5,3": {
+      config: { style: "book" },
       position: { x: 1, y: 5, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,6,3": {
-      config: { slider: false },
+    "block@1,6,3": {
+      config: { style: "book" },
       position: { x: 1, y: 6, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,7,3": {
-      config: { slider: false },
+    "block@1,7,3": {
+      config: { style: "book" },
       position: { x: 1, y: 7, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,8,3": {
-      config: { slider: false },
+    "block@1,8,3": {
+      config: { style: "book" },
       position: { x: 1, y: 8, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,9,3": {
-      config: { slider: false },
+    "block@1,9,3": {
+      config: { style: "book" },
       position: { x: 1, y: 9, z: 3 },
-      type: "book",
+      type: "block",
     },
     "door@0,0,0": {
       config: { direction: "towards", toRoom: "bookworld33" },
@@ -151,6 +136,21 @@ export const room = inferRoomJson({
       config: { gives: "jumps" },
       position: { x: 1, y: 9, z: 0 },
       type: "pickup",
+    },
+    "slidingBlock@0,10,-1": {
+      config: { style: "book" },
+      position: { x: 0, y: 10, z: 1 },
+      type: "slidingBlock",
+    },
+    "slidingBlock@0,13,-1": {
+      config: { style: "book" },
+      position: { x: 0, y: 13, z: 1 },
+      type: "slidingBlock",
+    },
+    "slidingBlock@0,5,-1": {
+      config: { style: "book" },
+      position: { x: 0, y: 5, z: 2 },
+      type: "slidingBlock",
     },
   },
   planet: "bookworld",

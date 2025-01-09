@@ -455,11 +455,26 @@ const convertItem = async ({
     }
 
     case "book":
-      return {
-        type: "book",
-        config: { slider: xml2JsonItem.class === "freeitem" },
-        position,
-      };
+      return xml2JsonItem.class === "freeitem" ?
+          {
+            type: "slidingBlock",
+            config: { style: "book" },
+            position,
+          }
+        : {
+            type: "block",
+            config: {
+              style: "book",
+              disappearing:
+                (
+                  xml2JsonItem.behavior ===
+                  "behavior of disappearance on jump into"
+                ) ?
+                  "onStand"
+                : undefined,
+            },
+            position,
+          };
 
     case "drum":
     case "portable-brick":

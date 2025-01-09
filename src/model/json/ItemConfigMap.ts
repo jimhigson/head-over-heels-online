@@ -7,7 +7,7 @@ import type {
   DeadlyItemStyle,
 } from "./JsonItem";
 
-export type BlockStyle = "organic" | "artificial" | "tower";
+export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 
 export type JsonMovement =
   | "free"
@@ -196,7 +196,9 @@ export type ItemConfigMap<
       }
   );
   slidingBlock: {
-    style: "puck";
+    // non-deadly sliding puck - eg the arrows in the centre of the moonbase
+    // in the middle of the teleporter rooms
+    style: "puck" | "book";
   };
   book: {
     // books are like movableBlocks, but have orientation and are only sometimes movable.

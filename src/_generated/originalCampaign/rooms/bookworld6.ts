@@ -7,20 +7,15 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld6",
   items: {
-    "book@1,3,0": {
-      config: { slider: false },
+    "block@1,3,0": {
+      config: { style: "book" },
       position: { x: 1, y: 3, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@1,3,1": {
-      config: { slider: true },
-      position: { x: 1, y: 3, z: 1 },
-      type: "book",
-    },
-    "book@1,7,0": {
-      config: { slider: false },
+    "block@1,7,0": {
+      config: { style: "book" },
       position: { x: 1, y: 7, z: 0 },
-      type: "book",
+      type: "block",
     },
     "deadlyBlock@3,0,0": {
       config: { style: "toaster" },
@@ -46,6 +41,11 @@ export const room = inferRoomJson({
       config: { movement: "free", style: "stepStool" },
       position: { x: 2, y: 5, z: 0 },
       type: "movableBlock",
+    },
+    "slidingBlock@1,3,1": {
+      config: { style: "book" },
+      position: { x: 1, y: 3, z: 1 },
+      type: "slidingBlock",
     },
   },
   planet: "bookworld",

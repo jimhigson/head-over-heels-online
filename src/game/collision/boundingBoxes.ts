@@ -51,8 +51,11 @@ export const boundingBoxForItem = (
     case "moveableDeadly":
     case "slidingDeadly":
     case "firedDoughnut":
-    case "slidingBlock":
       return { aabb: smallItemAabb };
+    case "slidingBlock":
+      return item.config.style === "book" ?
+          { aabb: largeItemAabb }
+        : { aabb: smallItemAabb };
     case "lift":
       return {
         aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
@@ -81,6 +84,7 @@ export const boundingBoxForItem = (
       switch (item.config.style) {
         case "artificial":
         case "organic":
+        case "book":
           return { aabb: largeItemAabb };
         case "tower":
           return { aabb: { x: 11, y: 11, z: blockSizePx.h } };
@@ -117,7 +121,6 @@ export const boundingBoxForItem = (
     case "bubbles":
       return { aabb: smallItemAabb };
 
-    case "book":
     case "conveyor":
     case "hushPuppy":
     case "teleporter": {

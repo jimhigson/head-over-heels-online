@@ -7,9 +7,29 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld35",
   items: {
+    "block@1,7,3": {
+      config: { style: "book" },
+      position: { x: 1, y: 7, z: 3 },
+      type: "block",
+    },
+    "block@2,7,3": {
+      config: { style: "book" },
+      position: { x: 2, y: 7, z: 3 },
+      type: "block",
+    },
+    "block@3,7,3": {
+      config: { style: "book" },
+      position: { x: 3, y: 7, z: 3 },
+      type: "block",
+    },
     "block@5,1,0": {
       config: { style: "organic" },
       position: { x: 5, y: 1, z: 0 },
+      type: "block",
+    },
+    "block@5,7,4": {
+      config: { style: "book" },
+      position: { x: 5, y: 7, z: 4 },
       type: "block",
     },
     "block@6,0,0": {
@@ -31,26 +51,6 @@ export const room = inferRoomJson({
       config: { style: "organic" },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
-    },
-    "book@1,7,3": {
-      config: { slider: false },
-      position: { x: 1, y: 7, z: 3 },
-      type: "book",
-    },
-    "book@2,7,3": {
-      config: { slider: false },
-      position: { x: 2, y: 7, z: 3 },
-      type: "book",
-    },
-    "book@3,7,3": {
-      config: { slider: false },
-      position: { x: 3, y: 7, z: 3 },
-      type: "book",
-    },
-    "book@5,7,4": {
-      config: { slider: false },
-      position: { x: 5, y: 7, z: 4 },
-      type: "book",
     },
     "charles@5,7,5": {
       config: {},

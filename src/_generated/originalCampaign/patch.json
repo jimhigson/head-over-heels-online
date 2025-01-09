@@ -73,9 +73,9 @@
     "op": "add",
     "path": "/rooms/safari15/items/monsterpen",
     "value": {
-      "type": "barrier",
+      "config": { "axis": "x" },
       "position": { "x": 1, "y": 9, "z": 0 },
-      "config": { "axis": "x" }
+      "type": "barrier"
     }
   },
   {
@@ -670,6 +670,21 @@
   { "op": "replace", "path": "/rooms/bookworld37/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/bookworld36/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/bookworld35/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld34/items/slidingBlock@0,5,-1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld34/items/slidingBlock@0,10,-1/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld34/items/slidingBlock@0,13,-1/position/z",
+    "value": 1
+  },
   {
     "op": "replace",
     "path": "/rooms/bookworld33/color/shade",

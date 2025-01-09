@@ -7,40 +7,40 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld22",
   items: {
-    "book@0,0,2": {
-      config: { slider: false },
+    "block@0,0,2": {
+      config: { disappearing: "onStand", style: "book" },
       position: { x: 0, y: 0, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@0,1,0": {
-      config: { slider: false },
+    "block@0,1,0": {
+      config: { style: "book" },
       position: { x: 0, y: 1, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,1,1": {
-      config: { slider: false },
+    "block@0,1,1": {
+      config: { style: "book" },
       position: { x: 0, y: 1, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@1,0,3": {
-      config: { slider: false },
+    "block@1,0,3": {
+      config: { style: "book" },
       position: { x: 1, y: 0, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@1,1,0": {
-      config: { slider: false },
+    "block@1,1,0": {
+      config: { style: "book" },
       position: { x: 1, y: 1, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@1,1,1": {
-      config: { slider: false },
+    "block@1,1,1": {
+      config: { style: "book" },
       position: { x: 1, y: 1, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@1,1,2": {
-      config: { slider: false },
+    "block@1,1,2": {
+      config: { style: "book" },
       position: { x: 1, y: 1, z: 2 },
-      type: "book",
+      type: "block",
     },
     "deadlyBlock@0,0,0": {
       config: { style: "toaster" },

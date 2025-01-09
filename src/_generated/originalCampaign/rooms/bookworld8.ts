@@ -7,25 +7,25 @@ export const room = inferRoomJson({
   floor: "bookworld",
   id: "bookworld8",
   items: {
-    "book@0,2,0": {
-      config: { slider: false },
+    "block@0,2,0": {
+      config: { style: "book" },
       position: { x: 0, y: 2, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@0,2,2": {
-      config: { slider: false },
+    "block@0,2,2": {
+      config: { style: "book" },
       position: { x: 0, y: 2, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@0,2,3": {
-      config: { slider: false },
+    "block@0,2,3": {
+      config: { style: "book" },
       position: { x: 0, y: 2, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@0,3,3": {
-      config: { slider: false },
+    "block@0,3,3": {
+      config: { style: "book" },
       position: { x: 0, y: 3, z: 3 },
-      type: "book",
+      type: "block",
     },
     "door@0,3,4": {
       config: { direction: "right", toRoom: "bookworld9" },

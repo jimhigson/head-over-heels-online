@@ -89,7 +89,6 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   barrier: 1,
   floor: 1,
   floorEdge: 1, // not actually possible to touch
-  book: 1,
   hushPuppy: 1,
   teleporter: 1,
   doorFrame: 1,

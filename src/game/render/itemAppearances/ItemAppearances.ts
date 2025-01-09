@@ -40,6 +40,9 @@ const blockTextureId = (
   style: BlockStyle,
   disappear: boolean,
 ): TextureId => {
+  if (style === "book") {
+    return `book.x`;
+  }
   if (style === "organic" && isDark) {
     return `block.organic.dark${disappear ? ".disappearing" : ""}`;
   }
@@ -56,7 +59,7 @@ const singleRenderWithStyleAsTexture = renderOnce<
     item: {
       config: { style },
     },
-  }) => createSprite(style),
+  }) => createSprite(style === "book" ? "book.y" : style),
 );
 
 export const itemAppearances: {
@@ -653,14 +656,6 @@ export const itemAppearances: {
       renderProps: { compressed, highlighted },
     };
   },
-
-  book: renderOnce(
-    ({
-      item: {
-        config: { slider },
-      },
-    }) => createSprite(`book.${slider ? "y" : "x"}`),
-  ),
 
   hushPuppy: staticSpriteAppearance("hushPuppy"),
 

@@ -1148,13 +1148,13 @@ const rooms = {
         position: { x: 3, y: 3, z: 0 },
       },
       {
-        type: "book",
-        config: { slider: true },
+        type: "slidingBlock",
+        config: { style: "book" },
         position: { x: 4, y: 2, z: 0 },
       },
       {
-        type: "book",
-        config: {},
+        type: "block",
+        config: { style: "book" },
         position: { x: 4, y: 2, z: 1 },
       },
       {
