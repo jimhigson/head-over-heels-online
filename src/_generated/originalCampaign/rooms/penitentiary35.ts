@@ -5,8 +5,28 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   floor: "none",
-  id: "penitentiary29",
+  id: "penitentiary35",
   items: {
+    "block@0,0,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
+    "block@0,1,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 0, y: 1, z: 0 },
+      type: "block",
+    },
+    "block@1,0,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 1, y: 0, z: 0 },
+      type: "block",
+    },
+    "block@1,1,0": {
+      config: { disappearing: false, style: "organic" },
+      position: { x: 1, y: 1, z: 0 },
+      type: "block",
+    },
     "block@2,0,0": {
       config: { disappearing: false, style: "organic" },
       position: { x: 2, y: 0, z: 0 },
@@ -47,44 +67,35 @@ export const room = inferRoomJson({
       position: { x: 5, y: 1, z: 0 },
       type: "block",
     },
-    "block@6,0,0": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 6, y: 0, z: 0 },
-      type: "block",
+    "portableBlock@1,1,1": {
+      config: { style: "sticks" },
+      position: { x: 1, y: 1, z: 1 },
+      type: "portableBlock",
     },
-    "block@6,1,0": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 6, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@7,0,0": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@7,1,0": {
-      config: { disappearing: false, style: "organic" },
-      position: { x: 7, y: 1, z: 0 },
-      type: "block",
-    },
-    "door@8,0,3": {
-      config: { direction: "left", toRoom: "penitentiary28" },
-      position: { x: 8, y: 0, z: 3 },
-      type: "door",
-    },
-    "slidingDeadly@2,0,1": {
+    "slidingDeadly@5,0,1": {
       config: { style: "puck" },
-      position: { x: 2, y: 0, z: 1 },
+      position: { x: 5, y: 0, z: 1 },
       type: "slidingDeadly",
     },
-    "slidingDeadly@2,1,1": {
+    "slidingDeadly@5,0,2": {
       config: { style: "puck" },
-      position: { x: 2, y: 1, z: 1 },
+      position: { x: 5, y: 0, z: 2 },
+      type: "slidingDeadly",
+    },
+    "slidingDeadly@5,1,1": {
+      config: { style: "puck" },
+      position: { x: 5, y: 1, z: 1 },
+      type: "slidingDeadly",
+    },
+    "slidingDeadly@5,1,2": {
+      config: { style: "puck" },
+      position: { x: 5, y: 1, z: 2 },
       type: "slidingDeadly",
     },
   },
   planet: "penitentiary",
-  roomBelow: "penitentiary35",
+  roomAbove: "penitentiary29",
+  roomBelow: "penitentiary32",
   size: { x: 8, y: 2 },
   walls: {
     away: [
@@ -97,6 +108,6 @@ export const room = inferRoomJson({
       "loop",
       "loop",
     ],
-    left: ["none", "none"],
+    left: ["loop", "loop"],
   },
 }) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;

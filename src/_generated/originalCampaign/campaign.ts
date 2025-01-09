@@ -243,6 +243,7 @@ import { room as penitentiary31 } from "./rooms/penitentiary31.ts";
 import { room as penitentiary32 } from "./rooms/penitentiary32.ts";
 import { room as penitentiary33 } from "./rooms/penitentiary33.ts";
 import { room as penitentiary34crown } from "./rooms/penitentiary34crown.ts";
+import { room as penitentiary35 } from "./rooms/penitentiary35.ts";
 import { room as safari1 } from "./rooms/safari1.ts";
 import { room as safari2 } from "./rooms/safari2.ts";
 import { room as safari3 } from "./rooms/safari3.ts";
@@ -521,6 +522,7 @@ export const campaign = {
     penitentiary32,
     penitentiary33,
     penitentiary34crown,
+    penitentiary35,
     safari1,
     safari2,
     safari3,

@@ -7,6 +7,7 @@ import { objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
 import { orderBy } from "natural-orderby";
 import type { AnyRoomJson } from "../model/RoomJson";
+import type { Campaign } from "@/model/modelTypes";
 
 /* multi-line string are easier to read than single-line strings with \n */
 function convertMultilineToTemplate(jsonString: string): string {
@@ -39,16 +40,15 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
   const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
-  const roomIdsSorted = orderBy(Object.keys(rooms));
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
     JSON.stringify({ rooms }),
   );
 
-  let patchedJson;
+  let patchedCampaign: Campaign<string>;
   try {
-    patchedJson = fastJsonPatch.applyPatch(
+    patchedCampaign = fastJsonPatch.applyPatch(
       { rooms },
       patch as Operation[],
     ).newDocument;
@@ -56,6 +56,8 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     console.error("Error applying patch", "to", { rooms }, e);
     process.exit(1);
   }
+
+  const roomIdsSorted = orderBy(Object.keys(patchedCampaign.rooms));
 
   const writeOriginalCampaignRoomIdType = writeFile(
     tsRoomIdsFilename,
@@ -91,7 +93,7 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     writeTsBarrell,
     writeOriginalCampaignRoomIdType,
     writeConvertedJsonPromise,
-    ...iterate(objectValues(patchedJson.rooms)).map(async (room) => {
+    ...iterate(objectValues(patchedCampaign.rooms)).map(async (room) => {
       return writeFile(tsRoomFilename(room.id), roomTs(room));
     }),
   ]);
