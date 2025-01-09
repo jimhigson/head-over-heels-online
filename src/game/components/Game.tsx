@@ -4,9 +4,10 @@ import { type GameApi } from "../GameApi";
 import type { RenderOptions } from "../RenderOptions";
 import { GameOverlayDialogs } from "./GameOverlayDialogs";
 
-// this helps containers with cacheAsTexture turned on to not go blurry when rendered:
-import { TextureStyle } from "pixi.js";
 import { gameMain } from "../gameMain";
+
+// setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
+import { TextureStyle } from "pixi.js";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const useGame = <RoomId extends string>(
