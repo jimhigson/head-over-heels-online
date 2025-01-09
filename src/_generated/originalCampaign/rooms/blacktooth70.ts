@@ -8,42 +8,42 @@ export const room = inferRoomJson({
   id: "blacktooth70",
   items: {
     "block@0,5,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
     "block@0,5,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 5, z: 1 },
       type: "block",
     },
     "block@0,6,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 6, z: 1 },
       type: "block",
     },
     "block@0,7,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 7, z: 1 },
       type: "block",
     },
     "block@1,5,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
     "block@1,5,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 5, z: 1 },
       type: "block",
     },
     "block@1,6,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 6, z: 1 },
       type: "block",
     },
     "block@1,7,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 7, z: 1 },
       type: "block",
     },

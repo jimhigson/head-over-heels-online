@@ -281,10 +281,13 @@ const initialState = (jsonItem: UnknownJsonItem) => {
       { setting: "left", touchedOnProgression: -1 }
     : {}),
     ...(jsonItem.type === "block" ?
-      { disappear: jsonItem.config.disappearing ? "onStand" : null }
+      { disappear: jsonItem.config.disappearing ?? null }
+    : {}),
+    ...(jsonItem.type === "conveyor" ?
+      { disappear: jsonItem.config.disappearing ?? null }
     : {}),
     ...(jsonItem.type === "barrier" ?
-      { disappear: jsonItem.config.disappearing ? "onTouch" : null }
+      { disappear: jsonItem.config.disappearing ?? null }
     : {}),
     ...(jsonItem.type === "lift" ?
       { direction: "up", vels: { lift: originXyz } }

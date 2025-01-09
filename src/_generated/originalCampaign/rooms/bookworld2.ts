@@ -7,6 +7,16 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "bookworld2",
   items: {
+    canary: {
+      config: { style: "cube" },
+      position: { x: 11, y: 1, z: 1 },
+      type: "portableBlock",
+    },
+    canary2: {
+      config: { style: "cube" },
+      position: { x: 11, y: 1, z: 2 },
+      type: "portableBlock",
+    },
     "conveyor@0,0,0": {
       config: { direction: "away" },
       position: { x: 0, y: 0, z: 0 },
@@ -53,7 +63,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@2,0,0": {
-      config: { direction: "right" },
+      config: { direction: "right", disappearing: "onStand" },
       position: { x: 2, y: 0, z: 0 },
       type: "conveyor",
     },
@@ -78,7 +88,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@4,3,0": {
-      config: { direction: "towards" },
+      config: { direction: "towards", disappearing: "onStand" },
       position: { x: 4, y: 3, z: 0 },
       type: "conveyor",
     },
@@ -113,7 +123,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@9,5,0": {
-      config: { direction: "right" },
+      config: { direction: "right", disappearing: "onStand" },
       position: { x: 9, y: 5, z: 0 },
       type: "conveyor",
     },
@@ -161,6 +171,16 @@ export const room = inferRoomJson({
       config: { direction: "left", toRoom: "bookworld1" },
       position: { x: 12, y: 2, z: 3 },
       type: "door",
+    },
+    extraBlock: {
+      config: { style: "organic" },
+      position: { x: 11, y: 1, z: 0 },
+      type: "block",
+    },
+    extraBlock2: {
+      config: { style: "organic" },
+      position: { x: 11, y: 0, z: 0 },
+      type: "block",
     },
   },
   planet: "bookworld",

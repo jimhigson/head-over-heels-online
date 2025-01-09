@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   id: "penitentiary6",
   items: {
     "block@0,5,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },

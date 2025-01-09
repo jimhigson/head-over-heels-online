@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   id: "bookworld41crown",
   items: {
     "barrier@3,4,0": {
-      config: { axis: "y", disappearing: false },
+      config: { axis: "y" },
       position: { x: 3, y: 4, z: 0 },
       type: "barrier",
     },

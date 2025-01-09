@@ -54,7 +54,7 @@ const colourRooms = () => {
     },
     {
       type: "block",
-      config: { style: "organic", disappearing: false },
+      config: { style: "organic" },
       position: { x: 4, y: 6, z: 0 },
     },
     {
@@ -182,12 +182,12 @@ const rooms = {
       // },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 0, y: 2, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 0, y: 2, z: 2 },
       },
       // {
@@ -240,7 +240,7 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 5, y: 0, z: 0 },
       },
 
@@ -304,22 +304,22 @@ const rooms = {
       // to test disappearing barriers:
       {
         type: "barrier",
-        config: { axis: "x", disappearing: false },
+        config: { axis: "x" },
         position: { x: 10, y: 6, z: 0 },
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: true },
+        config: { axis: "x", disappearing: "onTouch" },
         position: { x: 10, y: 6, z: 1 },
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: false },
+        config: { axis: "x" },
         position: { x: 10, y: 8, z: 0 },
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: true },
+        config: { axis: "x", disappearing: "onTouch" },
         position: { x: 10, y: 8, z: 1 },
       },
       // tests for lifts:
@@ -342,7 +342,7 @@ const rooms = {
       {
         type: "block",
         config: {
-          disappearing: true,
+          disappearing: "onStand",
           style: "organic",
         },
         position: { x: 0, y: 4, z: 0 },
@@ -375,12 +375,12 @@ const rooms = {
       // blocks provide a lift lobby:
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 3, y: 5, z: 8 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 3, y: 3, z: 8 },
       },
       // charles and joystick tests
@@ -409,7 +409,7 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "artificial", disappearing: false },
+        config: { style: "artificial" },
         position: { x: 4, y: 3, z: 0 },
       },
       // monsters that push the joysticks!
@@ -548,38 +548,38 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 6, y: 6, z: 2 },
       },
       // run of disappearing blocks:
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 8, y: 0, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: "onStand" },
         position: { x: 9, y: 0, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: "onStand" },
         position: { x: 9, y: 0, z: 1 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: "onStand" },
         position: { x: 9, y: 0, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: "onStand" },
         position: { x: 10, y: 0, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: true },
+        config: { style: "organic", disappearing: "onStand" },
         position: { x: 11, y: 0, z: 0 },
       },
 
@@ -737,7 +737,6 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
-          disappearing: false,
         },
         position: { x: 14, y: 3, z: 0 },
       },
@@ -745,7 +744,6 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
-          disappearing: false,
         },
         position: { x: 14, y: 3, z: 1 },
       },
@@ -760,7 +758,6 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
-          disappearing: false,
         },
         position: { x: 13, y: 5, z: 0 },
       },
@@ -776,7 +773,6 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
-          disappearing: false,
         },
         position: { x: 13, y: 7, z: 0 },
       },
@@ -784,7 +780,6 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
-          disappearing: false,
         },
         position: { x: 13, y: 5, z: 1 },
       },
@@ -792,7 +787,6 @@ const rooms = {
         type: "block",
         config: {
           style: "organic",
-          disappearing: false,
         },
         position: { x: 13, y: 5, z: 2 },
       },
@@ -800,7 +794,6 @@ const rooms = {
         type: "block",
         config: {
           style: "organic",
-          disappearing: false,
         },
         position: { x: 13, y: 4, z: 2 },
       },
@@ -808,7 +801,6 @@ const rooms = {
         type: "block",
         config: {
           style: "organic",
-          disappearing: false,
         },
         position: { x: 13, y: 4, z: 3 },
       },
@@ -816,7 +808,6 @@ const rooms = {
         type: "block",
         config: {
           style: "organic",
-          disappearing: false,
         },
         position: { x: 13, y: 3, z: 3 },
       },
@@ -889,17 +880,17 @@ const rooms = {
       // what's more, they all have substantial overlap that looks bad if not rendered correctly!
       {
         type: "block",
-        config: { style: "artificial", disappearing: false },
+        config: { style: "artificial" },
         position: { x: 15.5, y: 8, z: 0 },
       },
       {
         type: "block",
-        config: { style: "artificial", disappearing: false },
+        config: { style: "artificial" },
         position: { x: 15, y: 9, z: 0.5 },
       },
       {
         type: "block",
-        config: { style: "artificial", disappearing: false },
+        config: { style: "artificial" },
         position: { x: 16, y: 8.5, z: 1 },
       },
       // some deadly step to check shields on:
@@ -945,17 +936,17 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 1, y: 10, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 0, y: 10, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 2, y: 10, z: 3 },
       },
       {
@@ -1153,7 +1144,7 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "artificial", disappearing: false },
+        config: { style: "artificial" },
         position: { x: 3, y: 3, z: 0 },
       },
       {
@@ -1168,17 +1159,17 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: false },
+        config: { style: "organic" },
         position: { x: 5, y: 5, z: 0 },
       },
       {
         type: "block",
-        config: { style: "tower", disappearing: false },
+        config: { style: "tower" },
         position: { x: 7, y: 7, z: 0 },
       },
       {
         type: "block",
-        config: { style: "tower", disappearing: false },
+        config: { style: "tower" },
         position: { x: 7, y: 7, z: 1 },
       },
       {
@@ -1273,12 +1264,12 @@ const rooms = {
       },
       {
         type: "barrier",
-        config: { axis: "y", disappearing: false },
+        config: { axis: "y" },
         position: { x: 6, y: 1, z: 0 },
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: false },
+        config: { axis: "x" },
         position: { x: 8, y: 1, z: 0 },
       },
       {

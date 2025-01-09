@@ -282,29 +282,34 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     - needs a test specially for a jump to 2 across, 1 up
 
 # safari9
-[ ] sandwich falling out of world goes in front of room edge
+[x] sandwich falling out of world goes in front of room edge
 # safari15
 [ ] dalek can get out of its zone
 # safari18
 [x] doesn't work without y-scrolling
-# safari6triple and #safari7
-[ ] we can't handle two doors between same two rooms
+
+# safari6triple
+[ ] walls missing
+    - these are only missing because the room is too big!
+
+# safari6triple <--> #safari7
+[x] we can't handle two doors between same two rooms
 
 # safari35
-[ ] sandwich starts moving on stand on
-[ ] sandwich falls between gap between blocks
+[x] sandwich starts moving on stand on
+[ ] sandwich should fall in the gap between blocks
 
 # bookworld2
-[ ] vanishing conveyors don't vanish
+[x] vanishing conveyors don't vanish
 
 # bookworld3
-[ ] monkeys don't move
+[x] monkeys don't move
 
 # bookworld6
 [ ] sliding book doesn't slide
 
 # bookworld34
-[ ] immediate crash! - items in collision
+[ ] immediate crash! - items in collisionack
 
 # penitentiary2
 [ ] this room shouldn't scroll horizontally
@@ -321,7 +326,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] falling into a room that's smaller means can't locate player if fall off towards the back of the room    
 
 # penitentiary29
-[ ] crash on drop down to next room
+[x] crash on drop down to next room
  - seems to be a room missing - the room right below this one and above 32
 
 # moonbase33triple

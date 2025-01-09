@@ -8,47 +8,47 @@ export const room = inferRoomJson({
   id: "egyptus7",
   items: {
     "block@0,0,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
     "block@0,5,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 5, z: 3 },
       type: "block",
     },
     "block@0,7,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "block@2,7,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 7, z: 3 },
       type: "block",
     },
     "block@3,0,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 0, z: 3 },
       type: "block",
     },
     "block@4,0,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 4, y: 0, z: 3 },
       type: "block",
     },
     "block@7,3,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 3, z: 3 },
       type: "block",
     },
     "block@7,4,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 4, z: 3 },
       type: "block",
     },
     "block@7,7,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 7, z: 3 },
       type: "block",
     },

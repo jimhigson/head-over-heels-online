@@ -8,52 +8,52 @@ export const room = inferRoomJson({
   id: "egyptus39crown",
   items: {
     "block@3,3,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
     "block@3,3,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 3, y: 3, z: 1 },
       type: "block",
     },
     "block@3,3,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 3, y: 3, z: 2 },
       type: "block",
     },
     "block@4,3,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
     "block@4,3,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 1 },
       type: "block",
     },
     "block@4,3,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 2 },
       type: "block",
     },
     "block@4,3,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 3 },
       type: "block",
     },
     "block@4,3,4": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 4 },
       type: "block",
     },
     "block@4,3,5": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 5 },
       type: "block",
     },
     "block@4,3,6": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 3, z: 6 },
       type: "block",
     },

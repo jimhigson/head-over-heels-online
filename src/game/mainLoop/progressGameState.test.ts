@@ -157,12 +157,12 @@ describe("jumping", () => {
           lowerBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
           upperBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 2 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
         },
         inputState: { direction: unitVectors.towards },
@@ -223,12 +223,12 @@ describe("jumping", () => {
           lowBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
           highBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 1 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
         },
         inputState: { direction: unitVectors.towards, jump: true },
@@ -262,17 +262,17 @@ describe("jumping", () => {
           lowBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 0 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
           mediumBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 1 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
           highBlock: {
             type: "block",
             position: { x: 0, y: 0, z: 2 },
-            config: { style: "organic", disappearing: false },
+            config: { style: "organic" },
           },
         },
         inputState: { direction: unitVectors.towards },
@@ -366,7 +366,7 @@ describe("teleporter", () => {
         teleporterLanding: {
           type: "block",
           position: { x: 0, y: 2, z: 0 },
-          config: { style: "organic", disappearing: false },
+          config: { style: "organic" },
         },
       },
       inputState: { jump: true },
@@ -680,7 +680,7 @@ describe("lifts", () => {
         // a block to stand on when getting to the new room:
         landing: {
           type: "block",
-          config: { style: "organic", disappearing: false },
+          config: { style: "organic" },
           position: { x: 5, y: 5, z: 0 },
         },
       },
@@ -718,7 +718,7 @@ describe("lifts", () => {
         },
         landing: {
           type: "block",
-          config: { style: "organic", disappearing: false },
+          config: { style: "organic" },
           position: { x: 4, y: 5, z: 5.5 },
         },
       },
@@ -771,7 +771,7 @@ describe("lifts", () => {
         },
         landing: {
           type: "block",
-          config: { style: "organic", disappearing: false },
+          config: { style: "organic" },
           position: { x: 4, y: 5, z: 3 },
         },
       },
@@ -808,7 +808,6 @@ describe("pushing", () => {
         position: { x: 0, y: 4, z: 0 },
         config: {
           style: "organic",
-          disappearing: false,
         },
       },
     },
@@ -881,7 +880,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 0, z: 0 },
           config: {
             style: "organic",
-            disappearing: true,
+            disappearing: "onStand",
           },
         },
         disappearingBlock1: {
@@ -891,7 +890,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 1, z: 1 },
           config: {
             style: "organic",
-            disappearing: true,
+            disappearing: "onStand",
           },
         },
         disappearingBlock2: {
@@ -899,7 +898,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 2, z: 0 },
           config: {
             style: "organic",
-            disappearing: true,
+            disappearing: "onStand",
           },
         },
         disappearingBlock3: {
@@ -907,7 +906,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 3, z: 0 },
           config: {
             style: "organic",
-            disappearing: true,
+            disappearing: "onStand",
           },
         },
         pickup: {

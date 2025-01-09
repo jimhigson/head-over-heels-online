@@ -8,32 +8,32 @@ export const room = inferRoomJson({
   id: "blacktooth12",
   items: {
     "block@0,0,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
     "block@0,1,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 1, z: 3 },
       type: "block",
     },
     "block@4,0,3": {
-      config: { disappearing: true, style: "organic" },
+      config: { disappearing: "onStand", style: "organic" },
       position: { x: 4, y: 0, z: 3 },
       type: "block",
     },
     "block@4,1,3": {
-      config: { disappearing: true, style: "organic" },
+      config: { disappearing: "onStand", style: "organic" },
       position: { x: 4, y: 1, z: 3 },
       type: "block",
     },
     "block@7,0,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 0, z: 3 },
       type: "block",
     },
     "block@7,1,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 1, z: 3 },
       type: "block",
     },
