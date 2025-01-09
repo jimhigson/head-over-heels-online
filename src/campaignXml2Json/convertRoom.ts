@@ -39,7 +39,6 @@ export const convertRoom = async (xmlRoomName: string) => {
   const room: AnyRoomJson = {
     id: convertRoomId(xmlRoomName),
     floor: floorMap[jsonFloorKind],
-    //floorSkip: convertFloorSkip(roomXmlJson, roomSidesWithDoors),
     planet,
     roomBelow:
       roomOnMap["below"] &&
