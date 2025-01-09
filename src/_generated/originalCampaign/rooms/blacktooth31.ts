@@ -8,17 +8,17 @@ export const room = inferRoomJson({
   id: "blacktooth31",
   items: {
     "block@5,2,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 5, y: 2, z: 0 },
       type: "block",
     },
     "block@5,2,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 5, y: 2, z: 1 },
       type: "block",
     },
     "block@5,3,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },

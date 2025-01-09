@@ -59,11 +59,11 @@ export type ItemConfigMap<
   barrier: {
     // the axis the barrier runs along
     axis: AxisXy;
-    disappearing: boolean;
+    disappearing?: "onTouch";
   };
   block: {
     style: BlockStyle;
-    disappearing: boolean;
+    disappearing?: "onStand";
   };
   deadlyBlock: {
     // these don't move, and the differences are purely in their rendering:
@@ -79,6 +79,7 @@ export type ItemConfigMap<
   };
   conveyor: {
     direction: DirectionXy4;
+    disappearing?: "onStand";
   };
   pickup:
     | {

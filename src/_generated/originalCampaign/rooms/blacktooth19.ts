@@ -8,52 +8,52 @@ export const room = inferRoomJson({
   id: "blacktooth19",
   items: {
     "block@2,2,0": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 2, y: 2, z: 0 },
       type: "block",
     },
     "block@2,2,1": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 2, y: 2, z: 1 },
       type: "block",
     },
     "block@2,2,2": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 2, y: 2, z: 2 },
       type: "block",
     },
     "block@2,2,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 2, z: 3 },
       type: "block",
     },
     "block@3,2,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 2, z: 3 },
       type: "block",
     },
     "block@4,2,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 4, y: 2, z: 3 },
       type: "block",
     },
     "block@5,2,3": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 5, y: 2, z: 3 },
       type: "block",
     },
     "block@6,2,0": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 6, y: 2, z: 0 },
       type: "block",
     },
     "block@6,2,1": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 6, y: 2, z: 1 },
       type: "block",
     },
     "block@6,2,2": {
-      config: { disappearing: false, style: "tower" },
+      config: { style: "tower" },
       position: { x: 6, y: 2, z: 2 },
       type: "block",
     },

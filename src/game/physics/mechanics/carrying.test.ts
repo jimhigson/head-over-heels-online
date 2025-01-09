@@ -25,7 +25,7 @@ const makeBlock = (position: Xyz) =>
       {
         type: "block",
         position,
-        config: { disappearing: false, style: "organic" },
+        config: { style: "organic" },
       },
       {},
     ),

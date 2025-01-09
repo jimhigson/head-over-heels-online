@@ -8,27 +8,27 @@ export const room = inferRoomJson({
   id: "bookworld35",
   items: {
     "block@5,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 5, y: 1, z: 0 },
       type: "block",
     },
     "block@6,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 6, y: 0, z: 0 },
       type: "block",
     },
     "block@6,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 6, y: 1, z: 0 },
       type: "block",
     },
     "block@6,2,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 6, y: 2, z: 0 },
       type: "block",
     },
     "block@7,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
     },

@@ -8,47 +8,47 @@ export const room = inferRoomJson({
   id: "moonbase4",
   items: {
     "block@1,7,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
     "block@1,7,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 1, y: 7, z: 1 },
       type: "block",
     },
     "block@1,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 1, y: 7, z: 3 },
       type: "block",
     },
     "block@2,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 2, y: 7, z: 3 },
       type: "block",
     },
     "block@3,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 3, y: 7, z: 3 },
       type: "block",
     },
     "block@7,0,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
     "block@7,1,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 1, z: 1 },
       type: "block",
     },
     "block@7,2,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 2, z: 2 },
       type: "block",
     },
     "block@7,3,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 3, z: 3 },
       type: "block",
     },

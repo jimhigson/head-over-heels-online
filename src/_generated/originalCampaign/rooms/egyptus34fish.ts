@@ -9,42 +9,42 @@ export const room = inferRoomJson({
   items: {
     "ball@0,2,1": { config: {}, position: { x: 0, y: 2, z: 1 }, type: "ball" },
     "block@0,2,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 2, z: 0 },
       type: "block",
     },
     "block@0,3,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
     "block@0,6,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 6, z: 0 },
       type: "block",
     },
     "block@0,7,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
     "block@0,7,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 1 },
       type: "block",
     },
     "block@0,7,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 2 },
       type: "block",
     },
     "block@0,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "block@0,7,4": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 4 },
       type: "block",
     },

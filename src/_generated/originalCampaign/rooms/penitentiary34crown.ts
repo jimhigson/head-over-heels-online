@@ -8,52 +8,52 @@ export const room = inferRoomJson({
   id: "penitentiary34crown",
   items: {
     "block@0,0,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
     "block@0,0,1": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 1 },
       type: "block",
     },
     "block@0,0,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 2 },
       type: "block",
     },
     "block@0,0,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
     "block@0,0,4": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 4 },
       type: "block",
     },
     "block@0,0,5": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 0, z: 5 },
       type: "block",
     },
     "block@0,1,0": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 1, z: 0 },
       type: "block",
     },
     "block@0,7,2": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 2 },
       type: "block",
     },
     "block@7,3,4": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 3, z: 4 },
       type: "block",
     },
     "block@7,4,4": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 7, y: 4, z: 4 },
       type: "block",
     },

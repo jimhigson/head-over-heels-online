@@ -8,22 +8,22 @@ export const room = inferRoomJson({
   id: "blacktooth1head",
   items: {
     "barrier@5,0,0": {
-      config: { axis: "y", disappearing: false },
+      config: { axis: "y" },
       position: { x: 5, y: 0, z: 0 },
       type: "barrier",
     },
     "barrier@5,0,2": {
-      config: { axis: "y", disappearing: false },
+      config: { axis: "y" },
       position: { x: 5, y: 0, z: 2 },
       type: "barrier",
     },
     "barrier@5,0,4": {
-      config: { axis: "y", disappearing: false },
+      config: { axis: "y" },
       position: { x: 5, y: 0, z: 4 },
       type: "barrier",
     },
     "barrier@5,0,6": {
-      config: { axis: "y", disappearing: false },
+      config: { axis: "y" },
       position: { x: 5, y: 0, z: 6 },
       type: "barrier",
     },

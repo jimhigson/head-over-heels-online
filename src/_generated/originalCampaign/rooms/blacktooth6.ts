@@ -8,42 +8,42 @@ export const room = inferRoomJson({
   id: "blacktooth6",
   items: {
     "block@0,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
     "block@0,3,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
     "block@0,4,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
     "block@0,7,0": {
-      config: { disappearing: true, style: "organic" },
+      config: { disappearing: "onStand", style: "organic" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
     "block@3,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "block@3,7,0": {
-      config: { disappearing: true, style: "organic" },
+      config: { disappearing: "onStand", style: "organic" },
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },
     "block@6,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 6, y: 0, z: 0 },
       type: "block",
     },
     "block@7,7,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
@@ -83,7 +83,7 @@ the doughnut icon at the bottom left of the screen.
       type: "pickup",
     },
     scrollBlock: {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 3, z: 0 },
       type: "block",
     },

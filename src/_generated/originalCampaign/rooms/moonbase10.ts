@@ -8,22 +8,22 @@ export const room = inferRoomJson({
   id: "moonbase10",
   items: {
     "block@0,3,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
     "block@0,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "block@0,7,5": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 0, y: 7, z: 5 },
       type: "block",
     },
     "block@4,7,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 4, y: 7, z: 3 },
       type: "block",
     },

@@ -8,22 +8,22 @@ export const room = inferRoomJson({
   id: "blacktooth63",
   items: {
     "block@6,0,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 6, y: 0, z: 3 },
       type: "block",
     },
     "block@6,1,3": {
-      config: { disappearing: false, style: "artificial" },
+      config: { style: "artificial" },
       position: { x: 6, y: 1, z: 3 },
       type: "block",
     },
     "block@7,0,3": {
-      config: { disappearing: true, style: "artificial" },
+      config: { disappearing: "onStand", style: "artificial" },
       position: { x: 7, y: 0, z: 3 },
       type: "block",
     },
     "block@7,1,3": {
-      config: { disappearing: true, style: "artificial" },
+      config: { disappearing: "onStand", style: "artificial" },
       position: { x: 7, y: 1, z: 3 },
       type: "block",
     },

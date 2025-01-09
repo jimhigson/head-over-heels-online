@@ -8,42 +8,42 @@ export const room = inferRoomJson({
   id: "moonbase3",
   items: {
     "block@1,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
     "block@2,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
     "block@2,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 1, z: 0 },
       type: "block",
     },
     "block@2,2,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 2, z: 0 },
       type: "block",
     },
     "block@2,4,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 4, z: 0 },
       type: "block",
     },
     "block@3,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "block@3,1,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 1, z: 0 },
       type: "block",
     },
     "block@4,0,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 4, y: 0, z: 0 },
       type: "block",
     },

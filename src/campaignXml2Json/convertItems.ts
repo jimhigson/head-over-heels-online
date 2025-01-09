@@ -231,7 +231,9 @@ const convertItem = async ({
         config: {
           axis: xml2JsonItem.kind === "bars-ns" ? "y" : "x",
           disappearing:
-            xml2JsonItem.behavior === "behavior of disappearance on touch",
+            xml2JsonItem.behavior === "behavior of disappearance on touch" ?
+              "onTouch"
+            : undefined,
         },
         position,
       };
@@ -239,7 +241,7 @@ const convertItem = async ({
     case "cylinder":
       return {
         type: "block",
-        config: { style: "tower", disappearing: false },
+        config: { style: "tower" },
         position,
       };
 
@@ -258,7 +260,9 @@ const convertItem = async ({
         config: {
           style: styleConversion[xml2JsonItem.kind],
           disappearing:
-            xml2JsonItem.behavior === "behavior of disappearance on jump into",
+            xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
+              "onStand"
+            : undefined,
         },
         position,
       };
@@ -290,6 +294,10 @@ const convertItem = async ({
         type: "conveyor",
         config: {
           direction: convertDirection(xml2JsonItem.orientation),
+          disappearing:
+            xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
+              "onStand"
+            : undefined,
         },
         position,
       };

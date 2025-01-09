@@ -128,8 +128,10 @@ export type Xml2JsonItem = {
       kind: "conveyor";
       orientation: CompassDirectionsNESW;
       class: "griditem";
-      // one room has a conveyor with a disappearing behavior
-      behavior?: "behavior of disappearance on jump into";
+      // one room has a conveyor with a disappearing behavior (bookworld|byblos)2
+      behavior?:
+        | "behavior of disappearance on jump into"
+        | "behavior of conveyor";
     }
   | {
       kind: "elevator";

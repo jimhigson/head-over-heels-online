@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   id: "safari24",
   items: {
     "block@1,2,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 1, y: 2, z: 0 },
       type: "block",
     },
     "block@7,2,1": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 7, y: 2, z: 1 },
       type: "block",
     },

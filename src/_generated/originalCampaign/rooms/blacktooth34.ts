@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   id: "blacktooth34",
   items: {
     "block@3,7,0": {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },
     "block@5,7,0": {
-      config: { disappearing: true, style: "organic" },
+      config: { disappearing: "onStand", style: "organic" },
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
@@ -44,7 +44,7 @@ Jumping from a spring will give extra height to your jump.
       type: "pickup",
     },
     scrollBlock: {
-      config: { disappearing: false, style: "organic" },
+      config: { style: "organic" },
       position: { x: 2, y: 7, z: 0 },
       type: "block",
     },
