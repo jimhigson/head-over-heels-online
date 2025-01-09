@@ -44,7 +44,7 @@ export const room = inferRoomJson({
     },
     "movableBlock@4,1,0": {
       config: {
-        activated: 'onStand',
+        activated: "onStand",
         movement: "clockwise",
         startDirection: "away",
         style: "sandwich",
