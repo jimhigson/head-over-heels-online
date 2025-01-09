@@ -33,7 +33,6 @@ export type JsonItemType =
   | "switch"
   | "hushPuppy"
   | "ball"
-  | "book"
   | "wall";
 
 export type RenderItemType = JsonItemType | "door-front" | "door-back";

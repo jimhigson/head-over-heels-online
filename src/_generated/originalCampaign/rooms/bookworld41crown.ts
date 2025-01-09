@@ -12,35 +12,30 @@ export const room = inferRoomJson({
       position: { x: 3, y: 4, z: 0 },
       type: "barrier",
     },
-    "book@2,4,0": {
-      config: { slider: true },
-      position: { x: 2, y: 4, z: 0 },
-      type: "book",
-    },
-    "book@3,4,1": {
-      config: { slider: false },
+    "block@3,4,1": {
+      config: { style: "book" },
       position: { x: 3, y: 4, z: 1 },
-      type: "book",
+      type: "block",
     },
-    "book@3,4,2": {
-      config: { slider: false },
+    "block@3,4,2": {
+      config: { style: "book" },
       position: { x: 3, y: 4, z: 2 },
-      type: "book",
+      type: "block",
     },
-    "book@3,4,3": {
-      config: { slider: false },
+    "block@3,4,3": {
+      config: { style: "book" },
       position: { x: 3, y: 4, z: 3 },
-      type: "book",
+      type: "block",
     },
-    "book@3,4,4": {
-      config: { slider: false },
+    "block@3,4,4": {
+      config: { style: "book" },
       position: { x: 3, y: 4, z: 4 },
-      type: "book",
+      type: "block",
     },
-    "book@3,4,5": {
-      config: { slider: false },
+    "block@3,4,5": {
+      config: { style: "book" },
       position: { x: 3, y: 4, z: 5 },
-      type: "book",
+      type: "block",
     },
     "door@2,0,0": {
       config: { direction: "towards", toRoom: "bookworld40" },
@@ -79,6 +74,11 @@ export const room = inferRoomJson({
       config: { style: "sticks" },
       position: { x: 0, y: 7, z: 0 },
       type: "portableBlock",
+    },
+    "slidingBlock@2,4,0": {
+      config: { style: "book" },
+      position: { x: 2, y: 4, z: 0 },
+      type: "slidingBlock",
     },
   },
   planet: "bookworld",

@@ -7,15 +7,15 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "bookworld24",
   items: {
-    "book@0,2,0": {
-      config: { slider: false },
+    "block@0,2,0": {
+      config: { style: "book" },
       position: { x: 0, y: 2, z: 0 },
-      type: "book",
+      type: "block",
     },
-    "book@3,2,0": {
-      config: { slider: false },
+    "block@3,2,0": {
+      config: { style: "book" },
       position: { x: 3, y: 2, z: 0 },
-      type: "book",
+      type: "block",
     },
     "deadlyBlock@0,0,1": {
       config: { style: "toaster" },

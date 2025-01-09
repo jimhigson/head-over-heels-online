@@ -41,8 +41,7 @@ export type Xml2JsonItem = {
         | "vulcano" /* [sic] */
         | "toaster"
         | "spikes"
-        | "puppy"
-        | "book";
+        | "puppy";
       class: "griditem";
     }
   | {
@@ -119,7 +118,17 @@ export type Xml2JsonItem = {
       orientation: CompassDirectionsNESW;
     }
   | {
-      kind: "imperial-guard-head" | "diver" | "turtle" | "book";
+      kind: "book";
+      class: "freeitem";
+      behavior?: "behavior of thing able to move by pushing";
+    }
+  | {
+      kind: "book";
+      class: "griItem";
+      behavior?: "behavior of disappearance on jump into";
+    }
+  | {
+      kind: "imperial-guard-head" | "diver" | "turtle";
       class: "freeitem";
       behavior: XmlItemMonsterBehaviour;
       orientation: CompassDirectionsNESW;

@@ -120,8 +120,6 @@ const shadowMask = (
     case "hushPuppy":
       // just happens to be the right shape:
       return { spriteOptions: "shadowMask.hushPuppy", relativeTo: "origin" };
-    case "book":
-      return { spriteOptions: "shadowMask.fullBlock", relativeTo: "origin" };
     case "portableBlock":
       return {
         spriteOptions:
@@ -131,7 +129,13 @@ const shadowMask = (
         relativeTo: "origin",
       };
     case "slidingBlock":
-      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
+      return {
+        spriteOptions:
+          jsonItem.config.style === "book" ?
+            "shadowMask.fullBlock"
+          : "shadowMask.smallRound",
+        relativeTo: "origin",
+      };
     case "deadlyBlock":
       switch (jsonItem.config.style) {
         case "volcano":
@@ -195,7 +199,6 @@ const shadowCast = (
     case "movableBlock":
     case "hushPuppy":
     case "deadlyBlock":
-    case "book":
       return "shadow.fullBlock";
     case "portableBlock":
       return jsonItem.config.style === "drum" ?
