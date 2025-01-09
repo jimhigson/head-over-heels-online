@@ -70,6 +70,15 @@
     }
   },
   {
+    "op": "add",
+    "path": "/rooms/safari15/items/monsterpen",
+    "value": {
+      "type": "barrier",
+      "position": { "x": 1, "y": 9, "z": 0 },
+      "config": { "axis": "x" }
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/safari12/items/lift@7,5,0/config/top",
     "value": 11

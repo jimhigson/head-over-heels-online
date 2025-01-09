@@ -109,6 +109,11 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 0 },
       type: "monster",
     },
+    monsterpen: {
+      config: { axis: "x" },
+      position: { x: 1, y: 9, z: 0 },
+      type: "barrier",
+    },
   },
   planet: "safari",
   size: { x: 4, y: 16 },
