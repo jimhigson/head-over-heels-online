@@ -190,6 +190,12 @@ export const mutatorsTestHarness = () => {
       if (playableItem === undefined) {
         throw new Error(`${playableName} not in the game`);
       }
+      // before walking to the door, move the player to next to it so the before/after
+      // position once walked through is predictable
+      playableItem.state.position = addXyz(
+        sourcePortal.state.position,
+        sourcePortal.config.relativePoint,
+      );
       changeCharacterRoom({
         playableItem,
         gameState,
