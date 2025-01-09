@@ -4,6 +4,8 @@
     "path": "/rooms/safari9/items/movableBlock@0,1,3/config/activated",
     "value": "onStand"
   },
+  { "op": "replace", "path": "/rooms/safari6triple/size/y", "value": 12 },
+  { "op": "replace", "path": "/rooms/safari6triple/size/x", "value": 12 },
   {
     "op": "replace",
     "path": "/rooms/safari35/items/movableBlock@7,5,1/config/activated",
@@ -30,6 +32,42 @@
     "op": "replace",
     "path": "/rooms/safari2/items/movableBlock@7,1,0/config/activated",
     "value": true
+  },
+  {
+    "op": "add",
+    "path": "/rooms/safari19triple/items/keepMonsterInPlace0",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 0, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/safari19triple/items/keepMonsterInPlace1",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 1, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/safari19triple/items/keepMonsterInPlace2",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 2, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/safari19triple/items/keepMonsterInPlace3",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 3, "z": 0 },
+      "type": "barrier"
+    }
   },
   {
     "op": "replace",

@@ -67,6 +67,26 @@ export const room = inferRoomJson({
       position: { x: 13, y: 3, z: 2 },
       type: "barrier",
     },
+    "keepMonsterInPlace0": {
+      config: { axis: "y" },
+      position: { x: 8, y: 0, z: 0 },
+      type: "barrier",
+    },
+    "keepMonsterInPlace1": {
+      config: { axis: "y" },
+      position: { x: 8, y: 1, z: 0 },
+      type: "barrier",
+    },
+    "keepMonsterInPlace2": {
+      config: { axis: "y" },
+      position: { x: 8, y: 2, z: 0 },
+      type: "barrier",
+    },
+    "keepMonsterInPlace3": {
+      config: { axis: "y" },
+      position: { x: 8, y: 3, z: 0 },
+      type: "barrier",
+    },
     "block@0,9,0": {
       config: { style: "tower" },
       position: { x: 0, y: 9, z: 0 },

@@ -284,13 +284,15 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # safari9
 [x] sandwich falling out of world goes in front of room edge
 # safari15
-[ ] dalek can get out of its zone
+[x] dalek can get out of its zone
+    - fixed with a small wall (in patch)
 # safari18
 [x] doesn't work without y-scrolling
 
 # safari6triple
-[ ] walls missing
+[x] walls missing
     - these are only missing because the room is too big!
+    - fixed by making room smaller in patch - can't see any reason for room in xml being too big
 
 # safari6triple <--> #safari7
 [x] we can't handle two doors between same two rooms

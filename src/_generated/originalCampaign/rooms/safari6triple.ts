@@ -194,7 +194,7 @@ export const room = inferRoomJson({
     },
   },
   planet: "safari",
-  size: { x: 13, y: 13 },
+  size: { x: 12, y: 12 },
   walls: {
     away: [
       "shield",
