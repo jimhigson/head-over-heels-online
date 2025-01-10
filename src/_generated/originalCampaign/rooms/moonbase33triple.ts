@@ -450,16 +450,6 @@ export const room = inferRoomJson({
       position: { x: 5, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,7,0:Z2oYlvx": {
-      config: { side: "away", style: "coil" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "wall",
-    },
-    "wall@5,7,0:ZcS5yT": {
-      config: { side: "left", style: "coil" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "wall",
-    },
   },
   planet: "moonbase",
   size: { x: 12, y: 16 },
