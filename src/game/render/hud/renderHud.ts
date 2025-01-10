@@ -77,17 +77,11 @@ export const renderHud = <RoomId extends string>(
     outline = false,
     label = "text",
   }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) => {
-    const yScaleFactor = doubleHeight ? 2 : 1;
-
-    const textContainer = new Container({ label });
-    textContainer.scale = { x: 1, y: yScaleFactor };
-
-    if (outline) {
-      textContainer.filters =
-        outline ? [outlineFilter, textFilter] : textFilter;
-    }
-
-    return textContainer;
+    return new Container({
+      label,
+      filters: outline ? [outlineFilter, textFilter] : textFilter,
+      scale: { x: 1, y: doubleHeight ? 2 : 1 },
+    });
   };
 
   const characterSprite = (characterName: IndividualCharacterName) => {
