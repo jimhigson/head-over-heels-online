@@ -65,23 +65,26 @@ export const renderHud = <RoomId extends string>(
 ) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
+  const outlineFilter = new OutlineFilter(
+    spritesheetPalette.pureBlack,
+    upscale.scaleFactor,
+  );
   const uncurrentSpriteFilter = new RevertColouriseFilter();
   const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();
 
   const makeText = ({
     doubleHeight = false,
     outline = false,
-  }: { doubleHeight?: boolean; outline?: boolean } = {}) => {
+    label = "text",
+  }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) => {
     const yScaleFactor = doubleHeight ? 2 : 1;
 
-    const textContainer = new Container();
+    const textContainer = new Container({ label });
     textContainer.scale = { x: 1, y: yScaleFactor };
 
     if (outline) {
-      textContainer.filters = new OutlineFilter(
-        spritesheetPalette.pureBlack,
-        upscale.scaleFactor,
-      );
+      textContainer.filters =
+        outline ? [outlineFilter, textFilter] : textFilter;
     }
 
     return textContainer;
@@ -104,13 +107,15 @@ export const renderHud = <RoomId extends string>(
     textOnTop = false,
     noText = false,
     outline = false,
+    label,
   }: {
     textureId: TextureId;
     textOnTop?: boolean;
     noText?: boolean;
-    outline?: boolean;
+    outline?: boolean | "text-only";
+    label: string;
   }) => {
-    const container = new Container();
+    const container = new Container({ label });
     container.pivot = { x: 4, y: 16 };
 
     const icon = new Sprite({
@@ -121,10 +126,8 @@ export const renderHud = <RoomId extends string>(
     });
     container.addChild(icon);
 
-    const text = makeText();
-    //text.text = "0";
+    const text = makeText({ outline: outline === "text-only" });
     text.y = textOnTop ? 0 : 16;
-    text.filters = textFilter;
 
     text.x = icon.x = hudCharTextureSize.w / 2;
     container.addChild(text);
@@ -133,11 +136,8 @@ export const renderHud = <RoomId extends string>(
       text.visible = false;
     }
 
-    if (outline) {
-      container.filters = new OutlineFilter(
-        spritesheetPalette.pureBlack,
-        upscale.scaleFactor,
-      );
+    if (outline === true) {
+      container.filters = outlineFilter;
     }
 
     return {
@@ -150,11 +150,29 @@ export const renderHud = <RoomId extends string>(
   const hudElements = {
     head: {
       sprite: characterSprite("head"),
-      livesText: makeText({ doubleHeight: true, outline: true }),
-      shield: iconWithNumber({ textureId: "hud.shield", outline: true }),
-      extraSkill: iconWithNumber({ textureId: "hud.fastSteps", outline: true }),
-      doughnuts: iconWithNumber({ textureId: "doughnuts", textOnTop: true }),
+      livesText: makeText({
+        label: "headLives",
+        doubleHeight: true,
+        outline: true,
+      }),
+      shield: iconWithNumber({
+        label: "headShield",
+        textureId: "hud.shield",
+        outline: true,
+      }),
+      extraSkill: iconWithNumber({
+        label: "headFastSteps",
+        textureId: "hud.fastSteps",
+        outline: true,
+      }),
+      doughnuts: iconWithNumber({
+        label: "headDoughnuts",
+        textureId: "doughnuts",
+        textOnTop: true,
+        outline: "text-only",
+      }),
       hooter: iconWithNumber({
+        label: "headHooter",
         textureId: "hooter",
         textOnTop: true,
         noText: true,
@@ -162,12 +180,29 @@ export const renderHud = <RoomId extends string>(
     },
     heels: {
       sprite: characterSprite("heels"),
-      livesText: makeText({ doubleHeight: true, outline: true }),
-      shield: iconWithNumber({ textureId: "hud.shield", outline: true }),
-      extraSkill: iconWithNumber({ textureId: "hud.bigJumps", outline: true }),
-      bag: iconWithNumber({ textureId: "bag", textOnTop: true, noText: true }),
+      livesText: makeText({
+        label: "heelsLives",
+        doubleHeight: true,
+        outline: true,
+      }),
+      shield: iconWithNumber({
+        label: "heelsShield",
+        textureId: "hud.shield",
+        outline: true,
+      }),
+      extraSkill: iconWithNumber({
+        label: "heelsBigJumps",
+        textureId: "hud.bigJumps",
+        outline: true,
+      }),
+      bag: iconWithNumber({
+        label: "heelsBag",
+        textureId: "bag",
+        textOnTop: true,
+        noText: true,
+      }),
       carrying: {
-        container: new Container(),
+        container: new Container({ label: "heelsCarrying" }),
       },
     },
   };
