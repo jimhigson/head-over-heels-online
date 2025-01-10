@@ -88,7 +88,13 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         id: "floor/portal",
         config: {
           toRoom: roomJson.roomBelow,
-          relativePoint: originXyz,
+          // floor and ceiling relative points are the middle of the portal, this fixes
+          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+          relativePoint: {
+            x: roomNaturalFootprintAabb.x / 2,
+            y: roomNaturalFootprintAabb.y / 2,
+            z: 0,
+          },
           direction: unitVectors["down"],
         },
 
@@ -136,7 +142,13 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         id: "ceiling",
         config: {
           toRoom: roomJson.roomAbove,
-          relativePoint: { x: 0, y: 0, z: -blockSizePx.h },
+          // floor and ceiling relative points are the middle of the portal, this fixes
+          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+          relativePoint: {
+            x: roomNaturalFootprintAabb.x / 2,
+            y: roomNaturalFootprintAabb.y / 2,
+            z: -blockSizePx.h,
+          },
           direction: unitVectors["up"],
         },
 

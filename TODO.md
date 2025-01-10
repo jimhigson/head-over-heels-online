@@ -304,7 +304,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 
 # safari35
 [x] sandwich starts moving on stand on
-[ ] sandwich should fall in the gap between blocks
+[ ] [MINOR] sandwich should fall in the gap between blocks
 
 # bookworld2
 [x] vanishing conveyors don't vanish
@@ -330,7 +330,7 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     constrast with #blacktooth27fish where it isn't due to left-side door
 
 # penitentiary21 falling into # penitentiary20
-[ ] falling into a room that's smaller means can't locate player if fall off towards the back of the room    
+[x] falling into a room that's smaller means can't locate player if fall off towards the back of the room    
 
 # penitentiary29
 [x] crash on drop down to next room
@@ -340,7 +340,8 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] doesn't scroll in y
     [ ] does but scrolling is poor
 [ ] monsters don't wake up
-[ ] hidden wall shouldn't render
+[x] hidden wall shouldn't render
+[ ] render extra floor edge
 
 # Problems with force/accel based model:
 
