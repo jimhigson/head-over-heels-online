@@ -382,11 +382,8 @@
     "value": "dimmed"
   },
   { "op": "replace", "path": "/rooms/moonbase36/color/hue", "value": "yellow" },
-  { "op": "remove", "path": "/rooms/moonbase33triple/items/wall@5,7,0:ZcS5yT" },
-  {
-    "op": "remove",
-    "path": "/rooms/moonbase33triple/items/wall@5,7,0:Z2oYlvx"
-  },
+  { "op": "replace", "path": "/rooms/moonbase35/color/hue", "value": "green" },
+  { "op": "replace", "path": "/rooms/moonbase34/color/hue", "value": "cyan" },
   { "op": "replace", "path": "/rooms/moonbase32/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase30/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/rooms/moonbase3/color/hue", "value": "magenta" },

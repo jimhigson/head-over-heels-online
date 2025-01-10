@@ -124,8 +124,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [ ] collecting crowns    
-[ ] hoh seems to be able to jump way too far!
+[x] hoh seems to be able to jump way too far!
+    [x] fix is to glide at head's normal glide speed
 [ ] shadow masks/cast provided by appearance
+    [ ] allow to be dynamic
 [x] acel for player normal walking
 [ ] playable on mame joystick
     [ ] time to do a config screen?
