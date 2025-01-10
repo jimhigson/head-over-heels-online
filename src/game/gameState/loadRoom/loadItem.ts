@@ -37,28 +37,17 @@ export function* loadItemFromJson<RoomId extends string>(
       return;
     }
 
-    case "conveyor": {
-      yield {
-        ...jsonItem,
-        ...defaultItemProperties,
-        ...boundingBoxForItem(jsonItem),
-        shadowMask: shadowMask(jsonItem),
-        shadowCastTexture: shadowCast(jsonItem),
-        id: itemId,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        config: { ...jsonItem.config, count: 1 } as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
-        state: initialState(jsonItem) as any,
-      };
-      return;
-    }
-
     // catch-all for all items that don't need special handling:
     default: {
       yield {
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxForItem(jsonItem),
+        renders: !(
+          jsonItem.type === "wall" &&
+          (jsonItem.config.side === "right" ||
+            jsonItem.config.side === "towards")
+        ),
         shadowMask: shadowMask(jsonItem),
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,

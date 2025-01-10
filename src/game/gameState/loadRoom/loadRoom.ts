@@ -1,8 +1,8 @@
-import type { ItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { RoomState, RoomStateItems } from "@/model/modelTypes";
 import type { RoomJson } from "@/model/RoomJson";
 import type { SceneryName } from "@/sprites/planets";
-import { entries, objectEntriesIter } from "@/utils/entries";
+import { entries } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
@@ -10,13 +10,10 @@ import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
-import { directionAxis, perpendicularAxisXy } from "@/utils/vectors/vectors";
-import { blockSizePx } from "@/sprites/spritePivots";
 import { isSolid } from "@/game/physics/itemPredicates";
 
 // might do this again later, or use it as a template to gather other item types
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/*
 function* gatherConveyors<RoomId extends string>(
   sorted: Iterable<UnknownItemInPlay<RoomId>>,
 ): Generator<UnknownItemInPlay<RoomId>> {
@@ -85,6 +82,7 @@ function* gatherConveyors<RoomId extends string>(
     }
   }
 }
+  */
 
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<SceneryName, RoomId>,

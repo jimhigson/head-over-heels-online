@@ -38,7 +38,6 @@ type ItemInPlayConfigMap<RoomId extends string> = {
   };
   conveyor: {
     direction: DirectionXy4;
-    count: number; // how many conveyors blocks in this run of conveyors?
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config

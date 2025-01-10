@@ -136,13 +136,19 @@ const convertItem = async ({
   // picture on the wall tile:
   if (isWallName(xml2JsonItem.kind)) {
     const planetName = convertSceneryName(xml2JsonRoom.scenery);
+    const parsedWallName = parseXmlWallName(xml2JsonItem.kind);
     // Xml2JsonWallItem has to be kept out of the wall union since it can have any string value
     // and stops us from discriminating unions properly
     return {
       type: "wall",
       config: {
         side:
-          parseXmlWallName(xml2JsonItem.kind).axis === "x" ? "away" : "left",
+          parsedWallName.axis === "x" ?
+            parsedWallName.isInvisible ?
+              "towards"
+            : "away"
+          : parsedWallName.isInvisible ? "right"
+          : "left",
         style: convertWallName(planetName, xml2JsonItem.kind),
       },
       position,
