@@ -33,7 +33,8 @@ export const walking = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId> => {
-  const result = _walking(playableItem, gameState, deltaMS);
+  // we wrap walking implementation and add analysis of how far walked etc
+  const result = walkingImpl(playableItem, gameState, deltaMS);
 
   if (result.movementType === "vel" && result.vels.walking !== undefined) {
     const speed = lengthXyz(result.vels.walking);
@@ -61,9 +62,10 @@ export const walking = <RoomId extends string>(
 };
 
 /**
- * walking, but also gliding and changing direction mid-air
+ * implementation of the mechanic for walking, but also gliding and
+ * (head) changing direction mid-air
  */
-const _walking = <RoomId extends string>(
+const walkingImpl = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
   { inputState: gameStateInputState, currentCharacterName }: GameState<RoomId>,
   deltaMS: number,
@@ -87,15 +89,19 @@ const _walking = <RoomId extends string>(
   const effectiveInputState =
     isCurrentCharacter ? gameStateInputState : emptyInput;
 
+  const isFalling = standingOn === null && gravityVel.z < 0;
+  const hasFastSteps =
+    type === "head" &&
+    fastStepsRemaining(playableItem.state) > 0 &&
+    standingOn !== null;
+
   const useSpeedOfCharacter =
     type === "headOverHeels" ?
-      // heels does the walking for headOverHeels, so we need to use the heels walking speed:
-      "heels"
-    : (
-      type === "head" &&
-      fastStepsRemaining(playableItem.state) > 0 &&
-      standingOn !== null
-    ) ?
+      // falling (gliding) horizontal movement is at head's speed, not sped up by heels:
+      isFalling ? "head"
+        // heels does the walking for headOverHeels, so we need to use the heels walking speed:
+      : "heels"
+    : hasFastSteps ?
       // head fast-walking is effectively heels:
       "heels"
       // no special-case, use player's natural speed:
@@ -149,8 +155,6 @@ const _walking = <RoomId extends string>(
       }
     }
   }
-
-  const isFalling = standingOn === null && gravityVel.z < 0;
 
   const hasWalkVector = lengthXyz(walkVector) !== 0;
 
