@@ -123,6 +123,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] if die while jumping (ascending), the velocity is maintained when coming back into the room
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
+[ ] collecting crowns    
+[ ] hoh seems to be able to jump way too far!
+[ ] shadow masks/cast provided by appearance
 [x] acel for player normal walking
 [ ] playable on mame joystick
     [ ] time to do a config screen?
@@ -308,10 +311,10 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [x] monkeys don't move
 
 # bookworld6
-[ ] sliding book doesn't slide
+[x] sliding book doesn't slide
 
 # bookworld34
-[ ] immediate crash! - items in collisionack
+[x] immediate crash! - items in collisionack
 
 # penitentiary2
 [ ] this room shouldn't scroll horizontally
