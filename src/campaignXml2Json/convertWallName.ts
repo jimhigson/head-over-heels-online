@@ -8,11 +8,11 @@ import { wallNumbers } from "./wallNumbers";
 // TODO: also support "invisible-wall-x" and "invisible-wall-y"
 // TODO: - see room moonbase33triple
 const pictureNameRegex =
-  /(?<planet>\w+)-wall-(?<axis>x|y)(?:-(?<number>\d+))?(.png)?$/;
+  /(?<planetOrInvisible>\w+)-wall-(?<axis>x|y)(?:-(?<number>\d+))?(.png)?$/;
 
 export const parseXmlWallName = (
   pictureName: string,
-): { axis: AxisXy; wallTypeIndex: number } => {
+): { axis: AxisXy; wallTypeIndex: number; isInvisible: boolean } => {
   const regexMatch = pictureNameRegex.exec(pictureName);
 
   if (regexMatch === null || regexMatch.groups === undefined) {
@@ -25,6 +25,7 @@ export const parseXmlWallName = (
     // the first (and only) wall variant:
     wallTypeIndex:
       regexMatch.groups["number"] ? parseInt(regexMatch.groups["number"]) : 1,
+    isInvisible: regexMatch.groups["planetOrInvisible"] === "invisible",
   };
 };
 

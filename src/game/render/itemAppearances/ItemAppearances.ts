@@ -2,7 +2,6 @@ import { Container } from "pixi.js";
 import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheet";
 import { spriteSheet } from "../../../sprites/spriteSheet";
-import { blockSizePx } from "@/sprites/spritePivots";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
@@ -12,9 +11,7 @@ import { type ItemInPlayType } from "@/model/ItemInPlay";
 import { isPlayableItem } from "@/game/physics/itemPredicates";
 import { playableAppearance } from "./playableAppearance";
 import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
-import { range } from "iter-tools";
 import { iterate } from "@/utils/iterate";
-import { projectWorldXyzToScreenXyInteger } from "../projectToScreen";
 import {
   directionAxis,
   vectorClosestDirectionXy4,
@@ -193,7 +190,7 @@ export const itemAppearances: {
 
   conveyor({
     item: {
-      config: { direction, count },
+      config: { direction },
       state: { stoodOnBy },
     },
     currentlyRenderedProps,
@@ -212,25 +209,19 @@ export const itemAppearances: {
 
     const axis = directionAxis(direction);
     rendering.addChild(
-      ...iterate(range(count, 0, -1)).map((i) => {
-        const xy = projectWorldXyzToScreenXyInteger({
-          [axis]: (i - 1) * blockSizePx.w,
-        });
-
-        return createSprite(
-          moving ?
-            {
-              frames: spriteSheet.animations[`conveyor.${axis}`],
-              reverse: direction === "towards" || direction === "right",
-              animationSpeed: 0.5,
-              ...xy,
-            }
-          : {
-              texture: `conveyor.${axis}.6`,
-              ...xy,
-            },
-        );
-      }),
+      createSprite(
+        moving ?
+          {
+            frames: spriteSheet.animations[`conveyor.${axis}`],
+            reverse: direction === "towards" || direction === "right",
+            animationSpeed: 0.5,
+            //...xy,
+          }
+        : {
+            texture: `conveyor.${axis}.6`,
+            //...xy,
+          },
+      ),
     );
 
     return {

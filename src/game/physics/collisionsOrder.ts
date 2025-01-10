@@ -1,17 +1,5 @@
-import type {
-  UnknownItemInPlay,
-  ItemInPlayType,
-  ItemInPlay,
-} from "@/model/ItemInPlay";
-import { blockSizePx, blockSizeXyzPx } from "@/sprites/spritePivots";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import {
-  type Xyz,
-  addXyz,
-  dotProductXyz,
-  scaleXyz,
-  xyzEqual,
-} from "@/utils/vectors/vectors";
+import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
+import { type Xyz, dotProductXyz } from "@/utils/vectors/vectors";
 
 export type SortableObstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };
@@ -24,7 +12,7 @@ export type SortableObstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
  * are stood on at once. This allows objects to be nicely moved around
  * conveyor corners (see blacktooth26)
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO: use this when landing on two conveyors
+/*
 const conveyorOrderComparator = (
   a: ItemInPlay<"conveyor">,
   b: ItemInPlay<"conveyor">,
@@ -55,6 +43,7 @@ const conveyorOrderComparator = (
 
   return 0;
 };
+*/
 
 export const obstaclePointEarliestPointInVector = (
   vector: Xyz,
