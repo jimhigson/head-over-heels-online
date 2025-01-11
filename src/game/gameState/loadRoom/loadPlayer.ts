@@ -57,6 +57,7 @@ export const loadPlayer = <RoomId extends string>(
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
         gameTime: 0,
+        actedOnAt: Number.NEGATIVE_INFINITY,
       },
     };
   } else {
@@ -77,6 +78,7 @@ export const loadPlayer = <RoomId extends string>(
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
         gameTime: 0,
+        actedOnAt: Number.NEGATIVE_INFINITY,
       },
     };
   }

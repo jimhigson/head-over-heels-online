@@ -172,17 +172,17 @@ export const room = inferRoomJson({
       position: { x: 3.5, y: 3.5, z: 0 },
       type: "player",
     },
-    "extra1": {
+    extra1: {
       config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 3, z: 0 },
       type: "movableBlock",
     },
-    "extra2": {
+    extra2: {
       config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 4, z: 0 },
       type: "movableBlock",
     },
-    "extra3": {
+    extra3: {
       config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 3, z: 1 },
       type: "movableBlock",

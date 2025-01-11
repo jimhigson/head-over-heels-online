@@ -35,11 +35,14 @@ export const projectWorldXyzToScreenXyInteger = ({
   y = 0,
   z = 0,
 }: Partial<Xyz>): Xy => {
+  const xRounded = Math.round(x);
+  const yRounded = Math.round(y);
   return {
-    x: y - x,
+    x: yRounded - xRounded,
     y:
+      // avoid case where a floating point error causes a number like 16.500000001
       // >> 1 is /2 but rounded down
-      -((x + y) >> 1) - z,
+      Math.floor(-((xRounded + yRounded) / 2) - z),
   };
 };
 

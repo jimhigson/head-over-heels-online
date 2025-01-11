@@ -3,7 +3,7 @@ import type {
   ItemInPlayType,
   AnyItemInPlay,
 } from "@/model/ItemInPlay";
-import { isPlayableItem } from "../physics/itemPredicates";
+import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
 import {
   otherIndividualCharacterName,
   type RoomState,
@@ -44,18 +44,15 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,
 ) => {
   for (const item of objectValues(room.items)) {
-    const startingPosition: Xyz | undefined = startingPositions[item.id];
-    if (startingPosition === undefined) {
-      // no position at the start of the tick: item was introduced during the tick
+    if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt) {
+      // was acted on in this tick - do not snap
       continue;
     }
 
-    const itemIsStationary = xyzEqual(startingPosition, item.state.position);
-    const shouldSnap =
-      itemIsStationary && !isExactIntegerXyz(item.state.position);
-
-    if (shouldSnap) {
-      console.log(`snapping item ${item.id} to pixel grid`);
+    if (!isExactIntegerXyz(item.state.position)) {
+      console.log(
+        `snapping item ${item.id} to pixel grid (not acted on in tick)`,
+      );
       item.state.position = roundXyz(item.state.position);
       movedItems.add(item);
     }

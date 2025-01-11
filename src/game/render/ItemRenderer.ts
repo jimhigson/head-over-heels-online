@@ -45,10 +45,10 @@ const moveContainerToItemPosition = (
   container: Container,
 ) => {
   // current position of item doesn't match its current rendered position
-  const projectionXyz = projectWorldXyzToScreenXy(position);
+  const projectionXy = projectWorldXyzToScreenXy(position);
 
-  container.x = projectionXyz.x;
-  container.y = projectionXyz.y;
+  container.x = projectionXy.x;
+  container.y = projectionXy.y;
 };
 
 export const ItemRenderer = <
@@ -132,6 +132,7 @@ export const ItemRenderer = <
 
       if (hasMoved) {
         // current position of item doesn't match its current rendered position
+
         moveContainerToItemPosition(item, mainContainer);
       }
 
