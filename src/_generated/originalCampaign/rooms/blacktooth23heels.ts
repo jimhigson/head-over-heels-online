@@ -167,11 +167,6 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    heels: {
-      config: { which: "heels" },
-      position: { x: 3.5, y: 3.5, z: 0 },
-      type: "player",
-    },
     extra1: {
       config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 3, z: 0 },
@@ -186,6 +181,11 @@ export const room = inferRoomJson({
       config: { movement: "free", style: "stepStool" },
       position: { x: 1, y: 3, z: 1 },
       type: "movableBlock",
+    },
+    heels: {
+      config: { which: "heels" },
+      position: { x: 3.5, y: 3.5, z: 0 },
+      type: "player",
     },
     scroll: {
       config: {

@@ -1315,8 +1315,71 @@
         "gives": "scroll",
         "markdown": "\n## HISTORY OF THE BLACKTOOTH EMPIRE\n\n![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four\nworlds enslaved by the planet Blacktooth. All of the slave worlds bubble with\nunrest, but due to the oppressive nature of their rulers they never reach\nboiling point, they all lack a leader to draw the masses of population together.\n\nBlacktooth itself is not any better, a world rigidly controlled by its dynastic\nleaders for so long that the populace do not ever think about revolution. The\npeoples of the neighbouring stars are getting very worried about signs of\nmilitary expansion from Blacktooth and have sent a spy from the planet Freedom\nto see if he can push the slave planets into full rebellion by finding the\ncrowns lost when Blacktooth took over.\n\nThe creatures of Freedom are very strange in that they are formed from a pair of\nsymbiotic animals that have adapted to operate either independently or, to their\nmutual advantage, join together as one - Head saddled on Heels, and indeed these\nARE their names and both are highly trained spies.\n\n*> head over heels manual*\n"
       },
-      "position": { "x": 1, "y": 0, "z": 0 },
+      "position": { "x": 1, "y": 3.5, "z": 4 },
       "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 2, "z": 0 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra2",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra3",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 4.5, "z": 1 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra4",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 2.5, "z": 1 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra5",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 3, "z": 2 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra6",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 4, "z": 2 },
+      "config": { "style": "stepStool", "movement": "free" }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth2/items/extra7",
+    "value": {
+      "type": "movableBlock",
+      "position": { "x": 1, "y": 3.5, "z": 3 },
+      "config": { "style": "stepStool", "movement": "free" }
     }
   },
   {

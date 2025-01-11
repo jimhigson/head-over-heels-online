@@ -12,6 +12,41 @@ export const room = inferRoomJson({
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
+    extra: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 2, z: 0 },
+      type: "movableBlock",
+    },
+    extra2: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 5, z: 0 },
+      type: "movableBlock",
+    },
+    extra3: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 4.5, z: 1 },
+      type: "movableBlock",
+    },
+    extra4: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 2.5, z: 1 },
+      type: "movableBlock",
+    },
+    extra5: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 3, z: 2 },
+      type: "movableBlock",
+    },
+    extra6: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 4, z: 2 },
+      type: "movableBlock",
+    },
+    extra7: {
+      config: { movement: "free", style: "stepStool" },
+      position: { x: 1, y: 3.5, z: 3 },
+      type: "movableBlock",
+    },
     scroll: {
       config: {
         gives: "scroll",
@@ -38,7 +73,7 @@ ARE their names and both are highly trained spies.
 *> head over heels manual*
 `,
       },
-      position: { x: 1, y: 0, z: 0 },
+      position: { x: 1, y: 3.5, z: 4 },
       type: "pickup",
     },
     "teleporter@5,7,0": {
