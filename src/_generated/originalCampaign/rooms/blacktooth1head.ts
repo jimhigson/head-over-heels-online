@@ -37,6 +37,11 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
+    colouriseSwitch: {
+      type: 'switch',
+      config: { activates: {} },
+      position: { x: 5, y: 3, z: 0 },
+    },
     "pickup@5,0,7": {
       config: { gives: "extra-life" },
       position: { x: 5, y: 0, z: 7 },
