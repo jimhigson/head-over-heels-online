@@ -1228,6 +1228,14 @@
       "type": "pickup"
     }
   },
+  {
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/movableBlock@1,3,1"
+  },
+  {
+    "op": "remove",
+    "path": "/rooms/blacktooth23heels/items/movableBlock@1,4,1"
+  },
   { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@1,3,0" },
   { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@2,3,0" },
   { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@3,3,0" },
@@ -1241,6 +1249,33 @@
       "config": { "which": "heels" },
       "position": { "x": 3.5, "y": 3.5, "z": 0 },
       "type": "player"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/extra1",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 3, "z": 0 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/extra2",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 4, "z": 0 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth23heels/items/extra3",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 3, "z": 1 },
+      "type": "movableBlock"
     }
   },
   {
@@ -1291,6 +1326,15 @@
       "config": { "which": "head" },
       "position": { "x": 2.5, "y": 2.5, "z": 0 },
       "type": "player"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth1head/items/colouriseSwitch",
+    "value": {
+      "type": "switch",
+      "config": { "activates": {} },
+      "position": { "x": 5, "y": 3, "z": 0 }
     }
   },
   {
