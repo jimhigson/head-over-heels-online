@@ -39,6 +39,9 @@ export type FreeItemState<RoomId extends string = string> = {
     /** eg, for conveyors - maybe for other kinds of moving floors in future */
     movingFloor: Xyz;
   };
+
+  /** the roomTime when this item last had a force applied to it - used for snapping to the pixel grid */
+  actedOnAt: number;
 };
 
 type SlidingItemState<RoomId extends string> = FreeItemState<RoomId> & {

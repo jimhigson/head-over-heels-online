@@ -27,6 +27,7 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
       switchedToAt: Number.NEGATIVE_INFINITY,
+      actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
   const heels: PlayableItem<"heels", RoomId> = {
@@ -42,6 +43,7 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position),
       switchedToAt: Number.NEGATIVE_INFINITY,
+      actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
 
@@ -72,6 +74,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
       teleporting: null,
       autoWalk: false,
       facing: heels.state.facing,
+      actedOnAt: Math.max(heels.state.actedOnAt, heels.state.actedOnAt),
       head: {
         ...pick(
           head.state,

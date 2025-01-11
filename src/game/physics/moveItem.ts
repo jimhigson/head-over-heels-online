@@ -78,6 +78,10 @@ export const moveItem = <RoomId extends string>({
 
   // strategy is to move to the target position, then back off as needed
   subjectItem.state.position = addXyz(originalPosition, posDelta);
+  if (isFreeItem(subjectItem)) {
+    // it isn't clear why subjectItem would ever *not* be a freeItem
+    subjectItem.state.actedOnAt = room.roomTime;
+  }
 
   if (log)
     console.log(
