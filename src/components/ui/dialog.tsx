@@ -5,9 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 import { cn } from "@/lib/utils";
 
-const Dialog = DialogPrimitive.Root;
-
-const DialogPortal = DialogPrimitive.Portal;
+export const Dialog = DialogPrimitive.Root;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -21,11 +19,11 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-const DialogContent = React.forwardRef<
+export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-  <DialogPortal>
+  <DialogPrimitive.Portal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
@@ -39,8 +37,6 @@ const DialogContent = React.forwardRef<
       <DialogPrimitive.Title />
       {children}
     </DialogPrimitive.Content>
-  </DialogPortal>
+  </DialogPrimitive.Portal>
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
-
-export { Dialog, DialogPortal, DialogOverlay, DialogContent };
