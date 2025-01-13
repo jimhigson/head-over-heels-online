@@ -2,23 +2,23 @@ import type { GameApi } from "@/game/GameApi";
 import type { Action, InputState } from "@/game/input/InputState";
 import { useEffect } from "react";
 
-export type UseCloseOnInputProps<RoomId extends string> = {
-  onClose: () => void;
+export type UseActionInputProps<RoomId extends string> = {
+  onAction: () => void;
   gameApi: GameApi<RoomId>;
   action: Action;
 };
 
-export const useCloseOnInput = <RoomId extends string>({
-  onClose,
+export const useActionInput = <RoomId extends string>({
+  onAction,
   gameApi,
   action,
-}: UseCloseOnInputProps<RoomId>) => {
+}: UseActionInputProps<RoomId>) => {
   useEffect(
     function closeOnInput() {
       const handleInput = (inputState: InputState) => {
         console.log("handleInput", JSON.stringify(inputState));
         if (inputState[action]) {
-          onClose();
+          onAction();
           inputState[action] = false; // handled this input
         }
       };
@@ -29,6 +29,6 @@ export const useCloseOnInput = <RoomId extends string>({
         gameApi.events.off("inputStateChanged", handleInput);
       };
     },
-    [action, gameApi, onClose],
+    [action, gameApi, onAction],
   );
 };

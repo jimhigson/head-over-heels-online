@@ -4,7 +4,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import { useContext } from "react";
 import type { GameApi } from "@/game/GameApi";
-import { useCloseOnInput } from "./useCloseOnInput";
+import { useActionInput } from "./useCloseOnInput";
 
 type HoldDialogContentProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
@@ -22,23 +22,22 @@ export const HoldDialogContent = <RoomId extends string>({
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
 
-  useCloseOnInput({
+  useActionInput({
     action: "hold",
-    onClose,
+    onAction: onClose,
     gameApi,
   });
 
   return (
     <div className="text-center bg-pureBlack">
-      <div>
-        <BitmapText
-          scale={scaleFactor}
-          doubleHeight
-          color={spritesheetPalette.moss}
-        >
-          hold
-        </BitmapText>
-      </div>
+      <BitmapText
+        scale={scaleFactor}
+        doubleHeight
+        color={spritesheetPalette.moss}
+        className="block"
+      >
+        hold
+      </BitmapText>
       <span>
         <PressToContinueBanner
           className="text-center"

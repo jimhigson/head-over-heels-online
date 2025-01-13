@@ -77,9 +77,8 @@ export const listenForInput = ({
       foundMapping = true;
       if (isDirectionAction(action)) {
         directionsPressed[action] = directionPressNumber++;
-      } else {
-        inputState[action] = true;
       }
+      inputState[action] = true;
     }
 
     if (!foundMapping) {
@@ -98,9 +97,8 @@ export const listenForInput = ({
     for (const action of keyToAction(keyAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];
-      } else {
-        inputState[action] = false;
       }
+      inputState[action] = false;
     }
     updateDirection();
     onInputStateChange?.(inputState);

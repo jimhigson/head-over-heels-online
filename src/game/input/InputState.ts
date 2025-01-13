@@ -1,7 +1,7 @@
 import { fromAllEntries } from "@/utils/entries";
 import type { Key } from "./keys";
 import type { Xyz } from "@/utils/vectors/vectors";
-import { type DirectionXy4 } from "@/utils/vectors/vectors";
+import { directionsXy4, type DirectionXy4 } from "@/utils/vectors/vectors";
 
 export const booleanActions = [
   "jump",
@@ -10,6 +10,7 @@ export const booleanActions = [
   "swop",
   "hold", // aka pause in modern games
   "menu",
+  ...directionsXy4,
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
@@ -28,6 +29,7 @@ export type InputState = Record<Action, boolean> & {
 
 export const createEmptyInput = (): InputState => ({
   ...fromAllEntries(booleanActions.map((action) => [action, false])),
+  ...fromAllEntries(directionsXy4.map((action) => [action, false])),
   windowFocus: true,
   direction: { x: 0, y: 0, z: 0 },
 });

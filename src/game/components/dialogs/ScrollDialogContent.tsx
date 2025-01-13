@@ -4,7 +4,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useContext } from "react";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import type { GameApi } from "@/game/GameApi";
-import { useCloseOnInput } from "./useCloseOnInput";
+import { useActionInput } from "./useCloseOnInput";
 
 export type ScrollContentProps<RoomId extends string> = {
   markdown: string;
@@ -23,8 +23,8 @@ export const ScrollDialogContent = <RoomId extends string>({
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
 
-  useCloseOnInput({
-    onClose,
+  useActionInput({
+    onAction: onClose,
     gameApi,
     action: "jump",
   });

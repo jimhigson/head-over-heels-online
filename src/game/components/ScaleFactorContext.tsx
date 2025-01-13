@@ -5,7 +5,7 @@ import "react";
 
 declare module "react" {
   interface CSSProperties {
-    [`--scaleFactor`]: string | number;
+    [`--scaleFactor`]?: string | number;
   }
 }
 

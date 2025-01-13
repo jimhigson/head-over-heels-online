@@ -111,6 +111,7 @@ export interface BitmapTextProps {
   scale?: number;
   doubleHeight?: boolean;
   color?: Color;
+  className?: string;
 }
 
 export const BitmapText = ({
@@ -118,6 +119,7 @@ export const BitmapText = ({
   scale = 1,
   doubleHeight,
   color = spritesheetPalette.shadow,
+  className,
 }: BitmapTextProps) => {
   const trimmed =
     Array.isArray(text) ?
@@ -128,7 +130,7 @@ export const BitmapText = ({
   }
   const words = trimmed.toUpperCase().split(/\s+/);
   return (
-    <>
+    <span className={className}>
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
@@ -149,7 +151,7 @@ export const BitmapText = ({
           </span>
         );
       })}
-    </>
+    </span>
   );
 };
 export const RenderTextChildrenAsSprites = ({
