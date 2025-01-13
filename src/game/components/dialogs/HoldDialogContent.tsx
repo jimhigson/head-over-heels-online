@@ -4,7 +4,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import { useContext } from "react";
 import type { GameApi } from "@/game/GameApi";
-import { useActionInput } from "./useCloseOnInput";
+import { useActionInput } from "./useActionInput";
 
 type HoldDialogContentProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;

@@ -4,7 +4,7 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useContext } from "react";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import type { GameApi } from "@/game/GameApi";
-import { useActionInput } from "./useCloseOnInput";
+import { useActionInput } from "./useActionInput";
 
 export type ScrollContentProps<RoomId extends string> = {
   markdown: string;

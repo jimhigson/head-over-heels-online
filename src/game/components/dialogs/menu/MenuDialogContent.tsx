@@ -1,9 +1,9 @@
 import type { GameApi } from "@/game/GameApi";
-import { BitmapText } from "../Sprite";
+import { BitmapText } from "../../Sprite";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useContext, useState } from "react";
-import { ScaleFactorContext } from "../ScaleFactorContext";
-import { useActionInput } from "./useCloseOnInput";
+import { ScaleFactorContext } from "../../ScaleFactorContext";
+import { useActionInput } from "../useActionInput";
 
 export interface MenuDialogContentProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -22,8 +22,9 @@ const MenuItem = ({ text, selected }: { text: string; selected: boolean }) => {
       color={
         selected ? spritesheetPalette.metallicBlue : spritesheetPalette.moss
       }
-      className="block"
+      className="block mb-1"
     >
+      {selected ? "==" : "{}"}
       {text}
     </BitmapText>
   );

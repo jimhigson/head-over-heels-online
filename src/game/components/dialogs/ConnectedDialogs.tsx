@@ -4,7 +4,7 @@ import type { InputState } from "../../input/InputState";
 import { ScrollDialogContent } from "./ScrollDialogContent";
 import { HoldDialogContent } from "./HoldDialogContent";
 import { Dialog } from "@/components/ui/dialog";
-import { MenuDialogContent } from "./MenuDialogContent";
+import { MenuDialogContent } from "./menu/MenuDialogContent";
 
 export type ConnectedDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;

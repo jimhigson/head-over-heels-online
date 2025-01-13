@@ -16,7 +16,6 @@ export const useActionInput = <RoomId extends string>({
   useEffect(
     function closeOnInput() {
       const handleInput = (inputState: InputState) => {
-        console.log("handleInput", JSON.stringify(inputState));
         if (inputState[action]) {
           onAction();
           inputState[action] = false; // handled this input

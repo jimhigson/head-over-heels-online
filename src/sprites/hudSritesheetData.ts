@@ -1,6 +1,6 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { hudCharTextureSize } from "./textureSizes";
-import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
+import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { fromAllEntries } from "@/utils/entries";
 import type { Xy } from "@/utils/vectors/vectors";
 
@@ -62,6 +62,10 @@ const punctuation2 = [
   "EnterFullscreen",
   "ExitFullscreen",
 ] as const;
+// choose some arbitrary but fairly common keys for the menu items,
+// selected to be unlikely to be used for either game controls or to
+// appear in scroll markdown
+const menuChars = ["=", "{", "}"] as const;
 
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,
@@ -99,13 +103,15 @@ export const hudSpritesheetData = {
     "hud.bigJumps": {
       frame: { x: 587, y: 0, ...hudCharTextureSize },
     },
-    "hud.char.0": {
-      frame: { x: 479, y: 0, ...hudCharTextureSize },
-    },
     ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
     ...charFrames(punctuation, { x: 515, y: 9 }),
     ...charFrames(punctuation2, { x: 515, y: 18 }),
-    ...seriesOfAnimationFrameTextures(
+    ...charFrames(menuChars, { x: 596, y: 0 }),
+    "hud.char.0": {
+      frame: { x: 479, y: 0, ...hudCharTextureSize },
+    },
+    // numbers 1..9:
+    ...seriesOfNumberedTextures(
       "hud.char",
       9,
       { x: 488, y: 0 },

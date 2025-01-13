@@ -1,5 +1,5 @@
 import type { SpritesheetData } from "pixi.js";
-import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
+import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "@/model/modelTypes";
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
@@ -34,25 +34,25 @@ function walkingFrames<P extends CharacterName>(p: P) {
 }
 
 const frames = {
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "head.walking.towards",
     3,
     { x: 4, y: 266 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "head.walking.right",
     3,
     { x: 80, y: 266 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "head.walking.left",
     3,
     { x: 4, y: 240 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "head.walking.away",
     3,
     { x: 80, y: 240 },
@@ -70,7 +70,7 @@ const frames = {
   "head.falling.right": {
     frame: { x: 105, y: 291, ...smallItemTextureSize },
   },
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.head",
     6,
     { x: 4, y: 215 },
@@ -79,31 +79,31 @@ const frames = {
 
   // Heels
   // ------------
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "heels.walking.towards",
     3,
     { x: 159, y: 266 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "heels.walking.right",
     3,
     { x: 235, y: 266 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "heels.walking.left",
     3,
     { x: 159, y: 240 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "heels.walking.away",
     3,
     { x: 235, y: 240 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.heels",
     6,
     { x: 159, y: 215 },

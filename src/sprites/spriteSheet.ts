@@ -2,7 +2,7 @@ import type { SpritesheetData } from "pixi.js";
 import { Assets, Spritesheet, Texture } from "pixi.js";
 import spritesheetUrl from "../../gfx/sprites.png";
 import {
-  seriesOfAnimationFrameTextures,
+  seriesOfNumberedTextures,
   fourDirections,
   seriesOfAnimationFrameTextureIds,
 } from "./spriteGenerators";
@@ -107,7 +107,7 @@ const frames = {
   teleporter: {
     frame: { x: 2, y: 478, ...largeItemTextureSize },
   },
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "teleporter.flashing",
     2,
     { x: 35, y: 478 },
@@ -168,13 +168,13 @@ const frames = {
   "shadowMask.spikes": {
     frame: { x: 333, y: 397, ...largeItemTextureSize },
   },
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "conveyor.x",
     7,
     { x: 409, y: 454 },
     largeItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "conveyor.y",
     7,
     { x: 409, y: 483 },
@@ -204,7 +204,7 @@ const frames = {
   bag: {
     frame: { x: 227, y: 349, ...smallItemTextureSize },
   },
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "fish",
     2,
     { x: 177, y: 324 },
@@ -217,7 +217,7 @@ const frames = {
     frame: { x: 27, y: 453, ...smallItemTextureSize },
   },
 
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "lift",
     4,
     { x: 233, y: 481 },
@@ -225,7 +225,7 @@ const frames = {
   ),
   "lift.static": { frame: { x: 333, y: 481, ...smallItemTextureSize } },
 
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "dalek",
     2,
     { x: 4, y: 4 },
@@ -302,57 +302,57 @@ const frames = {
   ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
   ...fourDirections("computerBot", { x: 173, y: 146 }, smallItemTextureSize),
 
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.cold",
     2,
     { x: 79, y: 4 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.taupe",
     3,
     { x: 102, y: 324 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.white",
     3,
     { x: 102, y: 349 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "bubbles.fish",
     3,
     { x: 227, y: 324 },
     smallItemTextureSize,
   ),
 
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "turtle.left",
     2,
     { x: 4, y: 137 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "turtle.away",
     2,
     { x: 55, y: 137 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "turtle.towards",
     2,
     { x: 4, y: 163 },
     smallItemTextureSize,
   ),
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "turtle.right",
     2,
     { x: 55, y: 163 },
     smallItemTextureSize,
   ),
 
-  ...seriesOfAnimationFrameTextures(
+  ...seriesOfNumberedTextures(
     "helicopterBug",
     4,
     { x: 4, y: 188 },
