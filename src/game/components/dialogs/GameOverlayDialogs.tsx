@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import type { GameApi } from "../GameApi";
-import type { InputState } from "../input/InputState";
-import { GameDialog } from "./GameDialog";
+import type { GameApi } from "../../GameApi";
+import type { InputState } from "../../input/InputState";
 import { ScrollContent } from "./ScrollContent";
-import { HoldBanner } from "./HoldBanner";
+import { HoldBanner } from "../HoldBanner";
+import { Dialog } from "@/components/ui/dialog";
 
 export type GameOverlayDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
@@ -73,20 +73,16 @@ export const GameOverlayDialogs = <RoomId extends string>({
   return (
     <>
       {displayedScrollContent !== null ?
-        <GameDialog
-          content={
-            <ScrollContent
-              markdown={displayedScrollContent}
-              keyAssignment={gameApi.gameState.keyAssignment}
-            />
-          }
-        />
+        <Dialog>
+          <ScrollContent
+            markdown={displayedScrollContent}
+            keyAssignment={gameApi.gameState.keyAssignment}
+          />
+        </Dialog>
       : paused ?
-        <GameDialog
-          content={
-            <HoldBanner keyAssignment={gameApi.gameState.keyAssignment} />
-          }
-        />
+        <Dialog>
+          <HoldBanner keyAssignment={gameApi.gameState.keyAssignment} />
+        </Dialog>
       : null}
     </>
   );

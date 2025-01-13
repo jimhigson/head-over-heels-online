@@ -1,42 +1,35 @@
 "use client";
 
-import * as React from "react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import {
+  Dialog as RadixDialog,
+  DialogContent as RadixDialogContent,
+  DialogTitle as RadixDialogTitle,
+  DialogPortal as RadixDialogPortal,
+} from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils";
+import { ScaleFactorContext } from "@/game/components/ScaleFactorContext";
+import type { ReactNode } from "react";
+import { useContext } from "react";
 
-export const Dialog = DialogPrimitive.Root;
+export type DialogProps = {
+  children: ReactNode;
+};
 
-const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
-    {...props}
-  />
-));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+export const Dialog = ({ children }: DialogProps) => {
+  const scaleFactor = useContext(ScaleFactorContext);
 
-export const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPrimitive.Portal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%] gap-4 bg-background shadow-lg",
-        className,
-      )}
-      {...props}
-    >
-      {/* keep radix happy: */}
-      <DialogPrimitive.Title />
-      {children}
-    </DialogPrimitive.Content>
-  </DialogPrimitive.Portal>
-));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
+  return (
+    <RadixDialog open={true} modal={false}>
+      <RadixDialogPortal>
+        <RadixDialogContent
+          className={`max-w-dialog${scaleFactor} bg-highlightBeige fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%] gap-4 bg-background shadow-lg`}
+          aria-describedby={undefined}
+        >
+          {/* keep radix happy with an empty title: */}
+          <RadixDialogTitle />
+          {children}
+        </RadixDialogContent>
+      </RadixDialogPortal>
+    </RadixDialog>
+  );
+};
