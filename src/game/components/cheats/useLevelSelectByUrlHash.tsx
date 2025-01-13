@@ -1,5 +1,5 @@
+import type { GameApi } from "@/game/GameApi";
 import { useEffect } from "react";
-import type { GameApi } from "../GameApi";
 
 export const useLevelSelectByUrlHash = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,

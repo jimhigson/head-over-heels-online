@@ -14,10 +14,10 @@ const originalKeyAssignment: KeyAssignment = {
 };
 
 const defaultAssignment: KeyAssignment = {
-  right: ["ArrowRight"],
-  towards: ["ArrowDown"],
-  left: ["ArrowLeft"],
-  away: ["ArrowUp"],
+  right: ["ArrowRight", "P"],
+  towards: ["ArrowDown", "A"],
+  left: ["ArrowLeft", "O"],
+  away: ["ArrowUp", "Q"],
   jump: [" ", "`"],
   carry: ["Shift", "`"],
   fire: ["D"],

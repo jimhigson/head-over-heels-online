@@ -4,11 +4,11 @@ import type { GameApi } from "../../GameApi.tsx";
 import type { Campaign } from "../../../model/modelTypes.ts";
 import type { RenderOptions, ShowBoundingBoxes } from "../../RenderOptions.tsx";
 import { isItemType } from "../../physics/itemPredicates.ts";
-import type { Cheats } from "../Cheats.tsx";
-import { useScaleFactor } from "../useScaleFactor.tsx";
+import { useCalculateScaleFactor } from "../useCalculateScaleFactor.tsx";
 import { ScaleFactorBoundary } from "../ScaleFactorContext.tsx";
+import type Cheats from "../cheats/Cheats.tsx";
 
-const LazyCheats = lazy(() => import("../Cheats.tsx")) as typeof Cheats;
+const LazyCheats = lazy(() => import("../cheats/Cheats.tsx")) as typeof Cheats;
 
 const useShowBoundingBoxes = (): [
   ShowBoundingBoxes,
@@ -54,7 +54,7 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   );
   const [showBoundingBoxes, setShowBoundingBoxes] = useShowBoundingBoxes();
   const [showShadowMasks, setShowShadowMask] = useShowShadowMasks();
-  const upscale = useScaleFactor();
+  const upscale = useCalculateScaleFactor();
 
   const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
     if (gameApi === undefined)

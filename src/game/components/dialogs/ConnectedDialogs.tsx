@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import type { GameApi } from "../../GameApi";
 import type { InputState } from "../../input/InputState";
-import { ScrollContent } from "./ScrollContent";
-import { HoldBanner } from "../HoldBanner";
+import { ScrollDialogContent } from "./ScrollDialogContent";
+import { HoldDialogContent } from "./HoldDialogContent";
 import { Dialog } from "@/components/ui/dialog";
 
-export type GameOverlayDialogsProps<RoomId extends string> = {
+export type ConnectedDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
 };
 
-export const GameOverlayDialogs = <RoomId extends string>({
+export const ConnectedDialogs = <RoomId extends string>({
   gameApi,
-}: GameOverlayDialogsProps<RoomId>) => {
+}: ConnectedDialogsProps<RoomId>) => {
   const [displayedScrollContent, setDisplayedScrollContent] = useState<
     string | null
   >(null);
   const [paused, setPaused] = useState<boolean>(false);
 
   useEffect(
-    function listenForScrollOpen() {
+    function showScrollOnScrollOpenedEvent() {
       const handleScrollOpened = ({ markdown }: { markdown: string }) => {
         setDisplayedScrollContent(markdown);
         gameApi.gameState.gameSpeed = 0;
@@ -35,15 +35,7 @@ export const GameOverlayDialogs = <RoomId extends string>({
 
   useEffect(
     function listenForInput() {
-      const handleInput = (inputState: InputState) => {
-        if (displayedScrollContent !== null && inputState.jump) {
-          // close the scroll
-          setDisplayedScrollContent(null);
-          gameApi.gameState.gameSpeed = 1;
-          inputState.jump = false; // handled this input
-        }
-
-        //pausing
+      const showHoldDialogOnHoldPressed = (inputState: InputState) => {
         if (
           (inputState.hold || inputState.windowFocus === false) &&
           !paused &&
@@ -53,18 +45,12 @@ export const GameOverlayDialogs = <RoomId extends string>({
           gameApi.gameState.gameSpeed = 0;
           inputState.hold = false; // handled this input
         }
-        //un pausing
-        if (inputState.hold && paused) {
-          setPaused(false);
-          gameApi.gameState.gameSpeed = 1;
-          inputState.hold = false; // handled this input
-        }
       };
 
-      gameApi.events.on("inputStateChanged", handleInput);
+      gameApi.events.on("inputStateChanged", showHoldDialogOnHoldPressed);
 
       return () => {
-        gameApi.events.off("inputStateChanged", handleInput);
+        gameApi.events.off("inputStateChanged", showHoldDialogOnHoldPressed);
       };
     },
     [gameApi, paused, displayedScrollContent],
@@ -74,14 +60,24 @@ export const GameOverlayDialogs = <RoomId extends string>({
     <>
       {displayedScrollContent !== null ?
         <Dialog>
-          <ScrollContent
+          <ScrollDialogContent
             markdown={displayedScrollContent}
-            keyAssignment={gameApi.gameState.keyAssignment}
+            gameApi={gameApi}
+            onClose={() => {
+              setDisplayedScrollContent(null);
+              gameApi.gameState.gameSpeed = 1;
+            }}
           />
         </Dialog>
       : paused ?
         <Dialog>
-          <HoldBanner keyAssignment={gameApi.gameState.keyAssignment} />
+          <HoldDialogContent
+            gameApi={gameApi}
+            onClose={() => {
+              setPaused(false);
+              gameApi.gameState.gameSpeed = 1;
+            }}
+          />
         </Dialog>
       : null}
     </>

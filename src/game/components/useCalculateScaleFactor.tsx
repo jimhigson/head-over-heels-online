@@ -3,7 +3,7 @@ import { useState, useLayoutEffect } from "react";
 import type { Upscale } from "../render/upscale";
 import { calculateUpscale } from "../render/upscale";
 
-export const useScaleFactor = (): Upscale => {
+export const useCalculateScaleFactor = (): Upscale => {
   const [scaleFactor, setScaleFactor] = useState<Upscale>(() =>
     calculateUpscale(
       { x: window.innerWidth, y: window.innerHeight },

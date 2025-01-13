@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import type { Campaign } from "../../model/modelTypes";
 import { type GameApi } from "../GameApi";
 import type { RenderOptions } from "../RenderOptions";
-import { GameOverlayDialogs } from "./GameOverlayDialogs";
+import { ConnectedDialogs } from "./dialogs/ConnectedDialogs";
 
 import { gameMain } from "../gameMain";
 
@@ -72,7 +72,7 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
     return (
       <>
         <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
-        {gameApi && <GameOverlayDialogs gameApi={gameApi} />}
+        {gameApi && <ConnectedDialogs gameApi={gameApi} />}
       </>
     );
   });

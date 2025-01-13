@@ -1,13 +1,13 @@
-import { BitmapText } from "./Sprite";
-import type { Action, KeyAssignment } from "../input/InputState";
+import { BitmapText } from "../Sprite";
+import type { Action, KeyAssignment } from "../../input/InputState";
 import { Fragment } from "react/jsx-runtime";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import type { Color } from "pixi.js";
 import { cx } from "class-variance-authority";
 import { useContext } from "react";
-import { ScaleFactorContext } from "./ScaleFactorContext";
+import { ScaleFactorContext } from "../ScaleFactorContext";
 
-export const PressToContinue = ({
+export const PressToContinueBanner = ({
   action,
   keyAssignment,
   className,

@@ -7,23 +7,23 @@ import {
 } from "@radix-ui/react-collapsible";
 import { Label } from "@radix-ui/react-label";
 
-import { selectCurrentRoom } from "../gameState/GameState";
+import { selectCurrentRoom } from "../../gameState/GameState";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
-} from "../gameState/gameStateSelectors/selectPlayableItem";
-import { changeCharacterRoom } from "../gameState/mutators/changeCharacterRoom";
-import { RoomSelect } from "../levelEdit/RoomSelect";
-import { ImgSprite } from "./Sprite";
-import type { GameApi } from "../GameApi";
-import type { ShowBoundingBoxes } from "../RenderOptions";
+} from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
+import { RoomSelect } from "./RoomSelect";
+import { ImgSprite } from "../Sprite";
 import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
 import type { SceneryName } from "@/sprites/planets";
-import { addItemFromJsonToRoom } from "../gameState/mutators/addItemToRoom";
+import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import { Switch } from "@/components/ui/switch";
 import type { CharacterName } from "@/model/modelTypes";
 import type { PropsWithChildren } from "react";
+import type { GameApi } from "@/game/GameApi";
+import type { ShowBoundingBoxes } from "@/game/RenderOptions";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;

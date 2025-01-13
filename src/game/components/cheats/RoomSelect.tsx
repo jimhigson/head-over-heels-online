@@ -13,9 +13,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import type { GameApi } from "../GameApi";
-import { useCurrentlyViewedRoom } from "./useCurrentRoom";
-import { ImgSprite } from "../components/Sprite";
+import type { GameApi } from "../../GameApi";
+import { useCurrentlyViewedRoom } from "../useCurrentRoom";
+import { ImgSprite } from "../Sprite";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
