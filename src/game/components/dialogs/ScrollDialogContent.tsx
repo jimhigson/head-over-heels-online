@@ -1,10 +1,10 @@
 import { BlockyMarkdown } from "../BlockyMarkdown";
 import { PressToContinueBanner } from "./PressToContinueBanner";
-import type { InputState } from "../../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import type { GameApi } from "@/game/GameApi";
+import { useCloseOnInput } from "./useCloseOnInput";
 
 export type ScrollContentProps<RoomId extends string> = {
   markdown: string;
@@ -23,23 +23,11 @@ export const ScrollDialogContent = <RoomId extends string>({
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
 
-  useEffect(
-    function closeOnJumpPressed() {
-      const handleInput = (inputState: InputState) => {
-        if (inputState.jump) {
-          onClose();
-          inputState.jump = false; // handled this input
-        }
-      };
-
-      gameApi.events.on("inputStateChanged", handleInput);
-
-      return () => {
-        gameApi.events.off("inputStateChanged", handleInput);
-      };
-    },
-    [gameApi, onClose],
-  );
+  useCloseOnInput({
+    onClose,
+    gameApi,
+    action: "jump",
+  });
 
   return (
     <div className="bg-highlightBeige">

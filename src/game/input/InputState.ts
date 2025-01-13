@@ -8,12 +8,12 @@ export const booleanActions = [
   "fire",
   "carry",
   "swop",
-  /* original game calls this hold (not pause) */
-  "hold",
+  "hold", // aka pause in modern games
+  "menu",
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
-export type KeyAssignment = Record<Action | DirectionXy4, Key[]>;
+export type KeyAssignment = Record<Action | DirectionXy4, Readonly<Key[]>>;
 
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {

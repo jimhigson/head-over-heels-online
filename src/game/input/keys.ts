@@ -107,6 +107,7 @@ const keys = [
   "F10",
   "F11",
   "F12",
+  "Escape",
 ] as const;
 
 export type Key = (typeof keys)[number];

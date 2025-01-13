@@ -1,6 +1,9 @@
 import type { KeyAssignment } from "./InputState";
 import type { Key } from "./keys";
 
+// menu key can't be reconfigured:
+const menu = ["Escape"] as const;
+
 const originalKeyAssignment: KeyAssignment = {
   right: ["P", "7"],
   towards: ["A", "8"],
@@ -11,6 +14,7 @@ const originalKeyAssignment: KeyAssignment = {
   fire: ["Shift", "Z", "X", "C", "V"],
   swop: ["S", "D", "F", "G"],
   hold: ["H"],
+  menu,
 };
 
 const defaultAssignment: KeyAssignment = {
@@ -23,6 +27,7 @@ const defaultAssignment: KeyAssignment = {
   fire: ["D"],
   swop: ["Enter"],
   hold: ["F8", "H"],
+  menu,
 };
 
 // left hand on wasd, right hand (optionally) on IOP
@@ -36,6 +41,7 @@ const wasdKeyAssignments: KeyAssignment = {
   fire: ["E", "O"],
   swop: ["Q"],
   hold: ["H"],
+  menu,
 };
 
 type MameButtons = {
@@ -80,6 +86,7 @@ const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
   fire: mameButtons.map((mb) => mb.buttons[2]),
   swop: mameButtons.map((mb) => mb.start),
   hold: mameButtons.map((mb) => mb.coin),
+  menu,
 });
 
 export const keyAssignmentPresets = {

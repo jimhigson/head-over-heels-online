@@ -2,9 +2,9 @@ import { BitmapText } from "../Sprite";
 import { PressToContinueBanner } from "./PressToContinueBanner";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { ScaleFactorContext } from "../ScaleFactorContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import type { GameApi } from "@/game/GameApi";
-import type { InputState } from "@/game/input/InputState";
+import { useCloseOnInput } from "./useCloseOnInput";
 
 type HoldDialogContentProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
@@ -22,23 +22,11 @@ export const HoldDialogContent = <RoomId extends string>({
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
 
-  useEffect(
-    function closeOnHoldPressed() {
-      const handleInput = (inputState: InputState) => {
-        if (inputState.hold) {
-          onClose();
-          inputState.hold = false; // handled this input
-        }
-      };
-
-      gameApi.events.on("inputStateChanged", handleInput);
-
-      return () => {
-        gameApi.events.off("inputStateChanged", handleInput);
-      };
-    },
-    [gameApi, onClose],
-  );
+  useCloseOnInput({
+    action: "hold",
+    onClose,
+    gameApi,
+  });
 
   return (
     <div className="text-center bg-pureBlack">
