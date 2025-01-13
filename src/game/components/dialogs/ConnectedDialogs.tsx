@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import type { GameApi } from "../../GameApi";
 import type { InputState } from "../../input/InputState";
-import { ScrollDialogContent } from "./ScrollDialogContent";
-import { HoldDialogContent } from "./HoldDialogContent";
-import { Dialog } from "@/components/ui/dialog";
-import { MenuDialogContent } from "./menu/MenuDialogContent";
+import { ScrollDialog } from "./ScrollDialog";
+import { HoldDialog } from "./HoldDialog";
+import { MenuDialog } from "./menu/MenuDialog";
 
 export type ConnectedDialogsProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
@@ -71,37 +70,31 @@ export const ConnectedDialogs = <RoomId extends string>({
   return (
     <>
       {displayedScrollContent !== null ?
-        <Dialog>
-          <ScrollDialogContent
-            markdown={displayedScrollContent}
-            gameApi={gameApi}
-            onClose={() => {
-              setDisplayedScrollContent(null);
-              gameApi.gameState.gameSpeed = 1;
-            }}
-          />
-        </Dialog>
+        <ScrollDialog
+          markdown={displayedScrollContent}
+          gameApi={gameApi}
+          onClose={() => {
+            setDisplayedScrollContent(null);
+            gameApi.gameState.gameSpeed = 1;
+          }}
+        />
       : paused ?
-        <Dialog>
-          <HoldDialogContent
-            gameApi={gameApi}
-            onClose={() => {
-              setPaused(false);
-              gameApi.gameState.gameSpeed = 1;
-            }}
-          />
-        </Dialog>
+        <HoldDialog
+          gameApi={gameApi}
+          onClose={() => {
+            setPaused(false);
+            gameApi.gameState.gameSpeed = 1;
+          }}
+        />
       : null}
       {menuOpen ?
-        <Dialog>
-          <MenuDialogContent
-            gameApi={gameApi}
-            onClose={() => {
-              setMenuOpen(false);
-              gameApi.gameState.gameSpeed = 1;
-            }}
-          />
-        </Dialog>
+        <MenuDialog
+          gameApi={gameApi}
+          onClose={() => {
+            setMenuOpen(false);
+            gameApi.gameState.gameSpeed = 1;
+          }}
+        />
       : null}
     </>
   );

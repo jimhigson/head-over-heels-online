@@ -5,6 +5,7 @@ import { ScaleFactorContext } from "../ScaleFactorContext";
 import { useContext } from "react";
 import type { GameApi } from "@/game/GameApi";
 import { useActionInput } from "./useActionInput";
+import { Dialog } from "@/components/ui/dialog";
 
 type HoldDialogContentProps<RoomId extends string> = {
   gameApi: GameApi<RoomId>;
@@ -12,7 +13,7 @@ type HoldDialogContentProps<RoomId extends string> = {
   onClose: () => void;
 };
 
-export const HoldDialogContent = <RoomId extends string>({
+export const HoldDialog = <RoomId extends string>({
   gameApi,
   onClose,
 }: HoldDialogContentProps<RoomId>) => {
@@ -29,7 +30,7 @@ export const HoldDialogContent = <RoomId extends string>({
   });
 
   return (
-    <div className="text-center bg-pureBlack">
+    <Dialog className="text-center">
       <BitmapText
         scale={scaleFactor}
         doubleHeight
@@ -45,6 +46,6 @@ export const HoldDialogContent = <RoomId extends string>({
           keyAssignment={keyAssignment}
         />
       </span>
-    </div>
+    </Dialog>
   );
 };

@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ScaleFactorContext } from "../ScaleFactorContext";
 import type { GameApi } from "@/game/GameApi";
 import { useActionInput } from "./useActionInput";
+import { Dialog } from "@/components/ui/dialog";
 
 export type ScrollContentProps<RoomId extends string> = {
   markdown: string;
@@ -13,7 +14,7 @@ export type ScrollContentProps<RoomId extends string> = {
   onClose: () => void;
 };
 
-export const ScrollDialogContent = <RoomId extends string>({
+export const ScrollDialog = <RoomId extends string>({
   markdown,
   gameApi,
   onClose,
@@ -30,7 +31,7 @@ export const ScrollDialogContent = <RoomId extends string>({
   });
 
   return (
-    <div className="bg-highlightBeige">
+    <Dialog className="bg-highlightBeige">
       <BlockyMarkdown
         className={`p-${scaleFactor} pb-0`}
         markdown={markdown}
@@ -41,6 +42,6 @@ export const ScrollDialogContent = <RoomId extends string>({
         keyAssignment={keyAssignment}
         keyColor={spritesheetPalette.midRed}
       />
-    </div>
+    </Dialog>
   );
 };
