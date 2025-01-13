@@ -18,7 +18,7 @@ export const MenuItemComponent = ({
       scale={scaleFactor}
       doubleHeight={selected}
       color={
-        selected ? spritesheetPalette.metallicBlue : spritesheetPalette.moss
+        selected ? spritesheetPalette.white : spritesheetPalette.metallicBlue
       }
       className="block mb-1"
     >

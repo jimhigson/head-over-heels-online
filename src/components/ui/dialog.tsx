@@ -8,22 +8,23 @@ import {
 } from "@radix-ui/react-dialog";
 
 import { ScaleFactorContext } from "@/game/components/ScaleFactorContext";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithRef, ReactNode } from "react";
 import { useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
-export type DialogProps = {
+export type DialogProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;
   className?: string;
 };
 
-export const Dialog = ({ children, className }: DialogProps) => {
+export const Dialog = ({ children, className, ref }: DialogProps) => {
   const scaleFactor = useContext(ScaleFactorContext);
 
   return (
     <RadixDialog open={true} modal={false}>
       <RadixDialogPortal>
         <RadixDialogContent
+          ref={ref}
           className={twMerge(
             `max-w-dialog${scaleFactor} bg-pureBlack fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%]`,
             className,

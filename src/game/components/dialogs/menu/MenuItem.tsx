@@ -1,9 +1,9 @@
 export type MenuItem = {
   text: string;
 };
-export const menuItems: MenuItem[] = [
+export const menu: MenuItem[] = [
   { text: "Play the game" },
   { text: "Select the keys" },
-  { text: "Read the manual" },
   { text: "Modernisation options" },
+  { text: "Read the manual" },
 ];

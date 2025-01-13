@@ -2,7 +2,7 @@ import type { GameApi } from "@/game/GameApi";
 import { useContext, useState } from "react";
 import { useActionInput } from "../useActionInput";
 import { MenuItemComponent } from "./MenuItemComponent";
-import { menuItems } from "./MenuItem";
+import { menu } from "./MenuItem";
 import { BitmapText } from "../../Sprite";
 import { ScaleFactorContext } from "../../ScaleFactorContext";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
@@ -29,22 +29,20 @@ export const MenuDialog = <RoomId extends string>({
   useActionInput({
     action: "away",
     onAction() {
-      setSelectedItemIndex(
-        (i) => (i - 1 + menuItems.length) % menuItems.length,
-      );
+      setSelectedItemIndex((i) => (i - 1 + menu.length) % menu.length);
     },
     gameApi,
   });
   useActionInput({
     action: "towards",
     onAction() {
-      setSelectedItemIndex((i) => (i + 1) % menuItems.length);
+      setSelectedItemIndex((i) => (i + 1) % menu.length);
     },
     gameApi,
   });
 
   return (
-    <Dialog>
+    <Dialog className="bg-midRed p-1">
       <div>
         <BitmapText
           color={spritesheetPalette.highlightBeige}
@@ -54,12 +52,18 @@ export const MenuDialog = <RoomId extends string>({
           Head
         </BitmapText>
         <BitmapText scale={scaleFactor}>over</BitmapText>
-        <BitmapText scale={scaleFactor} doubleHeight>
+        <BitmapText
+          scale={scaleFactor}
+          color={spritesheetPalette.highlightBeige}
+          doubleHeight
+        >
           Heels
         </BitmapText>
+        <BitmapText scale={scaleFactor}>online</BitmapText>
       </div>
+      <BitmapText scale={scaleFactor}>blockstack.ing</BitmapText>
       <div className="mt-4">
-        {menuItems.map((mi, i) => (
+        {menu.map((mi, i) => (
           <MenuItemComponent
             key={mi.text}
             menuItem={mi}
