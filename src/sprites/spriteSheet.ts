@@ -225,12 +225,7 @@ const frames = {
   ),
   "lift.static": { frame: { x: 333, y: 481, ...smallItemTextureSize } },
 
-  ...seriesOfNumberedTextures(
-    "dalek",
-    2,
-    { x: 4, y: 4 },
-    smallItemTextureSize,
-  ),
+  ...seriesOfNumberedTextures("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),
   "shadowMask.dalek": {
     frame: { x: 4, y: 29, ...smallItemTextureSize },
   },

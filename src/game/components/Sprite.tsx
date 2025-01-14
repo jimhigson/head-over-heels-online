@@ -89,7 +89,7 @@ export const ImgSprite = ({ textureId, className, tint }: ImgSpriteProps) => {
 
           display: "inline-block",
           width: `calc(var(--w) * var(--scale))`,
-          height: `calc(var(--w) * var(--scale) * var(--doubleHeight))`,
+          height: `calc(var(--h) * var(--scale) * var(--doubleHeight))`,
           maskImage: `var(--spritesheetUrl)`,
           maskPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
           maskSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
@@ -110,7 +110,7 @@ export const ImgSprite = ({ textureId, className, tint }: ImgSpriteProps) => {
         "--y": `${y}px`,
         display: "inline-block",
         width: `calc(var(--w) * var(--scale))`,
-        height: `calc(var(--w) * var(--scale) * var(--doubleHeight))`,
+        height: `calc(var(--h) * var(--scale) * var(--doubleHeight))`,
         backgroundImage: `var(--spritesheetUrl)`,
         backgroundPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
         backgroundSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
