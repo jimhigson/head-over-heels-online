@@ -30,6 +30,16 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/safari24/items/movableBlock@0,2,0/config/activated",
+    "value": "onStand"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/safari24/items/movableBlock@0,2,0/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
     "path": "/rooms/safari2/items/movableBlock@7,1,0/config/activated",
     "value": true
   },
