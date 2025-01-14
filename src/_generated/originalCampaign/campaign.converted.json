@@ -14451,22 +14451,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -14716,23 +14716,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -14783,12 +14783,12 @@
       "walls": {
         "away": ["none", "none"],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -14819,23 +14819,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -14919,14 +14919,14 @@
       "planet": "moonbase",
       "size": { "x": 4, "y": 8 },
       "walls": {
-        "away": ["window3", "none", "none", "window1"],
+        "away": ["window2", "none", "none", "window1"],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -15020,15 +15020,15 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -15126,13 +15126,13 @@
       "size": { "x": 8, "y": 2 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": ["none", "none"]
@@ -15190,18 +15190,18 @@
         "away": [
           "window1",
           "coil",
-          "window3",
           "window2",
+          "window3",
           "coil",
           "window1",
           "window1",
           "coil",
-          "window3",
           "window2",
+          "window3",
           "coil",
           "window1"
         ],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@2,5,0": {
@@ -15317,8 +15317,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window3", "window2", "none", "none", "window2", "window1"],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "away": ["window2", "window3", "none", "none", "window3", "window1"],
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -15367,8 +15367,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window3", "window2", "none", "none", "window2", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window2", "window3", "none", "none", "window3", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -15418,13 +15418,13 @@
       "size": { "x": 8, "y": 2 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": ["none", "none"]
@@ -15498,16 +15498,16 @@
       "size": { "x": 8, "y": 6 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "hushPuppy@4,5,2": {
@@ -15618,22 +15618,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -15721,15 +15721,15 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -15876,15 +15876,15 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["window3", "window2", "none", "none", "window2", "window1"],
+        "away": ["window2", "window3", "none", "none", "window3", "window1"],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -16032,22 +16032,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -16136,23 +16136,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -16396,23 +16396,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -16656,13 +16656,13 @@
       "size": { "x": 8, "y": 2 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": ["none", "none"]
@@ -16742,13 +16742,13 @@
       "walls": {
         "away": ["none", "none"],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -16777,8 +16777,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window3", "window2", "none", "none", "window2", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window2", "window3", "none", "none", "window3", "window1"]
       },
       "items": {
         "hushPuppy@5,3,2": {
@@ -16826,23 +16826,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -17086,23 +17086,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -17226,8 +17226,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window3", "window2", "none", "none", "window2", "window1"],
-        "left": ["window3", "window2", "none", "none", "window2", "window1"]
+        "away": ["window2", "window3", "none", "none", "window3", "window1"],
+        "left": ["window2", "window3", "none", "none", "window3", "window1"]
       },
       "items": {
         "door@2,6,0": {
@@ -17249,8 +17249,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {
@@ -17300,23 +17300,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -17560,34 +17560,34 @@
       "size": { "x": 12, "y": 16 },
       "walls": {
         "away": [
+          "window2",
           "window3",
-          "window2",
           "none",
           "none",
-          "window2",
+          "window3",
           "window1",
           "window1",
           "coil",
-          "window3",
           "window2",
+          "window3",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1",
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -18056,16 +18056,16 @@
       "size": { "x": 8, "y": 4 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
-        "left": ["window3", "window2", "window1", "coil"]
+        "left": ["window2", "window3", "window1", "coil"]
       },
       "items": {
         "deadlyBlock@7,3,0": {
@@ -18151,8 +18151,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@5,4,0": {
@@ -18329,8 +18329,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window1", "coil", "window3", "window2", "coil", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window1", "coil", "window2", "window3", "coil", "window1"]
       },
       "items": {
         "deadlyBlock@5,4,0": {
@@ -18508,22 +18508,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -18671,15 +18671,15 @@
       "planet": "moonbase",
       "size": { "x": 4, "y": 8 },
       "walls": {
-        "away": ["window3", "none", "none", "window1"],
+        "away": ["window2", "none", "none", "window1"],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -18731,23 +18731,23 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ]
       },
@@ -18850,22 +18850,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -19012,22 +19012,22 @@
       "size": { "x": 8, "y": 8 },
       "walls": {
         "away": [
-          "window2",
+          "window3",
           "window1",
           "coil",
+          "window2",
           "window3",
-          "window2",
           "coil",
-          "window2",
+          "window3",
           "window1"
         ],
         "left": [
-          "window2",
+          "window3",
           "coil",
-          "window3",
+          "window2",
           "none",
           "none",
-          "window3",
+          "window2",
           "coil",
           "window1"
         ]
@@ -19207,8 +19207,8 @@
       "planet": "moonbase",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["window1", "coil", "window3", "window2", "coil", "window1"],
-        "left": ["window3", "window2", "none", "none", "window2", "window1"]
+        "away": ["window1", "coil", "window2", "window3", "coil", "window1"],
+        "left": ["window2", "window3", "none", "none", "window3", "window1"]
       },
       "items": {
         "teleporter@3,3,0": {

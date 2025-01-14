@@ -76,13 +76,13 @@ clear.
   size: { x: 8, y: 2 },
   walls: {
     away: [
-      "window2",
+      "window3",
       "window1",
       "coil",
+      "window2",
       "window3",
-      "window2",
       "coil",
-      "window2",
+      "window3",
       "window1",
     ],
     left: ["none", "none"],

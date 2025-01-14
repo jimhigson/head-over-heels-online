@@ -36,7 +36,7 @@ export const room = inferRoomJson({
   planet: "moonbase",
   size: { x: 6, y: 6 },
   walls: {
-    away: ["window1", "coil", "window3", "window2", "coil", "window1"],
-    left: ["window3", "window2", "none", "none", "window2", "window1"],
+    away: ["window1", "coil", "window2", "window3", "coil", "window1"],
+    left: ["window2", "window3", "none", "none", "window3", "window1"],
   },
 }) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;
