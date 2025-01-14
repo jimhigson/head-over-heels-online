@@ -70,9 +70,9 @@ export const MenuDialog = <RoomId extends string>({
   const [curMenu] = curMenus;
 
   return (
-    <Dialog className={`bg-${curMenu.background}`}>
+    <Dialog className={`bg-${curMenu.background} h-zx`}>
       <div>{curMenu.heading}</div>
-      <div className="mt-2">
+      <div className="mt-2 leading-blockPlusOne">
         {curMenu.items.map((mi, i) => (
           <MenuItemComponent
             menu={curMenu}

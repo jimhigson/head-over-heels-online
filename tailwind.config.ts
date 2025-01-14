@@ -10,9 +10,6 @@ export default {
     {
       pattern: /bg-/,
     },
-    {
-      pattern: /max-w-dialog\d+/,
-    },
   ],
   theme: {
     colors: spritesheetPalette,
@@ -26,13 +23,11 @@ export default {
     lineHeight: {
       blockPlusOne: "calc(var(--block) + (var(--scale) * 1px))",
     },
-    extend: {
-      maxWidth: {
-        // Built around scaled-up text of size 8x8px - 32 is number of attribute cells
-        // horizontally on the ZX Spectrum resolution
-        zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,
-      },
+    width: {
+      zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,
+    },
+    height: {
+      zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
     },
   },
-  //plugins: [require("tailwindcss-animate")],
 } satisfies Config;

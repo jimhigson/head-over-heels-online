@@ -25,7 +25,7 @@ export const MenuItemComponent = ({
     </BitmapText>
   );
   return (
-    <div className={`block mb-1 ${selected ? "[--doubleHeight:2]" : ""}`}>
+    <div className={`block ${selected ? "[--doubleHeight:2]" : ""}`}>
       {labelEle}
       {menuItem.type === "key" && <BitmapText>cur</BitmapText>}
     </div>
