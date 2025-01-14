@@ -102,11 +102,14 @@ const markdownComponents: Components = {
     assertIsTextureId(src);
 
     return (
-      <ImgSprite
-        scale={2 * scaleFactor}
-        textureId={src}
-        className={`float-left mr-${scaleFactor} mb-${scaleFactor} w-1/5 mb-2`}
-      />
+      // make double-size:
+      <span style={{ "--scale": scaleFactor * 2 }}>
+        <ImgSprite
+          scale={2 * scaleFactor}
+          textureId={src}
+          className={`float-left mr-${scaleFactor} mb-${scaleFactor} w-1/5 mb-2`}
+        />
+      </span>
     );
   },
 };
