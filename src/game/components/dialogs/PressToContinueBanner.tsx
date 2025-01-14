@@ -25,34 +25,22 @@ export const PressToContinueBanner = ({
 
   return (
     <div className={cx("text-left", `mt-${scaleFactor * 2}`, className)}>
-      <BitmapText scale={scaleFactor} color={textColor}>
-        Press
-      </BitmapText>
-      <BitmapText scale={scaleFactor} color={keyColor}>
-        {action}
-      </BitmapText>
-      <BitmapText scale={scaleFactor} color={spritesheetPalette.metallicBlue}>
+      <BitmapText color={textColor}>Press</BitmapText>
+      <BitmapText color={keyColor}>{action}</BitmapText>
+      <BitmapText color={spritesheetPalette.metallicBlue}>
         to continue
       </BitmapText>
       <div>
-        <BitmapText scale={scaleFactor} color={textColor}>
-          (
-        </BitmapText>
+        <BitmapText color={textColor}>(</BitmapText>
         {keys.map((k, i) => (
           <Fragment key={k}>
-            <BitmapText scale={scaleFactor} color={keyColor}>
-              {k === " " ? "space" : k}
-            </BitmapText>
+            <BitmapText color={keyColor}>{k === " " ? "space" : k}</BitmapText>
             {i < keys.length - 1 && (
-              <BitmapText scale={scaleFactor} color={textColor}>
-                /
-              </BitmapText>
+              <BitmapText color={textColor}>/</BitmapText>
             )}
           </Fragment>
         ))}
-        <BitmapText scale={scaleFactor} color={spritesheetPalette.metallicBlue}>
-          )
-        </BitmapText>
+        <BitmapText color={spritesheetPalette.metallicBlue}>)</BitmapText>
       </div>
     </div>
   );

@@ -62,6 +62,7 @@ const punctuation2 = [
   "EnterFullscreen",
   "ExitFullscreen",
 ] as const;
+const diagonalArrows = ["↖", "↘", "↗", "↙"] as const;
 // choose some arbitrary but fairly common keys for the menu items,
 // selected to be unlikely to be used for either game controls or to
 // appear in scroll markdown
@@ -106,6 +107,7 @@ export const hudSpritesheetData = {
     ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
     ...charFrames(punctuation, { x: 515, y: 9 }),
     ...charFrames(punctuation2, { x: 515, y: 18 }),
+    ...charFrames(diagonalArrows, { x: 560, y: 27 }),
     ...charFrames(menuChars, { x: 596, y: 0 }),
     "hud.char.0": {
       frame: { x: 479, y: 0, ...hudCharTextureSize },

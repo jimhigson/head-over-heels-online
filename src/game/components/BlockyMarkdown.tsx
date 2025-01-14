@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { useContext, type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
-import { ImgSprite, RenderTextChildrenAsSprites } from "./Sprite";
+import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
@@ -18,15 +18,14 @@ const markdownComponents: Components = {
     const scaleFactor = useContext(ScaleFactorContext);
     return (
       <h2 className={`text-metallicBlue mb-${scaleFactor}`}>
-        <RenderTextChildrenAsSprites
+        <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
             doubleHeight: true,
             color: spritesheetPalette.metallicBlue,
-            scale: scaleFactor,
           }}
         >
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </h2>
     );
   },
@@ -34,14 +33,13 @@ const markdownComponents: Components = {
     const scaleFactor = useContext(ScaleFactorContext);
     return (
       <h3 className={`text-metallicBlue mt-${scaleFactor} mb-${scaleFactor}`}>
-        <RenderTextChildrenAsSprites
+        <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
             color: spritesheetPalette.metallicBlue,
-            scale: scaleFactor,
           }}
         >
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </h3>
     );
   },
@@ -49,11 +47,9 @@ const markdownComponents: Components = {
     const scaleFactor = useContext(ScaleFactorContext);
     return (
       <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{ scale: scaleFactor }}
-        >
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </p>
     );
   },
@@ -61,38 +57,32 @@ const markdownComponents: Components = {
     const scaleFactor = useContext(ScaleFactorContext);
     return (
       <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{ scale: scaleFactor }}
-        >
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </p>
     );
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <RenderTextChildrenAsSprites
+      <RenderTextChildrenAsBitmapText
         imgSpriteTextProps={{
-          scale: scaleFactor,
           color: spritesheetPalette.midRed,
         }}
       >
         {children}
-      </RenderTextChildrenAsSprites>
+      </RenderTextChildrenAsBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <RenderTextChildrenAsSprites
+      <RenderTextChildrenAsBitmapText
         imgSpriteTextProps={{
-          scale: scaleFactor,
           color: spritesheetPalette.moss,
         }}
       >
         {children}
-      </RenderTextChildrenAsSprites>
+      </RenderTextChildrenAsBitmapText>
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {

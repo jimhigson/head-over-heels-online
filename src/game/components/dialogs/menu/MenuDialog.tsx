@@ -1,12 +1,9 @@
 import type { GameApi } from "@/game/GameApi";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useActionInput } from "../useActionInput";
 import { MenuItemComponent } from "./MenuItemComponent";
-import { menu } from "./MenuItem";
-import { BitmapText } from "../../Sprite";
-import { ScaleFactorContext } from "../../ScaleFactorContext";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Dialog } from "@/components/ui/dialog";
+import { mainMenu, type Menu } from "./mainMenu";
 
 export interface MenuDialogContentProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -14,60 +11,72 @@ export interface MenuDialogContentProps<RoomId extends string> {
   onClose: () => void;
 }
 
+const defaultMenus = [mainMenu];
 export const MenuDialog = <RoomId extends string>({
   onClose,
   gameApi,
 }: MenuDialogContentProps<RoomId>) => {
-  const scaleFactor = useContext(ScaleFactorContext);
+  const [curMenus, setCurMenus] = useState<Menu[]>(defaultMenus);
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   useActionInput({
     action: "menu",
-    onAction: onClose,
+    onAction() {
+      if (curMenus.length === 1) {
+        onClose();
+      } else {
+        setCurMenus(([_head, ...tail]) => tail);
+        setSelectedItemIndex(0);
+      }
+    },
     gameApi,
   });
   useActionInput({
     action: "away",
     onAction() {
-      setSelectedItemIndex(
-        (i) => (i - 1 + menu.items.length) % menu.items.length,
-      );
+      setSelectedItemIndex((i) => {
+        const [curMenu] = curMenus;
+        return (i - 1 + curMenu.items.length) % curMenu.items.length;
+      });
     },
     gameApi,
   });
   useActionInput({
     action: "towards",
     onAction() {
-      setSelectedItemIndex((i) => (i + 1) % menu.items.length);
+      const [curMenu] = curMenus;
+      setSelectedItemIndex((i) => (i + 1) % curMenu.items.length);
+    },
+    gameApi,
+  });
+  useActionInput({
+    action: "jump",
+    onAction() {
+      const [curMenu] = curMenus;
+      const selectedMenuItem = curMenu.items[selectedItemIndex];
+      switch (selectedMenuItem.type) {
+        case "submenu":
+          setCurMenus((cm) => [selectedMenuItem.submenu, ...cm]);
+          setSelectedItemIndex(0);
+          break;
+        case "toGame":
+          onClose();
+          break;
+      }
     },
     gameApi,
   });
 
+  const [curMenu] = curMenus;
+
   return (
-    <Dialog className="bg-midRed p-1">
-      <div>
-        <BitmapText
-          color={spritesheetPalette.highlightBeige}
-          scale={scaleFactor}
-          doubleHeight
-        >
-          Head
-        </BitmapText>
-        <BitmapText scale={scaleFactor}>over</BitmapText>
-        <BitmapText
-          scale={scaleFactor}
-          color={spritesheetPalette.highlightBeige}
-          doubleHeight
-        >
-          Heels
-        </BitmapText>
-        <BitmapText scale={scaleFactor}>online</BitmapText>
-      </div>
-      <BitmapText scale={scaleFactor}>blockstack.ing</BitmapText>
+    <Dialog className={`bg-${curMenu.background} p-1`}>
+      <div>{curMenu.heading}</div>
       <div className="mt-4">
-        {menu.items.map((mi, i) => (
+        {curMenu.items.map((mi, i) => (
           <MenuItemComponent
-            key={mi.text}
+            menu={curMenu}
+            key={mi.label}
             menuItem={mi}
             selected={selectedItemIndex === i}
           />

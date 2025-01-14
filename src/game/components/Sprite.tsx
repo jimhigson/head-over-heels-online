@@ -120,7 +120,6 @@ export const ImgSprite = ({ textureId, className, color }: ImgSpriteProps) => {
 
 export interface BitmapTextProps {
   children: string | string[];
-  scale?: number;
   doubleHeight?: boolean;
   color?: Color;
   className?: string;
@@ -128,7 +127,6 @@ export interface BitmapTextProps {
 
 export const BitmapText = ({
   children: text,
-  scale = 1,
   doubleHeight,
   color = spritesheetPalette.shadow,
   className,
@@ -152,15 +150,24 @@ export const BitmapText = ({
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
-          <span className={`word text-nowrap me-${scale}`} key={wordIndex}>
+          <span className={`word text-nowrap me-[--block]`} key={wordIndex}>
             {w.split("").map((c, charIndex) => {
               const textureId = `hud.char.${c}`;
+              if (!isTextureId(textureId)) {
+                console.error(
+                  "no texture for char",
+                  c,
+                  c.charCodeAt(0),
+                  textureId,
+                  "we have:",
+                  Object.keys(spriteSheet.textures),
+                );
+              }
               return (
                 <ImgSprite
                   className={c}
                   key={charIndex}
                   textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
-                  scale={scale}
                   color={color}
                 />
               );
@@ -171,7 +178,7 @@ export const BitmapText = ({
     </span>
   );
 };
-export const RenderTextChildrenAsSprites = ({
+export const RenderTextChildrenAsBitmapText = ({
   children,
   imgSpriteTextProps,
   className,
@@ -181,7 +188,7 @@ export const RenderTextChildrenAsSprites = ({
 }>): ReactNode => {
   if (Array.isArray(children)) {
     return children.map((c, i) => (
-      <RenderTextChildrenAsSprites
+      <RenderTextChildrenAsBitmapText
         key={i}
         children={c}
         imgSpriteTextProps={imgSpriteTextProps}

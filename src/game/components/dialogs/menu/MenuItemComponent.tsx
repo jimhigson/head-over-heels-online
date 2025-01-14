@@ -1,29 +1,33 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { useContext } from "react";
-import { ScaleFactorContext } from "../../ScaleFactorContext";
 import { BitmapText } from "../../Sprite";
-import type { MenuItem } from "./MenuItem";
+import type { Menu, MenuItem } from "./mainMenu";
 
 type MenuItemComponentProps = {
+  menu: Menu;
   menuItem: MenuItem;
   selected: boolean;
 };
 export const MenuItemComponent = ({
-  menuItem: { text },
+  menu,
+  menuItem,
   selected,
 }: MenuItemComponentProps) => {
-  const scaleFactor = useContext(ScaleFactorContext);
-  return (
+  const labelEle = (
     <BitmapText
-      scale={scaleFactor}
-      doubleHeight={selected}
       color={
-        selected ? spritesheetPalette.white : spritesheetPalette.metallicBlue
+        selected ?
+          spritesheetPalette[menu.selectedColour]
+        : spritesheetPalette[menu.itemColour]
       }
-      className="block mb-1"
     >
       {selected ? "==" : "{}"}
-      {text}
+      {menuItem.label}
     </BitmapText>
+  );
+  return (
+    <div className={`block mb-1 ${selected ? "[--doubleHeight:2]" : ""}`}>
+      {labelEle}
+      {menuItem.type === "key" && <BitmapText>cur</BitmapText>}
+    </div>
   );
 };

@@ -8,6 +8,7 @@ import { spriteSheet } from "@/sprites/spriteSheet";
 declare module "react" {
   interface CSSProperties {
     [`--scale`]?: number | string;
+    [`--block`]?: number | string;
   }
 }
 
@@ -29,6 +30,7 @@ export const CssVariables = ({
       className="contents"
       style={{
         "--scale": scaleFactor,
+        "--block": `${scaleFactor * 8}px`,
         "--spritesheetUrl": `url('${spritesheetUrl}')`,
         "--spritesheetW": `${spritesheetW}px`,
         "--spritesheetH": `${spritesheetH}px`,

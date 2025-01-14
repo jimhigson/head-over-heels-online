@@ -32,7 +32,6 @@ export const HoldDialog = <RoomId extends string>({
   return (
     <Dialog className="text-center p-1">
       <BitmapText
-        scale={scaleFactor}
         doubleHeight
         color={spritesheetPalette.moss}
         className="block"
