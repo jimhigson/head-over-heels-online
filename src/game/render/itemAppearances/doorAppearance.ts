@@ -93,7 +93,6 @@ function* doorFrameGenerator(
 ): Generator<Container> {
   const axis = doorAlongAxis(direction);
 
-  // draw the actual door frame
   yield createSprite({
     texture: doorTexture(room, axis, part),
     filter: mainPaletteSwapFilter(room),
