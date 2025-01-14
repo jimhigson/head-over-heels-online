@@ -4,8 +4,6 @@ import { Fragment } from "react/jsx-runtime";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import type { Color } from "pixi.js";
 import { cx } from "class-variance-authority";
-import { useContext } from "react";
-import { ScaleFactorContext } from "../ScaleFactorContext";
 
 export const PressToContinueBanner = ({
   action,
@@ -20,11 +18,10 @@ export const PressToContinueBanner = ({
   textColor?: Color;
   keyColor?: Color;
 }) => {
-  const scaleFactor = useContext(ScaleFactorContext);
   const keys = keyAssignment[action];
 
   return (
-    <div className={cx("text-left", `mt-${scaleFactor * 2}`, className)}>
+    <div className={cx("text-left", `mt-1`, className)}>
       <BitmapText color={textColor}>Press</BitmapText>
       <BitmapText color={keyColor}>{action}</BitmapText>
       <BitmapText color={spritesheetPalette.metallicBlue}>

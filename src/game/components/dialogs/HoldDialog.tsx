@@ -1,8 +1,6 @@
 import { BitmapText } from "../Sprite";
 import { PressToContinueBanner } from "./PressToContinueBanner";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { ScaleFactorContext } from "../ScaleFactorContext";
-import { useContext } from "react";
 import type { GameApi } from "@/game/GameApi";
 import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
@@ -17,8 +15,6 @@ export const HoldDialog = <RoomId extends string>({
   gameApi,
   onClose,
 }: HoldDialogContentProps<RoomId>) => {
-  const scaleFactor = useContext(ScaleFactorContext);
-
   // technically this is wrong - if the key assignment changes, this component won't re-render
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
@@ -30,7 +26,7 @@ export const HoldDialog = <RoomId extends string>({
   });
 
   return (
-    <Dialog className="text-center p-1">
+    <Dialog className="text-center">
       <BitmapText
         doubleHeight
         color={spritesheetPalette.moss}

@@ -71,13 +71,13 @@ export const ScrollDialog = <RoomId extends string>({
   });
 
   return (
-    <Dialog className="bg-highlightBeige" ref={contentRef}>
+    <Dialog className="bg-highlightBeige p-0" ref={contentRef}>
       <BlockyMarkdown
-        className={`p-${scaleFactor} pb-0`}
+        className={`p-1 pb-0`}
         markdown={markdown}
       ></BlockyMarkdown>
       <PressToContinueBanner
-        className={`px-${scaleFactor} sticky bottom-0 bg-lightBeige`}
+        className={`px-1 sticky bottom-0 bg-lightBeige`}
         action="jump"
         keyAssignment={keyAssignment}
         keyColor={spritesheetPalette.midRed}

@@ -150,7 +150,7 @@ export const BitmapText = ({
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
-          <span className={`word text-nowrap me-[--block]`} key={wordIndex}>
+          <span className={`word text-nowrap me-1`} key={wordIndex}>
             {w.split("").map((c, charIndex) => {
               const textureId = `hud.char.${c}`;
               if (!isTextureId(textureId)) {

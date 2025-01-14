@@ -1,6 +1,6 @@
 import type { Action } from "@/game/input/InputState";
 import type { ReactNode } from "react";
-import { BitmapText } from "../../Sprite";
+import { BitmapText, ImgSprite } from "../../Sprite";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export type Menu = {
@@ -27,17 +27,23 @@ export const mainMenu: Menu = {
   selectedColour: "white",
   heading: (
     <>
-      <div>
-        <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
-          Head
-        </BitmapText>
-        <BitmapText>over</BitmapText>
-        <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
-          Heels
-        </BitmapText>
-        <BitmapText>online</BitmapText>
+      <div className="flex">
+        <div className="flex flex-col">
+          <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
+            Head
+          </BitmapText>
+          <ImgSprite className="ml-1" textureId="head.walking.right.2" />
+        </div>
+        <BitmapText className="mt-1">over</BitmapText>
+        <div className="flex flex-col">
+          <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
+            Heels
+          </BitmapText>
+          <ImgSprite className="ml-1" textureId="heels.walking.towards.2" />
+        </div>
+        <BitmapText className="mt-1">online</BitmapText>
       </div>
-      <BitmapText>blockstack.ing</BitmapText>
+      <BitmapText className="mt-1">https://blockstack.ing</BitmapText>
     </>
   ),
   items: [
@@ -56,6 +62,10 @@ export const mainMenu: Menu = {
           </BitmapText>
         ),
         items: [
+          {
+            type: "todo",
+            label: "Use preset",
+          },
           {
             type: "key",
             label: "Left ↖",

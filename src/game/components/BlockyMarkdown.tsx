@@ -15,9 +15,8 @@ export interface BlockyMarkdownProps {
 
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <h2 className={`text-metallicBlue mb-${scaleFactor}`}>
+      <h2 className={`text-metallicBlue mb-1`}>
         <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
             doubleHeight: true,
@@ -30,9 +29,8 @@ const markdownComponents: Components = {
     );
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <h3 className={`text-metallicBlue mt-${scaleFactor} mb-${scaleFactor}`}>
+      <h3 className={`text-metallicBlue mt-1 mb-1`}>
         <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
             color: spritesheetPalette.metallicBlue,
@@ -44,9 +42,8 @@ const markdownComponents: Components = {
     );
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
+      <p className={`mb-1 leading-blockPlusOne clear-both`}>
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -54,9 +51,8 @@ const markdownComponents: Components = {
     );
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
+      <p className={`mb-1 leading-blockPlusOne clear-both`}>
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -97,7 +93,7 @@ const markdownComponents: Components = {
         <ImgSprite
           scale={2 * scaleFactor}
           textureId={src}
-          className={`float-left mr-${scaleFactor} mb-${scaleFactor} w-1/5 mb-2`}
+          className={`float-left mr-1 mb-1 w-1/5`}
         />
       </span>
     );
