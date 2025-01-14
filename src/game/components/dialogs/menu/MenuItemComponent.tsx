@@ -27,7 +27,11 @@ export const MenuItemComponent = ({
   return (
     <div className={`block ${selected ? "[--doubleHeight:2]" : ""}`}>
       {labelEle}
-      {menuItem.type === "key" && <BitmapText>cur</BitmapText>}
+      {menuItem.type === "key" && (
+        <BitmapText noSpaceAfter colour={spritesheetPalette.midRed}>
+          cur
+        </BitmapText>
+      )}
     </div>
   );
 };

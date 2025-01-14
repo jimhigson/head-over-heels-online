@@ -160,7 +160,10 @@ export const BitmapText = ({
         return (
           // me- is margin end - for a space before the next word
           <span
-            className={twMerge(`word text-nowrap`, noSpaceAfter ? "" : "me-1")}
+            className={twMerge(
+              `word text-nowrap`,
+              noSpaceAfter && wordIndex === words.length - 1 ? "" : "me-1",
+            )}
             key={wordIndex}
           >
             {w.split("").map((c, charIndex) => {

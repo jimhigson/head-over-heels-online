@@ -2,9 +2,13 @@ import type { Action } from "@/game/input/InputState";
 import type { ReactNode } from "react";
 import { BitmapText, ImgSprite } from "../../Sprite";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { objectEntriesIter } from "@/utils/entries";
+import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
+import { iterate } from "@/utils/iterate";
 
 export type Menu = {
   heading: ReactNode;
+  footer?: ReactNode;
   items: MenuItem[];
   background: keyof typeof spritesheetPalette;
   itemColour: keyof typeof spritesheetPalette;
@@ -31,7 +35,7 @@ export const mainMenu: Menu = {
   itemColour: "metallicBlue",
   selectedColour: "white",
   heading: (
-    <>
+    <div className="ml-2">
       <div className="flex">
         <div className="flex flex-col">
           <BitmapText colour={spritesheetPalette.highlightBeige} doubleHeight>
@@ -52,17 +56,65 @@ export const mainMenu: Menu = {
           online
         </BitmapText>
       </div>
+    </div>
+  ),
+  footer: (
+    <>
+      <div className="flex gap-3">
+        <div className="flex flex-col">
+          <BitmapText colour={spritesheetPalette.redShadow} noSpaceAfter>
+            1987 original
+          </BitmapText>
+          <div className="flex gap-2">
+            <div className="flex flex-col">
+              <BitmapText className="ml-1" colour={colourCycle} noSpaceAfter>
+                Jon
+              </BitmapText>
+              <BitmapText colour={colourCycle} noSpaceAfter>
+                Ritman
+              </BitmapText>
+            </div>
+            <div className="flex flex-col">
+              <BitmapText className="ml-1" colour={colourCycle} noSpaceAfter>
+                Bernie
+              </BitmapText>
+              <BitmapText colour={colourCycle} noSpaceAfter>
+                Drummand
+              </BitmapText>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <BitmapText colour={spritesheetPalette.redShadow} noSpaceAfter>
+            2025 remake
+          </BitmapText>
+          <div className="flex">
+            <div className="flex flex-col ml-3">
+              <BitmapText className="ml-1" colour={colourCycle} noSpaceAfter>
+                Jim
+              </BitmapText>
+              <BitmapText colour={colourCycle} noSpaceAfter>
+                Higson
+              </BitmapText>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="mt-1">
-        <BitmapText colour={spritesheetPalette.metallicBlue} noSpaceAfter>
+        <ImgSprite className="mr-1" textureId="cube" />
+        <BitmapText colour={spritesheetPalette.redShadow} noSpaceAfter>
           https://
         </BitmapText>
+        <BitmapText colour={spritesheetPalette.lightGrey} noSpaceAfter>
+          block
+        </BitmapText>
         <BitmapText colour={spritesheetPalette.highlightBeige} noSpaceAfter>
-          blockstack
+          stack
         </BitmapText>
         <BitmapText colour={spritesheetPalette.metallicBlue} noSpaceAfter>
           .
         </BitmapText>
-        <BitmapText colour={spritesheetPalette.highlightBeige} noSpaceAfter>
+        <BitmapText colour={spritesheetPalette.lightGrey} noSpaceAfter>
           ing
         </BitmapText>
       </div>
@@ -85,8 +137,29 @@ export const mainMenu: Menu = {
         ),
         items: [
           {
-            type: "todo",
-            label: "Use preset",
+            type: "submenu",
+            label: "choose a preset",
+            submenu: {
+              background: "lightGrey",
+              itemColour: "metallicBlue",
+              selectedColour: "moss",
+              heading: (
+                <BitmapText
+                  colour={spritesheetPalette.metallicBlue}
+                  doubleHeight
+                >
+                  Select the keys
+                </BitmapText>
+              ),
+              items: [
+                ...iterate(objectEntriesIter(keyAssignmentPresets)).map(
+                  ([presetName, _keyAssignment]): MenuItem => ({
+                    type: "todo",
+                    label: presetName,
+                  }),
+                ),
+              ],
+            },
           },
           {
             type: "key",

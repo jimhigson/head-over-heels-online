@@ -90,9 +90,9 @@ const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
 });
 
 export const keyAssignmentPresets = {
-  original: originalKeyAssignment,
   default: defaultAssignment,
+  original: originalKeyAssignment,
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
-  mameP1P2: mameToHoh(mameButtonsP1, mameButtonsP2),
+  mame: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
 };

@@ -82,6 +82,7 @@ export const MenuDialog = <RoomId extends string>({
           />
         ))}
       </div>
+      {curMenu.footer && <div className="mt-1">{curMenu.footer}</div>}
     </Dialog>
   );
 };
