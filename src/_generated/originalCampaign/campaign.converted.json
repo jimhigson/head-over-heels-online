@@ -7744,20 +7744,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -7829,14 +7829,14 @@
       "planet": "bookworld",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["book", "person", "book", "book", "person", "book"],
+        "away": ["book", "cowboy", "book", "book", "cowboy", "book"],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -7873,10 +7873,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -7917,14 +7917,14 @@
       "planet": "bookworld",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["book", "person", "book", "book", "person", "book"],
+        "away": ["book", "cowboy", "book", "book", "cowboy", "book"],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -7992,10 +7992,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -8024,20 +8024,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8168,20 +8168,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8235,10 +8235,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8271,10 +8271,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -8322,10 +8322,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8394,10 +8394,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8465,16 +8465,16 @@
       "walls": {
         "away": [
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book"
         ],
         "left": ["book", "book", "none", "none", "book", "book"]
@@ -8690,20 +8690,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8766,10 +8766,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -8844,7 +8844,7 @@
       "planet": "bookworld",
       "size": { "x": 6, "y": 6 },
       "walls": {
-        "away": ["book", "person", "book", "book", "person", "book"],
+        "away": ["book", "cowboy", "book", "book", "cowboy", "book"],
         "left": ["book", "book", "none", "none", "book", "book"]
       },
       "items": {
@@ -8875,10 +8875,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -8952,10 +8952,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -8985,10 +8985,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -9051,10 +9051,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -9098,29 +9098,29 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book"
         ]
       },
@@ -9368,20 +9368,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -9549,10 +9549,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -9599,10 +9599,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -9648,20 +9648,20 @@
       "walls": {
         "away": [
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book"
         ],
         "left": ["book", "book", "none", "none", "book", "book"]
@@ -9796,20 +9796,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -9833,20 +9833,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -9889,20 +9889,20 @@
         "away": ["none", "none"],
         "left": [
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book"
         ]
       },
@@ -10064,20 +10064,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10180,10 +10180,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
@@ -10252,10 +10252,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10304,20 +10304,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10342,20 +10342,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10435,10 +10435,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10482,20 +10482,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10520,14 +10520,14 @@
       "planet": "bookworld",
       "size": { "x": 6, "y": 8 },
       "walls": {
-        "away": ["book", "person", "book", "book", "person", "book"],
+        "away": ["book", "cowboy", "book", "book", "cowboy", "book"],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10619,10 +10619,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10669,10 +10669,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10731,10 +10731,10 @@
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10777,20 +10777,20 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "none",
           "none",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],
         "left": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ]
@@ -10848,10 +10848,10 @@
         "away": [
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book",
-          "person",
+          "cowboy",
           "book",
           "book"
         ],

@@ -26,7 +26,7 @@ export const room = inferRoomJson({
   planet: "bookworld",
   size: { x: 6, y: 6 },
   walls: {
-    away: ["book", "person", "book", "book", "person", "book"],
+    away: ["book", "cowboy", "book", "book", "cowboy", "book"],
     left: ["book", "book", "none", "none", "book", "book"],
   },
 }) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;

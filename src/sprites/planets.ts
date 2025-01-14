@@ -3,7 +3,7 @@ import type { Subset } from "@/utils/subset";
 export const scenery = {
   jail: { walls: ["bars"] },
   blacktooth: { walls: ["armour", "shield", "plain"] },
-  bookworld: { walls: ["person", "book"] },
+  bookworld: { walls: ["cowboy", "book"] },
   egyptus: { walls: ["sarcophagus", "hieroglyphics"] },
   market: { walls: ["passage", "fruits", "more-fruits"] },
   moonbase: { walls: ["window1", "window2", "window3", "coil"] },

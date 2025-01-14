@@ -52,6 +52,6 @@ export const room = inferRoomJson({
   size: { x: 4, y: 8 },
   walls: {
     away: ["book", "none", "none", "book"],
-    left: ["book", "book", "person", "none", "none", "person", "book", "book"],
+    left: ["book", "book", "cowboy", "none", "none", "cowboy", "book", "book"],
   },
 }) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;
