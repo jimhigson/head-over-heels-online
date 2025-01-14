@@ -22,22 +22,22 @@ export const PressToContinueBanner = ({
 
   return (
     <div className={cx("text-left", `mt-1`, className)}>
-      <BitmapText color={textColor}>Press</BitmapText>
-      <BitmapText color={keyColor}>{action}</BitmapText>
-      <BitmapText color={spritesheetPalette.metallicBlue}>
+      <BitmapText colour={textColor}>Press</BitmapText>
+      <BitmapText colour={keyColor}>{action}</BitmapText>
+      <BitmapText colour={spritesheetPalette.metallicBlue}>
         to continue
       </BitmapText>
       <div>
-        <BitmapText color={textColor}>(</BitmapText>
+        <BitmapText colour={textColor}>(</BitmapText>
         {keys.map((k, i) => (
           <Fragment key={k}>
-            <BitmapText color={keyColor}>{k === " " ? "space" : k}</BitmapText>
+            <BitmapText colour={keyColor}>{k === " " ? "space" : k}</BitmapText>
             {i < keys.length - 1 && (
-              <BitmapText color={textColor}>/</BitmapText>
+              <BitmapText colour={textColor}>/</BitmapText>
             )}
           </Fragment>
         ))}
-        <BitmapText color={spritesheetPalette.metallicBlue}>)</BitmapText>
+        <BitmapText colour={spritesheetPalette.metallicBlue}>)</BitmapText>
       </div>
     </div>
   );

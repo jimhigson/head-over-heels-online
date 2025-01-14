@@ -29,7 +29,7 @@ export const HoldDialog = <RoomId extends string>({
     <Dialog className="text-center">
       <BitmapText
         doubleHeight
-        color={spritesheetPalette.moss}
+        colour={spritesheetPalette.moss}
         className="block"
       >
         hold

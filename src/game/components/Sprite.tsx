@@ -17,6 +17,8 @@ export interface PixiSpriteProps {
 }
 
 import "react";
+import { twMerge } from "tailwind-merge";
+import { emptyObject } from "@/utils/empty";
 
 declare module "react" {
   interface CSSProperties {
@@ -69,13 +71,14 @@ export interface ImgSpriteProps {
   textureId: TextureId;
   className?: string;
   scale?: number;
-  color?: Color;
+  /** if true, will tint to the colour in the --bitmapTextColour css variable */
+  tint?: boolean;
 }
 
-export const ImgSprite = ({ textureId, className, color }: ImgSpriteProps) => {
+export const ImgSprite = ({ textureId, className, tint }: ImgSpriteProps) => {
   const { width, x, y, height } = spriteSheet.textures[textureId].frame;
 
-  if (color) {
+  if (tint) {
     return (
       <span
         style={{
@@ -121,15 +124,17 @@ export const ImgSprite = ({ textureId, className, color }: ImgSpriteProps) => {
 export interface BitmapTextProps {
   children: string | string[];
   doubleHeight?: boolean;
-  color?: Color;
+  colour?: Color | Color[];
   className?: string;
+  noSpaceAfter?: boolean;
 }
 
 export const BitmapText = ({
   children: text,
   doubleHeight,
-  color = spritesheetPalette.shadow,
+  colour = spritesheetPalette.shadow,
   className,
+  noSpaceAfter,
 }: BitmapTextProps) => {
   const trimmed =
     Array.isArray(text) ?
@@ -141,16 +146,23 @@ export const BitmapText = ({
   const words = trimmed.toUpperCase().split(/\s+/);
   return (
     <span
-      className={className}
-      style={{
-        "--bitmapTextColour": color.toRgbaString(),
-        ...(doubleHeight ? { "--doubleHeight": "2" } : {}),
-      }}
+      className={twMerge(className, doubleHeight && "[--doubleHeight:2]")}
+      style={
+        Array.isArray(colour) ? emptyObject : (
+          {
+            "--bitmapTextColour": colour.toRgbaString(),
+            //...(doubleHeight ? { "--doubleHeight": "2" } : {}),
+          }
+        )
+      }
     >
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
-          <span className={`word text-nowrap me-1`} key={wordIndex}>
+          <span
+            className={twMerge(`word text-nowrap`, noSpaceAfter ? "" : "me-1")}
+            key={wordIndex}
+          >
             {w.split("").map((c, charIndex) => {
               const textureId = `hud.char.${c}`;
               if (!isTextureId(textureId)) {
@@ -163,14 +175,29 @@ export const BitmapText = ({
                   Object.keys(spriteSheet.textures),
                 );
               }
-              return (
+              const imgSpriteEle = (
                 <ImgSprite
-                  className={c}
                   key={charIndex}
                   textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
-                  color={color}
+                  tint
                 />
               );
+
+              if (Array.isArray(colour)) {
+                return (
+                  <span
+                    // all these styles could be replaced with a tailwind plugin
+                    style={{
+                      "--bitmapTextColour":
+                        colour[charIndex % colour.length].toRgbaString(),
+                    }}
+                  >
+                    {imgSpriteEle}
+                  </span>
+                );
+              }
+
+              return imgSpriteEle;
             })}
           </span>
         );

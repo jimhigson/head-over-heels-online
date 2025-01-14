@@ -20,7 +20,7 @@ const markdownComponents: Components = {
         <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
             doubleHeight: true,
-            color: spritesheetPalette.metallicBlue,
+            colour: spritesheetPalette.metallicBlue,
           }}
         >
           {children}
@@ -33,7 +33,7 @@ const markdownComponents: Components = {
       <h3 className={`text-metallicBlue mt-1 mb-1`}>
         <RenderTextChildrenAsBitmapText
           imgSpriteTextProps={{
-            color: spritesheetPalette.metallicBlue,
+            colour: spritesheetPalette.metallicBlue,
           }}
         >
           {children}
@@ -63,7 +63,7 @@ const markdownComponents: Components = {
     return (
       <RenderTextChildrenAsBitmapText
         imgSpriteTextProps={{
-          color: spritesheetPalette.midRed,
+          colour: spritesheetPalette.midRed,
         }}
       >
         {children}
@@ -74,7 +74,7 @@ const markdownComponents: Components = {
     return (
       <RenderTextChildrenAsBitmapText
         imgSpriteTextProps={{
-          color: spritesheetPalette.moss,
+          colour: spritesheetPalette.moss,
         }}
       >
         {children}

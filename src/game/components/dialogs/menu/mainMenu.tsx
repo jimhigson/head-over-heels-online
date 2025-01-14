@@ -21,6 +21,11 @@ export type MenuItem = {
   | { type: "key"; action: Action }
   | { type: "todo" }
 );
+const colourCycle = [
+  spritesheetPalette.lightGrey,
+  spritesheetPalette.highlightBeige,
+  spritesheetPalette.metallicBlue,
+];
 export const mainMenu: Menu = {
   background: "midRed",
   itemColour: "metallicBlue",
@@ -29,21 +34,38 @@ export const mainMenu: Menu = {
     <>
       <div className="flex">
         <div className="flex flex-col">
-          <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
+          <BitmapText colour={spritesheetPalette.highlightBeige} doubleHeight>
             Head
           </BitmapText>
           <ImgSprite className="ml-1" textureId="head.walking.right.2" />
         </div>
-        <BitmapText className="mt-1">over</BitmapText>
+        <BitmapText colour={colourCycle} className="mt-1">
+          over
+        </BitmapText>
         <div className="flex flex-col">
-          <BitmapText color={spritesheetPalette.highlightBeige} doubleHeight>
+          <BitmapText colour={spritesheetPalette.highlightBeige} doubleHeight>
             Heels
           </BitmapText>
           <ImgSprite className="ml-1" textureId="heels.walking.towards.2" />
         </div>
-        <BitmapText className="mt-1">online</BitmapText>
+        <BitmapText colour={colourCycle} className="mt-1">
+          online
+        </BitmapText>
       </div>
-      <BitmapText className="mt-1">https://blockstack.ing</BitmapText>
+      <div className="mt-1">
+        <BitmapText colour={spritesheetPalette.metallicBlue} noSpaceAfter>
+          https://
+        </BitmapText>
+        <BitmapText colour={spritesheetPalette.highlightBeige} noSpaceAfter>
+          blockstack
+        </BitmapText>
+        <BitmapText colour={spritesheetPalette.metallicBlue} noSpaceAfter>
+          .
+        </BitmapText>
+        <BitmapText colour={spritesheetPalette.highlightBeige} noSpaceAfter>
+          ing
+        </BitmapText>
+      </div>
     </>
   ),
   items: [
@@ -57,7 +79,7 @@ export const mainMenu: Menu = {
         itemColour: "metallicBlue",
         selectedColour: "moss",
         heading: (
-          <BitmapText color={spritesheetPalette.metallicBlue} doubleHeight>
+          <BitmapText colour={spritesheetPalette.metallicBlue} doubleHeight>
             Select the keys
           </BitmapText>
         ),

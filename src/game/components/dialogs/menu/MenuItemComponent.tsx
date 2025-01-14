@@ -14,7 +14,7 @@ export const MenuItemComponent = ({
 }: MenuItemComponentProps) => {
   const labelEle = (
     <BitmapText
-      color={
+      colour={
         selected ?
           spritesheetPalette[menu.selectedColour]
         : spritesheetPalette[menu.itemColour]
