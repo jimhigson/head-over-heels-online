@@ -5,7 +5,7 @@ import type { Campaign } from "../../../model/modelTypes.ts";
 import type { RenderOptions, ShowBoundingBoxes } from "../../RenderOptions.tsx";
 import { isItemType } from "../../physics/itemPredicates.ts";
 import { useCalculateScaleFactor } from "../useCalculateScaleFactor.tsx";
-import { ScaleFactorBoundary } from "../ScaleFactorContext.tsx";
+import { ScaleBoundary } from "../ScaleFactorContext.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
 
 const LazyCheats = lazy(() => import("../cheats/Cheats.tsx")) as typeof Cheats;
@@ -104,7 +104,7 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   const CampaignGame = useRef(Game(campaign)).current;
 
   return (
-    <ScaleFactorBoundary scaleFactor={upscale.scaleFactor}>
+    <ScaleBoundary scaleFactor={upscale.scaleFactor}>
       {useCheatsEnabled() && gameApi !== undefined && (
         <Suspense fallback={null}>
           <LazyCheats
@@ -120,6 +120,6 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
         renderOptions={renderOptions}
         ref={(api) => setGameApi(api ?? undefined)}
       />
-    </ScaleFactorBoundary>
+    </ScaleBoundary>
   );
 };

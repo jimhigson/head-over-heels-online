@@ -7,7 +7,10 @@ import {
   DialogPortal as RadixDialogPortal,
 } from "@radix-ui/react-dialog";
 
-import { ScaleFactorContext } from "@/game/components/ScaleFactorContext";
+import {
+  CssVariables,
+  ScaleFactorContext,
+} from "@/game/components/ScaleFactorContext";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { useContext } from "react";
 import { twMerge } from "tailwind-merge";
@@ -23,18 +26,21 @@ export const Dialog = ({ children, className, ref }: DialogProps) => {
   return (
     <RadixDialog open={true} modal={false}>
       <RadixDialogPortal>
-        <RadixDialogContent
-          ref={ref}
-          className={twMerge(
-            `max-w-dialog${scaleFactor} bg-pureBlack fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%]`,
-            className,
-          )}
-          aria-describedby={undefined}
-        >
-          {/* keep radix happy with an empty title: */}
-          <RadixDialogTitle />
-          {children}
-        </RadixDialogContent>
+        {/* css variables don't flow through react portals, so repeat it here: */}
+        <CssVariables scaleFactor={scaleFactor}>
+          <RadixDialogContent
+            ref={ref}
+            className={twMerge(
+              `max-w-dialog${scaleFactor} bg-pureBlack fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%]`,
+              className,
+            )}
+            aria-describedby={undefined}
+          >
+            {/* keep radix happy with an empty title: */}
+            <RadixDialogTitle />
+            {children}
+          </RadixDialogContent>
+        </CssVariables>
       </RadixDialogPortal>
     </RadixDialog>
   );

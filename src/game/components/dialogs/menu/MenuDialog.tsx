@@ -29,14 +29,16 @@ export const MenuDialog = <RoomId extends string>({
   useActionInput({
     action: "away",
     onAction() {
-      setSelectedItemIndex((i) => (i - 1 + menu.length) % menu.length);
+      setSelectedItemIndex(
+        (i) => (i - 1 + menu.items.length) % menu.items.length,
+      );
     },
     gameApi,
   });
   useActionInput({
     action: "towards",
     onAction() {
-      setSelectedItemIndex((i) => (i + 1) % menu.length);
+      setSelectedItemIndex((i) => (i + 1) % menu.items.length);
     },
     gameApi,
   });
@@ -63,7 +65,7 @@ export const MenuDialog = <RoomId extends string>({
       </div>
       <BitmapText scale={scaleFactor}>blockstack.ing</BitmapText>
       <div className="mt-4">
-        {menu.map((mi, i) => (
+        {menu.items.map((mi, i) => (
           <MenuItemComponent
             key={mi.text}
             menuItem={mi}

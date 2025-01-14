@@ -7,7 +7,6 @@ import {
 import { createSprite, type CreateSpriteOptions } from "../render/createSprite";
 import type { Color } from "pixi.js";
 import { Application } from "pixi.js";
-import spritesheetUrl from "../../../gfx/sprites.png";
 import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
 import { isTextureId } from "@/sprites/assertIsTextureId";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
@@ -15,6 +14,22 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 export interface PixiSpriteProps {
   spriteOptions: CreateSpriteOptions;
   className?: string;
+}
+
+import "react";
+
+declare module "react" {
+  interface CSSProperties {
+    [`--w`]?: `${string}px`;
+    [`--h`]?: `${string}px`;
+    [`--x`]?: `${string}px`;
+    [`--y`]?: `${string}px`;
+    [`--bitmapTextColour`]?: string;
+    [`--spritesheetUrl`]?: string;
+    [`--spritesheetW`]?: string;
+    [`--spritesheetH`]?: string;
+    [`--doubleHeight`]?: "1" | "2";
+  }
 }
 
 /** displays one sprite from the spritesheet */
@@ -53,37 +68,30 @@ export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
 export interface ImgSpriteProps {
   textureId: TextureId;
   className?: string;
-  doubleHeight?: boolean;
   scale?: number;
   color?: Color;
 }
 
-export const ImgSprite = ({
-  textureId,
-  className,
-  doubleHeight,
-  scale = 1,
-  color,
-}: ImgSpriteProps) => {
+export const ImgSprite = ({ textureId, className, color }: ImgSpriteProps) => {
   const { width, x, y, height } = spriteSheet.textures[textureId].frame;
-
-  const { width: sourceWidth, height: sourceHeight } =
-    spriteSheet.textureSource;
-
-  const yScale = scale * (doubleHeight ? 2 : 1);
 
   if (color) {
     return (
       <span
         style={{
+          "--w": `${width}px`,
+          "--h": `${height}px`,
+          "--x": `${x}px`,
+          "--y": `${y}px`,
+
           display: "inline-block",
-          width: `${width * scale}px`,
-          height: `${height * yScale}px`,
-          mask: `url(${spritesheetUrl})`,
-          maskPosition: `-${x * scale}px -${y * yScale}px`,
-          maskSize: `${sourceWidth * scale}px ${sourceHeight * yScale}px`,
+          width: `calc(var(--w) * var(--scale))`,
+          height: `calc(var(--w) * var(--scale) * var(--doubleHeight))`,
+          maskImage: `var(--spritesheetUrl)`,
+          maskPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
+          maskSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
+          backgroundColor: `var(--bitmapTextColour)`,
           imageRendering: "pixelated",
-          backgroundColor: color.toRgbaString(),
         }}
         className={className}
       />
@@ -93,12 +101,16 @@ export const ImgSprite = ({
   return (
     <span
       style={{
+        "--w": `${width}px`,
+        "--h": `${height}px`,
+        "--x": `${x}px`,
+        "--y": `${y}px`,
         display: "inline-block",
-        width: `${width * scale}px`,
-        height: `${height * yScale}px`,
-        backgroundImage: `url(${spritesheetUrl})`,
-        backgroundPosition: `-${x * scale}px -${y * yScale}px`,
-        backgroundSize: `${sourceWidth * scale}px ${sourceHeight * yScale}px`,
+        width: `calc(var(--w) * var(--scale))`,
+        height: `calc(var(--w) * var(--scale) * var(--doubleHeight))`,
+        backgroundImage: `var(--spritesheetUrl)`,
+        backgroundPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
+        backgroundSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
         imageRendering: "pixelated",
       }}
       className={className}
@@ -130,7 +142,13 @@ export const BitmapText = ({
   }
   const words = trimmed.toUpperCase().split(/\s+/);
   return (
-    <span className={className}>
+    <span
+      className={className}
+      style={{
+        "--bitmapTextColour": color.toRgbaString(),
+        ...(doubleHeight ? { "--doubleHeight": "2" } : {}),
+      }}
+    >
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
@@ -142,7 +160,6 @@ export const BitmapText = ({
                   className={c}
                   key={charIndex}
                   textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
-                  doubleHeight={doubleHeight}
                   scale={scale}
                   color={color}
                 />
