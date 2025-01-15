@@ -76,6 +76,20 @@ const mameButtonsP2: MameButtons = {
   buttons: ["A", "S", "Q", "W", "E"],
 };
 
+// see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
+const standardGamepadAssignment: KeyAssignment = {
+  right: ["gamePad(15)"],
+  towards: ["gamePad(13)"],
+  left: ["gamePad(14)"],
+  away: ["gamePad(12)"],
+  jump: ["gamePad(0)", "gamePad(5)"],
+  carry: ["gamePad(1)", "gamePad(5)"],
+  fire: ["gamePad(2)"],
+  swop: ["gamePad(3)"],
+  hold: ["gamePad(9)"],
+  menu: ["gamePad(8)"],
+};
+
 const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
   right: mameButtons.map((mb) => mb.directions.right),
   towards: mameButtons.map((mb) => mb.directions.down),
@@ -95,4 +109,5 @@ export const keyAssignmentPresets = {
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
+  gamepad: standardGamepadAssignment,
 };

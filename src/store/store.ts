@@ -4,6 +4,8 @@ import { calculateUpscale, type Upscale } from "@/game/render/upscale";
 import type { ShowBoundingBoxes } from "@/game/RenderOptions";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import type { KeyAssignment } from "@/game/input/InputState";
+import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
 
 export type OpenMenu = {
   menuId: MenuId;
@@ -24,6 +26,7 @@ export type GameMenusState = {
    * when none
    */
   scrollContent: string | null;
+  keyAssignment: KeyAssignment;
 };
 
 const initialState: GameMenusState = {
@@ -36,6 +39,7 @@ const initialState: GameMenusState = {
   showShadowMasks: false,
   menus: [],
   scrollContent: null,
+  keyAssignment: keyAssignmentPresets.default,
 };
 
 /**

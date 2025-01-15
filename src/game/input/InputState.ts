@@ -14,7 +14,12 @@ export const booleanActions = [
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
-export type KeyAssignment = Record<Action | DirectionXy4, Readonly<Key[]>>;
+export type AssignableInput = Key | `gamePad(${number})`;
+
+export type KeyAssignment = Record<
+  Action | DirectionXy4,
+  Readonly<AssignableInput[]>
+>;
 
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {
