@@ -99,6 +99,7 @@ export const boundingBoxForItem = (
         case "cyberman":
         case "elephant":
         case "emperorsGuardian":
+        case "monkey":
         case "computerBot":
           return { aabb: doubleHeightCharacter };
         case "helicopterBug":
