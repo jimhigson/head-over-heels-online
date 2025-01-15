@@ -5,7 +5,7 @@ import { useMenus } from "@/store/selectors";
 import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
 import type { OpenMenu } from "@/store/store";
-import { menuDown, menuUp, popMenu, pushMenu } from "@/store/store";
+import { menuDown, menuUp, popMenu, menuItemSelected } from "@/store/store";
 import { menus } from "./mainMenu";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
@@ -32,7 +32,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   useActionInput({
     action: "jump",
     onAction() {
-      dispatch(pushMenu());
+      dispatch(menuItemSelected());
     },
   });
 

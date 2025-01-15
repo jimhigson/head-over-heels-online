@@ -69,19 +69,28 @@ const gameMenusSlice = createSlice({
         state.scrollContent = null;
       }
     },
-    pushMenu(state) {
+    menuItemSelected(state) {
       const [{ menuId, selectedIndex }] = state.menus;
       const menu = menus[menuId];
       const selectedMenuItem = menu.items[selectedIndex];
 
-      if (selectedMenuItem.type !== "submenu") {
-        throw new Error();
+      switch (selectedMenuItem.type) {
+        case "submenu":
+          state.menus = [
+            { menuId: selectedMenuItem.submenu, selectedIndex: 0 },
+            ...state.menus,
+          ];
+          break;
+        case "keyPreset": {
+          const [, ...tail] = state.menus;
+          state.menus = tail;
+          (state as GameMenusState).keyAssignment =
+            keyAssignmentPresets[selectedMenuItem.preset];
+          break;
+        }
+        case "toGame":
+          state.menus = [];
       }
-
-      state.menus = [
-        { menuId: selectedMenuItem.submenu, selectedIndex: 0 },
-        ...state.menus,
-      ];
     },
     popMenu(state) {
       if (state.menus.length < 1) {
@@ -141,7 +150,7 @@ export const {
   setUpscale,
   showScroll,
   closeScroll,
-  pushMenu,
+  menuItemSelected,
   popMenu,
   menuDown,
   menuPressed,

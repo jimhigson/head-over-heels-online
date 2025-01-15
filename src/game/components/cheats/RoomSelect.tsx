@@ -46,7 +46,7 @@ export function RoomSelect<RoomId extends string>({
         >
           {viewingRoomId || "Select a room"}
           <ImgSprite
-            textureId={open ? "hud.char.X" : "hud.char.ArrowDown"}
+            textureId={open ? "hud.char.X" : "hud.char.⬇"}
             scale={3}
             className="ml-2 h-4 w-4 shrink-0"
           />

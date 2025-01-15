@@ -111,3 +111,5 @@ export const keyAssignmentPresets = {
   wasd: wasdKeyAssignments,
   gamepad: standardGamepadAssignment,
 };
+
+export type KeyAssignmentPreset = keyof typeof keyAssignmentPresets;

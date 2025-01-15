@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { BitmapText, ImgSprite } from "../../Sprite";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { objectEntriesIter } from "@/utils/entries";
+import type { KeyAssignmentPreset } from "@/game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
 import { iterate } from "@/utils/iterate";
 
@@ -30,6 +31,7 @@ export type MenuItem = {
   | { type: "toGame" }
   | { type: "switch" }
   | { type: "key"; action: Action }
+  | { type: "keyPreset"; preset: KeyAssignmentPreset }
   | { type: "todo" }
 );
 
@@ -233,7 +235,8 @@ export const menus: Record<MenuId, Menu> = {
     items: [
       ...iterate(objectEntriesIter(keyAssignmentPresets)).map(
         ([presetName, _keyAssignment]): MenuItem => ({
-          type: "todo",
+          type: "keyPreset",
+          preset: presetName,
           label: presetName,
         }),
       ),
