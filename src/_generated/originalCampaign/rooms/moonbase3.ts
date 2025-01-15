@@ -104,7 +104,7 @@ export const room = inferRoomJson({
     },
     "movableBlock@0,7,0": {
       config: {
-        activated: false,
+        activated: true,
         movement: "clockwise",
         startDirection: "towards",
         style: "sandwich",
