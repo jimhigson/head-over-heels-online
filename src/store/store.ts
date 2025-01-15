@@ -92,14 +92,6 @@ const gameMenusSlice = createSlice({
           state.menus = [];
       }
     },
-    popMenu(state) {
-      if (state.menus.length < 1) {
-        throw new Error();
-      }
-
-      const [, ...tail] = state.menus;
-      state.menus = tail;
-    },
     menuDown(state) {
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
@@ -151,7 +143,6 @@ export const {
   showScroll,
   closeScroll,
   menuItemSelected,
-  popMenu,
   menuDown,
   menuPressed,
   menuUp,

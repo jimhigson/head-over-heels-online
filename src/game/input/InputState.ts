@@ -14,7 +14,7 @@ export const booleanActions = [
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
-export type AssignableInput = Key | `gamePad(${number})`;
+export type AssignableInput = Key | `joystick:${number}`;
 
 export type KeyAssignment = Record<
   Action | DirectionXy4,
@@ -30,6 +30,11 @@ export type InputState = Record<Action, boolean> & {
    * velocities later
    */
   direction: Xyz;
+
+  /**
+   * the raw keys/buttons being pressed right now. Not usually used in-game
+   */
+  raw: Partial<Record<AssignableInput, true>>;
 };
 
 export const createEmptyInput = (): InputState => ({
@@ -37,6 +42,7 @@ export const createEmptyInput = (): InputState => ({
   ...fromAllEntries(directionsXy4.map((action) => [action, false])),
   windowBlurred: false,
   direction: { x: 0, y: 0, z: 0 },
+  raw: {},
 });
 
 export const emptyInput = Object.freeze(createEmptyInput());

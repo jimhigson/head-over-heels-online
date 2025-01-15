@@ -165,7 +165,8 @@ export const BitmapText = ({
             )}
             key={wordIndex}
           >
-            {w.split("").map((c, charIndex) => {
+            {/* Array.from(string) is unicode-aware */}
+            {Array.from(w).map((c, charIndex) => {
               const textureId = `hud.char.${c}`;
               if (!isTextureId(textureId)) {
                 console.error(

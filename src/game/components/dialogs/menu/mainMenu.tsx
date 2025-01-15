@@ -221,6 +221,7 @@ export const menus: Record<MenuId, Menu> = {
     items: [
       { type: "switch", label: "Colourised" },
       { type: "switch", label: "Extra items" },
+      { type: "switch", label: "Emulated resolution" },
     ],
   },
   inputPreset: {

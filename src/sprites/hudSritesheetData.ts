@@ -94,6 +94,9 @@ export const hudSpritesheetData = {
     "hud.bigJumps": {
       frame: { x: 587, y: 0, ...hudCharTextureSize },
     },
+    "hud.char.🕹": {
+      frame: { x: 569, y: 27, ...hudCharTextureSize },
+    },
     ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
     ...charFrames(punctuation, { x: 515, y: 9 }),
     ...charFrames(arrowChars, { x: 515, y: 18 }),

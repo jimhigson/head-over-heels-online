@@ -2,7 +2,6 @@ import type { KeyAssignment } from "./InputState";
 import type { Key } from "./keys";
 
 // menu key can't be reconfigured:
-const menu = ["Escape"] as const;
 
 const originalKeyAssignment: KeyAssignment = {
   right: ["P", "7"],
@@ -14,7 +13,7 @@ const originalKeyAssignment: KeyAssignment = {
   fire: ["Shift", "Z", "X", "C", "V"],
   swop: ["S", "D", "F", "G"],
   hold: ["H"],
-  menu,
+  menu: ["Escape"],
 };
 
 const defaultAssignment: KeyAssignment = {
@@ -35,7 +34,7 @@ const defaultAssignment: KeyAssignment = {
   fire: ["D"],
   swop: ["Enter"],
   hold: ["F8", "H"],
-  menu,
+  menu: ["Escape"],
 };
 
 // left hand on wasd, right hand (optionally) on IOP
@@ -49,7 +48,7 @@ const wasdKeyAssignments: KeyAssignment = {
   fire: ["E", "O"],
   swop: ["Q"],
   hold: ["H"],
-  menu,
+  menu: ["Escape"],
 };
 
 type MameButtons = {
@@ -86,16 +85,16 @@ const mameButtonsP2: MameButtons = {
 
 // see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
 const standardGamepadAssignment: KeyAssignment = {
-  right: ["gamePad(15)"],
-  towards: ["gamePad(13)"],
-  left: ["gamePad(14)"],
-  away: ["gamePad(12)"],
-  jump: ["gamePad(0)", "gamePad(5)"],
-  carry: ["gamePad(1)", "gamePad(5)"],
-  fire: ["gamePad(2)"],
-  swop: ["gamePad(3)"],
-  hold: ["gamePad(9)"],
-  menu: ["gamePad(8)"],
+  right: ["joystick:15"],
+  towards: ["joystick:13"],
+  left: ["joystick:14"],
+  away: ["joystick:12"],
+  jump: ["joystick:0", "joystick:5"],
+  carry: ["joystick:1", "joystick:5"],
+  fire: ["joystick:2"],
+  swop: ["joystick:3"],
+  hold: ["joystick:9"],
+  menu: ["joystick:8", "Escape"],
 };
 
 const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
@@ -108,7 +107,7 @@ const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
   fire: mameButtons.map((mb) => mb.buttons[2]),
   swop: mameButtons.map((mb) => mb.start),
   hold: mameButtons.map((mb) => mb.coin),
-  menu,
+  menu: ["Escape"] as const,
 });
 
 export const keyAssignmentPresets = {
@@ -117,7 +116,7 @@ export const keyAssignmentPresets = {
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
-  gamepad: standardGamepadAssignment,
+  "🕹 gamepad/joystick": standardGamepadAssignment,
 };
 
 export type KeyAssignmentPreset = keyof typeof keyAssignmentPresets;

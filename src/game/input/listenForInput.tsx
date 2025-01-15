@@ -18,8 +18,7 @@ function* keyToAction(
     }
   }
 }
-const standardiseCase = (k: string): string =>
-  k.length === 1 ? k.toUpperCase() : k;
+const standardiseCase = (k: string) => (k.length === 1 ? k.toUpperCase() : k);
 
 const isDirectionAction = (
   input: Action | DirectionXy4,
@@ -78,8 +77,10 @@ export const listenForInput = ({
       return;
     }
 
+    inputState.raw[stdKey] = true;
+
     let foundMapping = false;
-    const keyAssignment = keyAssignmentHandle.keyAssignment;
+    const { keyAssignment } = keyAssignmentHandle;
     for (const action of keyToAction(keyAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
@@ -101,7 +102,9 @@ export const listenForInput = ({
       return;
     }
 
-    const keyAssignment = keyAssignmentHandle.keyAssignment;
+    delete inputState.raw[stdKey];
+
+    const { keyAssignment } = keyAssignmentHandle;
     for (const action of keyToAction(keyAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];
@@ -122,6 +125,7 @@ export const listenForInput = ({
     for (const action of booleanActions) {
       inputState[action] = false;
     }
+    inputState.raw = {};
     onInputStateChange?.(inputState);
   };
 

@@ -5,6 +5,10 @@ import { Fragment } from "react";
 import { BitmapText } from "../../Sprite";
 
 const friendlyName = (k: AssignableInput) => {
+  if (k.startsWith("joystick:")) {
+    return k.replace("joystick:", "🕹");
+  }
+
   switch (k) {
     case " ":
       return "space";

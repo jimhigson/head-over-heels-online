@@ -5,32 +5,29 @@ import { useMenus } from "@/store/selectors";
 import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
 import type { OpenMenu } from "@/store/store";
-import { menuDown, menuUp, popMenu, menuItemSelected } from "@/store/store";
+import { menuDown, menuUp, menuItemSelected } from "@/store/store";
 import { menus } from "./mainMenu";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
 
   useActionInput({
-    action: "menu",
-    onAction() {
-      dispatch(popMenu());
-    },
-  });
-  useActionInput({
     action: "away",
+    key: ["ArrowUp"],
     onAction() {
       dispatch(menuUp());
     },
   });
   useActionInput({
     action: "towards",
+    key: ["ArrowDown"],
     onAction() {
       dispatch(menuDown());
     },
   });
   useActionInput({
     action: "jump",
+    key: ["Enter", " "],
     onAction() {
       dispatch(menuItemSelected());
     },
