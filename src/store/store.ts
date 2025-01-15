@@ -118,6 +118,18 @@ const gameMenusSlice = createSlice({
 
       state.onHold = !state.onHold;
     },
+    setShowBoundingBoxes(
+      state,
+      { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
+    ) {
+      state.showBoundingBoxes = showBoundingBoxes;
+    },
+    setShowShadowMasks(
+      state,
+      { payload: showShadowMasks }: PayloadAction<boolean>,
+    ) {
+      state.showShadowMasks = showShadowMasks;
+    },
   },
 });
 
@@ -131,6 +143,8 @@ export const {
   menuPressed,
   menuUp,
   onHoldPressed,
+  setShowBoundingBoxes,
+  setShowShadowMasks
 } = gameMenusSlice.actions;
 
 export const store = configureStore({

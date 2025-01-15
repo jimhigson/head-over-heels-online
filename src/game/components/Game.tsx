@@ -1,8 +1,14 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+  lazy,
+  Suspense,
+} from "react";
 import type { Campaign } from "../../model/modelTypes";
 import { type GameApi } from "../GameApi";
 import { Dialogs } from "./dialogs/Dialogs";
-
 import { gameMain } from "../gameMain";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
@@ -11,7 +17,16 @@ import { useRenderOptions } from "@/store/selectors";
 import type { EmptyObject } from "type-fest";
 import { Flow } from "@/store/storeFlow/Flow";
 import { GameApiProvider } from "./GameApiContext";
+import type Cheats from "./cheats/Cheats.tsx";
+
 TextureStyle.defaultOptions.scaleMode = "nearest";
+
+const LazyCheats = lazy(() => import("./cheats/Cheats.tsx")) as typeof Cheats;
+
+const useCheatsEnabled = (): boolean => {
+  const params = new URLSearchParams(window.location.search);
+  return params.has("cheats");
+};
 
 const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
@@ -66,6 +81,7 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
     (_emptyProps, gameApiRef) => {
       const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
       const gameApi = useGame(campaign);
+      const cheatsEnabled = useCheatsEnabled();
       useImperativeHandle(gameApiRef, () => gameApi || undefined);
 
       useEffect(() => {
@@ -80,6 +96,11 @@ export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
             <GameApiProvider gameApi={gameApi}>
               <Flow />
               <Dialogs />
+              {cheatsEnabled && (
+                <Suspense fallback={null}>
+                  <LazyCheats />
+                </Suspense>
+              )}
             </GameApiProvider>
           )}
         </>

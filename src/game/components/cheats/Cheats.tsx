@@ -23,7 +23,10 @@ import { Switch } from "@/components/ui/switch";
 import type { CharacterName } from "@/model/modelTypes";
 import type { PropsWithChildren } from "react";
 import type { GameApi } from "@/game/GameApi";
-import type { ShowBoundingBoxes } from "@/game/RenderOptions";
+import type { EmptyObject } from "type-fest";
+import { useGameApi } from "../GameApiContext";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setShowBoundingBoxes, setShowShadowMasks } from "@/store/store";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -120,20 +123,13 @@ const Heading = ({ children }: { children: string }) => {
   return <h4 className="bg-redShadow pl-1">{children}</h4>;
 };
 
-export const Cheats = <RoomId extends string>({
-  gameApi,
-  showBoundingBoxes,
-  setShowBoundingBoxes,
-  setShowShadowMasks,
-  showShadowMasks,
-}: {
-  gameApi: GameApi<RoomId>;
-  showBoundingBoxes: ShowBoundingBoxes;
-  setShowBoundingBoxes: (show: ShowBoundingBoxes) => void;
-  showShadowMasks: boolean;
-  setShowShadowMasks: (show: boolean) => void;
-}) => {
+export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
+  const gameApi = useGameApi<RoomId>();
   const { campaign } = gameApi.gameState;
+
+  const showBoundingBoxes = useAppSelector((state) => state.showBoundingBoxes);
+  const showShadowMasks = useAppSelector((state) => state.showShadowMasks);
+  const dispatch = useAppDispatch();
 
   useLevelSelectByUrlHash(gameApi);
 
@@ -207,7 +203,7 @@ export const Cheats = <RoomId extends string>({
               id="showbbs"
               checked={showBoundingBoxes !== "none"}
               onCheckedChange={(checked) =>
-                setShowBoundingBoxes(checked ? "non-wall" : "none")
+                dispatch(setShowBoundingBoxes(checked ? "non-wall" : "none"))
               }
               onClick={(e) => e.currentTarget.blur()}
             />
@@ -216,7 +212,7 @@ export const Cheats = <RoomId extends string>({
               id="showAllBbs"
               checked={showBoundingBoxes === "all"}
               onCheckedChange={(checked) =>
-                setShowBoundingBoxes(checked ? "all" : "non-wall")
+                dispatch(setShowBoundingBoxes(checked ? "all" : "non-wall"))
               }
               onClick={(e) => e.currentTarget.blur()}
             />
@@ -224,7 +220,9 @@ export const Cheats = <RoomId extends string>({
             <Switch
               id="showshadows"
               checked={showShadowMasks}
-              onCheckedChange={(checked) => setShowShadowMasks(checked)}
+              onCheckedChange={(checked) =>
+                dispatch(setShowShadowMasks(checked))
+              }
               onClick={(e) => e.currentTarget.blur()}
             />
             <Label htmlFor="showshadows">shadow masks</Label>

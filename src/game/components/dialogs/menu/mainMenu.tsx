@@ -72,7 +72,11 @@ export const menus: Record<MenuId, Menu> = {
       <>
         <div className="flex gap-3">
           <div className="flex flex-col">
-            <BitmapText colour={spritesheetPalette.redShadow} noSpaceAfter>
+            <BitmapText
+              className="ml-1"
+              colour={spritesheetPalette.redShadow}
+              noSpaceAfter
+            >
               1987 original
             </BitmapText>
             <div className="flex gap-2">
