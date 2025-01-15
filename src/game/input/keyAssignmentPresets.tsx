@@ -22,8 +22,16 @@ const defaultAssignment: KeyAssignment = {
   towards: ["ArrowDown", "A"],
   left: ["ArrowLeft", "O"],
   away: ["ArrowUp", "Q"],
-  jump: [" ", "`"],
-  carry: ["Shift", "`"],
+  jump: [
+    " ",
+    "`", // right of left-shift on mac
+    "\\", // right of left-shift on windows
+  ],
+  carry: [
+    "Shift",
+    "`", // right of left-shift on mac,
+    "\\", // right of left-shift on windows
+  ],
   fire: ["D"],
   swop: ["Enter"],
   hold: ["F8", "H"],
