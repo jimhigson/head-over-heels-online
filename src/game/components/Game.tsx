@@ -59,17 +59,6 @@ const useGame = <RoomId extends string>(
     [campaign],
   );
 
-  useEffect(
-    function setRenderOptionsOnGameApi() {
-      if (gameApi === undefined) return;
-
-      console.log("changing renderOptions", renderOptions);
-
-      gameApi.renderOptions = renderOptions;
-    },
-    [gameApi, renderOptions],
-  );
-
   return gameApi;
 };
 

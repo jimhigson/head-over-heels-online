@@ -30,6 +30,10 @@
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
 
+# Menus
+[ ] css grid layout or similar for menu items
+    - should allow multi-line, eg when a loy of keys mapped
+
 # Rooms
 
 # blacktoothhead1

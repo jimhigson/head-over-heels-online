@@ -30,7 +30,11 @@ const isDirectionAction = (
   input === "right";
 
 type ListenForInputOptions = {
-  keyAssignment: KeyAssignment;
+  /**
+   * a handle is used here so the 'current' value can be
+   * swapped in and out if the user changes their keys
+   */
+  keyAssignmentHandle: { keyAssignment: KeyAssignment };
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
@@ -38,7 +42,7 @@ type ListenForInputOptions = {
 };
 
 export const listenForInput = ({
-  keyAssignment,
+  keyAssignmentHandle,
   inputState,
   onInputStateChange,
 }: ListenForInputOptions) => {
@@ -75,6 +79,7 @@ export const listenForInput = ({
     }
 
     let foundMapping = false;
+    const keyAssignment = keyAssignmentHandle.keyAssignment;
     for (const action of keyToAction(keyAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
@@ -96,6 +101,7 @@ export const listenForInput = ({
       return;
     }
 
+    const keyAssignment = keyAssignmentHandle.keyAssignment;
     for (const action of keyToAction(keyAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];

@@ -11,7 +11,6 @@ export const useOpenScrolls = () => {
     function openScrollDialogOnScrollOpenedEvent() {
       const handleScrollOpened = ({ markdown }: { markdown: string }) => {
         dispatch(showScroll(markdown));
-        gameApi.gameState.gameSpeed = 0;
       };
 
       gameApi.events.on("scrollOpened", handleScrollOpened);

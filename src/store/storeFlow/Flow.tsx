@@ -1,3 +1,5 @@
+import { useGiveStoreKeyAssignmentToGame } from "./useGiveStoreKeyAssignmentToGame";
+import { useGiveStoreRenderOptionsToGame } from "./useGiveStoreRenderOptionsToGame";
 import { useGoOnHold } from "./useGoOnHold";
 import { useOpenMainMenu } from "./useOpenMainMenu";
 import { useOpenScrolls } from "./useOpenScrolls";
@@ -10,5 +12,7 @@ export const Flow = () => {
   useUpdateUpscaleWhenWindowResizes();
   useOpenMainMenu();
   useZeroGameSpeedWhenDialogsOpen();
+  useGiveStoreRenderOptionsToGame();
+  useGiveStoreKeyAssignmentToGame();
   return null;
 };

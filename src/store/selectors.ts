@@ -25,3 +25,6 @@ export const useScrollContent = () =>
 export const useMenus = () => useAppSelector((state) => state.menus);
 
 export const useIsOnHold = () => useAppSelector((state) => state.onHold);
+
+export const useKeyAssignment = () =>
+  useAppSelector((state) => state.keyAssignment);
