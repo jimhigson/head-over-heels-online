@@ -4,13 +4,8 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Dialog } from "@/components/ui/dialog";
 import type { EmptyObject } from "type-fest";
 import { useIsOnHold } from "@/store/selectors";
-import { useGameApi } from "../GameApiContext";
 
 const HoldDialogInner = (_emptyProps: EmptyObject) => {
-  // technically this is wrong - if the key assignment changes, this component won't re-render
-  // but this is probably not possible during the lifetime of this component
-  const { keyAssignment } = useGameApi().gameState;
-
   return (
     <Dialog className="text-center">
       <BitmapText
@@ -21,11 +16,7 @@ const HoldDialogInner = (_emptyProps: EmptyObject) => {
         hold
       </BitmapText>
       <span>
-        <PressToContinueBanner
-          className="text-center"
-          action="hold"
-          keyAssignment={keyAssignment}
-        />
+        <PressToContinueBanner className="text-center" action="hold" />
       </span>
     </Dialog>
   );

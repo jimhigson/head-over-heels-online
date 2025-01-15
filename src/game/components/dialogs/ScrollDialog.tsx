@@ -5,7 +5,6 @@ import { useCallback, useRef } from "react";
 import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
 import { hudCharTextureSize } from "@/sprites/textureSizes";
-import { useGameApi } from "../GameApiContext";
 import { useScaleFactor, useScrollContent } from "@/store/selectors";
 import type { EmptyObject } from "type-fest";
 import { useAppDispatch } from "@/store/hooks";
@@ -17,12 +16,6 @@ const charHeight = hudCharTextureSize.h;
 const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const scaleFactor = useScaleFactor();
-
-  const gameApi = useGameApi();
-
-  // technically this is wrong - if the key assignment changes, this component won't re-render
-  // but this is probably not possible during the lifetime of this component
-  const { keyAssignment } = gameApi.gameState;
 
   const dispatch = useAppDispatch();
   useActionInput({
@@ -75,7 +68,6 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
       <PressToContinueBanner
         className={`px-1 sticky bottom-0 bg-lightBeige`}
         action="jump"
-        keyAssignment={keyAssignment}
         keyColor={spritesheetPalette.midRed}
       />
     </Dialog>

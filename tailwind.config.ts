@@ -19,6 +19,7 @@ export default {
       2: "calc(var(--block) * 2)",
       3: "calc(var(--block) * 3)",
       4: "calc(var(--block) * 4)",
+      selectKeysIndent: "calc(var(--block) * 11)",
     },
     lineHeight: {
       blockPlusOne: "calc(var(--block) + (var(--scale) * 1px))",
