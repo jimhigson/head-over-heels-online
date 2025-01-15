@@ -29,17 +29,19 @@ const isDirectionAction = (
   input === "left" ||
   input === "right";
 
-export const listenForInput = ({
-  keyAssignment,
-  inputState,
-  onInputStateChange,
-}: {
+type ListenForInputOptions = {
   keyAssignment: KeyAssignment;
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
   onInputStateChange?: (inputState: InputState) => void;
-}) => {
+};
+
+export const listenForInput = ({
+  keyAssignment,
+  inputState,
+  onInputStateChange,
+}: ListenForInputOptions) => {
   let directionPressNumber = 0;
   // map the direction key to the order of its press, if it is currently being pressed
   const directionsPressed: Partial<Record<DirectionXy4, number>> = {};

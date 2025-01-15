@@ -55,7 +55,7 @@ export type GameState<RoomId extends string> = {
     [C in CharacterName]: PlayableEntryState;
   }>;
 
-  renderOptions: RenderOptions<RoomId>;
+  renderOptions: RenderOptions;
   /** TODO: is this really state? */
   events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up

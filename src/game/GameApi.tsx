@@ -4,6 +4,8 @@ import type { Emitter } from "mitt";
 import type { GameState } from "./gameState/GameState";
 import type { RenderOptions } from "./RenderOptions";
 import type { InputState } from "./input/InputState";
+import type { Container } from "pixi.js";
+import type { AnyItemInPlay } from "@/model/ItemInPlay";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
@@ -11,6 +13,7 @@ export type GameEvents<RoomId extends string> = {
   gameOver: undefined;
   /** emitted when input changes - only really so react/dom bits can close when some input happens */
   inputStateChanged: InputState;
+  itemClicked: { container: Container; item: AnyItemInPlay<RoomId> };
 };
 
 export type GameApi<RoomId extends string> = {
@@ -22,6 +25,6 @@ export type GameApi<RoomId extends string> = {
   currentRoom: RoomState<SceneryName, RoomId>;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
-  set renderOptions(options: RenderOptions<RoomId>);
+  set renderOptions(options: RenderOptions);
   stop: () => void;
 };

@@ -27,6 +27,7 @@ import type { EmptyObject } from "type-fest";
 import { useGameApi } from "../GameApiContext";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setShowBoundingBoxes, setShowShadowMasks } from "@/store/store";
+import { useDebugClickOnItem } from "@/game/components/cheats/useDebugClickOnItem";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -126,6 +127,8 @@ const Heading = ({ children }: { children: string }) => {
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const gameApi = useGameApi<RoomId>();
   const { campaign } = gameApi.gameState;
+
+  useDebugClickOnItem();
 
   const showBoundingBoxes = useAppSelector((state) => state.showBoundingBoxes);
   const showShadowMasks = useAppSelector((state) => state.showShadowMasks);

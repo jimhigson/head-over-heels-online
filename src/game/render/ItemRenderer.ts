@@ -6,37 +6,24 @@ import type {
 import type { RoomState } from "@/model/modelTypes";
 import type { SceneryName } from "@/sprites/planets";
 import { Container } from "pixi.js";
-import type { RenderOptions } from "../RenderOptions";
 import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { RenderContext } from "./roomRenderer";
+import type { GameState } from "../gameState/GameState";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
   container: Container,
-  renderOptions: RenderOptions<RoomId>,
+  gameState: GameState<RoomId>,
 ) => {
   if (container !== undefined) {
-    if (renderOptions.onItemClick && container !== undefined) {
-      container.eventMode = "static";
-      container.on("pointertap", () => {
-        renderOptions.onItemClick!(item, container);
-      });
-    }
-
-    /*container.on("pointerenter", () => {
-      container!.filters = new RevertColouriseFilter(
-        // don't have the room here and this doesn't really matter so arbitrary choose yellow
-        "white",
-      );
+    container.eventMode = "static";
+    container.on("pointertap", () => {
+      gameState.events.emit("itemClicked", { item, container });
     });
-
-    container.on("pointerleave", () => {
-      container!.filters = [];
-    });*/
   }
 };
 
@@ -58,8 +45,10 @@ export const ItemRenderer = <
 >(
   item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
   room: RoomState<SceneryName, RoomId, ItemId>,
-  renderOptions: RenderOptions<RoomId>,
+  gameState: GameState<RoomId>,
 ) => {
+  const { renderOptions } = gameState;
+
   const renderBoundingBoxes =
     renderOptions.showBoundingBoxes === "all" ||
     (renderOptions.showBoundingBoxes === "non-wall" && item.type !== "wall");
@@ -82,7 +71,7 @@ export const ItemRenderer = <
     mainContainer.zIndex = item.fixedZIndex;
   }
 
-  assignMouseActions(item, mainContainer, renderOptions);
+  assignMouseActions(item, mainContainer, gameState);
 
   if (renderBoundingBoxes) {
     mainContainer.addChild(renderItemBBs(item));

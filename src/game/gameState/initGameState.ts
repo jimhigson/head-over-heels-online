@@ -49,7 +49,7 @@ export const initGameState = <RoomId extends string>({
   renderOptions,
 }: {
   campaign: Campaign<RoomId>;
-  renderOptions: RenderOptions<NoInfer<RoomId>>;
+  renderOptions: RenderOptions;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 

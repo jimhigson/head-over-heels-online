@@ -57,7 +57,7 @@ const basicEmptyRoomWithItems = (
     items,
   };
 };
-const basicRenderOptions: RenderOptions<TestRoomId> = {
+const basicRenderOptions: RenderOptions = {
   showBoundingBoxes: "none",
   showShadowMasks: false,
   upscale: {

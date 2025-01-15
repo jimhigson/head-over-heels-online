@@ -23,7 +23,7 @@ export const ItemShadowRenderer = <
   /** the item currently being rendered for = the one that the shadow is cast on  */
   shadowSurfaceItem: ItemInPlay<T, SceneryName, RoomId, ItemId>,
   room: RoomState<SceneryName, RoomId, ItemId>,
-  renderOptions: RenderOptions<RoomId>,
+  renderOptions: RenderOptions,
 ) => {
   if (shadowSurfaceItem.shadowMask === undefined) {
     // this item does not render shadows - return nothing

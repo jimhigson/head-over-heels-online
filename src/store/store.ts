@@ -144,7 +144,7 @@ export const {
   menuUp,
   onHoldPressed,
   setShowBoundingBoxes,
-  setShowShadowMasks
+  setShowShadowMasks,
 } = gameMenusSlice.actions;
 
 export const store = configureStore({

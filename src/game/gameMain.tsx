@@ -15,7 +15,7 @@ import { initDevtools } from "@pixi/devtools";
  */
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  renderOptions: RenderOptions<RoomId>,
+  renderOptions: RenderOptions,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
   if (import.meta.env.MODE === "development") {
@@ -54,7 +54,7 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
-    set renderOptions(options: RenderOptions<RoomId>) {
+    set renderOptions(options: RenderOptions) {
       gameState.renderOptions = options;
     },
     stop() {

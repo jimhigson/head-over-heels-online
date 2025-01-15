@@ -37,7 +37,7 @@ export type ItemAppearanceOptions<
    */
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
 
-  renderOptions: RenderOptions<RoomId>;
+  renderOptions: RenderOptions;
 };
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({

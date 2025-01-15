@@ -32,7 +32,7 @@ const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): GameApi<RoomId> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
-  const renderOptions = useRenderOptions<RoomId>();
+  const renderOptions = useRenderOptions();
 
   useEffect(
     function createGame() {

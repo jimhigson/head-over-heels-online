@@ -99,7 +99,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
             // this cast shouldn't be needed - maybe look into why room.items isn't properly typed with the room's ItemId
             item as UnknownItemInPlay<RoomId, ItemId>,
             room,
-            renderOptions,
+            gameState,
           );
           if (itemRenderer === undefined) {
             // ItemRenderer declined to render this item

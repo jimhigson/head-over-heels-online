@@ -10,14 +10,14 @@ const renderOptionsSelector = createSelector(
   (state: RootState) => state.showBoundingBoxes,
   (state: RootState) => state.showShadowMasks,
   (state: RootState) => state.upscale,
-  (showBoundingBoxes, showShadowMasks, upscale): RenderOptions<string> => ({
+  (showBoundingBoxes, showShadowMasks, upscale): RenderOptions => ({
     showBoundingBoxes,
     showShadowMasks,
     upscale,
   }),
 );
-export const useRenderOptions = <RoomId extends string = string>() =>
-  useAppSelector(renderOptionsSelector) as RenderOptions<RoomId>;
+export const useRenderOptions = () =>
+  useAppSelector(renderOptionsSelector) as RenderOptions;
 
 export const useScrollContent = () =>
   useAppSelector((state) => state.scrollContent);
