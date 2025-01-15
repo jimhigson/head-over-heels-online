@@ -1,12 +1,12 @@
 import { zxSpectrumResolution as originalSystemRes } from "@/originalGame";
-import { mainMenu, type Menu } from "@/game/components/dialogs/menu/mainMenu";
+import { menus, type MenuId } from "@/game/components/dialogs/menu/mainMenu";
 import { calculateUpscale, type Upscale } from "@/game/render/upscale";
 import type { ShowBoundingBoxes } from "@/game/RenderOptions";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 export type OpenMenu = {
-  menu: Menu;
+  menuId: MenuId;
   selectedIndex: number;
 };
 
@@ -60,13 +60,14 @@ const gameMenusSlice = createSlice({
         const [, ...tail] = state.menus;
         state.menus = tail;
       } else {
-        state.menus = [{ menu: mainMenu, selectedIndex: 0 }];
+        state.menus = [{ menuId: "mainMenu", selectedIndex: 0 }];
         state.onHold = false;
         state.scrollContent = null;
       }
     },
     pushMenu(state) {
-      const [{ menu, selectedIndex }] = state.menus;
+      const [{ menuId, selectedIndex }] = state.menus;
+      const menu = menus[menuId];
       const selectedMenuItem = menu.items[selectedIndex];
 
       if (selectedMenuItem.type !== "submenu") {
@@ -74,7 +75,7 @@ const gameMenusSlice = createSlice({
       }
 
       state.menus = [
-        { menu: selectedMenuItem.submenu, selectedIndex: 0 },
+        { menuId: selectedMenuItem.submenu, selectedIndex: 0 },
         ...state.menus,
       ];
     },
@@ -87,17 +88,22 @@ const gameMenusSlice = createSlice({
       state.menus = tail;
     },
     menuDown(state) {
-      const [{ selectedIndex, menu }, ...tail] = state.menus;
+      const [{ selectedIndex, menuId }, ...tail] = state.menus;
+      const menu = menus[menuId];
       state.menus = [
-        { menu, selectedIndex: (selectedIndex + 1) % menu.items.length },
+        {
+          menuId,
+          selectedIndex: (selectedIndex + 1) % menu.items.length,
+        },
         ...tail,
       ];
     },
     menuUp(state) {
-      const [{ selectedIndex, menu }, ...tail] = state.menus;
+      const [{ selectedIndex, menuId }, ...tail] = state.menus;
+      const menu = menus[menuId];
       state.menus = [
         {
-          menu,
+          menuId,
           selectedIndex:
             (selectedIndex - 1 + menu.items.length) % menu.items.length,
         },

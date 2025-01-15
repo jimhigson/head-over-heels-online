@@ -6,8 +6,9 @@ import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
 import type { OpenMenu } from "@/store/store";
 import { menuDown, menuUp, popMenu, pushMenu } from "@/store/store";
+import { menus } from "./mainMenu";
 
-const MenuDialogInner = ({ menus }: { menus: OpenMenu[] }) => {
+const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
 
   useActionInput({
@@ -35,7 +36,8 @@ const MenuDialogInner = ({ menus }: { menus: OpenMenu[] }) => {
     },
   });
 
-  const [{ menu, selectedIndex }] = menus;
+  const [{ menuId, selectedIndex }] = openMenus;
+  const menu = menus[menuId];
 
   return (
     <Dialog className={`bg-${menu.background} h-zx`}>
@@ -62,5 +64,5 @@ export const MenuDialog = (_emptyProps: EmptyObject) => {
     return null;
   }
 
-  return <MenuDialogInner menus={menus} />;
+  return <MenuDialogInner openMenus={menus} />;
 };

@@ -188,6 +188,7 @@ export const BitmapText = ({
               if (Array.isArray(colour)) {
                 return (
                   <span
+                    key={charIndex}
                     // all these styles could be replaced with a tailwind plugin
                     style={{
                       "--bitmapTextColour":
