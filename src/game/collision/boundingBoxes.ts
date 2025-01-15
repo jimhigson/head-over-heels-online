@@ -112,7 +112,7 @@ export const boundingBoxForItem = (
     case "deadlyBlock":
       switch (item.config.style) {
         case "toaster":
-          return { aabb: { ...largeItemAabb, y: largeItemAabb.y - 2 } };
+          return { aabb: { ...largeItemAabb, y: largeItemAabb.y } };
         case "spikes":
         case "volcano":
           return { aabb: largeItemAabb };

@@ -761,6 +761,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/bookworld24/items/movableBlock@7,2,0/config/activated",
+    "value": true
+  },
+  {
+    "op": "replace",
     "path": "/rooms/bookworld23/color/shade",
     "value": "dimmed"
   },
