@@ -39,9 +39,10 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   return (
     <Dialog className={`bg-${menu.background} h-zx`}>
       <div>{menu.heading}</div>
-      <div className="mt-2 leading-blockPlusOne">
+      <div className="mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1">
         {menu.items.map((mi, i) => (
           <MenuItemComponent
+            className="col-start-1"
             menu={menu}
             key={mi.label}
             menuItem={mi}

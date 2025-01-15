@@ -30,5 +30,8 @@ export default {
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
     },
+    gridTemplateColumns: {
+      menuItems: "max-content 1fr",
+    },
   },
 } satisfies Config;

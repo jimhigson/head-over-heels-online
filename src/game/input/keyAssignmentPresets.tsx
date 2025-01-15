@@ -16,25 +16,41 @@ const originalKeyAssignment: KeyAssignment = {
   menu: ["Escape"],
 };
 
+// see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
+const standardGamepadAssignment: KeyAssignment = {
+  right: ["joystick:15"],
+  towards: ["joystick:13"],
+  left: ["joystick:14"],
+  away: ["joystick:12"],
+  jump: ["joystick:0", "joystick:5"],
+  carry: ["joystick:1", "joystick:5"],
+  fire: ["joystick:2"],
+  swop: ["joystick:3"],
+  hold: ["joystick:9"],
+  menu: ["joystick:8", "Escape"],
+};
+
 const defaultAssignment: KeyAssignment = {
-  right: ["ArrowRight", "P"],
-  towards: ["ArrowDown", "A"],
-  left: ["ArrowLeft", "O"],
-  away: ["ArrowUp", "Q"],
+  right: ["ArrowRight", "P", ...standardGamepadAssignment.right],
+  towards: ["ArrowDown", "A", ...standardGamepadAssignment.towards],
+  left: ["ArrowLeft", "O", ...standardGamepadAssignment.left],
+  away: ["ArrowUp", "Q", ...standardGamepadAssignment.away],
   jump: [
     " ",
     "`", // right of left-shift on mac
     "\\", // right of left-shift on windows
+    ...standardGamepadAssignment.jump,
   ],
   carry: [
     "Shift",
     "`", // right of left-shift on mac,
     "\\", // right of left-shift on windows
+    ...standardGamepadAssignment.carry,
   ],
-  fire: ["D"],
-  swop: ["Enter"],
-  hold: ["F8", "H"],
-  menu: ["Escape"],
+  fire: ["D", ...standardGamepadAssignment.fire],
+  swop: ["Enter", "S", ...standardGamepadAssignment.swop],
+  hold: ["F8", "H", ...standardGamepadAssignment.hold],
+  menu: ["Escape", "joystick:8"],
 };
 
 // left hand on wasd, right hand (optionally) on IOP
@@ -81,20 +97,6 @@ const mameButtonsP2: MameButtons = {
     right: "G",
   },
   buttons: ["A", "S", "Q", "W", "E"],
-};
-
-// see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
-const standardGamepadAssignment: KeyAssignment = {
-  right: ["joystick:15"],
-  towards: ["joystick:13"],
-  left: ["joystick:14"],
-  away: ["joystick:12"],
-  jump: ["joystick:0", "joystick:5"],
-  carry: ["joystick:1", "joystick:5"],
-  fire: ["joystick:2"],
-  swop: ["joystick:3"],
-  hold: ["joystick:9"],
-  menu: ["joystick:8", "Escape"],
 };
 
 const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({

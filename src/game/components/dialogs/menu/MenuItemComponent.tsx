@@ -2,16 +2,19 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../Sprite";
 import type { Menu, MenuItem } from "./mainMenu";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
+import { twMerge } from "tailwind-merge";
 
 type MenuItemComponentProps = {
   menu: Menu;
   menuItem: MenuItem;
   selected: boolean;
+  className: string;
 };
 export const MenuItemComponent = ({
   menu,
   menuItem,
   selected,
+  className,
 }: MenuItemComponentProps) => {
   const itemColor =
     selected ?
@@ -19,22 +22,32 @@ export const MenuItemComponent = ({
     : spritesheetPalette[menu.itemColour];
 
   const labelEle = (
-    <BitmapText colour={itemColor}>
+    <BitmapText colour={itemColor} noSpaceAfter>
       {selected ? "==" : "{}"}
       {menuItem.label}
     </BitmapText>
   );
   return (
-    <div className={`block relative ${selected ? "[--doubleHeight:2]" : ""}`}>
-      {labelEle}
+    <>
+      <div
+        className={twMerge(
+          `${selected && menuItem.type !== "key" ? "[--doubleHeight:2]" : ""}`,
+          menuItem.type === "submenu" ? "col-span-2" : "",
+          className,
+        )}
+      >
+        {labelEle}
+      </div>
       {menuItem.type === "key" && (
         <CurrentKeyAssignment
-          className="absolute left-selectKeysIndent top-0"
+          className=""
           action={menuItem.action}
-          keyColor={spritesheetPalette.midRed}
+          keyColor={
+            selected ? spritesheetPalette.redShadow : spritesheetPalette.midRed
+          }
           deliminatorColor={itemColor}
         />
       )}
-    </div>
+    </>
   );
 };

@@ -155,7 +155,7 @@ export const menus: Record<MenuId, Menu> = {
   selectKeys: {
     background: "lightGrey",
     itemColour: "metallicBlue",
-    selectedColour: "moss",
+    selectedColour: "shadow",
     heading: (
       <BitmapText colour={spritesheetPalette.metallicBlue} doubleHeight>
         Select the keys
@@ -207,6 +207,11 @@ export const menus: Record<MenuId, Menu> = {
         label: "Swop",
         action: "swop",
       },
+      {
+        type: "key",
+        label: "Menu",
+        action: "menu",
+      },
     ],
   },
   modernisationOptions: {
@@ -230,7 +235,7 @@ export const menus: Record<MenuId, Menu> = {
     selectedColour: "moss",
     heading: (
       <BitmapText colour={spritesheetPalette.metallicBlue} doubleHeight>
-        Select the keys
+        Key presets
       </BitmapText>
     ),
     items: [
