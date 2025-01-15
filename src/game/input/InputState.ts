@@ -18,7 +18,7 @@ export type KeyAssignment = Record<Action | DirectionXy4, Readonly<Key[]>>;
 
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {
-  windowFocus: boolean;
+  windowBlurred: boolean;
   /**
    * direction pressed on the joystick, keyboard, etc - normalised to -1..1 in x and y
    * z will always be zero, but including it makes it easier to convert to 3-space
@@ -30,7 +30,7 @@ export type InputState = Record<Action, boolean> & {
 export const createEmptyInput = (): InputState => ({
   ...fromAllEntries(booleanActions.map((action) => [action, false])),
   ...fromAllEntries(directionsXy4.map((action) => [action, false])),
-  windowFocus: true,
+  windowBlurred: false,
   direction: { x: 0, y: 0, z: 0 },
 });
 

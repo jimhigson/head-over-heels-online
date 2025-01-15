@@ -1,29 +1,15 @@
 import { BitmapText } from "../Sprite";
 import { PressToContinueBanner } from "./PressToContinueBanner";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { GameApi } from "@/game/GameApi";
-import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
+import type { EmptyObject } from "type-fest";
+import { useIsOnHold } from "@/store/selectors";
+import { useGameApi } from "../GameApiContext";
 
-type HoldDialogContentProps<RoomId extends string> = {
-  gameApi: GameApi<RoomId>;
-  /** callback for when this dialog wants to close itself */
-  onClose: () => void;
-};
-
-export const HoldDialog = <RoomId extends string>({
-  gameApi,
-  onClose,
-}: HoldDialogContentProps<RoomId>) => {
+const HoldDialogInner = (_emptyProps: EmptyObject) => {
   // technically this is wrong - if the key assignment changes, this component won't re-render
   // but this is probably not possible during the lifetime of this component
-  const { keyAssignment } = gameApi.gameState;
-
-  useActionInput({
-    action: "hold",
-    onAction: onClose,
-    gameApi,
-  });
+  const { keyAssignment } = useGameApi().gameState;
 
   return (
     <Dialog className="text-center">
@@ -43,4 +29,12 @@ export const HoldDialog = <RoomId extends string>({
       </span>
     </Dialog>
   );
+};
+
+export const HoldDialog = (_emptyProps: EmptyObject) => {
+  const isOnHold = useIsOnHold();
+
+  if (!isOnHold) return null;
+
+  return <HoldDialogInner />;
 };

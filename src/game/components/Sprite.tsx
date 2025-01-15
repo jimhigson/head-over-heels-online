@@ -151,7 +151,6 @@ export const BitmapText = ({
         Array.isArray(colour) ? emptyObject : (
           {
             "--bitmapTextColour": colour.toRgbaString(),
-            //...(doubleHeight ? { "--doubleHeight": "2" } : {}),
           }
         )
       }

@@ -1,9 +1,10 @@
-import type { PropsWithChildren } from "react";
-import { createContext } from "react";
 import spritesheetUrl from "../../../gfx/sprites.png";
 
 import "react";
 import { spriteSheet } from "@/sprites/spriteSheet";
+import type { PropsWithChildren } from "react";
+import type { EmptyObject } from "type-fest";
+import { useScaleFactor } from "@/store/selectors";
 
 declare module "react" {
   interface CSSProperties {
@@ -12,18 +13,12 @@ declare module "react" {
   }
 }
 
-export const ScaleFactorContext = createContext<number>(1);
-export type ScaleFactorBoundaryProps = PropsWithChildren<{
-  scaleFactor: number;
-}>;
-
 /** TODO: this could be written to the body via an effect */
-export const CssVariables = ({
-  scaleFactor,
-  children,
-}: ScaleFactorBoundaryProps) => {
+export const CssVariables = ({ children }: PropsWithChildren<EmptyObject>) => {
   const { width: spritesheetW, height: spritesheetH } =
     spriteSheet.textureSource;
+
+  const scaleFactor = useScaleFactor();
 
   return (
     <div
@@ -39,15 +34,5 @@ export const CssVariables = ({
     >
       {children}
     </div>
-  );
-};
-export const ScaleBoundary = ({
-  scaleFactor,
-  children,
-}: ScaleFactorBoundaryProps) => {
-  return (
-    <CssVariables scaleFactor={scaleFactor}>
-      <ScaleFactorContext value={scaleFactor}>{children}</ScaleFactorContext>
-    </CssVariables>
   );
 };

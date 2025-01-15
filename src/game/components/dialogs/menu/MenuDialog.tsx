@@ -1,92 +1,41 @@
-import type { GameApi } from "@/game/GameApi";
-import { useState } from "react";
 import { useActionInput } from "../useActionInput";
 import { MenuItemComponent } from "./MenuItemComponent";
 import { Dialog } from "@/components/ui/dialog";
-import { mainMenu, type Menu } from "./mainMenu";
+import { useMenus } from "@/store/selectors";
+import { useAppDispatch } from "@/store/hooks";
+import type { EmptyObject } from "type-fest";
+import type { OpenMenu } from "@/store/store";
+import { menuDown, menuUp, popMenu, pushMenu } from "@/store/store";
 
-export interface MenuDialogContentProps<RoomId extends string> {
-  gameApi: GameApi<RoomId>;
-  /** callback for when this dialog wants to close itself */
-  onClose: () => void;
-}
-
-const defaultMenus = [{ menu: mainMenu, selectedIndex: 0 }];
-export const MenuDialog = <RoomId extends string>({
-  onClose,
-  gameApi,
-}: MenuDialogContentProps<RoomId>) => {
-  const [curMenus, setCurMenus] = useState<
-    {
-      menu: Menu;
-      selectedIndex: number;
-    }[]
-  >(defaultMenus);
+const MenuDialogInner = ({ menus }: { menus: OpenMenu[] }) => {
+  const dispatch = useAppDispatch();
 
   useActionInput({
     action: "menu",
     onAction() {
-      // go back up a menu:
-      if (curMenus.length === 1) {
-        onClose();
-      } else {
-        setCurMenus(([_head, ...tail]) => tail);
-      }
+      dispatch(popMenu());
     },
-    gameApi,
   });
   useActionInput({
     action: "away",
     onAction() {
-      setCurMenus(([{ selectedIndex, menu }, ...tail]) => {
-        return [
-          {
-            selectedIndex:
-              (selectedIndex - 1 + menu.items.length) % menu.items.length,
-            menu,
-          },
-          ...tail,
-        ];
-      });
+      dispatch(menuUp());
     },
-    gameApi,
   });
   useActionInput({
     action: "towards",
     onAction() {
-      setCurMenus(([{ selectedIndex, menu }, ...tail]) => {
-        return [
-          {
-            selectedIndex: (selectedIndex + 1) % menu.items.length,
-            menu,
-          },
-          ...tail,
-        ];
-      });
+      dispatch(menuDown());
     },
-    gameApi,
   });
   useActionInput({
     action: "jump",
     onAction() {
-      const [{ menu, selectedIndex }] = curMenus;
-      const selectedMenuItem = menu.items[selectedIndex];
-      switch (selectedMenuItem.type) {
-        case "submenu":
-          setCurMenus((cm) => [
-            { menu: selectedMenuItem.submenu, selectedIndex: 0 },
-            ...cm,
-          ]);
-          break;
-        case "toGame":
-          onClose();
-          break;
-      }
+      dispatch(pushMenu());
     },
-    gameApi,
   });
 
-  const [{ menu, selectedIndex }] = curMenus;
+  const [{ menu, selectedIndex }] = menus;
 
   return (
     <Dialog className={`bg-${menu.background} h-zx`}>
@@ -104,4 +53,14 @@ export const MenuDialog = <RoomId extends string>({
       {menu.footer && <div className="mt-1">{menu.footer}</div>}
     </Dialog>
   );
+};
+
+export const MenuDialog = (_emptyProps: EmptyObject) => {
+  const menus = useMenus();
+
+  if (menus.length === 0) {
+    return null;
+  }
+
+  return <MenuDialogInner menus={menus} />;
 };

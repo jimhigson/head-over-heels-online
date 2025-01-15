@@ -1,22 +1,32 @@
-import type { GameApi } from "@/game/GameApi";
-import type { Action, InputState } from "@/game/input/InputState";
-import { useEffect } from "react";
+import type { InputState } from "@/game/input/InputState";
+import { useEffect, useMemo } from "react";
+import { useGameApi } from "../GameApiContext";
+import type { ConditionalKeys } from "type-fest";
 
-export type UseActionInputProps<RoomId extends string> = {
+type BooleanInputStateKey = ConditionalKeys<InputState, boolean>;
+
+export type UseActionInputProps = {
   onAction: () => void;
-  gameApi: GameApi<RoomId>;
-  action: Action;
+  action: BooleanInputStateKey | BooleanInputStateKey[];
 };
 
-export const useActionInput = <RoomId extends string>({
+export const useActionInput = ({
   onAction,
-  gameApi,
-  action,
-}: UseActionInputProps<RoomId>) => {
+  action: actionProp,
+}: UseActionInputProps) => {
+  const gameApi = useGameApi();
+
+  const actions = useMemo(
+    () => (Array.isArray(actionProp) ? actionProp : [actionProp]),
+    [actionProp],
+  );
+
   useEffect(
     function closeOnInput() {
       const handleInput = (inputState: InputState) => {
-        if (inputState[action]) {
+        const action = actions.find((action) => inputState[action]);
+
+        if (action !== undefined && inputState[action]) {
           onAction();
           inputState[action] = false; // handled this input
         }
@@ -28,6 +38,6 @@ export const useActionInput = <RoomId extends string>({
         gameApi.events.off("inputStateChanged", handleInput);
       };
     },
-    [action, gameApi, onAction],
+    [actions, gameApi, onAction],
   );
 };

@@ -399,6 +399,11 @@
   { "op": "replace", "path": "/rooms/moonbase3/color/hue", "value": "magenta" },
   {
     "op": "replace",
+    "path": "/rooms/moonbase3/items/movableBlock@0,7,0/config/activated",
+    "value": true
+  },
+  {
+    "op": "replace",
     "path": "/rooms/moonbase29/color/shade",
     "value": "dimmed"
   },

@@ -22,6 +22,7 @@ export type MenuItem = {
       submenu: Menu;
     }
   | { type: "toGame" }
+  | { type: "switch" }
   | { type: "key"; action: Action }
   | { type: "todo" }
 );
@@ -204,7 +205,24 @@ export const mainMenu: Menu = {
         ],
       },
     },
-    { label: "Modernisation options", type: "todo" },
+    {
+      label: "Modernisation options",
+      type: "submenu",
+      submenu: {
+        background: "metallicBlue",
+        itemColour: "lightGrey",
+        selectedColour: "moss",
+        heading: (
+          <BitmapText doubleHeight colour={spritesheetPalette.moss}>
+            Modernisation options
+          </BitmapText>
+        ),
+        items: [
+          { type: "switch", label: "Colourised" },
+          { type: "switch", label: "Extra items" },
+        ],
+      },
+    },
     { label: "Read the manual", type: "todo" },
   ],
 };

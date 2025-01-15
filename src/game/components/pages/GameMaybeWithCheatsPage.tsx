@@ -1,11 +1,8 @@
 import { Game } from "../Game.tsx";
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { GameApi } from "../../GameApi.tsx";
 import type { Campaign } from "../../../model/modelTypes.ts";
-import type { RenderOptions, ShowBoundingBoxes } from "../../RenderOptions.tsx";
-import { isItemType } from "../../physics/itemPredicates.ts";
-import { useCalculateScaleFactor } from "../useCalculateScaleFactor.tsx";
-import { ScaleBoundary } from "../ScaleFactorContext.tsx";
+import type { ShowBoundingBoxes } from "../../RenderOptions.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
 
 const LazyCheats = lazy(() => import("../cheats/Cheats.tsx")) as typeof Cheats;
@@ -54,57 +51,10 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
   );
   const [showBoundingBoxes, setShowBoundingBoxes] = useShowBoundingBoxes();
   const [showShadowMasks, setShowShadowMask] = useShowShadowMasks();
-  const upscale = useCalculateScaleFactor();
-
-  const renderOptions = useMemo<RenderOptions<RoomId>>(() => {
-    if (gameApi === undefined)
-      return {
-        showBoundingBoxes,
-        upscale,
-        showShadowMasks,
-      };
-
-    return {
-      showBoundingBoxes,
-      upscale,
-      showShadowMasks,
-      onItemClick(item, container) {
-        if (isItemType("teleporter", "doorFrame")(item)) {
-          const { toRoom } = item.config;
-          gameApi.changeRoom(toRoom);
-        }
-        if (item.type === "lift") {
-          const toRoom = gameApi.currentRoom.roomAbove;
-          if (toRoom) gameApi.changeRoom(toRoom);
-        }
-        if (item.type === "floor") {
-          const toRoom = gameApi.currentRoom.roomBelow;
-          if (toRoom) gameApi.changeRoom(toRoom);
-        }
-        console.log(
-          "item (live):",
-          item,
-          "\nstate (shallow copy):",
-          {
-            ...item.state,
-          },
-          "\nposition",
-          `(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
-          "\ncontainer:",
-          container,
-        );
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).container = container;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).item = item;
-      },
-    };
-  }, [gameApi, upscale, showBoundingBoxes, showShadowMasks]);
-
   const CampaignGame = useRef(Game(campaign)).current;
 
   return (
-    <ScaleBoundary scaleFactor={upscale.scaleFactor}>
+    <>
       {useCheatsEnabled() && gameApi !== undefined && (
         <Suspense fallback={null}>
           <LazyCheats
@@ -116,10 +66,7 @@ export const GameMaybeWithCheatsPage = <RoomId extends string>({
           />
         </Suspense>
       )}
-      <CampaignGame
-        renderOptions={renderOptions}
-        ref={(api) => setGameApi(api ?? undefined)}
-      />
-    </ScaleBoundary>
+      <CampaignGame ref={(api) => setGameApi(api ?? undefined)} />
+    </>
   );
 };

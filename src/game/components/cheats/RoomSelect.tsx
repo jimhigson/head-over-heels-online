@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -14,8 +13,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { GameApi } from "../../GameApi";
-import { useCurrentlyViewedRoom } from "../useCurrentRoom";
+import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 import { ImgSprite } from "../Sprite";
+import { useState } from "react";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
@@ -26,7 +26,7 @@ export function RoomSelect<RoomId extends string>({
   gameApi,
   className,
 }: RoomSelectProps<RoomId>) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const viewingRoomId = useCurrentlyViewedRoom(gameApi);
 

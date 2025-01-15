@@ -1,12 +1,12 @@
 import type { JSX } from "react";
-import { useContext, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { ScaleFactorContext } from "./ScaleFactorContext";
+import { useScaleFactor } from "@/store/selectors";
 
 export interface BlockyMarkdownProps {
   markdown: string;
@@ -82,7 +82,7 @@ const markdownComponents: Components = {
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
-    const scaleFactor = useContext(ScaleFactorContext);
+    const scaleFactor = useScaleFactor();
     if (src === undefined) return null;
 
     assertIsTextureId(src);

@@ -1,33 +1,49 @@
 import { BlockyMarkdown } from "../BlockyMarkdown";
 import { PressToContinueBanner } from "./PressToContinueBanner";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { useCallback, useContext, useRef } from "react";
-import { ScaleFactorContext } from "../ScaleFactorContext";
-import type { GameApi } from "@/game/GameApi";
+import { useCallback, useRef } from "react";
 import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
 import { hudCharTextureSize } from "@/sprites/textureSizes";
-
-export type ScrollContentProps<RoomId extends string> = {
-  markdown: string;
-  gameApi: GameApi<RoomId>;
-  /** callback for when this dialog wants to close itself */
-  onClose: () => void;
-};
+import { useGameApi } from "../GameApiContext";
+import { useScaleFactor, useScrollContent } from "@/store/selectors";
+import type { EmptyObject } from "type-fest";
+import { useAppDispatch } from "@/store/hooks";
+import { closeScroll } from "@/store/store";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
 
-export const ScrollDialog = <RoomId extends string>({
-  markdown,
-  gameApi,
-  onClose,
-}: ScrollContentProps<RoomId>) => {
+const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const scaleFactor = useContext(ScaleFactorContext);
+  const scaleFactor = useScaleFactor();
+
+  const gameApi = useGameApi();
+
   // technically this is wrong - if the key assignment changes, this component won't re-render
   // but this is probably not possible during the lifetime of this component
   const { keyAssignment } = gameApi.gameState;
+
+  const dispatch = useAppDispatch();
+  useActionInput({
+    onAction() {
+      dispatch(closeScroll());
+    },
+    action: "jump",
+  });
+
+  useActionInput({
+    onAction() {
+      scrollScroll("down");
+    },
+    action: "towards",
+  });
+  useActionInput({
+    onAction() {
+      scrollScroll("up");
+    },
+    action: "away",
+  });
 
   const scrollScroll = useCallback(
     (direction: "down" | "up") => {
@@ -50,26 +66,6 @@ export const ScrollDialog = <RoomId extends string>({
     [scaleFactor],
   );
 
-  useActionInput({
-    onAction: onClose,
-    gameApi,
-    action: "jump",
-  });
-  useActionInput({
-    onAction() {
-      scrollScroll("down");
-    },
-    gameApi,
-    action: "towards",
-  });
-  useActionInput({
-    onAction() {
-      scrollScroll("up");
-    },
-    gameApi,
-    action: "away",
-  });
-
   return (
     <Dialog className="bg-highlightBeige p-0" ref={contentRef}>
       <BlockyMarkdown
@@ -84,4 +80,14 @@ export const ScrollDialog = <RoomId extends string>({
       />
     </Dialog>
   );
+};
+
+export const ScrollDialog = (_emptyProps: EmptyObject) => {
+  const scrollContent = useScrollContent();
+
+  if (scrollContent === null) {
+    return null;
+  }
+
+  return <ScrollDialogInner markdown={scrollContent} />;
 };

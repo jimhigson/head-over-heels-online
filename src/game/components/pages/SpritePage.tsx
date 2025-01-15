@@ -1,12 +1,12 @@
 import type { TextureId } from "@/sprites/spriteSheet";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { ImgSprite } from "../Sprite";
-import { ScaleBoundary } from "../ScaleFactorContext";
+import { CssVariables } from "../CssVariables";
 
 export const SpritePage = () => {
   const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];
   return (
-    <ScaleBoundary scaleFactor={5}>
+    <CssVariables>
       <div className="flex flex-wrap p-[8px] bg-pureBlack">
         {textureIds.map((textureId) => {
           const { frame } = spriteSheet.data.frames[textureId];
@@ -27,6 +27,6 @@ export const SpritePage = () => {
           );
         })}
       </div>
-    </ScaleBoundary>
+    </CssVariables>
   );
 };

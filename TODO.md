@@ -121,9 +121,13 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
     vanish a second time (test on #penitentiary2)
 [x] baddies can fall out of the room via doors (test on #penitentiary2 at high speed)    
 [x] if die while jumping (ascending), the velocity is maintained when coming back into the room
+[ ] why doesn't work in Safari/iOS?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [ ] collecting crowns    
+[ ] while viewing scrolls:
+    [ ] up/down (custom keys) 
+    [ ] no scrollbar visible
 [x] hoh seems to be able to jump way too far!
     [x] fix is to glide at head's normal glide speed
 [ ] shadow masks/cast provided by appearance
@@ -141,6 +145,9 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 [ ] room floor edge with attribute clash, hud in original colours
 
 # Rooms
+
+# blacktoothhead1
+[ ] colourise on/off switch
 
 # (heels room 4) blacktooth26
 
@@ -254,9 +261,15 @@ Reading: https://pikuma.com/blog/isometric-projection-in-games#:~:text=A%202%3A1
 # blacktooth61
 [x] hush pupplies not vanishing on head enter
 
+# moonbase3 
+[ ] sandwich is not moving
+
 # moonbase8
 [x] charging cyberman not still
     - rename 'charging' in config to 'activated' and copy direct from config to state
+
+# pen 4/8 egyptus 13/14/19
+[ ] seems like the ceiling isn't high enough? - too easy to jump into room above by mistake
 
 # egyptus12    
 [x] lift doesn't lift charles up
@@ -376,3 +389,7 @@ dalek -> ???
 [x] scripts -> src
 [ ] pause -> hold
 [x] directions8Xy -> directionsXy8 /4 etc
+
+Level ideas
+[ ] have to shoot a switch with donuts
+[ ] have to make monster touch joystick

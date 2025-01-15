@@ -20,6 +20,7 @@ export const mainLoop = <RoomId extends string>(
   const hudContainer = new Container({ label: "hud" });
   app.stage.addChild(worldContainer);
   app.stage.addChild(hudContainer);
+  app.stage.scale = gameState.renderOptions.upscale.scaleFactor;
 
   const pauseFilter = new RevertColouriseFilter(spritesheetPalette.shadow);
 

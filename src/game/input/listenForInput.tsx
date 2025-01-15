@@ -105,11 +105,11 @@ export const listenForInput = ({
   };
 
   const handleWindowFocus = (): void => {
-    inputState.windowFocus = true;
+    inputState.windowBlurred = false;
     onInputStateChange?.(inputState);
   };
   const handleWindowBlur = (): void => {
-    inputState.windowFocus = false;
+    inputState.windowBlurred = true;
     // turn all keys off:
     for (const action of booleanActions) {
       inputState[action] = false;

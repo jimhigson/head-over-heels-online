@@ -7,27 +7,22 @@ import {
   DialogPortal as RadixDialogPortal,
 } from "@radix-ui/react-dialog";
 
-import {
-  CssVariables,
-  ScaleFactorContext,
-} from "@/game/components/ScaleFactorContext";
+import { CssVariables } from "@/game/components/CssVariables";
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import { useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
 export type DialogProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;
   className?: string;
+  closed?: boolean;
 };
 
 export const Dialog = ({ children, className, ref }: DialogProps) => {
-  const scaleFactor = useContext(ScaleFactorContext);
-
   return (
     <RadixDialog open={true} modal={false}>
       <RadixDialogPortal>
         {/* css variables don't flow through react portals, so repeat it here: */}
-        <CssVariables scaleFactor={scaleFactor}>
+        <CssVariables>
           <RadixDialogContent
             ref={ref}
             className={twMerge(
