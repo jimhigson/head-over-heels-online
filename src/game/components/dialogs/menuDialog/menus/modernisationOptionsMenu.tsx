@@ -18,7 +18,7 @@ export const modernisationOptionsMenu: Menu = {
       label: "Colourise",
       selector: (store) => store.readerOptions.colourise,
       dispatch: { type: "gameMenus/toggleColourise", payload: undefined },
-      hint: "Original two-colour graphics, or 16-colour colourised",
+      hint: "Original two-tone graphics, or 16-colour colourised",
     },
     {
       type: "switch",
