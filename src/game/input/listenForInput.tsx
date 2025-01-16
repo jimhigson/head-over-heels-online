@@ -7,6 +7,12 @@ import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 
+// see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
+//const DOM_KEY_LOCATION_STANDARD = 0;
+//const DOM_KEY_LOCATION_LEFT = 1;
+//const DOM_KEY_LOCATION_RIGHT = 2;
+const DOM_KEY_LOCATION_NUMPAD = 3;
+
 // returns the action for a given keyboard key, or undefined if none was found
 function* keyToAction(
   keyAssignment: KeyAssignment,
@@ -18,7 +24,22 @@ function* keyToAction(
     }
   }
 }
-const standardiseCase = (k: string) => (k.length === 1 ? k.toUpperCase() : k);
+const getKey = ({
+  key: k,
+  location: l,
+  repeat: r,
+}: KeyboardEvent): Key | undefined => {
+  if (r) {
+    // ignore key repeat from OS (holding down key makes multiple keypresses)
+    return undefined;
+  }
+
+  const standardCase = k.length === 1 ? k.toUpperCase() : k;
+  const withLocation =
+    l === DOM_KEY_LOCATION_NUMPAD ? `Numpad${standardCase}` : standardCase;
+
+  return isKey(withLocation) ? withLocation : undefined;
+};
 
 const isDirectionAction = (
   input: Action | DirectionXy4,
@@ -66,14 +87,11 @@ export const listenForInput = ({
       );
   };
 
-  const keyDownHandler = ({ key, repeat }: KeyboardEvent): void => {
-    // ignore key repeat from OS (holding down key makes multiple keypresses)
-    if (repeat) return;
+  const keyDownHandler = (keyboardEvent: KeyboardEvent): void => {
+    const stdKey = getKey(keyboardEvent);
 
-    const stdKey = standardiseCase(key);
-
-    if (!isKey(stdKey)) {
-      console.log("do not recognise key: ", stdKey);
+    if (stdKey === undefined) {
+      console.log("do not recognise key event: ", keyboardEvent);
       return;
     }
 
@@ -96,9 +114,11 @@ export const listenForInput = ({
     updateDirection();
     onInputStateChange?.(inputState);
   };
-  const keyUpHandler = ({ key }: KeyboardEvent): void => {
-    const stdKey = standardiseCase(key);
-    if (!isKey(stdKey)) {
+  const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
+    const stdKey = getKey(keyboardEvent);
+
+    if (stdKey === undefined) {
+      console.log("do not recognise key event: ", keyboardEvent);
       return;
     }
 

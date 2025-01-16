@@ -31,15 +31,16 @@ const standardGamepadAssignment: KeyAssignment = {
 };
 
 const defaultAssignment: KeyAssignment = {
-  right: ["ArrowRight", "P", ...standardGamepadAssignment.right],
-  towards: ["ArrowDown", "A", ...standardGamepadAssignment.towards],
-  left: ["ArrowLeft", "O", ...standardGamepadAssignment.left],
-  away: ["ArrowUp", "Q", ...standardGamepadAssignment.away],
+  right: ["ArrowRight", "P", "Numpad6", ...standardGamepadAssignment.right],
+  towards: ["ArrowDown", "A", "Numpad5", ...standardGamepadAssignment.towards],
+  left: ["ArrowLeft", "O", "Numpad8", ...standardGamepadAssignment.left],
+  away: ["ArrowUp", "Q", "Numpad9", ...standardGamepadAssignment.away],
   jump: [
     " ",
     "`", // right of left-shift on mac
     "\\", // right of left-shift on windows
     ...standardGamepadAssignment.jump,
+    "Numpad0",
   ],
   carry: [
     "Shift",
@@ -47,9 +48,9 @@ const defaultAssignment: KeyAssignment = {
     "\\", // right of left-shift on windows
     ...standardGamepadAssignment.carry,
   ],
-  fire: ["D", ...standardGamepadAssignment.fire],
-  swop: ["Enter", "S", ...standardGamepadAssignment.swop],
-  hold: ["F8", "H", ...standardGamepadAssignment.hold],
+  fire: ["D", "NumpadEnter", ...standardGamepadAssignment.fire],
+  swop: ["Enter", "S", "Numpad+", ...standardGamepadAssignment.swop],
+  hold: ["F8", "H", "Numpad.", ...standardGamepadAssignment.hold],
   menu: ["Escape", "joystick:8"],
 };
 

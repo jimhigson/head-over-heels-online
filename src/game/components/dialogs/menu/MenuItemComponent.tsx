@@ -30,8 +30,15 @@ export const MenuItemComponent = ({
   return (
     <>
       <div
+        ref={
+          selected ?
+            (ele) => ele?.scrollIntoView({ behavior: "instant", block: "end" })
+          : undefined
+        }
         className={twMerge(
-          `${selected && menuItem.type !== "key" && !menuItem.disableDoubling ? "[--doubleHeight:2]" : ""}`,
+          selected && menuItem.type !== "key" && !menuItem.disableDoubling ?
+            "[--doubleHeight:2]"
+          : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
           className,
         )}

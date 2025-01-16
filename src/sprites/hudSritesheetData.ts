@@ -1,10 +1,9 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { hudCharTextureSize } from "./textureSizes";
-import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { fromAllEntries } from "@/utils/entries";
 import type { Xy } from "@/utils/vectors/vectors";
 
-const alphabetUppercase = [
+const alphaNumeric = [
   "A",
   "B",
   "C",
@@ -31,6 +30,16 @@ const alphabetUppercase = [
   "X",
   "Y",
   "Z",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
 ] as const;
 
 const punctuation = [
@@ -48,6 +57,7 @@ const punctuation = [
   "'",
   "`",
   "-",
+  "+",
 ] as const;
 
 const brackets = ["(", ")", "[", "]", "<", ">"] as const;
@@ -85,32 +95,22 @@ const charFrames = <Char extends string>(
 
 export const hudSpritesheetData = {
   frames: {
+    ...charFrames(alphaNumeric, { x: 173, y: 0 }),
     "hud.fastSteps": {
-      frame: { x: 569, y: 0, ...hudCharTextureSize },
+      frame: { x: 497, y: 0, ...hudCharTextureSize },
     },
     "hud.shield": {
-      frame: { x: 578, y: 0, ...hudCharTextureSize },
+      frame: { x: 506, y: 0, ...hudCharTextureSize },
     },
     "hud.bigJumps": {
-      frame: { x: 587, y: 0, ...hudCharTextureSize },
+      frame: { x: 515, y: 0, ...hudCharTextureSize },
     },
     "hud.char.🕹": {
-      frame: { x: 569, y: 27, ...hudCharTextureSize },
+      frame: { x: 227, y: 27, ...hudCharTextureSize },
     },
-    ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
-    ...charFrames(punctuation, { x: 515, y: 9 }),
-    ...charFrames(arrowChars, { x: 515, y: 18 }),
-    ...charFrames(menuChars, { x: 596, y: 0 }),
-    ...charFrames(brackets, { x: 515, y: 27 }),
-    "hud.char.0": {
-      frame: { x: 479, y: 0, ...hudCharTextureSize },
-    },
-    // numbers 1..9:
-    ...seriesOfNumberedTextures(
-      "hud.char",
-      9,
-      { x: 488, y: 0 },
-      hudCharTextureSize,
-    ),
+    ...charFrames(punctuation, { x: 173, y: 9 }),
+    ...charFrames(arrowChars, { x: 173, y: 18 }),
+    ...charFrames(menuChars, { x: 524, y: 0 }),
+    ...charFrames(brackets, { x: 173, y: 27 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;
