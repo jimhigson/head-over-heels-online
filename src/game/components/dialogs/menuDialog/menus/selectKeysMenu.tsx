@@ -46,7 +46,7 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
   );
 };
 
-export const selectKeys: Menu = {
+export const selectKeysMenu: Menu = {
   background: "lightGrey",
   itemColour: "metallicBlue",
   selectedColour: "shadow",

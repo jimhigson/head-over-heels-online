@@ -6,4 +6,6 @@ export type RenderOptions = {
   showBoundingBoxes: ShowBoundingBoxes;
   showShadowMasks: boolean;
   upscale: Upscale;
+  crtFilter: boolean;
+  colourise: boolean;
 };

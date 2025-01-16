@@ -8,7 +8,7 @@ import { hudCharTextureSize } from "@/sprites/textureSizes";
 import { useScaleFactor, useScrollContent } from "@/store/selectors";
 import type { EmptyObject } from "type-fest";
 import { useAppDispatch } from "@/store/hooks";
-import { closeScroll } from "@/store/store";
+import { closeScroll } from "@/store/gameMenusSlice";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;

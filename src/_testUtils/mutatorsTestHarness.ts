@@ -107,6 +107,8 @@ export const mutatorsTestHarness = () => {
   const gameState = initGameState({
     campaign: testCampaign,
     renderOptions: {
+      crtFilter: false,
+      colourise: true,
       showBoundingBoxes: "none",
       showShadowMasks: false,
       upscale: {

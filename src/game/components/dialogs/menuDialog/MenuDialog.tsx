@@ -4,10 +4,11 @@ import { Dialog } from "@/components/ui/dialog";
 import { useMenus } from "@/store/selectors";
 import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
-import type { OpenMenu } from "@/store/store";
-import { menuDown, menuUp, menuItemSelected } from "@/store/store";
+import { menuDown, menuUp, menuItemSelected } from "@/store/gameMenusSlice";
 import { menus } from "./menus";
 import { BitmapText } from "../../Sprite";
+import type { OpenMenu } from "@/store/gameMenusSlice";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
@@ -54,7 +55,12 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
         ))}
       </div>
       {selectedItemHint && (
-        <BitmapText className="block mt-1">{selectedItemHint}</BitmapText>
+        <BitmapText
+          colour={menu.hintColour && spritesheetPalette[menu.hintColour]}
+          className="block mt-1"
+        >
+          {selectedItemHint}
+        </BitmapText>
       )}
       {menu.footer && <div className="mt-1">{menu.footer}</div>}
     </Dialog>

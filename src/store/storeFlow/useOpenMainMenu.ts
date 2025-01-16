@@ -1,5 +1,6 @@
 import { useActionInput } from "@/game/components/dialogs/useActionInput";
-import { menuPressed, store } from "../store";
+import { store } from "../store";
+import { menuPressed } from "../gameMenusSlice";
 
 export const useOpenMainMenu = () => {
   useActionInput({

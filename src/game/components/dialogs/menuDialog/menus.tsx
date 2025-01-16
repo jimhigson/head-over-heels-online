@@ -1,11 +1,10 @@
-import type { Action } from "@/game/input/InputState";
-import type { FunctionComponent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { KeyAssignmentPreset } from "@/game/input/keyAssignmentPresets";
-import { inputPreset } from "./menus/inputPreset";
+import { inputPresetMenu } from "./menus/inputPresetMenu";
 import { mainMenu } from "./menus/mainMenu";
-import { modernisationOptions } from "./menus/modernisationOptions";
-import { selectKeys } from "./menus/selectKeys";
+import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
+import { selectKeysMenu } from "./menus/selectKeysMenu";
+import type { MenuItem } from "./MenuItem";
 
 export type MenuId =
   | "mainMenu"
@@ -20,26 +19,11 @@ export type Menu = {
   background: keyof typeof spritesheetPalette;
   itemColour: keyof typeof spritesheetPalette;
   selectedColour: keyof typeof spritesheetPalette;
+  hintColour?: keyof typeof spritesheetPalette;
 };
-export type MenuItem = {
-  label: string | FunctionComponent<{ selected: boolean }>;
-  disableDoubling?: boolean;
-  hint?: string;
-} & (
-  | {
-      type: "submenu";
-      submenu: MenuId;
-    }
-  | { type: "toGame" }
-  | { type: "switch" }
-  | { type: "key"; action: Action }
-  | { type: "keyPreset"; preset: KeyAssignmentPreset }
-  | { type: "todo" }
-);
-
 export const menus: Record<MenuId, Menu> = {
   mainMenu,
-  selectKeys,
-  modernisationOptions,
-  inputPreset,
+  selectKeys: selectKeysMenu,
+  modernisationOptions: modernisationOptionsMenu,
+  inputPreset: inputPresetMenu,
 };

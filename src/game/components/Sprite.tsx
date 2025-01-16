@@ -127,6 +127,8 @@ export interface BitmapTextProps {
   colour?: Color | Color[];
   className?: string;
   noSpaceAfter?: boolean;
+  noTrim?: boolean;
+  noSlitWords?: boolean;
 }
 
 export const BitmapText = ({
@@ -135,15 +137,19 @@ export const BitmapText = ({
   colour = spritesheetPalette.shadow,
   className,
   noSpaceAfter,
+  noTrim,
+  noSlitWords,
 }: BitmapTextProps) => {
   const trimmed =
     Array.isArray(text) ?
-      text.map((text) => text.trim()).join(" ")
+      text.map((text) => (noTrim ? text : text.trim())).join(" ")
+    : noTrim ? text
     : text.trim();
   if (trimmed.length === 0) {
     return null;
   }
-  const words = trimmed.toUpperCase().split(/\s+/);
+  const words =
+    noSlitWords ? [trimmed.toUpperCase()] : trimmed.toUpperCase().split(/\s+/);
   return (
     <span
       className={twMerge(className, doubleHeight && "[--doubleHeight:2]")}

@@ -1,6 +1,6 @@
 import { useActionInput } from "@/game/components/dialogs/useActionInput";
-import { onHoldPressed } from "../store";
 import { useAppDispatch } from "../hooks";
+import { onHoldPressed } from "../gameMenusSlice";
 
 export const useGoOnHold = () => {
   const dispatch = useAppDispatch();

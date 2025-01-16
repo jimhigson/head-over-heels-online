@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../hooks";
-import { showScroll } from "../store";
+
 import { useGameApi } from "@/game/components/GameApiContext";
+import { showScroll } from "../gameMenusSlice";
 
 export const useOpenScrolls = () => {
   const dispatch = useAppDispatch();

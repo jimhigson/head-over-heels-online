@@ -25,9 +25,13 @@ import type { PropsWithChildren } from "react";
 import type { GameApi } from "@/game/GameApi";
 import type { EmptyObject } from "type-fest";
 import { useGameApi } from "../GameApiContext";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setShowBoundingBoxes, setShowShadowMasks } from "@/store/store";
+import { useAppDispatch } from "@/store/hooks";
+import {
+  setShowBoundingBoxes,
+  setShowShadowMasks,
+} from "@/store/gameMenusSlice";
 import { useDebugClickOnItem } from "@/game/components/cheats/useDebugClickOnItem";
+import { useRenderOptions } from "@/store/selectors";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -130,8 +134,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   useDebugClickOnItem();
 
-  const showBoundingBoxes = useAppSelector((state) => state.showBoundingBoxes);
-  const showShadowMasks = useAppSelector((state) => state.showShadowMasks);
+  const { showBoundingBoxes, showShadowMasks } = useRenderOptions();
   const dispatch = useAppDispatch();
 
   useLevelSelectByUrlHash(gameApi);

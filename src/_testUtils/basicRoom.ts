@@ -64,6 +64,8 @@ const basicRenderOptions: RenderOptions = {
     scaleFactor: 1,
     effectiveSize: zxSpectrumResolution,
   },
+  crtFilter: false,
+  colourise: true,
 };
 
 const gameStateWithInput = (

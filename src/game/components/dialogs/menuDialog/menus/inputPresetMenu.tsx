@@ -3,9 +3,10 @@ import { objectEntriesIter } from "@/utils/entries";
 import { iterate } from "@/utils/iterate";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../../Sprite";
-import type { Menu, MenuItem } from "../menus";
+import type { Menu } from "../menus";
+import type { MenuItem } from "../MenuItem";
 
-export const inputPreset: Menu = {
+export const inputPresetMenu: Menu = {
   background: "lightGrey",
   itemColour: "metallicBlue",
   selectedColour: "moss",

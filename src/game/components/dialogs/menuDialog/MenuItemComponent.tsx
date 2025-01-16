@@ -1,8 +1,28 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../Sprite";
-import type { Menu, MenuItem } from "./menus";
+import type { Menu } from "./menus";
+import type { MenuItem } from "./MenuItem";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
+import { useAppSelector } from "@/store/hooks";
+
+const SwitchCurrentValue = ({
+  switchMenuItem: { selector },
+}: {
+  switchMenuItem: MenuItem & { type: "switch" };
+}) => {
+  const value = useAppSelector((store) => (selector ? selector(store) : false));
+
+  return (
+    <BitmapText
+      colour={value ? spritesheetPalette.moss : spritesheetPalette.midRed}
+      noTrim
+      noSlitWords
+    >
+      {value ? "    ON" : "OFF"}
+    </BitmapText>
+  );
+};
 
 type MenuItemComponentProps = {
   menu: Menu;
@@ -58,6 +78,9 @@ export const MenuItemComponent = ({
           }
           deliminatorColor={itemColor}
         />
+      )}
+      {menuItem.type === "switch" && (
+        <SwitchCurrentValue switchMenuItem={menuItem} />
       )}
     </>
   );

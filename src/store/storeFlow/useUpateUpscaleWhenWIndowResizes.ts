@@ -1,8 +1,8 @@
 import { zxSpectrumResolution as originalSystemRes } from "@/originalGame";
 import { useLayoutEffect } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { setUpscale } from "@/store/store";
 import { calculateUpscale } from "@/game/render/upscale";
+import { setUpscale } from "../gameMenusSlice";
 
 export const useUpdateUpscaleWhenWindowResizes = (): void => {
   const dispatch = useAppDispatch();
