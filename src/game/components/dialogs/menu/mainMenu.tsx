@@ -23,6 +23,7 @@ export type Menu = {
 };
 export type MenuItem = {
   label: string;
+  disableDoubling?: boolean;
 } & (
   | {
       type: "submenu";
@@ -166,6 +167,7 @@ export const menus: Record<MenuId, Menu> = {
         type: "submenu",
         label: "choose a preset",
         submenu: "inputPreset",
+        disableDoubling: true,
       },
       {
         type: "key",

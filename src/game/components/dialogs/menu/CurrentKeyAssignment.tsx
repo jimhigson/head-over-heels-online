@@ -1,7 +1,6 @@
 import type { AssignableInput, Action } from "@/game/input/InputState";
 import { useAppSelector } from "@/store/hooks";
 import type { Color } from "pixi.js";
-import { Fragment } from "react";
 import { BitmapText } from "../../Sprite";
 
 const friendlyName = (k: AssignableInput) => {
@@ -45,12 +44,12 @@ export const CurrentKeyAssignment = ({
       {keys.map((k, i) => {
         const isNotLast = i < keys.length - 1;
         return (
-          <Fragment key={k}>
+          <span className="text-nowrap" key={k}>
             <BitmapText colour={keyColor} noSpaceAfter={isNotLast}>
               {friendlyName(k)}
             </BitmapText>
             {isNotLast && <BitmapText colour={deliminatorColor}>,</BitmapText>}
-          </Fragment>
+          </span>
         );
       })}
     </div>
