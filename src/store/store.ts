@@ -1,5 +1,5 @@
 import { zxSpectrumResolution as originalSystemRes } from "@/originalGame";
-import { menus, type MenuId } from "@/game/components/dialogs/menu/mainMenu";
+import { menus, type MenuId } from "@/game/components/dialogs/menuDialog/menus";
 import { calculateUpscale, type Upscale } from "@/game/render/upscale";
 import type { ShowBoundingBoxes } from "@/game/RenderOptions";
 import type { PayloadAction } from "@reduxjs/toolkit";

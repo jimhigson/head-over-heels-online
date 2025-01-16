@@ -3,7 +3,7 @@ import type { Action } from "../../input/InputState";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import type { Color } from "pixi.js";
 import { cx } from "class-variance-authority";
-import { CurrentKeyAssignment } from "./menu/CurrentKeyAssignment";
+import { CurrentKeyAssignment } from "./menuDialog/CurrentKeyAssignment";
 
 export const PressToContinueBanner = ({
   action,

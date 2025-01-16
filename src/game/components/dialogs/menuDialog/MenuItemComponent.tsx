@@ -1,6 +1,6 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../Sprite";
-import type { Menu, MenuItem } from "./mainMenu";
+import type { Menu, MenuItem } from "./menus";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 
@@ -21,12 +21,13 @@ export const MenuItemComponent = ({
       spritesheetPalette[menu.selectedColour]
     : spritesheetPalette[menu.itemColour];
 
-  const labelEle = (
-    <BitmapText colour={itemColor} noSpaceAfter>
-      {selected ? "==" : "{}"}
-      {menuItem.label}
-    </BitmapText>
-  );
+  const labelEle =
+    typeof menuItem.label === "string" ?
+      <BitmapText colour={itemColor} noSpaceAfter>
+        {selected ? "==" : "{}"}
+        {menuItem.label}
+      </BitmapText>
+    : <menuItem.label selected={selected} />;
   return (
     <>
       <div

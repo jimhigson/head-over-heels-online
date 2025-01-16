@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
 import type { OpenMenu } from "@/store/store";
 import { menuDown, menuUp, menuItemSelected } from "@/store/store";
-import { menus } from "./mainMenu";
+import { menus } from "./menus";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
@@ -44,7 +44,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
           <MenuItemComponent
             className="col-start-1"
             menu={menu}
-            key={mi.label}
+            key={i}
             menuItem={mi}
             selected={selectedIndex === i}
           />
