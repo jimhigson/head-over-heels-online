@@ -4,7 +4,7 @@ import { calculateUpscale, type Upscale } from "@/game/render/upscale";
 import type { ShowBoundingBoxes } from "@/game/RenderOptions";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import type { KeyAssignment } from "@/game/input/InputState";
+import type { InputAssignment } from "@/game/input/InputState";
 import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
 
 export type OpenMenu = {
@@ -26,7 +26,7 @@ export type GameMenusState = {
    * when none
    */
   scrollContent: string | null;
-  keyAssignment: KeyAssignment;
+  inputAssignment: InputAssignment;
 };
 
 const initialState: GameMenusState = {
@@ -39,7 +39,7 @@ const initialState: GameMenusState = {
   showShadowMasks: false,
   menus: [],
   scrollContent: null,
-  keyAssignment: keyAssignmentPresets.default,
+  inputAssignment: keyAssignmentPresets.default.inputAssignment,
 };
 
 /**
@@ -84,8 +84,8 @@ const gameMenusSlice = createSlice({
         case "keyPreset": {
           const [, ...tail] = state.menus;
           state.menus = tail;
-          (state as GameMenusState).keyAssignment =
-            keyAssignmentPresets[selectedMenuItem.preset];
+          (state as GameMenusState).inputAssignment =
+            keyAssignmentPresets[selectedMenuItem.preset].inputAssignment;
           break;
         }
         case "toGame":

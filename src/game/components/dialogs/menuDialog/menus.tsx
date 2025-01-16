@@ -24,6 +24,7 @@ export type Menu = {
 export type MenuItem = {
   label: string | FunctionComponent<{ selected: boolean }>;
   disableDoubling?: boolean;
+  hint?: string;
 } & (
   | {
       type: "submenu";

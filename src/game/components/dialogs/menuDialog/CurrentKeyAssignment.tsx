@@ -4,8 +4,17 @@ import type { Color } from "pixi.js";
 import { BitmapText } from "../../Sprite";
 
 const friendlyName = (k: AssignableInput) => {
-  if (k.startsWith("joystick:")) {
-    return k.replace("joystick:", "🕹");
+  const joystickRegex = /joystick:((?<button>\d+)|(?<axis>x|y))/;
+  const joystickMatch = joystickRegex.exec(k);
+  if (joystickMatch !== null) {
+    const { button, axis } = joystickMatch.groups!;
+
+    if (button) {
+      return `🕹${button}`;
+    }
+    if (axis) {
+      return `🕹${axis === "x" ? "⬅➡" : "⬆⬇"}`;
+    }
   }
 
   switch (k) {
@@ -36,7 +45,7 @@ export const CurrentKeyAssignment = ({
   className?: string;
 }) => {
   const keys = useAppSelector((state) => {
-    return state.keyAssignment[action];
+    return state.inputAssignment[action];
   });
 
   return (

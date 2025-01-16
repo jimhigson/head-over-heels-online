@@ -14,6 +14,7 @@ export const modernisationOptions: Menu = {
   items: [
     { type: "switch", label: "Colourised" },
     { type: "switch", label: "Extra items" },
+    { type: "switch", label: "CRT (TV) effect" },
     { type: "switch", label: "Emulated resolution" },
   ],
 };

@@ -1,71 +1,141 @@
-import type { KeyAssignment } from "./InputState";
+import type { InputAssignmentPreset } from "./InputState";
 import type { Key } from "./keys";
 
 // menu key can't be reconfigured:
 
-const originalKeyAssignment: KeyAssignment = {
-  right: ["P", "7"],
-  towards: ["A", "8"],
-  left: ["O", "6"],
-  away: ["Q", "9"],
-  jump: [" ", "M", "N", "B"],
-  carry: [" ", "Enter", "L", "K", "J"],
-  fire: ["Shift", "Z", "X", "C", "V"],
-  swop: ["S", "D", "F", "G"],
-  hold: ["H"],
-  menu: ["Escape"],
+const originalKeyAssignment: InputAssignmentPreset = {
+  inputAssignment: {
+    right: ["P", "7", "joystick:x"],
+    towards: ["A", "8", "joystick:y"],
+    left: ["O", "6", "joystick:x"],
+    away: ["Q", "9", "joystick:y"],
+    jump: [" ", "M", "N", "B"],
+    carry: [" ", "Enter", "L", "K", "J"],
+    fire: ["Shift", "Z", "X", "C", "V"],
+    swop: ["S", "D", "F", "G"],
+    hold: ["H"],
+    menu: ["Escape"],
+  },
+  description: "closely matches zx spectrum keys",
 };
 
 // see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
-const standardGamepadAssignment: KeyAssignment = {
-  right: ["joystick:15"],
-  towards: ["joystick:13"],
-  left: ["joystick:14"],
-  away: ["joystick:12"],
-  jump: ["joystick:0", "joystick:5"],
-  carry: ["joystick:1", "joystick:5"],
-  fire: ["joystick:2"],
-  swop: ["joystick:3"],
-  hold: ["joystick:9"],
-  menu: ["joystick:8", "Escape"],
+const standardGamepadAssignment: InputAssignmentPreset = {
+  inputAssignment: {
+    right: ["joystick:15"],
+    towards: ["joystick:13"],
+    left: ["joystick:14"],
+    away: ["joystick:12"],
+    jump: ["joystick:0", "joystick:5"],
+    carry: ["joystick:1", "joystick:5"],
+    fire: ["joystick:2"],
+    swop: ["joystick:3"],
+    hold: ["joystick:9"],
+    menu: ["joystick:8", "Escape"],
+  },
+  description:
+    "Playstation2+, xbox, and similar controllers with dual analogue sticks and lots of buttons",
 };
 
-const defaultAssignment: KeyAssignment = {
-  right: ["ArrowRight", "P", "Numpad6", ...standardGamepadAssignment.right],
-  towards: ["ArrowDown", "A", "Numpad5", ...standardGamepadAssignment.towards],
-  left: ["ArrowLeft", "O", "Numpad8", ...standardGamepadAssignment.left],
-  away: ["ArrowUp", "Q", "Numpad9", ...standardGamepadAssignment.away],
-  jump: [
-    " ",
-    "`", // right of left-shift on mac
-    "\\", // right of left-shift on windows
-    ...standardGamepadAssignment.jump,
-    "Numpad0",
-  ],
-  carry: [
-    "Shift",
-    "`", // right of left-shift on mac,
-    "\\", // right of left-shift on windows
-    ...standardGamepadAssignment.carry,
-  ],
-  fire: ["D", "NumpadEnter", ...standardGamepadAssignment.fire],
-  swop: ["Enter", "S", "Numpad+", ...standardGamepadAssignment.swop],
-  hold: ["F8", "H", "Numpad.", ...standardGamepadAssignment.hold],
-  menu: ["Escape", "joystick:8"],
+// a gamepad with less buttons
+const basicGamepadAssignment: InputAssignmentPreset = {
+  inputAssignment: {
+    right: ["joystick:x"],
+    towards: ["joystick:y"],
+    left: ["joystick:x"],
+    away: ["joystick:y"],
+    jump: ["joystick:0", "joystick:4"],
+    carry: ["joystick:1", "joystick:4"],
+    fire: ["joystick:2"],
+    swop: ["joystick:3"],
+    hold: ["joystick:5"],
+    menu: ["joystick:6", "Escape"],
+  },
+  description: "Controllers with 4-6 buttons",
+};
+
+const defaultAssignment: InputAssignmentPreset = {
+  inputAssignment: {
+    right: [
+      "ArrowRight",
+      "P",
+      "Numpad6",
+      ...basicGamepadAssignment.inputAssignment.right,
+      ...standardGamepadAssignment.inputAssignment.right,
+    ],
+    towards: [
+      "ArrowDown",
+      "A",
+      "Numpad5",
+      ...basicGamepadAssignment.inputAssignment.towards,
+      ...standardGamepadAssignment.inputAssignment.towards,
+    ],
+    left: [
+      "ArrowLeft",
+      "O",
+      "Numpad8",
+      ...basicGamepadAssignment.inputAssignment.left,
+      ...standardGamepadAssignment.inputAssignment.left,
+    ],
+    away: [
+      "ArrowUp",
+      "Q",
+      "Numpad9",
+      ...basicGamepadAssignment.inputAssignment.away,
+      ...standardGamepadAssignment.inputAssignment.away,
+    ],
+    jump: [
+      " ",
+      "`", // right of left-shift on mac
+      "\\", // right of left-shift on windows
+      "Numpad0",
+      "Numpad-",
+      ...standardGamepadAssignment.inputAssignment.jump,
+    ],
+    carry: [
+      "Shift",
+      "`", // right of left-shift on mac,
+      "\\", // right of left-shift on windows
+      "Numpad1",
+      "Numpad-",
+      ...standardGamepadAssignment.inputAssignment.carry,
+    ],
+    fire: [
+      "D",
+      "NumpadEnter",
+      ...standardGamepadAssignment.inputAssignment.fire,
+    ],
+    swop: [
+      "Enter",
+      "S",
+      "Numpad+",
+      ...standardGamepadAssignment.inputAssignment.swop,
+    ],
+    hold: [
+      "F8",
+      "H",
+      "Numpad.",
+      ...standardGamepadAssignment.inputAssignment.hold,
+    ],
+    menu: ["Escape", "joystick:8"],
+  },
 };
 
 // left hand on wasd, right hand (optionally) on IOP
-const wasdKeyAssignments: KeyAssignment = {
-  right: ["D"],
-  towards: ["S"],
-  left: ["A"],
-  away: ["W"],
-  jump: [" ", "F", "P"],
-  carry: ["Shift", "F", "I", "P"],
-  fire: ["E", "O"],
-  swop: ["Q"],
-  hold: ["H"],
-  menu: ["Escape"],
+const wasdKeyAssignments: InputAssignmentPreset = {
+  inputAssignment: {
+    right: ["D"],
+    towards: ["S"],
+    left: ["A"],
+    away: ["W"],
+    jump: [" ", "F", "P"],
+    carry: ["Shift", "F", "I", "P"],
+    fire: ["E", "O", "Control"],
+    swop: ["Q"],
+    hold: ["H"],
+    menu: ["Escape"],
+  },
+  description: "Modern, minimalist WASD key layout",
 };
 
 type MameButtons = {
@@ -100,17 +170,21 @@ const mameButtonsP2: MameButtons = {
   buttons: ["A", "S", "Q", "W", "E"],
 };
 
-const mameToHoh = (...mameButtons: MameButtons[]): KeyAssignment => ({
-  right: mameButtons.map((mb) => mb.directions.right),
-  towards: mameButtons.map((mb) => mb.directions.down),
-  left: mameButtons.map((mb) => mb.directions.left),
-  away: mameButtons.map((mb) => mb.directions.up),
-  jump: mameButtons.map((mb) => [mb.buttons[0], mb.buttons[3]]).flat(),
-  carry: mameButtons.map((mb) => [mb.buttons[1], mb.buttons[3]]).flat(),
-  fire: mameButtons.map((mb) => mb.buttons[2]),
-  swop: mameButtons.map((mb) => mb.start),
-  hold: mameButtons.map((mb) => mb.coin),
-  menu: ["Escape"] as const,
+const mameToHoh = (...mameButtons: MameButtons[]): InputAssignmentPreset => ({
+  inputAssignment: {
+    right: mameButtons.map((mb) => mb.directions.right),
+    towards: mameButtons.map((mb) => mb.directions.down),
+    left: mameButtons.map((mb) => mb.directions.left),
+    away: mameButtons.map((mb) => mb.directions.up),
+    jump: mameButtons.map((mb) => [mb.buttons[0], mb.buttons[3]]).flat(),
+    carry: mameButtons.map((mb) => [mb.buttons[1], mb.buttons[3]]).flat(),
+    fire: mameButtons.map((mb) => mb.buttons[2]),
+    swop: mameButtons.map((mb) => mb.start),
+    hold: mameButtons.map((mb) => mb.coin),
+
+    menu: ["Escape"] as const,
+  },
+  description: "MAME key mappings. For arcade-style control panels",
 });
 
 export const keyAssignmentPresets = {
@@ -119,7 +193,8 @@ export const keyAssignmentPresets = {
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
-  "🕹 gamepad/joystick": standardGamepadAssignment,
+  "🕹 gamepad/joystick 1": basicGamepadAssignment,
+  "🕹 gamepad/joystick 2": standardGamepadAssignment,
 };
 
 export type KeyAssignmentPreset = keyof typeof keyAssignmentPresets;

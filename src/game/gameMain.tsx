@@ -25,7 +25,7 @@ export const gameMain = async <RoomId extends string>(
 
   const gameState = initGameState({ campaign, renderOptions });
   const stopListeningForInput = listenForInput({
-    keyAssignmentHandle: gameState,
+    inputAssignmentHandle: gameState,
     inputState: gameState.inputState,
     onInputStateChange(inputState) {
       gameState.events.emit("inputStateChanged", inputState);

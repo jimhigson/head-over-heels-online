@@ -1,15 +1,15 @@
 import { useGameApi } from "@/game/components/GameApiContext";
 import { useEffect } from "react";
-import { useKeyAssignment } from "../selectors";
+import { useInputAssignment } from "../selectors";
 
 export const useGiveStoreKeyAssignmentToGame = () => {
   const gameApi = useGameApi();
-  const keyAssignment = useKeyAssignment();
+  const inputAssignment = useInputAssignment();
 
   useEffect(
     function setRenderOptionsOnGameApi() {
-      gameApi.gameState.keyAssignment = keyAssignment;
+      gameApi.gameState.inputAssignment = inputAssignment;
     },
-    [gameApi, keyAssignment],
+    [gameApi, inputAssignment],
   );
 };

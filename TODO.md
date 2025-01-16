@@ -11,7 +11,8 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
-
+[ ] CRT filter (and option)    
+[ ] actually use joystick/control pad input
 [ ] why doesn't work in Safari/iOS?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?

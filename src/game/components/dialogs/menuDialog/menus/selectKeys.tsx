@@ -14,7 +14,7 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
       for (const [name, preset] of iterate(
         objectEntriesIter(keyAssignmentPresets),
       )) {
-        if (nanoEqual(preset, state.keyAssignment)) {
+        if (nanoEqual(preset.inputAssignment, state.inputAssignment)) {
           return name;
         }
       }
@@ -30,19 +30,18 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
           selected ? spritesheetPalette.shadow : spritesheetPalette.metallicBlue
         }
       >
-        choose a preset
+        choose a preset:
       </BitmapText>
-      {currentPresetName && (
-        <BitmapText
-          className="text-nowrap indent-1 inline-block"
-          colour={
-            selected ? spritesheetPalette.redShadow : spritesheetPalette.midRed
-          }
-          noSpaceAfter
-        >
-          {currentPresetName}
-        </BitmapText>
-      )}
+
+      <BitmapText
+        className="text-nowrap indent-1 inline-block"
+        colour={
+          selected ? spritesheetPalette.redShadow : spritesheetPalette.midRed
+        }
+        noSpaceAfter
+      >
+        {currentPresetName ?? "custom"}
+      </BitmapText>
     </>
   );
 };

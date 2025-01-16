@@ -2,7 +2,11 @@ import type { Key } from "./keys";
 import { isKey } from "./keys";
 import { entries, objectEntriesIter } from "@/utils/entries";
 import type { InputState } from "./InputState";
-import { type KeyAssignment, type Action, booleanActions } from "./InputState";
+import {
+  type InputAssignment,
+  type Action,
+  booleanActions,
+} from "./InputState";
 import type { DirectionXy4 } from "@/utils/vectors/vectors";
 import { originXyz } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
@@ -15,10 +19,10 @@ const DOM_KEY_LOCATION_NUMPAD = 3;
 
 // returns the action for a given keyboard key, or undefined if none was found
 function* keyToAction(
-  keyAssignment: KeyAssignment,
+  inputAssignment: InputAssignment,
   pressedKey: Key,
 ): Generator<Action | DirectionXy4> {
-  for (const [action, assignedKeys] of entries(keyAssignment)) {
+  for (const [action, assignedKeys] of entries(inputAssignment)) {
     if (assignedKeys.includes(pressedKey)) {
       yield action;
     }
@@ -54,7 +58,7 @@ type ListenForInputOptions = {
    * a handle is used here so the 'current' value can be
    * swapped in and out if the user changes their keys
    */
-  keyAssignmentHandle: { keyAssignment: KeyAssignment };
+  inputAssignmentHandle: { inputAssignment: InputAssignment };
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
@@ -62,7 +66,7 @@ type ListenForInputOptions = {
 };
 
 export const listenForInput = ({
-  keyAssignmentHandle,
+  inputAssignmentHandle,
   inputState,
   onInputStateChange,
 }: ListenForInputOptions) => {
@@ -98,8 +102,8 @@ export const listenForInput = ({
     inputState.raw[stdKey] = true;
 
     let foundMapping = false;
-    const { keyAssignment } = keyAssignmentHandle;
-    for (const action of keyToAction(keyAssignment, stdKey)) {
+    const { inputAssignment } = inputAssignmentHandle;
+    for (const action of keyToAction(inputAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
         directionsPressed[action] = directionPressNumber++;
@@ -124,8 +128,8 @@ export const listenForInput = ({
 
     delete inputState.raw[stdKey];
 
-    const { keyAssignment } = keyAssignmentHandle;
-    for (const action of keyToAction(keyAssignment, stdKey)) {
+    const { inputAssignment } = inputAssignmentHandle;
+    for (const action of keyToAction(inputAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];
       }

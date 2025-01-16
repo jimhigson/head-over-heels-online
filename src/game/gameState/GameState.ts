@@ -5,7 +5,7 @@ import {
   type Campaign,
 } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
-import type { InputState, KeyAssignment } from "../input/InputState";
+import type { InputState, InputAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
@@ -35,7 +35,7 @@ type CharacterRooms<RoomId extends string> =
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  keyAssignment: KeyAssignment;
+  inputAssignment: InputAssignment;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?

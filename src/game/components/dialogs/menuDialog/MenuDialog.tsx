@@ -7,6 +7,7 @@ import type { EmptyObject } from "type-fest";
 import type { OpenMenu } from "@/store/store";
 import { menuDown, menuUp, menuItemSelected } from "@/store/store";
 import { menus } from "./menus";
+import { BitmapText } from "../../Sprite";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
@@ -36,6 +37,8 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const [{ menuId, selectedIndex }] = openMenus;
   const menu = menus[menuId];
 
+  const selectedItemHint = menu.items[selectedIndex].hint;
+
   return (
     <Dialog className={`bg-${menu.background} h-zx`}>
       <div>{menu.heading}</div>
@@ -50,6 +53,9 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
           />
         ))}
       </div>
+      {selectedItemHint && (
+        <BitmapText className="block mt-1">{selectedItemHint}</BitmapText>
+      )}
       {menu.footer && <div className="mt-1">{menu.footer}</div>}
     </Dialog>
   );

@@ -32,6 +32,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.5.0
         version: 2.5.0(react-redux@9.2.0(@types/react@19.0.2)(react@19.0.0)(redux@5.0.1))(react@19.0.0)
+      '@types/nano-equal':
+        specifier: ^2.0.2
+        version: 2.0.2
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -41,6 +44,9 @@ importers:
       cmdk:
         specifier: 1.0.4
         version: 1.0.4(@types/react-dom@19.0.2(@types/react@19.0.2))(@types/react@19.0.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      nano-equal:
+        specifier: ^2.0.2
+        version: 2.0.2
       natural-orderby:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1226,6 +1232,9 @@ packages:
 
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
+
+  '@types/nano-equal@2.0.2':
+    resolution: {integrity: sha512-5p/cTMHlBb3Rka1DtMn46lgpb4BMmhjObGnzbv2gwlL8k/T9260ImQQcW3Ucz/apxO26AP+o59S8kNWTwOM+zw==}
 
   '@types/node@22.10.2':
     resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
@@ -2443,6 +2452,9 @@ packages:
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
+
+  nano-equal@2.0.2:
+    resolution: {integrity: sha512-RtAioZtSSppEWRruYU8oz2AKPJWTW74TpzcqP79n7Kh4nHW+gmrJGcTuELmid9tvGR4Xp2cCoTtYIIDy9iWO4g==}
 
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
@@ -4118,6 +4130,8 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
+  '@types/nano-equal@2.0.2': {}
+
   '@types/node@22.10.2':
     dependencies:
       undici-types: 6.20.0
@@ -5681,6 +5695,8 @@ snapshots:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
+
+  nano-equal@2.0.2: {}
 
   nanoid@3.3.8: {}
 

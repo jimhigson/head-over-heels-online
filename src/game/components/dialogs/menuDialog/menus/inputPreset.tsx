@@ -16,10 +16,11 @@ export const inputPreset: Menu = {
   ),
   items: [
     ...iterate(objectEntriesIter(keyAssignmentPresets)).map(
-      ([presetName, _keyAssignment]): MenuItem => ({
+      ([presetName, { description }]): MenuItem => ({
         type: "keyPreset",
         preset: presetName,
         label: presetName,
+        hint: description,
       }),
     ),
   ],

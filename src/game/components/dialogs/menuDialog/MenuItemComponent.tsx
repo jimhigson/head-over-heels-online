@@ -21,13 +21,16 @@ export const MenuItemComponent = ({
       spritesheetPalette[menu.selectedColour]
     : spritesheetPalette[menu.itemColour];
 
-  const labelEle =
-    typeof menuItem.label === "string" ?
-      <BitmapText colour={itemColor} noSpaceAfter>
-        {selected ? "==" : "{}"}
-        {menuItem.label}
-      </BitmapText>
-    : <menuItem.label selected={selected} />;
+  const labelEle = (
+    <>
+      <BitmapText colour={itemColor}>{selected ? "==" : "{}"}</BitmapText>
+      {typeof menuItem.label === "string" ?
+        <BitmapText colour={itemColor} noSpaceAfter>
+          {menuItem.label}
+        </BitmapText>
+      : <menuItem.label selected={selected} />}
+    </>
+  );
   return (
     <>
       <div

@@ -71,7 +71,7 @@ export const initGameState = <RoomId extends string>({
       );
 
   return {
-    keyAssignment: keyAssignmentPresets.default,
+    inputAssignment: keyAssignmentPresets.default.inputAssignment,
     // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {

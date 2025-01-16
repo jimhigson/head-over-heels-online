@@ -14,12 +14,17 @@ export const booleanActions = [
 ] as const;
 export type Action = (typeof booleanActions)[number];
 
-export type AssignableInput = Key | `joystick:${number}`;
+export type AssignableInput = Key | `joystick:${number | "x" | "y"}`;
 
-export type KeyAssignment = Record<
+export type InputAssignment = Record<
   Action | DirectionXy4,
   Readonly<AssignableInput[]>
 >;
+
+export type InputAssignmentPreset = {
+  inputAssignment: InputAssignment;
+  description?: string;
+};
 
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {
