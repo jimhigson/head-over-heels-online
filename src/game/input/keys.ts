@@ -97,6 +97,7 @@ const keys = [
   "Numpad/",
   "Numpad.",
   "NumpadEnter",
+  "Numpad=",
   "F1",
   "F2",
   "F3",
