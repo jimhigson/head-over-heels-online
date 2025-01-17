@@ -25,7 +25,7 @@ const topLevelFilters = (
     : undefined,
     renderOptions.crtFilter ?
       new CRTFilter({
-        lineContrast: paused ? 0.3 : 0.15,
+        lineContrast: paused ? 0.3 : 0.1,
         vignetting: paused ? 0.5 : 0.15,
         lineWidth: renderOptions.upscale.gameEngineUpscale / 2,
       })

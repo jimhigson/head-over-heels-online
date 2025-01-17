@@ -1,4 +1,4 @@
-import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
+import { defaultRoomHeightBlocks } from "@/game/physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
 import { floorBlockMinMax } from "@/game/render/renderExtent";
 import { defaultItemProperties } from "@/model/defaultItemProperties";
@@ -17,6 +17,8 @@ export function* loadFloorAndCeiling<RoomId extends string>(
   | ItemInPlay<"floorEdge", SceneryName, RoomId>
   | ItemInPlay<"portal", SceneryName, RoomId>
 > {
+  const roomHeightBlocks = roomJson.size.z ?? defaultRoomHeightBlocks;
+
   const roomNaturalFootprintAabb = blockXyzToFineXyz({
     ...roomJson.size,
     z: 1,

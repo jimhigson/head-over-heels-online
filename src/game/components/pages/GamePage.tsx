@@ -13,6 +13,7 @@ import type Cheats from "../cheats/Cheats.tsx";
 import { campaign as originalCampaign } from "@/_generated/originalCampaign/campaign.ts";
 import { testCampaign } from "@/testCampaign.ts";
 import { useAppSelector } from "@/store/hooks.ts";
+import { CssVariables } from "../CssVariables.tsx";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -96,7 +97,9 @@ export const GamePage = () => {
           <Dialogs />
           {cheatsEnabled && (
             <Suspense fallback={null}>
-              <LazyCheats />
+              <CssVariables>
+                <LazyCheats />
+              </CssVariables>
             </Suspense>
           )}
         </GameApiProvider>

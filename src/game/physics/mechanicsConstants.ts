@@ -103,7 +103,7 @@ export const playerJumpHeightPx = {
 // original game lift speed was 1px per frame
 export const liftSpeed = pxPerFrameSpeed(2);
 
-export const roomHeightBlocks = 11;
+export const defaultRoomHeightBlocks = 11;
 
 /**
  * lifts need to go down visually into the ground a bit, or they are too difficult to jump onto

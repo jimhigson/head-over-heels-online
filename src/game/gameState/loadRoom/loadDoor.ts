@@ -15,7 +15,7 @@ import {
 } from "@/utils/vectors/vectors";
 import { unitVectors } from "@/utils/vectors/unitVectors";
 import { emptySet } from "@/utils/empty";
-import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
+import { defaultRoomHeightBlocks } from "@/game/physics/mechanicsConstants";
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -148,7 +148,7 @@ export function* loadDoor<RoomId extends string>(
       aabb: blockXyzToFineXyz({
         [axis]: 2,
         [crossAxis]: 0.5,
-        z: roomHeightBlocks - doorPostHeightBlocks,
+        z: defaultRoomHeightBlocks - doorPostHeightBlocks,
       }),
     },
   };

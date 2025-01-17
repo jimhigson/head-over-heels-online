@@ -22,7 +22,7 @@ import type { PlayableItem } from "../physics/itemPredicates";
 import { headState, heelsState, itemState } from "@/_testUtils/characterState";
 import {
   liftBBShortening,
-  roomHeightBlocks,
+  defaultRoomHeightBlocks,
 } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
 import { createEmptyInput } from "../input/InputState";
@@ -669,7 +669,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 0 },
           config: {
             bottom: 0,
-            top: roomHeightBlocks,
+            top: defaultRoomHeightBlocks,
           },
         },
       },
@@ -766,7 +766,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 0 },
           config: {
             bottom: 0,
-            top: roomHeightBlocks,
+            top: defaultRoomHeightBlocks,
           },
         },
         landing: {

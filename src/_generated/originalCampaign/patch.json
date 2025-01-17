@@ -108,6 +108,7 @@
     "path": "/rooms/penitentiary8/color/shade",
     "value": "dimmed"
   },
+  { "op": "add", "path": "/rooms/penitentiary8/size/z", "value": 12 },
   {
     "op": "replace",
     "path": "/rooms/penitentiary7/color/shade",
@@ -133,11 +134,13 @@
     "path": "/rooms/penitentiary5/color/hue",
     "value": "green"
   },
+  { "op": "add", "path": "/rooms/penitentiary5/size/z", "value": 12 },
   {
     "op": "replace",
     "path": "/rooms/penitentiary4/color/hue",
     "value": "green"
   },
+  { "op": "add", "path": "/rooms/penitentiary4/size/z", "value": 12 },
   {
     "op": "replace",
     "path": "/rooms/penitentiary34crown/items/teleporter@7,5,4/config/toPosition/x",
@@ -623,6 +626,7 @@
     "path": "/rooms/egyptus19/items/lift@5,7,0/config/top",
     "value": 11
   },
+  { "op": "add", "path": "/rooms/egyptus19/size/z", "value": 12 },
   { "op": "replace", "path": "/rooms/egyptus18/color/hue", "value": "magenta" },
   { "op": "replace", "path": "/rooms/egyptus17/color/hue", "value": "cyan" },
   {
@@ -641,12 +645,14 @@
     "path": "/rooms/egyptus14/items/lift@0,7,0/config/top",
     "value": 11
   },
+  { "op": "add", "path": "/rooms/egyptus14/size/z", "value": 12 },
   { "op": "replace", "path": "/rooms/egyptus13/color/hue", "value": "yellow" },
   {
     "op": "replace",
     "path": "/rooms/egyptus13/items/lift@0,0,2/config/top",
     "value": 5
   },
+  { "op": "add", "path": "/rooms/egyptus13/size/z", "value": 13 },
   { "op": "replace", "path": "/rooms/egyptus12/color/hue", "value": "green" },
   {
     "op": "replace",

@@ -55,7 +55,7 @@ export const room = inferRoomJson({
   },
   planet: "penitentiary",
   roomAbove: "penitentiary9",
-  size: { x: 2, y: 8 },
+  size: { x: 2, y: 8, z: 12 },
   walls: {
     away: ["loop", "loop"],
     left: [

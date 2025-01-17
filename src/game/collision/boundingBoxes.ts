@@ -3,7 +3,7 @@ import { blockSizePx } from "@/sprites/spritePivots";
 import { type Aabb } from "@/utils/vectors/vectors";
 import {
   liftBBShortening,
-  roomHeightBlocks,
+  defaultRoomHeightBlocks,
 } from "../physics/mechanicsConstants";
 import type { UnknownItemInPlay } from "@/model/ItemInPlay";
 
@@ -23,7 +23,7 @@ export const wallThicknessBlocks = 1;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
   y: blockSizePx.d * wallThicknessBlocks,
-  z: roomHeightBlocks * blockSizePx.h,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
 };
 export const xAxisWallRenderAabb = {
   x: xAxisWallAabb.x,
@@ -34,7 +34,7 @@ export const xAxisWallRenderAabb = {
 export const yAxisWallAabb = {
   x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: roomHeightBlocks * blockSizePx.h,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
 };
 export const yAxisWallRenderAabb = {
   x: 0,
