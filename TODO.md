@@ -11,24 +11,24 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
-[x] CRT filter (and option)    
-[ ] option to turn off extra items should work
+[ ] limit maximum scale factor (maximum resolution to render to) to 4x or so, and scale in css past that
+    - the game stops running as smoothly past a certain size with crt filter on    
+    - on unscaled 4k , get: `changing upscale to 11x for 3840 x 2160`
+[ ] colourise option should actually work (and switch in first room)
+[ ] load game initially shows menu, with game not started
+[ ] custom key assignments
 [ ] actually use joystick/control pad input
 [ ] why doesn't work in Safari/iOS?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
-[ ] load game showing menu    
-[ ] collecting crowns    
-[ ] while viewing scrolls:
-    [ ] up/down (custom keys) 
-    [ ] no scrollbar visible
+[ ] collecting crowns (and screen)
+[ ] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)
 [ ] shadow masks/cast provided by appearance
     [ ] allow to be dynamic
-[ ] playable on mame joystick
-    [ ] time to do a config screen?
+[ ] option to turn off extra items should work
 [ ] ELERI cheat
-[x] scrolls/text
-    [ ] tailwind plugin for blocky text
+
+[ ] tailwind plugin for blocky text (scrolls/menus/etc)
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
 
@@ -39,16 +39,19 @@
 # Rooms
 
 # blacktoothhead1
-[ ] colourise on/off switch
+[ ] colourise on/off switch should work
 
 # blacktooth20
 [ ] [MINOR] corner of room not shown in shadow
 
-# (heels) blacktooth35
-[ ] room positioning on screen is poor
+# blacktooth25
+[ ] fall off lift when heading up if not near its centre
 
-# moonbase3 
-[ ] sandwich is not moving
+# blacktooth29
+[ ] when on lift, monster turns around too quickly
+
+# (heels) blacktooth35
+[ ] room positioning (scrolling) on screen is poor
 
 # pen 4/8 egyptus 13/14/19
 [ ] seems like the ceiling isn't high enough? - too easy to jump into room above by mistake

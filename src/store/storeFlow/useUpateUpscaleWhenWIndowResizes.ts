@@ -15,6 +15,10 @@ export const useUpdateUpscaleWhenWindowResizes = (): void => {
         { x: window.innerWidth, y: window.innerHeight },
         emulatedResolution,
       );
+      console.log(
+        `changing upscale to ${upscale.scaleFactor}x for ${window.innerWidth}x${window.innerHeight} window`,
+      );
+
       dispatch(setUpscale(upscale));
     };
     window.addEventListener("resize", updateSize);
