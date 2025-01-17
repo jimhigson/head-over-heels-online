@@ -93,7 +93,9 @@ export function* loadFloorAndCeiling<RoomId extends string>(
           relativePoint: {
             x: roomNaturalFootprintAabb.x / 2,
             y: roomNaturalFootprintAabb.y / 2,
-            z: 0,
+            // the relative point is on the top of the aabb - the top edge
+            // of the floor portal is the one we're expecting to interact with
+            z: roomNaturalFootprintAabb.z,
           },
           direction: unitVectors["down"],
         },
