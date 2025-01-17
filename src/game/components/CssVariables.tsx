@@ -4,7 +4,7 @@ import "react";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
-import { useScaleFactor } from "@/store/selectors";
+import { useTotalUpscale } from "@/store/selectors";
 
 declare module "react" {
   interface CSSProperties {
@@ -18,7 +18,7 @@ export const CssVariables = ({ children }: PropsWithChildren<EmptyObject>) => {
   const { width: spritesheetW, height: spritesheetH } =
     spriteSheet.textureSource;
 
-  const scaleFactor = useScaleFactor();
+  const scaleFactor = useTotalUpscale();
 
   return (
     <div

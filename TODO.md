@@ -11,18 +11,21 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
-[ ] limit maximum scale factor (maximum resolution to render to) to 4x or so, and scale in css past that
+[x] limit maximum scale factor (maximum resolution to render to) to 4x or so, and scale in css past that
     - the game stops running as smoothly past a certain size with crt filter on    
     - on unscaled 4k , get: `changing upscale to 11x for 3840 x 2160`
-[ ] colourise option should actually work (and switch in first room)
 [ ] load game initially shows menu, with game not started
+    [ ] load campaign lazily
 [ ] custom key assignments
+[ ] persist settings
+[ ] colourise option should actually work (and switch in first room)
 [ ] actually use joystick/control pad input
 [ ] why doesn't work in Safari/iOS?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [ ] collecting crowns (and screen)
 [ ] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)
+    [ ] no way to capture pixels from html - will need some experimentation, maybe with a transparent pixi overlay
 [ ] shadow masks/cast provided by appearance
     [ ] allow to be dynamic
 [ ] option to turn off extra items should work

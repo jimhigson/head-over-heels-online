@@ -28,7 +28,7 @@ import {
 } from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
 import { OutlineFilter } from "@/filters/colorReplace/outlineFilter";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { Upscale } from "../upscale";
+import type { Upscale } from "../calculateUpscale";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -67,7 +67,7 @@ export const renderHud = <RoomId extends string>(
   const textFilter = new RevertColouriseFilter();
   const outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
-    upscale.scaleFactor,
+    upscale.gameEngineUpscale,
   );
   const uncurrentSpriteFilter = new RevertColouriseFilter();
   const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();

@@ -139,7 +139,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
           bottom: renderSprite({
             name: "heels",
@@ -147,7 +147,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         })
       : createSprite(
@@ -157,7 +157,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         ),
     renderProps: {

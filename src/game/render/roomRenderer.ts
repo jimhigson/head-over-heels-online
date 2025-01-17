@@ -52,7 +52,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
   const scrollRoom = positionRoom(
     room,
     roomContainer,
-    gameState.renderOptions.upscale.effectiveSize,
+    gameState.renderOptions.upscale.gameEngineScreenSize,
   );
 
   return {

@@ -5,7 +5,7 @@ import { useCallback, useRef } from "react";
 import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
 import { hudCharTextureSize } from "@/sprites/textureSizes";
-import { useScaleFactor, useScrollContent } from "@/store/selectors";
+import { useScrollContent, useTotalUpscale } from "@/store/selectors";
 import type { EmptyObject } from "type-fest";
 import { useAppDispatch } from "@/store/hooks";
 import { closeScroll } from "@/store/gameMenusSlice";
@@ -15,7 +15,7 @@ const charHeight = hudCharTextureSize.h;
 
 const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const scaleFactor = useScaleFactor();
+  const scaleFactor = useTotalUpscale();
 
   const dispatch = useAppDispatch();
   useActionInput({

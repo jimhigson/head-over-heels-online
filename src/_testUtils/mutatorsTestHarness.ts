@@ -112,8 +112,10 @@ export const mutatorsTestHarness = () => {
       showBoundingBoxes: "none",
       showShadowMasks: false,
       upscale: {
-        scaleFactor: 1,
-        effectiveSize: zxSpectrumResolution,
+        gameEngineUpscale: 1,
+        cssUpscale: 1,
+        gameEngineScreenSize: zxSpectrumResolution,
+        canvasSize: zxSpectrumResolution,
       },
     },
   });

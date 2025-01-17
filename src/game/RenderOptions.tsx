@@ -1,4 +1,4 @@
-import type { Upscale } from "./render/upscale";
+import type { Upscale } from "./render/calculateUpscale";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 

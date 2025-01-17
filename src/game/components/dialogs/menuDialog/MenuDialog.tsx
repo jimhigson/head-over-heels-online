@@ -29,7 +29,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   });
   useActionInput({
     action: "jump",
-    key: ["Enter", " "],
+    key: ["Enter", " ", "ArrowRight"],
     onAction() {
       dispatch(menuItemSelected());
     },

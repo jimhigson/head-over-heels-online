@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { calculateUpscale } from "@/game/render/upscale";
+import { calculateUpscale } from "@/game/render/calculateUpscale";
 import { setUpscale } from "../gameMenusSlice";
 import { store } from "../store";
 
@@ -16,7 +16,7 @@ export const useUpdateUpscaleWhenWindowResizes = (): void => {
         emulatedResolution,
       );
       console.log(
-        `changing upscale to ${upscale.scaleFactor}x for ${window.innerWidth}x${window.innerHeight} window`,
+        `changing upscale to ${JSON.stringify(upscale)}x for ${window.innerWidth}x${window.innerHeight} window`,
       );
 
       dispatch(setUpscale(upscale));

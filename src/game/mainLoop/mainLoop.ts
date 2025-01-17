@@ -27,7 +27,7 @@ const topLevelFilters = (
       new CRTFilter({
         lineContrast: paused ? 0.3 : 0.15,
         vignetting: paused ? 0.5 : 0.15,
-        lineWidth: renderOptions.upscale.scaleFactor / 2,
+        lineWidth: renderOptions.upscale.gameEngineUpscale / 2,
       })
     : undefined,
     renderOptions.crtFilter ?
@@ -49,7 +49,7 @@ export const mainLoop = <RoomId extends string>(
   const hudContainer = new Container({ label: "hud" });
   app.stage.addChild(worldContainer);
   app.stage.addChild(hudContainer);
-  app.stage.scale = gameState.renderOptions.upscale.scaleFactor;
+  app.stage.scale = gameState.renderOptions.upscale.gameEngineUpscale;
 
   let roomRenderer = RoomRenderer(gameState, selectCurrentRoom(gameState));
   worldContainer.addChild(roomRenderer.container);
@@ -59,15 +59,23 @@ export const mainLoop = <RoomId extends string>(
     gameState.renderOptions.upscale,
   );
 
-  let filtersWhenPaused: Filter[] = [];
-  let filtersWhenUnpaused: Filter[] = [];
+  let filtersWhenPaused: Filter[] = topLevelFilters(
+    gameState.renderOptions,
+    true,
+    selectCurrentRoom(gameState).color,
+  );
+  let filtersWhenUnpaused: Filter[] = topLevelFilters(
+    gameState.renderOptions,
+    false,
+    selectCurrentRoom(gameState).color,
+  );
 
   const handleTick = ({ deltaMS }: Ticker) => {
     //worldContainer.x = gameState.renderOptions.upscale.effectiveSize.x / 2;
 
     const paused = gameState.gameSpeed === 0;
 
-    tickHud(gameState, gameState.renderOptions.upscale.effectiveSize);
+    tickHud(gameState, gameState.renderOptions.upscale.gameEngineScreenSize);
 
     const tickRoom = selectCurrentRoom(gameState);
     if (
@@ -78,7 +86,7 @@ export const mainLoop = <RoomId extends string>(
       roomRenderer = RoomRenderer(gameState, tickRoom);
       worldContainer.addChild(roomRenderer.container);
       gameState.events.emit("roomChange", tickRoom.id);
-      app.stage.scale = gameState.renderOptions.upscale.scaleFactor;
+      app.stage.scale = gameState.renderOptions.upscale.gameEngineUpscale;
 
       filtersWhenPaused = topLevelFilters(
         gameState.renderOptions,

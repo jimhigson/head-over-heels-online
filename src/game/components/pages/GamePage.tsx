@@ -12,6 +12,7 @@ import { GameApiProvider } from "../GameApiContext.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
 import { campaign as originalCampaign } from "@/_generated/originalCampaign/campaign.ts";
 import { testCampaign } from "@/testCampaign.ts";
+import { useAppSelector } from "@/store/hooks.ts";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -69,6 +70,9 @@ export const GamePage = () => {
   const cheatsEnabled = useCheatsEnabled();
   const campaign = cheatsEnabled ? campaignWithTestRooms : originalCampaign;
   const gameApi = useGame(campaign);
+  const { cssUpscale, canvasSize } = useAppSelector(
+    (state) => state.readerOptions.upscale,
+  );
 
   useEffect(() => {
     if (gameDiv === null || gameApi === undefined) return;
@@ -77,7 +81,15 @@ export const GamePage = () => {
 
   return (
     <>
-      <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
+      <div
+        style={{
+          transform: `scale(${cssUpscale})`,
+          width: canvasSize.x,
+          height: canvasSize.y,
+        }}
+        className="origin-top-left bg-slate-700"
+        ref={setGameDiv}
+      />
       {gameApi && (
         <GameApiProvider gameApi={gameApi}>
           <Flow />

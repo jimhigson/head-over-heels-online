@@ -21,7 +21,7 @@ export const gameMain = async <RoomId extends string>(
   if (import.meta.env.MODE === "development") {
     initDevtools({ app });
   }
-  await app.init({ background: "#000000", resizeTo: window });
+  await app.init({ background: "#000000" });
 
   const gameState = initGameState({ campaign, renderOptions });
   const stopListeningForInput = listenForInput({
@@ -39,6 +39,7 @@ export const gameMain = async <RoomId extends string>(
     events: gameState.events,
     renderIn(containerElement) {
       containerElement.appendChild(app.canvas);
+      app.resizeTo = containerElement;
     },
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({

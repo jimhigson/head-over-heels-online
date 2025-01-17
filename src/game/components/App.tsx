@@ -8,14 +8,16 @@ import { GamePage } from "./pages/GamePage.tsx";
 
 const AppInner = () => {
   return (
-    <CssVariables>
+    <>
       <Route path="/">
         <GamePage />
       </Route>
       <Route path="/sprites">
-        <SpritePage />
+        <CssVariables>
+          <SpritePage />
+        </CssVariables>
       </Route>
-    </CssVariables>
+    </>
   );
 };
 

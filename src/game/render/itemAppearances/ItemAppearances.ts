@@ -588,7 +588,7 @@ export const itemAppearances: {
       highlighted ?
         new OutlineFilter(
           carryableOutlineColour,
-          renderOptions.upscale.scaleFactor,
+          renderOptions.upscale.gameEngineUpscale,
         )
       : undefined;
 
@@ -627,7 +627,7 @@ export const itemAppearances: {
       highlighted ?
         new OutlineFilter(
           carryableOutlineColour,
-          renderOptions.upscale.scaleFactor,
+          renderOptions.upscale.gameEngineUpscale,
         )
       : undefined;
 
