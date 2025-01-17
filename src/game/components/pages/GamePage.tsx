@@ -71,7 +71,7 @@ export const GamePage = () => {
   const campaign = cheatsEnabled ? campaignWithTestRooms : originalCampaign;
   const gameApi = useGame(campaign);
   const { cssUpscale, canvasSize } = useAppSelector(
-    (state) => state.readerOptions.upscale,
+    (state) => state.renderOptions.upscale,
   );
 
   useEffect(() => {

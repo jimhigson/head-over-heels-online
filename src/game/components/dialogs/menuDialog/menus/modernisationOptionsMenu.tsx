@@ -16,7 +16,7 @@ export const modernisationOptionsMenu: Menu = {
     {
       type: "switch",
       label: "Colourise",
-      selector: (store) => store.readerOptions.colourise,
+      selector: (store) => store.renderOptions.colourise,
       dispatch: { type: "gameMenus/toggleColourise", payload: undefined },
       hint: "Original two-tone graphics, or 16-colour colourised",
     },
@@ -31,7 +31,7 @@ export const modernisationOptionsMenu: Menu = {
     {
       type: "switch",
       label: "CRT TV effect",
-      selector: (store) => store.readerOptions.crtFilter,
+      selector: (store) => store.renderOptions.crtFilter,
       dispatch: { type: "gameMenus/toggleCrtFilter", payload: undefined },
       hint: "Looks like an old tv",
     },

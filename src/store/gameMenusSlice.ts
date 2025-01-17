@@ -17,7 +17,7 @@ export type OpenMenu = {
 export type GameMenusState = {
   onHold: boolean;
 
-  readerOptions: RenderOptions;
+  renderOptions: RenderOptions;
 
   emulatedResolution: Xy;
 
@@ -35,7 +35,7 @@ export type GameMenusState = {
 
 const initialState: GameMenusState = {
   onHold: false,
-  readerOptions: {
+  renderOptions: {
     upscale: calculateUpscale(
       { x: window.innerWidth, y: window.innerHeight },
       zxSpectrumResolution,
@@ -60,7 +60,7 @@ export const gameMenusSlice = createSlice({
   initialState,
   reducers: {
     setUpscale(state, { payload: upscale }: PayloadAction<Upscale>) {
-      state.readerOptions.upscale = upscale;
+      state.renderOptions.upscale = upscale;
     },
     setEmulatedResolution(
       state,
@@ -149,19 +149,19 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
     ) {
-      state.readerOptions.showBoundingBoxes = showBoundingBoxes;
+      state.renderOptions.showBoundingBoxes = showBoundingBoxes;
     },
     setShowShadowMasks(
       state,
       { payload: showShadowMasks }: PayloadAction<boolean>,
     ) {
-      state.readerOptions.showShadowMasks = showShadowMasks;
+      state.renderOptions.showShadowMasks = showShadowMasks;
     },
     toggleCrtFilter(state) {
-      state.readerOptions.crtFilter = !state.readerOptions.crtFilter;
+      state.renderOptions.crtFilter = !state.renderOptions.crtFilter;
     },
     toggleColourise(state) {
-      state.readerOptions.colourise = !state.readerOptions.colourise;
+      state.renderOptions.colourise = !state.renderOptions.colourise;
     },
   },
 });

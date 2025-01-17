@@ -3,7 +3,7 @@ import { useAppSelector } from "./hooks";
 export const useTotalUpscale = () =>
   useAppSelector((state) => {
     const {
-      readerOptions: {
+      renderOptions: {
         upscale: { cssUpscale, gameEngineUpscale },
       },
     } = state;
@@ -11,7 +11,7 @@ export const useTotalUpscale = () =>
   });
 
 export const useRenderOptions = () =>
-  useAppSelector((state) => state.readerOptions);
+  useAppSelector((state) => state.renderOptions);
 
 export const useScrollContent = () =>
   useAppSelector((state) => state.scrollContent);

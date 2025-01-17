@@ -1,4 +1,4 @@
-import type { Xy } from "@/utils/vectors/vectors";
+import { scaleXy, type Xy } from "@/utils/vectors/vectors";
 
 export type Upscale = {
   cssUpscale: number;
@@ -16,26 +16,28 @@ export type Upscale = {
  * This is because on large screens (ie, 4k), the filters in the game can be
  * slow. rendering in quarter-pixels is fine.
  */
-export const maximumCanvasUpscale = 4;
+export const maximumCanvasUpscale = 3;
 
 export const calculateUpscale = (
   /** size of the dom element, window, etc we want to render into */
   renderAreaSize: Xy,
   emulatedScreenSize: Xy,
 ): Upscale => {
+  const devicePixels = scaleXy(renderAreaSize, window.devicePixelRatio);
+
   const scaleFactor = Math.floor(
     Math.min(
-      renderAreaSize.x / emulatedScreenSize.x,
-      renderAreaSize.y / emulatedScreenSize.y,
+      devicePixels.x / emulatedScreenSize.x,
+      devicePixels.y / emulatedScreenSize.y,
     ),
   );
   const gameEngineScreenSize = {
-    x: Math.floor(renderAreaSize.x / scaleFactor),
-    y: Math.floor(renderAreaSize.y / scaleFactor),
+    x: Math.floor(devicePixels.x / scaleFactor),
+    y: Math.floor(devicePixels.y / scaleFactor),
   };
 
   const gameEngineUpscale = Math.min(maximumCanvasUpscale, scaleFactor);
-  const cssUpscale = scaleFactor / gameEngineUpscale;
+  const cssUpscale = scaleFactor / gameEngineUpscale / window.devicePixelRatio;
 
   const canvasSize = {
     x: Math.ceil(renderAreaSize.x / cssUpscale),
