@@ -59,7 +59,8 @@ export const moveSpeedPixPerMs = {
   head: onePxPerFrameInOriginalGamePxPerMs, //
   heels: 2 * onePxPerFrameInOriginalGamePxPerMs,
   charles: onePxPerFrameInOriginalGamePxPerMs,
-  dalek: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  // moved diagonally in a (1, 1) vector in original - that gives us √2 px per frame
+  dalek: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
   cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
   skiHead: onePxPerFrameInOriginalGamePxPerMs,
   helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
