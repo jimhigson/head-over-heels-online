@@ -142,7 +142,7 @@ type MameButtons = {
   start: Key;
   coin: Key;
   directions: Record<"up" | "down" | "left" | "right", Key>;
-  buttons: [Key, Key, Key, Key, Key];
+  buttons: [Key, Key, Key, Key, Key, Key];
 };
 
 // default mame assignments to allow using arcade control panels made for mame:
@@ -156,7 +156,7 @@ const mameButtonsP1: MameButtons = {
     left: "ArrowLeft",
     right: "ArrowRight",
   },
-  buttons: ["Control", "Alt", " ", "Shift", "Z"],
+  buttons: ["Control", "Alt", " ", "Shift", "Z", "X"],
 };
 const mameButtonsP2: MameButtons = {
   start: "2",
@@ -167,7 +167,7 @@ const mameButtonsP2: MameButtons = {
     left: "D",
     right: "G",
   },
-  buttons: ["A", "S", "Q", "W", "E"],
+  buttons: ["A", "S", "Q", "W", "I", "K"],
 };
 
 const mameToHoh = (...mameButtons: MameButtons[]): InputAssignmentPreset => ({
@@ -180,9 +180,9 @@ const mameToHoh = (...mameButtons: MameButtons[]): InputAssignmentPreset => ({
     carry: mameButtons.map((mb) => [mb.buttons[1], mb.buttons[3]]).flat(),
     fire: mameButtons.map((mb) => mb.buttons[2]),
     swop: mameButtons.map((mb) => mb.start),
-    hold: mameButtons.map((mb) => mb.coin),
+    hold: ["P", ...mameButtons.map((mb) => mb.coin)],
 
-    menu: ["Escape"] as const,
+    menu: ["Escape", "`", ...mameButtons.map((mb) => mb.buttons[5])],
   },
   description: "MAME key mappings. For arcade-style control panels",
 });

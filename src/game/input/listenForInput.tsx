@@ -42,7 +42,11 @@ const getKey = ({
   const withLocation =
     l === DOM_KEY_LOCATION_NUMPAD ? `Numpad${standardCase}` : standardCase;
 
-  return isKey(withLocation) ? withLocation : undefined;
+  if (isKey(withLocation)) {
+    return withLocation;
+  }
+  console.log("unrecognised key", k);
+  return undefined;
 };
 
 const isDirectionAction = (
@@ -95,7 +99,6 @@ export const listenForInput = ({
     const stdKey = getKey(keyboardEvent);
 
     if (stdKey === undefined) {
-      console.log("do not recognise key event: ", keyboardEvent);
       return;
     }
 
@@ -122,7 +125,6 @@ export const listenForInput = ({
     const stdKey = getKey(keyboardEvent);
 
     if (stdKey === undefined) {
-      console.log("do not recognise key event: ", keyboardEvent);
       return;
     }
 
