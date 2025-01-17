@@ -1,27 +1,25 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-  lazy,
-  Suspense,
-} from "react";
-import type { Campaign } from "../../model/modelTypes";
-import { type GameApi } from "../GameApi";
-import { Dialogs } from "./dialogs/Dialogs";
-import { gameMain } from "../gameMain";
+import { useEffect, useState, lazy, Suspense } from "react";
+import type { Campaign } from "../../../model/modelTypes.ts";
+import { type GameApi } from "../../GameApi.tsx";
+import { Dialogs } from "../dialogs/Dialogs.tsx";
+import { gameMain } from "../../gameMain.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { TextureStyle } from "pixi.js";
 import { useRenderOptions } from "@/store/selectors";
-import type { EmptyObject } from "type-fest";
 import { Flow } from "@/store/storeFlow/Flow";
-import { GameApiProvider } from "./GameApiContext";
-import type Cheats from "./cheats/Cheats.tsx";
+import { GameApiProvider } from "../GameApiContext.tsx";
+import type Cheats from "../cheats/Cheats.tsx";
+import { campaign as originalCampaign } from "@/_generated/originalCampaign/campaign.ts";
+import { testCampaign } from "@/testCampaign.ts";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
-const LazyCheats = lazy(() => import("./cheats/Cheats.tsx")) as typeof Cheats;
+const campaignWithTestRooms = {
+  rooms: { ...originalCampaign.rooms, ...testCampaign.rooms },
+};
+
+const LazyCheats = lazy(() => import("../cheats/Cheats.tsx")) as typeof Cheats;
 
 const useCheatsEnabled = (): boolean => {
   const params = new URLSearchParams(window.location.search);
@@ -65,35 +63,32 @@ const useGame = <RoomId extends string>(
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
-export const Game = <RoomId extends string>(campaign: Campaign<RoomId>) =>
-  forwardRef<GameApi<RoomId> | undefined, EmptyObject>(
-    (_emptyProps, gameApiRef) => {
-      const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
-      const gameApi = useGame(campaign);
-      const cheatsEnabled = useCheatsEnabled();
-      useImperativeHandle(gameApiRef, () => gameApi || undefined);
+export const GamePage = () => {
+  const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
 
-      useEffect(() => {
-        if (gameDiv === null || gameApi === undefined) return;
-        gameApi.renderIn(gameDiv);
-      }, [gameApi, gameDiv]);
+  const cheatsEnabled = useCheatsEnabled();
+  const campaign = cheatsEnabled ? campaignWithTestRooms : originalCampaign;
+  const gameApi = useGame(campaign);
 
-      return (
-        <>
-          <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
-          {gameApi && (
-            <GameApiProvider gameApi={gameApi}>
-              <Flow />
-              <Dialogs />
-              {cheatsEnabled && (
-                <Suspense fallback={null}>
-                  <LazyCheats />
-                </Suspense>
-              )}
-            </GameApiProvider>
+  useEffect(() => {
+    if (gameDiv === null || gameApi === undefined) return;
+    gameApi.renderIn(gameDiv);
+  }, [gameApi, gameDiv]);
+
+  return (
+    <>
+      <div className="h-screen w-screen bg-slate-700" ref={setGameDiv} />
+      {gameApi && (
+        <GameApiProvider gameApi={gameApi}>
+          <Flow />
+          <Dialogs />
+          {cheatsEnabled && (
+            <Suspense fallback={null}>
+              <LazyCheats />
+            </Suspense>
           )}
-        </>
-      );
-    },
+        </GameApiProvider>
+      )}
+    </>
   );
-Game.displayName = "Game";
+};

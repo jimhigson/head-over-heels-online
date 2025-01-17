@@ -1,21 +1,16 @@
-import type { Campaign } from "../../model/modelTypes.ts";
 import { Route } from "wouter";
 
-import { GameMaybeWithCheatsPage } from "./pages/GameMaybeWithCheatsPage.tsx";
 import { SpritePage } from "./pages/SpritePage.tsx";
 import { Provider } from "react-redux";
 import { store } from "@/store/store.ts";
 import { CssVariables } from "./CssVariables.tsx";
+import { GamePage } from "./pages/GamePage.tsx";
 
-const AppInner = <RoomId extends string>({
-  campaign,
-}: {
-  campaign: Campaign<RoomId>;
-}) => {
+const AppInner = () => {
   return (
     <CssVariables>
       <Route path="/">
-        <GameMaybeWithCheatsPage campaign={campaign} />
+        <GamePage />
       </Route>
       <Route path="/sprites">
         <SpritePage />
@@ -24,14 +19,10 @@ const AppInner = <RoomId extends string>({
   );
 };
 
-export const App = <RoomId extends string>({
-  campaign,
-}: {
-  campaign: Campaign<RoomId>;
-}) => {
+export const App = () => {
   return (
     <Provider store={store}>
-      <AppInner campaign={campaign} />
+      <AppInner />
     </Provider>
   );
 };
