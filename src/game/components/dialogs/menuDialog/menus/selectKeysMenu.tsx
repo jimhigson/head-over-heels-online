@@ -1,4 +1,3 @@
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 import { useAppSelector } from "@/store/hooks";
@@ -24,20 +23,10 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 
   return (
     <>
-      <BitmapText
-        noSpaceAfter
-        colour={
-          selected ? spritesheetPalette.shadow : spritesheetPalette.metallicBlue
-        }
-      >
-        choose a preset:
-      </BitmapText>
+      <BitmapText noSpaceAfter>choose a preset:</BitmapText>
 
       <BitmapText
-        className="text-nowrap indent-1 inline-block"
-        colour={
-          selected ? spritesheetPalette.redShadow : spritesheetPalette.midRed
-        }
+        className={`text-nowrap indent-1 inline-block ${selected ? "sprite-tint-redShadow" : "sprite-tint-midRed"}`}
         noSpaceAfter
       >
         {currentPresetName ?? "custom"}
@@ -47,11 +36,11 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 };
 
 export const selectKeysMenu: Menu = {
-  background: "lightGrey",
-  itemColour: "metallicBlue",
-  selectedColour: "shadow",
+  backgroundClassName: "bg-lightGrey",
+  itemClassName: "sprite-tint-metallicBlue",
+  selectedClassName: "sprite-tint-shadow",
   heading: (
-    <BitmapText colour={spritesheetPalette.metallicBlue} doubleHeight>
+    <BitmapText className="sprite-tint-metallicBlue sprites-double-height">
       Select the keys
     </BitmapText>
   ),

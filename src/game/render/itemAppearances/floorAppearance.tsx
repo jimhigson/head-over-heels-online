@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { type TextureId } from "../../../sprites/spriteSheet";
+import { type TextureId } from "../../../sprites/spriteSheetData";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,

@@ -1,6 +1,7 @@
 import type { UnknownRoomState } from "@/model/modelTypes";
 import type { DoorFrameTextureName } from "@/sprites/doorSpritesheetData";
-import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
+import { spriteSheet } from "@/sprites/spriteSheet";
+import type { TextureId } from "@/sprites/spriteSheetData";
 
 export const doorTexture = (
   room: UnknownRoomState,

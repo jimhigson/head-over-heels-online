@@ -5,7 +5,6 @@ import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useTotalUpscale } from "@/store/selectors";
 
 export interface BlockyMarkdownProps {
@@ -16,13 +15,8 @@ export interface BlockyMarkdownProps {
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h2 className={`text-metallicBlue mb-1`}>
-        <RenderTextChildrenAsBitmapText
-          imgSpriteTextProps={{
-            doubleHeight: true,
-            colour: spritesheetPalette.metallicBlue,
-          }}
-        >
+      <h2 className="mb-1 sprites-double-height sprite-tint-metallicBlue">
+        <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
       </h2>
@@ -30,12 +24,8 @@ const markdownComponents: Components = {
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h3 className={`text-metallicBlue mt-1 mb-1`}>
-        <RenderTextChildrenAsBitmapText
-          imgSpriteTextProps={{
-            colour: spritesheetPalette.metallicBlue,
-          }}
-        >
+      <h3 className="mt-1 mb-1 sprite-tint-metallicBlue">
+        <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
       </h3>
@@ -61,22 +51,14 @@ const markdownComponents: Components = {
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText
-        imgSpriteTextProps={{
-          colour: spritesheetPalette.midRed,
-        }}
-      >
+      <RenderTextChildrenAsBitmapText className="sprite-tint-midRed">
         {children}
       </RenderTextChildrenAsBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText
-        imgSpriteTextProps={{
-          colour: spritesheetPalette.moss,
-        }}
-      >
+      <RenderTextChildrenAsBitmapText className="sprite-tint-moss">
         {children}
       </RenderTextChildrenAsBitmapText>
     );

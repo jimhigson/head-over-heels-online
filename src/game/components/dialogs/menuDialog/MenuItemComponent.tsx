@@ -1,4 +1,3 @@
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../Sprite";
 import type { Menu } from "./menus";
 import type { MenuItem } from "./MenuItem";
@@ -15,7 +14,7 @@ const SwitchCurrentValue = ({
 
   return (
     <BitmapText
-      colour={value ? spritesheetPalette.moss : spritesheetPalette.midRed}
+      className={value ? "sprite-tint-moss" : "sprite-tint-midRed"}
       noTrim
       noSlitWords
     >
@@ -36,18 +35,11 @@ export const MenuItemComponent = ({
   selected,
   className,
 }: MenuItemComponentProps) => {
-  const itemColor =
-    selected ?
-      spritesheetPalette[menu.selectedColour]
-    : spritesheetPalette[menu.itemColour];
-
   const labelEle = (
     <>
-      <BitmapText colour={itemColor}>{selected ? "==" : "{}"}</BitmapText>
+      <BitmapText>{selected ? "⏩⏩" : "⁌⁍"}</BitmapText>
       {typeof menuItem.label === "string" ?
-        <BitmapText colour={itemColor} noSpaceAfter>
-          {menuItem.label}
-        </BitmapText>
+        <BitmapText noSpaceAfter>{menuItem.label}</BitmapText>
       : <menuItem.label selected={selected} />}
     </>
   );
@@ -61,9 +53,10 @@ export const MenuItemComponent = ({
         }
         className={twMerge(
           selected && menuItem.type !== "key" && !menuItem.disableDoubling ?
-            "[--doubleHeight:2]"
+            "sprites-double-height"
           : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
+          selected ? menu.selectedClassName : "",
           className,
         )}
       >
@@ -71,12 +64,11 @@ export const MenuItemComponent = ({
       </div>
       {menuItem.type === "key" && (
         <CurrentKeyAssignment
-          className=""
+          className={selected ? menu.selectedClassName : ""}
           action={menuItem.action}
-          keyColor={
-            selected ? spritesheetPalette.redShadow : spritesheetPalette.midRed
+          keyClassName={
+            selected ? "sprite-tint-redShadow" : "sprite-tint-midRed"
           }
-          deliminatorColor={itemColor}
         />
       )}
       {menuItem.type === "switch" && (

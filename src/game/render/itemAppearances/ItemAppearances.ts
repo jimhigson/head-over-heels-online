@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
-import type { TextureId } from "../../../sprites/spriteSheet";
+import type { TextureId } from "../../../sprites/spriteSheetData";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";

@@ -1,14 +1,13 @@
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 
 export const modernisationOptionsMenu: Menu = {
-  background: "metallicBlue",
-  itemColour: "lightGrey",
-  selectedColour: "moss",
-  hintColour: "moss",
+  backgroundClassName: "bg-metallicBlue",
+  itemClassName: "sprite-tint-lightGrey",
+  selectedClassName: "sprite-tint-moss",
+  hintClassName: "sprite-tint-moss",
   heading: (
-    <BitmapText doubleHeight colour={spritesheetPalette.moss}>
+    <BitmapText className="sprite-tint-moss sprites-double-height">
       Modernisation options
     </BitmapText>
   ),
@@ -33,7 +32,7 @@ export const modernisationOptionsMenu: Menu = {
       label: "CRT TV effect",
       selector: (store) => store.renderOptions.crtFilter,
       dispatch: { type: "gameMenus/toggleCrtFilter", payload: undefined },
-      hint: "Looks like an old tv",
+      hint: "Screen glows a bit like an old tv",
     },
     {
       type: "todo",

@@ -1,7 +1,4 @@
-import spritesheetUrl from "../../../gfx/sprites.png";
-
 import "react";
-import { spriteSheet } from "@/sprites/spriteSheet";
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "@/store/selectors";
@@ -15,21 +12,14 @@ declare module "react" {
 
 /** TODO: this could be written to the body via an effect */
 export const CssVariables = ({ children }: PropsWithChildren<EmptyObject>) => {
-  const { width: spritesheetW, height: spritesheetH } =
-    spriteSheet.textureSource;
-
   const scaleFactor = useTotalUpscale();
 
   return (
     <div
-      className="contents"
+      className="contents set-spritesheet-vars"
       style={{
         "--scale": scaleFactor,
         "--block": `${scaleFactor * 8}px`,
-        "--spritesheetUrl": `url('${spritesheetUrl}')`,
-        "--spritesheetW": `${spritesheetW}px`,
-        "--spritesheetH": `${spritesheetH}px`,
-        "--doubleHeight": "1",
       }}
     >
       {children}

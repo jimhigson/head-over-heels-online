@@ -1,6 +1,5 @@
-import type { TextureId } from "@/sprites/spriteSheet";
+import type { TextureId } from "@/sprites/spriteSheetData";
 import { spriteSheet } from "@/sprites/spriteSheet";
-import { ImgSprite } from "../Sprite";
 
 export const SpritePage = () => {
   const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];
@@ -10,9 +9,8 @@ export const SpritePage = () => {
         const { frame } = spriteSheet.data.frames[textureId];
         return (
           <div key={textureId} className="bg-shadow m-[8px] p-[16px]">
-            <ImgSprite
-              textureId={textureId}
-              className="bg-shadow hover:bg-metallicBlue hover:border-pink border-shadow border border-4 mb-1 box-content"
+            <div
+              className={`sprite texture-${textureId} bg-shadow hover:bg-metallicBlue hover:border-pink border-shadow border border-4 mb-1 box-content`}
             />
             <div className="text-moss">{textureId}</div>
             <div className="text-lightGrey">

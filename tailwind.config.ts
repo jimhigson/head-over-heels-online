@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 
 import spritesheetPalette from "./gfx/spritesheetPalette.json";
 import { zxSpectrumResolution } from "./src/originalGame";
+import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
 export default {
   darkMode: ["class"],
@@ -9,6 +10,14 @@ export default {
   safelist: [
     {
       pattern: /bg-/,
+    },
+    {
+      // keep all the spritesheet available dynamically:
+      pattern: /texture-/,
+    },
+    {
+      // keep all the spritesheet available dynamically:
+      pattern: /sprite-tint-/,
     },
   ],
   theme: {
@@ -34,4 +43,5 @@ export default {
       menuItems: "max-content 1fr",
     },
   },
+  plugins: [spritesTailwindPlugin],
 } satisfies Config;

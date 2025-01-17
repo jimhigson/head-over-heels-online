@@ -1,6 +1,5 @@
 import type { AssignableInput, Action } from "@/game/input/InputState";
 import { useAppSelector } from "@/store/hooks";
-import type { Color } from "pixi.js";
 import { BitmapText } from "../../Sprite";
 
 const friendlyName = (k: AssignableInput) => {
@@ -35,13 +34,13 @@ const friendlyName = (k: AssignableInput) => {
 
 export const CurrentKeyAssignment = ({
   action,
-  deliminatorColor,
-  keyColor,
+  deliminatorClassName,
+  keyClassName,
   className,
 }: {
   action: Action;
-  deliminatorColor: Color;
-  keyColor: Color;
+  deliminatorClassName?: string;
+  keyClassName?: string;
   className?: string;
 }) => {
   const keys = useAppSelector((state) => {
@@ -54,10 +53,12 @@ export const CurrentKeyAssignment = ({
         const isNotLast = i < keys.length - 1;
         return (
           <span className="text-nowrap" key={k}>
-            <BitmapText colour={keyColor} noSpaceAfter={isNotLast}>
+            <BitmapText className={keyClassName} noSpaceAfter={isNotLast}>
               {friendlyName(k)}
             </BitmapText>
-            {isNotLast && <BitmapText colour={deliminatorColor}>,</BitmapText>}
+            {isNotLast && (
+              <BitmapText className={deliminatorClassName}>,</BitmapText>
+            )}
           </span>
         );
       })}

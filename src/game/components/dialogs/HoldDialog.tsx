@@ -1,6 +1,5 @@
 import { BitmapText } from "../Sprite";
 import { PressToContinueBanner } from "./PressToContinueBanner";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Dialog } from "@/components/ui/dialog";
 import type { EmptyObject } from "type-fest";
 import { useIsOnHold } from "@/store/selectors";
@@ -8,11 +7,7 @@ import { useIsOnHold } from "@/store/selectors";
 const HoldDialogInner = (_emptyProps: EmptyObject) => {
   return (
     <Dialog className="text-center">
-      <BitmapText
-        doubleHeight
-        colour={spritesheetPalette.moss}
-        className="block"
-      >
+      <BitmapText className="block sprites-double-height sprite-tint-moss">
         hold
       </BitmapText>
       <span>

@@ -46,7 +46,8 @@ const initialState: GameMenusState = {
     colourise: true,
   },
   emulatedResolution: zxSpectrumResolution,
-  menus: [],
+  // when we first load, show the main menu:
+  menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
   scrollContent: null,
   inputAssignment: keyAssignmentPresets.default.inputAssignment,
 };
@@ -138,8 +139,8 @@ export const gameMenusSlice = createSlice({
       ];
     },
     onHoldPressed(state) {
-      if (state.menus.length > 0 && !state.onHold) {
-        // do nothing if paused pressed while in menus
+      if (state.menus.length > 0 || state.scrollContent !== null) {
+        // do nothing if hold pressed while in menus
         return;
       }
 

@@ -8,7 +8,7 @@ import { menuDown, menuUp, menuItemSelected } from "@/store/gameMenusSlice";
 import { menus } from "./menus";
 import { BitmapText } from "../../Sprite";
 import type { OpenMenu } from "@/store/gameMenusSlice";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { twMerge } from "tailwind-merge";
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
@@ -41,9 +41,14 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const selectedItemHint = menu.items[selectedIndex].hint;
 
   return (
-    <Dialog className={`bg-${menu.background} h-zx`}>
+    <Dialog className={twMerge(menu.backgroundClassName, "h-zx")}>
       <div>{menu.heading}</div>
-      <div className="mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1">
+      <div
+        className={twMerge(
+          "mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1",
+          menu.itemClassName,
+        )}
+      >
         {menu.items.map((mi, i) => (
           <MenuItemComponent
             className="col-start-1"
@@ -55,10 +60,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
         ))}
       </div>
       {selectedItemHint && (
-        <BitmapText
-          colour={menu.hintColour && spritesheetPalette[menu.hintColour]}
-          className="block mt-1"
-        >
+        <BitmapText className={twMerge("block mt-1", menu.hintClassName)}>
           {selectedItemHint}
         </BitmapText>
       )}

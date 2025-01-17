@@ -5,11 +5,9 @@ import {
   type ReactNode,
 } from "react";
 import { createSprite, type CreateSpriteOptions } from "../render/createSprite";
-import type { Color } from "pixi.js";
 import { Application } from "pixi.js";
-import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
+import { spriteSheet } from "@/sprites/spriteSheet";
 import { isTextureId } from "@/sprites/assertIsTextureId";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 export interface PixiSpriteProps {
   spriteOptions: CreateSpriteOptions;
@@ -18,21 +16,8 @@ export interface PixiSpriteProps {
 
 import "react";
 import { twMerge } from "tailwind-merge";
-import { emptyObject } from "@/utils/empty";
-
-declare module "react" {
-  interface CSSProperties {
-    [`--w`]?: `${string}px`;
-    [`--h`]?: `${string}px`;
-    [`--x`]?: `${string}px`;
-    [`--y`]?: `${string}px`;
-    [`--bitmapTextColour`]?: string;
-    [`--spritesheetUrl`]?: string;
-    [`--spritesheetW`]?: string;
-    [`--spritesheetH`]?: string;
-    [`--doubleHeight`]?: "1" | "2";
-  }
-}
+import type { TextureId } from "@/sprites/spriteSheetData";
+import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 
 /** displays one sprite from the spritesheet */
 export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
@@ -76,55 +61,23 @@ export interface ImgSpriteProps {
 }
 
 export const ImgSprite = ({ textureId, className, tint }: ImgSpriteProps) => {
-  const { width, x, y, height } = spriteSheet.textures[textureId].frame;
-
-  if (tint) {
-    return (
-      <span
-        style={{
-          "--w": `${width}px`,
-          "--h": `${height}px`,
-          "--x": `${x}px`,
-          "--y": `${y}px`,
-
-          display: "inline-block",
-          width: `calc(var(--w) * var(--scale))`,
-          height: `calc(var(--h) * var(--scale) * var(--doubleHeight))`,
-          maskImage: `var(--spritesheetUrl)`,
-          maskPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
-          maskSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
-          backgroundColor: `var(--bitmapTextColour)`,
-          imageRendering: "pixelated",
-        }}
-        className={className}
-      />
-    );
-  }
-
   return (
     <span
-      style={{
-        "--w": `${width}px`,
-        "--h": `${height}px`,
-        "--x": `${x}px`,
-        "--y": `${y}px`,
-        display: "inline-block",
-        width: `calc(var(--w) * var(--scale))`,
-        height: `calc(var(--h) * var(--scale) * var(--doubleHeight))`,
-        backgroundImage: `var(--spritesheetUrl)`,
-        backgroundPosition: `calc(-1 * var(--x) * var(--scale)) calc(-1 * var(--y) * var(--scale) * var(--doubleHeight))`,
-        backgroundSize: `calc(var(--spritesheetW) * var(--scale)) calc( var(--spritesheetH) * var(--scale) * var(--doubleHeight))`,
-        imageRendering: "pixelated",
-      }}
-      className={className}
+      className={twMerge(
+        `${tint ? "sprite-tinted" : "sprite"} texture-${textureId}`,
+        className,
+      )}
     />
   );
 };
 
 export interface BitmapTextProps {
   children: string | string[];
-  doubleHeight?: boolean;
-  colour?: Color | Color[];
+  /**
+   * special case of per-char colour cycling - otherwise
+   * set a single colour using classname/tailwind
+   */
+  colourCycle?: SpritesheetPaletteColourName[];
   className?: string;
   noSpaceAfter?: boolean;
   noTrim?: boolean;
@@ -133,12 +86,11 @@ export interface BitmapTextProps {
 
 export const BitmapText = ({
   children: text,
-  doubleHeight,
-  colour = spritesheetPalette.shadow,
   className,
   noSpaceAfter,
   noTrim,
   noSlitWords,
+  colourCycle,
 }: BitmapTextProps) => {
   const trimmed =
     Array.isArray(text) ?
@@ -151,16 +103,7 @@ export const BitmapText = ({
   const words =
     noSlitWords ? [trimmed.toUpperCase()] : trimmed.toUpperCase().split(/\s+/);
   return (
-    <span
-      className={twMerge(className, doubleHeight && "[--doubleHeight:2]")}
-      style={
-        Array.isArray(colour) ? emptyObject : (
-          {
-            "--bitmapTextColour": colour.toRgbaString(),
-          }
-        )
-      }
-    >
+    <span className={className}>
       {words.map((w, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
@@ -192,15 +135,11 @@ export const BitmapText = ({
                 />
               );
 
-              if (Array.isArray(colour)) {
+              if (colourCycle !== undefined) {
                 return (
                   <span
+                    className={`sprite-tint-${colourCycle[charIndex % colourCycle.length]}`}
                     key={charIndex}
-                    // all these styles could be replaced with a tailwind plugin
-                    style={{
-                      "--bitmapTextColour":
-                        colour[charIndex % colour.length].toRgbaString(),
-                    }}
                   >
                     {imgSpriteEle}
                   </span>
@@ -217,24 +156,18 @@ export const BitmapText = ({
 };
 export const RenderTextChildrenAsBitmapText = ({
   children,
-  imgSpriteTextProps,
   className,
 }: PropsWithChildren<{
-  imgSpriteTextProps?: Omit<BitmapTextProps, "children">;
   className?: string;
 }>): ReactNode => {
   if (Array.isArray(children)) {
     return children.map((c, i) => (
-      <RenderTextChildrenAsBitmapText
-        key={i}
-        children={c}
-        imgSpriteTextProps={imgSpriteTextProps}
-      />
+      <RenderTextChildrenAsBitmapText key={i} children={c} />
     ));
   } else if (typeof children === "string") {
     return (
       <span className={className}>
-        <BitmapText {...imgSpriteTextProps}>{children}</BitmapText>
+        <BitmapText>{children}</BitmapText>
       </span>
     );
   } else {

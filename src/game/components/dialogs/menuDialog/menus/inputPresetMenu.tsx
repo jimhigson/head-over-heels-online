@@ -1,17 +1,17 @@
 import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
 import { objectEntriesIter } from "@/utils/entries";
 import { iterate } from "@/utils/iterate";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 import type { MenuItem } from "../MenuItem";
 
 export const inputPresetMenu: Menu = {
-  background: "lightGrey",
-  itemColour: "metallicBlue",
-  selectedColour: "moss",
+  backgroundClassName: "bg-lightGrey",
+  itemClassName: "sprite-tint-metallicBlue",
+  selectedClassName: "sprite-tint-moss",
+  hintClassName: "sprite-tint-shadow",
   heading: (
-    <BitmapText colour={spritesheetPalette.metallicBlue} doubleHeight>
+    <BitmapText className="sprite-tint-metallicBlue sprites-double-height">
       Key presets
     </BitmapText>
   ),

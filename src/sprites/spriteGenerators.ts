@@ -1,6 +1,6 @@
-import type { SpriteSize } from "@/model/modelTypes";
-import { iterate } from "@/utils/iterate";
-import type { DirectionXy4, Xy } from "@/utils/vectors/vectors";
+import type { SpriteSize } from "../model/modelTypes";
+import { iterate } from "../utils/iterate";
+import type { DirectionXy4, Xy } from "../utils/vectors/vectors";
 import { range } from "iter-tools";
 import type { SpritesheetFrameData } from "pixi.js";
 

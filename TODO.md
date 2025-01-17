@@ -14,7 +14,8 @@
 [x] limit maximum scale factor (maximum resolution to render to) to 4x or so, and scale in css past that
     - the game stops running as smoothly past a certain size with crt filter on    
     - on unscaled 4k , get: `changing upscale to 11x for 3840 x 2160`
-[ ] load game initially shows menu, with game not started
+[ ] remove '@' mapping added by shad    
+[x] load game initially shows menu, with game not started
     [ ] load campaign lazily
 [ ] custom key assignments
 [ ] persist settings
@@ -31,7 +32,7 @@
 [ ] option to turn off extra items should work
 [ ] ELERI cheat
 
-[ ] tailwind plugin for blocky text (scrolls/menus/etc)
+[x] tailwind plugin for blocky text (scrolls/menus/etc)
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
 

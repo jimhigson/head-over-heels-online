@@ -1,6 +1,5 @@
 import { BlockyMarkdown } from "../BlockyMarkdown";
 import { PressToContinueBanner } from "./PressToContinueBanner";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { useCallback, useRef } from "react";
 import { useActionInput } from "./useActionInput";
 import { Dialog } from "@/components/ui/dialog";
@@ -60,15 +59,18 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   );
 
   return (
-    <Dialog className="bg-highlightBeige p-0" ref={contentRef}>
+    <Dialog
+      className="bg-highlightBeige sprite-tint-shadow p-0"
+      ref={contentRef}
+    >
       <BlockyMarkdown
         className={`p-1 pb-0`}
         markdown={markdown}
       ></BlockyMarkdown>
       <PressToContinueBanner
-        className={`px-1 sticky bottom-0 bg-lightBeige`}
+        className="px-1 pt-1 sticky bottom-0 bg-lightBeige "
         action="jump"
-        keyColor={spritesheetPalette.midRed}
+        keyClassName="sprite-tint-midRed"
       />
     </Dialog>
   );

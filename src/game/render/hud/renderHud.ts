@@ -2,7 +2,7 @@ import type { GameState } from "@/game/gameState/GameState";
 import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
-import type { TextureId } from "@/sprites/spriteSheet";
+import type { TextureId } from "@/sprites/spriteSheetData";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import {
   hudCharTextureSize,

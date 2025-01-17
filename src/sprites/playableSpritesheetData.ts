@@ -1,11 +1,11 @@
 import type { SpritesheetData } from "pixi.js";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { smallItemTextureSize } from "./textureSizes";
-import type { CharacterName } from "@/model/modelTypes";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
-import { directionsXy4 } from "@/utils/vectors/vectors";
+import type { CharacterName } from "../model/modelTypes";
+import type { DirectionXy4 } from "../utils/vectors/vectors";
+import { directionsXy4 } from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import { zxSpectrumFrameRate } from "@/originalGame";
+import { zxSpectrumFrameRate } from "../originalGame";
 
 function walkingFrames<P extends CharacterName>(p: P) {
   function* walkingFramesGen<P extends CharacterName, D extends DirectionXy4>(

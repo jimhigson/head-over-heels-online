@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { spritesheetPalette } from "gfx/spritesheetPalette";
 import { inputPresetMenu } from "./menus/inputPresetMenu";
 import { mainMenu } from "./menus/mainMenu";
 import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
@@ -16,10 +15,10 @@ export type Menu = {
   heading: ReactNode;
   footer?: ReactNode;
   items: MenuItem[];
-  background: keyof typeof spritesheetPalette;
-  itemColour: keyof typeof spritesheetPalette;
-  selectedColour: keyof typeof spritesheetPalette;
-  hintColour?: keyof typeof spritesheetPalette;
+  backgroundClassName: string;
+  itemClassName: string;
+  selectedClassName: string;
+  hintClassName?: string;
 };
 export const menus: Record<MenuId, Menu> = {
   mainMenu,

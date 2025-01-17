@@ -1,7 +1,7 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { hudCharTextureSize } from "./textureSizes";
-import { fromAllEntries } from "@/utils/entries";
-import type { Xy } from "@/utils/vectors/vectors";
+import { fromAllEntries } from "../utils/entries";
+import type { Xy } from "../utils/vectors/vectors";
 
 const alphaNumeric = [
   "A",
@@ -63,10 +63,18 @@ const punctuation = [
 const brackets = ["(", ")", "[", "]", "<", ">"] as const;
 
 const arrowChars = ["⬅", "➡", "⬆", "⬇", "↖", "↘", "↗", "↙"] as const;
-// choose some arbitrary but fairly common keys for the menu items,
-// selected to be unlikely to be used for either game controls or to
-// appear in scroll markdown
-const menuChars = ["=", "{", "}", "EnterFullscreen", "ExitFullscreen"] as const;
+
+const menuChars = [
+  // choose some arbitrary but fairly common keys for the menu items,
+  // selected to be unlikely to be used for either game controls or to
+  // appear in scroll markdown
+  "⏩",
+  "⁌",
+  "⁍",
+  // currently unused
+  //"EnterFullscreen",
+  //"ExitFullscreen",
+] as const;
 
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,

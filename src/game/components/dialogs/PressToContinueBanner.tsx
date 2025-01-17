@@ -1,37 +1,36 @@
 import { BitmapText } from "../Sprite";
 import type { Action } from "../../input/InputState";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { Color } from "pixi.js";
-import { cx } from "class-variance-authority";
 import { CurrentKeyAssignment } from "./menuDialog/CurrentKeyAssignment";
+import { twMerge } from "tailwind-merge";
 
 export const PressToContinueBanner = ({
   action,
   className,
-  textColor = spritesheetPalette.metallicBlue,
-  keyColor = spritesheetPalette.pink,
+  keyClassName = "sprite-tint-pink",
 }: {
   action: Action;
   className?: string;
-  textColor?: Color;
-  keyColor?: Color;
+  keyClassName?: string;
 }) => {
   return (
-    <div className={cx("text-left", `mt-1`, className)}>
-      <BitmapText colour={textColor}>Press</BitmapText>
-      <BitmapText colour={keyColor}>{action}</BitmapText>
-      <BitmapText colour={spritesheetPalette.metallicBlue}>
-        to continue
-      </BitmapText>
+    <div
+      className={twMerge(
+        "sprite-tint-metallicBlue text-left",
+        `mt-1`,
+        className,
+      )}
+    >
+      <BitmapText>Press</BitmapText>
+      <BitmapText className={keyClassName}>{action}</BitmapText>
+      <BitmapText>to continue</BitmapText>
       <div>
-        <BitmapText colour={textColor}>(</BitmapText>
+        <BitmapText>(</BitmapText>
         <CurrentKeyAssignment
           className="inline"
+          keyClassName={keyClassName}
           action="hold"
-          keyColor={keyColor}
-          deliminatorColor={textColor}
         />
-        <BitmapText colour={spritesheetPalette.metallicBlue}>)</BitmapText>
+        <BitmapText>)</BitmapText>
       </div>
     </div>
   );
