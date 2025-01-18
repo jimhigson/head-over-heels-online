@@ -45,7 +45,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
       <div>{menu.heading}</div>
       <div
         className={twMerge(
-          "mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1",
+          "mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
           menu.itemClassName,
         )}
       >

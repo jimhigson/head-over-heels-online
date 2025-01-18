@@ -15,10 +15,6 @@ export default {
       // keep all the spritesheet available dynamically:
       pattern: /texture-/,
     },
-    {
-      // keep all the spritesheet available dynamically:
-      pattern: /sprite-tint-/,
-    },
   ],
   theme: {
     colors: spritesheetPalette,
@@ -29,8 +25,10 @@ export default {
       3: "calc(var(--block) * 3)",
       4: "calc(var(--block) * 4)",
       selectKeysIndent: "calc(var(--block) * 11)",
+      oneScaledPix: "calc(var(--scale) * 1px)",
     },
     lineHeight: {
+      none: "0",
       blockPlusOne: "calc(var(--block) + (var(--scale) * 1px))",
     },
     width: {

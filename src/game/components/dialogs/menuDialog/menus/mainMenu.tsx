@@ -25,7 +25,7 @@ export const mainMenu: Menu = {
   heading: (
     <div className="ml-2">
       <div className="flex sprite-tint-highlightBeige">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="sprites-double-height">Head</BitmapText>
           <ImgSprite className="ml-1" textureId="head.walking.right.2" />
         </div>
@@ -44,13 +44,13 @@ export const mainMenu: Menu = {
   ),
   footer: (
     <>
-      <div className="flex gap-3">
-        <div className="flex flex-col">
+      <div className="flex gap-3 leading-none">
+        <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="sprite-tint-redShadow ml-l" noSpaceAfter>
             1987 original
           </BitmapText>
           <div className="flex gap-2">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-oneScaledPix">
               <BitmapText
                 className="ml-1"
                 colourCycle={colourCycle}
@@ -62,7 +62,7 @@ export const mainMenu: Menu = {
                 Ritman
               </BitmapText>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-oneScaledPix">
               <BitmapText
                 className="ml-1"
                 colourCycle={colourCycle}
@@ -76,12 +76,12 @@ export const mainMenu: Menu = {
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="sprite-tint-redShadow" noSpaceAfter>
             2025 remake
           </BitmapText>
           <div className="flex">
-            <div className="flex flex-col ml-3">
+            <div className="flex flex-col gap-y-oneScaledPix ml-3">
               <BitmapText
                 className="ml-1"
                 colourCycle={colourCycle}
