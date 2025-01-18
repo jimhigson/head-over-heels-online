@@ -7,11 +7,11 @@ import type { MenuItem } from "../MenuItem";
 
 export const inputPresetMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
-  itemClassName: "sprite-tint-metallicBlue",
-  selectedClassName: "sprite-tint-moss",
-  hintClassName: "sprite-tint-shadow",
+  itemClassName: "text-metallicBlue",
+  selectedClassName: "text-moss",
+  hintClassName: "text-shadow",
   heading: (
-    <BitmapText className="sprite-tint-metallicBlue sprites-double-height">
+    <BitmapText className="text-metallicBlue sprites-double-height">
       Key presets
     </BitmapText>
   ),

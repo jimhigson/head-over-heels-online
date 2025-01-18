@@ -15,7 +15,7 @@ export interface BlockyMarkdownProps {
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h2 className="mb-1 sprites-double-height sprite-tint-metallicBlue">
+      <h2 className="mb-1 sprites-double-height text-metallicBlue">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -24,7 +24,7 @@ const markdownComponents: Components = {
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h3 className="mt-1 mb-1 sprite-tint-metallicBlue">
+      <h3 className="mt-1 mb-1 text-metallicBlue">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -51,14 +51,14 @@ const markdownComponents: Components = {
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="sprite-tint-midRed">
+      <RenderTextChildrenAsBitmapText className="text-midRed">
         {children}
       </RenderTextChildrenAsBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="sprite-tint-moss">
+      <RenderTextChildrenAsBitmapText className="text-moss">
         {children}
       </RenderTextChildrenAsBitmapText>
     );

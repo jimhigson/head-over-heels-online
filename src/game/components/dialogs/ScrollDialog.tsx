@@ -59,10 +59,7 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   );
 
   return (
-    <Dialog
-      className="bg-highlightBeige sprite-tint-shadow p-0"
-      ref={contentRef}
-    >
+    <Dialog className="bg-highlightBeige text-shadow p-0" ref={contentRef}>
       <BlockyMarkdown
         className={`p-1 pb-0`}
         markdown={markdown}
@@ -70,7 +67,7 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
       <PressToContinueBanner
         className="px-1 pt-1 sticky bottom-0 bg-lightBeige "
         action="jump"
-        keyClassName="sprite-tint-midRed"
+        keyClassName="text-midRed"
       />
     </Dialog>
   );

@@ -26,7 +26,7 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
       <BitmapText noSpaceAfter>choose a preset:</BitmapText>
 
       <BitmapText
-        className={`text-nowrap indent-1 inline-block ${selected ? "sprite-tint-redShadow" : "sprite-tint-midRed"}`}
+        className={`text-nowrap indent-1 inline-block ${selected ? "text-redShadow" : "text-midRed"}`}
         noSpaceAfter
       >
         {currentPresetName ?? "custom"}
@@ -37,10 +37,10 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 
 export const selectKeysMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
-  itemClassName: "sprite-tint-metallicBlue",
-  selectedClassName: "sprite-tint-shadow",
+  itemClassName: "text-metallicBlue",
+  selectedClassName: "text-shadow",
   heading: (
-    <BitmapText className="sprite-tint-metallicBlue sprites-double-height">
+    <BitmapText className="text-metallicBlue sprites-double-height">
       Select the keys
     </BitmapText>
   ),

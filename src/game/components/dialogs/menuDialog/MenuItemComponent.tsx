@@ -14,7 +14,7 @@ const SwitchCurrentValue = ({
 
   return (
     <BitmapText
-      className={value ? "sprite-tint-moss" : "sprite-tint-midRed"}
+      className={value ? "text-moss" : "text-midRed"}
       noTrim
       noSlitWords
     >
@@ -66,9 +66,7 @@ export const MenuItemComponent = ({
         <CurrentKeyAssignment
           className={selected ? menu.selectedClassName : ""}
           action={menuItem.action}
-          keyClassName={
-            selected ? "sprite-tint-redShadow" : "sprite-tint-midRed"
-          }
+          keyClassName={selected ? "text-redShadow" : "text-midRed"}
         />
       )}
       {menuItem.type === "switch" && (

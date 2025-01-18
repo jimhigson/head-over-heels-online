@@ -6,20 +6,14 @@ import { twMerge } from "tailwind-merge";
 export const PressToContinueBanner = ({
   action,
   className,
-  keyClassName = "sprite-tint-pink",
+  keyClassName = "text-pink",
 }: {
   action: Action;
   className?: string;
   keyClassName?: string;
 }) => {
   return (
-    <div
-      className={twMerge(
-        "sprite-tint-metallicBlue text-left",
-        `mt-1`,
-        className,
-      )}
-    >
+    <div className={twMerge("text-metallicBlue text-left", `mt-1`, className)}>
       <BitmapText>Press</BitmapText>
       <BitmapText className={keyClassName}>{action}</BitmapText>
       <BitmapText>to continue</BitmapText>

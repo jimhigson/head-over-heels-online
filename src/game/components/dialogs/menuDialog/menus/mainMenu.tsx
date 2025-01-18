@@ -20,11 +20,11 @@ const PlayGameLabel = () => {
 
 export const mainMenu: Menu = {
   backgroundClassName: "bg-midRed",
-  itemClassName: "sprite-tint-metallicBlue",
-  selectedClassName: "sprite-tint-white",
+  itemClassName: "text-metallicBlue",
+  selectedClassName: "text-white",
   heading: (
     <div className="ml-2">
-      <div className="flex sprite-tint-highlightBeige">
+      <div className="flex text-highlightBeige">
         <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="sprites-double-height">Head</BitmapText>
           <ImgSprite className="ml-1" textureId="head.walking.right.2" />
@@ -46,7 +46,7 @@ export const mainMenu: Menu = {
     <>
       <div className="flex gap-3 leading-none">
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="sprite-tint-redShadow ml-l" noSpaceAfter>
+          <BitmapText className="text-redShadow ml-l" noSpaceAfter>
             1987 original
           </BitmapText>
           <div className="flex gap-2">
@@ -77,7 +77,7 @@ export const mainMenu: Menu = {
           </div>
         </div>
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="sprite-tint-redShadow" noSpaceAfter>
+          <BitmapText className="text-redShadow" noSpaceAfter>
             2025 remake
           </BitmapText>
           <div className="flex">
@@ -98,19 +98,19 @@ export const mainMenu: Menu = {
       </div>
       <div className="mt-1">
         <ImgSprite className="mr-1" textureId="cube" />
-        <BitmapText className="sprite-tint-redShadow" noSpaceAfter>
+        <BitmapText className="text-redShadow" noSpaceAfter>
           https://
         </BitmapText>
-        <BitmapText className="sprite-tint-lightGrey" noSpaceAfter>
+        <BitmapText className="text-lightGrey" noSpaceAfter>
           block
         </BitmapText>
-        <BitmapText className="sprite-tint-highlightBeige" noSpaceAfter>
+        <BitmapText className="text-highlightBeige" noSpaceAfter>
           stack
         </BitmapText>
-        <BitmapText className="sprite-tint-metallicBlue" noSpaceAfter>
+        <BitmapText className="text-metallicBlue" noSpaceAfter>
           .
         </BitmapText>
-        <BitmapText className="sprite-tint-lightGrey" noSpaceAfter>
+        <BitmapText className="text-lightGrey" noSpaceAfter>
           ing
         </BitmapText>
       </div>

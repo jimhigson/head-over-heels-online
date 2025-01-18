@@ -7,7 +7,7 @@ import { useIsOnHold } from "@/store/selectors";
 const HoldDialogInner = (_emptyProps: EmptyObject) => {
   return (
     <Dialog className="text-center">
-      <BitmapText className="block sprites-double-height sprite-tint-moss">
+      <BitmapText className="block sprites-double-height text-moss">
         hold
       </BitmapText>
       <span>

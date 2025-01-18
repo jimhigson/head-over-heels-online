@@ -3,11 +3,11 @@ import type { Menu } from "../menus";
 
 export const modernisationOptionsMenu: Menu = {
   backgroundClassName: "bg-metallicBlue",
-  itemClassName: "sprite-tint-lightGrey",
-  selectedClassName: "sprite-tint-moss",
-  hintClassName: "sprite-tint-moss",
+  itemClassName: "text-lightGrey",
+  selectedClassName: "text-moss",
+  hintClassName: "text-moss",
   heading: (
-    <BitmapText className="sprite-tint-moss sprites-double-height">
+    <BitmapText className="text-moss sprites-double-height">
       Modernisation options
     </BitmapText>
   ),

@@ -138,7 +138,7 @@ export const BitmapText = ({
               if (colourCycle !== undefined) {
                 return (
                   <span
-                    className={`sprite-tint-${colourCycle[charIndex % colourCycle.length]}`}
+                    className={`text-${colourCycle[charIndex % colourCycle.length]}`}
                     key={charIndex}
                   >
                     {imgSpriteEle}
