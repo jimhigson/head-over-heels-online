@@ -16,7 +16,7 @@ export type Menu = {
   footer?: ReactNode;
   items: MenuItem[];
   backgroundClassName: string;
-  itemClassName: string;
+  itemsClassName: string;
   selectedClassName: string;
   hintClassName?: string;
 };

@@ -1,7 +1,9 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { BitmapText, ImgSprite } from "../../../Sprite";
-import type { Menu } from "../menus";
+import { type Menu } from "../menus";
 import { useGameApi } from "@/game/components/GameApiContext";
+
+export const nbsp = "\u00A0";
 
 export const colourCycle: SpritesheetPaletteColourName[] = [
   "lightGrey",
@@ -20,20 +22,20 @@ const PlayGameLabel = () => {
 
 export const mainMenu: Menu = {
   backgroundClassName: "bg-midRed",
-  itemClassName: "text-metallicBlue",
+  itemsClassName: "text-metallicBlue",
   selectedClassName: "text-white",
   heading: (
     <div className="ml-2">
       <div className="flex text-highlightBeige">
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="sprites-double-height">Head</BitmapText>
+          <BitmapText className="sprites-double-height me-1">Head</BitmapText>
           <ImgSprite className="ml-1" textureId="head.walking.right.2" />
         </div>
-        <BitmapText colourCycle={colourCycle} className="mt-1">
+        <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
           over
         </BitmapText>
         <div className="flex flex-col">
-          <BitmapText className="sprites-double-height">Heels</BitmapText>
+          <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
           <ImgSprite className="ml-1" textureId="heels.walking.towards.2" />
         </div>
         <BitmapText colourCycle={colourCycle} className="mt-1">
@@ -46,73 +48,41 @@ export const mainMenu: Menu = {
     <>
       <div className="flex gap-3 leading-none">
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="text-redShadow ml-l" noSpaceAfter>
-            1987 original
-          </BitmapText>
+          <BitmapText className="text-redShadow ml-l">1987 original</BitmapText>
           <div className="flex gap-2">
             <div className="flex flex-col gap-y-oneScaledPix">
-              <BitmapText
-                className="ml-1"
-                colourCycle={colourCycle}
-                noSpaceAfter
-              >
+              <BitmapText className="ml-1" colourCycle={colourCycle}>
                 Jon
               </BitmapText>
-              <BitmapText colourCycle={colourCycle} noSpaceAfter>
-                Ritman
-              </BitmapText>
+              <BitmapText colourCycle={colourCycle}>Ritman</BitmapText>
             </div>
             <div className="flex flex-col gap-y-oneScaledPix">
-              <BitmapText
-                className="ml-1"
-                colourCycle={colourCycle}
-                noSpaceAfter
-              >
+              <BitmapText className="ml-1" colourCycle={colourCycle}>
                 Bernie
               </BitmapText>
-              <BitmapText colourCycle={colourCycle} noSpaceAfter>
-                Drummand
-              </BitmapText>
+              <BitmapText colourCycle={colourCycle}>Drummand</BitmapText>
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="text-redShadow" noSpaceAfter>
-            2025 remake
-          </BitmapText>
+          <BitmapText className="text-redShadow">2025 remake</BitmapText>
           <div className="flex">
             <div className="flex flex-col gap-y-oneScaledPix ml-3">
-              <BitmapText
-                className="ml-1"
-                colourCycle={colourCycle}
-                noSpaceAfter
-              >
+              <BitmapText className="ml-1" colourCycle={colourCycle}>
                 Jim
               </BitmapText>
-              <BitmapText colourCycle={colourCycle} noSpaceAfter>
-                Higson
-              </BitmapText>
+              <BitmapText colourCycle={colourCycle}>Higson</BitmapText>
             </div>
           </div>
         </div>
       </div>
       <div className="mt-1">
         <ImgSprite className="mr-1" textureId="cube" />
-        <BitmapText className="text-redShadow" noSpaceAfter>
-          https://
-        </BitmapText>
-        <BitmapText className="text-lightGrey" noSpaceAfter>
-          block
-        </BitmapText>
-        <BitmapText className="text-highlightBeige" noSpaceAfter>
-          stack
-        </BitmapText>
-        <BitmapText className="text-metallicBlue" noSpaceAfter>
-          .
-        </BitmapText>
-        <BitmapText className="text-lightGrey" noSpaceAfter>
-          ing
-        </BitmapText>
+        <BitmapText className="text-redShadow">https://</BitmapText>
+        <BitmapText className="text-lightGrey">block</BitmapText>
+        <BitmapText className="text-highlightBeige">stack</BitmapText>
+        <BitmapText className="text-metallicBlue">.</BitmapText>
+        <BitmapText className="text-lightGrey">ing</BitmapText>
       </div>
     </>
   ),

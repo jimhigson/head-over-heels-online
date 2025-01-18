@@ -41,12 +41,12 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const selectedItemHint = menu.items[selectedIndex].hint;
 
   return (
-    <Dialog className={twMerge(menu.backgroundClassName, "h-zx")}>
+    <Dialog className={twMerge(menu.backgroundClassName, "h-zx leading-none")}>
       <div>{menu.heading}</div>
       <div
         className={twMerge(
-          "mt-2 leading-blockPlusOne grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
-          menu.itemClassName,
+          "mt-2 grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
+          menu.itemsClassName,
         )}
       >
         {menu.items.map((mi, i) => (
@@ -60,7 +60,12 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
         ))}
       </div>
       {selectedItemHint && (
-        <BitmapText className={twMerge("block mt-1", menu.hintClassName)}>
+        <BitmapText
+          className={twMerge(
+            "block mt-1 leading-multilineText",
+            menu.hintClassName,
+          )}
+        >
           {selectedItemHint}
         </BitmapText>
       )}

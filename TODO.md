@@ -11,6 +11,8 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
+[ ] scrolls - no space around em,strong etc    
+[ ] colon and '>' (citation in scrolls) never shown in sprite-text    
 [x] limit maximum scale factor (maximum resolution to render to) to 4x or so, and scale in css past that
     - the game stops running as smoothly past a certain size with crt filter on    
     - on unscaled 4k , get: `changing upscale to 11x for 3840 x 2160`

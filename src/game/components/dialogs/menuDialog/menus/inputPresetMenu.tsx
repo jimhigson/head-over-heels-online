@@ -7,7 +7,7 @@ import type { MenuItem } from "../MenuItem";
 
 export const inputPresetMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
-  itemClassName: "text-metallicBlue",
+  itemsClassName: "text-metallicBlue",
   selectedClassName: "text-moss",
   hintClassName: "text-shadow",
   heading: (

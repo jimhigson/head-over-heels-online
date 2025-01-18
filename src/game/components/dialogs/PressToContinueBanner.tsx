@@ -14,8 +14,10 @@ export const PressToContinueBanner = ({
 }) => {
   return (
     <div className={twMerge("text-metallicBlue text-left", `mt-1`, className)}>
-      <BitmapText>Press</BitmapText>
-      <BitmapText className={keyClassName}>{action}</BitmapText>
+      <BitmapText className="me-1">Press</BitmapText>
+      <BitmapText className={twMerge("me-1", keyClassName)}>
+        {action}
+      </BitmapText>
       <BitmapText>to continue</BitmapText>
       <div>
         <BitmapText>(</BitmapText>

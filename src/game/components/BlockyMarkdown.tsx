@@ -33,7 +33,7 @@ const markdownComponents: Components = {
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <p className={`mb-1 leading-blockPlusOne clear-both`}>
+      <p className={`mb-1 leading-multilineText clear-both`}>
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -42,7 +42,7 @@ const markdownComponents: Components = {
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <p className={`mb-1 leading-blockPlusOne clear-both`}>
+      <p className={`mb-1 leading-multilineText clear-both`}>
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>

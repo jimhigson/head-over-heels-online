@@ -1,6 +1,7 @@
 import type { AssignableInput, Action } from "@/game/input/InputState";
 import { useAppSelector } from "@/store/hooks";
 import { BitmapText } from "../../Sprite";
+import { twMerge } from "tailwind-merge";
 
 const friendlyName = (k: AssignableInput) => {
   const joystickRegex = /joystick:((?<button>\d+)|(?<axis>x|y))/;
@@ -53,11 +54,11 @@ export const CurrentKeyAssignment = ({
         const isNotLast = i < keys.length - 1;
         return (
           <span className="text-nowrap" key={k}>
-            <BitmapText className={keyClassName} noSpaceAfter={isNotLast}>
-              {friendlyName(k)}
-            </BitmapText>
+            <BitmapText className={keyClassName}>{friendlyName(k)}</BitmapText>
             {isNotLast && (
-              <BitmapText className={deliminatorClassName}>,</BitmapText>
+              <BitmapText className={twMerge("me-1", deliminatorClassName)}>
+                ,
+              </BitmapText>
             )}
           </span>
         );

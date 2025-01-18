@@ -3,7 +3,7 @@ import type { Menu } from "../menus";
 
 export const modernisationOptionsMenu: Menu = {
   backgroundClassName: "bg-metallicBlue",
-  itemClassName: "text-lightGrey",
+  itemsClassName: "text-lightGrey",
   selectedClassName: "text-moss",
   hintClassName: "text-moss",
   heading: (

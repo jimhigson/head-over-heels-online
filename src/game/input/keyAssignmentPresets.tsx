@@ -199,8 +199,8 @@ export const keyAssignmentPresets = {
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mameToHoh(mameButtonsP1, mameButtonsP2),
   wasd: wasdKeyAssignments,
-  "🕹 gamepad/joystick 1": basicGamepadAssignment,
-  "🕹 gamepad/joystick 2": standardGamepadAssignment,
+  "🕹joystick 1": basicGamepadAssignment,
+  "🕹joystick 2": standardGamepadAssignment,
 };
 
 export type KeyAssignmentPreset = keyof typeof keyAssignmentPresets;

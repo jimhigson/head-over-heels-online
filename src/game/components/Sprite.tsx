@@ -79,7 +79,6 @@ export interface BitmapTextProps {
    */
   colourCycle?: SpritesheetPaletteColourName[];
   className?: string;
-  noSpaceAfter?: boolean;
   noTrim?: boolean;
   noSlitWords?: boolean;
 }
@@ -87,21 +86,20 @@ export interface BitmapTextProps {
 export const BitmapText = ({
   children: text,
   className,
-  noSpaceAfter,
-  noTrim,
   noSlitWords,
   colourCycle,
 }: BitmapTextProps) => {
-  const trimmed =
-    Array.isArray(text) ?
-      text.map((text) => (noTrim ? text : text.trim())).join(" ")
-    : noTrim ? text
-    : text.trim();
-  if (trimmed.length === 0) {
+  const textString =
+    // trimming helps for some markdown-rendering:
+    Array.isArray(text) ? text.map((t) => t.trim()).join(" ") : text.trim();
+  if (textString.length === 0) {
     return null;
   }
   const words =
-    noSlitWords ? [trimmed.toUpperCase()] : trimmed.toUpperCase().split(/\s+/);
+    noSlitWords ?
+      [textString.toUpperCase()]
+    : textString.toUpperCase().split(/\s+/);
+
   return (
     <span className={className}>
       {words.map((w, wordIndex) => {
@@ -109,8 +107,8 @@ export const BitmapText = ({
           // me- is margin end - for a space before the next word
           <span
             className={twMerge(
-              `word text-nowrap`,
-              noSpaceAfter && wordIndex === words.length - 1 ? "" : "me-1",
+              `text-nowrap`,
+              wordIndex === words.length - 1 ? "" : "me-1",
             )}
             key={wordIndex}
           >

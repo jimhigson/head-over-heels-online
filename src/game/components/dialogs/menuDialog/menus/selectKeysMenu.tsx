@@ -23,11 +23,10 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 
   return (
     <>
-      <BitmapText noSpaceAfter>choose a preset:</BitmapText>
+      <BitmapText className="me-1">preset:</BitmapText>
 
       <BitmapText
-        className={`text-nowrap indent-1 inline-block ${selected ? "text-redShadow" : "text-midRed"}`}
-        noSpaceAfter
+        className={`text-nowrap ${selected ? "text-redShadow" : "text-midRed"}`}
       >
         {currentPresetName ?? "custom"}
       </BitmapText>
@@ -37,7 +36,8 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 
 export const selectKeysMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
-  itemClassName: "text-metallicBlue",
+  // since these items are themselves multi-line, leave an extra gap between them
+  itemsClassName: "text-metallicBlue gap-y-1",
   selectedClassName: "text-shadow",
   heading: (
     <BitmapText className="text-metallicBlue sprites-double-height">

@@ -29,7 +29,7 @@ export default {
     },
     lineHeight: {
       none: "0",
-      blockPlusOne: "calc(var(--block) + (var(--scale) * 1px))",
+      multilineText: "calc(var(--block) + (var(--scale) * 1px))",
     },
     width: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,

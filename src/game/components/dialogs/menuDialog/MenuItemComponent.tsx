@@ -13,11 +13,7 @@ const SwitchCurrentValue = ({
   const value = useAppSelector((store) => (selector ? selector(store) : false));
 
   return (
-    <BitmapText
-      className={value ? "text-moss" : "text-midRed"}
-      noTrim
-      noSlitWords
-    >
+    <BitmapText className={value ? "text-moss" : "text-midRed"} noSlitWords>
       {value ? "    ON" : "OFF"}
     </BitmapText>
   );
@@ -37,9 +33,9 @@ export const MenuItemComponent = ({
 }: MenuItemComponentProps) => {
   const labelEle = (
     <>
-      <BitmapText>{selected ? "⏩⏩" : "⁌⁍"}</BitmapText>
+      <BitmapText className="me-1">{selected ? "⏩⏩" : "⁌⁍"}</BitmapText>
       {typeof menuItem.label === "string" ?
-        <BitmapText noSpaceAfter>{menuItem.label}</BitmapText>
+        <BitmapText>{menuItem.label}</BitmapText>
       : <menuItem.label selected={selected} />}
     </>
   );
@@ -64,9 +60,14 @@ export const MenuItemComponent = ({
       </div>
       {menuItem.type === "key" && (
         <CurrentKeyAssignment
-          className={selected ? menu.selectedClassName : ""}
+          className={twMerge(
+            "flex flex-wrap gap-y-oneScaledPix gap-x-1",
+            selected ? menu.selectedClassName : "",
+          )}
           action={menuItem.action}
           keyClassName={selected ? "text-redShadow" : "text-midRed"}
+          // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
+          deliminatorClassName="me-0"
         />
       )}
       {menuItem.type === "switch" && (
