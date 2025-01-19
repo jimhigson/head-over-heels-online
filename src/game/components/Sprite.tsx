@@ -19,6 +19,7 @@ import { twMerge } from "tailwind-merge";
 import type { TextureId } from "@/sprites/spriteSheetData";
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { escapeCharForTailwind } from "@/sprites/escapeCharForTailwind";
+import clsx from "clsx";
 
 /** displays one sprite from the spritesheet */
 export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
@@ -101,19 +102,19 @@ export const BitmapText = ({
     : textString.toUpperCase().split(/\s+/);
 
   return (
-    <span className={className}>
-      {words.map((w, wordIndex) => {
+    <span className={clsx(className, "inline-block")}>
+      {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
           <span
             className={twMerge(
-              `text-nowrap`,
+              `text-nowrap inline-block`,
               wordIndex === words.length - 1 ? "" : "me-1",
             )}
             key={wordIndex}
           >
             {/* Array.from(string) is unicode-aware */}
-            {Array.from(w).map((c, charIndex) => {
+            {Array.from(word).map((c, charIndex) => {
               const textureId = `hud.char.${escapeCharForTailwind(c)}`;
               if (!isTextureId(textureId)) {
                 console.error(

@@ -4,18 +4,30 @@ import type { MenuItem } from "./MenuItem";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "@/store/hooks";
+import { clsx } from "clsx";
 
 const SwitchCurrentValue = ({
   switchMenuItem: { selector },
+  className,
 }: {
   switchMenuItem: MenuItem & { type: "switch" };
+  className?: string;
 }) => {
   const value = useAppSelector((store) => (selector ? selector(store) : false));
 
   return (
-    <BitmapText className={value ? "text-moss" : "text-midRed"} noSlitWords>
-      {value ? "    ON" : "OFF"}
-    </BitmapText>
+    <div>
+      <BitmapText
+        className={clsx(
+          value ? "bg-shadow" : "bg-redShadow",
+          value ? "text-moss" : "text-midRed",
+          className,
+        )}
+        noSlitWords
+      >
+        {value ? "  ON" : "OFF "}
+      </BitmapText>
+    </div>
   );
 };
 
@@ -39,6 +51,9 @@ export const MenuItemComponent = ({
       : <menuItem.label selected={selected} />}
     </>
   );
+  const needsDoubling =
+    selected && menuItem.type !== "key" && !menuItem.disableDoubling;
+
   return (
     <>
       <div
@@ -48,9 +63,7 @@ export const MenuItemComponent = ({
           : undefined
         }
         className={twMerge(
-          selected && menuItem.type !== "key" && !menuItem.disableDoubling ?
-            "sprites-double-height"
-          : "",
+          needsDoubling ? "sprites-double-height" : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
           selected ? menu.selectedClassName : "",
           className,
@@ -71,7 +84,10 @@ export const MenuItemComponent = ({
         />
       )}
       {menuItem.type === "switch" && (
-        <SwitchCurrentValue switchMenuItem={menuItem} />
+        <SwitchCurrentValue
+          className={needsDoubling ? "sprites-double-height" : ""}
+          switchMenuItem={menuItem}
+        />
       )}
     </>
   );
