@@ -37,7 +37,8 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 export const selectKeysMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
   // since these items are themselves multi-line, leave an extra gap between them
-  itemsClassName: "text-metallicBlue gap-y-1",
+  // the '!' is needed because twMerge doesn't recognise that gay-y-1 overrides gap-y-(name)
+  itemsClassName: "text-metallicBlue !gap-y-1",
   selectedClassName: "text-shadow",
   heading: (
     <BitmapText className="text-metallicBlue sprites-double-height">
