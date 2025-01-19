@@ -24,7 +24,7 @@ const CommandInput = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <ImgSprite textureId="hud.char.>" scale={3} className="mr-1" />
+    <ImgSprite textureId="hud.char.gt" scale={3} className="mr-1" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(

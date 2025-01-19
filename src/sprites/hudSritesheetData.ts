@@ -2,6 +2,8 @@ import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { hudCharTextureSize } from "./textureSizes";
 import { fromAllEntries } from "../utils/entries";
 import type { Xy } from "../utils/vectors/vectors";
+import type { EscapedForTailwind } from "./escapeCharForTailwind";
+import { escapeCharForTailwind } from "./escapeCharForTailwind";
 
 const alphaNumeric = [
   "A",
@@ -76,17 +78,20 @@ const menuChars = [
   //"ExitFullscreen",
 ] as const;
 
+export type CharSpriteTextureId<C extends string> =
+  `hud.char.${EscapedForTailwind<C>}`;
+
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,
   startPosition: Xy,
-): Record<`hud.char.${Char}`, SpritesheetFrameData> => {
+): Record<CharSpriteTextureId<Char>, SpritesheetFrameData> => {
   function* charFramesGenerator(): Generator<
-    [`hud.char.${Char}`, SpritesheetFrameData]
+    [CharSpriteTextureId<Char>, SpritesheetFrameData]
   > {
     for (let i = 0; i < ar.length; i++) {
       const char = ar[i];
       yield [
-        `hud.char.${char}`,
+        `hud.char.${escapeCharForTailwind(char)}`,
         {
           frame: {
             x: startPosition.x + i * (hudCharTextureSize.w + 1),

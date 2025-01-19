@@ -18,6 +18,7 @@ import "react";
 import { twMerge } from "tailwind-merge";
 import type { TextureId } from "@/sprites/spriteSheetData";
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
+import { escapeCharForTailwind } from "@/sprites/escapeCharForTailwind";
 
 /** displays one sprite from the spritesheet */
 export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
@@ -79,7 +80,6 @@ export interface BitmapTextProps {
    */
   colourCycle?: SpritesheetPaletteColourName[];
   className?: string;
-  noTrim?: boolean;
   noSlitWords?: boolean;
 }
 
@@ -91,7 +91,7 @@ export const BitmapText = ({
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
-    Array.isArray(text) ? text.map((t) => t.trim()).join(" ") : text.trim();
+    Array.isArray(text) ? text.join(" ") : text;
   if (textString.length === 0) {
     return null;
   }
@@ -114,7 +114,7 @@ export const BitmapText = ({
           >
             {/* Array.from(string) is unicode-aware */}
             {Array.from(w).map((c, charIndex) => {
-              const textureId = `hud.char.${c}`;
+              const textureId = `hud.char.${escapeCharForTailwind(c)}`;
               if (!isTextureId(textureId)) {
                 console.error(
                   "no texture for char",
