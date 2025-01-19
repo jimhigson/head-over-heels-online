@@ -9,6 +9,13 @@ import { menus } from "./menus";
 import { BitmapText } from "../../Sprite";
 import type { OpenMenu } from "@/store/gameMenusSlice";
 import { twMerge } from "tailwind-merge";
+import type { MenuItem } from "./MenuItem";
+
+const backMenuItem: MenuItem = {
+  label: "Back",
+  type: "back",
+  hint: "back up to the previous menu",
+};
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
@@ -38,7 +45,10 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const [{ menuId, selectedIndex }] = openMenus;
   const menu = menus[menuId];
 
-  const selectedItemHint = menu.items[selectedIndex].hint;
+  const selectedItemHint = (
+    selectedIndex === menu.items.length ?
+      backMenuItem
+    : menu.items[selectedIndex]).hint;
 
   return (
     <Dialog className={twMerge(menu.backgroundClassName, "h-zx leading-none")}>
@@ -58,6 +68,14 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
             selected={selectedIndex === i}
           />
         ))}
+        {openMenus.length > 1 && (
+          <MenuItemComponent
+            className="col-start-1"
+            menu={menu}
+            menuItem={backMenuItem}
+            selected={selectedIndex === menu.items.length}
+          />
+        )}
       </div>
       {selectedItemHint && (
         <BitmapText

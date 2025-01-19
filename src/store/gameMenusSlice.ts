@@ -88,6 +88,14 @@ export const gameMenusSlice = createSlice({
     menuItemSelected(state) {
       const [{ menuId, selectedIndex }] = state.menus;
       const menu = menus[menuId];
+
+      if (selectedIndex === menu.items.length) {
+        // a menu item 'after' the end of the menu is the back item:
+        const [, ...tail] = state.menus;
+        state.menus = tail;
+        return;
+      }
+
       const selectedMenuItem = menu.items[selectedIndex];
 
       switch (selectedMenuItem.type) {
@@ -118,10 +126,12 @@ export const gameMenusSlice = createSlice({
     menuDown(state) {
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
+      const maxIndex =
+        tail.length > 0 ? menu.items.length + 1 : menu.items.length;
       state.menus = [
         {
           menuId,
-          selectedIndex: (selectedIndex + 1) % menu.items.length,
+          selectedIndex: (selectedIndex + 1) % maxIndex,
         },
         ...tail,
       ];
@@ -129,11 +139,12 @@ export const gameMenusSlice = createSlice({
     menuUp(state) {
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
+      const maxIndex =
+        tail.length > 0 ? menu.items.length + 1 : menu.items.length;
       state.menus = [
         {
           menuId,
-          selectedIndex:
-            (selectedIndex - 1 + menu.items.length) % menu.items.length,
+          selectedIndex: (selectedIndex - 1 + maxIndex) % maxIndex,
         },
         ...tail,
       ];

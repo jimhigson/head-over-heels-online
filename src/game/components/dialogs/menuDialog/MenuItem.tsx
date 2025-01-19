@@ -22,5 +22,6 @@ export type MenuItem = {
     }
   | { type: "key"; action: Action }
   | { type: "keyPreset"; preset: KeyAssignmentPreset }
+  | { type: "back" }
   | { type: "todo" }
 );

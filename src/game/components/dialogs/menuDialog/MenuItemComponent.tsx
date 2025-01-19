@@ -45,7 +45,11 @@ export const MenuItemComponent = ({
 }: MenuItemComponentProps) => {
   const labelEle = (
     <>
-      <BitmapText className="me-1">{selected ? "⏩⏩" : "⁌⁍"}</BitmapText>
+      <BitmapText
+        className={clsx("me-1", menuItem.type === "back" ? "scale-[-1]" : "")}
+      >
+        {selected ? "⏩⏩" : "⁌⁍"}
+      </BitmapText>
       {typeof menuItem.label === "string" ?
         <BitmapText>{menuItem.label}</BitmapText>
       : <menuItem.label selected={selected} />}
@@ -65,6 +69,7 @@ export const MenuItemComponent = ({
         className={twMerge(
           needsDoubling ? "sprites-double-height" : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
+          menuItem.type === "back" ? "mt-1" : "",
           selected ? menu.selectedClassName : "",
           className,
         )}
