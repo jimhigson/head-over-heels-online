@@ -19,6 +19,7 @@ export type Menu = {
   itemsClassName: string;
   selectedClassName: string;
   hintClassName?: string;
+  borderClassName: string;
 };
 export const menus: Record<MenuId, Menu> = {
   mainMenu,

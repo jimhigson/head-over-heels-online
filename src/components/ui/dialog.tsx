@@ -14,13 +14,21 @@ import { twMerge } from "tailwind-merge";
 export type DialogProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;
   className?: string;
+  /** if you know the spectrum, you know this */
+  borderClassName?: string;
   closed?: boolean;
 };
 
-export const Dialog = ({ children, className, ref }: DialogProps) => {
+export const Dialog = ({
+  children,
+  className,
+  borderClassName,
+  ref,
+}: DialogProps) => {
   return (
     <RadixDialog open={true} modal={false}>
       <RadixDialogPortal>
+        <div className={`fixed inset-0 ${borderClassName}`} />
         {/* css variables don't flow through react portals, so repeat it here: */}
         <CssVariables>
           <RadixDialogContent

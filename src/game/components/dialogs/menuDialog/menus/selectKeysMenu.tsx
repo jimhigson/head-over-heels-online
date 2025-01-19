@@ -40,6 +40,7 @@ export const selectKeysMenu: Menu = {
   // the '!' is needed because twMerge doesn't recognise that gay-y-1 overrides gap-y-(name)
   itemsClassName: "text-metallicBlue !gap-y-1",
   selectedClassName: "text-shadow",
+  borderClassName: "bg-midGrey",
   heading: (
     <BitmapText className="text-metallicBlue sprites-double-height">
       Select the keys

@@ -24,19 +24,23 @@ export const mainMenu: Menu = {
   backgroundClassName: "bg-midRed",
   itemsClassName: "text-metallicBlue",
   selectedClassName: "text-white",
+  borderClassName: "bg-metallicBlue",
   heading: (
-    <div className="ml-2">
+    <div className="">
       <div className="flex text-highlightBeige">
         <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-          <ImgSprite className="ml-1" textureId="head.walking.right.2" />
+          <ImgSprite className="ml-1 mt-1" textureId="head.walking.right.2" />
         </div>
         <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
           over
         </BitmapText>
         <div className="flex flex-col">
           <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-          <ImgSprite className="ml-1" textureId="heels.walking.towards.2" />
+          <ImgSprite
+            className="ml-1 mt-1"
+            textureId="heels.walking.towards.2"
+          />
         </div>
         <BitmapText colourCycle={colourCycle} className="mt-1">
           online

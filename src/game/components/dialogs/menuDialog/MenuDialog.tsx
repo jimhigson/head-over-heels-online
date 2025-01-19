@@ -51,7 +51,10 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
     : menu.items[selectedIndex]).hint;
 
   return (
-    <Dialog className={twMerge(menu.backgroundClassName, "h-zx leading-none")}>
+    <Dialog
+      className={twMerge(menu.backgroundClassName, "h-zx leading-none")}
+      borderClassName={menu.borderClassName}
+    >
       <div>{menu.heading}</div>
       <div
         className={twMerge(

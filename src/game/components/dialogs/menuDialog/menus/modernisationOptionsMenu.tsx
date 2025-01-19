@@ -5,6 +5,7 @@ export const modernisationOptionsMenu: Menu = {
   backgroundClassName: "bg-metallicBlue",
   itemsClassName: "text-lightGrey",
   selectedClassName: "text-moss",
+  borderClassName: "bg-moss",
   hintClassName: "text-moss",
   heading: (
     <BitmapText className="text-moss sprites-double-height">

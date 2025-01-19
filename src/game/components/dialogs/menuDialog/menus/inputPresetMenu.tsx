@@ -10,6 +10,7 @@ export const inputPresetMenu: Menu = {
   itemsClassName: "text-metallicBlue",
   selectedClassName: "text-moss",
   hintClassName: "text-shadow",
+  borderClassName: "bg-midGrey",
   heading: (
     <BitmapText className="text-metallicBlue sprites-double-height">
       Key presets
