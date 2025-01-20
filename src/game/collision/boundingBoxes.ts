@@ -1,7 +1,4 @@
-import {
-  liftBBShortening,
-  defaultRoomHeightBlocks,
-} from "../physics/mechanicsConstants";
+import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import type { Aabb } from "../../utils/vectors/vectors";
 import type { UnknownItemInPlay } from "../../model/ItemInPlay";
 import type { UnknownJsonItem } from "../../model/json/JsonItem";
@@ -58,7 +55,7 @@ export const boundingBoxForItem = (
         : { aabb: smallItemAabb };
     case "lift":
       return {
-        aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
+        aabb: { ...smallItemAabb, z: smallItemAabb.z },
       };
 
     case "switch": {

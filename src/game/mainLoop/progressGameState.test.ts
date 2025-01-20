@@ -7,10 +7,7 @@ import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
 
 import type { PlayableItem } from "../physics/itemPredicates";
-import {
-  liftBBShortening,
-  defaultRoomHeightBlocks,
-} from "../physics/mechanicsConstants";
+import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
 import { createEmptyInput } from "../input/InputState";
 
@@ -626,7 +623,7 @@ describe("lifts", () => {
       until: 5_000, // run for quite a long time
     });
 
-    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h - liftBBShortening;
+    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h;
 
     expect(maxHeight).toBeCloseTo(expectedMaxHeight, 0);
   });

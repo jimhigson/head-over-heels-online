@@ -103,13 +103,6 @@ export const liftSpeed = pxPerFrameSpeed(2);
 
 export const defaultRoomHeightBlocks = 11;
 
-/**
- * lifts need to go down visually into the ground a bit, or they are too difficult to jump onto
- * if at the bottom of their cycle they only touch the ground. Their bbs are reduced vertically
- * by this amount so they fly lower
- */
-export const liftBBShortening = 2;
-
 /** how long (in ms) a shield bunny lasts for */
 export const shieldDuration = 60_000;
 
