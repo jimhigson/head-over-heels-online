@@ -1,12 +1,12 @@
-import { type ItemInPlay } from "@/model/ItemInPlay";
 import { type FreeItemTypes } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
-import type { GameState } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
 import { isSolid } from "../itemPredicates";
-import { originXyz } from "@/utils/vectors/vectors";
+import { originXyz } from "../../../utils/vectors/vectors";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { SceneryName } from "../../../sprites/planets";
+import type { GameState } from "../../gameState/GameState";
 
 const notFalling = {
   movementType: "vel",

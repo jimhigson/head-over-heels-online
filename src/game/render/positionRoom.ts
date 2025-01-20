@@ -1,12 +1,13 @@
-import type { UnknownRoomState } from "@/model/modelTypes";
-import { type Xy, addXyz, subXy, lengthXy } from "@/utils/vectors/vectors";
 import { Graphics, type Container } from "pixi.js";
 import type { PlayableItem } from "../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { floorRenderExtent } from "./renderExtent";
-import type { AnyRoomJson } from "@/model/RoomJson";
-import { wallTileSize } from "@/sprites/textureSizes";
 import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
+import type { UnknownRoomState } from "../../model/modelTypes";
+import type { AnyRoomJson } from "../../model/RoomJson";
+import { wallTileSize } from "../../sprites/textureSizes";
+import type { Xy } from "../../utils/vectors/vectors";
+import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
 
 const scrollLimit = 0.33;
 // how much to move the room up (at home position) to bring off the hud

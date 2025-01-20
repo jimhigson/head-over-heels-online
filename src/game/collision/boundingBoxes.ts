@@ -1,11 +1,11 @@
-import type { UnknownJsonItem } from "@/model/json/JsonItem";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { type Aabb } from "@/utils/vectors/vectors";
 import {
   liftBBShortening,
   defaultRoomHeightBlocks,
 } from "../physics/mechanicsConstants";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { Aabb } from "../../utils/vectors/vectors";
+import type { UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { UnknownJsonItem } from "../../model/json/JsonItem";
+import { blockSizePx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };

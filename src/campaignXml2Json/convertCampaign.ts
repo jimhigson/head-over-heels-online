@@ -6,7 +6,7 @@ import { writeOut } from "./writeOut";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { convertRoom } from "./convertRoom";
 import type { ZxSpectrumRoomHue, ZxSpectrumShade } from "../originalGame";
-import type { AnyRoomJson } from "@/model/RoomJson";
+import type { AnyRoomJson } from "../model/RoomJson";
 
 export const map = await readMapToJson();
 

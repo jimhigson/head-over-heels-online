@@ -1,21 +1,20 @@
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import { type ItemInPlay } from "@/model/ItemInPlay";
 import type { PlayableItem, PortableItemType } from "../itemPredicates";
 import { isPortable } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
-import type { GameState } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
-import { addXyz } from "@/utils/vectors/vectors";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { collision1toMany } from "@/game/collision/aabbCollision";
-import type { RoomState } from "@/model/modelTypes";
 import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
-import { iterate } from "@/utils/iterate";
-import { findStandingOnWithHighestPriorityAndMostOverlap } from "@/game/collision/checkStandingOn";
-import { deleteItemFromRoom } from "@/game/gameState/mutators/deleteItemFromRoom";
-import type { CarriedItem, HeelsAbilities } from "@/model/ItemStateMap";
-import { addItemFromJsonToRoom } from "@/game/gameState/mutators/addItemToRoom";
+import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { iterate } from "../../../utils/iterate";
+import { addXyz } from "../../../utils/vectors/vectors";
+import { collision1toMany } from "../../collision/aabbCollision";
+import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
+import type { GameState } from "../../gameState/GameState";
+import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
+import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 
 /**
  * walking, but also gliding and changing direction mid-air

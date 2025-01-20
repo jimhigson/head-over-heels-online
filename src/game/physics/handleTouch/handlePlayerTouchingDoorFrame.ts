@@ -1,5 +1,5 @@
-import type { CharacterName } from "@/model/modelTypes";
-import { addXyz, doorAlongAxis } from "@/utils/vectors/vectors";
+import type { CharacterName } from "../../../model/modelTypes";
+import { doorAlongAxis, addXyz } from "../../../utils/vectors/vectors";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /*

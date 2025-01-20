@@ -1,7 +1,7 @@
-import type { Xyz } from "@/utils/vectors/vectors";
-import { addXyz, axesXyz } from "@/utils/vectors/vectors";
+import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
 
 export type DrawOrderComparable = Pick<
   AnyItemInPlay,

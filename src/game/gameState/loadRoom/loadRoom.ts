@@ -1,16 +1,16 @@
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState, RoomStateItems } from "@/model/modelTypes";
-import type { RoomJson } from "@/model/RoomJson";
-import type { SceneryName } from "@/sprites/planets";
-import { entries } from "@/utils/entries";
 import { loadWalls } from "./loadWalls";
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import { isSolid } from "@/game/physics/itemPredicates";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomStateItems, RoomState } from "../../../model/modelTypes";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
+import { entries } from "../../../utils/entries";
+import { iterate } from "../../../utils/iterate";
+import { isSolid } from "../../physics/itemPredicates";
 
 // might do this again later, or use it as a template to gather other item types
 /*

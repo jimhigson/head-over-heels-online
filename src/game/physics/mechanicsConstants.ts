@@ -1,11 +1,9 @@
-// NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
-
-import type { ItemInPlayType } from "@/model/ItemInPlay";
-import type { JsonItemConfig } from "@/model/json/JsonItem";
-import type { CharacterName } from "@/model/modelTypes";
-import { zxSpectrumFrameRate } from "@/originalGame";
-import type { SceneryName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { JsonItemConfig } from "../../model/json/JsonItem";
+import type { CharacterName } from "../../model/modelTypes";
+import { zxSpectrumFrameRate } from "../../originalGame";
+import type { SceneryName } from "../../sprites/planets";
+import { blockSizePx } from "../../sprites/spritePivots";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 

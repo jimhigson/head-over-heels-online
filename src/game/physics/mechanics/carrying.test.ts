@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { checkSpaceAvailableToPutDown } from "./carrying";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import { loadItemFromJson } from "@/game/gameState/loadRoom/loadItem";
 import { first } from "iter-tools";
-import type { Xyz } from "@/utils/vectors/vectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { loadItemFromJson } from "../../gameState/loadRoom/loadItem";
 
 const makeHeels = (position: Xyz) =>
   first(

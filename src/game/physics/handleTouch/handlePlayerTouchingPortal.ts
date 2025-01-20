@@ -1,10 +1,10 @@
-import { dotProductXyz } from "@/utils/vectors/vectors";
-import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
-import type { CharacterName } from "@/model/modelTypes";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { PlayableItem } from "../itemPredicates";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { dotProductXyz } from "../../../utils/vectors/vectors";
+import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 
 /**
  *

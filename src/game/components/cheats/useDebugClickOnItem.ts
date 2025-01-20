@@ -1,7 +1,7 @@
-import { useGameApi } from "@/game/components/GameApiContext";
-import type { GameEvents } from "@/game/GameApi";
-import { isItemType } from "@/game/physics/itemPredicates";
 import { useEffect } from "react";
+import type { GameEvents } from "../../GameApi";
+import { isItemType } from "../../physics/itemPredicates";
+import { useGameApi } from "../GameApiContext";
 
 export const useDebugClickOnItem = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();

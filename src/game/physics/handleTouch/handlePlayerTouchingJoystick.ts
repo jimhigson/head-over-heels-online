@@ -1,10 +1,10 @@
-import { scaleXyz, unitVector } from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
-import type { ItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 import { moveItem } from "../moveItem";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
+import type { SceneryName } from "../../../sprites/planets";
+import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
 
 export const handlePlayerTouchingJoystick = <RoomId extends string>({
   gameState,

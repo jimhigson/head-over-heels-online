@@ -1,7 +1,7 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { menuItemSelected } from "./gameMenusSlice";
 import type { AppDispatch, RootState } from "./store";
-import { menus } from "@/game/components/dialogs/menuDialog/menus";
+import { menus } from "../game/components/dialogs/menuDialog/menus";
 
 export const listenerMiddleware = createListenerMiddleware();
 

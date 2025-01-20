@@ -9,7 +9,7 @@ import {
   type ItemTouchEvent,
 } from "./ItemTouchEvent";
 import type { PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "@/model/modelTypes";
+import type { CharacterName } from "../../../model/modelTypes";
 
 /**
  * @returns true is the physics needs to halt after this handler

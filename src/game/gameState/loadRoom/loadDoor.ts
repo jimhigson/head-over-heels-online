@@ -1,22 +1,22 @@
-import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import { doorIsInHiddenWall, type JsonItem } from "@/model/json/JsonItem";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { blockSizePx } from "@/sprites/spritePivots";
-import type { SceneryName } from "@/sprites/planets";
-import type { Xyz } from "@/utils/vectors/vectors";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import { doorIsInHiddenWall } from "../../../model/json/JsonItem";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptySet } from "../../../utils/empty";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import {
+  doorAlongAxis,
+  perpendicularAxisXy,
   originXyz,
   addXyz,
-  perpendicularAxisXy,
-  doorAlongAxis,
   subXyz,
   scaleXyz,
-} from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import { emptySet } from "@/utils/empty";
-import { defaultRoomHeightBlocks } from "@/game/physics/mechanicsConstants";
-
+} from "../../../utils/vectors/vectors";
+import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when

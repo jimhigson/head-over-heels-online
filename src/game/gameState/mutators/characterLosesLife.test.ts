@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
+import { mutatorsTestHarness } from "../../../_testUtils/mutatorsTestHarness";
 import {
   individualCharacterNames,
   otherIndividualCharacterName,
-} from "@/model/modelTypes";
-import { startingLives } from "@/game/physics/mechanicsConstants";
-import { mutatorsTestHarness } from "@/_testUtils/mutatorsTestHarness";
+} from "../../../model/modelTypes";
+import { startingLives } from "../../physics/mechanicsConstants";
 
 describe("while not in symbiosis", () => {
   describe.each(individualCharacterNames)(

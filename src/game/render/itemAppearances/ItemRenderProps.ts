@@ -1,11 +1,11 @@
+import type { EmptyObject } from "type-fest";
 import type {
   SwitchSetting,
-  ItemInPlayType,
   Disappear,
-} from "@/model/ItemInPlay";
-import type { PlayableActionState } from "@/model/ItemStateMap";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
-import type { EmptyObject } from "type-fest";
+  ItemInPlayType,
+} from "../../../model/ItemInPlay";
+import type { PlayableActionState } from "../../../model/ItemStateMap";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 
 type PortableItemRenderProps = {
   highlighted: boolean;

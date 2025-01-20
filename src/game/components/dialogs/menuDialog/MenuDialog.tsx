@@ -1,15 +1,19 @@
 import { useActionInput } from "../useActionInput";
 import { MenuItemComponent } from "./MenuItemComponent";
-import { Dialog } from "@/components/ui/dialog";
-import { useMenus } from "@/store/selectors";
-import { useAppDispatch } from "@/store/hooks";
 import type { EmptyObject } from "type-fest";
-import { menuDown, menuUp, menuItemSelected } from "@/store/gameMenusSlice";
 import { menus } from "./menus";
 import { BitmapText } from "../../Sprite";
-import type { OpenMenu } from "@/store/gameMenusSlice";
 import { twMerge } from "tailwind-merge";
 import type { MenuItem } from "./MenuItem";
+import type { OpenMenu } from "../../../../store/gameMenusSlice";
+import {
+  menuUp,
+  menuDown,
+  menuItemSelected,
+} from "../../../../store/gameMenusSlice";
+import { useAppDispatch } from "../../../../store/hooks";
+import { useMenus } from "../../../../store/selectors";
+import { Dialog } from "../../../../components/ui/dialog";
 
 const backMenuItem: MenuItem = {
   label: "Back",

@@ -1,8 +1,8 @@
-import type { GameState } from "@/game/gameState/GameState";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import type { GameState } from "../../gameState/GameState";
 import type { MechanicResult } from "../MechanicResult";
-import { blockSizePx } from "@/sprites/spritePivots";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.h;

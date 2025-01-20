@@ -1,15 +1,15 @@
+import type { CharacterName } from "../../../model/modelTypes";
+import { originalGameFrameDuration } from "../../../originalGame";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import type { GameState } from "../../gameState/GameState";
 import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
-import type { CharacterName } from "@/model/modelTypes";
-import { type GameState } from "@/game/gameState/GameState";
-import { originalGameFrameDuration } from "@/originalGame";
 import {
   fallG,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
-import { blockSizePx } from "@/sprites/spritePivots";
 
 const jumpInitialVelocity = (apexZ: number) => {
   // Calculate the time to reach the apex in milliseconds in the original game:

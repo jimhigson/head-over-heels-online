@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { blockSizePx } from "@/sprites/spritePivots";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -15,23 +13,30 @@ import {
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "./RoomSelect";
 import { ImgSprite } from "../Sprite";
-import type { JsonItemConfig, JsonItemType } from "@/model/json/JsonItem";
-import type { SceneryName } from "@/sprites/planets";
+
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
-import { Switch } from "@/components/ui/switch";
-import type { CharacterName } from "@/model/modelTypes";
+
 import type { PropsWithChildren } from "react";
-import type { GameApi } from "@/game/GameApi";
 import type { EmptyObject } from "type-fest";
 import { useGameApi } from "../GameApiContext";
-import { useAppDispatch } from "@/store/hooks";
+import { Button } from "../../../components/ui/button";
+import type {
+  JsonItemType,
+  JsonItemConfig,
+} from "../../../model/json/JsonItem";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   setShowBoundingBoxes,
   setShowShadowMasks,
-} from "@/store/gameMenusSlice";
-import { useDebugClickOnItem } from "@/game/components/cheats/useDebugClickOnItem";
-import { useRenderOptions } from "@/store/selectors";
+} from "../../../store/gameMenusSlice";
+import { useAppDispatch } from "../../../store/hooks";
+import { useRenderOptions } from "../../../store/selectors";
+import type { GameApi } from "../../GameApi";
+import { useDebugClickOnItem } from "./useDebugClickOnItem";
+import { Switch } from "../../../components/ui/switch";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;

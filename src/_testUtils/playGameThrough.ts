@@ -1,7 +1,7 @@
-import type { GameState } from "@/game/gameState/GameState";
-import { progressGameState } from "@/game/mainLoop/progressGameState";
+import type { GameState } from "../game/gameState/GameState";
+import { createEmptyInput } from "../game/input/InputState";
+import { progressGameState } from "../game/mainLoop/progressGameState";
 import type { TestRoomId } from "./basicRoom";
-import { createEmptyInput } from "@/game/input/InputState";
 
 type FrameCallback = (
   gameState: GameState<TestRoomId>,

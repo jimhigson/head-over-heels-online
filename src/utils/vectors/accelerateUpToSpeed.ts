@@ -6,7 +6,7 @@ import {
   subXyz,
   perpendicularXyz,
   lengthXyz,
-} from "@/utils/vectors/vectors";
+} from "./vectors";
 import { componentInDirection } from "./componentInDirection";
 
 /** accelerates the current velocity towards the given max speed,

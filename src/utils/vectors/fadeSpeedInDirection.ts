@@ -1,13 +1,13 @@
+import { componentInDirection } from "./componentInDirection";
+import type { Xyz } from "./vectors";
 import {
-  type Xyz,
   xyzEqual,
   originXyz,
   unitVector,
   scaleXyz,
   dotProductXyz,
   addXyz,
-} from "@/utils/vectors/vectors";
-import { componentInDirection } from "./componentInDirection";
+} from "./vectors";
 
 /*
  * eg, for when a direction is no longer pressed and player is idle - basically, friction etc

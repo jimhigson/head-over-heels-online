@@ -1,7 +1,5 @@
 /* eslint-disable */
-import type { Campaign } from "@/model/modelTypes.ts";
-
-import type { RoomJson } from "@/model/RoomJson.ts";
+import type { Campaign } from "../../model/modelTypes.ts";
 
 import { type OriginalCampaignRoomId } from "./OriginalCampaignRoomId.ts";
 

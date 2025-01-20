@@ -1,6 +1,5 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
-import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
@@ -9,6 +8,7 @@ import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { initDevtools } from "@pixi/devtools";
+import { selectCurrentRoom } from "./gameState/GameState";
 
 /**
  * we are now outside of React-land - pure pixi game engine!

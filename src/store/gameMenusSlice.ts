@@ -1,13 +1,15 @@
-import { zxSpectrumResolution } from "@/originalGame";
-import { menus, type MenuId } from "@/game/components/dialogs/menuDialog/menus";
-import { calculateUpscale, type Upscale } from "@/game/render/calculateUpscale";
-import type { RenderOptions, ShowBoundingBoxes } from "@/game/RenderOptions";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { InputAssignment } from "@/game/input/InputState";
-import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
 import type { ValueOf } from "type-fest";
-import type { Xy } from "@/utils/vectors/vectors";
+import type { MenuId } from "../game/components/dialogs/menuDialog/menus";
+import { menus } from "../game/components/dialogs/menuDialog/menus";
+import type { InputAssignment } from "../game/input/InputState";
+import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
+import type { Upscale } from "../game/render/calculateUpscale";
+import { calculateUpscale } from "../game/render/calculateUpscale";
+import type { RenderOptions, ShowBoundingBoxes } from "../game/RenderOptions";
+import { zxSpectrumResolution } from "../originalGame";
+import type { Xy } from "../utils/vectors/vectors";
 
 export type OpenMenu = {
   menuId: MenuId;

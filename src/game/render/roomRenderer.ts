@@ -1,7 +1,4 @@
-import type { RoomState } from "@/model/modelTypes";
 import { Container } from "pixi.js";
-import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
@@ -10,6 +7,9 @@ import type { GraphEdges } from "./sortZ/toposort/toposort";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
+import type { ItemInPlayType, UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
 
 export type RenderContext = {
   movedItems: MovedItems;

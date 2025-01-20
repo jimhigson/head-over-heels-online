@@ -1,4 +1,4 @@
-import { spriteSheet } from "@/sprites/spriteSheet";
+import { spriteSheet } from "./spriteSheet";
 import type { TextureId } from "./spriteSheetData";
 
 export function assertIsTextureId(

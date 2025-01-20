@@ -1,11 +1,11 @@
+import { useAppSelector } from "../../../../../store/hooks";
+import { objectEntriesIter } from "../../../../../utils/entries";
+import { iterate } from "../../../../../utils/iterate";
+import type { KeyAssignmentPreset } from "../../../../input/keyAssignmentPresets";
+import { keyAssignmentPresets } from "../../../../input/keyAssignmentPresets";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
-import { useAppSelector } from "@/store/hooks";
 import nanoEqual from "nano-equal";
-import type { KeyAssignmentPreset } from "@/game/input/keyAssignmentPresets";
-import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
-import { objectEntriesIter } from "@/utils/entries";
-import { iterate } from "@/utils/iterate";
 
 const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
   const currentPresetName = useAppSelector(

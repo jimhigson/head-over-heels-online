@@ -1,5 +1,5 @@
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import type { Xy } from "@/utils/vectors/vectors";
+import type { AnyItemInPlay } from "../../model/ItemInPlay";
+import type { Xy } from "../../utils/vectors/vectors";
 
 export const xyRectangleOverlapArea = (
   pos1: Xy,

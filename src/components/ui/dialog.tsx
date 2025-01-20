@@ -7,9 +7,9 @@ import {
   DialogPortal as RadixDialogPortal,
 } from "@radix-ui/react-dialog";
 
-import { CssVariables } from "@/game/components/CssVariables";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
+import { CssVariables } from "../../game/components/CssVariables";
 
 export type DialogProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;

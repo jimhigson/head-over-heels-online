@@ -1,5 +1,5 @@
-import type { PlanetName, SceneryName, Wall } from "@/sprites/planets";
-import type { DirectionXy4, Xyz, AxisXy } from "@/utils/vectors/vectors";
+import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
+import type { DirectionXy4, Xyz, AxisXy } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
   DoorFrameConfig,

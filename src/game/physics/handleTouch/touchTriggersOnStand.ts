@@ -1,4 +1,4 @@
-import { spatiallyCheckStandingOn } from "@/game/collision/checkStandingOn";
+import { spatiallyCheckStandingOn } from "../../collision/checkStandingOn";
 import { isFreeItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 

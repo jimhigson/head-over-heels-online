@@ -1,9 +1,9 @@
-import type { FreeItem } from "@/game/physics/itemPredicates";
+import type { FreeItem } from "../game/physics/itemPredicates";
+import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { CreateSpriteOptions } from "@/game/render/createSprite";
 import type { CharacterName } from "./modelTypes";
 
 export type ItemInPlayType =

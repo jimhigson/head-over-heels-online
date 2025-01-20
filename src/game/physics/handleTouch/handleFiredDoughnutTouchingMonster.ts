@@ -1,4 +1,4 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 /**

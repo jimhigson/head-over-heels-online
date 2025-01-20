@@ -1,5 +1,5 @@
-import type { AssignableInput, Action } from "@/game/input/InputState";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "../../../../store/hooks";
+import type { Action, AssignableInput } from "../../../input/InputState";
 import { BitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 

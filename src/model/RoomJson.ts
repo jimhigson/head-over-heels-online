@@ -1,5 +1,5 @@
-import type { ZxSpectrumRoomColour } from "@/originalGame";
-import type { SceneryName } from "@/sprites/planets";
+import type { ZxSpectrumRoomColour } from "../originalGame";
+import type { SceneryName } from "../sprites/planets";
 import type { UnknownJsonItem } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 

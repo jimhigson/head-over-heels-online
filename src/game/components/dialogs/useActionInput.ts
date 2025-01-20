@@ -1,9 +1,9 @@
-import type { InputState } from "@/game/input/InputState";
 import { useEffect, useMemo } from "react";
 import { useGameApi } from "../GameApiContext";
 import type { ConditionalKeys } from "type-fest";
-import type { Key } from "@/game/input/keys";
-import { emptyArray } from "@/utils/empty";
+import { emptyArray } from "../../../utils/empty";
+import type { InputState } from "../../input/InputState";
+import type { Key } from "../../input/keys";
 
 type BooleanInput = ConditionalKeys<InputState, boolean>;
 

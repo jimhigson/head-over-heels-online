@@ -1,8 +1,9 @@
-import { originalFramePeriod } from "@/game/render/animationTimings";
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { type Xyz, subXyz, xyzEqual, originXyz } from "@/utils/vectors/vectors";
+import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import { subXyz, xyzEqual, originXyz } from "../../../utils/vectors/vectors";
+import { originalFramePeriod } from "../../render/animationTimings";
 
 export const assignLatentMovement = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,

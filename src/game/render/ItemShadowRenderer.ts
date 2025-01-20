@@ -1,7 +1,3 @@
-import type { ItemInPlayType, ItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { subXy } from "@/utils/vectors/vectors";
 import type { Sprite } from "pixi.js";
 import { AlphaFilter, Container } from "pixi.js";
 import type { RenderOptions } from "../RenderOptions";
@@ -10,10 +6,14 @@ import { createSprite } from "./createSprite";
 import type { Collideable } from "../collision/aabbCollision";
 import { collision1to1 } from "../collision/aabbCollision";
 import { concat, objectEntries, objectValues } from "iter-tools";
-import { iterate } from "@/utils/iterate";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../physics/mechanicsConstants";
 import type { RenderContext } from "./roomRenderer";
+import type { ItemInPlayType, ItemInPlay } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
+import { iterate } from "../../utils/iterate";
+import { subXy } from "../../utils/vectors/vectors";
 
 export const ItemShadowRenderer = <
   T extends ItemInPlayType,

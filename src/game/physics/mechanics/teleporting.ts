@@ -1,12 +1,12 @@
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { GameState } from "../../gameState/GameState";
+import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
+import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
-import type { CharacterName } from "@/model/modelTypes";
-import type { GameState } from "@/game/gameState/GameState";
-import { changeCharacterRoom } from "@/game/gameState/mutators/changeCharacterRoom";
-import { fadeInOrOutDuration } from "@/game/render/animationTimings";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 
 export function teleporting<RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,

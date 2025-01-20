@@ -1,19 +1,19 @@
-import type { GameState } from "@/game/gameState/GameState";
 import type {
   AnyItemInPlay,
-  ItemInPlay,
   ItemInPlayType,
+  ItemInPlay,
   UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import type { Xyz } from "@/utils/vectors/vectors";
+} from "../../../model/ItemInPlay";
+import type { RoomState, CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
 import type {
   DeadlyItemType,
   ItemTypeUnion,
   PlayableItem,
 } from "../itemPredicates";
 import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
-import type { SceneryName } from "@/sprites/planets";
-import type { CharacterName, RoomState } from "@/model/modelTypes";
 
 export type ItemTouchEvent<
   RoomId extends string,

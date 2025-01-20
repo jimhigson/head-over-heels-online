@@ -1,6 +1,6 @@
-import { useGameApi } from "@/game/components/GameApiContext";
 import { useEffect } from "react";
 import { useRenderOptions } from "../selectors";
+import { useGameApi } from "../../game/components/GameApiContext";
 
 export const useGiveStoreRenderOptionsToGame = () => {
   const gameApi = useGameApi();

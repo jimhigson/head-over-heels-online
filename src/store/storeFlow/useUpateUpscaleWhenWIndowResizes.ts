@@ -1,8 +1,8 @@
 import { useLayoutEffect } from "react";
-import { useAppDispatch } from "@/store/hooks";
-import { calculateUpscale } from "@/game/render/calculateUpscale";
 import { setUpscale } from "../gameMenusSlice";
 import { store } from "../store";
+import { useAppDispatch } from "../hooks";
+import { calculateUpscale } from "../../game/render/calculateUpscale";
 
 export const useUpdateUpscaleWhenWindowResizes = (): void => {
   const dispatch = useAppDispatch();

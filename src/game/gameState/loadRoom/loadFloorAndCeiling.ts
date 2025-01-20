@@ -1,13 +1,13 @@
-import { defaultRoomHeightBlocks } from "@/game/physics/mechanicsConstants";
-import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import { floorBlockMinMax } from "@/game/render/renderExtent";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { RoomJson } from "@/model/RoomJson";
-import type { SceneryName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
+import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { floorBlockMinMax } from "../../render/renderExtent";
 import { defaultBaseState } from "./loadItem";
 
 export function* loadFloorAndCeiling<RoomId extends string>(

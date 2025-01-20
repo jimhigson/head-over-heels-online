@@ -1,16 +1,16 @@
-import type { JsonItem } from "@/model/json/JsonItem";
 import { positionCentredInBlock } from "./positionCentredInBlock";
-import { smallItemAabb } from "@/game/collision/boundingBoxes";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { SceneryName } from "@/sprites/planets";
-import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { originXyz } from "@/utils/vectors/vectors";
-import type { CharacterName } from "@/model/modelTypes";
-import type { PlayableState } from "@/model/ItemStateMap";
 import { defaultBaseState, defaultFreeItemState } from "./loadItem";
-import { emptyObject } from "@/utils/empty";
-import { startingLives } from "@/game/physics/mechanicsConstants";
-import { unitVectors } from "@/utils/vectors/unitVectors";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { PlayableState } from "../../../model/ItemStateMap";
+import type { JsonItem } from "../../../model/json/JsonItem";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { emptyObject } from "../../../utils/empty";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { originXyz } from "../../../utils/vectors/vectors";
+import { smallItemAabb } from "../../collision/boundingBoxes";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import { startingLives } from "../../physics/mechanicsConstants";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,

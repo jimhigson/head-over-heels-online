@@ -1,17 +1,17 @@
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { loadItemFromJson } from "../loadRoom/loadItem";
-import type {
-  JsonItem,
-  JsonItemConfig,
-  JsonItemType,
-  UnknownJsonItem,
-} from "@/model/json/JsonItem";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { originXyz } from "@/utils/vectors/vectors";
-import type { GameState } from "../GameState";
 import { first } from "iter-tools";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  JsonItemType,
+  JsonItemConfig,
+  JsonItem,
+  UnknownJsonItem,
+} from "../../../model/json/JsonItem";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import { originXyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../GameState";
+import { loadItemFromJson } from "../loadRoom/loadItem";
 
 let i = 0;
 

@@ -8,19 +8,19 @@ import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
 import { floorRenderExtent } from "../renderExtent";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
-import type { Xy } from "@/utils/vectors/vectors";
-import {
-  axesXy,
-  originXy,
-  perpendicularAxisXy,
-  type DirectionXy4,
-} from "@/utils/vectors/vectors";
+
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
 import { objectValues } from "iter-tools";
-import { iterate } from "@/utils/iterate";
-import type { UnknownRoomState } from "@/model/modelTypes";
-import { iterateToContainer } from "@/game/iterateToContainer";
+import type { UnknownRoomState } from "../../../model/modelTypes";
+import { iterate } from "../../../utils/iterate";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import {
+  axesXy,
+  perpendicularAxisXy,
+  originXy,
+} from "../../../utils/vectors/vectors";
+import { iterateToContainer } from "../../iterateToContainer";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 

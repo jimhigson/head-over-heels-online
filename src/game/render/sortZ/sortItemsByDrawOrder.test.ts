@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./zComparator";
 import type { SortByZPairsReturn } from "./sortItemsByDrawOrder";
 import { sortByZPairs, zEdges } from "./sortItemsByDrawOrder";
-import { collision1toMany } from "@/game/collision/aabbCollision";
+import { collision1toMany } from "../../collision/aabbCollision";
 
 type TestItems = Record<string, DrawOrderComparable>;
 

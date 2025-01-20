@@ -1,20 +1,20 @@
-import type {
-  CharacterName,
-  IndividualCharacterName,
-} from "@/model/modelTypes";
-import { otherIndividualCharacterName } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
-import type { PlayableItem } from "@/game/physics/itemPredicates";
 import {
   combinePlayablesInSymbiosis,
   uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
 import { entryState } from "../PlayableEntryState";
-import { collision1to1 } from "@/game/collision/aabbCollision";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../model/modelTypes";
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { collision1to1 } from "../../collision/aabbCollision";
+import type { PlayableItem } from "../../physics/itemPredicates";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,

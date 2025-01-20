@@ -1,10 +1,9 @@
-import { type ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { GameState } from "../../gameState/GameState";
 import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
-
-import type { GameState } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
-import type { RoomState } from "@/model/modelTypes";
 
 /**
  * handle *only* the vertical speed downwards, and recognising

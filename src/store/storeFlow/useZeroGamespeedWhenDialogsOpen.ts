@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useIsOnHold, useMenus, useScrollContent } from "../selectors";
-import { useGameApi } from "@/game/components/GameApiContext";
+import { useGameApi } from "../../game/components/GameApiContext";
 
 export const useZeroGameSpeedWhenDialogsOpen = () => {
   const gameApi = useGameApi();

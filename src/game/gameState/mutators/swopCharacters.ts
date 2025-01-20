@@ -1,5 +1,3 @@
-import type { IndividualCharacterName } from "@/model/modelTypes";
-import { otherIndividualCharacterName } from "@/model/modelTypes";
 import { type GameState } from "../GameState";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
@@ -11,6 +9,8 @@ import {
   uncombinePlayablesFromSymbiosis,
   combinePlayablesInSymbiosis,
 } from "./symbiosis";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
 
 const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,

@@ -1,10 +1,14 @@
-import { isItemType, type PlayableItem } from "@/game/physics/itemPredicates";
+import type {
+  HeadAbilities,
+  HeelsAbilities,
+} from "../../../model/ItemStateMap";
 import type {
   CharacterName,
   IndividualCharacterName,
-} from "@/model/modelTypes";
+} from "../../../model/modelTypes";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import { isItemType } from "../../physics/itemPredicates";
 import type { GameState } from "../GameState";
-import type { HeadAbilities, HeelsAbilities } from "@/model/ItemStateMap";
 
 const isHead = isItemType("head");
 const isHeels = isItemType("heels");

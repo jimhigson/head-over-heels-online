@@ -5,7 +5,7 @@ import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { assertIsTextureId } from "../../sprites/assertIsTextureId";
-import { useTotalUpscale } from "@/store/selectors";
+import { useTotalUpscale } from "../../store/selectors";
 
 export interface BlockyMarkdownProps {
   markdown: string;

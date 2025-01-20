@@ -1,9 +1,9 @@
-import { boundingBoxForItem } from "@/game/collision/boundingBoxes";
-import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import type { UnknownJsonItem } from "@/model/json/JsonItem";
-import { blockSizePx } from "@/sprites/spritePivots";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { addXyz } from "@/utils/vectors/vectors";
+import type { UnknownJsonItem } from "../../../model/json/JsonItem";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import { addXyz } from "../../../utils/vectors/vectors";
+import { boundingBoxForItem } from "../../collision/boundingBoxes";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
 
 export const positionCentredInBlock = (item: UnknownJsonItem): Xyz => {
   const blockPosition = blockXyzToFineXyz(item.position);

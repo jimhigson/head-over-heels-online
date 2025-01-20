@@ -3,8 +3,8 @@ import type { Menu } from "./menus";
 import type { MenuItem } from "./MenuItem";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
-import { useAppSelector } from "@/store/hooks";
 import { clsx } from "clsx";
+import { useAppSelector } from "../../../../store/hooks";
 
 const SwitchCurrentValue = ({
   switchMenuItem: { selector },

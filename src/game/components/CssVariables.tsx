@@ -1,7 +1,7 @@
 import "react";
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
-import { useTotalUpscale } from "@/store/selectors";
+import { useTotalUpscale } from "../../store/selectors";
 
 declare module "react" {
   interface CSSProperties {

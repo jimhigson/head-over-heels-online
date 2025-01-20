@@ -1,11 +1,11 @@
-import type { Campaign, RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
 import type { Emitter } from "mitt";
 import type { GameState } from "./gameState/GameState";
 import type { RenderOptions } from "./RenderOptions";
 import type { InputState } from "./input/InputState";
 import type { Container } from "pixi.js";
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
+import type { AnyItemInPlay } from "../model/ItemInPlay";
+import type { Campaign, RoomState } from "../model/modelTypes";
+import type { SceneryName } from "../sprites/planets";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;

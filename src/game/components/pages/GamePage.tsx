@@ -6,14 +6,14 @@ import { gameMain } from "../../gameMain.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { TextureStyle } from "pixi.js";
-import { useRenderOptions } from "@/store/selectors";
-import { Flow } from "@/store/storeFlow/Flow";
 import { GameApiProvider } from "../GameApiContext.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
-import { campaign as originalCampaign } from "@/_generated/originalCampaign/campaign.ts";
-import { testCampaign } from "@/testCampaign.ts";
-import { useAppSelector } from "@/store/hooks.ts";
 import { CssVariables } from "../CssVariables.tsx";
+import { useRenderOptions } from "../../../store/selectors.ts";
+import { useAppSelector } from "../../../store/hooks.ts";
+import { Flow } from "../../../store/storeFlow/Flow.tsx";
+import { testCampaign } from "../../../testCampaign.ts";
+import { campaign as originalCampaign } from "../../../_generated/originalCampaign/campaign.ts";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 

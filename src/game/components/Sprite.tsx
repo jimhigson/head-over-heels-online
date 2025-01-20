@@ -1,19 +1,17 @@
 import { type PropsWithChildren, type ReactNode } from "react";
 import { type CreateSpriteOptions } from "../render/createSprite";
-import { spriteSheet } from "@/sprites/spriteSheet";
-import { isTextureId } from "@/sprites/assertIsTextureId";
+import "react";
+import { twMerge } from "tailwind-merge";
+import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
+import clsx from "clsx";
+import { isTextureId } from "../../sprites/assertIsTextureId";
+import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
+import { spriteSheet } from "../../sprites/spriteSheet";
 
 export interface PixiSpriteProps {
   spriteOptions: CreateSpriteOptions;
   className?: string;
 }
-
-import "react";
-import { twMerge } from "tailwind-merge";
-import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
-import { escapeCharForTailwind } from "@/sprites/escapeCharForTailwind";
-import clsx from "clsx";
-
 export interface ImgSpriteProps {
   className?: string;
   /** if true, will tint to the colour in the --bitmapTextColour css variable */

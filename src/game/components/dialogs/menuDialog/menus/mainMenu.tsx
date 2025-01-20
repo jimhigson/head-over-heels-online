@@ -1,9 +1,7 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { BitmapText, ImgSprite } from "../../../Sprite";
 import { type Menu } from "../menus";
-import { useGameApi } from "@/game/components/GameApiContext";
-
-export const nbsp = "\u00A0";
+import { useGameApi } from "../../../GameApiContext";
 
 export const colourCycle: SpritesheetPaletteColourName[] = [
   "lightGrey",

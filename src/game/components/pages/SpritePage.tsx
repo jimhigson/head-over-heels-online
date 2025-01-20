@@ -1,5 +1,5 @@
-import type { TextureId } from "@/sprites/spriteSheetData";
-import { spriteSheet } from "@/sprites/spriteSheet";
+import { spriteSheet } from "../../../sprites/spriteSheet";
+import type { TextureId } from "../../../sprites/spriteSheetData";
 
 export const SpritePage = () => {
   const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];

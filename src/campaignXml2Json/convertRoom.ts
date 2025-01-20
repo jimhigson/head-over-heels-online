@@ -1,5 +1,5 @@
-import type { AnyRoomJson } from "@/model/RoomJson";
 import type { Floor } from "../model/modelTypes";
+import type { AnyRoomJson } from "../model/RoomJson";
 import { map, convertRoomColour } from "./convertCampaign";
 import { convertItems } from "./convertItems";
 import { convertSceneryName } from "./convertPlanetName";

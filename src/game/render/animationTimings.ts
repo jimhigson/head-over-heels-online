@@ -1,4 +1,4 @@
-import { spriteSheet } from "@/sprites/spriteSheet";
+import { spriteSheet } from "../../sprites/spriteSheet";
 
 /**
   default animation speed is one frame of animation per twp

@@ -1,4 +1,13 @@
-import { type ItemInPlay } from "@/model/ItemInPlay";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { SceneryName } from "../../../sprites/planets";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  originXyz,
+  vectorClosestDirectionXy4,
+  oppositeDirection,
+  scaleXyz,
+} from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
 import { type FreeItemTypes } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { isPlayableItem } from "../itemPredicates";
@@ -7,15 +16,6 @@ import {
   conveyorSpeedPixPerMs,
   moveSpeedPixPerMs,
 } from "../mechanicsConstants";
-import type { GameState } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
-import {
-  oppositeDirection,
-  originXyz,
-  scaleXyz,
-  vectorClosestDirectionXy4,
-} from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
 
 const resetConveyorStateForItem = {
   movementType: "vel",

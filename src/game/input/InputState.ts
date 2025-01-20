@@ -1,7 +1,7 @@
-import { fromAllEntries } from "@/utils/entries";
+import { fromAllEntries } from "../../utils/entries";
+import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
+import { directionsXy4 } from "../../utils/vectors/vectors";
 import type { Key } from "./keys";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { directionsXy4, type DirectionXy4 } from "@/utils/vectors/vectors";
 
 export const booleanActions = [
   "jump",

@@ -1,4 +1,5 @@
-import { scaleXy, type Xy } from "@/utils/vectors/vectors";
+import type { Xy } from "../../utils/vectors/vectors";
+import { scaleXy } from "../../utils/vectors/vectors";
 
 export type Upscale = {
   cssUpscale: number;

@@ -1,12 +1,12 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
-} from "@/game/gameState/gameStateSelectors/selectPlayableItem";
+} from "../../gameState/gameStateSelectors/selectPlayableItem";
+import type { PlayableItem } from "../itemPredicates";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   e: ItemTouchEvent<

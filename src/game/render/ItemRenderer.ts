@@ -1,11 +1,3 @@
-import type {
-  AnyItemInPlay,
-  ItemInPlayType,
-  ItemInPlay,
-} from "@/model/ItemInPlay";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { Container } from "pixi.js";
 import type { ItemRenderProps } from "./itemAppearances/ItemRenderProps";
 import { itemAppearances } from "./itemAppearances/ItemAppearances";
 import { renderItemBBs } from "./renderItemBBs";
@@ -13,6 +5,14 @@ import { projectWorldXyzToScreenXy } from "./projectToScreen";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { RenderContext } from "./roomRenderer";
 import type { GameState } from "../gameState/GameState";
+import { Container } from "pixi.js";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
+import type {
+  AnyItemInPlay,
+  ItemInPlayType,
+  ItemInPlay,
+} from "../../model/ItemInPlay";
 
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,

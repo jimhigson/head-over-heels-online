@@ -1,9 +1,9 @@
-import { keyAssignmentPresets } from "@/game/input/keyAssignmentPresets";
-import { objectEntriesIter } from "@/utils/entries";
-import { iterate } from "@/utils/iterate";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 import type { MenuItem } from "../MenuItem";
+import { objectEntriesIter } from "../../../../../utils/entries";
+import { iterate } from "../../../../../utils/iterate";
+import { keyAssignmentPresets } from "../../../../input/keyAssignmentPresets";
 
 export const inputPresetMenu: Menu = {
   backgroundClassName: "bg-lightGrey",

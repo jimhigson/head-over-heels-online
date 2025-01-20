@@ -1,15 +1,15 @@
-import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { addXyz } from "@/utils/vectors/vectors";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptyObject } from "../../../utils/empty";
+import { pick } from "../../../utils/pick";
+import { addXyz } from "../../../utils/vectors/vectors";
+import { doubleHeightCharacter } from "../../collision/boundingBoxes";
+import type { PlayableItem } from "../../physics/itemPredicates";
 import { defaultBaseState, defaultFreeItemState } from "../loadRoom/loadItem";
 import {
   defaultPlayableRootAttributes,
   defaultPlayerState,
 } from "../loadRoom/loadPlayer";
-import { doubleHeightCharacter } from "@/game/collision/boundingBoxes";
-import { emptyObject } from "@/utils/empty";
-import { pick } from "@/utils/pick";
 
 export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
   headOverHeels: PlayableItem<"headOverHeels", RoomId>,

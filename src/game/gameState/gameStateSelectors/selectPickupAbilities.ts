@@ -1,6 +1,6 @@
-import { shieldDuration } from "@/game/physics/mechanicsConstants";
-import type { HeadAbilities } from "@/model/ItemStateMap";
-import { blockSizePx } from "@/sprites/spritePivots";
+import type { HeadAbilities } from "../../../model/ItemStateMap";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { shieldDuration } from "../../physics/mechanicsConstants";
 
 export const shieldRemaining = (abilities?: {
   shieldCollectedAt: number;

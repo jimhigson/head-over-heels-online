@@ -1,5 +1,4 @@
 import { Container } from "pixi.js";
-import type { BlockStyle, ItemConfigMap } from "@/model/json/ItemConfigMap";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -7,15 +6,7 @@ import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import type { SceneryName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
-import { type ItemInPlayType } from "@/model/ItemInPlay";
-import { isPlayableItem } from "@/game/physics/itemPredicates";
 import { playableAppearance } from "./playableAppearance";
-import { smallItemTextureSize, wallTileSize } from "@/sprites/textureSizes";
-import { iterate } from "@/utils/iterate";
-import {
-  directionAxis,
-  vectorClosestDirectionXy4,
-} from "@/utils/vectors/vectors";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
@@ -25,12 +16,27 @@ import {
   greyFilter,
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type {
+  BlockStyle,
+  ItemConfigMap,
+} from "../../../model/json/ItemConfigMap";
+import {
+  wallTileSize,
+  smallItemTextureSize,
+} from "../../../sprites/textureSizes";
+import { iterate } from "../../../utils/iterate";
+import {
+  directionAxis,
+  vectorClosestDirectionXy4,
+} from "../../../utils/vectors/vectors";
+import { isPlayableItem } from "../../physics/itemPredicates";
 import {
   stackedSprites,
   itemRidingOnBubblesSpritesOptions,
 } from "./stackedSprites";
-import { OutlineFilter } from "@/filters/colorReplace/outlineFilter";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 
 const blockTextureId = (
   isDark: boolean,

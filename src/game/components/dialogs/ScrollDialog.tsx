@@ -2,12 +2,12 @@ import { BlockyMarkdown } from "../BlockyMarkdown";
 import { PressToContinueBanner } from "./PressToContinueBanner";
 import { useCallback, useRef } from "react";
 import { useActionInput } from "./useActionInput";
-import { Dialog } from "@/components/ui/dialog";
-import { hudCharTextureSize } from "@/sprites/textureSizes";
-import { useScrollContent, useTotalUpscale } from "@/store/selectors";
 import type { EmptyObject } from "type-fest";
-import { useAppDispatch } from "@/store/hooks";
-import { closeScroll } from "@/store/gameMenusSlice";
+import { hudCharTextureSize } from "../../../sprites/textureSizes";
+import { closeScroll } from "../../../store/gameMenusSlice";
+import { useAppDispatch } from "../../../store/hooks";
+import { useTotalUpscale, useScrollContent } from "../../../store/selectors";
+import { Dialog } from "../../../components/ui/dialog";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;

@@ -1,13 +1,13 @@
-import { collision1to1 } from "@/game/collision/aabbCollision";
-import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import type { FreeItem } from "../physics/itemPredicates";
-import type { SceneryName } from "@/sprites/planets";
 import { isSolid } from "../physics/itemPredicates";
-import { iterate } from "@/utils/iterate";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
-import { addXyz } from "@/utils/vectors/vectors";
-import { epsilon } from "@/utils/veryClose";
+import type { AnyItemInPlay, UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { SceneryName } from "../../sprites/planets";
+import { iterate } from "../../utils/iterate";
+import { addXyz } from "../../utils/vectors/vectors";
+import { epsilon } from "../../utils/veryClose";
+import { collision1to1 } from "./aabbCollision";
 
 export const spatiallyCheckStandingOn = <RoomId extends string>(
   itemMaybeStanding: FreeItem<SceneryName, RoomId>,

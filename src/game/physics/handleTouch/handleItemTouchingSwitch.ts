@@ -1,6 +1,6 @@
-import { objectEntriesIter } from "@/utils/entries";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import { objectEntriesIter } from "../../../utils/entries";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
-import type { ItemInPlayType } from "@/model/ItemInPlay";
 
 export const handleItemTouchingSwitch = <RoomId extends string>({
   touchedItem: switchItem,

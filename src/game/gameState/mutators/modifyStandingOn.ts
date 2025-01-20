@@ -1,6 +1,6 @@
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 import type { FreeItem } from "../../physics/itemPredicates";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { SceneryName } from "../../../sprites/planets";
 
 export const removeStandingOn = <RoomId extends string>(
   item: FreeItem<SceneryName, RoomId>,

@@ -2,17 +2,16 @@ import type { Application, Filter, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
-
 import { renderHud } from "../render/hud/renderHud";
 import { progressGameState } from "./progressGameState";
-import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import { getColorScheme } from "@/hintColours";
 import { RoomRenderer } from "../render/roomRenderer";
-import { emptySet } from "@/utils/empty";
 import { CRTFilter } from "pixi-filters/crt";
 import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
 import type { RenderOptions } from "../RenderOptions";
-import type { ZxSpectrumRoomColour } from "@/originalGame";
+import { RevertColouriseFilter } from "../../filters/colorReplace/RevertColouriseFilter";
+import { getColorScheme } from "../../hintColours";
+import type { ZxSpectrumRoomColour } from "../../originalGame";
+import { emptySet } from "../../utils/empty";
 
 const topLevelFilters = (
   renderOptions: RenderOptions,

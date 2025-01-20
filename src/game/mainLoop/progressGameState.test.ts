@@ -5,29 +5,37 @@ vi.mock("../../sprites/samplePalette", () => ({
 
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
-import type { BasicGameStateOptions, TestRoomId } from "@/_testUtils/basicRoom";
-import {
-  basicGameState,
-  firstRoomId,
-  secondRoomId,
-} from "@/_testUtils/basicRoom";
-import {
-  playGameThrough,
-  stopAllInputAfter,
-  stopJumpingAMomentAfterStartingPlay,
-} from "@/_testUtils/playGameThrough";
-import { blockSizePx } from "@/sprites/spritePivots";
-import type { ItemInPlay } from "@/model/ItemInPlay";
+
 import type { PlayableItem } from "../physics/itemPredicates";
-import { headState, heelsState, itemState } from "@/_testUtils/characterState";
 import {
   liftBBShortening,
   defaultRoomHeightBlocks,
 } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
 import { createEmptyInput } from "../input/InputState";
-import { unitVectors } from "@/utils/vectors/unitVectors";
 
+import type {
+  TestRoomId,
+  BasicGameStateOptions,
+} from "../../_testUtils/basicRoom";
+import {
+  basicGameState,
+  firstRoomId,
+  secondRoomId,
+} from "../../_testUtils/basicRoom";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../_testUtils/characterState";
+import {
+  playGameThrough,
+  stopJumpingAMomentAfterStartingPlay,
+  stopAllInputAfter,
+} from "../../_testUtils/playGameThrough";
+import type { ItemInPlay } from "../../model/ItemInPlay";
+import { blockSizePx } from "../../sprites/spritePivots";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 const testFrameRates = [
   25, // original game, PAL
   29.97, // NTSC real

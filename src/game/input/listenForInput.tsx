@@ -1,15 +1,15 @@
 import type { Key } from "./keys";
 import { isKey } from "./keys";
-import { entries, objectEntriesIter } from "@/utils/entries";
 import type { InputState } from "./InputState";
 import {
   type InputAssignment,
   type Action,
   booleanActions,
 } from "./InputState";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
-import { originXyz } from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
+import { entries, objectEntriesIter } from "../../utils/entries";
+import { unitVectors } from "../../utils/vectors/unitVectors";
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
+import { originXyz } from "../../utils/vectors/vectors";
 
 // see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
 //const DOM_KEY_LOCATION_STANDARD = 0;

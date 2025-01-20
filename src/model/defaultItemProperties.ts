@@ -1,4 +1,4 @@
-import { smallItemAabb } from "@/game/collision/boundingBoxes";
+import { smallItemAabb } from "../game/collision/boundingBoxes";
 import type { UnknownItemInPlay } from "./ItemInPlay";
 
 /**

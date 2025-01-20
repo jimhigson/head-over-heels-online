@@ -8,9 +8,9 @@ import type {
 import { AnimatedSprite, Sprite } from "pixi.js";
 import type { TextureId } from "../../sprites/spriteSheetData";
 import { spriteSheet } from "../../sprites/spriteSheet";
-import { originalGameFrameDuration } from "@/originalGame";
 import { defaultAnimationSpeed } from "./animationTimings";
-import type { Xy } from "@/utils/vectors/vectors";
+import { originalGameFrameDuration } from "../../originalGame";
+import type { Xy } from "../../utils/vectors/vectors";
 
 type AnimatedCreateSpriteOptions = {
   // animated

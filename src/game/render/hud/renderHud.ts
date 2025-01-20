@@ -1,34 +1,38 @@
-import type { GameState } from "@/game/gameState/GameState";
-import { selectCurrentRoom } from "@/game/gameState/GameState";
-import { Container } from "pixi.js";
-import { Sprite } from "pixi.js";
-import type { TextureId } from "@/sprites/spriteSheetData";
-import { spriteSheet } from "@/sprites/spriteSheet";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
+import type { Upscale } from "../calculateUpscale";
+import { Container, Sprite } from "pixi.js";
+import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
+import { RevertColouriseFilter } from "../../../filters/colorReplace/RevertColouriseFilter";
+import { getColorScheme } from "../../../hintColours";
+import type {
+  HeadAbilities,
+  HeelsAbilities,
+} from "../../../model/ItemStateMap";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../model/modelTypes";
+import { individualCharacterNames } from "../../../model/modelTypes";
+import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
+import { spriteSheet } from "../../../sprites/spriteSheet";
+import type { TextureId } from "../../../sprites/spriteSheetData";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
-} from "@/sprites/textureSizes";
-import type { IndividualCharacterName } from "@/model/modelTypes";
-import { individualCharacterNames } from "@/model/modelTypes";
-import { type CharacterName } from "@/model/modelTypes";
-import { getColorScheme } from "@/hintColours";
-import { noFilters } from "../filters/paletteSwapFilters";
-import { RevertColouriseFilter } from "@/filters/colorReplace/RevertColouriseFilter";
-import { type Xy } from "@/utils/vectors/vectors";
-import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { createSprite } from "../createSprite";
-import { assertIsTextureId } from "@/sprites/assertIsTextureId";
-import { iterateToContainer } from "@/game/iterateToContainer";
-import { selectAbilities } from "@/game/gameState/gameStateSelectors/selectPlayableItem";
-import { selectCanCombine } from "@/game/gameState/gameStateSelectors/selectCanCombine";
-import type { HeadAbilities, HeelsAbilities } from "@/model/ItemStateMap";
+} from "../../../sprites/textureSizes";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import { selectCurrentRoom } from "../../gameState/GameState";
+import { selectCanCombine } from "../../gameState/gameStateSelectors/selectCanCombine";
 import {
-  fastStepsRemaining,
   shieldRemaining,
-} from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
-import { OutlineFilter } from "@/filters/colorReplace/outlineFilter";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { Upscale } from "../calculateUpscale";
+  fastStepsRemaining,
+} from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { iterateToContainer } from "../../iterateToContainer";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import { createSprite } from "../createSprite";
+import { noFilters } from "../filters/paletteSwapFilters";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;

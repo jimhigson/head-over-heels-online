@@ -1,9 +1,9 @@
-import type { Action } from "@/game/input/InputState";
-import type { KeyAssignmentPreset } from "@/game/input/keyAssignmentPresets";
-import type { RootState } from "@/store/store";
 import type { FunctionComponent } from "react";
 import type { MenuId } from "./menus";
-import type { GameMenusSliceAction } from "@/store/gameMenusSlice";
+import type { GameMenusSliceAction } from "../../../../store/gameMenusSlice";
+import type { RootState } from "../../../../store/store";
+import type { KeyAssignmentPreset } from "../../../input/keyAssignmentPresets";
+import type { Action } from "../../../input/InputState";
 
 export type MenuItem = {
   label: string | FunctionComponent<{ selected: boolean }>;

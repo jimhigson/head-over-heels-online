@@ -1,10 +1,10 @@
-import { isItemType } from "@/game/physics/itemPredicates";
-import { iterate } from "@/utils/iterate";
 import { objectValues } from "iter-tools";
 import { makeItemFadeOut } from "./makeItemFadeOut";
-import type { SceneryName } from "@/sprites/planets";
-import type { RoomState } from "@/model/modelTypes";
 import type { GameState } from "../GameState";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { iterate } from "../../../utils/iterate";
+import { isItemType } from "../../physics/itemPredicates";
 
 export const removeHushPuppiesFromRoom = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
