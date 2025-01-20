@@ -34,7 +34,7 @@ export const Dialog = ({
           <RadixDialogContent
             ref={ref}
             className={twMerge(
-              `p-1 w-zx bg-pureBlack fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%]`,
+              `p-1 w-zx fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-hidden translate-x-[-50%]`,
               className,
             )}
             aria-describedby={undefined}

@@ -6,7 +6,7 @@ import { useIsOnHold } from "@/store/selectors";
 
 const HoldDialogInner = (_emptyProps: EmptyObject) => {
   return (
-    <Dialog className="text-center">
+    <Dialog className="text-center bg-pureBlack">
       <BitmapText className="block sprites-double-height text-moss">
         hold
       </BitmapText>
