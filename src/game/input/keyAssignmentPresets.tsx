@@ -186,9 +186,9 @@ const mameToHoh = (...mameButtons: MameButtons[]): InputAssignmentPreset => ({
     carry: mameButtons.map((mb) => [mb.buttons[1], mb.buttons[3]]).flat(),
     fire: mameButtons.map((mb) => mb.buttons[2]),
     swop: mameButtons.map((mb) => mb.start),
-    hold: ["P", ...mameButtons.map((mb) => mb.coin)],
+    hold: ["P", "F5", ...mameButtons.map((mb) => mb.coin)],
 
-    menu: ["Escape", "`", ...mameButtons.map((mb) => mb.buttons[5])],
+    menu: ["Escape", "`", "Tab", ...mameButtons.map((mb) => mb.buttons[5])],
   },
   description: "MAME key mappings. For arcade-style control panels",
 });

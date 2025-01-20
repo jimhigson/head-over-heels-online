@@ -1,9 +1,10 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { inputPresetMenu } from "./menus/inputPresetMenu";
 import { mainMenu } from "./menus/mainMenu";
 import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
 import { selectKeysMenu } from "./menus/selectKeysMenu";
 import type { MenuItem } from "./MenuItem";
+import type { EmptyObject } from "type-fest";
 
 export type MenuId =
   | "mainMenu"
@@ -13,7 +14,7 @@ export type MenuId =
 
 export type Menu = {
   heading: ReactNode;
-  footer?: ReactNode;
+  footer?: ReactElement | ((props: EmptyObject) => ReactElement);
   items: MenuItem[];
   backgroundClassName: string;
   itemsClassName: string;

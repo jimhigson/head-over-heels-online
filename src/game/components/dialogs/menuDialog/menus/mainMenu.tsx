@@ -45,7 +45,7 @@ export const mainMenu: Menu = {
   ),
   footer: (
     <>
-      <div className="flex gap-3 leading-none">
+      <div className="flex gap-3 leading-none mt-1">
         <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="text-redShadow ml-l">1987 original</BitmapText>
           <div className="flex gap-2">

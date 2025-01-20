@@ -28,7 +28,7 @@ export function RoomSelect<RoomId extends string>({
 }: RoomSelectProps<RoomId>) {
   const [open, setOpen] = useState(false);
 
-  const viewingRoomId = useCurrentlyViewedRoom(gameApi);
+  const viewingRoomId = useCurrentlyViewedRoom();
 
   if (gameApi === undefined) {
     return null;

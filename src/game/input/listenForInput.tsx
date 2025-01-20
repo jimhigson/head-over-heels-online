@@ -57,6 +57,12 @@ const isDirectionAction = (
   input === "left" ||
   input === "right";
 
+export type InputStateChangeEvent = {
+  /** was a key put down (add a new key press) or up (remove a keypress)? */
+  upOrDown?: "up" | "down";
+  inputState: InputState;
+};
+
 type ListenForInputOptions = {
   /**
    * a handle is used here so the 'current' value can be
@@ -66,7 +72,7 @@ type ListenForInputOptions = {
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
-  onInputStateChange?: (inputState: InputState) => void;
+  onInputStateChange?: (inputState: InputStateChangeEvent) => void;
 };
 
 export const listenForInput = ({
@@ -119,7 +125,7 @@ export const listenForInput = ({
     }
 
     updateDirection();
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ upOrDown: "down", inputState });
   };
   const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
     const stdKey = getKey(keyboardEvent);
@@ -138,12 +144,12 @@ export const listenForInput = ({
       inputState[action] = false;
     }
     updateDirection();
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ upOrDown: "up", inputState });
   };
 
   const handleWindowFocus = (): void => {
     inputState.windowBlurred = false;
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ inputState });
   };
   const handleWindowBlur = (): void => {
     inputState.windowBlurred = true;
@@ -152,7 +158,7 @@ export const listenForInput = ({
       inputState[action] = false;
     }
     inputState.raw = {};
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ inputState });
   };
 
   window.focus();

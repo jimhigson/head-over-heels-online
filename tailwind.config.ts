@@ -38,6 +38,15 @@ export default {
     gridTemplateColumns: {
       menuItems: "max-content 1fr",
     },
+    keyframes: {
+      flash: {
+        "0%, 100%": { opacity: "1" },
+        "50%": { opacity: "0" },
+      },
+    },
+    animation: {
+      flash: "flash 1s steps(1, end) infinite",
+    },
   },
   plugins: [spritesTailwindPlugin],
 } satisfies Config;

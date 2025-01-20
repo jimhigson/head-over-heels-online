@@ -10,10 +10,16 @@ import {
   menuUp,
   menuDown,
   menuItemSelected,
+  inputAssigned,
 } from "../../../../store/gameMenusSlice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { useMenus } from "../../../../store/selectors";
 import { Dialog } from "../../../../components/ui/dialog";
+import { useCallback } from "react";
+import { useEvent } from "../../../../utils/react/useEvent";
+import { useGameApi } from "../../GameApiContext";
+import type { AssignableInput } from "../../../input/InputState";
+import { componentOrElement } from "../../../../utils/react/componentOrNode";
 
 const backMenuItem: MenuItem = {
   label: "Back",
@@ -23,28 +29,60 @@ const backMenuItem: MenuItem = {
 
 const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
   const dispatch = useAppDispatch();
+  const assigningKeys = useAppSelector(
+    (store) => store.actionBeingAssignedKeys !== undefined,
+  );
 
   useActionInput({
     action: "away",
     key: ["ArrowUp"],
-    onAction() {
+    onAction: useCallback(() => {
       dispatch(menuUp());
-    },
+    }, [dispatch]),
+    disabled: assigningKeys,
   });
   useActionInput({
     action: "towards",
     key: ["ArrowDown"],
-    onAction() {
+    onAction: useCallback(() => {
       dispatch(menuDown());
-    },
+    }, [dispatch]),
+    disabled: assigningKeys,
   });
   useActionInput({
     action: "jump",
     key: ["Enter", " ", "ArrowRight"],
-    onAction() {
+    onAction: useCallback(() => {
       dispatch(menuItemSelected());
-    },
+    }, [dispatch]),
+    disabled: assigningKeys,
   });
+
+  // really just for the select input menu - dispatch keys as new assignments if
+  // we are currently assigning keys
+  useEvent(
+    useGameApi().events,
+    "inputStateChanged",
+    useCallback(
+      (inputStateEvent) => {
+        if (!assigningKeys) {
+          return;
+        }
+        if (inputStateEvent.upOrDown !== "down") {
+          return;
+        }
+        const assignableInput = Object.keys(inputStateEvent.inputState.raw).at(
+          0,
+        );
+        if (assignableInput === undefined) {
+          throw new Error("no assignableInput");
+        }
+
+        dispatch(inputAssigned(assignableInput as AssignableInput));
+      },
+      [assigningKeys, dispatch],
+    ),
+  );
 
   const [{ menuId, selectedIndex }] = openMenus;
   const menu = menus[menuId];
@@ -94,7 +132,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
           {selectedItemHint}
         </BitmapText>
       )}
-      {menu.footer && <div className="mt-1">{menu.footer}</div>}
+      {menu.footer && componentOrElement(menu.footer, {})}
     </Dialog>
   );
 };

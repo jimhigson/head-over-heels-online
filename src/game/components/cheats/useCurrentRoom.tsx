@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import type { GameApi } from "../../GameApi";
+import { useGameApi } from "../GameApiContext";
 
-export const useCurrentlyViewedRoom = <RoomId extends string>(
-  gameApi: GameApi<RoomId> | undefined,
-): RoomId | undefined => {
+export const useCurrentlyViewedRoom = <RoomId extends string>():
+  | RoomId
+  | undefined => {
+  const gameApi = useGameApi<RoomId>();
+
   const [currentRoom, setCurrentRoom] = useState<RoomId | undefined>(
     gameApi?.currentRoom.id,
   );
 
   useEffect(() => {
-    if (gameApi === undefined) return;
-
     setCurrentRoom(gameApi.currentRoom.id);
 
     const roomChangeHandler = (roomId: RoomId) => {

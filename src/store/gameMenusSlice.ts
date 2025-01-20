@@ -3,7 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
 import type { MenuId } from "../game/components/dialogs/menuDialog/menus";
 import { menus } from "../game/components/dialogs/menuDialog/menus";
-import type { InputAssignment } from "../game/input/InputState";
+import type {
+  Action,
+  AssignableInput,
+  InputAssignment,
+} from "../game/input/InputState";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
 import { calculateUpscale } from "../game/render/calculateUpscale";
@@ -33,6 +37,8 @@ export type GameMenusState = {
    */
   scrollContent: string | null;
   inputAssignment: InputAssignment;
+  // for the key assignment menu, the key currently being assigned
+  actionBeingAssignedKeys: Action | undefined;
 };
 
 const initialState: GameMenusState = {
@@ -52,6 +58,7 @@ const initialState: GameMenusState = {
   menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
   scrollContent: null,
   inputAssignment: keyAssignmentPresets.default.inputAssignment,
+  actionBeingAssignedKeys: undefined,
 };
 
 /**
@@ -76,6 +83,30 @@ export const gameMenusSlice = createSlice({
     },
     closeScroll(state) {
       state.scrollContent = null;
+    },
+    /** adds another input to the currently being assigned action */
+    inputAssigned(
+      state,
+      { payload: assignableInput }: PayloadAction<AssignableInput>,
+    ) {
+      if (assignableInput === undefined) {
+        throw new Error(
+          // should be impossible by the types, but who knows?
+          `can not assign undefined to ${state.actionBeingAssignedKeys}`,
+        );
+      }
+      if (state.actionBeingAssignedKeys === undefined) {
+        throw new Error("reducer called while not assigning keys");
+      }
+
+      const currentAssignment =
+        state.inputAssignment[state.actionBeingAssignedKeys];
+      if (currentAssignment.includes(assignableInput)) {
+        // already assigned
+        return;
+      }
+
+      currentAssignment.push(assignableInput);
     },
     menuPressed(state) {
       if (state.menus.length > 0) {
@@ -114,11 +145,18 @@ export const gameMenusSlice = createSlice({
             keyAssignmentPresets[selectedMenuItem.preset].inputAssignment;
           break;
         }
+        case "key":
+          state.actionBeingAssignedKeys = selectedMenuItem.action;
+          state.inputAssignment[selectedMenuItem.action] = [];
+          break;
         case "switch":
           // we rely on the listener api to pick this up and re-dispatch the appropriate action
+          // to change the value represented by the switch
           break;
         case "toGame":
           state.menus = [];
+          break;
+        case "back":
           break;
         case "todo":
           // not implemented - do nothing
@@ -126,10 +164,15 @@ export const gameMenusSlice = createSlice({
       }
     },
     menuDown(state) {
+      if (state.actionBeingAssignedKeys !== undefined) {
+        // can't move up or down in menu while assigning keys to an action
+        return;
+      }
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
       const maxIndex =
         tail.length > 0 ? menu.items.length + 1 : menu.items.length;
+
       state.menus = [
         {
           menuId,
@@ -139,6 +182,11 @@ export const gameMenusSlice = createSlice({
       ];
     },
     menuUp(state) {
+      if (state.actionBeingAssignedKeys !== undefined) {
+        // can't move up or down in menu while assigning keys to an action
+        return;
+      }
+
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
       const maxIndex =
@@ -197,4 +245,5 @@ export const {
   setShowShadowMasks,
   toggleColourise,
   toggleCrtFilter,
+  inputAssigned,
 } = gameMenusSlice.actions;

@@ -1,22 +1,27 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useGameApi } from "../GameApiContext";
 import type { ConditionalKeys } from "type-fest";
 import { emptyArray } from "../../../utils/empty";
 import type { InputState } from "../../input/InputState";
 import type { Key } from "../../input/keys";
+import { useEvent } from "../../../utils/react/useEvent";
+import type { InputStateChangeEvent } from "../../input/listenForInput";
 
 type BooleanInput = ConditionalKeys<InputState, boolean>;
 
 export type UseActionInputProps = {
+  /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
   onAction: () => void;
   action?: BooleanInput | BooleanInput[];
   key?: Key | Key[];
+  disabled?: boolean;
 };
 
 export const useActionInput = ({
   onAction,
   action: actionProp,
   key: keyProp,
+  disabled = false,
 }: UseActionInputProps) => {
   const gameApi = useGameApi();
 
@@ -36,27 +41,37 @@ export const useActionInput = ({
     [keyProp],
   );
 
-  useEffect(() => {
-    const handleInput = (inputState: InputState) => {
-      const action = actions.find((action) => inputState[action]);
+  useEvent(
+    gameApi.events,
+    "inputStateChanged",
+    useCallback(
+      (inputStateChangeEvent: InputStateChangeEvent) => {
+        if (disabled) {
+          return;
+        }
 
-      if (action !== undefined && inputState[action]) {
-        onAction();
-        inputState[action] = false; // handled this input
-        return;
-      }
+        console.log(inputStateChangeEvent);
 
-      const key = keys.find((key) => inputState.raw[key]);
-      if (key !== undefined && inputState.raw[key]) {
-        onAction();
-        delete inputState.raw[key]; // handled this input
-      }
-    };
+        if (inputStateChangeEvent.upOrDown !== "down") {
+          return;
+        }
+        const { inputState } = inputStateChangeEvent;
 
-    gameApi.events.on("inputStateChanged", handleInput);
+        const action = actions.find((action) => inputState[action]);
 
-    return () => {
-      gameApi.events.off("inputStateChanged", handleInput);
-    };
-  }, [actions, gameApi, keys, onAction]);
+        if (action !== undefined && inputState[action]) {
+          onAction();
+          inputState[action] = false; // handled this input
+          return;
+        }
+
+        const key = keys.find((key) => inputState.raw[key]);
+        if (key !== undefined && inputState.raw[key]) {
+          onAction();
+          delete inputState.raw[key]; // handled this input
+        }
+      },
+      [actions, disabled, keys, onAction],
+    ),
+  );
 };

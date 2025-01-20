@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../../../store/hooks";
 import type { Action, AssignableInput } from "../../../input/InputState";
-import { BitmapText } from "../../Sprite";
+import { BitmapText, ImgSprite } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 
 const friendlyName = (k: AssignableInput) => {
@@ -38,11 +38,13 @@ export const CurrentKeyAssignment = ({
   deliminatorClassName,
   keyClassName,
   className,
+  flashingCursor = false,
 }: {
   action: Action;
   deliminatorClassName?: string;
   keyClassName?: string;
   className?: string;
+  flashingCursor?: boolean;
 }) => {
   const keys = useAppSelector((state) => {
     return state.inputAssignment[action];
@@ -63,6 +65,9 @@ export const CurrentKeyAssignment = ({
           </span>
         );
       })}
+      {flashingCursor && (
+        <ImgSprite className="texture-hud.char.space bg-[currentColor] animate-flash" />
+      )}
     </div>
   );
 };

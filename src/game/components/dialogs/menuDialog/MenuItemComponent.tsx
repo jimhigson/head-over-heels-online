@@ -32,6 +32,34 @@ const SwitchCurrentValue = ({
   );
 };
 
+const MenuItemKeyAssignment = ({
+  switchMenuItem: { action },
+  selected,
+  className,
+}: {
+  switchMenuItem: MenuItem & { type: "key" };
+  selected?: boolean;
+  className?: string;
+}) => {
+  const assigningThisAction = useAppSelector(
+    (store) => store.actionBeingAssignedKeys === action,
+  );
+
+  return (
+    <CurrentKeyAssignment
+      className={twMerge(
+        "flex flex-wrap gap-y-oneScaledPix gap-x-1",
+        className,
+      )}
+      action={action}
+      keyClassName={selected ? "text-redShadow" : "text-midRed"}
+      // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
+      deliminatorClassName="me-0"
+      flashingCursor={assigningThisAction}
+    />
+  );
+};
+
 type MenuItemComponentProps = {
   menu: Menu;
   menuItem: MenuItem;
@@ -47,7 +75,10 @@ export const MenuItemComponent = ({
   const labelEle = (
     <>
       <BitmapText
-        className={clsx("me-1", menuItem.type === "back" ? "scale-[-1]" : "")}
+        className={clsx(
+          "inline-block me-1",
+          menuItem.type === "back" ? "scale-[-1]" : "",
+        )}
       >
         {selected ? "⏩⏩" : "⁌⁍"}
       </BitmapText>
@@ -61,6 +92,7 @@ export const MenuItemComponent = ({
 
   return (
     <>
+      {/* first column content... */}
       <div
         ref={
           selected ?
@@ -78,16 +110,12 @@ export const MenuItemComponent = ({
       >
         {labelEle}
       </div>
+      {/* now the second column content... */}
       {menuItem.type === "key" && (
-        <CurrentKeyAssignment
-          className={twMerge(
-            "flex flex-wrap gap-y-oneScaledPix gap-x-1",
-            selected ? menu.selectedClassName : "",
-          )}
-          action={menuItem.action}
-          keyClassName={selected ? "text-redShadow" : "text-midRed"}
-          // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
-          deliminatorClassName="me-0"
+        <MenuItemKeyAssignment
+          switchMenuItem={menuItem}
+          selected={selected}
+          className={selected ? menu.selectedClassName : ""}
         />
       )}
       {menuItem.type === "switch" && (
@@ -96,6 +124,13 @@ export const MenuItemComponent = ({
           switchMenuItem={menuItem}
         />
       )}
+
+      {/* below-item content: */}
+      {/* {menuItem.type === "key" && (
+        <BitmapText className={twMerge("col-span-2")}>
+          Press Esc when done entering keys
+        </BitmapText>
+      )} */}
     </>
   );
 };

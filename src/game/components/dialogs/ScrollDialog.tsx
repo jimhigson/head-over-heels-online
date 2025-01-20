@@ -17,24 +17,12 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
   const scaleFactor = useTotalUpscale();
 
   const dispatch = useAppDispatch();
-  useActionInput({
-    onAction() {
-      dispatch(closeScroll());
-    },
-    action: "jump",
-  });
 
   useActionInput({
-    onAction() {
-      scrollScroll("down");
-    },
-    action: "towards",
-  });
-  useActionInput({
-    onAction() {
-      scrollScroll("up");
-    },
-    action: "away",
+    onAction: useCallback(() => {
+      dispatch(closeScroll());
+    }, [dispatch]),
+    action: "jump",
   });
 
   const scrollScroll = useCallback(
@@ -57,6 +45,19 @@ const ScrollDialogInner = ({ markdown }: { markdown: string }) => {
     },
     [scaleFactor],
   );
+
+  useActionInput({
+    onAction: useCallback(() => {
+      scrollScroll("down");
+    }, [scrollScroll]),
+    action: "towards",
+  });
+  useActionInput({
+    onAction: useCallback(() => {
+      scrollScroll("up");
+    }, [scrollScroll]),
+    action: "away",
+  });
 
   return (
     <Dialog className="bg-highlightBeige text-shadow p-0" ref={contentRef}>

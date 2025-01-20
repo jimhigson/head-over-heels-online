@@ -6,6 +6,7 @@ import { keyAssignmentPresets } from "../../../../input/keyAssignmentPresets";
 import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 import nanoEqual from "nano-equal";
+import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 
 const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
   const currentPresetName = useAppSelector(
@@ -47,6 +48,7 @@ export const selectKeysMenu: Menu = {
       Select the keys
     </BitmapText>
   ),
+  footer: SelectKeysMenuFooter,
   items: [
     {
       type: "submenu",
@@ -93,6 +95,11 @@ export const selectKeysMenu: Menu = {
       type: "key",
       label: "Swop",
       action: "swop",
+    },
+    {
+      type: "key",
+      label: "Hold",
+      action: "hold",
     },
     {
       type: "key",
