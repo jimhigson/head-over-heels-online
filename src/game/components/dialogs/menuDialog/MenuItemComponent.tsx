@@ -19,6 +19,7 @@ const SwitchCurrentValue = ({
     <div>
       <BitmapText
         className={clsx(
+          "inline-block",
           value ? "bg-shadow" : "bg-redShadow",
           value ? "text-moss" : "text-midRed",
           className,
