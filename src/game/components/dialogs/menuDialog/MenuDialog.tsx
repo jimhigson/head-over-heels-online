@@ -11,6 +11,7 @@ import {
   menuDown,
   menuItemSelected,
   inputAssigned,
+  doneAssigningInput,
 } from "../../../../store/gameMenusSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { useMenus } from "../../../../store/selectors";
@@ -18,8 +19,8 @@ import { Dialog } from "../../../../components/ui/dialog";
 import { useCallback } from "react";
 import { useEvent } from "../../../../utils/react/useEvent";
 import { useGameApi } from "../../GameApiContext";
-import type { AssignableInput } from "../../../input/InputState";
 import { componentOrElement } from "../../../../utils/react/componentOrNode";
+import { keys } from "../../../../utils/entries";
 
 const backMenuItem: MenuItem = {
   label: "Back",
@@ -71,14 +72,13 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
         if (inputStateEvent.upOrDown !== "down") {
           return;
         }
-        const assignableInput = Object.keys(inputStateEvent.inputState.raw).at(
-          0,
-        );
+        const assignableInput = keys(inputStateEvent.inputState.raw).at(0);
         if (assignableInput === undefined) {
           throw new Error("no assignableInput");
         }
 
-        dispatch(inputAssigned(assignableInput as AssignableInput));
+        if (assignableInput === "Escape") dispatch(doneAssigningInput());
+        else dispatch(inputAssigned(assignableInput));
       },
       [assigningKeys, dispatch],
     ),
@@ -94,13 +94,16 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
 
   return (
     <Dialog
-      className={twMerge(menu.backgroundClassName, "h-zx leading-none")}
+      className={twMerge(
+        menu.backgroundClassName,
+        "h-zx leading-none flex flex-col gap-y-1",
+      )}
       borderClassName={menu.borderClassName}
     >
       <div>{menu.heading}</div>
       <div
         className={twMerge(
-          "mt-2 grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
+          "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
           menu.itemsClassName,
         )}
       >
@@ -124,10 +127,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
       </div>
       {selectedItemHint && (
         <BitmapText
-          className={twMerge(
-            "block mt-1 leading-multilineText",
-            menu.hintClassName,
-          )}
+          className={twMerge("block leading-multilineText", menu.hintClassName)}
         >
           {selectedItemHint}
         </BitmapText>

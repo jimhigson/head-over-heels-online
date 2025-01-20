@@ -50,8 +50,6 @@ export const useActionInput = ({
           return;
         }
 
-        console.log(inputStateChangeEvent);
-
         if (inputStateChangeEvent.upOrDown !== "down") {
           return;
         }

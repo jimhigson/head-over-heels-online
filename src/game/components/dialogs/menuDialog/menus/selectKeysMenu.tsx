@@ -39,7 +39,7 @@ export const selectKeysMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
   // since these items are themselves multi-line, leave an extra gap between them
   // the '!' is needed because twMerge doesn't recognise that gay-y-1 overrides gap-y-(name)
-  itemsClassName: "text-metallicBlue !gap-y-1",
+  itemsClassName: "text-metallicBlue !gap-y-1 overflow-y-hidden",
   selectedClassName: "text-shadow",
   borderClassName: "bg-midGrey",
   hintClassName: "text-metallicBlue",

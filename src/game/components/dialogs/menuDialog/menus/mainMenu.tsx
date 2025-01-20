@@ -24,28 +24,26 @@ export const mainMenu: Menu = {
   selectedClassName: "text-white",
   borderClassName: "bg-metallicBlue",
   heading: (
-    <div className="">
-      <div className="flex text-highlightBeige">
-        <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-          <ImgSprite className="ml-1 mt-1 texture-head.walking.right.2" />
-        </div>
-        <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
-          over
-        </BitmapText>
-        <div className="flex flex-col">
-          <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-          <ImgSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
-        </div>
-        <BitmapText colourCycle={colourCycle} className="mt-1">
-          online
-        </BitmapText>
+    <div className="flex text-highlightBeige">
+      <div className="flex flex-col gap-y-oneScaledPix">
+        <BitmapText className="sprites-double-height me-1">Head</BitmapText>
+        <ImgSprite className="ml-1 mt-1 texture-head.walking.right.2" />
       </div>
+      <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
+        over
+      </BitmapText>
+      <div className="flex flex-col">
+        <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
+        <ImgSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
+      </div>
+      <BitmapText colourCycle={colourCycle} className="mt-1">
+        online
+      </BitmapText>
     </div>
   ),
   footer: (
     <>
-      <div className="flex gap-3 leading-none mt-1">
+      <div className="flex gap-3 leading-none">
         <div className="flex flex-col gap-y-oneScaledPix">
           <BitmapText className="text-redShadow ml-l">1987 original</BitmapText>
           <div className="flex gap-2">
@@ -75,7 +73,7 @@ export const mainMenu: Menu = {
           </div>
         </div>
       </div>
-      <div className="mt-1">
+      <div>
         <ImgSprite className="mr-1 texture-cube" />
         <BitmapText className="text-redShadow">https://</BitmapText>
         <BitmapText className="text-lightGrey">block</BitmapText>

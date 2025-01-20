@@ -108,6 +108,9 @@ export const gameMenusSlice = createSlice({
 
       currentAssignment.push(assignableInput);
     },
+    doneAssigningInput(state) {
+      state.actionBeingAssignedKeys = undefined;
+    },
     menuPressed(state) {
       if (state.menus.length > 0) {
         const [, ...tail] = state.menus;
@@ -246,4 +249,5 @@ export const {
   toggleColourise,
   toggleCrtFilter,
   inputAssigned,
+  doneAssigningInput,
 } = gameMenusSlice.actions;

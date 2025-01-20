@@ -15,7 +15,7 @@ export const SelectKeysMenuFooter = (_emptyProps: EmptyObject) => {
     <div className="bg-metallicBlue text-lightGrey leading-multilineText inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1">
       <BitmapText>Press</BitmapText>
       <BitmapText className="text-midRed"> escape </BitmapText>
-      <BitmapText>when done assigning for </BitmapText>
+      <BitmapText>when done selecting keys for </BitmapText>
       <BitmapText className="text-midRed">{assigningKeys}</BitmapText>
     </div>
   );

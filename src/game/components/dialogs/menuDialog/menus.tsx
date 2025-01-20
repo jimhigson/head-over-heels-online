@@ -14,7 +14,7 @@ export type MenuId =
 
 export type Menu = {
   heading: ReactNode;
-  footer?: ReactElement | ((props: EmptyObject) => ReactElement);
+  footer?: ReactElement | ((props: EmptyObject) => ReactElement | null);
   items: MenuItem[];
   backgroundClassName: string;
   itemsClassName: string;
