@@ -1,7 +1,4 @@
-import {
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
+import { type PropsWithChildren, type ReactNode } from "react";
 import { type CreateSpriteOptions } from "../render/createSprite";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { isTextureId } from "@/sprites/assertIsTextureId";
@@ -13,26 +10,20 @@ export interface PixiSpriteProps {
 
 import "react";
 import { twMerge } from "tailwind-merge";
-import type { TextureId } from "@/sprites/spriteSheetData";
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { escapeCharForTailwind } from "@/sprites/escapeCharForTailwind";
 import clsx from "clsx";
 
 export interface ImgSpriteProps {
-  textureId: TextureId;
   className?: string;
-  scale?: number;
   /** if true, will tint to the colour in the --bitmapTextColour css variable */
   tint?: boolean;
 }
 
-export const ImgSprite = ({ textureId, className, tint }: ImgSpriteProps) => {
+export const ImgSprite = ({ className, tint }: ImgSpriteProps) => {
   return (
     <span
-      className={twMerge(
-        `${tint ? "sprite-tinted" : "sprite"} texture-${textureId}`,
-        className,
-      )}
+      className={twMerge(`sprite  ${tint ? "sprite-tinted" : ""}`, className)}
     />
   );
 };
@@ -66,13 +57,13 @@ export const BitmapText = ({
     : textString.toUpperCase().split(/\s+/);
 
   return (
-    <span className={clsx(className, "inline-block")}>
+    <span className={clsx(className)}>
       {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
           <span
             className={twMerge(
-              `text-nowrap inline-block`,
+              `text-nowrap`,
               wordIndex === words.length - 1 ? "" : "me-1",
             )}
             key={wordIndex}
@@ -93,7 +84,13 @@ export const BitmapText = ({
               const imgSpriteEle = (
                 <ImgSprite
                   key={charIndex}
-                  textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
+                  className={
+                    isTextureId(textureId) ?
+                      // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
+                      // fine to construct dynamically:
+                      `texture-${textureId}`
+                    : "texture-hud.char.?"
+                  }
                   tint
                 />
               );

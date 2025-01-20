@@ -46,9 +46,7 @@ export function RoomSelect<RoomId extends string>({
         >
           {viewingRoomId || "Select a room"}
           <ImgSprite
-            textureId={open ? "hud.char.X" : "hud.char.⬇"}
-            scale={3}
-            className="ml-2 h-4 w-4 shrink-0"
+            className={`"ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud.char.X" : "texture-hud.char.⬇"}`}
           />
         </Button>
       </PopoverTrigger>
@@ -69,18 +67,10 @@ export function RoomSelect<RoomId extends string>({
                   }}
                 >
                   {gameApi.gameState.characterRooms.head?.id === r && (
-                    <ImgSprite
-                      textureId="head.walking.towards.2"
-                      scale={2}
-                      className="m-1"
-                    />
+                    <ImgSprite className="m-1 head.walking.towards.2" />
                   )}
                   {gameApi.gameState.characterRooms.heels?.id === r && (
-                    <ImgSprite
-                      textureId="heels.walking.towards.2"
-                      scale={2}
-                      className="m-1"
-                    />
+                    <ImgSprite className="m-1 texture-heels.walking.towards.2" />
                   )}
                   {r}
                 </CommandItem>

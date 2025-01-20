@@ -23,7 +23,7 @@ export const room = inferRoomJson({
         markdown: `
 ### BLACKTOOTH
 
-![](ball) This planet has a large moon with three lunar space stations on it, the larger
+![](texture-ball)This planet has a large moon with three lunar space stations on it, the larger
 of these, Moon Station HQ, is the main teleport center for the empire, with a
 direct teleport to all the slave planets. Sometime after the Egyptus episode,
 the latest Emperor sent out a craft to find that same strange planet, and after

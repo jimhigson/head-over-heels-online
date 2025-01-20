@@ -53,17 +53,17 @@ export const room = inferRoomJson({
         markdown: `
 ## CUDDLY STUFFED WHITE RABBITS
 
-![](bunny)The cute toy bunnies magically enhance your powers. The status display at the
+![](texture-bunny)The cute toy bunnies magically enhance your powers. The status display at the
 bottom of the screen will keep you informed as to which powers are temporarily
 enhanced. If Head and Heels are connected when they pick up a *Life* or *Iron pill*,
 they will both get the enhanced power.
 
 There are four types:
 
-1. ![](hud.char.2) **Two extra lives**
-2. ![](hud.shield) **Iron Pills** (to make you invulnerable)
-3. ![](hud.bigJumps) **Jump higher bunny** (only works on Heels)
-4. ![](hud.fastSteps) **Go faster bunny** (only works on slow-moving Head)
+1. ![](texture-hud.char.2)**Two extra lives**
+2. ![](texture-hud.shield)**Iron Pills** (to make you invulnerable)
+3. ![](texture-hud.bigJumps)**Jump higher bunny** (only works on Heels)
+4. ![](texture-hud.fastSteps)**Go faster bunny** (only works on slow-moving Head)
 
 *> Head Over Heels Manual*
 `,
@@ -77,7 +77,7 @@ There are four types:
         markdown: `
 ## THE GAME
 
-![](head.walking.towards.2)![](heels.walking.right.2) Head and Heels have been captured, separated and imprisoned in the castle
+![](texture-head.walking.towards.2)![](texture-heels.walking.right.2)Head and Heels have been captured, separated and imprisoned in the castle
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb. Your job is to get them both
 out of the castle and into the *marketplace* so they can join up again. From
@@ -85,7 +85,7 @@ there, the journey leads to *Moonbase Headquarters*, where you will have to deci
 either to try to escape back to Freedom or to be a true hero and teleport to one
 of the slave planets to search for its lost crown!
 
-![](crown)To overthrow the dictatorship on any of the slave planets would be a major blow
+![](texture-crown)To overthrow the dictatorship on any of the slave planets would be a major blow
 to Blacktooth and you could return to Freedom in glory. Of course, Blacktooth
 would probably enslave them again eventually but it would slow down any
 expansion plans for now. The populace of Blacktooth are so heavily oppressed

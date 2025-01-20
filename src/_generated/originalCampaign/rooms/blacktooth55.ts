@@ -28,7 +28,7 @@ export const room = inferRoomJson({
         markdown: `
 ## HUSH PUPPIES
 
-![](hushPuppy) These are a very strange type of beast; they are incredibly sleepy. In fact,
+![](texture-hushPuppy)These are a very strange type of beast; they are incredibly sleepy. In fact,
 they never wake up and it is quite normal for them to sleep for their entire
 lives. They are often used as tables and even used as building bricks. They are
 a native of Freedom, and for many thousands of years Head and his ancestors have

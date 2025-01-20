@@ -63,7 +63,8 @@ export const MenuItemComponent = ({
       <div
         ref={
           selected ?
-            (ele) => ele?.scrollIntoView({ behavior: "instant", block: "end" })
+            (ele) =>
+              ele?.scrollIntoView({ behavior: "instant", block: "center" })
           : undefined
         }
         className={twMerge(

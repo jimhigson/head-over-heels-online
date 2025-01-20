@@ -194,7 +194,7 @@ export const room = inferRoomJson({
 ## HEAD 
 ### (HEADUS MOUTHION)
 
-![](head.walking.towards.2) This creature is a symbiotic partner to Heels and will normally be found sitting
+![](texture-head.walking.towards.2)This creature is a symbiotic partner to Heels and will normally be found sitting
 on top of one. Head is descended from a breed of flying reptile and still has
 rudimentary wings that allow Head to jump up to twice his own height and to
 guide himself through the air.
@@ -212,7 +212,7 @@ guide himself through the air.
 ## HEELS 
 ### (FOOTUS UNDERIUM)
 
-![](heels.walking.towards.2) During Heels’s evolution, the arms have totally disappeared while the legs have
+![](texture-heels.walking.towards.2)During Heels’s evolution, the arms have totally disappeared while the legs have
 become very powerful. Heels can jump his own height and can also run very fast.        
 
 *> Head Over Heels Manual*

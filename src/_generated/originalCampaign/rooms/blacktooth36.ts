@@ -23,7 +23,7 @@ export const room = inferRoomJson({
         markdown: `
 ## SWITCHES
 
-![](switch.left)
+![](texture-switch.left)
 
 Simply push the switch to switch things off and on!  
 **WARNING**: Switching a deadly monster off will stop him moving but he will

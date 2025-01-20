@@ -41,6 +41,7 @@ export const selectKeysMenu: Menu = {
   itemsClassName: "text-metallicBlue !gap-y-1",
   selectedClassName: "text-shadow",
   borderClassName: "bg-midGrey",
+  hintClassName: "text-metallicBlue",
   heading: (
     <BitmapText className="text-metallicBlue sprites-double-height">
       Select the keys

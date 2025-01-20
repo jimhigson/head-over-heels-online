@@ -33,7 +33,7 @@ export const room = inferRoomJson({
         markdown: `
 ## SPRINGS
 
-![](spring.compressed)
+![](texture-spring.compressed)
 
 Jumping from a spring will give extra height to your jump.
 

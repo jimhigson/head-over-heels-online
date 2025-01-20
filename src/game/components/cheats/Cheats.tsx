@@ -92,11 +92,11 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <ImgSprite textureId="head.walking.right.2" />
+          <ImgSprite className="texture-head.walking.right.2" />
           over
-          <ImgSprite textureId="heels.walking.right.2" />
+          <ImgSprite className="texture-heels.walking.right.2" />
         </>
-      : <ImgSprite textureId={`${playableName}.walking.right.2`} />}
+      : <ImgSprite className={`texture-${playableName}.walking.right.2`} />}
     </Button>
   );
 };
@@ -163,7 +163,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <ImgSprite textureId="helicopterBug.1" scale={4} />
+        <ImgSprite className="texture-helicopterBug.1" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]">
@@ -252,7 +252,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="bag" />
+              <ImgSprite className="texture-bag" />
             </Button>
             <Button
               className="flex-1"
@@ -261,7 +261,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="hooter" />
+              <ImgSprite className="texture-hooter" />
             </Button>
             <Button
               className="flex-1"
@@ -270,7 +270,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="doughnuts" />
+              <ImgSprite className="texture-doughnuts" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -281,8 +281,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="bunny" />
-              <ImgSprite textureId="hud.char.2" scale={2} />
+              <ImgSprite className="texture-bunny" />
+              <ImgSprite className="texture-hud.char.2" />
             </Button>
             <Button
               className="flex-1"
@@ -291,8 +291,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="bunny" />
-              <ImgSprite textureId="hud.shield" scale={2} />
+              <ImgSprite className="texture-bunny" />
+              <ImgSprite className="texture-hud.shield" />
             </Button>
             <Button
               className="flex-1"
@@ -301,8 +301,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="bunny" />
-              <ImgSprite textureId="hud.fastSteps" scale={2} />
+              <ImgSprite className="texture-bunny" />
+              <ImgSprite className="texture-hud.fastSteps" />
             </Button>
             <Button
               className="flex-1"
@@ -311,8 +311,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="bunny" />
-              <ImgSprite textureId="hud.bigJumps" scale={2} />
+              <ImgSprite className="texture-bunny" />
+              <ImgSprite className="texture-hud.bigJumps" />
             </Button>
           </div>
 
@@ -392,8 +392,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <ImgSprite textureId="head.walking.right.2" />|
-              <ImgSprite textureId="heels.walking.right.2" />
+              <ImgSprite className="texture-head.walking.right.2" />|
+              <ImgSprite className="texture-heels.walking.right.2" />
             </Button>
           </div>
         </div>

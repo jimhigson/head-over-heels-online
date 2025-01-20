@@ -53,7 +53,7 @@ export const room = inferRoomJson({
         markdown: `
 ## HISTORY OF THE BLACKTOOTH EMPIRE
 
-![](crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
+![](texture-crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
 worlds enslaved by the planet Blacktooth. All of the slave worlds bubble with
 unrest, but due to the oppressive nature of their rulers they never reach
 boiling point, they all lack a leader to draw the masses of population together.

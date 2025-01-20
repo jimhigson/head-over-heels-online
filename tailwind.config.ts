@@ -9,11 +9,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   safelist: [
     {
-      pattern: /bg-/,
-    },
-    {
-      // keep all the spritesheet available dynamically:
-      pattern: /texture-/,
+      // any single-char sprite could be shown by parsing a markdown file, the others
+      // have to be specifically referenced
+      pattern: /texture-hud\.char\./,
     },
   ],
   theme: {

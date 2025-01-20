@@ -65,18 +65,19 @@ const markdownComponents: Components = {
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
     const scaleFactor = useTotalUpscale();
-    if (src === undefined) return null;
 
-    assertIsTextureId(src);
+    if (src === undefined) throw new Error("image without src");
+    if (!src.startsWith("texture-"))
+      throw new Error(
+        `image src "${src}" doesn't look like a tailwind class (doesn't start with 'texture-')`,
+      );
+
+    assertIsTextureId(src.replace(/^texture-/, ""));
 
     return (
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>
-        <ImgSprite
-          scale={2 * scaleFactor}
-          textureId={src}
-          className={`float-left mr-1 mb-1 w-1/5`}
-        />
+        <ImgSprite className={`${src} float-left mr-1 mb-1 w-1/5`} />
       </span>
     );
   },
