@@ -100,7 +100,9 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
       )}
       borderClassName={menu.borderClassName}
     >
+      {/* row: heading */}
       <div>{menu.heading}</div>
+      {/* row: menu items */}
       <div
         className={twMerge(
           "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
@@ -109,7 +111,6 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
       >
         {menu.items.map((mi, i) => (
           <MenuItemComponent
-            className="col-start-1"
             menu={menu}
             key={i}
             menuItem={mi}
@@ -118,13 +119,13 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
         ))}
         {openMenus.length > 1 && (
           <MenuItemComponent
-            className="col-start-1"
             menu={menu}
             menuItem={backMenuItem}
             selected={selectedIndex === menu.items.length}
           />
         )}
       </div>
+      {/* row: hint for selected menu item */}
       {selectedItemHint && (
         <BitmapText
           className={twMerge("block leading-multilineText", menu.hintClassName)}
@@ -132,6 +133,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
           {selectedItemHint}
         </BitmapText>
       )}
+      {/* row: menu footer */}
       {menu.footer && componentOrElement(menu.footer, {})}
     </Dialog>
   );

@@ -20,10 +20,7 @@
     "op": "add",
     "path": "/rooms/safari34/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## Exalted Emperor:\n\n![](texture-teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](texture-cyberman.towards)Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
-      },
+      "config": { "gives": "scroll", "page": "teleportBack" },
       "position": { "x": 3, "y": 6, "z": 0 },
       "type": "pickup"
     }
@@ -160,10 +157,7 @@
     "op": "add",
     "path": "/rooms/penitentiary33/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## Exalted Emperor:\n\n![](texture-teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](texture-cyberman.towards)Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
-      },
+      "config": { "gives": "scroll", "page": "teleportBack" },
       "position": { "x": 5, "y": 6, "z": 2 },
       "type": "pickup"
     }
@@ -422,10 +416,7 @@
     "op": "add",
     "path": "/rooms/moonbase25tobookworld/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## BOOK WORLD\n\n![](texture-bookworld.wall.person.left)The emperor is very keen on cowboy books and has devoted an entire world to a\nwestern library. Only the emperor's minions are permitted to read them.\nInformation is rigorously suppressed in the empire.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "bookWorld" },
       "position": { "x": 6, "y": 6, "z": 0 },
       "type": "pickup"
     }
@@ -439,10 +430,7 @@
     "op": "add",
     "path": "/rooms/moonbase24toegyptus/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## EGYPTUS\n\n![](texture-egyptus.wall.sarcophagus.left)Once, a long time ago, a craft from Blacktooth got a bit lost while doing a\nhyperspace jump and landed on an unknown planet. Here the crew found a primitive\nanimal forming a sort of civilization that appeared to revolve around wrapping\ncorpses in lots of bandages and putting them into huge stone pyramids. When they\nreturned to Blacktooth their emperor liked the sound of it so much that he\nrebuilt the capital city of one of the slave planets to resemble the story.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "egyptus" },
       "position": { "x": 2, "y": 3, "z": 0 },
       "type": "pickup"
     }
@@ -461,10 +449,7 @@
     "op": "add",
     "path": "/rooms/moonbase22topenitentiary/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## PENITENTIARY\n### The empire's prison planet\n\n![](texture-penitentiary.wall.skeleton.left)Millions are imprisoned here. A harsh planet, very mountainous, much climbing,\nskill required. The worst place is The Pit, try not to fall into it!\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "penitentiary" },
       "position": { "x": 1, "y": 4, "z": 0 },
       "type": "pickup"
     }
@@ -478,10 +463,7 @@
     "op": "add",
     "path": "/rooms/moonbase21tosafari/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## SAFARI\n\n![](texture-safari.wall.shield.left)A densely vegetated planet, mainly used for hunting. The natives live in wooden\nforts in the jungle, beware traps!\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "safari" },
       "position": { "x": 1, "y": 3, "z": 0 },
       "type": "pickup"
     }
@@ -510,10 +492,7 @@
     "op": "add",
     "path": "/rooms/moonbase15/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HUSH PUPPIES\n\n![Hush Puppy](hushPuppy)\n\nThese are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "hushPuppies" },
       "position": { "x": 3, "y": 1, "z": 0 },
       "type": "pickup"
     }
@@ -536,10 +515,7 @@
     "op": "add",
     "path": "/rooms/moonbase1/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HUSH PUPPIES\n\n![](texture-hushPuppy)These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "hushPuppies" },
       "position": { "x": 7, "y": 5, "z": 0 },
       "type": "pickup"
     }
@@ -554,10 +530,7 @@
     "op": "add",
     "path": "/rooms/egyptus38/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## Exalted Emperor:\n\n![](texture-teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](texture-cyberman.towards)Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
-      },
+      "config": { "gives": "scroll", "page": "teleportBack" },
       "position": { "x": 5, "y": 6, "z": 6 },
       "type": "pickup"
     }
@@ -682,10 +655,7 @@
     "op": "add",
     "path": "/rooms/bookworld39/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## Exalted Emperor:\n\n![](texture-teleporter)Sire, I took the liberty of installing this teleporter \nto aid your magnificent return to the moonbase after the daily crown inspections.\n\n![](texture-cyberman.towards)Supplies are running short of teleporters, so I set it up one-way\nuntil more come in.\nMay I humbly suggest you teleport after inspecting the crown or his grace\nwill have a long walk (well, ride on a minion’s back) to get back here.\n\nOf course, those two spies we threw in jail might try to use it to grab the crown and escape.\nJust kidding, they’ll never get this far!\n\n*> Your humble minion*\n"
-      },
+      "config": { "gives": "scroll", "page": "teleportBack" },
       "position": { "x": 0, "y": 0, "z": 10 },
       "type": "pickup"
     }
@@ -889,10 +859,7 @@
     "op": "add",
     "path": "/rooms/blacktooth9/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HOOTER\n\n![](texture-hooter)\nThe hooter may be used by Head to fire doughnuts at attacking monsters. This\nwill freeze them in place as they lick the doughnut off their faces. The hooter\nmay only be used by Head and requires a tray of doughnuts to be of any use.\n\n**> Head Over Heels Manual**\n"
-      },
+      "config": { "gives": "scroll", "page": "hooter" },
       "position": { "x": 7, "y": 1, "z": 1 },
       "type": "pickup"
     }
@@ -901,10 +868,7 @@
     "op": "add",
     "path": "/rooms/blacktooth8fish/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## REINCARNATION FISH\n\n![](texture-fish.1)The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "reincarnationFish" },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "pickup"
     }
@@ -936,10 +900,7 @@
     "op": "add",
     "path": "/rooms/blacktooth71/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## THE EMPEROR'S GUARDIAN\n\n![](texture-ball)The guardian blocks the door to the throne room in Blacktooth castle. He is very\ndangerous, and he doesn't like doughnuts. Only a true hero may pass the\nguardian.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "theEmperorsGuardian" },
       "position": { "x": 7, "y": 3, "z": 0 },
       "type": "pickup"
     }
@@ -1056,10 +1017,7 @@
     "op": "add",
     "path": "/rooms/blacktooth6/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## DOUGHNUTS\n\n![](texture-doughnuts)Trays of six doughnuts are few and far between, so don’t waste shots. Only Head\nmay pick up doughnuts. The number of remaining doughnuts will be displayed above\nthe doughnut icon at the bottom left of the screen.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "doughnuts" },
       "position": { "x": 2, "y": 3, "z": 1 },
       "type": "pickup"
     }
@@ -1093,10 +1051,7 @@
     "op": "add",
     "path": "/rooms/blacktooth55/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HUSH PUPPIES\n\n![](texture-hushPuppy)These are a very strange type of beast; they are incredibly sleepy. In fact,\nthey never wake up and it is quite normal for them to sleep for their entire\nlives. They are often used as tables and even used as building bricks. They are\na native of Freedom, and for many thousands of years Head and his ancestors have\nbeen mistaking them for Heels and causing so much trouble to the poor old hush\npuppies that they evolved a defense mechanism: they somehow learned to teleport\nthemselves away. Nobody knows where they go, but the instant they see any of\nHead's race, they disappear and won't return until they are sure the coast is\nclear.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "hushPuppies" },
       "position": { "x": 5, "y": 5, "z": 0 },
       "type": "pickup"
     }
@@ -1107,10 +1062,7 @@
     "op": "add",
     "path": "/rooms/blacktooth48market/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n### BLACKTOOTH\n\n![](texture-ball)This planet has a large moon with three lunar space stations on it, the larger\nof these, Moon Station HQ, is the main teleport center for the empire, with a\ndirect teleport to all the slave planets. Sometime after the Egyptus episode,\nthe latest Emperor sent out a craft to find that same strange planet, and after\nmuch exploration, it was finally located, and the craft landed. However, the\ncrew found the people had changed: instead of pyramids they used castles,\ninstead of wrapping corpses up in cloth, they wrapped living men in metal and\nthen tried to turn them into corpses with sharp metal sticks.\n\nThe Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and\nused it as his headquarters. The castle is surrounded by a small market, and\nthen a range of impassable mountains. The only way to leave is via teleport to\none of the three lunar space stations.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "blacktooth" },
       "position": { "x": 1, "y": 6, "z": 0 },
       "type": "pickup"
     }
@@ -1144,10 +1096,7 @@
     "op": "add",
     "path": "/rooms/blacktooth36/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## SWITCHES\n\n![](texture-switch.left)\n\nSimply push the switch to switch things off and on!  \n**WARNING**: Switching a deadly monster off will stop him moving but he will\nstill be deadly to touch.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "switches" },
       "position": { "x": 4, "y": 5, "z": 0 },
       "type": "pickup"
     }
@@ -1161,10 +1110,7 @@
     "op": "add",
     "path": "/rooms/blacktooth34/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## SPRINGS\n\n![](texture-spring.compressed)\n\nJumping from a spring will give extra height to your jump.\n\n**> head over heels manual**\n"
-      },
+      "config": { "gives": "scroll", "page": "springs" },
       "position": { "x": 2, "y": 7, "z": 1 },
       "type": "pickup"
     }
@@ -1187,10 +1133,7 @@
     "op": "add",
     "path": "/rooms/blacktooth3/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HINTS AND TIPS\n\n1. **1** *:* Beginners should aim to escape from Blacktooth and get back to Freedom\n   initially. Only the very skillful can hope to liberate a planet or two.\n2. **2** *:* When you first get Head and Heels in the same location, practice placing Head\n   on top of Heels and joining them together accurately with the swop key. Both\n   of their icons will light up when they are successfully joined.\n3. **3** *:* Remember Head and Heels are a team. Just because both are in the same room\n   does not mean you have to join them together, and in fact, some problems may\n   only be solved by separating Head and Heels.\n4. **4** *:* Make sure Head learns to climb ladders; this is an essential skill.\n5. **5** *:* Both Heels’s bag and Head’s hooter must be collected at the initial stages\n   for there to be any chance of completing the game.\n6. **6** *:* If Head and Heels are in the same room, extra jumping height may be obtained\n   by one jumping off the other’s back.\n7. **7** *:* Find a safe spot and get used to how far Head and Heels may move over the\n   edge of a brick before they fall. This will enable you to make the longest\n   jumps. Both Head and Heels will jump slightly further if they are running as\n   they jump.\n8. **8** *:* Learn the difference in distance and control between Head’s jumps and Heels’s\n   jumps.\n9. **9** *:* Make a map.\n10. **10** *:* Do not waste doughnuts; they are not easy to find.\n11. **11** *:* Do not get confused; only Heels may carry anything, and only Head may fire.\n12. **12** *:* To discover if there is a room above, pile objects as high as possible and\n    jump from the top. If there is a spring in the room, put it on the top for\n    extra jumping height.\n13. **13** *:* If you can’t understand a room, try exiting and entering again, watching\n    carefully for any movement in the room as you enter.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "hintsAndTips" },
       "position": { "x": 7, "y": 5, "z": 1 },
       "type": "pickup"
     }
@@ -1213,10 +1156,7 @@
     "op": "add",
     "path": "/rooms/blacktooth28/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## BAG\n\n![](texture-bag)The bag may be used to carry small objects around a room. It is essential for\nHeels to find and get the bag as it is impossible to get far without it. The\nobject in the bag will be displayed immediately above the bag’s icon at the\nbottom right of the screen. To pick up an object just stand on top of it and\npress the CARRY key. It is not possible to drop an object in a doorway.\n\n![](texture-cube)![](texture-drum)![](texture-spring.compressed)![](texture-sticks)\n\n**> head over heels manual**\n"
-      },
+      "config": { "gives": "scroll", "page": "bag" },
       "position": { "x": 4, "y": 0, "z": 1 },
       "type": "pickup"
     }
@@ -1234,10 +1174,7 @@
     "op": "add",
     "path": "/rooms/blacktooth27fish/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## REINCARNATION FISH\n\n![](texture-fish.1)The strangest animal in the known universe! This fish likes to be eaten! There\nhave been cases of it jumping onto plates! But there is more: when you eat one,\nits prodigious memory remembers everything about you. Its memory is so good that\nif you die at some later date, you will be reincarnated at the very place you\nate the fish, and you will even have its taste still in your mouth! How a fish\ncan remember anything when it's been eaten has never been successfully\nexplained.\n\nYou must be very careful to check that the fish is\nalive and wriggling as dead fish decompose very quickly and it rapidly\nturns so poisonous that a single lick can kill.\n\n### WARNING:\n\nEven living reincarnation fish taste horrible!\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "reincarnationFish" },
       "position": { "x": 0, "y": 7, "z": 0 },
       "type": "pickup"
     }
@@ -1251,10 +1188,7 @@
     "op": "add",
     "path": "/rooms/blacktooth25/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## CONVEYOR BELTS\n\n![](texture-conveyor.x.1)The rollers on the conveyor simply push you along it. If you wish to go the\nopposite direction you have to jump along.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "conveyorBelts" },
       "position": { "x": 3, "y": 5, "z": 0 },
       "type": "pickup"
     }
@@ -1313,10 +1247,7 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HEAD \n### (HEADUS MOUTHION)\n\n![](texture-head.walking.towards.2)This creature is a symbiotic partner to Heels and will normally be found sitting\non top of one. Head is descended from a breed of flying reptile and still has\nrudimentary wings that allow Head to jump up to twice his own height and to\nguide himself through the air.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "head" },
       "position": { "x": 7, "y": 1, "z": 0 },
       "type": "pickup"
     }
@@ -1325,10 +1256,7 @@
     "op": "add",
     "path": "/rooms/blacktooth23heels/items/scroll2",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HEELS \n### (FOOTUS UNDERIUM)\n\n![](texture-heels.walking.towards.2)During Heels’s evolution, the arms have totally disappeared while the legs have\nbecome very powerful. Heels can jump his own height and can also run very fast.        \n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "heels" },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "pickup"
     }
@@ -1405,10 +1333,7 @@
     "op": "add",
     "path": "/rooms/blacktooth2/items/scroll",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## HISTORY OF THE BLACKTOOTH EMPIRE\n\n![](texture-crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four\nworlds enslaved by the planet Blacktooth. All of the slave worlds bubble with\nunrest, but due to the oppressive nature of their rulers they never reach\nboiling point, they all lack a leader to draw the masses of population together.\n\nBlacktooth itself is not any better, a world rigidly controlled by its dynastic\nleaders for so long that the populace do not ever think about revolution. The\npeoples of the neighbouring stars are getting very worried about signs of\nmilitary expansion from Blacktooth and have sent a spy from the planet Freedom\nto see if he can push the slave planets into full rebellion by finding the\ncrowns lost when Blacktooth took over.\n\nThe creatures of Freedom are very strange in that they are formed from a pair of\nsymbiotic animals that have adapted to operate either independently or, to their\nmutual advantage, join together as one - Head saddled on Heels, and indeed these\nARE their names and both are highly trained spies.\n\n*> head over heels manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "historyOfTheBlacktoothEmpire" },
       "position": { "x": 1, "y": 2.5, "z": 4 },
       "type": "pickup"
     }
@@ -1435,10 +1360,7 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/scrollRabbit",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## CUDDLY STUFFED WHITE RABBITS\n\n![](texture-bunny)The cute toy bunnies magically enhance your powers. The status display at the\nbottom of the screen will keep you informed as to which powers are temporarily\nenhanced. If Head and Heels are connected when they pick up a *Life* or *Iron pill*,\nthey will both get the enhanced power.\n\nThere are four types:\n\n1. ![](texture-hud.char.2)**Two extra lives**\n2. ![](texture-hud.shield)**Iron Pills** (to make you invulnerable)\n3. ![](texture-hud.bigJumps)**Jump higher bunny** (only works on Heels)\n4. ![](texture-hud.fastSteps)**Go faster bunny** (only works on slow-moving Head)\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "cuddlyStuffedWhiteRabbits" },
       "position": { "x": 3, "y": 0, "z": 0 },
       "type": "pickup"
     }
@@ -1447,10 +1369,7 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/scrollTheGame",
     "value": {
-      "config": {
-        "gives": "scroll",
-        "markdown": "\n## THE GAME\n\n![](texture-head.walking.towards.2)![](texture-heels.walking.right.2)Head and Heels have been captured, separated and imprisoned in the castle\nheadquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including\na wall ladder that Head really must learn to climb. Your job is to get them both\nout of the castle and into the *marketplace* so they can join up again. From\nthere, the journey leads to *Moonbase Headquarters*, where you will have to decide\neither to try to escape back to Freedom or to be a true hero and teleport to one\nof the slave planets to search for its lost crown!\n\n![](texture-crown)To overthrow the dictatorship on any of the slave planets would be a major blow\nto Blacktooth and you could return to Freedom in glory. Of course, Blacktooth\nwould probably enslave them again eventually but it would slow down any\nexpansion plans for now. The populace of Blacktooth are so heavily oppressed\nthat they would have to see all four of the slave planets revolt before the\nBlacktooth crown could cause an uprising. This of course would be the ultimate\naccolade, and unfortunately, almost certain suicide.\n\n*> Head Over Heels Manual*\n"
-      },
+      "config": { "gives": "scroll", "page": "theGame" },
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "pickup"
     }

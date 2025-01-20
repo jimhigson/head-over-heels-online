@@ -5,12 +5,16 @@ import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
 import { selectKeysMenu } from "./menus/selectKeysMenu";
 import type { MenuItem } from "./MenuItem";
 import type { EmptyObject } from "type-fest";
+import { readTheManualMenu } from "./menus/readTheManualMenu";
+import type { MarkdownPageName } from "../../../../manual/pages";
 
 export type MenuId =
   | "mainMenu"
   | "selectKeys"
   | "inputPreset"
-  | "modernisationOptions";
+  | "modernisationOptions"
+  | "readTheManual"
+  | `manual/${MarkdownPageName}`;
 
 export type Menu = {
   heading: ReactNode;
@@ -27,4 +31,5 @@ export const menus: Record<MenuId, Menu> = {
   selectKeys: selectKeysMenu,
   modernisationOptions: modernisationOptionsMenu,
   inputPreset: inputPresetMenu,
+  readTheManual: readTheManualMenu,
 };

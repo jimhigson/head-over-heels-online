@@ -45,7 +45,7 @@ export const mainMenu: Menu = {
     <>
       <div className="flex gap-3 leading-none">
         <div className="flex flex-col gap-y-oneScaledPix">
-          <BitmapText className="text-redShadow ml-l">1987 original</BitmapText>
+          <BitmapText className="text-redShadow ml-2">1987 original</BitmapText>
           <div className="flex gap-2">
             <div className="flex flex-col gap-y-oneScaledPix">
               <BitmapText className="ml-1" colourCycle={colourCycle}>
@@ -96,6 +96,6 @@ export const mainMenu: Menu = {
       type: "submenu",
       submenu: "modernisationOptions",
     },
-    { label: "Read the manual", type: "todo" },
+    { label: "Read the manual", type: "submenu", submenu: "readTheManual" },
   ],
 };

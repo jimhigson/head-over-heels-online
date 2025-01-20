@@ -6,7 +6,7 @@ import type { KeyAssignmentPreset } from "../../../input/keyAssignmentPresets";
 import type { Action } from "../../../input/InputState";
 
 export type MenuItem = {
-  label: string | FunctionComponent<{ selected: boolean }>;
+  label: string | FunctionComponent<{ selected: boolean; menuItem: MenuItem }>;
   disableDoubling?: boolean;
   hint?: string;
 } & (

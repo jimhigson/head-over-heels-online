@@ -64,35 +64,31 @@ type MenuItemComponentProps = {
   menu: Menu;
   menuItem: MenuItem;
   selected: boolean;
-  className: string;
 };
 export const MenuItemComponent = ({
   menu,
   menuItem,
   selected,
-  className,
 }: MenuItemComponentProps) => {
-  const labelEle = (
-    <>
-      <BitmapText
-        className={clsx(
-          "inline-block me-1",
-          menuItem.type === "back" ? "scale-[-1]" : "",
-        )}
-      >
-        {selected ? "⏩⏩" : "⁌⁍"}
-      </BitmapText>
-      {typeof menuItem.label === "string" ?
-        <BitmapText>{menuItem.label}</BitmapText>
-      : <menuItem.label selected={selected} />}
-    </>
-  );
   const needsDoubling =
     selected && menuItem.type !== "key" && !menuItem.disableDoubling;
 
   return (
     <>
-      {/* first column content... */}
+      {/* first column content (icon thing)... */}
+      <BitmapText
+        className={clsx(
+          // inline-block is required for flipping with scale to work
+          "inline-block col-start-1",
+          needsDoubling ? "sprites-double-height" : "",
+          selected ? menu.selectedClassName : "",
+          menuItem.type === "back" ? "scale-[-1]" : "",
+        )}
+      >
+        {selected ? "⏩⏩" : "⁌⁍"}
+      </BitmapText>
+
+      {/* second column content (main label thing)... */}
       <div
         ref={
           selected ?
@@ -105,12 +101,15 @@ export const MenuItemComponent = ({
           menuItem.type === "submenu" ? "col-span-2" : "",
           menuItem.type === "back" ? "mt-1" : "",
           selected ? menu.selectedClassName : "",
-          className,
         )}
       >
-        {labelEle}
+        {typeof menuItem.label === "string" ?
+          <>
+            <BitmapText>{menuItem.label}</BitmapText>
+          </>
+        : <menuItem.label selected={selected} menuItem={menuItem} />}
       </div>
-      {/* now the second column content... */}
+      {/* third column content (values etc) */}
       {menuItem.type === "key" && (
         <MenuItemKeyAssignment
           switchMenuItem={menuItem}
@@ -124,13 +123,6 @@ export const MenuItemComponent = ({
           switchMenuItem={menuItem}
         />
       )}
-
-      {/* below-item content: */}
-      {/* {menuItem.type === "key" && (
-        <BitmapText className={twMerge("col-span-2")}>
-          Press Esc when done entering keys
-        </BitmapText>
-      )} */}
     </>
   );
 };

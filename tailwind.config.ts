@@ -36,7 +36,7 @@ export default {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
     },
     gridTemplateColumns: {
-      menuItems: "max-content 1fr",
+      menuItems: "calc(var(--block) * 2) max-content 1fr",
     },
     keyframes: {
       flash: {
