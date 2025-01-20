@@ -1,11 +1,8 @@
 import {
-  useEffect,
-  useState,
   type PropsWithChildren,
   type ReactNode,
 } from "react";
-import { createSprite, type CreateSpriteOptions } from "../render/createSprite";
-import { Application } from "pixi.js";
+import { type CreateSpriteOptions } from "../render/createSprite";
 import { spriteSheet } from "@/sprites/spriteSheet";
 import { isTextureId } from "@/sprites/assertIsTextureId";
 
@@ -20,39 +17,6 @@ import type { TextureId } from "@/sprites/spriteSheetData";
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { escapeCharForTailwind } from "@/sprites/escapeCharForTailwind";
 import clsx from "clsx";
-
-/** displays one sprite from the spritesheet */
-export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
-  const [containerEle, setContainerEle] = useState<HTMLSpanElement | null>(
-    null,
-  );
-
-  useEffect(() => {
-    if (containerEle === null) return;
-
-    const app = new Application();
-
-    const asyncEffect = async () => {
-      await app.init({ backgroundAlpha: 0, resizeTo: containerEle });
-      containerEle.appendChild(app.canvas);
-      const sprite = createSprite(spriteOptions);
-
-      sprite.x = containerEle.clientWidth / 2;
-      sprite.y = containerEle.clientHeight;
-      sprite.scale = containerEle.clientWidth / sprite.width;
-      app.stage.addChild(sprite);
-    };
-
-    asyncEffect();
-
-    return () => {
-      containerEle.removeChild(app.canvas);
-      app.destroy();
-    };
-  }, [containerEle, spriteOptions]);
-
-  return <span className={className} ref={setContainerEle} />;
-};
 
 export interface ImgSpriteProps {
   textureId: TextureId;
