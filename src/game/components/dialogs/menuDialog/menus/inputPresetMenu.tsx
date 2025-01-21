@@ -4,7 +4,6 @@ import type { MenuItem } from "../MenuItem";
 import { objectEntriesIter } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";
 import { keyAssignmentPresets } from "../../../../input/keyAssignmentPresets";
-import { withProps } from "../withClassName";
 import { MenuItems } from "../MenuItems";
 import { backMenuItem } from "../backMenuItem";
 import { SelectedItemHint } from "../SelectedItemHint";
@@ -12,16 +11,20 @@ import { SelectedItemHint } from "../SelectedItemHint";
 export const inputPresetMenu: Menu = {
   dialogClassName: "bg-lightGrey",
   borderClassName: "bg-midGrey",
-  sections: [
-    <BitmapText className="text-midRed sprites-double-height">
-      Key presets
-    </BitmapText>,
-    withProps(MenuItems, {
-      className: "text-metallicBlue",
-      selectedClassName: "text-moss",
-    }),
-    withProps(SelectedItemHint, { className: "text-shadow" }),
-  ],
+  Content() {
+    return (
+      <>
+        <BitmapText className="text-midRed sprites-double-height">
+          Key presets
+        </BitmapText>
+        <MenuItems
+          className="text-metallicBlue"
+          selectedClassName="text-moss"
+        />
+        <SelectedItemHint className="text-shadow" />
+      </>
+    );
+  },
   items: [
     ...iterate(objectEntriesIter(keyAssignmentPresets)).map(
       ([presetName, { description }]): MenuItem => ({

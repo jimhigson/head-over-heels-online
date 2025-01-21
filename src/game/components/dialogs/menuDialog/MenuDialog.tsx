@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 import type { OpenMenu } from "../../../../store/gameMenusSlice";
 import { useMenus } from "../../../../store/selectors";
 import { Dialog } from "../../../../components/ui/dialog";
-import { componentOrElement } from "../../../../utils/react/componentOrNode";
 
 const MenuDialogInner = (props: { openMenus: OpenMenu[] }) => {
   const { openMenus } = props;
@@ -17,11 +16,9 @@ const MenuDialogInner = (props: { openMenus: OpenMenu[] }) => {
         "h-zx leading-none flex flex-col gap-y-1",
         menu.dialogClassName,
       )}
-      borderClassName={menu.borderClassName}
+      overlayClassName={menu.borderClassName}
     >
-      {menu.sections.map((section, i) =>
-        componentOrElement(section, { key: i }),
-      )}
+      <menu.Content />
     </Dialog>
   );
 };

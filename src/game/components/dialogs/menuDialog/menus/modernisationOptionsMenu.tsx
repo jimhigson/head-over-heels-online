@@ -3,21 +3,21 @@ import { backMenuItem } from "../backMenuItem";
 import { MenuItems } from "../MenuItems";
 import type { Menu } from "../menus";
 import { SelectedItemHint } from "../SelectedItemHint";
-import { withProps } from "../withClassName";
 
 export const modernisationOptionsMenu: Menu = {
   dialogClassName: "bg-metallicBlue",
   borderClassName: "bg-moss",
-  sections: [
-    <BitmapText className="text-moss sprites-double-height">
-      Modernisation options
-    </BitmapText>,
-    withProps(MenuItems, {
-      className: "text-lightGrey",
-      selectedClassName: "text-moss",
-    }),
-    withProps(SelectedItemHint, { className: "text-moss" }),
-  ],
+  Content() {
+    return (
+      <>
+        <BitmapText className="text-moss sprites-double-height">
+          Modernisation options
+        </BitmapText>
+        <MenuItems className="text-lightGrey" selectedClassName="text-moss" />
+        <SelectedItemHint className="text-moss" />
+      </>
+    );
+  },
   items: [
     {
       type: "switch",

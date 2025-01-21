@@ -3,7 +3,7 @@ import type { Menu } from "../menus";
 import { Dialog } from "../../../../../components/ui/dialog";
 import { BitmapText } from "../../../Sprite";
 
-const HoldDialogInner = () => {
+const HoldDialogContent = () => {
   return (
     <Dialog className="text-center bg-pureBlack">
       <BitmapText className="block sprites-double-height text-moss">
@@ -18,7 +18,6 @@ const HoldDialogInner = () => {
 
 export const holdMenu: Menu = {
   dialogClassName: "h-max",
-  //borderClassName: "bg-midGrey",
-  sections: [HoldDialogInner],
+  Content: HoldDialogContent,
   items: [],
 };

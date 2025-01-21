@@ -15,20 +15,20 @@ export type DialogProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;
   className?: string;
   /** if you know the spectrum, you know this */
-  borderClassName?: string;
+  overlayClassName?: string;
   closed?: boolean;
 };
 
 export const Dialog = ({
   children,
   className,
-  borderClassName,
+  overlayClassName,
   ref,
 }: DialogProps) => {
   return (
     <RadixDialog open={true} modal={false}>
       <RadixDialogPortal>
-        <div className={`fixed inset-0 ${borderClassName}`} />
+        <div className={`fixed inset-0 ${overlayClassName}`} />
         {/* css variables don't flow through react portals, so repeat it here: */}
         <CssVariables>
           <RadixDialogContent

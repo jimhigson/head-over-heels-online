@@ -3,7 +3,6 @@ import { BitmapText, ImgSprite } from "../../../Sprite";
 import { type Menu } from "../menus";
 import { useGameApi } from "../../../GameApiContext";
 import { MenuItems } from "../MenuItems";
-import { withProps } from "../withClassName";
 
 export const colourCycle: SpritesheetPaletteColourName[] = [
   "lightGrey",
@@ -20,7 +19,7 @@ const PlayGameLabel = () => {
   );
 };
 
-const mainMenuHeading = (
+const MainMenuHeading = () => (
   <div className="flex text-highlightBeige">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
@@ -39,7 +38,7 @@ const mainMenuHeading = (
   </div>
 );
 
-const mainMenuFooter = (
+const MainMenuFooter = () => (
   <>
     <div className="flex gap-3 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix">
@@ -84,16 +83,19 @@ const mainMenuFooter = (
 
 export const mainMenu: Menu = {
   dialogClassName: "bg-midRed",
-  //selectedClassName: "text-white",
   borderClassName: "bg-metallicBlue",
-  sections: [
-    mainMenuHeading,
-    withProps(MenuItems, {
-      className: "text-metallicBlue",
-      selectedClassName: "text-white",
-    }),
-    mainMenuFooter,
-  ],
+  Content() {
+    return (
+      <>
+        <MainMenuHeading />
+        <MenuItems
+          className="text-metallicBlue"
+          selectedClassName="text-white"
+        />
+        <MainMenuFooter />
+      </>
+    );
+  },
   items: [
     { label: PlayGameLabel, type: "toGame" },
     {

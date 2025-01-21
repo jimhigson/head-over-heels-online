@@ -7,11 +7,9 @@ import { readTheManualMenu } from "./menus/readTheManualMenu";
 import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import type { MenuItem } from "./MenuItem";
 import { transformObject } from "../../../../utils/entries";
-import { withProps } from "./withClassName";
 import { MenuMarkdown } from "./MenuMarkdown";
 import { PressToContinueBanner } from "../PressToContinueBanner";
 import { holdMenu } from "./menus/holdMenu";
-import type { JSX } from "react/jsx-runtime";
 
 export type MenuId =
   | "mainMenu"
@@ -23,9 +21,7 @@ export type MenuId =
   | `markdown/${MarkdownPageName}`;
 
 export type Menu = {
-  sections: Array<
-    ReactElement | ((props: JSX.IntrinsicAttributes) => ReactElement | null)
-  >;
+  Content: () => ReactElement;
   items: MenuItem[];
   dialogClassName: string;
   borderClassName?: string;
@@ -48,17 +44,21 @@ export const menus: Record<MenuId, Menu> = {
           dialogClassName: "bg-highlightBeige",
           borderClassName: "bg-midGrey",
           items: [],
-          sections: [
-            withProps(MenuMarkdown, {
-              markdown,
-              className: "text-shadow overflow-y-hidden pb-2",
-            }),
-            withProps(PressToContinueBanner, {
-              action: "menu",
-              className: "absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1",
-              keyClassName: "text-midRed",
-            }),
-          ],
+          Content() {
+            return (
+              <>
+                <MenuMarkdown
+                  markdown={markdown}
+                  className="text-shadow overflow-y-hidden pb-2"
+                />
+                <PressToContinueBanner
+                  action="menu"
+                  className="absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1"
+                  keyClassName="text-midRed"
+                />
+              </>
+            );
+          },
         },
       ];
     },

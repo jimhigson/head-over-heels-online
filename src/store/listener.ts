@@ -14,10 +14,20 @@ export const startAppListening = listenerMiddleware.startListening.withTypes<
 // They may contain any sync or async logic, similar to thunks.
 startAppListening({
   actionCreator: menuItemSelected,
-  async effect(action, { dispatch, getState }) {
+  async effect(action, { dispatch, getState, getOriginalState }) {
+    const originalState = getOriginalState();
+    const originalMenu = originalState.menus.at(0)?.menuId;
+
     const {
       menus: [{ menuId, selectedIndex }],
     } = getState();
+
+    if (originalMenu !== menuId) {
+      // switched to this menu, which maybe just happens to have a switch first - in that case,
+      // don't flip the switch on going to the submenu
+      return;
+    }
+
     const menu = menus[menuId];
     const selectedMenuItem = menu.items.at(selectedIndex);
     if (
