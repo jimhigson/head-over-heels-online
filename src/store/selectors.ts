@@ -29,7 +29,5 @@ export const useCurrentMenuSelectedItemIndex = () => {
   return selectedIndex;
 };
 
-export const useIsOnHold = () => useAppSelector((state) => state.onHold);
-
 export const useInputAssignment = () =>
   useAppSelector((state) => state.inputAssignment);

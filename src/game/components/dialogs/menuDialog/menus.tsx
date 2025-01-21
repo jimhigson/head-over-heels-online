@@ -8,10 +8,10 @@ import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import type { MenuItem } from "./MenuItem";
 import { transformObject } from "../../../../utils/entries";
 import { withProps } from "./withClassName";
-import type { EmptyObject } from "type-fest";
 import { MenuMarkdown } from "./MenuMarkdown";
 import { PressToContinueBanner } from "../PressToContinueBanner";
 import { holdMenu } from "./menus/holdMenu";
+import type { JSX } from "react/jsx-runtime";
 
 export type MenuId =
   | "mainMenu"
@@ -23,7 +23,9 @@ export type MenuId =
   | `markdown/${MarkdownPageName}`;
 
 export type Menu = {
-  sections: Array<ReactElement | ((props: EmptyObject) => ReactElement | null)>;
+  sections: Array<
+    ReactElement | ((props: JSX.IntrinsicAttributes) => ReactElement | null)
+  >;
   items: MenuItem[];
   dialogClassName: string;
   borderClassName?: string;
