@@ -1,5 +1,5 @@
-import type { WallTextureId } from "@/sprites/scenerySpritesheetData";
-import type { SceneryName, Wall } from "@/sprites/planets";
+import type { SceneryName, Wall } from "../../sprites/planets";
+import type { WallTextureId } from "../../sprites/scenerySpritesheetData";
 
 export const wallTextureId = <P extends SceneryName, TDark extends boolean>(
   planet: P,

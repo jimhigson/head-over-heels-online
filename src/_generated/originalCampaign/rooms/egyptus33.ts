@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 

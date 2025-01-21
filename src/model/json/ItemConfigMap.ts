@@ -1,5 +1,6 @@
-import type { PlanetName, SceneryName, Wall } from "@/sprites/planets";
-import type { DirectionXy4, Xyz, AxisXy } from "@/utils/vectors/vectors";
+import type { MarkdownPageName } from "../../manual/pages";
+import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
+import type { DirectionXy4, Xyz, AxisXy } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
   DoorFrameConfig,
@@ -95,7 +96,7 @@ export type ItemConfigMap<
       }
     | {
         gives: "scroll";
-        markdown: string;
+        page: MarkdownPageName;
       }
     | {
         gives: "crown";

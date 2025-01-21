@@ -1,5 +1,5 @@
-import type { ItemInPlayType, ItemState } from "@/model/ItemInPlay";
-import type { Xyz } from "@/utils/vectors/vectors";
+import type { ItemInPlayType, ItemState } from "../../model/ItemInPlay";
+import type { Xyz } from "../../utils/vectors/vectors";
 
 export type MechanicsNames = "gravity" | "walking" | "jumping";
 

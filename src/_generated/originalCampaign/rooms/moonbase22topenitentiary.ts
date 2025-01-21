@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -111,15 +111,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        markdown: `
-## PENITENTIARY
-### The empire's prison planet
-
-![](penitentiary.wall.skeleton.left) Millions are imprisoned here. A harsh planet, very mountainous, much climbing,
-skill required. The worst place is The Pit, try not to fall into it!
-
-*> Head Over Heels Manual*
-`,
+        page: "penitentiary",
       },
       position: { x: 1, y: 4, z: 0 },
       type: "pickup",
@@ -148,15 +140,15 @@ skill required. The worst place is The Pit, try not to fall into it!
   planet: "moonbase",
   size: { x: 6, y: 8 },
   walls: {
-    away: ["window3", "window2", "none", "none", "window2", "window1"],
+    away: ["window2", "window3", "none", "none", "window3", "window1"],
     left: [
-      "window2",
+      "window3",
       "window1",
       "coil",
+      "window2",
       "window3",
-      "window2",
       "coil",
-      "window2",
+      "window3",
       "window1",
     ],
   },

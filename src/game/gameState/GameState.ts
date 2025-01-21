@@ -5,7 +5,7 @@ import {
   type Campaign,
 } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
-import type { InputState, KeyAssignment } from "../input/InputState";
+import type { InputState, InputAssignment } from "../input/InputState";
 import type { RenderOptions } from "../RenderOptions";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
@@ -35,7 +35,7 @@ type CharacterRooms<RoomId extends string> =
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  keyAssignment: KeyAssignment;
+  inputAssignment: InputAssignment;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?
@@ -55,7 +55,7 @@ export type GameState<RoomId extends string> = {
     [C in CharacterName]: PlayableEntryState;
   }>;
 
-  renderOptions: RenderOptions<RoomId>;
+  renderOptions: RenderOptions;
   /** TODO: is this really state? */
   events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up

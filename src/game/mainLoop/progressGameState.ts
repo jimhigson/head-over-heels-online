@@ -1,24 +1,8 @@
-import type {
-  UnknownItemInPlay,
-  ItemInPlayType,
-  AnyItemInPlay,
-} from "@/model/ItemInPlay";
-import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
-import {
-  otherIndividualCharacterName,
-  type RoomState,
-} from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { concat, objectValues } from "iter-tools";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
-import { objectEntriesIter } from "@/utils/entries";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { xyzEqual, isExactIntegerXyz, roundXyz } from "@/utils/vectors/vectors";
-import { iterate } from "@/utils/iterate";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
 import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
@@ -26,6 +10,24 @@ import {
   selectCurrentPlayableItem,
   selectPlayableItem,
 } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { concat, objectValues } from "iter-tools";
+import type { SceneryName } from "../../sprites/planets";
+import { objectEntriesIter } from "../../utils/entries";
+import { iterate } from "../../utils/iterate";
+import type { Xyz } from "../../utils/vectors/vectors";
+import {
+  isExactIntegerXyz,
+  roundXyz,
+  xyzEqual,
+} from "../../utils/vectors/vectors";
+import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
+import type {
+  UnknownItemInPlay,
+  AnyItemInPlay,
+  ItemInPlayType,
+} from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import { otherIndividualCharacterName } from "../../model/modelTypes";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,

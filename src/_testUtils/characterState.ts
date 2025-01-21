@@ -1,4 +1,5 @@
-import { selectCurrentRoom, type GameState } from "@/game/gameState/GameState";
+import type { GameState } from "../game/gameState/GameState";
+import { selectCurrentRoom } from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";
 
 export const headState = (gameState: GameState<TestRoomId>) => {

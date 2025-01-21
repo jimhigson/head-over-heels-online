@@ -1,120 +1,93 @@
-import type { JSX } from "react";
-import { useContext, type PropsWithChildren } from "react";
+import type { JSX, ReactElement } from "react";
+import { type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
-import { ImgSprite, RenderTextChildrenAsSprites } from "./Sprite";
+import { CssSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
-import { assertIsTextureId } from "../../sprites/assertIsTextureId";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { ScaleFactorContext } from "./ScaleFactorContext";
-
-export interface BlockyMarkdownProps {
-  markdown: string;
-  className?: string;
-}
+import { useTotalUpscale } from "../../store/selectors";
+import { twMerge } from "tailwind-merge";
 
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <h2 className={`text-metallicBlue mb-${scaleFactor}`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{
-            doubleHeight: true,
-            color: spritesheetPalette.metallicBlue,
-            scale: scaleFactor,
-          }}
-        >
+      <h2 className="mb-1 sprites-double-height text-metallicBlue">
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </h2>
     );
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <h3 className={`text-metallicBlue mt-${scaleFactor} mb-${scaleFactor}`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{
-            color: spritesheetPalette.metallicBlue,
-            scale: scaleFactor,
-          }}
-        >
+      <h3 className="mt-1 mb-1 text-metallicBlue">
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </h3>
     );
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{ scale: scaleFactor }}
-        >
+      <p className="mb-1">
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </p>
     );
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <p className={`mb-${scaleFactor} leading-${scaleFactor} clear-both`}>
-        <RenderTextChildrenAsSprites
-          imgSpriteTextProps={{ scale: scaleFactor }}
-        >
+      // clear left allows to go below other lis that have images in them:
+      <p className="mb-1 clear-left">
+        <RenderTextChildrenAsBitmapText>
           {children}
-        </RenderTextChildrenAsSprites>
+        </RenderTextChildrenAsBitmapText>
       </p>
     );
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <RenderTextChildrenAsSprites
-        imgSpriteTextProps={{
-          scale: scaleFactor,
-          color: spritesheetPalette.midRed,
-        }}
-      >
+      <RenderTextChildrenAsBitmapText className="text-midRed">
         {children}
-      </RenderTextChildrenAsSprites>
+      </RenderTextChildrenAsBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
-    const scaleFactor = useContext(ScaleFactorContext);
     return (
-      <RenderTextChildrenAsSprites
-        imgSpriteTextProps={{
-          scale: scaleFactor,
-          color: spritesheetPalette.moss,
-        }}
-      >
+      <RenderTextChildrenAsBitmapText className="text-moss">
         {children}
-      </RenderTextChildrenAsSprites>
+      </RenderTextChildrenAsBitmapText>
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
-    const scaleFactor = useContext(ScaleFactorContext);
-    if (src === undefined) return null;
+    const scaleFactor = useTotalUpscale();
 
-    assertIsTextureId(src);
+    if (src === undefined) throw new Error("image without src");
+
+    // the src is actually tailwind classes, usually just giving a single texture, but
+    // can also give extra params by writing as a url and using ? an & to encode them
+    const classes = src.split(/\?|&/);
 
     return (
-      <ImgSprite
-        scale={2 * scaleFactor}
-        textureId={src}
-        className={`float-left mr-${scaleFactor} mb-${scaleFactor} w-1/5 mb-2`}
-      />
+      // make double-size:
+      <span style={{ "--scale": scaleFactor * 2 }}>
+        <CssSprite
+          className={twMerge("float-left mr-1 mb-1", classes.join(" "))}
+        />
+      </span>
     );
   },
+};
+
+export type BlockyMarkdownProps = {
+  markdown: string;
+  className?: string;
 };
 
 export const BlockyMarkdown = ({
   markdown,
   className,
-}: BlockyMarkdownProps) => {
+}: BlockyMarkdownProps): ReactElement => {
   return (
     <Markdown
       className={className}

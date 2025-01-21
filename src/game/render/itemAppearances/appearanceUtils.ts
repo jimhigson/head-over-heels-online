@@ -1,15 +1,15 @@
-import { type ItemInPlayType, type ItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 import type { Container } from "pixi.js";
-import type { RoomState } from "@/model/modelTypes";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type {
   ItemInPlayTypesWithoutRenderProps,
   ItemRenderProps,
 } from "./ItemRenderProps";
-import { emptyObject } from "@/utils/empty";
-import type { RenderOptions } from "@/game/RenderOptions";
+import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { emptyObject } from "../../../utils/empty";
+import type { RenderOptions } from "../../RenderOptions";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -37,7 +37,7 @@ export type ItemAppearanceOptions<
    */
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
 
-  renderOptions: RenderOptions<RoomId>;
+  renderOptions: RenderOptions;
 };
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({

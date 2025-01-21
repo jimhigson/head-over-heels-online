@@ -1,10 +1,9 @@
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import { type ItemInPlayType } from "@/model/ItemInPlay";
 import { isItemType } from "../physics/itemPredicates";
 import type { ColorSource } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXyFloat } from "./projectToScreen";
-import type { Aabb } from "@/utils/vectors/vectors";
+import type { Aabb } from "../../utils/vectors/vectors";
+import type { ItemInPlayType, AnyItemInPlay } from "../../model/ItemInPlay";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
   const graphics = new Graphics()

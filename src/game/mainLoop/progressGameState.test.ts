@@ -5,29 +5,34 @@ vi.mock("../../sprites/samplePalette", () => ({
 
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoom } from "../gameState/GameState";
-import type { BasicGameStateOptions, TestRoomId } from "@/_testUtils/basicRoom";
+
+import type { PlayableItem } from "../physics/itemPredicates";
+import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
+import { smallItemAabb } from "../collision/boundingBoxes";
+import { createEmptyInput } from "../input/InputState";
+
+import type {
+  TestRoomId,
+  BasicGameStateOptions,
+} from "../../_testUtils/basicRoom";
 import {
   basicGameState,
   firstRoomId,
   secondRoomId,
-} from "@/_testUtils/basicRoom";
+} from "../../_testUtils/basicRoom";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../_testUtils/characterState";
 import {
   playGameThrough,
-  stopAllInputAfter,
   stopJumpingAMomentAfterStartingPlay,
-} from "@/_testUtils/playGameThrough";
-import { blockSizePx } from "@/sprites/spritePivots";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../physics/itemPredicates";
-import { headState, heelsState, itemState } from "@/_testUtils/characterState";
-import {
-  liftBBShortening,
-  roomHeightBlocks,
-} from "../physics/mechanicsConstants";
-import { smallItemAabb } from "../collision/boundingBoxes";
-import { createEmptyInput } from "../input/InputState";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-
+  stopAllInputAfter,
+} from "../../_testUtils/playGameThrough";
+import type { ItemInPlay } from "../../model/ItemInPlay";
+import { blockSizePx } from "../../sprites/spritePivots";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 const testFrameRates = [
   25, // original game, PAL
   29.97, // NTSC real
@@ -618,7 +623,7 @@ describe("lifts", () => {
       until: 5_000, // run for quite a long time
     });
 
-    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h - liftBBShortening;
+    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h;
 
     expect(maxHeight).toBeCloseTo(expectedMaxHeight, 0);
   });
@@ -669,7 +674,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 0 },
           config: {
             bottom: 0,
-            top: roomHeightBlocks,
+            top: defaultRoomHeightBlocks,
           },
         },
       },
@@ -766,7 +771,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 0 },
           config: {
             bottom: 0,
-            top: roomHeightBlocks,
+            top: defaultRoomHeightBlocks,
           },
         },
         landing: {

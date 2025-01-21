@@ -1,23 +1,28 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { isPortal } from "@/game/physics/itemPredicates";
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
-import type { SceneryName } from "@/sprites/planets";
-import type { Xyz } from "@/utils/vectors/vectors";
-import { addXyz, scaleXyz, subXyz, xyzEqual } from "@/utils/vectors/vectors";
 import { objectValues } from "iter-tools";
-import { iterate } from "@/utils/iterate";
 import { entryState } from "../PlayableEntryState";
-import type { CharacterName, RoomState } from "@/model/modelTypes";
-import { otherIndividualCharacterName } from "@/model/modelTypes";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { collision1toMany } from "@/game/collision/aabbCollision";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { removeStandingOn } from "./modifyStandingOn";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
-import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName, RoomState } from "../../../model/modelTypes";
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { iterate } from "../../../utils/iterate";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import {
+  xyzEqual,
+  scaleXyz,
+  subXyz,
+  addXyz,
+} from "../../../utils/vectors/vectors";
+import { collision1toMany } from "../../collision/aabbCollision";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import { isPortal } from "../../physics/itemPredicates";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 

@@ -1,4 +1,4 @@
-import type { SpriteSize } from "@/model/modelTypes";
+import type { SpriteSize } from "../model/modelTypes";
 
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 56 } as const satisfies SpriteSize;

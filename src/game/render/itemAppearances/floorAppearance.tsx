@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { type TextureId } from "../../../sprites/spriteSheet";
+import { type TextureId } from "../../../sprites/spriteSheetData";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
@@ -8,19 +8,19 @@ import { createSprite } from "../createSprite";
 import { moveContainerToBlockXyz } from "../projectToScreen";
 import { floorRenderExtent } from "../renderExtent";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
-import type { Xy } from "@/utils/vectors/vectors";
-import {
-  axesXy,
-  originXy,
-  perpendicularAxisXy,
-  type DirectionXy4,
-} from "@/utils/vectors/vectors";
+
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce } from "./appearanceUtils";
 import { objectValues } from "iter-tools";
-import { iterate } from "@/utils/iterate";
-import type { UnknownRoomState } from "@/model/modelTypes";
-import { iterateToContainer } from "@/game/iterateToContainer";
+import type { UnknownRoomState } from "../../../model/modelTypes";
+import { iterate } from "../../../utils/iterate";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import {
+  axesXy,
+  perpendicularAxisXy,
+  originXy,
+} from "../../../utils/vectors/vectors";
+import { iterateToContainer } from "../../iterateToContainer";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
@@ -98,7 +98,7 @@ const edges = (
   blockYExtent: number,
   type: "floorOverdraw" | "floorEdge",
 ): { right: Container; towards: Container } => {
-  const towards = new Container();
+  const towards = new Container({ label: "towards" });
   for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
     towards.addChild(
       moveContainerToBlockXyz(
@@ -110,7 +110,7 @@ const edges = (
       ),
     );
   }
-  const right = new Container();
+  const right = new Container({ label: "right" });
   for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
     right.addChild(
       moveContainerToBlockXyz(
@@ -257,7 +257,9 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
 
     const container = new Container({ label: `floorEdge` });
 
-    const overDrawToHideFallenItems = new Graphics()
+    const overDrawToHideFallenItems = new Graphics({
+      label: "overDrawToHideFallenItems",
+    })
       // Add the rectangular area to show
       .poly(
         [
@@ -291,7 +293,9 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
 
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
-    const floorMaskCutOffLeftAndRight = new Graphics()
+    const floorMaskCutOffLeftAndRight = new Graphics({
+      label: "floorMaskCutOffLeftAndRight",
+    })
       // Add the rectangular area to show
       .poly(
         [

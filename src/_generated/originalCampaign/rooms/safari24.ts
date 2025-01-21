@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -59,9 +59,9 @@ export const room = inferRoomJson({
     },
     "movableBlock@0,2,0": {
       config: {
-        activated: false,
+        activated: "onStand",
         movement: "clockwise",
-        startDirection: "left",
+        startDirection: "towards",
         style: "sandwich",
       },
       position: { x: 0, y: 2, z: 0 },

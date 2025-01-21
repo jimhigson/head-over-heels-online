@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -129,20 +129,20 @@ export const room = inferRoomJson({
   walls: {
     away: [
       "book",
-      "person",
+      "cowboy",
       "book",
       "book",
       "book",
       "book",
-      "person",
+      "cowboy",
       "book",
       "book",
-      "person",
+      "cowboy",
       "book",
       "book",
       "book",
       "book",
-      "person",
+      "cowboy",
       "book",
     ],
     left: ["book", "book", "none", "none", "book", "book"],

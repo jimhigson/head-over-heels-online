@@ -1,5 +1,6 @@
-import type { UnknownItemInPlay, ItemInPlayType } from "@/model/ItemInPlay";
-import { type Xyz, dotProductXyz } from "@/utils/vectors/vectors";
+import type { UnknownItemInPlay, ItemInPlayType } from "../../model/ItemInPlay";
+import type { Xyz } from "../../utils/vectors/vectors";
+import { dotProductXyz } from "../../utils/vectors/vectors";
 
 export type SortableObstacle = Pick<UnknownItemInPlay, "aabb" | "id"> & {
   state: { position: Xyz };

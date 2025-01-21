@@ -91,10 +91,13 @@ const keys = [
   "Numpad7",
   "Numpad8",
   "Numpad9",
-  "NumpadAdd",
-  "NumpadSubtract",
-  "NumpadMultiply",
-  "NumpadDivide",
+  "Numpad+",
+  "Numpad-",
+  "Numpad*",
+  "Numpad/",
+  "Numpad.",
+  "NumpadEnter",
+  "Numpad=",
   "F1",
   "F2",
   "F3",
@@ -107,6 +110,7 @@ const keys = [
   "F10",
   "F11",
   "F12",
+  "Escape",
 ] as const;
 
 export type Key = (typeof keys)[number];

@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -30,14 +30,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        markdown: `
-## CONVEYOR BELTS
-
-![](conveyor.x.1) The rollers on the conveyor simply push you along it. If you wish to go the
-opposite direction you have to jump along.
-
-*> head over heels manual*
-`,
+        page: "conveyorBelts",
       },
       position: { x: 3, y: 5, z: 0 },
       type: "pickup",

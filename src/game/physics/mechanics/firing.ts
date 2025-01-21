@@ -1,14 +1,14 @@
-import { addItemToRoom } from "@/game/gameState/mutators/addItemToRoom";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptyObject } from "../../../utils/empty";
+import { addXyz, scaleXyz, originXyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
-import { type GameState } from "@/game/gameState/GameState";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import { emptyObject } from "@/utils/empty";
-import { addXyz, originXyz, scaleXyz } from "@/utils/vectors/vectors";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import { blockSizePx } from "@/sprites/spritePivots";
 
 export const firing = <RoomId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId>,

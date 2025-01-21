@@ -3,7 +3,7 @@ import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "./checkStandingOn";
 import { first } from "iter-tools";
 import type { FreeItem } from "../physics/itemPredicates";
-import type { SceneryName } from "@/sprites/planets";
+import type { SceneryName } from "../../sprites/planets";
 
 test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
   const result = findStandingOnWithHighestPriorityAndMostOverlap(

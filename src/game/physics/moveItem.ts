@@ -1,14 +1,5 @@
-import type { AnyItemInPlay, UnknownItemInPlay } from "@/model/ItemInPlay";
 import { isItemType, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
-import type { Xyz } from "@/utils/vectors/vectors";
-import {
-  addXyz,
-  originXyz,
-  scaleXyz,
-  subXyz,
-  xyzEqual,
-} from "@/utils/vectors/vectors";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
@@ -20,8 +11,17 @@ import {
   removeStandingOn,
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
+import type { UnknownItemInPlay, AnyItemInPlay } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
+import type { Xyz } from "../../utils/vectors/vectors";
+import {
+  xyzEqual,
+  originXyz,
+  addXyz,
+  subXyz,
+  scaleXyz,
+} from "../../utils/vectors/vectors";
 
 const log = 0;
 

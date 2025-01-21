@@ -1,4 +1,5 @@
 import { objectEntries } from "iter-tools";
+import { iterate } from "./iterate";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ObjectKeys = <K extends keyof any>(
@@ -35,3 +36,17 @@ export type ObjectFromAllEntries = <K extends keyof any, V>(
 
 export const fromEntries = Object.fromEntries as ObjectFromEntries;
 export const fromAllEntries = Object.fromEntries as ObjectFromAllEntries;
+
+export const transformObject = <
+  KIn extends string,
+  VIn,
+  KOut extends string,
+  VOut,
+>(
+  object: Partial<Record<KIn, VIn>>,
+  transform: (entry: [KIn, VIn]) => [KOut, VOut],
+): Record<KOut, VOut> => {
+  const inIter = iterate(objectEntriesIter(object));
+  const transformedIter = inIter.map(transform);
+  return fromEntries(transformedIter) as Record<KOut, VOut>;
+};

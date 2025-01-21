@@ -1,7 +1,4 @@
-import type { RoomState } from "@/model/modelTypes";
 import { Container } from "pixi.js";
-import type { ItemInPlayType, UnknownItemInPlay } from "@/model/ItemInPlay";
-import type { SceneryName } from "@/sprites/planets";
 import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { ItemRenderer } from "./ItemRenderer";
@@ -10,6 +7,9 @@ import type { GraphEdges } from "./sortZ/toposort/toposort";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
+import type { ItemInPlayType, UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
 
 export type RenderContext = {
   movedItems: MovedItems;
@@ -52,7 +52,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
   const scrollRoom = positionRoom(
     room,
     roomContainer,
-    gameState.renderOptions.upscale.effectiveSize,
+    gameState.renderOptions.upscale.gameEngineScreenSize,
   );
 
   return {
@@ -99,7 +99,7 @@ export const RoomRenderer = <RoomId extends string, ItemId extends string>(
             // this cast shouldn't be needed - maybe look into why room.items isn't properly typed with the room's ItemId
             item as UnknownItemInPlay<RoomId, ItemId>,
             room,
-            renderOptions,
+            gameState,
           );
           if (itemRenderer === undefined) {
             // ItemRenderer declined to render this item

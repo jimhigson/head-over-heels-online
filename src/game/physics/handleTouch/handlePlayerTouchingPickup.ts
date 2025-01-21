@@ -1,12 +1,14 @@
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { crownCollected, showScroll } from "../../../store/gameMenusSlice";
+import { store } from "../../../store/store";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
-} from "@/game/gameState/gameStateSelectors/selectPlayableItem";
+} from "../../gameState/gameStateSelectors/selectPlayableItem";
+import type { PlayableItem } from "../itemPredicates";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 export const handlePlayerTouchingPickup = <RoomId extends string>(
   e: ItemTouchEvent<
@@ -99,18 +101,19 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
       gameState.inputState.jump = false;
-      gameState.events.emit("scrollOpened", {
-        markdown: pickup.config.markdown,
-      });
+      store.dispatch(showScroll(pickup.config.page));
       break;
 
     case "reincarnation":
       //TODO:
       break;
 
-    case "crown":
-      //TODO:
+    case "crown": {
+      // a little experiment- let's go straight to the store, even though
+      // we're in the game engine:
+      store.dispatch(crownCollected(pickup.config.planet));
       break;
+    }
 
     default:
       pickup.config satisfies never;

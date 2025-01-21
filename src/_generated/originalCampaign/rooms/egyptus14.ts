@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -61,7 +61,7 @@ export const room = inferRoomJson({
   planet: "egyptus",
   roomAbove: "egyptus19",
   roomBelow: "egyptus13",
-  size: { x: 8, y: 8 },
+  size: { x: 8, y: 8, z: 12 },
   walls: {
     away: [
       "hieroglyphics",

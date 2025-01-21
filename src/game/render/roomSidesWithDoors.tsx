@@ -1,6 +1,6 @@
+import type { AnyRoomJson } from "../../model/RoomJson";
+import { doorAlongAxis } from "../../utils/vectors/vectors";
 import type { SidesWithDoors } from "./itemAppearances/floorAppearance";
-import { doorAlongAxis } from "@/utils/vectors/vectors";
-import type { AnyRoomJson } from "@/model/RoomJson";
 
 export const roomSidesWithDoors = (room: AnyRoomJson): SidesWithDoors => {
   const result: SidesWithDoors = {};

@@ -1,13 +1,4 @@
 import {
-  originXy,
-  originXyz,
-  scaleXyz,
-  subXyz,
-  unitVector,
-  xyEqual,
-  lengthXyz,
-} from "@/utils/vectors/vectors";
-import {
   heelsJumpForwardSpeedFraction,
   heelsJumpForwardDecel,
   moveSpeedPixPerMs,
@@ -17,11 +8,20 @@ import {
 } from "../mechanicsConstants";
 import { isItemType, type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
-import type { CharacterName } from "@/model/modelTypes";
-import type { GameState } from "@/game/gameState/GameState";
-import { accelerateToSpeed2 } from "@/utils/vectors/accelerateUpToSpeed";
-import { emptyInput } from "@/game/input/InputState";
-import { fastStepsRemaining } from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
+import type { CharacterName } from "../../../model/modelTypes";
+import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
+import {
+  originXyz,
+  lengthXyz,
+  subXyz,
+  scaleXyz,
+  xyEqual,
+  originXy,
+  unitVector,
+} from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { emptyInput } from "../../input/InputState";
 
 const stopWalking = {
   movementType: "vel",

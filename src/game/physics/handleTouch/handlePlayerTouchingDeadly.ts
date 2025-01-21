@@ -1,10 +1,10 @@
-import { fadeInOrOutDuration } from "@/game/render/animationTimings";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import { shieldRemaining } from "@/game/gameState/gameStateSelectors/selectPickupAbilities";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { fadeInOrOutDuration } from "../../render/animationTimings";
 
 /**
  *

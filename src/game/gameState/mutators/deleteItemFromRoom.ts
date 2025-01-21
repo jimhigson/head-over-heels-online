@@ -1,7 +1,7 @@
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { isFreeItem } from "@/game/physics/itemPredicates";
+import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { isFreeItem } from "../../physics/itemPredicates";
 
 export const deleteItemFromRoom = <
   RoomId extends string,

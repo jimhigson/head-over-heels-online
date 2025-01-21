@@ -1,11 +1,12 @@
 import type {
-  ItemInPlay,
   ItemInPlayType,
+  ItemInPlay,
+  AnyItemInPlay,
   UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import { type AnyItemInPlay } from "@/model/ItemInPlay";
-import { characterNames, type CharacterName } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
+} from "../../model/ItemInPlay";
+import type { CharacterName } from "../../model/modelTypes";
+import { characterNames } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
 
 export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
   [TI in T]: ItemInPlay<TI, SceneryName, RoomId>;

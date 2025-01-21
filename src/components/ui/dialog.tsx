@@ -1,115 +1,50 @@
 "use client";
 
-import * as React from "react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import {
+  Dialog as RadixDialog,
+  DialogContent as RadixDialogContent,
+  DialogTitle as RadixDialogTitle,
+  DialogPortal as RadixDialogPortal,
+} from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils";
+import type { ComponentPropsWithRef, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
+import { CssVariables } from "../../game/components/CssVariables";
 
-const Dialog = DialogPrimitive.Root;
+export type DialogProps = ComponentPropsWithRef<"div"> & {
+  children: ReactNode;
+  className?: string;
+  /** if you know the spectrum, you know this */
+  overlayClassName?: string;
+  closed?: boolean;
+};
 
-const DialogTrigger = DialogPrimitive.Trigger;
-
-const DialogPortal = DialogPrimitive.Portal;
-
-const DialogClose = DialogPrimitive.Close;
-
-const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
-    {...props}
-  />
-));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
-
-const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen w-full overflow-y-auto translate-x-[-50%] gap-4 bg-background shadow-lg",
-        className,
-      )}
-      {...props}
-    >
-      <DialogTitle />
-      {children}
-    </DialogPrimitive.Content>
-  </DialogPortal>
-));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
-
-const DialogHeader = ({
+export const Dialog = ({
+  children,
   className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className,
-    )}
-    {...props}
-  />
-);
-DialogHeader.displayName = "DialogHeader";
-
-const DialogFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className,
-    )}
-    {...props}
-  />
-);
-DialogFooter.displayName = "DialogFooter";
-
-const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className,
-    )}
-    {...props}
-  />
-));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
-
-const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
-
-export {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogClose,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
+  overlayClassName,
+  ref,
+}: DialogProps) => {
+  return (
+    <RadixDialog open={true} modal={false}>
+      <RadixDialogPortal>
+        <div className={`fixed inset-0 ${overlayClassName}`} />
+        {/* css variables don't flow through react portals, so repeat it here: */}
+        <CssVariables>
+          <RadixDialogContent
+            ref={ref}
+            className={twMerge(
+              `p-1 w-zx fixed left-[50%] z-50 top-[50%] translate-y-[-50%] h-fit max-h-screen translate-x-[-50%]`,
+              className,
+            )}
+            aria-describedby={undefined}
+          >
+            {/* keep radix happy with an empty title: */}
+            <RadixDialogTitle className="hidden" />
+            {children}
+          </RadixDialogContent>
+        </CssVariables>
+      </RadixDialogPortal>
+    </RadixDialog>
+  );
 };

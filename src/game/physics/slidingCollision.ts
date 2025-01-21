@@ -1,4 +1,4 @@
-import { type Xyz } from "@/utils/vectors/vectors";
+import type { Xyz } from "../../utils/vectors/vectors";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.

@@ -1,10 +1,11 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import { hudCharTextureSize } from "./textureSizes";
-import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
-import { fromAllEntries } from "@/utils/entries";
-import type { Xy } from "@/utils/vectors/vectors";
+import { fromAllEntries } from "../utils/entries";
+import type { Xy } from "../utils/vectors/vectors";
+import type { EscapedForTailwind } from "./escapeCharForTailwind";
+import { escapeCharForTailwind } from "./escapeCharForTailwind";
 
-const alphabetUppercase = [
+const alphaNumeric = [
   "A",
   "B",
   "C",
@@ -31,6 +32,16 @@ const alphabetUppercase = [
   "X",
   "Y",
   "Z",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
 ] as const;
 
 const punctuation = [
@@ -42,38 +53,45 @@ const punctuation = [
   ";",
   ":",
   "/",
-  "(",
-  ")",
-  "[",
-  "]",
-  "<",
-  ">",
-] as const;
-const punctuation2 = [
+  "\\",
   "‘",
   "’",
   "'",
   "`",
   "-",
-  "ArrowLeft",
-  "ArrowRight",
-  "ArrowUp",
-  "ArrowDown",
-  "EnterFullscreen",
-  "ExitFullscreen",
+  "+",
 ] as const;
+
+const brackets = ["(", ")", "[", "]", "<", ">"] as const;
+
+const arrowChars = ["⬅", "➡", "⬆", "⬇", "↖", "↘", "↗", "↙"] as const;
+
+const menuChars = [
+  // choose some arbitrary but fairly common keys for the menu items,
+  // selected to be unlikely to be used for either game controls or to
+  // appear in scroll markdown
+  "⏩",
+  "⁌",
+  "⁍",
+  // currently unused
+  //"EnterFullscreen",
+  //"ExitFullscreen",
+] as const;
+
+export type CharSpriteTextureId<C extends string> =
+  `hud.char.${EscapedForTailwind<C>}`;
 
 const charFrames = <Char extends string>(
   ar: Readonly<Char[]>,
   startPosition: Xy,
-): Record<`hud.char.${Char}`, SpritesheetFrameData> => {
+): Record<CharSpriteTextureId<Char>, SpritesheetFrameData> => {
   function* charFramesGenerator(): Generator<
-    [`hud.char.${Char}`, SpritesheetFrameData]
+    [CharSpriteTextureId<Char>, SpritesheetFrameData]
   > {
     for (let i = 0; i < ar.length; i++) {
       const char = ar[i];
       yield [
-        `hud.char.${char}`,
+        `hud.char.${escapeCharForTailwind(char)}`,
         {
           frame: {
             x: startPosition.x + i * (hudCharTextureSize.w + 1),
@@ -90,26 +108,22 @@ const charFrames = <Char extends string>(
 
 export const hudSpritesheetData = {
   frames: {
+    ...charFrames(alphaNumeric, { x: 173, y: 0 }),
     "hud.fastSteps": {
-      frame: { x: 569, y: 0, ...hudCharTextureSize },
+      frame: { x: 497, y: 0, ...hudCharTextureSize },
     },
     "hud.shield": {
-      frame: { x: 578, y: 0, ...hudCharTextureSize },
+      frame: { x: 506, y: 0, ...hudCharTextureSize },
     },
     "hud.bigJumps": {
-      frame: { x: 587, y: 0, ...hudCharTextureSize },
+      frame: { x: 515, y: 0, ...hudCharTextureSize },
     },
-    "hud.char.0": {
-      frame: { x: 479, y: 0, ...hudCharTextureSize },
+    "hud.char.🕹": {
+      frame: { x: 227, y: 27, ...hudCharTextureSize },
     },
-    ...charFrames(alphabetUppercase, { x: 245, y: 0 }),
-    ...charFrames(punctuation, { x: 515, y: 9 }),
-    ...charFrames(punctuation2, { x: 515, y: 18 }),
-    ...seriesOfAnimationFrameTextures(
-      "hud.char",
-      9,
-      { x: 488, y: 0 },
-      hudCharTextureSize,
-    ),
+    ...charFrames(punctuation, { x: 173, y: 9 }),
+    ...charFrames(arrowChars, { x: 173, y: 18 }),
+    ...charFrames(menuChars, { x: 524, y: 0 }),
+    ...charFrames(brackets, { x: 173, y: 27 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

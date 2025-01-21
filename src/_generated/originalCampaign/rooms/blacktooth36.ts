@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -20,17 +20,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        markdown: `
-## SWITCHES
-
-![](switch.left)
-
-Simply push the switch to switch things off and on!  
-**WARNING**: Switching a deadly monster off will stop him moving but he will
-still be deadly to touch.
-
-*> head over heels manual*
-`,
+        page: "switches",
       },
       position: { x: 4, y: 5, z: 0 },
       type: "pickup",

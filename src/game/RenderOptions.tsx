@@ -1,19 +1,11 @@
-import type { AnyItemInPlay } from "@/model/ItemInPlay";
-import type { Container } from "pixi.js";
-import type { SetRequired } from "type-fest";
-import type { Upscale } from "./render/upscale";
-
-export const hasItemClick = <RoomId extends string>(
-  options: RenderOptions<RoomId>,
-): options is SetRequired<RenderOptions<RoomId>, "onItemClick"> => {
-  return options.onItemClick !== undefined;
-};
+import type { Upscale } from "./render/calculateUpscale";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
-export type RenderOptions<RoomId extends string> = {
-  onItemClick?: (item: AnyItemInPlay<RoomId>, container: Container) => void;
+export type RenderOptions = {
   showBoundingBoxes: ShowBoundingBoxes;
   showShadowMasks: boolean;
   upscale: Upscale;
+  crtFilter: boolean;
+  colourise: boolean;
 };

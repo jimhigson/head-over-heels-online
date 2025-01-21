@@ -1,7 +1,3 @@
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { RoomJson } from "@/model/RoomJson";
-import type { SceneryName } from "@/sprites/planets";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import {
   wallThicknessBlocks,
@@ -10,8 +6,12 @@ import {
   yAxisWallAabb,
   yAxisWallRenderAabb,
 } from "../../collision/boundingBoxes";
-import { doorAlongAxis } from "@/utils/vectors/vectors";
-import { emptySet } from "@/utils/empty";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
+import { emptySet } from "../../../utils/empty";
+import { doorAlongAxis } from "../../../utils/vectors/vectors";
 
 /**
  * convert a room's walls into normal items (that can be collided with as with any other item)

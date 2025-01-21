@@ -1,28 +1,24 @@
-import { spriteSheet } from "@/sprites/spriteSheet";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
-
-import type {
-  CharacterName,
-  IndividualCharacterName,
-} from "@/model/modelTypes";
 import type {
   ItemAppearanceOptions,
   ItemAppearanceReturn,
 } from "./appearanceUtils";
-
-import {
-  vectorClosestDirectionXy4,
-  type DirectionXy4,
-} from "@/utils/vectors/vectors";
 import { stackedSprites } from "./stackedSprites";
+import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
 import type {
   PlayableActionState,
   PlayableTeleportingState,
-} from "@/model/ItemStateMap";
-import type { PlayableItem } from "@/game/physics/itemPredicates";
-import { OutlineFilter } from "@/filters/colorReplace/outlineFilter";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
+} from "../../../model/ItemStateMap";
+import type {
+  IndividualCharacterName,
+  CharacterName,
+} from "../../../model/modelTypes";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import { spriteSheet } from "../../../sprites/spriteSheet";
 
 const renderSprite = ({
   name,
@@ -139,7 +135,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
           bottom: renderSprite({
             name: "heels",
@@ -147,7 +143,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         })
       : createSprite(
@@ -157,7 +153,7 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.scaleFactor,
+            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         ),
     renderProps: {

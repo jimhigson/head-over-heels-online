@@ -1,13 +1,13 @@
-import { roomHeightBlocks } from "@/game/physics/mechanicsConstants";
-import { blockXyzToFineXyz } from "@/game/render/projectToScreen";
-import { floorBlockMinMax } from "@/game/render/renderExtent";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
-import type { ItemInPlay } from "@/model/ItemInPlay";
-import type { RoomJson } from "@/model/RoomJson";
-import type { SceneryName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import { addXyz, originXy, originXyz } from "@/utils/vectors/vectors";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
+import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { floorBlockMinMax } from "../../render/renderExtent";
 import { defaultBaseState } from "./loadItem";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
@@ -17,6 +17,8 @@ export function* loadFloorAndCeiling<RoomId extends string>(
   | ItemInPlay<"floorEdge", SceneryName, RoomId>
   | ItemInPlay<"portal", SceneryName, RoomId>
 > {
+  const roomHeightBlocks = roomJson.size.z ?? defaultRoomHeightBlocks;
+
   const roomNaturalFootprintAabb = blockXyzToFineXyz({
     ...roomJson.size,
     z: 1,
@@ -93,7 +95,9 @@ export function* loadFloorAndCeiling<RoomId extends string>(
           relativePoint: {
             x: roomNaturalFootprintAabb.x / 2,
             y: roomNaturalFootprintAabb.y / 2,
-            z: 0,
+            // the relative point is on the top of the aabb - the top edge
+            // of the floor portal is the one we're expecting to interact with
+            z: roomNaturalFootprintAabb.z,
           },
           direction: unitVectors["down"],
         },

@@ -1,15 +1,15 @@
-import type { Campaign, CharacterName } from "@/model/modelTypes";
-import type { RoomJson } from "@/model/RoomJson";
-import type { GameState, PickupsCollected } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
 import { loadRoom } from "./loadRoom/loadRoom";
-import { fromAllEntries } from "@/utils/entries";
 import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import { createEmptyInput } from "../input/InputState";
 import { keyAssignmentPresets } from "../input/keyAssignmentPresets";
+import type { CharacterName, Campaign } from "../../model/modelTypes";
+import type { RoomJson } from "../../model/RoomJson";
+import type { SceneryName } from "../../sprites/planets";
+import { fromAllEntries } from "../../utils/entries";
+import type { GameState, PickupsCollected } from "./GameState";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -49,7 +49,7 @@ export const initGameState = <RoomId extends string>({
   renderOptions,
 }: {
   campaign: Campaign<RoomId>;
-  renderOptions: RenderOptions<NoInfer<RoomId>>;
+  renderOptions: RenderOptions;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -71,7 +71,7 @@ export const initGameState = <RoomId extends string>({
       );
 
   return {
-    keyAssignment: keyAssignmentPresets.default,
+    inputAssignment: keyAssignmentPresets.default.inputAssignment,
     // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {

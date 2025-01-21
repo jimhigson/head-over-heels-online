@@ -1,15 +1,15 @@
 import { mtv } from "../slidingCollision";
-import type { ItemInPlayType } from "@/model/ItemInPlay";
-import {
-  dotProductXyz,
-  originXyz,
-  scaleXyz,
-  unitVector,
-  xyzEqual,
-} from "@/utils/vectors/vectors";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import {
+  unitVector,
+  scaleXyz,
+  xyzEqual,
+  originXyz,
+  dotProductXyz,
+} from "../../../utils/vectors/vectors";
 
 export const handleItemTouchingSlidingItem = <RoomId extends string>({
   movingItem: touchingItem,

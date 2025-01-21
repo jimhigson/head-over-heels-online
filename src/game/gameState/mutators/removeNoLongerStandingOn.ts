@@ -1,17 +1,11 @@
-// if the period of the frame rate is less than this value, each rendering tick
-// will be split into multiple physics ticks down to this size:
-// this needs to be small enough that the fastest movement
-// (jumping: 2px per frame in original game @25fps, so 50px per second)
-// can be guaranteed to take up every half-pixel position.
-
+import { objectValues } from "iter-tools";
+import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
+import type { RoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
 import {
   spatiallyCheckStandingOn,
   findStandingOnWithHighestPriorityAndMostOverlap,
-} from "@/game/collision/checkStandingOn";
-import type { RoomState } from "@/model/modelTypes";
-import type { SceneryName } from "@/sprites/planets";
-import { objectValues } from "iter-tools";
-import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
+} from "../../collision/checkStandingOn";
 
 export const removeNoLongerStandingOn = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,

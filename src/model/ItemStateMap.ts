@@ -1,12 +1,12 @@
-import type { SceneryName } from "@/sprites/planets";
-import type { Xyz, Xy } from "@/utils/vectors/vectors";
+import type { PortableItemType } from "../game/physics/itemPredicates";
+import type { SceneryName } from "../sprites/planets";
+import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type {
   EmptyObject,
   SwitchSetting,
   UnknownItemInPlay,
 } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
-import type { PortableItemType } from "@/game/physics/itemPredicates";
 
 export type PlayableActionState =
   | "moving"

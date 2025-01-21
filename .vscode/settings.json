@@ -23,9 +23,11 @@
     "Glsl",
     "griditem",
     "immer",
+    "lookupable",
     "mame",
     "moonbase",
     "Morties",
+    "persistor",
     "pickupable",
     "pixi",
     "Playables",
@@ -57,5 +59,6 @@
     "xyzs"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.language": "en-GB,en-US"
+  "cSpell.language": "en-GB,en-US",
+  "javascript.preferences.importModuleSpecifier": "relative"
 }

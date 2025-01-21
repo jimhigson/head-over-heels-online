@@ -1,11 +1,9 @@
-// NOTE: zx spectrum ran at 50 (or 50.08) frames per second (PAL)
-
-import type { ItemInPlayType } from "@/model/ItemInPlay";
-import type { JsonItemConfig } from "@/model/json/JsonItem";
-import type { CharacterName } from "@/model/modelTypes";
-import { zxSpectrumFrameRate } from "@/originalGame";
-import type { SceneryName } from "@/sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { JsonItemConfig } from "../../model/json/JsonItem";
+import type { CharacterName } from "../../model/modelTypes";
+import { zxSpectrumFrameRate } from "../../originalGame";
+import type { SceneryName } from "../../sprites/planets";
+import { blockSizePx } from "../../sprites/spritePivots";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
@@ -59,7 +57,8 @@ export const moveSpeedPixPerMs = {
   head: onePxPerFrameInOriginalGamePxPerMs, //
   heels: 2 * onePxPerFrameInOriginalGamePxPerMs,
   charles: onePxPerFrameInOriginalGamePxPerMs,
-  dalek: 2 * onePxPerFrameInOriginalGamePxPerMs,
+  // moved diagonally in a (1, 1) vector in original - that gives us √2 px per frame
+  dalek: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
   cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
   skiHead: onePxPerFrameInOriginalGamePxPerMs,
   helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
@@ -102,14 +101,7 @@ export const playerJumpHeightPx = {
 // original game lift speed was 1px per frame
 export const liftSpeed = pxPerFrameSpeed(2);
 
-export const roomHeightBlocks = 11;
-
-/**
- * lifts need to go down visually into the ground a bit, or they are too difficult to jump onto
- * if at the bottom of their cycle they only touch the ground. Their bbs are reduced vertically
- * by this amount so they fly lower
- */
-export const liftBBShortening = 2;
+export const defaultRoomHeightBlocks = 11;
 
 /** how long (in ms) a shield bunny lasts for */
 export const shieldDuration = 60_000;

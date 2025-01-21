@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -48,15 +48,15 @@ export const room = inferRoomJson({
   planet: "moonbase",
   size: { x: 4, y: 8 },
   walls: {
-    away: ["window3", "none", "none", "window1"],
+    away: ["window2", "none", "none", "window1"],
     left: [
-      "window2",
+      "window3",
       "window1",
       "coil",
+      "window2",
       "window3",
-      "window2",
       "coil",
-      "window2",
+      "window3",
       "window1",
     ],
   },

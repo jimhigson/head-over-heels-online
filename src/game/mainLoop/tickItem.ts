@@ -1,8 +1,3 @@
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
 import {
   isCarrier,
   isDeadly,
@@ -13,33 +8,38 @@ import {
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
-import type { SceneryName } from "@/sprites/planets";
 import type { GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";
 import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
 import { walking } from "../physics/mechanics/walking";
 import { moveLift } from "../physics/mechanics/moveLift";
-import type { Xyz } from "@/utils/vectors/vectors";
-import {
-  originXyz,
-  addXyz,
-  scaleXyz,
-  lengthXyz,
-} from "@/utils/vectors/vectors";
 import { moveItem } from "../physics/moveItem";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { onConveyor } from "../physics/mechanics/onConveyor";
 import { tickMovement } from "../physics/mechanics/movement";
 import { carrying } from "../physics/mechanics/carrying";
-import type { RoomState } from "@/model/modelTypes";
-import { objectEntriesIter } from "@/utils/entries";
 import { latentMovement } from "../physics/mechanics/latentMovement";
 import { objectValues } from "iter-tools";
-import { iterate } from "@/utils/iterate";
 import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { firing } from "../physics/mechanics/firing";
+import type {
+  ItemInPlayType,
+  ItemInPlay,
+  UnknownItemInPlay,
+} from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/modelTypes";
+import type { SceneryName } from "../../sprites/planets";
+import { objectEntriesIter } from "../../utils/entries";
+import { iterate } from "../../utils/iterate";
+import type { Xyz } from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  scaleXyz,
+  lengthXyz,
+  originXyz,
+} from "../../utils/vectors/vectors";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be

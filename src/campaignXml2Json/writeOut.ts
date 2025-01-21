@@ -7,7 +7,7 @@ import { objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
 import { orderBy } from "natural-orderby";
 import type { AnyRoomJson } from "../model/RoomJson";
-import type { Campaign } from "@/model/modelTypes";
+import type { Campaign } from "../model/modelTypes";
 
 /* multi-line string are easier to read than single-line strings with \n */
 function convertMultilineToTemplate(jsonString: string): string {
@@ -29,7 +29,7 @@ function convertMultilineToTemplate(jsonString: string): string {
 
 const roomTs = (room: AnyRoomJson): string =>
   `
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";\n
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
 export const room = inferRoomJson(${convertMultilineToTemplate(canonicalize(room))}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
 `;
@@ -72,8 +72,7 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     tsBarrellFilename,
     `
     /* eslint-disable */
-    import type {Campaign} from "@/model/modelTypes.ts";\n
-    import type {RoomJson} from "@/model/RoomJson.ts";\n
+    import type {Campaign} from "../../model/modelTypes.ts";\n
     import {type OriginalCampaignRoomId} from './OriginalCampaignRoomId.ts';\n
 
     ${roomIdsSorted

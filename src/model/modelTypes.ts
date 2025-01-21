@@ -2,8 +2,8 @@ import type { SpritesheetFrameData } from "pixi.js";
 import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
 import type { SceneryName, Wall } from "../sprites/planets";
-import { blockSizePx } from "@/sprites/spritePivots";
 import type { RoomJson } from "./RoomJson";
+import { blockSizePx } from "../sprites/spritePivots";
 
 export const individualCharacterNames = ["head", "heels"] as const;
 export const characterNames = [

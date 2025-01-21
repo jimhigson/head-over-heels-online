@@ -1,4 +1,4 @@
-import { inferRoomJson, type RoomJson } from "@/model/RoomJson.ts";
+import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
@@ -111,14 +111,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        markdown: `
-## SAFARI
-
-![](safari.wall.shield.left) A densely vegetated planet, mainly used for hunting. The natives live in wooden
-forts in the jungle, beware traps!
-
-*> Head Over Heels Manual*
-`,
+        page: "safari",
       },
       position: { x: 1, y: 3, z: 0 },
       type: "pickup",
@@ -147,15 +140,15 @@ forts in the jungle, beware traps!
   planet: "moonbase",
   size: { x: 6, y: 8 },
   walls: {
-    away: ["window1", "coil", "window3", "window2", "coil", "window1"],
+    away: ["window1", "coil", "window2", "window3", "coil", "window1"],
     left: [
-      "window2",
+      "window3",
       "window1",
       "coil",
+      "window2",
       "window3",
-      "window2",
       "coil",
-      "window2",
+      "window3",
       "window1",
     ],
   },

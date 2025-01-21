@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
-import type { AnimatedTextureName, FrameNumbers } from "./spriteGenerators";
-import { seriesOfAnimationFrameTextures } from "./spriteGenerators";
+import type { NumberedTextureName, FrameNumbers } from "./spriteGenerators";
+import { seriesOfNumberedTextures } from "./spriteGenerators";
 
 test("generating frame number types", () => {
   expectTypeOf<FrameNumbers<2>>().toEqualTypeOf<"1" | "2">();
@@ -11,12 +11,12 @@ test("generating frame number types", () => {
 });
 
 test("generating animation frame names with numbers", () => {
-  expectTypeOf<AnimatedTextureName<"foo", 4>>().toEqualTypeOf<
+  expectTypeOf<NumberedTextureName<"foo", 4>>().toEqualTypeOf<
     "foo.1" | "foo.2" | "foo.3" | "foo.4"
   >();
 
   expectTypeOf(
-    seriesOfAnimationFrameTextures(
+    seriesOfNumberedTextures(
       "heels.walking.left",
       3,
       { x: 0, y: 0 },

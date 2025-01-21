@@ -15,7 +15,7 @@ export const spritesheetPalette = {
   lightBeige: new Color("#DDAC96"),
   highlightBeige: new Color("#ECC998"),
   alpha: new Color("#FDD44B"),
-  replaceLight: new Color("#00FFFF"),
-  replaceDark: new Color("#008380"),
+  replaceLight: new Color("#0D8D8B"),
+  replaceDark: new Color("#185A5A"),
 } as const;
 export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;

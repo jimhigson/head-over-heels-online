@@ -1,177 +1,117 @@
-import {
-  useEffect,
-  useState,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
-import { createSprite, type CreateSpriteOptions } from "../render/createSprite";
-import type { Color } from "pixi.js";
-import { Application } from "pixi.js";
-import spritesheetUrl from "../../../gfx/sprites.png";
-import { spriteSheet, type TextureId } from "@/sprites/spriteSheet";
-import { isTextureId } from "@/sprites/assertIsTextureId";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { type PropsWithChildren, type ReactNode } from "react";
+import "react";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
+import { isTextureId } from "../../sprites/assertIsTextureId";
+import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
+import { spriteSheet } from "../../sprites/spriteSheet";
 
-export interface PixiSpriteProps {
-  spriteOptions: CreateSpriteOptions;
+export interface CssSpriteProps {
   className?: string;
+  /** if true, will tint to the colour in the --bitmapTextColour css variable */
+  tint?: boolean;
 }
 
-/** displays one sprite from the spritesheet */
-export const PixiSprite = ({ spriteOptions, className }: PixiSpriteProps) => {
-  const [containerEle, setContainerEle] = useState<HTMLSpanElement | null>(
-    null,
-  );
-
-  useEffect(() => {
-    if (containerEle === null) return;
-
-    const app = new Application();
-
-    const asyncEffect = async () => {
-      await app.init({ backgroundAlpha: 0, resizeTo: containerEle });
-      containerEle.appendChild(app.canvas);
-      const sprite = createSprite(spriteOptions);
-
-      sprite.x = containerEle.clientWidth / 2;
-      sprite.y = containerEle.clientHeight;
-      sprite.scale = containerEle.clientWidth / sprite.width;
-      app.stage.addChild(sprite);
-    };
-
-    asyncEffect();
-
-    return () => {
-      containerEle.removeChild(app.canvas);
-      app.destroy();
-    };
-  }, [containerEle, spriteOptions]);
-
-  return <span className={className} ref={setContainerEle} />;
-};
-
-export interface ImgSpriteProps {
-  textureId: TextureId;
-  className?: string;
-  doubleHeight?: boolean;
-  scale?: number;
-  color?: Color;
-}
-
-export const ImgSprite = ({
-  textureId,
-  className,
-  doubleHeight,
-  scale = 1,
-  color,
-}: ImgSpriteProps) => {
-  const { width, x, y, height } = spriteSheet.textures[textureId].frame;
-
-  const { width: sourceWidth, height: sourceHeight } =
-    spriteSheet.textureSource;
-
-  const yScale = scale * (doubleHeight ? 2 : 1);
-
-  if (color) {
-    return (
-      <span
-        style={{
-          display: "inline-block",
-          width: `${width * scale}px`,
-          height: `${height * yScale}px`,
-          mask: `url(${spritesheetUrl})`,
-          maskPosition: `-${x * scale}px -${y * yScale}px`,
-          maskSize: `${sourceWidth * scale}px ${sourceHeight * yScale}px`,
-          imageRendering: "pixelated",
-          backgroundColor: color.toRgbaString(),
-        }}
-        className={className}
-      />
-    );
-  }
-
+/**
+ * css sprite is much lighter than using pixi, and can tint the sprite to any colour,
+ * but doesn't support filters like pixi does
+ */
+export const CssSprite = ({ className, tint }: CssSpriteProps) => {
   return (
     <span
-      style={{
-        display: "inline-block",
-        width: `${width * scale}px`,
-        height: `${height * yScale}px`,
-        backgroundImage: `url(${spritesheetUrl})`,
-        backgroundPosition: `-${x * scale}px -${y * yScale}px`,
-        backgroundSize: `${sourceWidth * scale}px ${sourceHeight * yScale}px`,
-        imageRendering: "pixelated",
-      }}
-      className={className}
+      className={twMerge(`sprite  ${tint ? "sprite-tinted" : ""}`, className)}
     />
   );
 };
 
 export interface BitmapTextProps {
   children: string | string[];
-  scale?: number;
-  doubleHeight?: boolean;
-  color?: Color;
+  /**
+   * per-char colour (or any other style) cycling
+   */
+  classnameCycle?: string[];
+  className?: string;
+  noSlitWords?: boolean;
 }
 
 export const BitmapText = ({
   children: text,
-  scale = 1,
-  doubleHeight,
-  color = spritesheetPalette.shadow,
+  className,
+  noSlitWords,
+  classnameCycle,
 }: BitmapTextProps) => {
-  const trimmed =
-    Array.isArray(text) ?
-      text.map((text) => text.trim()).join(" ")
-    : text.trim();
-  if (trimmed.length === 0) {
+  const textString =
+    // trimming helps for some markdown-rendering:
+    Array.isArray(text) ? text.join(" ") : text;
+  if (textString.length === 0) {
     return null;
   }
-  const words = trimmed.toUpperCase().split(/\s+/);
+  const words =
+    noSlitWords ?
+      [textString.toUpperCase()]
+    : textString.toUpperCase().split(/\s+/);
+
   return (
-    <>
-      {words.map((w, wordIndex) => {
+    <span className={clsx(className)}>
+      {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
-          <span className={`word text-nowrap me-${scale}`} key={wordIndex}>
-            {w.split("").map((c, charIndex) => {
-              const textureId = `hud.char.${c}`;
-              return (
-                <ImgSprite
-                  className={c}
+          <span
+            className={twMerge(
+              `text-nowrap`,
+              wordIndex === words.length - 1 ? "" : "me-1",
+            )}
+            key={wordIndex}
+          >
+            {/* Array.from(string) is unicode-aware */}
+            {Array.from(word).map((c, charIndex) => {
+              const textureId = `hud.char.${escapeCharForTailwind(c)}`;
+              if (!isTextureId(textureId)) {
+                console.error(
+                  "no texture for char",
+                  c,
+                  c.charCodeAt(0),
+                  textureId,
+                  "we have:",
+                  Object.keys(spriteSheet.textures),
+                );
+              }
+              const imgSpriteEle = (
+                <CssSprite
                   key={charIndex}
-                  textureId={isTextureId(textureId) ? textureId : "hud.char.?"}
-                  doubleHeight={doubleHeight}
-                  scale={scale}
-                  color={color}
+                  className={`${
+                    isTextureId(textureId) ?
+                      // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
+                      // fine to construct dynamically:
+                      `texture-${textureId}`
+                    : "texture-hud.char.?"
+                  } ${classnameCycle === undefined ? "" : classnameCycle[charIndex % classnameCycle.length]}`}
+                  tint
                 />
               );
+
+              return imgSpriteEle;
             })}
           </span>
         );
       })}
-    </>
+    </span>
   );
 };
-export const RenderTextChildrenAsSprites = ({
+export const RenderTextChildrenAsBitmapText = ({
   children,
-  imgSpriteTextProps,
   className,
 }: PropsWithChildren<{
-  imgSpriteTextProps?: Omit<BitmapTextProps, "children">;
   className?: string;
 }>): ReactNode => {
   if (Array.isArray(children)) {
     return children.map((c, i) => (
-      <RenderTextChildrenAsSprites
-        key={i}
-        children={c}
-        imgSpriteTextProps={imgSpriteTextProps}
-      />
+      <RenderTextChildrenAsBitmapText key={i} children={c} />
     ));
   } else if (typeof children === "string") {
     return (
       <span className={className}>
-        <BitmapText {...imgSpriteTextProps}>{children}</BitmapText>
+        <BitmapText>{children}</BitmapText>
       </span>
     );
   } else {

@@ -1,22 +1,25 @@
-import type { JsonItemType, UnknownJsonItem } from "@/model/json/JsonItem";
-import type {
-  BaseItemState,
-  ShadowMaskOptions,
-  UnknownItemInPlay,
-} from "@/model/ItemInPlay";
-import type { FreeItem } from "@/game/physics/itemPredicates";
-import { freeItemTypes, slidingItemTypes } from "@/game/physics/itemPredicates";
-import { defaultItemProperties } from "@/model/defaultItemProperties";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
-import { directionAxis, originXyz } from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { CreateSpriteOptions } from "@/game/render/createSprite";
-import type { FreeItemState } from "@/model/ItemStateMap";
-import type { SceneryName } from "@/sprites/planets";
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type {
+  UnknownItemInPlay,
+  ShadowMaskOptions,
+  BaseItemState,
+} from "../../../model/ItemInPlay";
+import type { FreeItemState } from "../../../model/ItemStateMap";
+import type {
+  UnknownJsonItem,
+  JsonItemType,
+} from "../../../model/json/JsonItem";
+import type { SceneryName } from "../../../sprites/planets";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { directionAxis, originXyz } from "../../../utils/vectors/vectors";
+import type { FreeItem } from "../../physics/itemPredicates";
+import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
+import type { CreateSpriteOptions } from "../../render/createSprite";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,

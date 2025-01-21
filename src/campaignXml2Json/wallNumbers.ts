@@ -8,11 +8,11 @@ import type { SceneryName, Wall } from "../sprites/planets";
  */
 export const wallNumbers: { [P in SceneryName]: Array<Wall<P>> } = {
   blacktooth: ["plain", "shield", "armour"],
-  bookworld: ["book", "person"],
+  bookworld: ["book", "cowboy"],
   egyptus: ["hieroglyphics", "sarcophagus"],
   jail: ["bars"],
   market: ["passage", "more-fruits", "fruits"],
-  moonbase: ["coil", "window2", "window3", "window1"],
+  moonbase: ["coil", "window3", "window2", "window1"],
   penitentiary: ["loop", "skeleton"],
   safari: ["wall", "shield", "window"],
 };

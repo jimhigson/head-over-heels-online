@@ -1,30 +1,30 @@
-import { type ItemInPlay } from "@/model/ItemInPlay";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
-import type { GameState } from "@/game/gameState/GameState";
-import type { SceneryName } from "@/sprites/planets";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import { unitVectors } from "@/utils/vectors/unitVectors";
-import type { DirectionXy8, Xyz } from "@/utils/vectors/vectors";
-import {
-  directionsXy4,
-  directions8Xy,
-  directionsXyDiagonal,
-  distanceSquaredXy,
-  originXy,
-  originXyz,
-  perpendicularAxisXy,
-  scaleXyz,
-  subXy,
-  unitVector,
-  xyEqual,
-  xyzEqual,
-  lengthXy,
-} from "@/utils/vectors/vectors";
 import { mtv } from "../slidingCollision";
-import type { RoomState, UnknownRoomState } from "@/model/modelTypes";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
-import { blockSizePx } from "@/sprites/spritePivots";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState, UnknownRoomState } from "../../../model/modelTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import type { Xyz, DirectionXy8 } from "../../../utils/vectors/vectors";
+import {
+  originXyz,
+  xyEqual,
+  originXy,
+  subXy,
+  distanceSquaredXy,
+  perpendicularAxisXy,
+  unitVector,
+  scaleXyz,
+  lengthXy,
+  xyzEqual,
+  directionsXyDiagonal,
+  directions8Xy,
+  directionsXy4,
+} from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];

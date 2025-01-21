@@ -1,5 +1,5 @@
-import type { ZxSpectrumRoomColour } from "@/originalGame";
-import type { SceneryName } from "@/sprites/planets";
+import type { ZxSpectrumRoomColour } from "../originalGame";
+import type { SceneryName } from "../sprites/planets";
 import type { UnknownJsonItem } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 
@@ -18,6 +18,9 @@ export type RoomJson<
     x: number;
     /* depth in game blocks. this is the integer unit of room size and different from the width in pixels */
     y: number;
+
+    // custom room height in blocks. If not set, the default room height is used. only a few rooms need this.
+    z?: number;
   };
   planet: P;
   floor: Floor;

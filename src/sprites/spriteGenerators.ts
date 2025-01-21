@@ -1,6 +1,6 @@
-import type { SpriteSize } from "@/model/modelTypes";
-import { iterate } from "@/utils/iterate";
-import type { DirectionXy4, Xy } from "@/utils/vectors/vectors";
+import type { SpriteSize } from "../model/modelTypes";
+import { iterate } from "../utils/iterate";
+import type { DirectionXy4, Xy } from "../utils/vectors/vectors";
 import { range } from "iter-tools";
 import type { SpritesheetFrameData } from "pixi.js";
 
@@ -52,13 +52,11 @@ export type FrameNumbers<N extends number> =
   : `${N}` extends "9" ? "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
   : never;
 
-//technically not all our animations have four frames but that's the maximum and it'll do ok
-// could be a bit smarter here really
-export type AnimatedTextureName<
+export type NumberedTextureName<
   TName extends string,
   N extends number,
 > = `${TName}.${FrameNumbers<N>}`;
-export const seriesOfAnimationFrameTextures = <
+export const seriesOfNumberedTextures = <
   TName extends string,
   N extends number,
 >(
@@ -66,8 +64,8 @@ export const seriesOfAnimationFrameTextures = <
   n: N,
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
-): Record<AnimatedTextureName<TName, N>, SpritesheetFrameData> => {
-  type Name = AnimatedTextureName<TName, N>;
+): Record<NumberedTextureName<TName, N>, SpritesheetFrameData> => {
+  type Name = NumberedTextureName<TName, N>;
 
   function* generator(): Generator<[Name, SpritesheetFrameData]> {
     for (let i = 0; i < n; i++) {
@@ -93,7 +91,7 @@ export const seriesOfAnimationFrameTextureIds = <
 >(
   name: TName,
   n: N,
-): Array<AnimatedTextureName<TName, N>> => [
+): Array<NumberedTextureName<TName, N>> => [
   ...iterate(range(1, n + 1)).map(
     (i) => `${name}.${String(i) as FrameNumbers<N>}` as const,
   ),

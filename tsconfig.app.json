@@ -19,10 +19,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
     // for shadcn: https://ui.shadcn.com/docs/installation/vite
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src"]
 }

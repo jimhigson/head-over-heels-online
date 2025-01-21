@@ -1,10 +1,10 @@
-import type { GameState } from "@/game/gameState/GameState";
-import { initGameState } from "@/game/gameState/initGameState";
-import type { InputState } from "@/game/input/InputState";
-import type { RenderOptions } from "@/game/RenderOptions";
-import type { RoomJson } from "@/model/RoomJson";
-import { zxSpectrumResolution } from "@/originalGame";
 import { produce } from "immer";
+import type { GameState } from "../game/gameState/GameState";
+import { initGameState } from "../game/gameState/initGameState";
+import type { InputState } from "../game/input/InputState";
+import type { RoomJson } from "../model/RoomJson";
+import { zxSpectrumResolution } from "../originalGame";
+import type { RenderOptions } from "../game/RenderOptions";
 
 /**
  * Utilities for setting up a basic example room - for testing
@@ -57,13 +57,17 @@ const basicEmptyRoomWithItems = (
     items,
   };
 };
-const basicRenderOptions: RenderOptions<TestRoomId> = {
+const basicRenderOptions: RenderOptions = {
   showBoundingBoxes: "none",
   showShadowMasks: false,
   upscale: {
-    scaleFactor: 1,
-    effectiveSize: zxSpectrumResolution,
+    gameEngineUpscale: 1,
+    cssUpscale: 1,
+    gameEngineScreenSize: zxSpectrumResolution,
+    canvasSize: zxSpectrumResolution,
   },
+  crtFilter: false,
+  colourise: true,
 };
 
 const gameStateWithInput = (

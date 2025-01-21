@@ -1,25 +1,53 @@
 import type { Key } from "./keys";
 import { isKey } from "./keys";
-import { entries, objectEntriesIter } from "@/utils/entries";
 import type { InputState } from "./InputState";
-import { type KeyAssignment, type Action, booleanActions } from "./InputState";
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
-import { originXyz } from "@/utils/vectors/vectors";
-import { unitVectors } from "@/utils/vectors/unitVectors";
+import {
+  type InputAssignment,
+  type Action,
+  booleanActions,
+} from "./InputState";
+import { entries, objectEntriesIter } from "../../utils/entries";
+import { unitVectors } from "../../utils/vectors/unitVectors";
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
+import { originXyz } from "../../utils/vectors/vectors";
+
+// see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
+//const DOM_KEY_LOCATION_STANDARD = 0;
+//const DOM_KEY_LOCATION_LEFT = 1;
+//const DOM_KEY_LOCATION_RIGHT = 2;
+const DOM_KEY_LOCATION_NUMPAD = 3;
 
 // returns the action for a given keyboard key, or undefined if none was found
 function* keyToAction(
-  keyAssignment: KeyAssignment,
+  inputAssignment: InputAssignment,
   pressedKey: Key,
 ): Generator<Action | DirectionXy4> {
-  for (const [action, assignedKeys] of entries(keyAssignment)) {
+  for (const [action, assignedKeys] of entries(inputAssignment)) {
     if (assignedKeys.includes(pressedKey)) {
       yield action;
     }
   }
 }
-const standardiseCase = (k: string): string =>
-  k.length === 1 ? k.toUpperCase() : k;
+const getKey = ({
+  key: k,
+  location: l,
+  repeat: r,
+}: KeyboardEvent): Key | undefined => {
+  if (r) {
+    // ignore key repeat from OS (holding down key makes multiple keypresses)
+    return undefined;
+  }
+
+  const standardCase = k.length === 1 ? k.toUpperCase() : k;
+  const withLocation =
+    l === DOM_KEY_LOCATION_NUMPAD ? `Numpad${standardCase}` : standardCase;
+
+  if (isKey(withLocation)) {
+    return withLocation;
+  }
+  console.log("unrecognised key", k);
+  return undefined;
+};
 
 const isDirectionAction = (
   input: Action | DirectionXy4,
@@ -29,17 +57,29 @@ const isDirectionAction = (
   input === "left" ||
   input === "right";
 
-export const listenForInput = ({
-  keyAssignment,
-  inputState,
-  onInputStateChange,
-}: {
-  keyAssignment: KeyAssignment;
+export type InputStateChangeEvent = {
+  /** was a key put down (add a new key press) or up (remove a keypress)? */
+  upOrDown?: "up" | "down";
+  inputState: InputState;
+};
+
+type ListenForInputOptions = {
+  /**
+   * a handle is used here so the 'current' value can be
+   * swapped in and out if the user changes their keys
+   */
+  inputAssignmentHandle: { inputAssignment: InputAssignment };
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
-  onInputStateChange?: (inputState: InputState) => void;
-}) => {
+  onInputStateChange?: (inputState: InputStateChangeEvent) => void;
+};
+
+export const listenForInput = ({
+  inputAssignmentHandle,
+  inputState,
+  onInputStateChange,
+}: ListenForInputOptions) => {
   let directionPressNumber = 0;
   // map the direction key to the order of its press, if it is currently being pressed
   const directionsPressed: Partial<Record<DirectionXy4, number>> = {};
@@ -61,25 +101,23 @@ export const listenForInput = ({
       );
   };
 
-  const keyDownHandler = ({ key, repeat }: KeyboardEvent): void => {
-    // ignore key repeat from OS (holding down key makes multiple keypresses)
-    if (repeat) return;
+  const keyDownHandler = (keyboardEvent: KeyboardEvent): void => {
+    const stdKey = getKey(keyboardEvent);
 
-    const stdKey = standardiseCase(key);
-
-    if (!isKey(stdKey)) {
-      console.log("do not recognise key: ", stdKey);
+    if (stdKey === undefined) {
       return;
     }
 
+    inputState.raw[stdKey] = true;
+
     let foundMapping = false;
-    for (const action of keyToAction(keyAssignment, stdKey)) {
+    const { inputAssignment } = inputAssignmentHandle;
+    for (const action of keyToAction(inputAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
         directionsPressed[action] = directionPressNumber++;
-      } else {
-        inputState[action] = true;
       }
+      inputState[action] = true;
     }
 
     if (!foundMapping) {
@@ -87,36 +125,40 @@ export const listenForInput = ({
     }
 
     updateDirection();
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ upOrDown: "down", inputState });
   };
-  const keyUpHandler = ({ key }: KeyboardEvent): void => {
-    const stdKey = standardiseCase(key);
-    if (!isKey(stdKey)) {
+  const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
+    const stdKey = getKey(keyboardEvent);
+
+    if (stdKey === undefined) {
       return;
     }
 
-    for (const action of keyToAction(keyAssignment, stdKey)) {
+    delete inputState.raw[stdKey];
+
+    const { inputAssignment } = inputAssignmentHandle;
+    for (const action of keyToAction(inputAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];
-      } else {
-        inputState[action] = false;
       }
+      inputState[action] = false;
     }
     updateDirection();
-    onInputStateChange?.(inputState);
+    onInputStateChange?.({ upOrDown: "up", inputState });
   };
 
   const handleWindowFocus = (): void => {
-    inputState.windowFocus = true;
-    onInputStateChange?.(inputState);
+    inputState.windowBlurred = false;
+    onInputStateChange?.({ inputState });
   };
   const handleWindowBlur = (): void => {
-    inputState.windowFocus = false;
+    inputState.windowBlurred = true;
     // turn all keys off:
     for (const action of booleanActions) {
       inputState[action] = false;
     }
-    onInputStateChange?.(inputState);
+    inputState.raw = {};
+    onInputStateChange?.({ inputState });
   };
 
   window.focus();

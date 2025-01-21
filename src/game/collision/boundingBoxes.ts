@@ -1,11 +1,8 @@
-import type { UnknownJsonItem } from "@/model/json/JsonItem";
-import { blockSizePx } from "@/sprites/spritePivots";
-import { type Aabb } from "@/utils/vectors/vectors";
-import {
-  liftBBShortening,
-  roomHeightBlocks,
-} from "../physics/mechanicsConstants";
-import type { UnknownItemInPlay } from "@/model/ItemInPlay";
+import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
+import type { Aabb } from "../../utils/vectors/vectors";
+import type { UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { UnknownJsonItem } from "../../model/json/JsonItem";
+import { blockSizePx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -23,7 +20,7 @@ export const wallThicknessBlocks = 1;
 export const xAxisWallAabb = {
   x: blockSizePx.w,
   y: blockSizePx.d * wallThicknessBlocks,
-  z: roomHeightBlocks * blockSizePx.h,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
 };
 export const xAxisWallRenderAabb = {
   x: xAxisWallAabb.x,
@@ -34,7 +31,7 @@ export const xAxisWallRenderAabb = {
 export const yAxisWallAabb = {
   x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: roomHeightBlocks * blockSizePx.h,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
 };
 export const yAxisWallRenderAabb = {
   x: 0,
@@ -58,7 +55,7 @@ export const boundingBoxForItem = (
         : { aabb: smallItemAabb };
     case "lift":
       return {
-        aabb: { ...smallItemAabb, z: smallItemAabb.z - liftBBShortening },
+        aabb: { ...smallItemAabb, z: smallItemAabb.z },
       };
 
     case "switch": {
@@ -99,6 +96,7 @@ export const boundingBoxForItem = (
         case "cyberman":
         case "elephant":
         case "emperorsGuardian":
+        case "monkey":
         case "computerBot":
           return { aabb: doubleHeightCharacter };
         case "helicopterBug":
@@ -111,7 +109,7 @@ export const boundingBoxForItem = (
     case "deadlyBlock":
       switch (item.config.style) {
         case "toaster":
-          return { aabb: { ...largeItemAabb, y: largeItemAabb.y - 2 } };
+          return { aabb: { ...largeItemAabb, y: largeItemAabb.y } };
         case "spikes":
         case "volcano":
           return { aabb: largeItemAabb };

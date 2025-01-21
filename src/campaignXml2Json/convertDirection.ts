@@ -1,4 +1,4 @@
-import type { DirectionXy4 } from "@/utils/vectors/vectors";
+import type { DirectionXy4 } from "../utils/vectors/vectors";
 import type { CompassDirections } from "./readToJson";
 
 export const convertDirection = (

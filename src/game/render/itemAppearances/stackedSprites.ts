@@ -1,6 +1,6 @@
-import { spriteSheet } from "@/sprites/spriteSheet";
 import { type Filter, Container } from "pixi.js";
 import { type CreateSpriteOptions, createSprite } from "../createSprite";
+import { spriteSheet } from "../../../sprites/spriteSheet";
 
 export const itemRidingOnBubblesSpritesOptions = {
   frames: spriteSheet.animations["bubbles.cold"],

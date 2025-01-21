@@ -1,6 +1,5 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
-import { selectCurrentRoom } from "@/game/gameState/GameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { listenForInput } from "./input/listenForInput";
 import { initGameState } from "./gameState/initGameState";
@@ -9,26 +8,27 @@ import { mainLoop } from "./mainLoop/mainLoop";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { initDevtools } from "@pixi/devtools";
+import { selectCurrentRoom } from "./gameState/GameState";
 
 /**
  * we are now outside of React-land - pure pixi game engine!
  */
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  renderOptions: RenderOptions<RoomId>,
+  renderOptions: RenderOptions,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
   if (import.meta.env.MODE === "development") {
     initDevtools({ app });
   }
-  await app.init({ background: "#000000", resizeTo: window });
+  await app.init({ background: "#000000" });
 
   const gameState = initGameState({ campaign, renderOptions });
   const stopListeningForInput = listenForInput({
-    keyAssignment: gameState.keyAssignment,
+    inputAssignmentHandle: gameState,
     inputState: gameState.inputState,
-    onInputStateChange(inputState) {
-      gameState.events.emit("inputStateChanged", inputState);
+    onInputStateChange(inputStateChangeEvent) {
+      gameState.events.emit("inputStateChanged", inputStateChangeEvent);
     },
   });
 
@@ -39,6 +39,7 @@ export const gameMain = async <RoomId extends string>(
     events: gameState.events,
     renderIn(containerElement) {
       containerElement.appendChild(app.canvas);
+      app.resizeTo = containerElement;
     },
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({
@@ -54,7 +55,7 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
-    set renderOptions(options: RenderOptions<RoomId>) {
+    set renderOptions(options: RenderOptions) {
       gameState.renderOptions = options;
     },
     stop() {

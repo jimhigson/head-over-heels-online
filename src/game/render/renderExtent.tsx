@@ -1,6 +1,6 @@
+import type { AnyRoomJson } from "../../model/RoomJson";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 import { roomSidesWithDoors } from "./roomSidesWithDoors";
-import type { AnyRoomJson } from "@/model/RoomJson";
 
 export const floorBlockMinMax = (roomJson: AnyRoomJson) => {
   const sidesWithDoors = roomSidesWithDoors(roomJson);
