@@ -1,6 +1,6 @@
 import type { GameApi } from "../../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
-import { ImgSprite } from "../Sprite";
+import { SpritesheetSprite } from "../Sprite";
 import { useState } from "react";
 import {
   Popover,
@@ -45,7 +45,7 @@ export function RoomSelect<RoomId extends string>({
           className={`justify-between ${className}`}
         >
           {viewingRoomId || "Select a room"}
-          <ImgSprite
+          <SpritesheetSprite
             className={`"ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud.char.X" : "texture-hud.char.⬇"}`}
           />
         </Button>
@@ -67,10 +67,10 @@ export function RoomSelect<RoomId extends string>({
                   }}
                 >
                   {gameApi.gameState.characterRooms.head?.id === r && (
-                    <ImgSprite className="m-1 head.walking.towards.2" />
+                    <SpritesheetSprite className="m-1 head.walking.towards.2" />
                   )}
                   {gameApi.gameState.characterRooms.heels?.id === r && (
-                    <ImgSprite className="m-1 texture-heels.walking.towards.2" />
+                    <SpritesheetSprite className="m-1 texture-heels.walking.towards.2" />
                   )}
                   {r}
                 </CommandItem>

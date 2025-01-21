@@ -4,27 +4,18 @@ import { mainMenu } from "./menus/mainMenu";
 import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
 import { selectKeysMenu } from "./menus/selectKeysMenu";
 import { readTheManualMenu } from "./menus/readTheManualMenu";
-import { type MarkdownPageName } from "../../../../manual/pages";
 import type { MenuItem } from "./MenuItem";
 import { holdMenu } from "./menus/holdMenu";
 import { markdownMenus } from "./markdownMenus";
-
-export type MenuId =
-  | "mainMenu"
-  | "selectKeys"
-  | "inputPreset"
-  | "modernisationOptions"
-  | "readTheManual"
-  | "hold"
-  | `markdown/${MarkdownPageName}`;
+import { crownsMenu } from "./menus/crownsMenu";
 
 export type Menu = {
   Content: () => ReactElement;
   items: MenuItem[];
-  dialogClassName: string;
+  dialogClassName?: string;
   borderClassName?: string;
 };
-export const menus: Record<MenuId, Menu> = {
+export const menus = {
   ...{
     mainMenu,
     selectKeys: selectKeysMenu,
@@ -32,6 +23,9 @@ export const menus: Record<MenuId, Menu> = {
     inputPreset: inputPresetMenu,
     readTheManual: readTheManualMenu,
     hold: holdMenu,
+    crowns: crownsMenu,
   },
   ...markdownMenus,
-};
+} as const;
+
+export type MenuId = keyof typeof menus;

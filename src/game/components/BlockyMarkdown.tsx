@@ -2,7 +2,7 @@ import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
-import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
+import { SpritesheetSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -71,7 +71,7 @@ const markdownComponents: Components = {
     return (
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>
-        <ImgSprite
+        <SpritesheetSprite
           className={twMerge("float-left mr-1 mb-1", classes.join(" "))}
         />
       </span>

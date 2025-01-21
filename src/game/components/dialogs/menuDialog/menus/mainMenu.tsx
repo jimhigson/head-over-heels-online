@@ -1,5 +1,5 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
-import { BitmapText, ImgSprite } from "../../../Sprite";
+import { BitmapText, SpritesheetSprite } from "../../../Sprite";
 import { type Menu } from "../menus";
 import { useGameApi } from "../../../GameApiContext";
 import { MenuItems } from "../MenuItems";
@@ -23,14 +23,14 @@ const MainMenuHeading = () => (
   <div className="flex text-highlightBeige">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-      <ImgSprite className="ml-1 mt-1 texture-head.walking.right.2" />
+      <SpritesheetSprite className="ml-1 mt-1 texture-head.walking.right.2" />
     </div>
     <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
       over
     </BitmapText>
     <div className="flex flex-col">
       <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-      <ImgSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
+      <SpritesheetSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
     </div>
     <BitmapText colourCycle={colourCycle} className="mt-1">
       online
@@ -71,7 +71,7 @@ const MainMenuFooter = () => (
       </div>
     </div>
     <div>
-      <ImgSprite className="mr-1 texture-cube" />
+      <SpritesheetSprite className="mr-1 texture-cube" />
       <BitmapText className="text-redShadow">https://</BitmapText>
       <BitmapText className="text-lightGrey">block</BitmapText>
       <BitmapText className="text-highlightBeige">stack</BitmapText>

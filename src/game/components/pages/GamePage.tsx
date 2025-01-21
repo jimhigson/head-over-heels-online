@@ -84,11 +84,12 @@ export const GamePage = () => {
     <>
       <div
         style={{
-          transform: `scale(${cssUpscale})`,
+          // using scale3d (not scale) to try to force hardware acceleration of the scaling
+          transform: `scale3d(${cssUpscale}, ${cssUpscale}, 1)`,
           width: canvasSize.x,
           height: canvasSize.y,
         }}
-        className="origin-top-left transform-gpu"
+        className="origin-top-left"
         ref={setGameDiv}
       />
       {gameApi && (

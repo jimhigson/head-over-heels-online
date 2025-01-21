@@ -37,6 +37,8 @@ export type GameMenusState = {
     emulatedResolution: Xy;
     inputAssignment: InputAssignment;
   };
+
+  gameRunning: boolean;
 };
 
 const initialState: GameMenusState = {
@@ -57,6 +59,8 @@ const initialState: GameMenusState = {
   // when we first load, show the main menu:
   menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
   actionBeingAssignedKeys: undefined,
+
+  gameRunning: false,
 };
 
 /**
@@ -113,6 +117,10 @@ export const gameMenusSlice = createSlice({
     },
     menuPressed(state) {
       if (state.menus.length > 0) {
+        if (state.menus.length === 1 && !state.gameRunning) {
+          return; // can't exit main menu if game not running
+        }
+
         // go up one menu:
         const [, ...tail] = state.menus;
         state.menus = tail;
@@ -156,7 +164,13 @@ export const gameMenusSlice = createSlice({
           // to change the value represented by the switch
           break;
         case "toGame":
-          state.menus = [];
+          if (state.gameRunning) {
+            state.menus = [];
+          } else {
+            // go to crowns menu page if not already started the game
+            state.menus = [{ menuId: "crowns", selectedIndex: 0 }];
+            state.gameRunning = true;
+          }
           break;
         case "back": {
           const [, ...tail] = state.menus;
