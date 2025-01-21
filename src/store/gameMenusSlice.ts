@@ -113,6 +113,7 @@ export const gameMenusSlice = createSlice({
     },
     menuPressed(state) {
       if (state.menus.length > 0) {
+        // go up one menu:
         const [, ...tail] = state.menus;
         state.menus = tail;
       } else {
@@ -159,11 +160,16 @@ export const gameMenusSlice = createSlice({
         case "toGame":
           state.menus = [];
           break;
-        case "back":
+        case "back": {
+          const [, ...tail] = state.menus;
+          state.menus = tail;
           break;
+        }
         case "todo":
           // not implemented - do nothing
           break;
+        default:
+          selectedMenuItem satisfies never;
       }
     },
     menuDown(state) {
@@ -173,13 +179,11 @@ export const gameMenusSlice = createSlice({
       }
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
-      const maxIndex =
-        tail.length > 0 ? menu.items.length + 1 : menu.items.length;
 
       state.menus = [
         {
           menuId,
-          selectedIndex: (selectedIndex + 1) % maxIndex,
+          selectedIndex: (selectedIndex + 1) % menu.items.length,
         },
         ...tail,
       ];
@@ -192,12 +196,12 @@ export const gameMenusSlice = createSlice({
 
       const [{ selectedIndex, menuId }, ...tail] = state.menus;
       const menu = menus[menuId];
-      const maxIndex =
-        tail.length > 0 ? menu.items.length + 1 : menu.items.length;
+
       state.menus = [
         {
           menuId,
-          selectedIndex: (selectedIndex - 1 + maxIndex) % maxIndex,
+          selectedIndex:
+            (selectedIndex - 1 + menu.items.length) % menu.items.length,
         },
         ...tail,
       ];

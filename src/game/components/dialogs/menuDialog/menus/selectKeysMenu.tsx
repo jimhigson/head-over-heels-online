@@ -7,6 +7,10 @@ import { BitmapText } from "../../../Sprite";
 import type { Menu } from "../menus";
 import nanoEqual from "nano-equal";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
+import { MenuItems } from "../MenuItems";
+import { withProps } from "../withClassName";
+import { backMenuItem } from "../backMenuItem";
+import { SelectedItemHint } from "../SelectedItemHint";
 
 const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
   const currentPresetName = useAppSelector(
@@ -37,18 +41,21 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 
 export const selectKeysMenu: Menu = {
   backgroundClassName: "bg-lightGrey",
-  // since these items are themselves multi-line, leave an extra gap between them
-  // the '!' is needed because twMerge doesn't recognise that gay-y-1 overrides gap-y-(name)
-  itemsClassName: "text-metallicBlue !gap-y-1 overflow-y-hidden",
-  selectedClassName: "text-shadow",
   borderClassName: "bg-midGrey",
-  hintClassName: "text-metallicBlue",
-  heading: (
+  sections: [
     <BitmapText className="text-metallicBlue sprites-double-height">
       Select the keys
-    </BitmapText>
-  ),
-  footer: SelectKeysMenuFooter,
+    </BitmapText>,
+    withProps(MenuItems, {
+      // since these items are themselves multi-line, leave an extra gap between them
+      // the '!' is needed because twMerge doesn't recognise that gay-y-1 overrides gap-y-(name)
+      className: "text-metallicBlue !gap-y-1 overflow-y-hidden",
+      selectedClassName: "text-shadow",
+    }),
+    withProps(SelectedItemHint, { className: "text-metallicBlue" }),
+    SelectKeysMenuFooter,
+  ],
+
   items: [
     {
       type: "submenu",
@@ -106,5 +113,6 @@ export const selectKeysMenu: Menu = {
       label: "Menu",
       action: "menu",
     },
+    backMenuItem,
   ],
 };

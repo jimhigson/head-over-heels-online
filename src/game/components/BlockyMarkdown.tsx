@@ -1,16 +1,11 @@
-import type { JSX } from "react";
+import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
 import { ImgSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
-import { assertIsTextureId } from "../../sprites/assertIsTextureId";
 import { useTotalUpscale } from "../../store/selectors";
-
-export interface BlockyMarkdownProps {
-  markdown: string;
-  className?: string;
-}
+import { twMerge } from "tailwind-merge";
 
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
@@ -67,26 +62,31 @@ const markdownComponents: Components = {
     const scaleFactor = useTotalUpscale();
 
     if (src === undefined) throw new Error("image without src");
-    if (!src.startsWith("texture-"))
-      throw new Error(
-        `image src "${src}" doesn't look like a tailwind class (doesn't start with 'texture-')`,
-      );
 
-    assertIsTextureId(src.replace(/^texture-/, ""));
+    // the src is actually tailwind classes, usually just giving a single texture, but
+    // can also give extra params by writing as a url and using ? an & to encode them
+    const classes = src.split(/\?|&/);
 
     return (
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>
-        <ImgSprite className={`${src} float-left mr-1 mb-1 w-1/5`} />
+        <ImgSprite
+          className={twMerge("float-left mr-1 mb-1", classes.join(" "))}
+        />
       </span>
     );
   },
 };
 
+export type BlockyMarkdownProps = {
+  markdown: string;
+  className?: string;
+};
+
 export const BlockyMarkdown = ({
   markdown,
   className,
-}: BlockyMarkdownProps) => {
+}: BlockyMarkdownProps): ReactElement => {
   return (
     <Markdown
       className={className}

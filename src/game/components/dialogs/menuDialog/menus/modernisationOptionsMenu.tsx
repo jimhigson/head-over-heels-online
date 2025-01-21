@@ -1,17 +1,23 @@
 import { BitmapText } from "../../../Sprite";
+import { backMenuItem } from "../backMenuItem";
+import { MenuItems } from "../MenuItems";
 import type { Menu } from "../menus";
+import { SelectedItemHint } from "../SelectedItemHint";
+import { withProps } from "../withClassName";
 
 export const modernisationOptionsMenu: Menu = {
   backgroundClassName: "bg-metallicBlue",
-  itemsClassName: "text-lightGrey",
-  selectedClassName: "text-moss",
   borderClassName: "bg-moss",
-  hintClassName: "text-moss",
-  heading: (
+  sections: [
     <BitmapText className="text-moss sprites-double-height">
       Modernisation options
-    </BitmapText>
-  ),
+    </BitmapText>,
+    withProps(MenuItems, {
+      className: "text-lightGrey",
+      selectedClassName: "text-moss",
+    }),
+    withProps(SelectedItemHint, { className: "text-moss" }),
+  ],
   items: [
     {
       type: "switch",
@@ -40,5 +46,6 @@ export const modernisationOptionsMenu: Menu = {
       label: "Emulated resolution",
       hint: "zx spectrum (256x192) or Amiga/c64/Atari ST PAL (320x256)",
     },
+    backMenuItem,
   ],
 };

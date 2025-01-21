@@ -1,8 +1,7 @@
-import type { EmptyObject } from "type-fest";
 import { BitmapText } from "../../../Sprite";
 import { useAppSelector } from "../../../../../store/hooks";
 
-export const SelectKeysMenuFooter = (_emptyProps: EmptyObject) => {
+export const SelectKeysMenuFooter = () => {
   const assigningKeys = useAppSelector(
     (store) => store.actionBeingAssignedKeys,
   );

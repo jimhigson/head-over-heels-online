@@ -1,10 +1,7 @@
 import { useActionInput } from "../useActionInput";
-import { MenuItemComponent } from "./MenuItemComponent";
 import type { EmptyObject } from "type-fest";
 import { menus } from "./menus";
-import { BitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
-import type { MenuItem } from "./MenuItem";
 import type { OpenMenu } from "../../../../store/gameMenusSlice";
 import {
   menuUp,
@@ -22,13 +19,8 @@ import { useGameApi } from "../../GameApiContext";
 import { componentOrElement } from "../../../../utils/react/componentOrNode";
 import { keys } from "../../../../utils/entries";
 
-const backMenuItem: MenuItem = {
-  label: "Back",
-  type: "back",
-  hint: "back up to the previous menu",
-};
-
-const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
+const MenuDialogInner = (props: { openMenus: OpenMenu[] }) => {
+  const { openMenus } = props;
   const dispatch = useAppDispatch();
   const assigningKeys = useAppSelector(
     (store) => store.actionBeingAssignedKeys !== undefined,
@@ -84,13 +76,8 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
     ),
   );
 
-  const [{ menuId, selectedIndex }] = openMenus;
+  const [{ menuId }] = openMenus;
   const menu = menus[menuId];
-
-  const selectedItemHint = (
-    selectedIndex === menu.items.length ?
-      backMenuItem
-    : menu.items[selectedIndex]).hint;
 
   return (
     <Dialog
@@ -100,41 +87,7 @@ const MenuDialogInner = ({ openMenus }: { openMenus: OpenMenu[] }) => {
       )}
       borderClassName={menu.borderClassName}
     >
-      {/* row: heading */}
-      <div>{menu.heading}</div>
-      {/* row: menu items */}
-      <div
-        className={twMerge(
-          "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
-          menu.itemsClassName,
-        )}
-      >
-        {menu.items.map((mi, i) => (
-          <MenuItemComponent
-            menu={menu}
-            key={i}
-            menuItem={mi}
-            selected={selectedIndex === i}
-          />
-        ))}
-        {openMenus.length > 1 && (
-          <MenuItemComponent
-            menu={menu}
-            menuItem={backMenuItem}
-            selected={selectedIndex === menu.items.length}
-          />
-        )}
-      </div>
-      {/* row: hint for selected menu item */}
-      {selectedItemHint && (
-        <BitmapText
-          className={twMerge("block leading-multilineText", menu.hintClassName)}
-        >
-          {selectedItemHint}
-        </BitmapText>
-      )}
-      {/* row: menu footer */}
-      {menu.footer && componentOrElement(menu.footer, {})}
+      {menu.sections.map((section) => componentOrElement(section, {}))}
     </Dialog>
   );
 };

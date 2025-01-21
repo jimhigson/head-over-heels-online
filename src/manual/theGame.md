@@ -1,10 +1,10 @@
 ## THE GAME
 
-![](texture-head.walking.towards.2)![](texture-heels.walking.right.2)Head and Heels have been captured, separated and imprisoned in the castle
+![](texture-heels.walking.right.2)![](texture-head.walking.towards.2&float-right)Head and Heels have been captured, separated and imprisoned in the castle
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb. Your job is to get them both
-out of the castle and into the *marketplace* so they can join up again. From
-there, the journey leads to *Moonbase Headquarters*, where you will have to decide
+out of the castle and into the *marketplace*![](texture-market.wall.fruits.left?bg-pureBlack) so they can join up again. From
+there, the journey leads to ![](texture-moonbase.wall.window2.away?bg-pureBlack&float-right)*Moonbase Headquarters*, where you will have to decide
 either to try to escape back to Freedom or to be a true hero and teleport to one
 of the slave planets to search for its lost crown!
 

@@ -4,8 +4,6 @@ const rawPages = import.meta.glob<string>("./*.md", {
   eager: true,
 });
 
-console.log(rawPages);
-
 // pages, in order as found in the original paper manual
 export const manualPages = {
   historyOfTheBlacktoothEmpire: rawPages["./historyOfTheBlacktoothEmpire.md"],
@@ -36,10 +34,19 @@ export const manualPages = {
 
 export const markdownPages = {
   ...manualPages,
-  teleportBack: rawPages.teleportBack,
+  teleportBack: rawPages["./teleportBack.md"],
 };
 
 export type MarkdownPageName = keyof typeof markdownPages;
 
 // regex to ge the title from any markdown page
 export const titleRegex = /^##\s+(.*)$/m;
+
+export const pageTitle = (pageContent: string): string => {
+  const match = pageContent.match(titleRegex);
+  if (match === null) {
+    return "no title found";
+  }
+  const [, title] = match;
+  return title;
+};

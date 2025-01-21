@@ -1,5 +1,4 @@
 import { BitmapText } from "../../Sprite";
-import type { Menu } from "./menus";
 import type { MenuItem } from "./MenuItem";
 import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
@@ -61,14 +60,14 @@ const MenuItemKeyAssignment = ({
 };
 
 type MenuItemComponentProps = {
-  menu: Menu;
   menuItem: MenuItem;
   selected: boolean;
+  className?: string;
 };
 export const MenuItemComponent = ({
-  menu,
   menuItem,
   selected,
+  className,
 }: MenuItemComponentProps) => {
   const needsDoubling =
     selected && menuItem.type !== "key" && !menuItem.disableDoubling;
@@ -77,12 +76,13 @@ export const MenuItemComponent = ({
     <>
       {/* first column content (icon thing)... */}
       <BitmapText
-        className={clsx(
+        className={twMerge(
           // inline-block is required for flipping with scale to work
           "inline-block col-start-1",
           needsDoubling ? "sprites-double-height" : "",
-          selected ? menu.selectedClassName : "",
+          //selected ? menu.selectedClassName : "",
           menuItem.type === "back" ? "scale-[-1]" : "",
+          className,
         )}
       >
         {selected ? "⏩⏩" : "⁌⁍"}
@@ -100,7 +100,7 @@ export const MenuItemComponent = ({
           needsDoubling ? "sprites-double-height" : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
           menuItem.type === "back" ? "mt-1" : "",
-          selected ? menu.selectedClassName : "",
+          className,
         )}
       >
         {typeof menuItem.label === "string" ?
@@ -114,7 +114,7 @@ export const MenuItemComponent = ({
         <MenuItemKeyAssignment
           switchMenuItem={menuItem}
           selected={selected}
-          className={selected ? menu.selectedClassName : ""}
+          className={className}
         />
       )}
       {menuItem.type === "switch" && (

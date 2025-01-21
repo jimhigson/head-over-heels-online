@@ -5,8 +5,22 @@ import { zxSpectrumResolution } from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
 export default {
+  /*corePlugins: {
+    accentColor: false,
+    backdropBlur: false,
+    accessibility: false,
+  },*/
+
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: {
+    files: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],
+    extract: {
+      md(content) {
+        return content.match(/[^\(\)&\?\s]*/g) ?? [];
+      },
+    },
+  },
+
   safelist: [
     {
       // any single-char sprite could be shown by parsing a markdown file, the others
