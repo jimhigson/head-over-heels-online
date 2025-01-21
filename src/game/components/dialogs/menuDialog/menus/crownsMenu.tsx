@@ -6,8 +6,10 @@ import { PixiSprite } from "../../../PixiSprite";
 const TitledCrown = ({
   planet,
   className,
+  label = planet,
 }: {
   planet: PlanetName;
+  label?: string;
   className?: string;
 }) => {
   return (
@@ -22,7 +24,7 @@ const TitledCrown = ({
         textureId="ball"
         revertColourTo="highlightBeige"
       />
-      <BitmapText className="block mx-auto text-pink">{planet}</BitmapText>
+      <BitmapText className="block mx-auto text-pink">{label}</BitmapText>
     </div>
   );
 };
@@ -45,7 +47,8 @@ const CrownsMenuContent = () => {
         className="w-12 absolute left-[calc(var(--block,8px)*0)] top-[calc(var(--block,8px)*17)]"
       />
       <TitledCrown
-        planet="book world"
+        planet="bookworld"
+        label="book world"
         className="w-12 absolute left-[calc(var(--block,8px)*20)] top-[calc(var(--block,8px)*17)]"
       />
       <TitledCrown
