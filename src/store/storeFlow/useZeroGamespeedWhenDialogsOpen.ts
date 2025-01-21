@@ -1,14 +1,13 @@
 import { useEffect } from "react";
-import { useIsOnHold, useMenus, useScrollContent } from "../selectors";
+import { useIsOnHold, useMenus } from "../selectors";
 import { useGameApi } from "../../game/components/GameApiContext";
 
 export const useZeroGameSpeedWhenDialogsOpen = () => {
   const gameApi = useGameApi();
   const isOnHold = useIsOnHold();
   const menus = useMenus();
-  const scrollContent = useScrollContent();
 
-  const open = menus.length > 0 || scrollContent !== null || isOnHold;
+  const open = menus.length > 0 || isOnHold;
 
   useEffect(() => {
     if (open) {

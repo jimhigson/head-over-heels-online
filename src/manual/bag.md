@@ -8,5 +8,5 @@ press the CARRY key. It is not possible to drop an object in a doorway.
 
 ![](texture-cube)![](texture-drum)![](texture-spring.compressed)![](texture-sticks)
 
-**> head over heels manual**
+*> head over heels manual*
 

@@ -12,8 +12,8 @@ export const useOpenScrolls = () => {
     gameApi.events,
     "scrollOpened",
     useCallback(
-      ({ markdown }) => {
-        dispatch(showScroll(markdown));
+      ({ page }) => {
+        dispatch(showScroll(page));
       },
       [dispatch],
     ),

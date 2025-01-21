@@ -19,8 +19,12 @@ startAppListening({
       menus: [{ menuId, selectedIndex }],
     } = getState();
     const menu = menus[menuId];
-    const selectedMenuItem = menu.items[selectedIndex];
-    if (selectedMenuItem.type === "switch" && selectedMenuItem.dispatch) {
+    const selectedMenuItem = menu.items.at(selectedIndex);
+    if (
+      selectedMenuItem !== undefined &&
+      selectedMenuItem.type === "switch" &&
+      selectedMenuItem.dispatch
+    ) {
       dispatch(selectedMenuItem.dispatch);
     }
   },

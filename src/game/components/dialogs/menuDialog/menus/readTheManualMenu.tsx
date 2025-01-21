@@ -10,7 +10,7 @@ import { withProps } from "../withClassName";
 
 export const readTheManualMenu: Menu = {
   backgroundClassName: "bg-highlightBeige",
-  borderClassName: "bg-midRed",
+  borderClassName: "bg-midGrey",
   sections: [
     <BitmapText className="text-moss sprites-double-height">
       Read the manual
@@ -31,7 +31,7 @@ export const readTheManualMenu: Menu = {
         return {
           type: "submenu",
           label: title,
-          submenu: `manual/${pageName}`,
+          submenu: `markdown/${pageName}`,
         };
       },
     ),

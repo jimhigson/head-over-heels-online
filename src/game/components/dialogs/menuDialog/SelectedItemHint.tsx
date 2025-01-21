@@ -15,7 +15,7 @@ export const SelectedItemHint = ({ className }: { className?: string }) => {
     : menu.items[selectedItemIndex].hint;
 
   if (selectedItemHint === undefined) {
-    return <>No hint</>;
+    return null;
   }
 
   return (

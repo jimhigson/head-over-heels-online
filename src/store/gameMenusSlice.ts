@@ -14,6 +14,7 @@ import { calculateUpscale } from "../game/render/calculateUpscale";
 import type { RenderOptions, ShowBoundingBoxes } from "../game/RenderOptions";
 import { zxSpectrumResolution } from "../originalGame";
 import type { Xy } from "../utils/vectors/vectors";
+import type { MarkdownPageName } from "../manual/pages";
 
 export type OpenMenu = {
   menuId: MenuId;
@@ -31,11 +32,7 @@ export type GameMenusState = {
    * stack of menus currently open - empty if none are
    */
   menus: OpenMenu[];
-  /**
-   * the markdown content of the currently displayed scroll, or null
-   * when none
-   */
-  scrollContent: string | null;
+
   inputAssignment: InputAssignment;
   // for the key assignment menu, the key currently being assigned
   actionBeingAssignedKeys: Action | undefined;
@@ -56,7 +53,6 @@ const initialState: GameMenusState = {
   emulatedResolution: zxSpectrumResolution,
   // when we first load, show the main menu:
   menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
-  scrollContent: null,
   inputAssignment: keyAssignmentPresets.default.inputAssignment,
   actionBeingAssignedKeys: undefined,
 };
@@ -78,11 +74,13 @@ export const gameMenusSlice = createSlice({
     ) {
       state.emulatedResolution = emulatedResolution;
     },
-    showScroll(state, { payload: scrollContent }: PayloadAction<string>) {
-      state.scrollContent = scrollContent;
-    },
-    closeScroll(state) {
-      state.scrollContent = null;
+    showScroll(
+      state,
+      { payload: markdownPageName }: PayloadAction<MarkdownPageName>,
+    ) {
+      state.menus = [
+        { menuId: `markdown/${markdownPageName}`, selectedIndex: 0 },
+      ];
     },
     /** adds another input to the currently being assigned action */
     inputAssigned(
@@ -119,7 +117,6 @@ export const gameMenusSlice = createSlice({
       } else {
         state.menus = [{ menuId: "mainMenu", selectedIndex: 0 }];
         state.onHold = false;
-        state.scrollContent = null;
       }
     },
     menuItemSelected(state) {
@@ -207,7 +204,7 @@ export const gameMenusSlice = createSlice({
       ];
     },
     onHoldPressed(state) {
-      if (state.menus.length > 0 || state.scrollContent !== null) {
+      if (state.menus.length > 0) {
         // do nothing if hold pressed while in menus
         return;
       }
@@ -242,7 +239,6 @@ export type GameMenusSliceAction = ReturnType<
 export const {
   setUpscale,
   showScroll,
-  closeScroll,
   menuItemSelected,
   menuDown,
   menuPressed,

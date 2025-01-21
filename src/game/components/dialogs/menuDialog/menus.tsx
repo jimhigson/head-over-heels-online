@@ -7,11 +7,10 @@ import { readTheManualMenu } from "./menus/readTheManualMenu";
 import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import type { MenuItem } from "./MenuItem";
 import { transformObject } from "../../../../utils/entries";
-import { backMenuItem } from "./backMenuItem";
-import { MenuItems } from "./MenuItems";
 import { withProps } from "./withClassName";
-import { BlockyMarkdown } from "../../BlockyMarkdown";
 import type { EmptyObject } from "type-fest";
+import { MenuMarkdown } from "./MenuMarkdown";
+import { PressToContinueBanner } from "../PressToContinueBanner";
 
 export type MenuId =
   | "mainMenu"
@@ -19,7 +18,7 @@ export type MenuId =
   | "inputPreset"
   | "modernisationOptions"
   | "readTheManual"
-  | `manual/${MarkdownPageName}`;
+  | `markdown/${MarkdownPageName}`;
 
 export type Menu = {
   sections: Array<ReactElement | ((props: EmptyObject) => ReactElement | null)>;
@@ -46,21 +45,22 @@ export const menus: Record<MenuId, Menu> = {
   },
   ...transformObject(
     markdownPages,
-    ([pageName, pageContent]): [`manual/${MarkdownPageName}`, Menu] => {
+    ([pageName, markdown]): [`markdown/${MarkdownPageName}`, Menu] => {
       return [
-        `manual/${pageName}`,
+        `markdown/${pageName}`,
         {
           backgroundClassName: "bg-highlightBeige",
-          borderClassName: "bg-midRed",
-          items: [backMenuItem],
+          borderClassName: "bg-midGrey",
+          items: [],
           sections: [
-            withProps(BlockyMarkdown, {
-              markdown: pageContent,
-              className: "text-shadow",
+            withProps(MenuMarkdown, {
+              markdown,
+              className: "text-shadow overflow-y-hidden pb-2",
             }),
-            withProps(MenuItems, {
-              className: "text-lightGrey",
-              selectedClassName: "text-shadow",
+            withProps(PressToContinueBanner, {
+              action: "menu",
+              className: "absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1",
+              keyClassName: "text-midRed",
             }),
           ],
         },

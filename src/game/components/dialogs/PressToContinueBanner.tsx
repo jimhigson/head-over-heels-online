@@ -13,18 +13,18 @@ export const PressToContinueBanner = ({
   keyClassName?: string;
 }) => {
   return (
-    <div className={twMerge("text-metallicBlue text-left", `mt-1`, className)}>
+    <div className={twMerge("text-metallicBlue text-left", className)}>
       <BitmapText className="me-1">Press</BitmapText>
       <BitmapText className={twMerge("me-1", keyClassName)}>
         {action}
       </BitmapText>
-      <BitmapText>to continue</BitmapText>
+      <BitmapText>key to continue</BitmapText>
       <div>
         <BitmapText>(</BitmapText>
         <CurrentKeyAssignment
           className="inline"
           keyClassName={keyClassName}
-          action="hold"
+          action={action}
         />
         <BitmapText>)</BitmapText>
       </div>

@@ -14,9 +14,6 @@ export const useTotalUpscale = () =>
 export const useRenderOptions = () =>
   useAppSelector((state) => state.renderOptions);
 
-export const useScrollContent = () =>
-  useAppSelector((state) => state.scrollContent);
-
 export const useMenus = () => useAppSelector((state) => state.menus);
 export const useCurrentMenu = () => {
   const openMenus = useMenus();

@@ -6,10 +6,11 @@ import type { AnyItemInPlay } from "../model/ItemInPlay";
 import type { Campaign, RoomState } from "../model/modelTypes";
 import type { SceneryName } from "../sprites/planets";
 import type { InputStateChangeEvent } from "./input/listenForInput";
+import type { MarkdownPageName } from "../manual/pages";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
-  scrollOpened: { page: string };
+  scrollOpened: { page: MarkdownPageName };
   gameOver: undefined;
   /** emitted when input changes - only really so react/dom bits can close when some input happens */
   inputStateChanged: InputStateChangeEvent;
