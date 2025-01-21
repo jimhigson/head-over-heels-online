@@ -47,10 +47,10 @@ export type GameMenusState = {
 const initialState: GameMenusState = {
   userSettings: {
     renderOptions: {
-      upscale: calculateUpscale(
-        { x: window.innerWidth, y: window.innerHeight },
-        zxSpectrumResolution,
-      ),
+      // we don't want to tie the store to the window object by reading window.innerWidth etc here,
+      // since then the tests wouldn't run under node. Put any value in - it will be updated by
+      // react hooks when they mount, before the first render to pixels
+      upscale: calculateUpscale(zxSpectrumResolution, zxSpectrumResolution, 1),
       showBoundingBoxes: "none",
       showShadowMasks: false,
       crtFilter: true,

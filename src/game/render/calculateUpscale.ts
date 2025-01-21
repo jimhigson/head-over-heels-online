@@ -23,8 +23,9 @@ export const calculateUpscale = (
   /** size of the dom element, window, etc we want to render into */
   renderAreaSize: Xy,
   emulatedScreenSize: Xy,
+  devicePixelRatio: number,
 ): Upscale => {
-  const devicePixels = scaleXy(renderAreaSize, window.devicePixelRatio);
+  const devicePixels = scaleXy(renderAreaSize, devicePixelRatio);
 
   const scaleFactor = Math.floor(
     Math.min(
@@ -38,7 +39,7 @@ export const calculateUpscale = (
   };
 
   const gameEngineUpscale = Math.min(maximumCanvasUpscale, scaleFactor);
-  const cssUpscale = scaleFactor / gameEngineUpscale / window.devicePixelRatio;
+  const cssUpscale = scaleFactor / gameEngineUpscale / devicePixelRatio;
 
   const canvasSize = {
     x: Math.ceil(renderAreaSize.x / cssUpscale),
