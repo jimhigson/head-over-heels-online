@@ -40,7 +40,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        page: 'reincarnationFish',
+        page: "reincarnationFish",
       },
       position: { x: 0, y: 7, z: 0 },
       type: "pickup",

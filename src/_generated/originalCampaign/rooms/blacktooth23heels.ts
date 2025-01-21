@@ -190,7 +190,7 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        page: 'head',
+        page: "head",
       },
       position: { x: 7, y: 1, z: 0 },
       type: "pickup",
@@ -198,7 +198,7 @@ export const room = inferRoomJson({
     scroll2: {
       config: {
         gives: "scroll",
-        page: 'heels',
+        page: "heels",
       },
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",

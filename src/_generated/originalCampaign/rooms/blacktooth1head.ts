@@ -50,8 +50,7 @@ export const room = inferRoomJson({
     scrollRabbit: {
       config: {
         gives: "scroll",
-        page: 'cuddlyStuffedWhiteRabbits',
-
+        page: "cuddlyStuffedWhiteRabbits",
       },
       position: { x: 3, y: 0, z: 0 },
       type: "pickup",
@@ -59,7 +58,7 @@ export const room = inferRoomJson({
     scrollTheGame: {
       config: {
         gives: "scroll",
-        page: 'theGame',
+        page: "theGame",
       },
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
