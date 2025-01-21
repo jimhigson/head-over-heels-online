@@ -88,7 +88,7 @@ export const GamePage = () => {
           width: canvasSize.x,
           height: canvasSize.y,
         }}
-        className="origin-top-left bg-slate-700"
+        className="origin-top-left transform-gpu"
         ref={setGameDiv}
       />
       {gameApi && (

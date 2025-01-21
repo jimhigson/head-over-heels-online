@@ -15,7 +15,7 @@ export type Upscale = {
  * The maximum upscale that the game engine will do.
  * Past this upscale, the upscale will be done on the canvas via css
  * This is because on large screens (ie, 4k), the filters in the game can be
- * slow. rendering in quarter-pixels is fine.
+ * slow. rendering in third/quarter-pixels is fine.
  */
 export const maximumCanvasUpscale = 3;
 

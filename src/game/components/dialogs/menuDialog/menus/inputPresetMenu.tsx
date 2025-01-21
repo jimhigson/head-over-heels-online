@@ -13,7 +13,7 @@ export const inputPresetMenu: Menu = {
   dialogClassName: "bg-lightGrey",
   borderClassName: "bg-midGrey",
   sections: [
-    <BitmapText className="text-metallicBlue sprites-double-height">
+    <BitmapText className="text-midRed sprites-double-height">
       Key presets
     </BitmapText>,
     withProps(MenuItems, {
