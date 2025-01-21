@@ -4,15 +4,17 @@ import { useAppSelector } from "./hooks";
 export const useTotalUpscale = () =>
   useAppSelector((state) => {
     const {
-      renderOptions: {
-        upscale: { cssUpscale, gameEngineUpscale },
+      userSettings: {
+        renderOptions: {
+          upscale: { cssUpscale, gameEngineUpscale },
+        },
       },
     } = state;
     return cssUpscale * gameEngineUpscale;
   });
 
 export const useRenderOptions = () =>
-  useAppSelector((state) => state.renderOptions);
+  useAppSelector((state) => state.userSettings.renderOptions);
 
 export const useMenus = () => useAppSelector((state) => state.menus);
 export const useCurrentMenu = () => {
@@ -30,4 +32,4 @@ export const useCurrentMenuSelectedItemIndex = () => {
 };
 
 export const useInputAssignment = () =>
-  useAppSelector((state) => state.inputAssignment);
+  useAppSelector((state) => state.userSettings.inputAssignment);

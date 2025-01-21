@@ -9,7 +9,9 @@ export const useUpdateUpscaleWhenWindowResizes = (): void => {
 
   useLayoutEffect(() => {
     const updateSize = () => {
-      const { emulatedResolution } = store.getState();
+      const {
+        userSettings: { emulatedResolution },
+      } = store.getState();
 
       const upscale = calculateUpscale(
         { x: window.innerWidth, y: window.innerHeight },

@@ -47,7 +47,7 @@ export const CurrentKeyAssignment = ({
   flashingCursor?: boolean;
 }) => {
   const keys = useAppSelector((state) => {
-    return state.inputAssignment[action];
+    return state.userSettings.inputAssignment[action];
   });
 
   return (

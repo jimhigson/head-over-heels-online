@@ -4,6 +4,7 @@ import {
   useCurrentMenuSelectedItemIndex,
 } from "../../../../store/selectors";
 import { BitmapText } from "../../Sprite";
+import { multilineTextClass } from "./multilineTextClass";
 
 export const SelectedItemHint = ({ className }: { className?: string }) => {
   const menu = useCurrentMenu();
@@ -19,7 +20,7 @@ export const SelectedItemHint = ({ className }: { className?: string }) => {
   }
 
   return (
-    <BitmapText className={twMerge("block leading-multilineText", className)}>
+    <BitmapText className={twMerge("block", multilineTextClass, className)}>
       {selectedItemHint}
     </BitmapText>
   );

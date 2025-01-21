@@ -28,7 +28,7 @@ const markdownComponents: Components = {
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <p className={`mb-1 leading-multilineText clear-both`}>
+      <p className="mb-1">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -37,7 +37,8 @@ const markdownComponents: Components = {
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <p className={`mb-1 leading-multilineText clear-both`}>
+      // clear left allows to go below other lis that have images in them:
+      <p className="mb-1 clear-left">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>

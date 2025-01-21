@@ -3,6 +3,8 @@ import { useCallback, useRef } from "react";
 import { useActionInput } from "../useActionInput";
 import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
+import { twMerge } from "tailwind-merge";
+import { multilineTextClass } from "./multilineTextClass";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
@@ -52,7 +54,7 @@ export const MenuMarkdown = ({
   });
 
   return (
-    <div className={className} ref={contentRef}>
+    <div className={twMerge(multilineTextClass, className)} ref={contentRef}>
       <BlockyMarkdown markdown={markdown} />
     </div>
   );

@@ -22,35 +22,40 @@ export type OpenMenu = {
 };
 
 export type GameMenusState = {
-  renderOptions: RenderOptions;
-
-  emulatedResolution: Xy;
-
   /**
    * stack of menus currently open - empty if none are
    */
   menus: OpenMenu[];
 
-  inputAssignment: InputAssignment;
-  // for the key assignment menu, the key currently being assigned
+  /**
+   * for the key assignment menu, the key currently being assigned
+   */
   actionBeingAssignedKeys: Action | undefined;
+
+  userSettings: {
+    renderOptions: RenderOptions;
+    emulatedResolution: Xy;
+    inputAssignment: InputAssignment;
+  };
 };
 
 const initialState: GameMenusState = {
-  renderOptions: {
-    upscale: calculateUpscale(
-      { x: window.innerWidth, y: window.innerHeight },
-      zxSpectrumResolution,
-    ),
-    showBoundingBoxes: "none",
-    showShadowMasks: false,
-    crtFilter: true,
-    colourise: true,
+  userSettings: {
+    renderOptions: {
+      upscale: calculateUpscale(
+        { x: window.innerWidth, y: window.innerHeight },
+        zxSpectrumResolution,
+      ),
+      showBoundingBoxes: "none",
+      showShadowMasks: false,
+      crtFilter: true,
+      colourise: true,
+    },
+    emulatedResolution: zxSpectrumResolution,
+    inputAssignment: keyAssignmentPresets.default.inputAssignment,
   },
-  emulatedResolution: zxSpectrumResolution,
   // when we first load, show the main menu:
   menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
-  inputAssignment: keyAssignmentPresets.default.inputAssignment,
   actionBeingAssignedKeys: undefined,
 };
 
@@ -63,13 +68,13 @@ export const gameMenusSlice = createSlice({
   initialState,
   reducers: {
     setUpscale(state, { payload: upscale }: PayloadAction<Upscale>) {
-      state.renderOptions.upscale = upscale;
+      state.userSettings.renderOptions.upscale = upscale;
     },
     setEmulatedResolution(
       state,
       { payload: emulatedResolution }: PayloadAction<Xy>,
     ) {
-      state.emulatedResolution = emulatedResolution;
+      state.userSettings.emulatedResolution = emulatedResolution;
     },
     showScroll(
       state,
@@ -95,7 +100,7 @@ export const gameMenusSlice = createSlice({
       }
 
       const currentAssignment =
-        state.inputAssignment[state.actionBeingAssignedKeys];
+        state.userSettings.inputAssignment[state.actionBeingAssignedKeys];
       if (currentAssignment.includes(assignableInput)) {
         // already assigned
         return;
@@ -138,13 +143,13 @@ export const gameMenusSlice = createSlice({
         case "keyPreset": {
           const [, ...tail] = state.menus;
           state.menus = tail;
-          (state as GameMenusState).inputAssignment =
+          (state as GameMenusState).userSettings.inputAssignment =
             keyAssignmentPresets[selectedMenuItem.preset].inputAssignment;
           break;
         }
         case "key":
           state.actionBeingAssignedKeys = selectedMenuItem.action;
-          state.inputAssignment[selectedMenuItem.action] = [];
+          state.userSettings.inputAssignment[selectedMenuItem.action] = [];
           break;
         case "switch":
           // we rely on the listener api to pick this up and re-dispatch the appropriate action
@@ -211,19 +216,21 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
     ) {
-      state.renderOptions.showBoundingBoxes = showBoundingBoxes;
+      state.userSettings.renderOptions.showBoundingBoxes = showBoundingBoxes;
     },
     setShowShadowMasks(
       state,
       { payload: showShadowMasks }: PayloadAction<boolean>,
     ) {
-      state.renderOptions.showShadowMasks = showShadowMasks;
+      state.userSettings.renderOptions.showShadowMasks = showShadowMasks;
     },
     toggleCrtFilter(state) {
-      state.renderOptions.crtFilter = !state.renderOptions.crtFilter;
+      state.userSettings.renderOptions.crtFilter =
+        !state.userSettings.renderOptions.crtFilter;
     },
     toggleColourise(state) {
-      state.renderOptions.colourise = !state.renderOptions.colourise;
+      state.userSettings.renderOptions.colourise =
+        !state.userSettings.renderOptions.colourise;
     },
   },
 });

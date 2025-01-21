@@ -1,8 +1,10 @@
 ## CUDDLY STUFFED WHITE RABBITS
 
-![](texture-bunny?float-right)The cute toy bunnies magically enhance your powers. The status display at the
+![](texture-bunny?float-right)The *cute toy bunnies* magically enhance your powers. The status display at the
 bottom of the screen will keep you informed as to which powers are temporarily
-enhanced. If Head and Heels are connected when they pick up a *Life* or *Iron pill*,
+enhanced.
+
+If Head and Heels are connected when they pick up a *Life* or *Iron pill*,
 they will both get the enhanced power.
 
 There are four types:

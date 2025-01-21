@@ -18,12 +18,11 @@
     - the game stops running as smoothly past a certain size with crt filter on    
     - on unscaled 4k , get: `changing upscale to 11x for 3840 x 2160`
 [x] remove '@' mapping added by shad    
-[ ] custom key assignments
-[ ] persist settings
+[x] custom key assignments
 [ ] actually use joystick/control pad input
+[x] persist settings
 [ ] collecting crowns (and screen)
-[ ] "press a button" to exit scrolls (any mapped key that isn't up or down)
-[ ] pressing return to start a game shouldn't immediately switch to heels
+[ ] bug: pressing return to start a game shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
     [ ] load campaign lazily
