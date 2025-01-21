@@ -6,7 +6,7 @@ import { SelectedItemHint } from "../SelectedItemHint";
 import { withProps } from "../withClassName";
 
 export const modernisationOptionsMenu: Menu = {
-  backgroundClassName: "bg-metallicBlue",
+  dialogClassName: "bg-metallicBlue",
   borderClassName: "bg-moss",
   sections: [
     <BitmapText className="text-moss sprites-double-height">

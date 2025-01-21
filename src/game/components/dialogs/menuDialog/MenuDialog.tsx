@@ -65,8 +65,8 @@ const MenuDialogInner = (props: { openMenus: OpenMenu[] }) => {
   return (
     <Dialog
       className={twMerge(
-        menu.backgroundClassName,
         "h-zx leading-none flex flex-col gap-y-1",
+        menu.dialogClassName,
       )}
       borderClassName={menu.borderClassName}
     >

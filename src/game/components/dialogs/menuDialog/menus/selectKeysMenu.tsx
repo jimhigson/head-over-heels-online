@@ -40,7 +40,7 @@ const ChoosePresetLabel = ({ selected }: { selected: boolean }) => {
 };
 
 export const selectKeysMenu: Menu = {
-  backgroundClassName: "bg-lightGrey",
+  dialogClassName: "bg-lightGrey",
   borderClassName: "bg-midGrey",
   sections: [
     <BitmapText className="text-metallicBlue sprites-double-height">

@@ -11,6 +11,7 @@ import { withProps } from "./withClassName";
 import type { EmptyObject } from "type-fest";
 import { MenuMarkdown } from "./MenuMarkdown";
 import { PressToContinueBanner } from "../PressToContinueBanner";
+import { holdMenu } from "./menus/holdMenu";
 
 export type MenuId =
   | "mainMenu"
@@ -18,22 +19,14 @@ export type MenuId =
   | "inputPreset"
   | "modernisationOptions"
   | "readTheManual"
+  | "hold"
   | `markdown/${MarkdownPageName}`;
 
 export type Menu = {
   sections: Array<ReactElement | ((props: EmptyObject) => ReactElement | null)>;
-
   items: MenuItem[];
-  /*heading: ReactNode;
-  footer?: ReactElement | ((props: EmptyObject) => ReactElement | null);*/
-
-  backgroundClassName: string;
-  /*
-  itemsClassName: string;
-  selectedClassName: string;
-  hintClassName?: string;
-  */
-  borderClassName: string;
+  dialogClassName: string;
+  borderClassName?: string;
 };
 export const menus: Record<MenuId, Menu> = {
   ...{
@@ -42,6 +35,7 @@ export const menus: Record<MenuId, Menu> = {
     modernisationOptions: modernisationOptionsMenu,
     inputPreset: inputPresetMenu,
     readTheManual: readTheManualMenu,
+    hold: holdMenu,
   },
   ...transformObject(
     markdownPages,
@@ -49,7 +43,7 @@ export const menus: Record<MenuId, Menu> = {
       return [
         `markdown/${pageName}`,
         {
-          backgroundClassName: "bg-highlightBeige",
+          dialogClassName: "bg-highlightBeige",
           borderClassName: "bg-midGrey",
           items: [],
           sections: [

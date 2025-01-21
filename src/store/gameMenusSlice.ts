@@ -22,8 +22,6 @@ export type OpenMenu = {
 };
 
 export type GameMenusState = {
-  onHold: boolean;
-
   renderOptions: RenderOptions;
 
   emulatedResolution: Xy;
@@ -39,7 +37,6 @@ export type GameMenusState = {
 };
 
 const initialState: GameMenusState = {
-  onHold: false,
   renderOptions: {
     upscale: calculateUpscale(
       { x: window.innerWidth, y: window.innerHeight },
@@ -116,7 +113,6 @@ export const gameMenusSlice = createSlice({
         state.menus = tail;
       } else {
         state.menus = [{ menuId: "mainMenu", selectedIndex: 0 }];
-        state.onHold = false;
       }
     },
     menuItemSelected(state) {
@@ -203,13 +199,13 @@ export const gameMenusSlice = createSlice({
         ...tail,
       ];
     },
-    onHoldPressed(state) {
-      if (state.menus.length > 0) {
-        // do nothing if hold pressed while in menus
-        return;
+    holdPressed(state) {
+      // do nothing if hold pressed while in menus
+      if (state.menus.length === 0) {
+        state.menus = [{ menuId: "hold", selectedIndex: 0 }];
+      } else if (state.menus[0]?.menuId === "hold") {
+        state.menus = [];
       }
-
-      state.onHold = !state.onHold;
     },
     setShowBoundingBoxes(
       state,
@@ -243,7 +239,7 @@ export const {
   menuDown,
   menuPressed,
   menuUp,
-  onHoldPressed,
+  holdPressed,
   setShowBoundingBoxes,
   setShowShadowMasks,
   toggleColourise,

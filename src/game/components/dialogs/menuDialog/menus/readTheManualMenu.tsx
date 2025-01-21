@@ -9,7 +9,7 @@ import type { Menu } from "../menus";
 import { withProps } from "../withClassName";
 
 export const readTheManualMenu: Menu = {
-  backgroundClassName: "bg-highlightBeige",
+  dialogClassName: "bg-highlightBeige",
   borderClassName: "bg-midGrey",
   sections: [
     <BitmapText className="text-moss sprites-double-height">

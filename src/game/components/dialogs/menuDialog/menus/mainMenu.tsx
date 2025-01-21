@@ -83,7 +83,7 @@ const mainMenuFooter = (
 );
 
 export const mainMenu: Menu = {
-  backgroundClassName: "bg-midRed",
+  dialogClassName: "bg-midRed",
   //selectedClassName: "text-white",
   borderClassName: "bg-metallicBlue",
   sections: [
