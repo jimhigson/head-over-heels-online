@@ -56,14 +56,6 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "pickup",
     },
-    crown: {
-      config: {
-        gives: "crown",
-        planet: 'egyptus',
-      },
-      position: { x: 1, y: 0, z: 8 },
-      type: "pickup",
-    },
     scrollTheGame: {
       config: {
         gives: "scroll",
