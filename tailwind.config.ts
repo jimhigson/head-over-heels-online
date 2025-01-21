@@ -17,7 +17,7 @@ export default {
     extract: {
       md(content) {
         // allow classes in markdown to be encoded as urls like class1?class2&class3
-        return content.match(/[^\(\)&\?\s]*/g) ?? [];
+        return content.match(/[^()&?\s]*/g) ?? [];
       },
     },
   },
