@@ -11,7 +11,7 @@ puppies that they evolved a defense mechanism: ![](texture-bubbles.white.1?float
 themselves away.
 
 Nobody knows where they go, but the instant they see any of
-Head's race, they disappear and won't return until they are sure the coast is
+Head’s race, they disappear and won’t return until they are sure the coast is
 clear.
 
 *> head over heels manual*

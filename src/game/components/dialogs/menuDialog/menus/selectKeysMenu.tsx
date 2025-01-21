@@ -55,7 +55,7 @@ export const selectKeysMenu: Menu = {
             <BitmapText className="text-midRed">Note: </BitmapText>
             <BitmapText className="text-midGrey">
               some puzzles require you to jump and pick up simultaneously -
-              assign a key to both jump and carry
+              assign a key for both jump and carry
             </BitmapText>
           </div>
           <MenuItems
