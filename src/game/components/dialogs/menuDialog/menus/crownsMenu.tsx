@@ -4,6 +4,8 @@ import type { PlanetName } from "../../../../../sprites/planets";
 import { PixiSprite } from "../../../PixiSprite";
 import type { SpritesheetPaletteColourName } from "../../../../../../gfx/spritesheetPalette";
 import { useAppSelector } from "../../../../../store/hooks";
+import { backMenuItem } from "../backMenuItem";
+import { MenuItems } from "../MenuItems";
 
 const colourCycle: Record<
   PlanetName,
@@ -78,6 +80,7 @@ const CrownsMenuContent = () => {
         planet="blacktooth"
         className="w-12 absolute left-[calc(var(--block,8px)*10)] top-[calc(var(--block,8px)*10)]"
       />
+      <MenuItems className="hidden" />
     </>
   );
 };
@@ -86,5 +89,7 @@ export const crownsMenu: Menu = {
   dialogClassName: "bg-pureBlack w-zx h-full block p-0",
   borderClassName: "bg-pureBlack",
   Content: CrownsMenuContent,
-  items: [],
+  // back menu item in the (hidden) menu just allows exiting more easily by pressing any button that
+  // would normally select an item
+  items: [backMenuItem],
 };
