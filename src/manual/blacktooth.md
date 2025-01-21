@@ -11,7 +11,7 @@ crew found the people had changed: instead of pyramids they used castles,
 instead of wrapping corpses up in cloth, they wrapped living men in metal and
 then tried to turn them into corpses with sharp metal sticks.
 
-The Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and
+![](texture-teleporter)The Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and
 used it as his headquarters. The castle is surrounded by a small market, and
 then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
