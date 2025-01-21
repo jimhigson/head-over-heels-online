@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import { spritesheetData, type TextureId } from "../../sprites/spriteSheetData";
 import { twMerge } from "tailwind-merge";
 import { useTotalUpscale } from "../../store/selectors";
-import {
-  spritesheetPalette,
-  type SpritesheetPaletteColourName,
-} from "../../../gfx/spritesheetPalette";
 import { RevertColouriseFilter } from "../../filters/colorReplace/RevertColouriseFilter";
 
 export interface PixiSpriteProps {
-  revertColourTo?: SpritesheetPaletteColourName;
+  // if given, colour is reverted to the currentColor (the text colour from css)
+  revertColour?: boolean;
   textureId: TextureId;
   className?: string;
 }
@@ -20,7 +17,7 @@ export interface PixiSpriteProps {
 export const PixiSprite = ({
   textureId,
   className,
-  revertColourTo,
+  revertColour,
 }: PixiSpriteProps) => {
   const [containerEle, setContainerEle] = useState<HTMLSpanElement | null>(
     null,
@@ -46,10 +43,9 @@ export const PixiSprite = ({
       sprite.y = containerEle.clientHeight;
       sprite.scale = containerEle.clientWidth / sprite.width;
 
-      if (revertColourTo !== undefined) {
-        sprite.filters = [
-          new RevertColouriseFilter(spritesheetPalette[revertColourTo]),
-        ];
+      if (revertColour) {
+        const { color } = window.getComputedStyle(containerEle);
+        sprite.filters = [new RevertColouriseFilter(color)];
       }
 
       app.stage.addChild(sprite);
@@ -61,7 +57,7 @@ export const PixiSprite = ({
       containerEle.removeChild(app.canvas);
       app.destroy();
     };
-  }, [containerEle, revertColourTo, textureId]);
+  }, [containerEle, revertColour, textureId]);
 
   return (
     <span

@@ -4,11 +4,11 @@ import { type Menu } from "../menus";
 import { useGameApi } from "../../../GameApiContext";
 import { MenuItems } from "../MenuItems";
 
-export const colourCycle: SpritesheetPaletteColourName[] = [
-  "lightGrey",
-  "highlightBeige",
-  "metallicBlue",
-];
+export const classnameCycle = [
+  "text-lightGrey",
+  "text-highlightBeige",
+  "text-metallicBlue",
+] satisfies Array<`text-${SpritesheetPaletteColourName}`>;
 
 const PlayGameLabel = () => {
   const gameApi = useGameApi();
@@ -25,14 +25,14 @@ const MainMenuHeading = () => (
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
       <SpritesheetSprite className="ml-1 mt-1 texture-head.walking.right.2" />
     </div>
-    <BitmapText colourCycle={colourCycle} className="mt-1 me-1">
+    <BitmapText classnameCycle={classnameCycle} className="mt-1 me-1">
       over
     </BitmapText>
     <div className="flex flex-col">
       <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
       <SpritesheetSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
     </div>
-    <BitmapText colourCycle={colourCycle} className="mt-1">
+    <BitmapText classnameCycle={classnameCycle} className="mt-1">
       online
     </BitmapText>
   </div>
@@ -45,16 +45,16 @@ const MainMenuFooter = () => (
         <BitmapText className="text-redShadow ml-2">1987 original</BitmapText>
         <div className="flex gap-2">
           <div className="flex flex-col gap-y-oneScaledPix">
-            <BitmapText className="ml-1" colourCycle={colourCycle}>
+            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
               Jon
             </BitmapText>
-            <BitmapText colourCycle={colourCycle}>Ritman</BitmapText>
+            <BitmapText classnameCycle={classnameCycle}>Ritman</BitmapText>
           </div>
           <div className="flex flex-col gap-y-oneScaledPix">
-            <BitmapText className="ml-1" colourCycle={colourCycle}>
+            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
               Bernie
             </BitmapText>
-            <BitmapText colourCycle={colourCycle}>Drummand</BitmapText>
+            <BitmapText classnameCycle={classnameCycle}>Drummand</BitmapText>
           </div>
         </div>
       </div>
@@ -62,10 +62,10 @@ const MainMenuFooter = () => (
         <BitmapText className="text-redShadow">2025 remake</BitmapText>
         <div className="flex">
           <div className="flex flex-col gap-y-oneScaledPix ml-3">
-            <BitmapText className="ml-1" colourCycle={colourCycle}>
+            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
               Jim
             </BitmapText>
-            <BitmapText colourCycle={colourCycle}>Higson</BitmapText>
+            <BitmapText classnameCycle={classnameCycle}>Higson</BitmapText>
           </div>
         </div>
       </div>

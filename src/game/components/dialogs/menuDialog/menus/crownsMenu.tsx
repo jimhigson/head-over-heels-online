@@ -2,6 +2,18 @@ import type { Menu } from "../menus";
 import { BitmapText } from "../../../Sprite";
 import type { PlanetName } from "../../../../../sprites/planets";
 import { PixiSprite } from "../../../PixiSprite";
+import type { SpritesheetPaletteColourName } from "../../../../../../gfx/spritesheetPalette";
+
+const colourCycle: Record<
+  PlanetName,
+  `text-${SpritesheetPaletteColourName}`[]
+> = {
+  egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
+  blacktooth: ["text-midGrey", "text-lightGrey", "text-moss"],
+  safari: ["text-moss", "text-midRed", "text-redShadow"],
+  bookworld: ["text-midRed", "text-redShadow", "text-midGrey"],
+  penitentiary: ["text-shadow", "text-midGrey"],
+};
 
 const TitledCrown = ({
   planet,
@@ -15,16 +27,21 @@ const TitledCrown = ({
   return (
     <div className={`flex flex-col ${className}`}>
       <PixiSprite
-        className="block mx-auto"
+        className="block mx-auto text-shadow"
         textureId="crown"
-        revertColourTo="pink"
+        revertColour
       />
       <PixiSprite
-        className="block mx-auto"
+        className={`block mx-auto ${colourCycle[planet][0]}`}
         textureId="ball"
-        revertColourTo="highlightBeige"
+        revertColour
       />
-      <BitmapText className="block mx-auto text-pink">{label}</BitmapText>
+      <BitmapText
+        classnameCycle={colourCycle[planet]}
+        className="block mx-auto"
+      >
+        {label}
+      </BitmapText>
     </div>
   );
 };

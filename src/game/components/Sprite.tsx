@@ -1,7 +1,6 @@
 import { type PropsWithChildren, type ReactNode } from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
-import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import clsx from "clsx";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
@@ -27,10 +26,9 @@ export const SpritesheetSprite = ({
 export interface BitmapTextProps {
   children: string | string[];
   /**
-   * special case of per-char colour cycling - otherwise
-   * set a single colour using classname/tailwind
+   * per-char colour (or any other style) cycling
    */
-  colourCycle?: SpritesheetPaletteColourName[];
+  classnameCycle?: string[];
   className?: string;
   noSlitWords?: boolean;
 }
@@ -39,7 +37,7 @@ export const BitmapText = ({
   children: text,
   className,
   noSlitWords,
-  colourCycle,
+  classnameCycle,
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
@@ -80,27 +78,16 @@ export const BitmapText = ({
               const imgSpriteEle = (
                 <SpritesheetSprite
                   key={charIndex}
-                  className={
+                  className={`${
                     isTextureId(textureId) ?
                       // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
                       // fine to construct dynamically:
                       `texture-${textureId}`
                     : "texture-hud.char.?"
-                  }
+                  } ${classnameCycle === undefined ? "" : classnameCycle[charIndex % classnameCycle.length]}`}
                   tint
                 />
               );
-
-              if (colourCycle !== undefined) {
-                return (
-                  <span
-                    className={`text-${colourCycle[charIndex % colourCycle.length]}`}
-                    key={charIndex}
-                  >
-                    {imgSpriteEle}
-                  </span>
-                );
-              }
 
               return imgSpriteEle;
             })}
