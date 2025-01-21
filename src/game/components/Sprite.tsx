@@ -6,16 +6,17 @@ import { isTextureId } from "../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
 import { spriteSheet } from "../../sprites/spriteSheet";
 
-export interface SpritesheetSpriteProps {
+export interface CssSpriteProps {
   className?: string;
   /** if true, will tint to the colour in the --bitmapTextColour css variable */
   tint?: boolean;
 }
 
-export const SpritesheetSprite = ({
-  className,
-  tint,
-}: SpritesheetSpriteProps) => {
+/**
+ * css sprite is much lighter than using pixi, and can tint the sprite to any colour,
+ * but doesn't support filters like pixi does
+ */
+export const CssSprite = ({ className, tint }: CssSpriteProps) => {
   return (
     <span
       className={twMerge(`sprite  ${tint ? "sprite-tinted" : ""}`, className)}
@@ -76,7 +77,7 @@ export const BitmapText = ({
                 );
               }
               const imgSpriteEle = (
-                <SpritesheetSprite
+                <CssSprite
                   key={charIndex}
                   className={`${
                     isTextureId(textureId) ?

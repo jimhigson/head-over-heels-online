@@ -34,7 +34,7 @@ const topLevelFilters = (
     renderOptions.crtFilter ?
       new AdvancedBloomFilter({
         threshold: 0.7,
-        brightness: 0.8,
+        brightness: 0.9,
         bloomScale: 0.6,
         blur: 10,
       })

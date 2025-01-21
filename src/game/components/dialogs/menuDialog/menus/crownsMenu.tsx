@@ -1,8 +1,9 @@
 import type { Menu } from "../menus";
-import { BitmapText } from "../../../Sprite";
+import { BitmapText, CssSprite } from "../../../Sprite";
 import type { PlanetName } from "../../../../../sprites/planets";
 import { PixiSprite } from "../../../PixiSprite";
 import type { SpritesheetPaletteColourName } from "../../../../../../gfx/spritesheetPalette";
+import { useAppSelector } from "../../../../../store/hooks";
 
 const colourCycle: Record<
   PlanetName,
@@ -24,13 +25,18 @@ const TitledCrown = ({
   label?: string;
   className?: string;
 }) => {
+  const collected = useAppSelector((state) => state.planetsLiberated[planet]);
+
   return (
     <div className={`flex flex-col ${className}`}>
-      <PixiSprite
-        className="block mx-auto text-shadow"
-        textureId="crown"
-        revertColour
-      />
+      {collected ?
+        <CssSprite className="block texture-crown mx-auto" />
+      : <PixiSprite
+          className="block mx-auto text-shadow"
+          textureId="crown"
+          revertColour
+        />
+      }
       <PixiSprite
         className={`block mx-auto ${colourCycle[planet][0]}`}
         textureId="ball"

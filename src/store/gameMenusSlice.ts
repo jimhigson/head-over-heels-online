@@ -15,6 +15,7 @@ import type { RenderOptions, ShowBoundingBoxes } from "../game/RenderOptions";
 import { zxSpectrumResolution } from "../originalGame";
 import type { Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
+import type { PlanetName } from "../sprites/planets";
 
 export type OpenMenu = {
   menuId: MenuId;
@@ -38,6 +39,8 @@ export type GameMenusState = {
     inputAssignment: InputAssignment;
   };
 
+  planetsLiberated: Record<PlanetName, boolean>;
+
   gameRunning: boolean;
 };
 
@@ -56,6 +59,15 @@ const initialState: GameMenusState = {
     emulatedResolution: zxSpectrumResolution,
     inputAssignment: keyAssignmentPresets.default.inputAssignment,
   },
+
+  planetsLiberated: {
+    blacktooth: false,
+    bookworld: false,
+    egyptus: false,
+    penitentiary: false,
+    safari: false,
+  },
+
   // when we first load, show the main menu:
   menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
   actionBeingAssignedKeys: undefined,
@@ -246,6 +258,10 @@ export const gameMenusSlice = createSlice({
       state.userSettings.renderOptions.colourise =
         !state.userSettings.renderOptions.colourise;
     },
+    crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
+      state.planetsLiberated[planet] = true;
+      state.menus = [{ menuId: "crowns", selectedIndex: 0 }];
+    },
   },
 });
 
@@ -267,4 +283,5 @@ export const {
   toggleCrtFilter,
   inputAssigned,
   doneAssigningInput,
+  crownCollected,
 } = gameMenusSlice.actions;

@@ -12,7 +12,7 @@ import {
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "./RoomSelect";
-import { SpritesheetSprite } from "../Sprite";
+import { CssSprite } from "../Sprite";
 
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
@@ -97,14 +97,11 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <SpritesheetSprite className="texture-head.walking.right.2" />
+          <CssSprite className="texture-head.walking.right.2" />
           over
-          <SpritesheetSprite className="texture-heels.walking.right.2" />
+          <CssSprite className="texture-heels.walking.right.2" />
         </>
-      : <SpritesheetSprite
-          className={`texture-${playableName}.walking.right.2`}
-        />
-      }
+      : <CssSprite className={`texture-${playableName}.walking.right.2`} />}
     </Button>
   );
 };
@@ -171,7 +168,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <SpritesheetSprite className="texture-helicopterBug.1" />
+        <CssSprite className="texture-helicopterBug.1" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]">
@@ -260,7 +257,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-bag" />
+              <CssSprite className="texture-bag" />
             </Button>
             <Button
               className="flex-1"
@@ -269,7 +266,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-hooter" />
+              <CssSprite className="texture-hooter" />
             </Button>
             <Button
               className="flex-1"
@@ -278,7 +275,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-doughnuts" />
+              <CssSprite className="texture-doughnuts" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -289,8 +286,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-bunny" />
-              <SpritesheetSprite className="texture-hud.char.2" />
+              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-hud.char.2" />
             </Button>
             <Button
               className="flex-1"
@@ -299,8 +296,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-bunny" />
-              <SpritesheetSprite className="texture-hud.shield" />
+              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-hud.shield" />
             </Button>
             <Button
               className="flex-1"
@@ -309,8 +306,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-bunny" />
-              <SpritesheetSprite className="texture-hud.fastSteps" />
+              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-hud.fastSteps" />
             </Button>
             <Button
               className="flex-1"
@@ -319,8 +316,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-bunny" />
-              <SpritesheetSprite className="texture-hud.bigJumps" />
+              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-hud.bigJumps" />
             </Button>
           </div>
 
@@ -400,8 +397,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <SpritesheetSprite className="texture-head.walking.right.2" />|
-              <SpritesheetSprite className="texture-heels.walking.right.2" />
+              <CssSprite className="texture-head.walking.right.2" />|
+              <CssSprite className="texture-heels.walking.right.2" />
             </Button>
           </div>
         </div>

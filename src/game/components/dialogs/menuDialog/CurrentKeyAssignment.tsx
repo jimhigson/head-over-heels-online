@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../../../store/hooks";
 import type { Action, AssignableInput } from "../../../input/InputState";
-import { BitmapText, SpritesheetSprite } from "../../Sprite";
+import { BitmapText, CssSprite } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 
 const friendlyName = (k: AssignableInput) => {
@@ -66,7 +66,7 @@ export const CurrentKeyAssignment = ({
         );
       })}
       {flashingCursor && (
-        <SpritesheetSprite className="texture-hud.char.space bg-[currentColor] animate-flash" />
+        <CssSprite className="texture-hud.char.space bg-[currentColor] animate-flash" />
       )}
     </div>
   );
