@@ -20,11 +20,11 @@ export type MenuItem = {
       submenu: MenuId;
     }
   | { type: "toGame" }
-  | { type: "dispatch"; dispatch: GameMenusSliceAction }
+  | { type: "dispatch"; dispatch: () => GameMenusSliceAction }
   | {
       type: "switch";
       selector?: (store: GameMenusState) => boolean;
-      dispatch?: GameMenusSliceAction;
+      dispatch?: () => GameMenusSliceAction;
     }
   | { type: "key"; action: Action }
   | { type: "keyPreset"; preset: KeyAssignmentPreset }

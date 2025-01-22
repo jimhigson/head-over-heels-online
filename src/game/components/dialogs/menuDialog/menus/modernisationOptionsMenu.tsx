@@ -1,3 +1,7 @@
+import {
+  toggleColourise,
+  toggleCrtFilter,
+} from "../../../../../store/gameMenusSlice";
 import { BitmapText } from "../../../Sprite";
 import { backMenuItem } from "../backMenuItem";
 import { MenuItems } from "../MenuItems";
@@ -23,7 +27,7 @@ export const modernisationOptionsMenu: Menu = {
       type: "switch",
       label: "Colourise",
       selector: (store) => store.userSettings.renderOptions.colourise,
-      dispatch: { type: "gameMenus/toggleColourise", payload: undefined },
+      dispatch: () => toggleColourise(),
       hint: "Original two-tone graphics, or 16-colour colourised",
     },
     {
@@ -38,7 +42,7 @@ export const modernisationOptionsMenu: Menu = {
       type: "switch",
       label: "CRT TV effect",
       selector: (store) => store.userSettings.renderOptions.crtFilter,
-      dispatch: { type: "gameMenus/toggleCrtFilter", payload: undefined },
+      dispatch: () => toggleCrtFilter(),
       hint: "Screen glows a bit like an old tv",
     },
     {

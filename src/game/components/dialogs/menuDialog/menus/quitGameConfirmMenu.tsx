@@ -11,7 +11,10 @@ export const quitGameConfirmMenu: Menu = {
     return (
       <>
         <MainMenuHeading />
-        <BitmapText className="ml-3 text-midRed sprites-double-height">
+        <BitmapText
+          className="ml-3 sprites-double-height"
+          classnameCycle={["text-redShadow", "text-shadow"]}
+        >
           Quit the game?
         </BitmapText>
         <MenuItems className="text-lightGrey" selectedClassName="text-midRed" />
@@ -27,7 +30,7 @@ export const quitGameConfirmMenu: Menu = {
     {
       label: "Yes",
       type: "dispatch",
-      dispatch: gameOver(),
+      dispatch: () => gameOver(),
     },
   ],
 };
