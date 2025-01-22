@@ -1,10 +1,8 @@
 import { type Filter, Container } from "pixi.js";
 import { type CreateSpriteOptions, createSprite } from "../createSprite";
-import { spriteSheet } from "../../../sprites/spriteSheet";
 
-export const itemRidingOnBubblesSpritesOptions = {
-  frames: spriteSheet.animations["bubbles.cold"],
-  animationSpeed: 0.25,
+export const itemRidingOnBubblesSpritesOptions: CreateSpriteOptions = {
+  animationId: "bubbles.cold",
 };
 export const stackedSprites = ({
   top,
