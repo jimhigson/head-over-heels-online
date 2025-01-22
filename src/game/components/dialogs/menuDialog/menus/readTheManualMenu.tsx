@@ -18,7 +18,10 @@ export const readTheManualMenu: Menu = {
           Read the manual
         </BitmapText>
         <MenuItems
-          className={`text-redShadow overflow-y-hidden ${multilineTextClass} !gap-y-0`}
+          className={
+            `text-redShadow ${multilineTextClass} !gap-y-0 ` +
+            "overflow-y-scroll scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-highlightBeige"
+          }
           selectedClassName="text-shadow"
         />
       </>

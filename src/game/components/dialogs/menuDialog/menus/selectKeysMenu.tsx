@@ -50,7 +50,12 @@ export const selectKeysMenu: Menu = {
         <BitmapText className="text-metallicBlue sprites-double-height">
           Select the keys
         </BitmapText>
-        <div className={`overflow-y-hidden`}>
+        <div
+          className={
+            "overflow-y-scroll " +
+            "scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-lightGrey"
+          }
+        >
           <div className={`mb-1 ${multilineTextClass}`}>
             <BitmapText className="text-midRed">Note: </BitmapText>
             <BitmapText className="text-midGrey">

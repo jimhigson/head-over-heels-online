@@ -13,13 +13,15 @@
     [?] make portals solid?    
 [ ] actually use joystick/control pad input
 [x] persist settings
-[ ] quit game option in menu (if playing)
-[ ] lives option
+[x] quit game option in menu (if playing)
+[ ] infinite lives option
 [x] collecting crowns (and screen)
 [ ] bug: pressing return to start a game shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
     [ ] load campaign lazily
+[ ] auto-resolution on big rooms    
+    - just use whatever scale factor fits the room in?
 [ ] colourise option should actually work (and switch in first room)
 [ ] why doesn't work in Safari/iOS?
 [ ] sonic-like shield effect when got shield    
