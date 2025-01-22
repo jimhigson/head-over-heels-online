@@ -68,8 +68,6 @@ const markdownComponents: Components = {
     // can also give extra params by writing as a url and using ? an & to encode them
     const classes = src.split(/\?|&/);
 
-    console.log(src);
-
     return (
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>

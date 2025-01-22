@@ -16,6 +16,7 @@ import { zxSpectrumResolution } from "../originalGame";
 import type { Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
+import { always } from "../utils/always";
 
 export type OpenMenu = {
   menuId: MenuId;
@@ -171,11 +172,13 @@ export const gameMenusSlice = createSlice({
           state.actionBeingAssignedKeys = selectedMenuItem.action;
           state.userSettings.inputAssignment[selectedMenuItem.action] = [];
           break;
+
+        case "dispatch":
         case "switch":
           // we rely on the listener api to pick this up and re-dispatch the appropriate action
           // to change the value represented by the switch
           break;
-        case "toGame":
+        case "toGame": {
           if (state.gameRunning) {
             state.openMenus = [];
           } else {
@@ -184,6 +187,7 @@ export const gameMenusSlice = createSlice({
             state.gameRunning = true;
           }
           break;
+        }
         case "back": {
           const [, ...tail] = state.openMenus;
           state.openMenus = tail;
@@ -204,10 +208,15 @@ export const gameMenusSlice = createSlice({
       const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
       const menu = menus[menuId];
 
+      let newSelectedIndex = selectedIndex;
+      do {
+        newSelectedIndex = (newSelectedIndex + 1) % menu.items.length;
+      } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
+
       state.openMenus = [
         {
           menuId,
-          selectedIndex: (selectedIndex + 1) % menu.items.length,
+          selectedIndex: newSelectedIndex,
         },
         ...tail,
       ];
@@ -221,11 +230,16 @@ export const gameMenusSlice = createSlice({
       const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
       const menu = menus[menuId];
 
+      let newSelectedIndex = selectedIndex;
+      do {
+        newSelectedIndex =
+          (newSelectedIndex - 1 + menu.items.length) % menu.items.length;
+      } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
+
       state.openMenus = [
         {
           menuId,
-          selectedIndex:
-            (selectedIndex - 1 + menu.items.length) % menu.items.length,
+          selectedIndex: newSelectedIndex,
         },
         ...tail,
       ];
@@ -262,6 +276,13 @@ export const gameMenusSlice = createSlice({
       state.planetsLiberated[planet] = true;
       state.openMenus = [{ menuId: "crowns", selectedIndex: 0 }];
     },
+    gameOver(state) {
+      state.gameRunning = false;
+      state.openMenus = [
+        { menuId: "gameOver", selectedIndex: 0 },
+        { menuId: "mainMenu", selectedIndex: 0 },
+      ];
+    },
   },
 });
 
@@ -284,4 +305,5 @@ export const {
   inputAssigned,
   doneAssigningInput,
   crownCollected,
+  gameOver,
 } = gameMenusSlice.actions;

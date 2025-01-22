@@ -4,6 +4,7 @@ import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 import { clsx } from "clsx";
 import { useAppSelector } from "../../../../store/hooks";
+import { always } from "../../../../utils/always";
 
 const SwitchCurrentValue = ({
   switchMenuItem: { selector },
@@ -69,6 +70,10 @@ export const MenuItemComponent = ({
   selected,
   className,
 }: MenuItemComponentProps) => {
+  const show = useAppSelector(menuItem.showIf ?? always);
+
+  if (!show) return null;
+
   const needsDoubling =
     selected && menuItem.type !== "key" && !menuItem.disableDoubling;
 
@@ -99,7 +104,10 @@ export const MenuItemComponent = ({
         className={twMerge(
           needsDoubling ? "sprites-double-height" : "",
           menuItem.type === "submenu" ? "col-span-2" : "",
+          // back buttons are usually at the bottom so set them away
+          // from the normal menu items:
           menuItem.type === "back" ? "mt-1" : "",
+          menuItem.className ?? "",
           className,
         )}
       >
