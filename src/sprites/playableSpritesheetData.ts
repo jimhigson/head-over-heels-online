@@ -6,6 +6,8 @@ import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { directionsXy4 } from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { zxSpectrumFrameRate } from "../originalGame";
+import type { FramesWithSpeed } from "./spriteSheetData";
+import { withSpeed } from "./withSpeed";
 
 function walkingFrames<P extends CharacterName>(p: P) {
   function* walkingFramesGen<P extends CharacterName, D extends DirectionXy4>(
@@ -24,12 +26,15 @@ function walkingFrames<P extends CharacterName>(p: P) {
   return directionsXy4.reduce(
     (ac, d) => ({
       ...ac,
-      [`${p}.walking.${d}`]: [...walkingFramesGen(p, d)],
+      [`${p}.walking.${d}`]: withSpeed(
+        [...walkingFramesGen(p, d)] as const,
+        0.5,
+      ),
     }),
     {},
   ) as Record<
     `${P}.walking.${DirectionXy4}`,
-    Array<`${P}.walking.${DirectionXy4}.${"1" | "2" | "3"}`>
+    FramesWithSpeed<Array<`${P}.walking.${DirectionXy4}.${"1" | "2" | "3"}`>>
   >;
 }
 
@@ -120,44 +125,56 @@ export const playableSpritesheetData = {
   animations: {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
-    "head.idle.right": [
-      // 50 frames of non-blinking confirmed against original to be about the same rate
-      ...new Array(nonBlinkingFrames).fill("head.walking.right.3"),
-      "head.blinking.right",
-      "head.walking.right.3",
-      "head.blinking.right",
-    ],
-    "head.idle.towards": [
-      ...new Array(nonBlinkingFrames).fill("head.walking.towards.3"),
-      "head.blinking.towards",
-      "head.walking.towards.3",
-      "head.blinking.towards",
-    ],
+    "head.idle.right": withSpeed(
+      [
+        // 50 frames of non-blinking confirmed against original to be about the same rate
+        ...new Array(nonBlinkingFrames).fill("head.walking.right.3"),
+        "head.blinking.right",
+        "head.walking.right.3",
+        "head.blinking.right",
+      ] as const,
+      0.5,
+    ),
+    "head.idle.towards": withSpeed(
+      [
+        ...new Array(nonBlinkingFrames).fill("head.walking.towards.3"),
+        "head.blinking.towards",
+        "head.walking.towards.3",
+        "head.blinking.towards",
+      ] as const,
+      0.5,
+    ),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
-    "head.fadeOut": [
-      "bubbles.head.1",
-      "bubbles.head.2",
-      "bubbles.head.4",
-      "bubbles.head.3",
-      "bubbles.head.4",
-      "bubbles.head.6",
-      "bubbles.head.5",
-      "bubbles.head.6",
-      "bubbles.head.5",
-    ],
-    "heels.fadeOut": [
-      "bubbles.heels.1",
-      "bubbles.heels.2",
-      "bubbles.heels.4",
-      "bubbles.heels.3",
-      "bubbles.heels.4",
-      "bubbles.heels.6",
-      "bubbles.heels.5",
-      "bubbles.heels.6",
-      "bubbles.heels.5",
-    ],
+    "head.fadeOut": withSpeed(
+      [
+        "bubbles.head.1",
+        "bubbles.head.2",
+        "bubbles.head.4",
+        "bubbles.head.3",
+        "bubbles.head.4",
+        "bubbles.head.6",
+        "bubbles.head.5",
+        "bubbles.head.6",
+        "bubbles.head.5",
+      ] as const,
+      0.5,
+    ),
+    "heels.fadeOut": withSpeed(
+      [
+        "bubbles.heels.1",
+        "bubbles.heels.2",
+        "bubbles.heels.4",
+        "bubbles.heels.3",
+        "bubbles.heels.4",
+        "bubbles.heels.6",
+        "bubbles.heels.5",
+        "bubbles.heels.6",
+        "bubbles.heels.5",
+      ] as const,
+      0.5,
+    ),
   },
 } as const satisfies Pick<
   SpritesheetData,

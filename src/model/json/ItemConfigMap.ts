@@ -113,7 +113,8 @@ export type ItemConfigMap<
     top: number;
     bottom: number;
   };
-  bubbles: { style: "fish" | "taupe" | "white" };
+  // actually not using the special bubbles frames:
+  bubbles: { style: /*"fish" | "taupe" | */ "white" };
   monster: {
     activated: boolean;
   } & (

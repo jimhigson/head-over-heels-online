@@ -1,6 +1,6 @@
 ## THE GAME
 
-![](texture-heels.walking.right.2)![](texture-head.walking.towards.2?float-right&clear-left)Head and Heels have been captured, separated and imprisoned in the castle
+![](texture-heels.walking.right.2)![](texture-animated-head.idle.towards?float-right&clear-left)Head and Heels have been captured, separated and imprisoned in the castle
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb.
 
@@ -15,9 +15,10 @@ to Blacktooth and you could return to Freedom in glory. Of course, Blacktooth
 would probably enslave them again eventually but it would slow down any
 expansion plans for now.
 
-The populace of Blacktooth are so heavily oppressed
+
+![](texture-cyberman.towards?float-right&relative&z-topSprite)![](texture-animated-bubbles.cold?float-right&clear-right&relative&bottom-bottomStackPullup)The populace of Blacktooth are so heavily oppressed
 that they would have to see all four of the slave planets revolt before the
-Blacktooth crown could cause an uprising. This of course would be the ultimate
+Blacktooth crown could cause an uprising. ![](texture-animated-turtle.right)This of course would be the ultimate
 accolade, and unfortunately, almost certain suicide.
 
 *> Head Over Heels Manual*

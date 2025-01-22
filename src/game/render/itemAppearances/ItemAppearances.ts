@@ -220,12 +220,9 @@ export const itemAppearances: {
           {
             frames: spriteSheet.animations[`conveyor.${axis}`],
             reverse: direction === "towards" || direction === "right",
-            animationSpeed: 0.5,
-            //...xy,
           }
         : {
             texture: `conveyor.${axis}.6`,
-            //...xy,
           },
       ),
     );

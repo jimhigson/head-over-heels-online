@@ -23,14 +23,14 @@ const MainMenuHeading = () => (
   <div className="flex text-highlightBeige">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-      <CssSprite className="ml-1 mt-1 texture-head.walking.right.2" />
+      <span className="ml-1 mt-1 sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right" />
     </div>
     <BitmapText classnameCycle={classnameCycle} className="mt-1 me-1">
       over
     </BitmapText>
     <div className="flex flex-col">
       <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-      <CssSprite className="ml-1 mt-1 texture-heels.walking.towards.2" />
+      <CssSprite className="ml-1 mt-1 texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards" />
     </div>
     <BitmapText classnameCycle={classnameCycle} className="mt-1">
       online
