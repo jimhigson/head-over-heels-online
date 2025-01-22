@@ -1,5 +1,5 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
-import { BitmapText, CssSprite } from "../../../Sprite";
+import { BitmapText } from "../../../Sprite";
 import { type Menu } from "../menus";
 import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";
@@ -22,14 +22,20 @@ export const MainMenuHeading = () => (
   <div className="flex text-highlightBeige ml-3">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-      <span className=" mt-1 sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right" />
+      <div className="mt-1 relative">
+        <span className="sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
+        <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+      </div>
     </div>
     <BitmapText classnameCycle={mainMenuCycle} className="mt-1 me-1">
       over
     </BitmapText>
     <div className="flex flex-col">
       <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-      <CssSprite className="ml-2 mt-1 texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards" />
+      <div className="mt-1 ml-2 relative">
+        <span className="sprite texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
+        <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+      </div>
     </div>
     <BitmapText classnameCycle={mainMenuCycle} className="mt-1">
       online

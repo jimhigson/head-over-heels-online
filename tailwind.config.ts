@@ -109,6 +109,10 @@ export default {
         "50%": { opacity: "0" },
       },
     },
+    opacity: {
+      // use with black sprites for EHB: https://en.wikipedia.org/wiki/Amiga_Halfbrite_mode
+      halfBrite: "0.5",
+    },
     animation: {
       flash: "flash 1s steps(1, end) infinite",
     },
