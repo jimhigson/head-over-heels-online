@@ -1,38 +1,37 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { BitmapText, CssSprite } from "../../../Sprite";
 import { type Menu } from "../menus";
-import { useGameApi } from "../../../GameApiContext";
 import { MenuItems } from "../MenuItems";
+import { useAppSelector } from "../../../../../store/hooks";
 
-export const classnameCycle = [
+export const mainMenuCycle = [
   "text-lightGrey",
   "text-highlightBeige",
   "text-metallicBlue",
 ] satisfies Array<`text-${SpritesheetPaletteColourName}`>;
 
 const PlayGameLabel = () => {
-  const gameApi = useGameApi();
-  const gameStarted = gameApi.gameState.gameTime > 0;
+  const gameRunning = useAppSelector((state) => state.gameRunning);
 
   return (
-    <BitmapText>{gameStarted ? "Resume the game" : "Play the game"}</BitmapText>
+    <BitmapText>{gameRunning ? "Resume the game" : "Play the game"}</BitmapText>
   );
 };
 
-const MainMenuHeading = () => (
-  <div className="flex text-highlightBeige">
+export const MainMenuHeading = () => (
+  <div className="flex text-highlightBeige ml-3">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
-      <span className="ml-1 mt-1 sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right" />
+      <span className=" mt-1 sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right" />
     </div>
-    <BitmapText classnameCycle={classnameCycle} className="mt-1 me-1">
+    <BitmapText classnameCycle={mainMenuCycle} className="mt-1 me-1">
       over
     </BitmapText>
     <div className="flex flex-col">
       <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
-      <CssSprite className="ml-1 mt-1 texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards" />
+      <CssSprite className="ml-2 mt-1 texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards" />
     </div>
-    <BitmapText classnameCycle={classnameCycle} className="mt-1">
+    <BitmapText classnameCycle={mainMenuCycle} className="mt-1">
       online
     </BitmapText>
   </div>
@@ -45,16 +44,16 @@ const MainMenuFooter = () => (
         <BitmapText className="text-redShadow ml-2">1987 original</BitmapText>
         <div className="flex gap-2">
           <div className="flex flex-col gap-y-oneScaledPix">
-            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
+            <BitmapText className="ml-1" classnameCycle={mainMenuCycle}>
               Jon
             </BitmapText>
-            <BitmapText classnameCycle={classnameCycle}>Ritman</BitmapText>
+            <BitmapText classnameCycle={mainMenuCycle}>Ritman</BitmapText>
           </div>
           <div className="flex flex-col gap-y-oneScaledPix">
-            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
+            <BitmapText className="ml-1" classnameCycle={mainMenuCycle}>
               Bernie
             </BitmapText>
-            <BitmapText classnameCycle={classnameCycle}>Drummand</BitmapText>
+            <BitmapText classnameCycle={mainMenuCycle}>Drummand</BitmapText>
           </div>
         </div>
       </div>
@@ -62,16 +61,15 @@ const MainMenuFooter = () => (
         <BitmapText className="text-redShadow">2025 remake</BitmapText>
         <div className="flex">
           <div className="flex flex-col gap-y-oneScaledPix ml-3">
-            <BitmapText className="ml-1" classnameCycle={classnameCycle}>
+            <BitmapText className="ml-1" classnameCycle={mainMenuCycle}>
               Jim
             </BitmapText>
-            <BitmapText classnameCycle={classnameCycle}>Higson</BitmapText>
+            <BitmapText classnameCycle={mainMenuCycle}>Higson</BitmapText>
           </div>
         </div>
       </div>
     </div>
-    <div>
-      <CssSprite className="mr-1 texture-cube" />
+    <div className="absolute bottom-1">
       <BitmapText className="text-redShadow">https://</BitmapText>
       <BitmapText className="text-lightGrey">block</BitmapText>
       <BitmapText className="text-highlightBeige">stack</BitmapText>
@@ -98,6 +96,12 @@ export const mainMenu: Menu = {
   },
   items: [
     { label: PlayGameLabel, type: "toGame" },
+    {
+      label: "Quit this game",
+      type: "submenu",
+      submenu: "quitGameConfirm",
+      showIf: (state) => state.gameRunning,
+    },
     {
       label: "Select the keys",
 

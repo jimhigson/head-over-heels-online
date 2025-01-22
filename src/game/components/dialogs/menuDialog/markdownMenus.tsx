@@ -1,9 +1,9 @@
 import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import { transformObject } from "../../../../utils/entries";
-import { PressToContinueBanner } from "../PressToContinueBanner";
+import { backMenuItem } from "./backMenuItem";
+import { MenuItems } from "./MenuItems";
 import { MenuMarkdown } from "./MenuMarkdown";
 import type { Menu } from "./menus";
-import { multilineTextClass } from "./multilineTextClass";
 
 export const markdownMenus = transformObject(
   markdownPages,
@@ -13,19 +13,20 @@ export const markdownMenus = transformObject(
       {
         dialogClassName: "bg-highlightBeige",
         borderClassName: "bg-midGrey",
-        items: [],
+        items: [backMenuItem],
         Content() {
           return (
             <>
               <MenuMarkdown
                 markdown={markdown}
-                className="text-shadow overflow-y-hidden pb-3"
+                className="text-shadow overflow-y-hidden"
               />
-              <PressToContinueBanner
+              {/* <PressToContinueBanner
                 action="menu"
                 className={`absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1 z-dialogChrome ${multilineTextClass}`}
                 keyClassName="text-midRed"
-              />
+              /> */}
+              <MenuItems className="hidden" />
             </>
           );
         },

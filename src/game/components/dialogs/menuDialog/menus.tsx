@@ -8,6 +8,8 @@ import type { MenuItem } from "./MenuItem";
 import { holdMenu } from "./menus/holdMenu";
 import { markdownMenus } from "./markdownMenus";
 import { crownsMenu } from "./menus/crownsMenu";
+import { gameOverMenu } from "./menus/gameOverMenu";
+import { quitGameConfirmMenu } from "./menus/quitGameConfirmMenu";
 
 export type Menu = {
   Content: () => ReactElement;
@@ -24,6 +26,8 @@ export const menus = {
     readTheManual: readTheManualMenu,
     hold: holdMenu,
     crowns: crownsMenu,
+    gameOver: gameOverMenu,
+    quitGameConfirm: quitGameConfirmMenu,
   },
   ...markdownMenus,
 } as const;

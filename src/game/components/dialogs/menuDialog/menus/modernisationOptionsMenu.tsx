@@ -10,7 +10,7 @@ export const modernisationOptionsMenu: Menu = {
   Content() {
     return (
       <>
-        <BitmapText className="text-moss sprites-double-height">
+        <BitmapText className="ml-3 text-moss sprites-double-height">
           Modernisation options
         </BitmapText>
         <MenuItems className="text-lightGrey" selectedClassName="text-moss" />
