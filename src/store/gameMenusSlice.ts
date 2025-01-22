@@ -26,7 +26,7 @@ export type GameMenusState = {
   /**
    * stack of menus currently open - empty if none are
    */
-  menus: OpenMenu[];
+  openMenus: OpenMenu[];
 
   /**
    * for the key assignment menu, the key currently being assigned
@@ -69,7 +69,7 @@ const initialState: GameMenusState = {
   },
 
   // when we first load, show the main menu:
-  menus: [{ selectedIndex: 0, menuId: "mainMenu" }],
+  openMenus: [{ selectedIndex: 0, menuId: "mainMenu" }],
   actionBeingAssignedKeys: undefined,
 
   gameRunning: false,
@@ -96,7 +96,7 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: markdownPageName }: PayloadAction<MarkdownPageName>,
     ) {
-      state.menus = [
+      state.openMenus = [
         { menuId: `markdown/${markdownPageName}`, selectedIndex: 0 },
       ];
     },
@@ -128,26 +128,26 @@ export const gameMenusSlice = createSlice({
       state.actionBeingAssignedKeys = undefined;
     },
     menuPressed(state) {
-      if (state.menus.length > 0) {
-        if (state.menus.length === 1 && !state.gameRunning) {
+      if (state.openMenus.length > 0) {
+        if (state.openMenus.length === 1 && !state.gameRunning) {
           return; // can't exit main menu if game not running
         }
 
         // go up one menu:
-        const [, ...tail] = state.menus;
-        state.menus = tail;
+        const [, ...tail] = state.openMenus;
+        state.openMenus = tail;
       } else {
-        state.menus = [{ menuId: "mainMenu", selectedIndex: 0 }];
+        state.openMenus = [{ menuId: "mainMenu", selectedIndex: 0 }];
       }
     },
     menuItemSelected(state) {
-      const [{ menuId, selectedIndex }] = state.menus;
+      const [{ menuId, selectedIndex }] = state.openMenus;
       const menu = menus[menuId];
 
       if (selectedIndex === menu.items.length) {
         // a menu item 'after' the end of the menu is the back item:
-        const [, ...tail] = state.menus;
-        state.menus = tail;
+        const [, ...tail] = state.openMenus;
+        state.openMenus = tail;
         return;
       }
 
@@ -155,14 +155,14 @@ export const gameMenusSlice = createSlice({
 
       switch (selectedMenuItem.type) {
         case "submenu":
-          state.menus = [
+          state.openMenus = [
             { menuId: selectedMenuItem.submenu, selectedIndex: 0 },
-            ...state.menus,
+            ...state.openMenus,
           ];
           break;
         case "keyPreset": {
-          const [, ...tail] = state.menus;
-          state.menus = tail;
+          const [, ...tail] = state.openMenus;
+          state.openMenus = tail;
           (state as GameMenusState).userSettings.inputAssignment =
             keyAssignmentPresets[selectedMenuItem.preset].inputAssignment;
           break;
@@ -177,16 +177,16 @@ export const gameMenusSlice = createSlice({
           break;
         case "toGame":
           if (state.gameRunning) {
-            state.menus = [];
+            state.openMenus = [];
           } else {
             // go to crowns menu page if not already started the game
-            state.menus = [{ menuId: "crowns", selectedIndex: 0 }];
+            state.openMenus = [{ menuId: "crowns", selectedIndex: 0 }];
             state.gameRunning = true;
           }
           break;
         case "back": {
-          const [, ...tail] = state.menus;
-          state.menus = tail;
+          const [, ...tail] = state.openMenus;
+          state.openMenus = tail;
           break;
         }
         case "todo":
@@ -201,10 +201,10 @@ export const gameMenusSlice = createSlice({
         // can't move up or down in menu while assigning keys to an action
         return;
       }
-      const [{ selectedIndex, menuId }, ...tail] = state.menus;
+      const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
       const menu = menus[menuId];
 
-      state.menus = [
+      state.openMenus = [
         {
           menuId,
           selectedIndex: (selectedIndex + 1) % menu.items.length,
@@ -218,10 +218,10 @@ export const gameMenusSlice = createSlice({
         return;
       }
 
-      const [{ selectedIndex, menuId }, ...tail] = state.menus;
+      const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
       const menu = menus[menuId];
 
-      state.menus = [
+      state.openMenus = [
         {
           menuId,
           selectedIndex:
@@ -232,10 +232,10 @@ export const gameMenusSlice = createSlice({
     },
     holdPressed(state) {
       // do nothing if hold pressed while in menus
-      if (state.menus.length === 0) {
-        state.menus = [{ menuId: "hold", selectedIndex: 0 }];
-      } else if (state.menus[0]?.menuId === "hold") {
-        state.menus = [];
+      if (state.openMenus.length === 0) {
+        state.openMenus = [{ menuId: "hold", selectedIndex: 0 }];
+      } else if (state.openMenus[0]?.menuId === "hold") {
+        state.openMenus = [];
       }
     },
     setShowBoundingBoxes(
@@ -260,7 +260,7 @@ export const gameMenusSlice = createSlice({
     },
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
-      state.menus = [{ menuId: "crowns", selectedIndex: 0 }];
+      state.openMenus = [{ menuId: "crowns", selectedIndex: 0 }];
     },
   },
 });

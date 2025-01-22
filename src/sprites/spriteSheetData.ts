@@ -16,6 +16,7 @@ import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
 import { shadowSpritesheetData } from "./shadowSpritesheetData";
 import { doorSpritesheetData } from "./doorSpritesheetData";
+import { withSpeed } from "./withSpeed";
 
 const frames = {
   "floorEdge.right": {
@@ -365,37 +366,79 @@ const frames = {
   ...doorSpritesheetData.frames,
 };
 
+export type TextureId = keyof typeof frames;
+
+export type FramesWithSpeed<TFrames extends string[] = TextureId[]> =
+  TFrames & {
+    animationSpeed: number;
+  };
+
 export const spritesheetData = {
   frames,
   animations: {
-    "teleporter.flashing": ["teleporter.flashing.1", "teleporter.flashing.2"],
-    fish: ["fish.1", "fish.2"],
-    lift: ["lift.1", "lift.2", "lift.3", "lift.4"],
-    dalek: ["dalek.1", "dalek.2"],
-    "turtle.left": ["turtle.left.1", "turtle.left.2"],
-    "turtle.away": ["turtle.away.1", "turtle.away.2"],
-    "turtle.towards": ["turtle.towards.1", "turtle.towards.2"],
-    "turtle.right": ["turtle.right.1", "turtle.right.2"],
-    helicopterBug: [
-      "helicopterBug.1",
-      "helicopterBug.2",
-      "helicopterBug.3",
-      "helicopterBug.4",
-    ],
-    "bubbles.cold": ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/],
-    "bubbles.white": ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"],
-    "bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"],
-    "bubbles.doughnut": ["bubbles.taupe.1", "bubbles.taupe.2"],
-    "bubbles.fish": ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"],
-    "conveyor.x": seriesOfAnimationFrameTextureIds("conveyor.x", 7),
-    "conveyor.y": seriesOfAnimationFrameTextureIds("conveyor.y", 7),
-    "spring.bounce": [
-      "spring.released",
-      "spring.compressed",
-      "spring.released",
-      "spring.compressed",
-      "spring.released",
-    ],
+    "teleporter.flashing": withSpeed(
+      ["teleporter.flashing.1", "teleporter.flashing.2"] as const,
+      0.5,
+    ),
+    fish: withSpeed(["fish.1", "fish.2"] as const, 0.25),
+    lift: withSpeed(["lift.1", "lift.2", "lift.3", "lift.4"] as const, 0.5),
+    dalek: withSpeed(["dalek.1", "dalek.2"] as const, 0.5),
+    "turtle.left": withSpeed(["turtle.left.1", "turtle.left.2"] as const, 0.25),
+    "turtle.away": withSpeed(["turtle.away.1", "turtle.away.2"] as const, 0.25),
+    "turtle.towards": withSpeed(
+      ["turtle.towards.1", "turtle.towards.2"] as const,
+      0.25,
+    ),
+    "turtle.right": withSpeed(
+      ["turtle.right.1", "turtle.right.2"] as const,
+      0.25,
+    ),
+    helicopterBug: withSpeed(
+      [
+        "helicopterBug.1",
+        "helicopterBug.2",
+        "helicopterBug.3",
+        "helicopterBug.4",
+      ] as const,
+      0.5,
+    ),
+    "bubbles.cold": withSpeed(
+      ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/] as const,
+      0.25,
+    ),
+    "bubbles.white": withSpeed(
+      ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"] as const,
+      0.5,
+    ),
+    //"bubbles.taupe": ["bubbles.taupe.1", "bubbles.taupe.2", "bubbles.taupe.3"] as const,
+    "bubbles.doughnut": withSpeed(
+      ["bubbles.taupe.1", "bubbles.taupe.2"] as const,
+      0.5,
+    ),
+    /*"bubbles.fish": withSpeed(
+      ["bubbles.fish.1", "bubbles.fish.2", "bubbles.fish.3"] as const,
+      0.25,
+    ),*/
+    "conveyor.x": withSpeed(
+      seriesOfAnimationFrameTextureIds("conveyor.x", 7),
+      0.5,
+    ),
+    "conveyor.y": withSpeed(
+      seriesOfAnimationFrameTextureIds("conveyor.y", 7),
+      0.5,
+    ),
+    "spring.bounce": withSpeed(
+      [
+        "spring.released",
+        "spring.compressed",
+        "spring.released",
+        "spring.compressed",
+        "spring.released",
+      ] as const,
+      0.5,
+    ),
+    // never actually used in the game(!) - for the manual only
+    switch: withSpeed(["switch.left", "switch.right"] as const, 0.02),
     ...playableSpritesheetData.animations,
   },
   meta: { scale: 1 },
@@ -403,5 +446,4 @@ export const spritesheetData = {
   keyof typeof frames
 >;
 
-export type TextureId = keyof typeof frames;
 export type AnimationId = keyof (typeof spritesheetData)["animations"];

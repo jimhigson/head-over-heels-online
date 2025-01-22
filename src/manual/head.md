@@ -1,7 +1,7 @@
 ## HEAD 
 ### (HEADUS MOUTHION)
 
-![](texture-head.walking.towards.2?float-right)This creature is a symbiotic partner to Heels and will normally be found sitting
+![](texture-animated-head.walking.towards?float-right)This creature is a symbiotic partner to Heels and will normally be found sitting
 on top of one.
 
 ![](texture-head.falling.right)Head is descended from a breed of flying reptile and still has

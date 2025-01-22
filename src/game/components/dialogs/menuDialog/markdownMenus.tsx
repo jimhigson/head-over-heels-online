@@ -23,7 +23,7 @@ export const markdownMenus = transformObject(
               />
               <PressToContinueBanner
                 action="menu"
-                className={`absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1 ${multilineTextClass}`}
+                className={`absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1 z-dialogChrome ${multilineTextClass}`}
                 keyClassName="text-midRed"
               />
             </>

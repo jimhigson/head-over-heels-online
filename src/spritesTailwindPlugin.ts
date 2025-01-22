@@ -1,13 +1,15 @@
 import plugin from "tailwindcss/plugin";
+import type { FramesWithSpeed, TextureId } from "./sprites/spriteSheetData";
 import { spritesheetData } from "./sprites/spriteSheetData";
 import { objectEntriesIter } from "./utils/entries";
 import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
+import { zxSpectrumFrameRate } from "./originalGame";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 
 // https://tailwindcss.com/docs/plugins
-export const spritesTailwindPlugin = plugin(({ addUtilities, e }) => {
+export const spritesTailwindPlugin = plugin(({ addUtilities, addBase, e }) => {
   const spriteStyles = (type: "background" | "mask") => ({
     [`${type}Image`]: `var(--spritesheetUrl)`,
     [`${type}Position`]: `calc(-1 * var(--x) * var(--scale, 1)) calc(-1 * var(--y) * var(--scale, 1) * var(--doubleHeight, 1))`,
@@ -56,5 +58,34 @@ export const spritesTailwindPlugin = plugin(({ addUtilities, e }) => {
     };
   }
 
+  const animations: CSSRuleObject = {};
+  for (const [animationName, frames] of objectEntriesIter(
+    spritesheetData.animations as Record<string, FramesWithSpeed<TextureId[]>>,
+  )) {
+    const pixiJsAnimationSpeed = frames.animationSpeed;
+    const animationDuration =
+      (frames.length * (1 / zxSpectrumFrameRate)) / pixiJsAnimationSpeed;
+
+    utilities[`.texture-animated-${e(animationName)}`] = {
+      "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
+      "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
+      // 1s timing should be configurable based on values from stylesheet
+      animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
+    };
+
+    animations[
+      `@keyframes sprite-animation-${animationName.replaceAll(".", "_")}`
+    ] = Object.fromEntries(
+      frames.map((frame, i) => [
+        `${(i * 100) / (frames.length - 1)}%`,
+        {
+          "--x": `${spritesheetData.frames[frame].frame.x}px`,
+          "--y": `${spritesheetData.frames[frame].frame.y}px`,
+        },
+      ]),
+    );
+  }
+
   addUtilities(utilities);
+  addBase(animations);
 });

@@ -18,7 +18,6 @@ import type {
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { spriteSheet } from "../../../sprites/spriteSheet";
 
 const renderSprite = ({
   name,
@@ -37,20 +36,20 @@ const renderSprite = ({
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
-      frames: spriteSheet.animations[`${name}.fadeOut`],
+      animationId: `${name}.fadeOut`,
     };
   }
 
   if (teleporting !== null) {
     if (teleporting.phase === "out") {
       return {
-        frames: spriteSheet.animations[`${name}.fadeOut`],
+        animationId: `${name}.fadeOut`,
       };
     }
 
     if (teleporting.phase === "in") {
       return {
-        frames: spriteSheet.animations[`${name}.fadeOut`].toReversed(),
+        animationId: `${name}.fadeOut`,
       };
     }
   }
@@ -67,7 +66,7 @@ const renderSprite = ({
 
   if (action === "moving") {
     return {
-      frames: spriteSheet.animations[`${name}.walking.${facingXy4}`],
+      animationId: `${name}.walking.${facingXy4}`,
       filter,
     };
   } else if (
@@ -79,7 +78,7 @@ const renderSprite = ({
   } else {
     if (name === "head" && (facingXy4 === "towards" || facingXy4 === "right")) {
       return {
-        frames: spriteSheet.animations[`head.idle.${facingXy4}`],
+        animationId: `head.idle.${facingXy4}`,
         filter,
       };
     }

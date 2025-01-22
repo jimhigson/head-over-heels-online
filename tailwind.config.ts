@@ -32,6 +32,11 @@ export default {
   theme: {
     colors: spritesheetPalette,
     spacing: {
+      // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
+      bottomStackPullup: `calc(var(--scale) * 15px)`,
+      // quite specialist - in markdown, when showing a smaller item stacked on a larger one,
+      // how much to move the smaller one over (with margin-left/ml)
+      centreSmallBlockOnLarge: `calc(var(--scale) * 4px)`,
       0: "0px",
       1: "calc(var(--block) * 1)",
       2: "calc(var(--block) * 2)",
@@ -93,7 +98,12 @@ export default {
     gridTemplateColumns: {
       menuItems: "calc(var(--block) * 2) max-content 1fr",
     },
+    zIndex: {
+      topSprite: "1",
+      dialogChrome: "2",
+    },
     keyframes: {
+      // cursor flash - for when selecting the keys for an action
       flash: {
         "0%, 100%": { opacity: "1" },
         "50%": { opacity: "0" },

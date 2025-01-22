@@ -14,7 +14,8 @@
 [ ] actually use joystick/control pad input
 [x] persist settings
 [ ] quit game option in menu (if playing)
-[ ] collecting crowns (and screen)
+[ ] lives option
+[x] collecting crowns (and screen)
 [ ] bug: pressing return to start a game shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started

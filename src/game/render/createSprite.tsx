@@ -3,12 +3,14 @@ import type {
   Filter,
   PointData,
   SpritesheetFrameData,
-  Texture,
 } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
-import type { TextureId } from "../../sprites/spriteSheetData";
+import {
+  spritesheetData,
+  type AnimationId,
+  type TextureId,
+} from "../../sprites/spriteSheetData";
 import { spriteSheet } from "../../sprites/spriteSheet";
-import { defaultAnimationSpeed } from "./animationTimings";
 import { originalGameFrameDuration } from "../../originalGame";
 import type { Xy } from "../../utils/vectors/vectors";
 
@@ -17,12 +19,7 @@ type AnimatedCreateSpriteOptions = {
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
-  /**
-   * if not given, defaults to 12.5 fps, or one frame every other (deinterlaced)
-   * zx-spectrum original game frame
-   */
-  animationSpeed?: number;
-  frames: Texture[];
+  animationId: AnimationId;
   /*
    * if true, animation will run backwards
    */
@@ -58,7 +55,11 @@ const bottomMiddleDefaultAnchor = { x: 0.5, y: 1 };
 const isAnimatedOptions = (
   options: CreateSpriteOptions,
 ): options is AnimatedCreateSpriteOptions =>
-  typeof options !== "string" && Object.hasOwn(options, "frames");
+  typeof options !== "string" &&
+  Object.hasOwn(
+    options,
+    "animationId" satisfies keyof AnimatedCreateSpriteOptions,
+  );
 
 /** utility for creating a sprite while setting several properties on it */
 export const createSprite = (options: CreateSpriteOptions): Sprite => {
@@ -117,11 +118,12 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
   }
 };
 function createAnimatedSprite({
-  frames,
-  animationSpeed,
+  animationId,
   reverse,
   playOnce,
 }: AnimatedCreateSpriteOptions) {
+  const frames = spriteSheet.animations[animationId];
+
   const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
     texture: frame,
     time: originalGameFrameDuration,
@@ -133,7 +135,8 @@ function createAnimatedSprite({
 
   const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
-  animatedSprite.animationSpeed = animationSpeed || defaultAnimationSpeed;
+  animatedSprite.animationSpeed =
+    spritesheetData.animations[animationId].animationSpeed;
   animatedSprite.play();
   if (playOnce !== undefined) {
     animatedSprite.loop = false;

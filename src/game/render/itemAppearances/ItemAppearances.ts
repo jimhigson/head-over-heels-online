@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import type { TextureId } from "../../../sprites/spriteSheetData";
-import { spriteSheet } from "../../../sprites/spriteSheet";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
@@ -218,14 +217,11 @@ export const itemAppearances: {
       createSprite(
         moving ?
           {
-            frames: spriteSheet.animations[`conveyor.${axis}`],
+            animationId: `conveyor.${axis}`,
             reverse: direction === "towards" || direction === "right",
-            animationSpeed: 0.5,
-            //...xy,
           }
         : {
             texture: `conveyor.${axis}.6`,
-            //...xy,
           },
       ),
     );
@@ -245,7 +241,7 @@ export const itemAppearances: {
     };
     rendering.addChild(
       createSprite({
-        frames: spriteSheet.animations.lift,
+        animationId: "lift",
         pivot,
       }),
     );
@@ -276,7 +272,7 @@ export const itemAppearances: {
         children: [
           createSprite("teleporter"),
           createSprite({
-            frames: spriteSheet.animations["teleporter.flashing"],
+            animationId: "teleporter.flashing",
           }),
         ],
       });
@@ -308,8 +304,7 @@ export const itemAppearances: {
         crown: "crown",
         scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
         reincarnation: {
-          frames: spriteSheet.animations["fish"],
-          animationSpeed: 0.25,
+          animationId: "fish",
         },
       };
       const createOptions = pickupIcons[gives];
@@ -422,9 +417,7 @@ export const itemAppearances: {
               container:
                 animate ?
                   createSprite({
-                    frames:
-                      spriteSheet.animations[`${config.which}.${facingXy4}`],
-                    animationSpeed: 0.25,
+                    animationId: `${config.which}.${facingXy4}`,
                     filter,
                   })
                 : createSprite({
@@ -496,15 +489,13 @@ export const itemAppearances: {
         switch (config.which) {
           case "helicopterBug":
           case "dalek": {
-            const frames = spriteSheet.animations[config.which];
             const animate = activated && !busyLickingDoughnutsOffFace;
             // not directional, animated
             return {
               container: createSprite(
                 animate ?
                   {
-                    frames,
-                    animationSpeed: 0.5,
+                    animationId: config.which,
                     filter,
                   }
                 : { texture: `${config.which}.1`, filter },
@@ -544,8 +535,7 @@ export const itemAppearances: {
           case "emperor":
             return {
               container: createSprite({
-                frames: spriteSheet.animations["bubbles.cold"],
-                animationSpeed: 0.25,
+                animationId: "bubbles.cold",
                 filter,
               }),
               renderProps,
@@ -641,7 +631,7 @@ export const itemAppearances: {
       container:
         !compressed && currentlyRenderedCompressed ?
           createSprite({
-            frames: spriteSheet.animations["spring.bounce"],
+            animationId: "spring.bounce",
             playOnce: "and-stop",
             filter,
           })
@@ -663,12 +653,12 @@ export const itemAppearances: {
       },
     }) => {
       return createSprite({
-        frames: spriteSheet.animations[`bubbles.${style}`],
+        animationId: `bubbles.${style}`,
       });
     },
   ),
   firedDoughnut: staticSpriteAppearance({
-    frames: spriteSheet.animations["bubbles.doughnut"],
+    animationId: "bubbles.doughnut",
   }),
 
   ball: staticSpriteAppearance("ball"),
