@@ -4,6 +4,8 @@ import spritesheetPalette from "./gfx/spritesheetPalette.json";
 import { zxSpectrumResolution } from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
+import scrollbar from "tailwind-scrollbar";
+
 export default {
   /*corePlugins: {
     accentColor: false,
@@ -117,5 +119,8 @@ export default {
       flash: "flash 1s steps(1, end) infinite",
     },
   },
-  plugins: [spritesTailwindPlugin],
+  plugins: [
+    spritesTailwindPlugin,
+    scrollbar({ preferredStrategy: "pseudoelements", nocompatible: true }),
+  ],
 } satisfies Config;

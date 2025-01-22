@@ -19,13 +19,11 @@ export const markdownMenus = transformObject(
             <>
               <MenuMarkdown
                 markdown={markdown}
-                className="text-shadow overflow-y-hidden"
+                className={
+                  `text-shadow overflow-y-scroll ` +
+                  "scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-highlightBeige"
+                }
               />
-              {/* <PressToContinueBanner
-                action="menu"
-                className={`absolute bg-lightBeige inset-x-0 bottom-0 h-min p-1 z-dialogChrome ${multilineTextClass}`}
-                keyClassName="text-midRed"
-              /> */}
               <MenuItems className="hidden" />
             </>
           );

@@ -44,7 +44,7 @@ startAppListening({
         selectedMenuItem.type === "dispatch") &&
       selectedMenuItem.dispatch
     ) {
-      dispatch(selectedMenuItem.dispatch);
+      dispatch(selectedMenuItem.dispatch());
     }
   },
 });
