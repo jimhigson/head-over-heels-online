@@ -37,17 +37,10 @@ export class ItemAppearanceRenderer<
     assignMouseActions(item, this.#container, gameState);
 
     this.#appearance = itemAppearances[item.type];
-
-    // this.#itemShadowRenderer = ItemShadowRenderer(item, room);
-
-    // if (this.#itemShadowRenderer !== undefined) {
-    //   this.#container.addChild(this.#itemShadowRenderer.container);
-    // }
   }
 
   destroy() {
     this.#container.destroy({ children: true });
-    //if (this.#itemShadowRenderer) this.#itemShadowRenderer.destroy();
   }
 
   tick(renderContext: RenderContext) {

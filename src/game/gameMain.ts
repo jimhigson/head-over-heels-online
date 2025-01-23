@@ -43,7 +43,7 @@ export const gameMain = async <RoomId extends string>(
       // app.resizeTo is not very reliable - it only resizes if the window resizes. That's usually
       // fine, but if the upscale changes without a window resize it can mean that we get the wrong size initially
       // instead - be explicit about it:
-      app.renderer.resize(newSize.x, newSize.y);
+      app.renderer?.resize(newSize.x, newSize.y);
     },
     changeRoom(roomId: RoomId) {
       changeCharacterRoom({

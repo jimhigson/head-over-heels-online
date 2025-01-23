@@ -35,7 +35,7 @@ export default {
     colors: spritesheetPalette,
     spacing: {
       // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
-      bottomStackPullup: `calc(var(--scale) * 15px)`,
+      bottomStackPullup: `calc(var(--scale) * 17px)`,
       // quite specialist - in markdown, when showing a smaller item stacked on a larger one,
       // how much to move the smaller one over (with margin-left/ml)
       centreSmallBlockOnLarge: `calc(var(--scale) * 4px)`,

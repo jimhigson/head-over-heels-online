@@ -182,12 +182,12 @@ const rooms = {
       // },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "book" },
         position: { x: 0, y: 2, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic" },
+        config: { style: "book" },
         position: { x: 0, y: 2, z: 2 },
       },
       // {

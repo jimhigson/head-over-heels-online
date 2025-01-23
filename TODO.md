@@ -20,10 +20,12 @@
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
     [ ] load campaign lazily
-[ ] CRASH - enter a room in symbio, split, die in the room    
+[x] CRASH - enter a room in symbio, split, die in the room    
     - tests say this is ok but it isn't
     [ ] bug - monsters near the door will repeatedly kill the player in this situation
-    [ ] reset all monsters to starting positions in this case
+      [ ] reset all monsters to starting positions in this case?
+[ ] bug - if pushed out of a room while player is dying, their entry state contains death
+    - fix - make players non-solid while state is death      
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
 [ ] colourise option should actually work (and switch in first room)
