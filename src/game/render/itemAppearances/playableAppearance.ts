@@ -18,6 +18,7 @@ import type {
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
+import { store } from "../../../store/store";
 
 const renderSprite = ({
   name,
@@ -25,14 +26,12 @@ const renderSprite = ({
   facingXy4,
   teleporting,
   highlighted,
-  scaleFactor,
 }: {
   name: IndividualCharacterName;
   action: PlayableActionState;
   facingXy4: DirectionXy4;
   teleporting: PlayableTeleportingState | null;
   highlighted: boolean;
-  scaleFactor: number;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
@@ -60,7 +59,7 @@ const renderSprite = ({
         name === "head" ?
           spritesheetPalette.metallicBlue
         : spritesheetPalette.pink,
-        scaleFactor,
+        store.getState().upscale.gameEngineUpscale,
       )
     : undefined;
 
@@ -97,7 +96,6 @@ export const isHighlighted = ({
 export const playableAppearance = <C extends CharacterName>({
   item,
   currentlyRenderedProps,
-  renderOptions,
 }: ItemAppearanceOptions<C, string>): ItemAppearanceReturn<CharacterName> => {
   const {
     type,
@@ -121,7 +119,7 @@ export const playableAppearance = <C extends CharacterName>({
     currentlyRenderedProps.highlighted !== highlighted;
 
   if (!render) {
-    return;
+    return "no-update";
   }
 
   return {
@@ -134,7 +132,6 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
           bottom: renderSprite({
             name: "heels",
@@ -142,7 +139,6 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         })
       : createSprite(
@@ -152,7 +148,6 @@ export const playableAppearance = <C extends CharacterName>({
             facingXy4,
             teleporting,
             highlighted,
-            scaleFactor: renderOptions.upscale.gameEngineUpscale,
           }),
         ),
     renderProps: {

@@ -20,10 +20,16 @@
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
     [ ] load campaign lazily
+[ ] CRASH - enter a room in symbio, split, die in the room    
+    - tests say this is ok but it isn't
+    [ ] bug - monsters near the door will repeatedly kill the player in this situation
+    [ ] reset all monsters to starting positions in this case
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
 [ ] colourise option should actually work (and switch in first room)
 [ ] why doesn't work in Safari/iOS?
+[ ] compare against original for how far player can edge up on a block
+[ ] show some stats in game over menu - at least rooms explored and planets liberated
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [ ] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)

@@ -1,10 +1,8 @@
 import { loadRoom } from "./loadRoom/loadRoom";
-import type { RenderOptions } from "../RenderOptions";
 import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import { createEmptyInput } from "../input/InputState";
-import { keyAssignmentPresets } from "../input/keyAssignmentPresets";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { SceneryName } from "../../sprites/planets";
@@ -46,10 +44,8 @@ export const startingRooms = <RoomId extends string>(
 
 export const initGameState = <RoomId extends string>({
   campaign,
-  renderOptions,
 }: {
   campaign: Campaign<RoomId>;
-  renderOptions: RenderOptions;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -70,8 +66,8 @@ export const initGameState = <RoomId extends string>({
         true,
       );
 
+  // create a gameApi
   return {
-    inputAssignment: keyAssignmentPresets.default.inputAssignment,
     // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: starts.head === undefined ? "heels" : "head",
     characterRooms: {
@@ -87,7 +83,6 @@ export const initGameState = <RoomId extends string>({
         ),
     },
     inputState: createEmptyInput(),
-    renderOptions,
     campaign,
     events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,

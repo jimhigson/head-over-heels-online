@@ -4,7 +4,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import type { GameState } from "../gameState/GameState";
-import { selectCurrentRoom } from "../gameState/GameState";
+import { selectCurrentRoomState } from "../gameState/GameState";
 
 import type { PlayableItem } from "../physics/itemPredicates";
 import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
@@ -85,7 +85,7 @@ describe("pickups", () => {
     ).toBe(true);
     // the pickup should have disappeared:
     expect(
-      selectCurrentRoom(gameState).items["pickupTwoSquaresFromHead"],
+      selectCurrentRoomState(gameState).items["pickupTwoSquaresFromHead"],
     ).toBeUndefined();
     expect(headState(gameState).lives).toBe(10);
 
@@ -96,7 +96,7 @@ describe("pickups", () => {
       ],
     ).toBeFalsy();
     expect(
-      selectCurrentRoom(gameState).items[
+      selectCurrentRoomState(gameState).items[
         "pickupCharactersWillNotGetInThisTest"
       ],
     ).not.toBeUndefined();
@@ -132,7 +132,7 @@ describe("pickups", () => {
     expect(heelsState(gameState).lives).toBe(10);
     // the pickup should have disappeared:
     expect(
-      selectCurrentRoom(gameState).items["pickupAboveHeels"],
+      selectCurrentRoomState(gameState).items["pickupAboveHeels"],
     ).toBeUndefined();
   });
 
@@ -346,7 +346,7 @@ describe("doors", () => {
     playGameThrough(gameState, {
       until: 2_000,
     });
-    expect(selectCurrentRoom(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoomState(gameState).id).toBe("secondRoom");
   });
 });
 
@@ -425,7 +425,7 @@ describe("conveyors", () => {
     });
     const {
       items: { portableBlock },
-    } = selectCurrentRoom(gameState);
+    } = selectCurrentRoomState(gameState);
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOn).toMatchObject({ id: "floor" });
     expect(heelsState(gameState).position).toEqual({
@@ -532,7 +532,7 @@ describe("deadly blocks", () => {
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
     expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
-    expect(selectCurrentRoom(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoomState(gameState).id).toBe("secondRoom");
   });
 });
 

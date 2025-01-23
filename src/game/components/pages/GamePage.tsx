@@ -1,14 +1,13 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import type { Campaign } from "../../../model/modelTypes.ts";
 import { type GameApi } from "../../GameApi.tsx";
-import { gameMain } from "../../gameMain.tsx";
+import { gameMain } from "../../gameMain.ts";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { TextureStyle } from "pixi.js";
 import { GameApiProvider } from "../GameApiContext.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
 import { CssVariables } from "../CssVariables.tsx";
-import { useRenderOptions } from "../../../store/selectors.ts";
 import { useAppSelector } from "../../../store/hooks.ts";
 import { Flow } from "../../../store/storeFlow/Flow.tsx";
 import { testCampaign } from "../../../testCampaign.ts";
@@ -32,15 +31,13 @@ const useGame = <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ): GameApi<RoomId> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<RoomId>>();
-  const renderOptions = useRenderOptions();
 
   useEffect(
     function createGame() {
       let stopped = false;
       let thisEffectGameApi: GameApi<RoomId> | undefined;
       const go = async () => {
-        console.log("creating game with renderOptions", renderOptions);
-        thisEffectGameApi = await gameMain(campaign, renderOptions);
+        thisEffectGameApi = await gameMain(campaign);
         if (stopped) {
           thisEffectGameApi.stop();
           return;
@@ -55,7 +52,6 @@ const useGame = <RoomId extends string>(
         stopped = true;
       };
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- we don't want to recreate the whole game every time renderOptions changes, only when the campaign changes. New renderopions are passed to the gameApi in an effect below
     [campaign],
   );
 
@@ -71,14 +67,16 @@ export const GamePage = () => {
   const cheatsEnabled = useCheatsEnabled();
   const campaign = cheatsEnabled ? campaignWithTestRooms : originalCampaign;
   const gameApi = useGame(campaign);
-  const { cssUpscale, canvasSize } = useAppSelector(
-    (state) => state.userSettings.renderOptions.upscale,
-  );
+  const { cssUpscale, canvasSize } = useAppSelector((state) => state.upscale);
 
   useEffect(() => {
     if (gameDiv === null || gameApi === undefined) return;
     gameApi.renderIn(gameDiv);
   }, [gameApi, gameDiv]);
+
+  useEffect(() => {
+    gameApi?.resizeTo(canvasSize);
+  });
 
   return (
     <>

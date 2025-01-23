@@ -6,7 +6,9 @@ import { calculateUpscale } from "../../game/render/calculateUpscale";
 
 const updateSize = () => {
   const {
-    userSettings: { emulatedResolution },
+    userSettings: {
+      displaySettings: { emulatedResolution },
+    },
   } = store.getState();
 
   const upscale = calculateUpscale(

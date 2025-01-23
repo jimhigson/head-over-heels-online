@@ -1,20 +1,14 @@
 import { menus } from "../game/components/dialogs/menuDialog/menus";
 import { useAppSelector } from "./hooks";
+import type { RootState } from "./store";
 
 export const useTotalUpscale = () =>
   useAppSelector((state) => {
     const {
-      userSettings: {
-        renderOptions: {
-          upscale: { cssUpscale, gameEngineUpscale },
-        },
-      },
+      upscale: { cssUpscale, gameEngineUpscale },
     } = state;
     return cssUpscale * gameEngineUpscale;
   });
-
-export const useRenderOptions = () =>
-  useAppSelector((state) => state.userSettings.renderOptions);
 
 export const useMenus = () => useAppSelector((state) => state.openMenus);
 export const useCurrentMenu = () => {
@@ -33,3 +27,5 @@ export const useCurrentMenuSelectedItemIndex = () => {
 
 export const useInputAssignment = () =>
   useAppSelector((state) => state.userSettings.inputAssignment);
+
+export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;

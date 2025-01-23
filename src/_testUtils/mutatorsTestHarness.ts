@@ -18,7 +18,6 @@ import type {
   IndividualCharacterName,
   CharacterName,
 } from "../model/modelTypes";
-import { zxSpectrumResolution } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import { blockSizePx } from "../sprites/spritePivots";
 import { iterate } from "../utils/iterate";
@@ -106,18 +105,6 @@ export const testCampaign = {
 export const mutatorsTestHarness = () => {
   const gameState = initGameState({
     campaign: testCampaign,
-    renderOptions: {
-      crtFilter: false,
-      colourise: true,
-      showBoundingBoxes: "none",
-      showShadowMasks: false,
-      upscale: {
-        gameEngineUpscale: 1,
-        cssUpscale: 1,
-        gameEngineScreenSize: zxSpectrumResolution,
-        canvasSize: zxSpectrumResolution,
-      },
-    },
   });
 
   const gameOverFn = vi.fn();
