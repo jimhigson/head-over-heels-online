@@ -22,6 +22,7 @@ import type { SceneryName } from "../sprites/planets";
 import { blockSizePx } from "../sprites/spritePivots";
 import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
+import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -289,10 +290,19 @@ export const mutatorsTestHarness = () => {
             `Could not find playable ${playableName} while losing life ${i} of ${count}`,
           );
         }
+        const room = this.selectRoomOfPlayable(playableName);
+        if (room === undefined) {
+          throw new Error("player losing a life while not in any room");
+        }
+        // in the game, the player's item expires and is removed from the room
+        // before the losing life code kicks in:
+        deleteItemFromRoom({ room, item: playable });
         playableLosesLife(gameState, playable);
       }
     },
-    selectRoomOfPlayable(playableName: CharacterName) {
+    selectRoomOfPlayable(
+      playableName: CharacterName,
+    ): RoomState<SceneryName, TestCampaignRoomId> | undefined {
       return gameState.characterRooms[playableName];
     },
     selectPlayable<C extends CharacterName = CharacterName>(playableName: C) {

@@ -212,8 +212,16 @@ export const individualPlayableLosesLife = <RoomId extends string>(
 
       if (enteredInSymbiosis) {
         const headOverHeels = combinePlayablesInSymbiosis({
-          head: roomWithCharacterLosingLife.items.head!,
-          heels: roomWithCharacterLosingLife.items.heels!,
+          // the playable that lost the life will no longer be in the room:
+
+          head:
+            characterLosingLife.id === "head" ?
+              characterLosingLife
+            : roomWithCharacterLosingLife.items.head!,
+          heels:
+            characterLosingLife.id === "heels" ?
+              characterLosingLife
+            : roomWithCharacterLosingLife.items.heels!,
         });
 
         resetPlayableToEntryState(gameState, headOverHeels);
@@ -227,6 +235,7 @@ export const individualPlayableLosesLife = <RoomId extends string>(
         gameState.characterRooms = {
           headOverHeels: reloadedRoom,
         };
+        gameState.currentCharacterName = "headOverHeels";
 
         return; // non-terminal outcome - continue playing
       }
