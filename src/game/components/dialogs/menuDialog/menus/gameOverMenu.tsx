@@ -3,8 +3,15 @@ import { BitmapText } from "../../../Sprite";
 import { backMenuItem } from "../backMenuItem";
 import { mainMenuCycle, MainMenuHeading } from "./mainMenu";
 import { MenuItems } from "../MenuItems";
+import { useAppSelector } from "../../../../../store/hooks";
+import { objectValues, size } from "iter-tools";
+import { iterate } from "../../../../../utils/iterate";
 
 const GameOverMenuContent = () => {
+  const planetsLiberatedCount = useAppSelector((state) =>
+    size(iterate(objectValues(state.planetsLiberated)).filter(Boolean)),
+  );
+
   return (
     <>
       <MainMenuHeading />
@@ -21,7 +28,7 @@ const GameOverMenuContent = () => {
         Explored - rooms
       </BitmapText>
       <BitmapText className="mt-2 block text-center mx-auto text-lightGrey">
-        Liberated - planets
+        Liberated {String(planetsLiberatedCount)} planets
       </BitmapText>
       <MenuItems className="hidden" />
     </>

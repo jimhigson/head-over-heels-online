@@ -5,7 +5,7 @@ import {
   type Campaign,
 } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
-import type { InputState, InputAssignment } from "../input/InputState";
+import type { InputState } from "../input/InputState";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
