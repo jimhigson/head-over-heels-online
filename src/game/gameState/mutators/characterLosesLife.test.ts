@@ -89,7 +89,7 @@ describe("while not in symbiosis", () => {
 
               const roomBeforeLosingLife = h.selectRoomOfPlayable("head")!;
 
-              h.playableLosesLife("head");
+              h.playableLosesLife(playableLosingLifeName);
 
               expect(h.selectPlayable("head")).toBeUndefined();
               expect(h.selectPlayable("heels")).toBeUndefined();
@@ -98,6 +98,7 @@ describe("while not in symbiosis", () => {
                 thisRoom: h.selectRoomOfPlayable("headOverHeels"),
                 shouldBeACopyOf: roomBeforeLosingLife,
               });
+              expect(h.gameState.currentCharacterName).toEqual("headOverHeels");
             });
           });
           describe(`because ${otherName} entered ${playableLosingLifeName}'s room`, () => {
