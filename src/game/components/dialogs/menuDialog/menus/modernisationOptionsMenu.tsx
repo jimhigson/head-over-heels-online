@@ -41,7 +41,7 @@ export const modernisationOptionsMenu: Menu = {
     {
       type: "switch",
       label: "CRT TV effect",
-      selector: (store) => store.userSettings.displaySettings.colourise,
+      selector: (store) => store.userSettings.displaySettings.crtFilter,
       dispatch: () => toggleCrtFilter(),
       hint: "Screen glows a bit like an old tv",
     },
