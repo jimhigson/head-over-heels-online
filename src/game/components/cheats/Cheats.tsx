@@ -5,7 +5,7 @@ import {
 } from "@radix-ui/react-collapsible";
 import { Label } from "@radix-ui/react-label";
 
-import { selectCurrentRoom } from "../../gameState/GameState";
+import { selectCurrentRoomState } from "../../gameState/GameState";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
@@ -32,8 +32,7 @@ import {
   setShowBoundingBoxes,
   setShowShadowMasks,
 } from "../../../store/gameMenusSlice";
-import { useAppDispatch } from "../../../store/hooks";
-import { useRenderOptions } from "../../../store/selectors";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { Switch } from "../../../components/ui/switch";
@@ -76,7 +75,7 @@ const SummonPlayableButton = <RoomId extends string>({
     <Button
       className="flex-1"
       onClick={(e) => {
-        const roomId = selectCurrentRoom(gameApi.gameState).id;
+        const roomId = selectCurrentRoomState(gameApi.gameState).id;
         gameApi.gameState.currentCharacterName = playableName;
         const playableItem = selectPlayableItem(
           gameApi.gameState,
@@ -139,7 +138,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   useDebugClickOnItem();
 
-  const { showBoundingBoxes, showShadowMasks } = useRenderOptions();
+  const { showBoundingBoxes, showShadowMasks } = useAppSelector(
+    (state) => state.userSettings.displaySettings,
+  );
   const dispatch = useAppDispatch();
 
   useLevelSelectByUrlHash(gameApi);
@@ -152,7 +153,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
     const playable = selectCurrentPlayableItem(gameState);
     addItemFromJsonToRoom({
       gameState,
-      room: selectCurrentRoom(gameState),
+      room: selectCurrentRoomState(gameState),
       itemType,
       config,
       position: {

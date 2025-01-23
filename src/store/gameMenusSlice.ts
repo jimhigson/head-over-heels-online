@@ -11,17 +11,38 @@ import type {
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
 import { calculateUpscale } from "../game/render/calculateUpscale";
-import type { RenderOptions, ShowBoundingBoxes } from "../game/RenderOptions";
 import { zxSpectrumResolution } from "../originalGame";
 import type { Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
 import { always } from "../utils/always";
 
+export type ShowBoundingBoxes = "none" | "all" | "non-wall";
+
 export type OpenMenu = {
   menuId: MenuId;
   selectedIndex: number;
 };
+
+export type DisplaySettings = {
+  emulatedResolution: Xy;
+  crtFilter: boolean;
+  colourise: boolean;
+  showBoundingBoxes: ShowBoundingBoxes;
+  showShadowMasks: boolean;
+};
+
+export type UserSettings = {
+  inputAssignment: InputAssignment;
+  displaySettings: DisplaySettings;
+};
+
+const cheatsOn =
+  typeof globalThis.window !== "undefined" ?
+    // in a browser
+    new URLSearchParams(window.location.search).has("cheats")
+    // in node (probably vitest)
+  : false;
 
 export type GameMenusState = {
   /**
@@ -34,32 +55,31 @@ export type GameMenusState = {
    */
   actionBeingAssignedKeys: Action | undefined;
 
-  userSettings: {
-    renderOptions: RenderOptions;
-    emulatedResolution: Xy;
-    inputAssignment: InputAssignment;
-  };
+  userSettings: UserSettings;
+  upscale: Upscale;
 
   planetsLiberated: Record<PlanetName, boolean>;
-
   gameRunning: boolean;
+
+  // if cheats are on, some cheat/debugging options are available
+  cheatsOn: boolean;
 };
 
 const initialState: GameMenusState = {
   userSettings: {
-    renderOptions: {
-      // we don't want to tie the store to the window object by reading window.innerWidth etc here,
-      // since then the tests wouldn't run under node. Put any value in - it will be updated by
-      // react hooks when they mount, before the first render to pixels
-      upscale: calculateUpscale(zxSpectrumResolution, zxSpectrumResolution, 1),
+    inputAssignment: keyAssignmentPresets.default.inputAssignment,
+    displaySettings: {
       showBoundingBoxes: "none",
       showShadowMasks: false,
       crtFilter: true,
       colourise: true,
+      emulatedResolution: zxSpectrumResolution,
     },
-    emulatedResolution: zxSpectrumResolution,
-    inputAssignment: keyAssignmentPresets.default.inputAssignment,
   },
+  // we don't want to tie the store to the window object by reading window.innerWidth etc here,
+  // since then the tests wouldn't run under node. Put any value in - it will be updated by
+  // react hooks when they mount, before the first render to pixels
+  upscale: calculateUpscale(zxSpectrumResolution, zxSpectrumResolution, 1),
 
   planetsLiberated: {
     blacktooth: false,
@@ -69,11 +89,18 @@ const initialState: GameMenusState = {
     safari: false,
   },
 
-  // when we first load, show the main menu:
-  openMenus: [{ selectedIndex: 0, menuId: "mainMenu" }],
+  openMenus:
+    cheatsOn ?
+      // if cheats are on we skip menus for debugging:
+      []
+      // normal case: when we first load, show the main menu:
+    : [{ selectedIndex: 0, menuId: "mainMenu" }],
   actionBeingAssignedKeys: undefined,
 
-  gameRunning: false,
+  // if cheating (debugging), the game is already running
+  gameRunning: cheatsOn,
+
+  cheatsOn,
 };
 
 /**
@@ -85,13 +112,14 @@ export const gameMenusSlice = createSlice({
   initialState,
   reducers: {
     setUpscale(state, { payload: upscale }: PayloadAction<Upscale>) {
-      state.userSettings.renderOptions.upscale = upscale;
+      state.upscale = upscale;
     },
     setEmulatedResolution(
       state,
       { payload: emulatedResolution }: PayloadAction<Xy>,
     ) {
-      state.userSettings.emulatedResolution = emulatedResolution;
+      state.userSettings.displaySettings.emulatedResolution =
+        emulatedResolution;
     },
     showScroll(
       state,
@@ -256,21 +284,21 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
     ) {
-      state.userSettings.renderOptions.showBoundingBoxes = showBoundingBoxes;
+      state.userSettings.displaySettings.showBoundingBoxes = showBoundingBoxes;
     },
     setShowShadowMasks(
       state,
       { payload: showShadowMasks }: PayloadAction<boolean>,
     ) {
-      state.userSettings.renderOptions.showShadowMasks = showShadowMasks;
+      state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
     toggleCrtFilter(state) {
-      state.userSettings.renderOptions.crtFilter =
-        !state.userSettings.renderOptions.crtFilter;
+      state.userSettings.displaySettings.crtFilter =
+        !state.userSettings.displaySettings.crtFilter;
     },
     toggleColourise(state) {
-      state.userSettings.renderOptions.colourise =
-        !state.userSettings.renderOptions.colourise;
+      state.userSettings.displaySettings.colourise =
+        !state.userSettings.displaySettings.colourise;
     },
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;

@@ -3,8 +3,6 @@ import type { GameState } from "../game/gameState/GameState";
 import { initGameState } from "../game/gameState/initGameState";
 import type { InputState } from "../game/input/InputState";
 import type { RoomJson } from "../model/RoomJson";
-import { zxSpectrumResolution } from "../originalGame";
-import type { RenderOptions } from "../game/RenderOptions";
 
 /**
  * Utilities for setting up a basic example room - for testing
@@ -57,18 +55,6 @@ const basicEmptyRoomWithItems = (
     items,
   };
 };
-const basicRenderOptions: RenderOptions = {
-  showBoundingBoxes: "none",
-  showShadowMasks: false,
-  upscale: {
-    gameEngineUpscale: 1,
-    cssUpscale: 1,
-    gameEngineScreenSize: zxSpectrumResolution,
-    canvasSize: zxSpectrumResolution,
-  },
-  crtFilter: false,
-  colourise: true,
-};
 
 const gameStateWithInput = (
   gameState: GameState<TestRoomId>,
@@ -107,7 +93,6 @@ export const basicGameState = ({
   };
   const gameState = initGameState<TestRoomId>({
     campaign,
-    renderOptions: basicRenderOptions,
   });
 
   return gameStateWithInput(gameState, inputState);

@@ -10,6 +10,7 @@ import { entries, objectEntriesIter } from "../../utils/entries";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import { originXyz } from "../../utils/vectors/vectors";
+import { store } from "../../store/store";
 
 // see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
 //const DOM_KEY_LOCATION_STANDARD = 0;
@@ -64,11 +65,6 @@ export type InputStateChangeEvent = {
 };
 
 type ListenForInputOptions = {
-  /**
-   * a handle is used here so the 'current' value can be
-   * swapped in and out if the user changes their keys
-   */
-  inputAssignmentHandle: { inputAssignment: InputAssignment };
   /** an inputState object to directly mutate */
   inputState: InputState;
   /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
@@ -76,7 +72,6 @@ type ListenForInputOptions = {
 };
 
 export const listenForInput = ({
-  inputAssignmentHandle,
   inputState,
   onInputStateChange,
 }: ListenForInputOptions) => {
@@ -111,7 +106,9 @@ export const listenForInput = ({
     inputState.raw[stdKey] = true;
 
     let foundMapping = false;
-    const { inputAssignment } = inputAssignmentHandle;
+    const {
+      userSettings: { inputAssignment },
+    } = store.getState();
     for (const action of keyToAction(inputAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
@@ -136,7 +133,9 @@ export const listenForInput = ({
 
     delete inputState.raw[stdKey];
 
-    const { inputAssignment } = inputAssignmentHandle;
+    const {
+      userSettings: { inputAssignment },
+    } = store.getState();
     for (const action of keyToAction(inputAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];

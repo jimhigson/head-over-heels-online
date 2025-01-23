@@ -1,5 +1,5 @@
 import type { GameState } from "../gameState/GameState";
-import { selectCurrentRoom } from "../gameState/GameState";
+import { selectCurrentRoomState } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
@@ -113,7 +113,7 @@ export const _progressGameState = <RoomId extends string>(
 ): MovedItems => {
   const { inputState } = gameState;
 
-  const room = selectCurrentRoom(gameState);
+  const room = selectCurrentRoomState(gameState);
 
   // take a snapshot of item positions before any physics ticks so we
   // can check later what has moved. DOne per physics tick, not render-tick

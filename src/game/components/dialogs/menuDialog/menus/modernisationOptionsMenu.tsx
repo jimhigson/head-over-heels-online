@@ -26,7 +26,7 @@ export const modernisationOptionsMenu: Menu = {
     {
       type: "switch",
       label: "Colourise",
-      selector: (store) => store.userSettings.renderOptions.colourise,
+      selector: (store) => store.userSettings.displaySettings.colourise,
       dispatch: () => toggleColourise(),
       hint: "Original two-tone graphics, or 16-colour colourised",
     },
@@ -41,7 +41,7 @@ export const modernisationOptionsMenu: Menu = {
     {
       type: "switch",
       label: "CRT TV effect",
-      selector: (store) => store.userSettings.renderOptions.crtFilter,
+      selector: (store) => store.userSettings.displaySettings.colourise,
       dispatch: () => toggleCrtFilter(),
       hint: "Screen glows a bit like an old tv",
     },

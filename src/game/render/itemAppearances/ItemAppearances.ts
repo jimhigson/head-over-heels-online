@@ -36,6 +36,7 @@ import {
   stackedSprites,
   itemRidingOnBubblesSpritesOptions,
 } from "./stackedSprites";
+import { store } from "../../../store/store";
 
 const blockTextureId = (
   isDark: boolean,
@@ -157,7 +158,7 @@ export const itemAppearances: {
       currentlyRenderedProps.disappear !== disappear;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     return {
@@ -184,7 +185,7 @@ export const itemAppearances: {
       setting !== currentlyRenderedProps.setting;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     return {
@@ -207,7 +208,7 @@ export const itemAppearances: {
       currentlyRenderedProps.moving !== moving;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     const rendering = new Container();
@@ -264,7 +265,7 @@ export const itemAppearances: {
       flashing !== currentlyRenderedProps.flashing;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     const renderFlashing = () =>
@@ -348,7 +349,7 @@ export const itemAppearances: {
       facingXy4 !== currentlyRenderedProps.facingXy4;
 
     if (!render) {
-      return;
+      return "no-update";
     }
     return {
       container: stackedSprites({ top: `charles.${facingXy4}` }),
@@ -382,7 +383,7 @@ export const itemAppearances: {
           facingXy4 !== currentlyRenderedProps.facingXy4;
 
         if (!render) {
-          return;
+          return "no-update";
         }
         const renderProps: ItemRenderProps<"monster"> = {
           facingXy4,
@@ -459,6 +460,7 @@ export const itemAppearances: {
             };
           default:
             config satisfies never;
+            throw new Error(`unexpected monster ${config}`);
         }
         break;
       }
@@ -477,7 +479,7 @@ export const itemAppearances: {
           activated !== currentlyRenderedProps.activated;
 
         if (!render) {
-          return;
+          return "no-update";
         }
 
         const renderProps: ItemRenderProps<"monster"> = {
@@ -542,6 +544,7 @@ export const itemAppearances: {
             };
           default:
             config satisfies never;
+            throw new Error(`unexpected monster ${config}`);
         }
         break;
       }
@@ -568,7 +571,6 @@ export const itemAppearances: {
       state: { wouldPickUpNext },
     },
     currentlyRenderedProps,
-    renderOptions,
   }) {
     const highlighted = wouldPickUpNext;
 
@@ -577,14 +579,14 @@ export const itemAppearances: {
       highlighted !== currentlyRenderedProps.highlighted;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     const filter =
       highlighted ?
         new OutlineFilter(
           carryableOutlineColour,
-          renderOptions.upscale.gameEngineUpscale,
+          store.getState().upscale.gameEngineUpscale,
         )
       : undefined;
 
@@ -602,7 +604,6 @@ export const itemAppearances: {
       state: { stoodOnBy, wouldPickUpNext },
     },
     currentlyRenderedProps,
-    renderOptions,
   }) {
     const compressed = stoodOnBy.size > 0;
     const highlighted = wouldPickUpNext;
@@ -613,7 +614,7 @@ export const itemAppearances: {
       compressed !== currentlyRenderedProps.compressed;
 
     if (!render) {
-      return;
+      return "no-update";
     }
 
     const currentlyRenderedCompressed =
@@ -623,7 +624,7 @@ export const itemAppearances: {
       highlighted ?
         new OutlineFilter(
           carryableOutlineColour,
-          renderOptions.upscale.gameEngineUpscale,
+          store.getState().upscale.gameEngineUpscale,
         )
       : undefined;
 

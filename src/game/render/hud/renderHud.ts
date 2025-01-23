@@ -1,5 +1,4 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { Upscale } from "../calculateUpscale";
 import { Container, Sprite } from "pixi.js";
 import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
 import { RevertColouriseFilter } from "../../../filters/colorReplace/RevertColouriseFilter";
@@ -22,7 +21,7 @@ import {
 } from "../../../sprites/textureSizes";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import { selectCurrentRoom } from "../../gameState/GameState";
+import { selectCurrentRoomState } from "../../gameState/GameState";
 import { selectCanCombine } from "../../gameState/gameStateSelectors/selectCanCombine";
 import {
   shieldRemaining,
@@ -33,6 +32,7 @@ import { iterateToContainer } from "../../iterateToContainer";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/paletteSwapFilters";
+import { store } from "../../../store/store";
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -63,15 +63,12 @@ function showNumberInContainer(container: Container, n: number) {
   iterateToContainer(numberSprites(n), container);
 }
 
-export const renderHud = <RoomId extends string>(
-  hudContainer: Container,
-  upscale: Upscale,
-) => {
+export const renderHud = <RoomId extends string>(hudContainer: Container) => {
   const iconFilter = new RevertColouriseFilter();
   const textFilter = new RevertColouriseFilter();
   const outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
-    upscale.gameEngineUpscale,
+    store.getState().upscale.gameEngineUpscale,
   );
   const uncurrentSpriteFilter = new RevertColouriseFilter();
   const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();
@@ -217,7 +214,7 @@ export const renderHud = <RoomId extends string>(
   hudContainer.addChild(hudElements.heels.carrying.container);
 
   return (gameState: GameState<RoomId>, screenSize: Xy) => {
-    const room = selectCurrentRoom(gameState);
+    const room = selectCurrentRoomState(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
     } = getColorScheme(room.color);

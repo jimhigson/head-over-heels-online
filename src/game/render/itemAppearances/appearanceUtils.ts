@@ -9,7 +9,7 @@ import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
-import type { RenderOptions } from "../../RenderOptions";
+import type { DisplaySettings } from "../../../store/gameMenusSlice";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -22,7 +22,7 @@ export type ItemAppearanceReturn<T extends ItemInPlayType> =
       renderProps: ItemRenderProps<T>;
     }
   /** returns undefined if no new rendering is required */
-  | undefined;
+  | "no-update";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
@@ -37,7 +37,7 @@ export type ItemAppearanceOptions<
    */
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
 
-  renderOptions: RenderOptions;
+  displaySettings: DisplaySettings;
 };
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({
@@ -70,11 +70,13 @@ export const renderOnce =
     ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({ item, room, currentlyRenderedProps, renderOptions }) => {
+  ({ item, room, currentlyRenderedProps, displaySettings }) => {
     if (currentlyRenderedProps === undefined) {
       return {
-        container: renderWith({ item, room, renderOptions }),
+        container: renderWith({ item, room, displaySettings }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };
+    } else {
+      return "no-update";
     }
   };
