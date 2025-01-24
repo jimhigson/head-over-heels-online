@@ -9,7 +9,7 @@ import { selectCurrentRoomState } from "../gameState/GameState";
 import type { PlayableItem } from "../physics/itemPredicates";
 import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
-import { createEmptyInput } from "../input/InputState";
+import { createEmptyInputState } from "../input/InputState";
 
 import type {
   TestRoomId,
@@ -179,7 +179,7 @@ describe("jumping", () => {
         frameCallbacks: [
           function startJumpingSoonAfterTheStart(gameState) {
             const inputState = {
-              ...createEmptyInput(),
+              ...createEmptyInputState(),
               direction: unitVectors.towards,
               jump:
                 gameState.gameTime > 100 &&
@@ -933,7 +933,7 @@ describe("dissapearing items", () => {
       {
         ...gameStateWithDisappearingBlocks,
         inputState: {
-          ...createEmptyInput(),
+          ...createEmptyInputState(),
           jump: true,
           direction: unitVectors.away,
         },
@@ -955,7 +955,7 @@ describe("dissapearing items", () => {
       {
         ...gameStateWithDisappearingBlocks,
         inputState: {
-          ...createEmptyInput(),
+          ...createEmptyInputState(),
           direction: unitVectors.away /* not jumping */,
         },
       },
@@ -1017,7 +1017,7 @@ describe("dissapearing items", () => {
       {
         ...gameState,
         inputState: {
-          ...createEmptyInput(),
+          ...createEmptyInputState(),
           jump: true,
           direction: unitVectors.away,
         },

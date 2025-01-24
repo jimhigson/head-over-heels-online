@@ -1,6 +1,6 @@
 import type { ColorSource } from "pixi.js";
 import { Color, Filter, GlProgram } from "pixi.js";
-import { vertex } from "../defaults";
+import { vertex } from "./defaults";
 import fragment from "./revertColourise.frag?raw";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 

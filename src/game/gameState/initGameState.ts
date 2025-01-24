@@ -2,7 +2,7 @@ import { loadRoom } from "./loadRoom/loadRoom";
 import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
-import { createEmptyInput } from "../input/InputState";
+import type { InputState } from "../input/InputState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { SceneryName } from "../../sprites/planets";
@@ -44,8 +44,10 @@ export const startingRooms = <RoomId extends string>(
 
 export const initGameState = <RoomId extends string>({
   campaign,
+  inputState,
 }: {
   campaign: Campaign<RoomId>;
+  inputState: InputState;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -82,7 +84,7 @@ export const initGameState = <RoomId extends string>({
           entryState(heelsRoom.items.heels!)
         ),
     },
-    inputState: createEmptyInput(),
+    inputState,
     campaign,
     events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,

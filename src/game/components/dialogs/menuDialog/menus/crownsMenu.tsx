@@ -1,7 +1,6 @@
 import type { Menu } from "../menus";
 import { BitmapText, CssSprite } from "../../../Sprite";
 import type { PlanetName } from "../../../../../sprites/planets";
-import { PixiSprite } from "../../../PixiSprite";
 import type { SpritesheetPaletteColourName } from "../../../../../../gfx/spritesheetPalette";
 import { useAppSelector } from "../../../../../store/hooks";
 import { backMenuItem } from "../backMenuItem";
@@ -43,18 +42,11 @@ const TitledCrown = ({
 
   return (
     <div className={`flex flex-col ${className}`}>
-      {collected ?
-        <CssSprite className={`block ${crownTextureClasses[planet]} mx-auto`} />
-      : <PixiSprite
-          className="block mx-auto text-shadow"
-          textureId={`crown.${planet}`}
-          revertColour
-        />
-      }
-      <PixiSprite
-        className={`block mx-auto ${colourCycle[planet][0]}`}
-        textureId="ball"
-        revertColour
+      <CssSprite
+        className={`block ${collected ? crownTextureClasses[planet] : "texture-crown.dark"} mx-auto`}
+      />
+      <CssSprite
+        className={`block texture-ball mx-auto ${colourCycle[planet][0]}`}
       />
       <BitmapText
         classnameCycle={colourCycle[planet]}

@@ -1,6 +1,6 @@
 import type { Color } from "pixi.js";
 import { Filter, GlProgram } from "pixi.js";
-import { vertex } from "../defaults";
+import { vertex } from "./defaults";
 import fragment from "./paletteSwap.frag?raw";
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { spritesheetPalette } from "gfx/spritesheetPalette";

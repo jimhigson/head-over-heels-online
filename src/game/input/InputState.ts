@@ -1,3 +1,4 @@
+import mitt, { type Emitter } from "mitt";
 import { fromAllEntries } from "../../utils/entries";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import { directionsXy4 } from "../../utils/vectors/vectors";
@@ -26,6 +27,12 @@ export type InputAssignmentPreset = {
   description?: string;
 };
 
+export type InputStateChangeEvent = {
+  /** was a key put down (add a new key press) or up (remove a keypress)? */
+  upOrDown?: "up" | "down";
+  inputState: InputState;
+};
+
 /** The currently pressed input, to be processed on the next tick */
 export type InputState = Record<Action, boolean> & {
   windowBlurred: boolean;
@@ -40,14 +47,17 @@ export type InputState = Record<Action, boolean> & {
    * the raw keys/buttons being pressed right now. Not usually used in-game
    */
   raw: Partial<Record<AssignableInput, true>>;
+
+  events: Emitter<{ inputStateChanged: InputStateChangeEvent }>;
 };
 
-export const createEmptyInput = (): InputState => ({
+export const createEmptyInputState = (): InputState => ({
   ...fromAllEntries(booleanActions.map((action) => [action, false])),
   ...fromAllEntries(directionsXy4.map((action) => [action, false])),
   windowBlurred: false,
   direction: { x: 0, y: 0, z: 0 },
   raw: {},
+  events: mitt(),
 });
 
-export const emptyInput = Object.freeze(createEmptyInput());
+export const emptyInput = Object.freeze(createEmptyInputState());

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { spritesheetData, type TextureId } from "../../sprites/spriteSheetData";
 import { twMerge } from "tailwind-merge";
 import { useTotalUpscale } from "../../store/selectors";
-import { RevertColouriseFilter } from "../../filters/colorReplace/RevertColouriseFilter";
+import { RevertColouriseFilter } from "../render/filters/RevertColouriseFilter";
 
 export interface PixiSpriteProps {
   // if given, colour is reverted to the currentColor (the text colour from css)

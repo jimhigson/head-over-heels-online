@@ -1,8 +1,8 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container, Sprite } from "pixi.js";
-import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
-import { RevertColouriseFilter } from "../../../filters/colorReplace/RevertColouriseFilter";
-import { getColorScheme } from "../../../hintColours";
+import { OutlineFilter } from "../filters/outlineFilter";
+import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
+import { getColorScheme } from "../../hintColours";
 import type {
   HeadAbilities,
   HeelsAbilities,

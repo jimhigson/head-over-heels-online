@@ -1,4 +1,4 @@
-import { spriteSheet } from "./spriteSheet";
+import { spritesheetData } from "./spriteSheetData";
 import type { TextureId } from "./spriteSheetData";
 
 export function assertIsTextureId(
@@ -10,5 +10,5 @@ export function assertIsTextureId(
 }
 
 export function isTextureId(textureId: string): textureId is TextureId {
-  return spriteSheet.textures[textureId as TextureId] !== undefined;
+  return spritesheetData.frames[textureId as TextureId] !== undefined;
 }

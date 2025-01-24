@@ -6,7 +6,7 @@ import type {
 } from "./appearanceUtils";
 import { stackedSprites } from "./stackedSprites";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
+import { OutlineFilter } from "../filters/outlineFilter";
 import type {
   PlayableActionState,
   PlayableTeleportingState,

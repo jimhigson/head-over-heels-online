@@ -29,3 +29,6 @@ export const useInputAssignment = () =>
   useAppSelector((state) => state.userSettings.inputAssignment);
 
 export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;
+
+export const useCheatsOn = (): boolean =>
+  useAppSelector((state) => state.cheatsOn);
