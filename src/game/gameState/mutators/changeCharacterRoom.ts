@@ -210,23 +210,30 @@ export const changeCharacterRoom = <RoomId extends string>(
     );
 
     if (destinationPortal === undefined) {
-      throw new Error(
-        `trying to move ${playableItem.id} from ${leavingRoom.id} --to-> ${toRoomId} but no destination portal found to locate with`,
+      if (changeCharacterRoomOptions.changeType === "level-select") {
+        // you're probably level selecting into the final room, but could also in theory be a room with only teleporters
+        // to access - don't think there are any in the original game though:
+        // choose a random spot that's likely to not collide:
+        playableItem.state.position = blockXyzToFineXyz({ x: 1, y: 1, z: 8 });
+      } else {
+        // we're not level selecting, there is really a bug in the campaign topology
+        throw new Error(
+          `trying to move ${playableItem.id} from ${leavingRoom.id} --to-> ${toRoomId} but no destination portal found to locate with`,
+        );
+      }
+    } else {
+      playableItem.state.position = addXyz(
+        destinationPortal.state.position,
+        destinationPortal.config.relativePoint,
+        positionRelativeToSourcePortal,
+        // an extra boost of one block when travelling up - this is because the room above won't have a floor
+        // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
+        changeType === "portal" && sourceItem.config.direction.z > 0 ?
+          { z: blockSizePx.h }
+        : {},
       );
-    }
 
-    playableItem.state.position = addXyz(
-      destinationPortal.state.position,
-      destinationPortal.config.relativePoint,
-      positionRelativeToSourcePortal,
-      // an extra boost of one block when travelling up - this is because the room above won't have a floor
-      // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
-      changeType === "portal" && sourceItem.config.direction.z > 0 ?
-        { z: blockSizePx.h }
-      : {},
-    );
-
-    console.log(
+      /*console.log(
       "character put down at",
       playableItem.state.position,
       "which is relative to",
@@ -236,31 +243,31 @@ export const changeCharacterRoom = <RoomId extends string>(
       destinationPortal.config.relativePoint,
       "positionRelativeToSourcePortal:",
       positionRelativeToSourcePortal,
-    );
+    );*/
 
-    const {
-      config: { direction: portalDirection },
-    } = destinationPortal;
-    if (
-      // portal is horizontal - not up or down
-      portalDirection.z === 0
-    ) {
-      const portalDirectionXy = portalDirection;
-      // automatically walk forward a short way in the new room to put character properly
-      // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
-      //  - only doors)
-      // TODO: maybe this should be side-effect free
-      playableItem.state.autoWalk = true;
+      const {
+        config: { direction: portalDirection },
+      } = destinationPortal;
+      if (
+        // portal is horizontal (door) - not up or down (floor/ceiling)
+        portalDirection.z === 0
+      ) {
+        const portalDirectionXy = portalDirection;
+        // automatically walk forward a short way in the new room to put character properly
+        // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
+        //  - only doors)
+        // TODO: maybe this should be side-effect free
+        playableItem.state.autoWalk = true;
 
-      // face the character the way they should have walked through the portal - this
-      // is usually a no-op since they had to be walking that way to get through, but
-      // it is possible they were pushed through and the autowalk needs to go in
-      // the right direction
-      playableItem.state.facing = scaleXyz(portalDirectionXy, -1);
+        // face the character the way they should have walked through the portal - this
+        // is usually a no-op since they had to be walking that way to get through, but
+        // it is possible they were pushed through and the autowalk needs to go in
+        // the right direction
+        playableItem.state.facing = scaleXyz(portalDirectionXy, -1);
 
-      // if the new position collides with the other character, back off some more so we can push them into
-      // the room - serves them right for standing in the way:
-      /*
+        // if the new position collides with the other character, back off some more so we can push them into
+        // the room - serves them right for standing in the way:
+        /*
       // this isn't quite right and is causing bugs - should only actually move by the amount of the overlap
       // alternatively, make the floor bigger and start futher back
       const collisionsWithPlayers = collision1toMany(
@@ -286,8 +293,9 @@ export const changeCharacterRoom = <RoomId extends string>(
         });
       }*/
 
-      if (playableItem.state.action === "idle")
-        playableItem.state.action = "moving";
+        if (playableItem.state.action === "idle")
+          playableItem.state.action = "moving";
+      }
     }
   }
   // when we put the playableItem in their new room, they won't be standing on anything yet (or will

@@ -48,10 +48,7 @@ export const room = inferRoomJson({
       type: "movableBlock",
     },
     scroll: {
-      config: {
-        gives: "scroll",
-        page: "historyOfTheBlacktoothEmpire",
-      },
+      config: { gives: "scroll", page: "historyOfTheBlacktoothEmpire" },
       position: { x: 1, y: 2.5, z: 4 },
       type: "pickup",
     },

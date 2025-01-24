@@ -1274,13 +1274,18 @@ const rooms = {
       },
       {
         type: "sceneryPlayer",
-        config: { which: "head" },
+        config: { which: "head", startDirection: "left" },
         position: { x: 3, y: 1, z: 0 },
       },
       {
         type: "sceneryPlayer",
-        config: { which: "heels" },
+        config: { which: "heels", startDirection: "right" },
         position: { x: 5, y: 1, z: 0 },
+      },
+      {
+        type: "sceneryPlayer",
+        config: { which: "headOverHeels", startDirection: "towards" },
+        position: { x: 10, y: 1, z: 0 },
       },
     ]),
     planet: "bookworld",

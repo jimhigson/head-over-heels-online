@@ -3,7 +3,6 @@ import type { TextureId } from "../../../sprites/spriteSheetData";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
-import type { SceneryName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { playableAppearance } from "./playableAppearance";
 import type { ItemAppearance } from "./appearanceUtils";
@@ -18,10 +17,7 @@ import {
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type {
-  BlockStyle,
-  ItemConfigMap,
-} from "../../../model/json/ItemConfigMap";
+import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
   wallTileSize,
   smallItemTextureSize,
@@ -284,35 +280,30 @@ export const itemAppearances: {
     };
   },
 
-  pickup: renderOnce(
-    ({
-      item: {
-        config: { gives },
-      },
-      room,
-    }) => {
-      const pickupIcons: Record<
-        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"],
-        CreateSpriteOptions
-      > = {
-        shield: "bunny",
-        jumps: "bunny",
-        fast: "bunny",
-        "extra-life": "bunny",
-        bag: "bag",
-        doughnuts: "doughnuts",
-        hooter: "hooter",
-        crown: "crown",
-        scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
-        reincarnation: {
-          animationId: "fish",
-        },
-      };
-      const createOptions = pickupIcons[gives];
+  pickup: renderOnce(({ item: { config }, room }) => {
+    if (config.gives === "crown") {
+      return createSprite({
+        texture: `crown.${config.planet}`,
+      });
+    }
 
-      return createSprite(createOptions);
-    },
-  ),
+    const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
+      shield: "bunny",
+      jumps: "bunny",
+      fast: "bunny",
+      "extra-life": "bunny",
+      bag: "bag",
+      doughnuts: "doughnuts",
+      hooter: "hooter",
+      scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
+      reincarnation: {
+        animationId: "fish",
+      },
+    };
+    const createOptions = pickupIcons[config.gives];
+
+    return createSprite(createOptions);
+  }),
 
   moveableDeadly: renderOnce(
     ({
@@ -325,15 +316,15 @@ export const itemAppearances: {
   sceneryPlayer: renderOnce(
     ({
       item: {
-        config: { which },
+        config: { which, startDirection },
       },
     }) =>
       which === "headOverHeels" ?
         stackedSprites({
-          top: `head.walking.towards.2`,
-          bottom: `heels.walking.towards.2`,
+          top: `head.walking.${startDirection}.2`,
+          bottom: `heels.walking.${startDirection}.2`,
         })
-      : createSprite(`${which}.walking.towards.2`),
+      : createSprite(`${which}.walking.${startDirection}.2`),
   ),
 
   charles({

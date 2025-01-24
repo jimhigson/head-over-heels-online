@@ -82,10 +82,7 @@ export const room = inferRoomJson({
       type: "door",
     },
     scroll: {
-      config: {
-        gives: "scroll",
-        page: "teleportBack",
-      },
+      config: { gives: "scroll", page: "teleportBack" },
       position: { x: 5, y: 6, z: 2 },
       type: "pickup",
     },

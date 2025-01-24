@@ -85,6 +85,8 @@ export type JsonItem<
   type: T;
   config: JsonItemConfig<T, P, RoomId, ItemId>;
   position: Xyz;
+  /** if true, on an original campaign room, the item is an item that has been added for the remake */
+  isExtra?: true;
 };
 
 export type UnknownJsonItem<

@@ -89,7 +89,7 @@ export const boundingBoxForItem = (
           throw new Error("unknown block style");
       }
     }
-    case "monster": // TODO: make different size for different monsters
+    case "monster":
       switch (item.config.which) {
         case "skiHead":
         case "bubbleRobot":
@@ -136,6 +136,11 @@ export const boundingBoxForItem = (
       return item.config.side === "left" || item.config.side === "right" ?
           { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
         : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
+
+    case "sceneryPlayer":
+      return item.config.which === "headOverHeels" ?
+          { aabb: doubleHeightCharacter }
+        : { aabb: smallItemAabb };
 
     default:
       //console.warn("giving default aabb for item", item);

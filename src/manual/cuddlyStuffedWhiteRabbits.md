@@ -9,9 +9,9 @@ they will both get the enhanced power.
 
 There are four types:
 
-1. ![](texture-hud.char.2)**Two extra lives**
-2. ![](texture-hud.shield)**Iron Pills** (to make you invulnerable)
-3. ![](texture-hud.bigJumps)**Jump higher bunny** (only works on Heels)
-4. ![](texture-hud.fastSteps)**Go faster bunny** (only works on slow-moving Head)
+1. ![](texture-hud.char.2?sprite-tinted&text-metallicBlue)**Two extra lives**
+2. ![](texture-hud.shield?sprite-tinted&text-metallicBlue)**Iron Pills** (to make you invulnerable)
+3. ![](texture-hud.bigJumps?sprite-tinted&text-metallicBlue)**Jump higher bunny** (only works on Heels)
+4. ![](texture-hud.fastSteps?sprite-tinted&text-metallicBlue)**Go faster bunny** (only works on slow-moving Head)
 
 *> Head Over Heels Manual*

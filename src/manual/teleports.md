@@ -4,3 +4,5 @@
 siren. Pressing the *jump key* will cause you to teleport.
 
 Not all teleports are two-way; some are linked in a chain.
+
+*> Head Over Heels Manual* 
