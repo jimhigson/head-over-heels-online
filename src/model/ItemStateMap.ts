@@ -148,6 +148,7 @@ export type ItemStateMap<RoomId extends string> = {
   };
   spring: PortableItemState<RoomId>;
   portableBlock: PortableItemState<RoomId>;
+  sceneryPlayer: PortableItemState<RoomId>;
   movableBlock: FreeItemState<RoomId> & {
     activated: boolean; // ie, can be turned on/off by a switch
     facing: Xyz; // used for moving platforms

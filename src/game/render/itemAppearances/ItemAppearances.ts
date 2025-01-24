@@ -313,20 +313,6 @@ export const itemAppearances: {
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
-  sceneryPlayer: renderOnce(
-    ({
-      item: {
-        config: { which, startDirection },
-      },
-    }) =>
-      which === "headOverHeels" ?
-        stackedSprites({
-          top: `head.walking.${startDirection}.2`,
-          bottom: `heels.walking.${startDirection}.2`,
-        })
-      : createSprite(`${which}.walking.${startDirection}.2`),
-  ),
-
   charles({
     item: {
       state: { facing },
@@ -559,12 +545,10 @@ export const itemAppearances: {
   portableBlock({
     item: {
       config: { style },
-      state: { wouldPickUpNext },
+      state: { wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
   }) {
-    const highlighted = wouldPickUpNext;
-
     const render =
       currentlyRenderedProps === undefined ||
       highlighted !== currentlyRenderedProps.highlighted;
@@ -592,12 +576,11 @@ export const itemAppearances: {
 
   spring({
     item: {
-      state: { stoodOnBy, wouldPickUpNext },
+      state: { stoodOnBy, wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
   }) {
     const compressed = stoodOnBy.size > 0;
-    const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -633,6 +616,44 @@ export const itemAppearances: {
           }),
 
       renderProps: { compressed, highlighted },
+    };
+  },
+
+  sceneryPlayer({
+    item: {
+      config: { which, startDirection },
+      state: { wouldPickUpNext: highlighted },
+    },
+    currentlyRenderedProps,
+  }) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      highlighted !== currentlyRenderedProps.highlighted;
+
+    if (!render) {
+      return "no-update";
+    }
+
+    const filter =
+      highlighted ?
+        new OutlineFilter(
+          carryableOutlineColour,
+          store.getState().upscale.gameEngineUpscale,
+        )
+      : undefined;
+
+    return {
+      container:
+        which === "headOverHeels" ?
+          stackedSprites({
+            top: { texture: `head.walking.${startDirection}.2`, filter },
+            bottom: { texture: `heels.walking.${startDirection}.2`, filter },
+          })
+        : createSprite({
+            texture: `${which}.walking.${startDirection}.2`,
+            filter,
+          }),
+      renderProps: { highlighted },
     };
   },
 
