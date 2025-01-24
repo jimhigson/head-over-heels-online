@@ -15,8 +15,8 @@ import {
 } from "../../../../store/gameMenusSlice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { useEvent } from "../../../../utils/react/useEvent";
-import { useGameApi } from "../../GameApiContext";
 import { keys } from "../../../../utils/entries";
+import { useInputState } from "../../../input/InputStateProvider";
 
 export const MenuItems = ({
   className,
@@ -62,7 +62,7 @@ export const MenuItems = ({
   // really just for the select they keys menu - dispatch keys as new assignments if
   // we are currently assigning keys
   useEvent(
-    useGameApi().events,
+    useInputState().events,
     "inputStateChanged",
     useCallback(
       (inputStateEvent) => {
@@ -74,7 +74,9 @@ export const MenuItems = ({
         }
         const assignableInput = keys(inputStateEvent.inputState.raw).at(0);
         if (assignableInput === undefined) {
-          throw new Error("no assignableInput");
+          throw new Error(
+            "no assignableInput: inputStateEvent.inputState.raw seems to be empty",
+          );
         }
 
         if (assignableInput === "Escape") dispatch(doneAssigningInput());

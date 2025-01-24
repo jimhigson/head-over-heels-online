@@ -13,6 +13,7 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
+import { addListeners } from "./storeFlow/addListeners";
 
 const gameMenusSlicePersistConfig = {
   key: "hohol/gameMenus/userSettings",
@@ -36,8 +37,11 @@ export const store = configureStore({
     }).prepend(listenerMiddleware.middleware),
 });
 
+addListeners();
+
 export const persistor = persistStore(store);
 
+export type AppStore = typeof store;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

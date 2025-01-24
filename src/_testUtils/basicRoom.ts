@@ -1,7 +1,10 @@
 import { produce } from "immer";
 import type { GameState } from "../game/gameState/GameState";
 import { initGameState } from "../game/gameState/initGameState";
-import type { InputState } from "../game/input/InputState";
+import {
+  createEmptyInputState,
+  type InputState,
+} from "../game/input/InputState";
 import type { RoomJson } from "../model/RoomJson";
 
 /**
@@ -93,6 +96,7 @@ export const basicGameState = ({
   };
   const gameState = initGameState<TestRoomId>({
     campaign,
+    inputState: createEmptyInputState(),
   });
 
   return gameStateWithInput(gameState, inputState);

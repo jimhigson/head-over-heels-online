@@ -4,14 +4,11 @@ import type { Container } from "pixi.js";
 import type { AnyItemInPlay } from "../model/ItemInPlay";
 import type { Campaign, RoomState } from "../model/modelTypes";
 import type { SceneryName } from "../sprites/planets";
-import type { InputStateChangeEvent } from "./input/listenForInput";
 import type { Xy } from "../utils/vectors/vectors";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
   gameOver: undefined;
-  /** emitted when input changes - only really so react/dom bits can close when some input happens */
-  inputStateChanged: InputStateChangeEvent;
   itemClicked: { container: Container; item: AnyItemInPlay<RoomId> };
 };
 

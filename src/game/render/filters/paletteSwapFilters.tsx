@@ -1,9 +1,9 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { type Filter } from "pixi.js";
-import type { PaletteSwaps } from "../../../filters/colorReplace/PaletteSwapFilter";
-import { PaletteSwapFilter } from "../../../filters/colorReplace/PaletteSwapFilter";
-import type { Shades } from "../../../hintColours";
-import { colorScheme } from "../../../hintColours";
+import type { PaletteSwaps } from "./PaletteSwapFilter";
+import { PaletteSwapFilter } from "./PaletteSwapFilter";
+import type { Shades } from "../../hintColours";
+import { colorScheme } from "../../hintColours";
 import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 

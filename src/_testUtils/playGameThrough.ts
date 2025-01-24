@@ -1,5 +1,5 @@
 import type { GameState } from "../game/gameState/GameState";
-import { createEmptyInput } from "../game/input/InputState";
+import { createEmptyInputState } from "../game/input/InputState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import type { TestRoomId } from "./basicRoom";
 
@@ -71,6 +71,6 @@ export const stopAllInputAfter =
         gameState
       : {
           ...gameState,
-          inputState: createEmptyInput(),
+          inputState: createEmptyInputState(),
         };
   };

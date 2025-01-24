@@ -16,30 +16,35 @@
 [x] quit game option in menu (if playing)
 [ ] infinite lives option
 [x] collecting crowns (and screen)
-[ ] bug: pressing return to start a game shouldn't immediately switch to heels
+[ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
-    [ ] load campaign lazily
-[x] CRASH - enter a room in symbio, split, die in the room    
-    - tests say this is ok but it isn't
-    [ ] bug - monsters near the door will repeatedly kill the player in this situation
-      [ ] reset all monsters to starting positions in this case?
+    [x] load campaign lazily
+
+[ ] main index loads pixi just for the Color class in the hint colors - let's not do that!    
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
+[ ] show FPS counter as an option (lean on pixi to give fps)    
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
+    - remove blurryness in general - replace css scaling with pixijs resolution setting
 [ ] colourise option should actually work (and switch in first room)
 [ ] why doesn't work in Safari/iOS?
 [ ] compare against original for how far player can edge up on a block
-[ ] show some stats in game over menu - at least rooms explored and planets liberated
+[ ] show some stats in game over menu - at least
+    [ ] score (???)
+    [ ] rooms explored 
+    [x] planets liberated
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
-[ ] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)
+[NO] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)
+    - not possible, and initial load is faster without pixi anyway
     [ ] no way to capture pixels from html - will need some experimentation, maybe with a transparent pixi overlay
 [ ] shadow masks/cast provided by appearance
     [ ] allow to be dynamic
 [ ] option to turn off extra items should work
 [ ] ELERI cheat
+
 
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
@@ -88,6 +93,10 @@
 [ ] monsters don't wake up
 [x] hidden wall shouldn't render
 [ ] render extra floor edge
+
+# finalroom
+    - in space of lives, should say FREEDOM in hud
+
 
 Audio
 =====

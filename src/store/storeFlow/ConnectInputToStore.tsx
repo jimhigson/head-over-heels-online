@@ -1,10 +1,10 @@
 import { useGoOnHold } from "./useGoOnHold";
-import { useOpenMainMenu } from "./useOpenMainMenu";
+import { useMenuPressed } from "./useMenuPressed";
 import { useUpdateUpscaleWhenWindowResizes } from "./useUpateUpscaleWhenWIndowResizes";
 
-export const Flow = () => {
+export const ConnectInputToStore = () => {
   useGoOnHold();
   useUpdateUpscaleWhenWindowResizes();
-  useOpenMainMenu();
+  useMenuPressed();
   return null;
 };

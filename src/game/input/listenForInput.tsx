@@ -10,7 +10,6 @@ import { entries, objectEntriesIter } from "../../utils/entries";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import { originXyz } from "../../utils/vectors/vectors";
-import { store } from "../../store/store";
 
 // see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
 //const DOM_KEY_LOCATION_STANDARD = 0;
@@ -58,23 +57,10 @@ const isDirectionAction = (
   input === "left" ||
   input === "right";
 
-export type InputStateChangeEvent = {
-  /** was a key put down (add a new key press) or up (remove a keypress)? */
-  upOrDown?: "up" | "down";
-  inputState: InputState;
-};
-
-type ListenForInputOptions = {
-  /** an inputState object to directly mutate */
-  inputState: InputState;
-  /** for callers not on a main game loop (ie, dom/react) - callback for when input change */
-  onInputStateChange?: (inputState: InputStateChangeEvent) => void;
-};
-
-export const listenForInput = ({
-  inputState,
-  onInputStateChange,
-}: ListenForInputOptions) => {
+export const listenForInput = (
+  inputState: InputState,
+  getInputAssignment: () => InputAssignment,
+) => {
   let directionPressNumber = 0;
   // map the direction key to the order of its press, if it is currently being pressed
   const directionsPressed: Partial<Record<DirectionXy4, number>> = {};
@@ -106,9 +92,7 @@ export const listenForInput = ({
     inputState.raw[stdKey] = true;
 
     let foundMapping = false;
-    const {
-      userSettings: { inputAssignment },
-    } = store.getState();
+    const inputAssignment = getInputAssignment();
     for (const action of keyToAction(inputAssignment, stdKey)) {
       foundMapping = true;
       if (isDirectionAction(action)) {
@@ -122,7 +106,10 @@ export const listenForInput = ({
     }
 
     updateDirection();
-    onInputStateChange?.({ upOrDown: "down", inputState });
+    inputState.events.emit("inputStateChanged", {
+      upOrDown: "down",
+      inputState,
+    });
   };
   const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
     const stdKey = getKey(keyboardEvent);
@@ -133,9 +120,7 @@ export const listenForInput = ({
 
     delete inputState.raw[stdKey];
 
-    const {
-      userSettings: { inputAssignment },
-    } = store.getState();
+    const inputAssignment = getInputAssignment();
     for (const action of keyToAction(inputAssignment, stdKey)) {
       if (isDirectionAction(action)) {
         delete directionsPressed[action];
@@ -143,12 +128,17 @@ export const listenForInput = ({
       inputState[action] = false;
     }
     updateDirection();
-    onInputStateChange?.({ upOrDown: "up", inputState });
+    inputState.events.emit("inputStateChanged", {
+      upOrDown: "up",
+      inputState,
+    });
   };
 
   const handleWindowFocus = (): void => {
     inputState.windowBlurred = false;
-    onInputStateChange?.({ inputState });
+    inputState.events.emit("inputStateChanged", {
+      inputState,
+    });
   };
   const handleWindowBlur = (): void => {
     inputState.windowBlurred = true;
@@ -157,7 +147,9 @@ export const listenForInput = ({
       inputState[action] = false;
     }
     inputState.raw = {};
-    onInputStateChange?.({ inputState });
+    inputState.events.emit("inputStateChanged", {
+      inputState,
+    });
   };
 
   window.focus();

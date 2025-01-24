@@ -15,7 +15,7 @@ import {
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
+import { OutlineFilter } from "../filters/outlineFilter";
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {

@@ -3,8 +3,8 @@ import type {
   ZxSpectrumShade,
   ZxSpectrumRoomColour,
   ZxSpectrumRoomHue,
-} from "./originalGame";
-import { spritesheetPalette } from "../gfx/spritesheetPalette";
+} from "../originalGame";
+import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/
@@ -36,14 +36,6 @@ export const greenShades = {
   original: new Color("rgb(0, 255, 0)"),
   basic: spritesheetPalette.moss,
   dimmed: new Color("hsl(73,50%,25%)"),
-};
-
-export const shades = {
-  white: whiteShades,
-  yellow: yellowShades,
-  magenta: magentaShades,
-  cyan: cyanShades,
-  green: greenShades,
 };
 
 type ColorScheme = {

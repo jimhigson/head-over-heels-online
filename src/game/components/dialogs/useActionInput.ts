@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from "react";
-import { useGameApi } from "../GameApiContext";
 import type { ConditionalKeys } from "type-fest";
 import { emptyArray } from "../../../utils/empty";
 import type { InputState } from "../../input/InputState";
 import type { Key } from "../../input/keys";
 import { useEvent } from "../../../utils/react/useEvent";
-import type { InputStateChangeEvent } from "../../input/listenForInput";
+import { useInputState } from "../../input/InputStateProvider";
 
 type BooleanInput = ConditionalKeys<InputState, boolean>;
 
@@ -23,8 +22,6 @@ export const useActionInput = ({
   key: keyProp,
   disabled = false,
 }: UseActionInputProps) => {
-  const gameApi = useGameApi();
-
   const actions: BooleanInput[] = useMemo(
     () =>
       actionProp === undefined ? emptyArray
@@ -42,10 +39,12 @@ export const useActionInput = ({
   );
 
   useEvent(
-    gameApi.events,
+    useInputState().events,
     "inputStateChanged",
     useCallback(
-      (inputStateChangeEvent: InputStateChangeEvent) => {
+      (inputStateChangeEvent) => {
+        console.log(inputStateChangeEvent);
+
         if (disabled) {
           return;
         }

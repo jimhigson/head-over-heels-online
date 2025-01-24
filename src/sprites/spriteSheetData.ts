@@ -199,6 +199,9 @@ const frames = {
   "crown.bookworld": {
     frame: { x: 286, y: 40, ...smallItemTextureSize },
   },
+  "crown.dark": {
+    frame: { x: 311, y: 40, ...smallItemTextureSize },
+  },
   hooter: {
     frame: { x: 202, y: 349, ...smallItemTextureSize },
   },

@@ -5,12 +5,15 @@ import { Provider } from "react-redux";
 import { CssVariables } from "./CssVariables.tsx";
 import { GamePage } from "./pages/GamePage.tsx";
 import { store } from "../../store/store.ts";
+import { InputStateProvider } from "../input/InputStateProvider.tsx";
 
 const AppInner = () => {
   return (
     <>
       <Route path="/">
-        <GamePage />
+        <InputStateProvider>
+          <GamePage />
+        </InputStateProvider>
       </Route>
       <Route path="/sprites">
         <CssVariables>

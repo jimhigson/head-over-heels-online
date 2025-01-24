@@ -4,7 +4,7 @@ import { useActionInput } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
 import { useCallback } from "react";
 
-export const useOpenMainMenu = () => {
+export const useMenuPressed = () => {
   const assigningKeys = useAppSelector(
     (store) => store.actionBeingAssignedKeys !== undefined,
   );
