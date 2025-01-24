@@ -184,8 +184,20 @@ const frames = {
   doughnuts: {
     frame: { x: 77, y: 324, ...smallItemTextureSize },
   },
-  crown: {
-    frame: { x: 202, y: 374, ...smallItemTextureSize },
+  "crown.blacktooth": {
+    frame: { x: 186, y: 40, ...smallItemTextureSize },
+  },
+  "crown.safari": {
+    frame: { x: 211, y: 40, ...smallItemTextureSize },
+  },
+  "crown.egyptus": {
+    frame: { x: 236, y: 40, ...smallItemTextureSize },
+  },
+  "crown.penitentiary": {
+    frame: { x: 261, y: 40, ...smallItemTextureSize },
+  },
+  "crown.bookworld": {
+    frame: { x: 286, y: 40, ...smallItemTextureSize },
   },
   hooter: {
     frame: { x: 202, y: 349, ...smallItemTextureSize },

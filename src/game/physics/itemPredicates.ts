@@ -77,6 +77,8 @@ export const isSlidingItem = isItemType(...slidingItemTypes);
 export const portableItemTypes = [
   "portableBlock",
   "spring",
+  // just for fun/an easter egg - let pick up the characters in the final room :-)
+  "sceneryPlayer",
 ] as const satisfies ItemInPlayType[];
 export type PortableItemType = (typeof portableItemTypes)[number];
 
@@ -120,6 +122,7 @@ export const freeItemTypes = [
   "slidingBlock",
   "slidingDeadly",
   "spring",
+  "sceneryPlayer", // just for fun
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];

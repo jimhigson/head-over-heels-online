@@ -6,16 +6,28 @@ import type { SpritesheetPaletteColourName } from "../../../../../../gfx/sprites
 import { useAppSelector } from "../../../../../store/hooks";
 import { backMenuItem } from "../backMenuItem";
 import { MenuItems } from "../MenuItems";
+import type { TextureId } from "../../../../../sprites/spriteSheetData";
 
 const colourCycle: Record<
   PlanetName,
   `text-${SpritesheetPaletteColourName}`[]
 > = {
   egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
-  blacktooth: ["text-midGrey", "text-lightGrey", "text-moss"],
+  blacktooth: ["text-midGrey", "text-lightGrey", "text-moss", "text-midRed"],
   safari: ["text-moss", "text-midRed", "text-redShadow"],
   bookworld: ["text-midRed", "text-redShadow", "text-midGrey"],
-  penitentiary: ["text-shadow", "text-midGrey"],
+  penitentiary: ["text-shadow", "text-metallicBlue", "text-midGrey"],
+};
+
+const crownTextureClasses: {
+  [P in PlanetName]: `texture-crown.${P}` & `texture-${TextureId}`;
+} = {
+  // thanks tailwind - these have to be in the source :-s
+  egyptus: "texture-crown.egyptus",
+  blacktooth: "texture-crown.blacktooth",
+  bookworld: "texture-crown.bookworld",
+  penitentiary: "texture-crown.penitentiary",
+  safari: "texture-crown.safari",
 };
 
 const TitledCrown = ({
@@ -32,10 +44,10 @@ const TitledCrown = ({
   return (
     <div className={`flex flex-col ${className}`}>
       {collected ?
-        <CssSprite className="block texture-crown mx-auto" />
+        <CssSprite className={`block ${crownTextureClasses[planet]} mx-auto`} />
       : <PixiSprite
           className="block mx-auto text-shadow"
-          textureId="crown"
+          textureId={`crown.${planet}`}
           revertColour
         />
       }

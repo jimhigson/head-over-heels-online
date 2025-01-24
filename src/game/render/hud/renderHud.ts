@@ -299,8 +299,11 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       if (carrying !== null && !hasSprite) {
         carryingContainer.addChild(
           createSprite(
-            carrying.type === "spring" ?
-              "spring.released"
+            carrying.type === "spring" ? "spring.released"
+            : carrying.type === "sceneryPlayer" ?
+              carrying.config.which === "head" ?
+                "head.walking.towards.2"
+              : "heels.walking.away.2"
             : carrying.config.style,
           ),
         );

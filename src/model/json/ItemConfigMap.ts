@@ -108,6 +108,7 @@ export type ItemConfigMap<
   /** non-playable but looks like the playable char - for the final room */
   sceneryPlayer: {
     which: CharacterName;
+    startDirection: DirectionXy4;
   };
   lift: {
     top: number;

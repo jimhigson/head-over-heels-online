@@ -150,6 +150,7 @@ export type Xml2JsonItem = {
     }
   | {
       kind: "head" | "heels" | "headoverheels";
+      orientation: CompassDirectionsNESW;
       top: string;
       bottom: string;
       class: "freeitem";

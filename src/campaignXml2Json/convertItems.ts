@@ -718,6 +718,7 @@ const convertItem = async ({
             xml2JsonItem.kind === "headoverheels" ?
               "headOverHeels"
             : xml2JsonItem.kind,
+          startDirection: convertDirection(xml2JsonItem.orientation),
         },
         position,
       };

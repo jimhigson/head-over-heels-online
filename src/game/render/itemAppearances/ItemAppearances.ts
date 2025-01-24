@@ -3,7 +3,6 @@ import type { TextureId } from "../../../sprites/spriteSheetData";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
-import type { SceneryName } from "../../../sprites/planets";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { playableAppearance } from "./playableAppearance";
 import type { ItemAppearance } from "./appearanceUtils";
@@ -18,10 +17,7 @@ import {
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../../../filters/colorReplace/outlineFilter";
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type {
-  BlockStyle,
-  ItemConfigMap,
-} from "../../../model/json/ItemConfigMap";
+import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
   wallTileSize,
   smallItemTextureSize,
@@ -284,35 +280,30 @@ export const itemAppearances: {
     };
   },
 
-  pickup: renderOnce(
-    ({
-      item: {
-        config: { gives },
-      },
-      room,
-    }) => {
-      const pickupIcons: Record<
-        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"],
-        CreateSpriteOptions
-      > = {
-        shield: "bunny",
-        jumps: "bunny",
-        fast: "bunny",
-        "extra-life": "bunny",
-        bag: "bag",
-        doughnuts: "doughnuts",
-        hooter: "hooter",
-        crown: "crown",
-        scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
-        reincarnation: {
-          animationId: "fish",
-        },
-      };
-      const createOptions = pickupIcons[gives];
+  pickup: renderOnce(({ item: { config }, room }) => {
+    if (config.gives === "crown") {
+      return createSprite({
+        texture: `crown.${config.planet}`,
+      });
+    }
 
-      return createSprite(createOptions);
-    },
-  ),
+    const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
+      shield: "bunny",
+      jumps: "bunny",
+      fast: "bunny",
+      "extra-life": "bunny",
+      bag: "bag",
+      doughnuts: "doughnuts",
+      hooter: "hooter",
+      scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
+      reincarnation: {
+        animationId: "fish",
+      },
+    };
+    const createOptions = pickupIcons[config.gives];
+
+    return createSprite(createOptions);
+  }),
 
   moveableDeadly: renderOnce(
     ({
@@ -320,20 +311,6 @@ export const itemAppearances: {
         config: { style },
       },
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
-  ),
-
-  sceneryPlayer: renderOnce(
-    ({
-      item: {
-        config: { which },
-      },
-    }) =>
-      which === "headOverHeels" ?
-        stackedSprites({
-          top: `head.walking.towards.2`,
-          bottom: `heels.walking.towards.2`,
-        })
-      : createSprite(`${which}.walking.towards.2`),
   ),
 
   charles({
@@ -568,12 +545,10 @@ export const itemAppearances: {
   portableBlock({
     item: {
       config: { style },
-      state: { wouldPickUpNext },
+      state: { wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
   }) {
-    const highlighted = wouldPickUpNext;
-
     const render =
       currentlyRenderedProps === undefined ||
       highlighted !== currentlyRenderedProps.highlighted;
@@ -601,12 +576,11 @@ export const itemAppearances: {
 
   spring({
     item: {
-      state: { stoodOnBy, wouldPickUpNext },
+      state: { stoodOnBy, wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
   }) {
     const compressed = stoodOnBy.size > 0;
-    const highlighted = wouldPickUpNext;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -642,6 +616,44 @@ export const itemAppearances: {
           }),
 
       renderProps: { compressed, highlighted },
+    };
+  },
+
+  sceneryPlayer({
+    item: {
+      config: { which, startDirection },
+      state: { wouldPickUpNext: highlighted },
+    },
+    currentlyRenderedProps,
+  }) {
+    const render =
+      currentlyRenderedProps === undefined ||
+      highlighted !== currentlyRenderedProps.highlighted;
+
+    if (!render) {
+      return "no-update";
+    }
+
+    const filter =
+      highlighted ?
+        new OutlineFilter(
+          carryableOutlineColour,
+          store.getState().upscale.gameEngineUpscale,
+        )
+      : undefined;
+
+    return {
+      container:
+        which === "headOverHeels" ?
+          stackedSprites({
+            top: { texture: `head.walking.${startDirection}.2`, filter },
+            bottom: { texture: `heels.walking.${startDirection}.2`, filter },
+          })
+        : createSprite({
+            texture: `${which}.walking.${startDirection}.2`,
+            filter,
+          }),
+      renderProps: { highlighted },
     };
   },
 

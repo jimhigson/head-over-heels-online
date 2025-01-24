@@ -20,6 +20,7 @@ type PlayableRenderProps = {
 
 type ItemRenderPropsMap = {
   portableBlock: PortableItemRenderProps;
+  sceneryPlayer: PortableItemRenderProps;
   switch: {
     setting: SwitchSetting;
   };
