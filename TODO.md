@@ -21,6 +21,12 @@
 [x] load game initially shows menu, with game not started
     [x] load campaign lazily
 
+[ ] re-org into a mono-repo
+    - @hohjs/gameEngine = everything while the game is running
+    - @hohjs/main = main site
+    - @hohjs/campaign = conversion and export of the main campaign
+    - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
+
 [ ] main index loads pixi just for the Color class in the hint colors - let's not do that!    
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      

@@ -1,64 +1,8 @@
 import { BitmapText } from "../../Sprite";
 import type { MenuItem } from "./MenuItem";
-import { CurrentKeyAssignment } from "./CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
-import { clsx } from "clsx";
 import { useAppSelector } from "../../../../store/hooks";
 import { always } from "../../../../utils/always";
-
-const SwitchCurrentValue = ({
-  switchMenuItem: { selector },
-  className,
-}: {
-  switchMenuItem: MenuItem & { type: "switch" };
-  className?: string;
-}) => {
-  const value = useAppSelector((store) => (selector ? selector(store) : false));
-
-  return (
-    <div>
-      <BitmapText
-        className={clsx(
-          "inline-block",
-          value ? "bg-shadow" : "bg-redShadow",
-          value ? "text-moss" : "text-midRed",
-          className,
-        )}
-        noSlitWords
-      >
-        {value ? "  ON" : "OFF "}
-      </BitmapText>
-    </div>
-  );
-};
-
-const MenuItemKeyAssignment = ({
-  switchMenuItem: { action },
-  selected,
-  className,
-}: {
-  switchMenuItem: MenuItem & { type: "key" };
-  selected?: boolean;
-  className?: string;
-}) => {
-  const assigningThisAction = useAppSelector(
-    (store) => store.actionBeingAssignedKeys === action,
-  );
-
-  return (
-    <CurrentKeyAssignment
-      className={twMerge(
-        "flex flex-wrap gap-y-oneScaledPix gap-x-1",
-        className,
-      )}
-      action={action}
-      keyClassName={selected ? "text-redShadow" : "text-midRed"}
-      // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
-      deliminatorClassName="me-0"
-      flashingCursor={assigningThisAction}
-    />
-  );
-};
 
 type MenuItemComponentProps = {
   menuItem: MenuItem;
@@ -78,22 +22,27 @@ export const MenuItemComponent = ({
     selected && menuItem.type !== "key" && !menuItem.disableDoubling;
 
   return (
-    <>
+    // contents div puts children into the grid layout:
+    <div
+      className={twMerge(
+        "contents",
+        needsDoubling ? "sprites-double-height" : "",
+        className,
+      )}
+    >
       {/* first column content (icon thing)... */}
       <BitmapText
         className={twMerge(
           // inline-block is required for flipping with scale to work
           "inline-block col-start-1",
-          needsDoubling ? "sprites-double-height" : "",
           //selected ? menu.selectedClassName : "",
           menuItem.type === "back" ? "scale-[-1]" : "",
-          className,
         )}
       >
         {selected ? "⏩⏩" : "⁌⁍"}
       </BitmapText>
 
-      {/* second column content (main label thing)... */}
+      {/* second column content (main label)... */}
       <div
         ref={
           selected ?
@@ -102,13 +51,13 @@ export const MenuItemComponent = ({
           : undefined
         }
         className={twMerge(
-          needsDoubling ? "sprites-double-height" : "",
-          menuItem.type === "submenu" ? "col-span-2" : "",
+          // if there is no value to show, take up the third column too:
+          menuItem.ValueComponent === undefined ? "col-span-2" : "",
+
           // back buttons are usually at the bottom so set them away
           // from the normal menu items:
           menuItem.type === "back" ? "mt-1" : "",
           menuItem.className ?? "",
-          className,
         )}
       >
         {typeof menuItem.label === "string" ?
@@ -117,20 +66,19 @@ export const MenuItemComponent = ({
           </>
         : <menuItem.label selected={selected} menuItem={menuItem} />}
       </div>
+
       {/* third column content (values etc) */}
-      {menuItem.type === "key" && (
-        <MenuItemKeyAssignment
-          switchMenuItem={menuItem}
+      {menuItem.ValueComponent && (
+        <menuItem.ValueComponent
           selected={selected}
-          className={className}
+          className={twMerge(
+            // back buttons are usually at the bottom so set them away
+            // from the normal menu items:
+            menuItem.type === "back" ? "mt-1" : "",
+            menuItem.className ?? "",
+          )}
         />
       )}
-      {menuItem.type === "switch" && (
-        <SwitchCurrentValue
-          className={needsDoubling ? "sprites-double-height" : ""}
-          switchMenuItem={menuItem}
-        />
-      )}
-    </>
+    </div>
   );
 };

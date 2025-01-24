@@ -203,4 +203,4 @@ export const keyAssignmentPresets = {
   "🕹joystick 2": standardGamepadAssignment,
 };
 
-export type KeyAssignmentPreset = keyof typeof keyAssignmentPresets;
+export type KeyAssignmentPresetName = keyof typeof keyAssignmentPresets;

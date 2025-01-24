@@ -4,8 +4,13 @@ import type {
   GameMenusSliceAction,
   GameMenusState,
 } from "../../../../store/gameMenusSlice";
-import type { KeyAssignmentPreset } from "../../../input/keyAssignmentPresets";
+import type { KeyAssignmentPresetName } from "../../../input/keyAssignmentPresets";
 import type { Action } from "../../../input/InputState";
+
+export type ValueComponent = FunctionComponent<{
+  className?: string;
+  selected: boolean;
+}>;
 
 export type MenuItem = {
   label: string | FunctionComponent<{ selected: boolean; menuItem: MenuItem }>;
@@ -13,6 +18,10 @@ export type MenuItem = {
   /* test for if this menu item should be shown */
   showIf?: (state: GameMenusState) => boolean;
   hint?: string;
+  /** select from the store - a value to display on the menuitem */
+  //selectValue?: (store: GameMenusState) => string | boolean | number;
+  /** used to render the value selected by selectValue. If not given, is just text */
+  ValueComponent?: ValueComponent;
   className?: string;
 } & (
   | {
@@ -23,11 +32,11 @@ export type MenuItem = {
   | { type: "dispatch"; dispatch: () => GameMenusSliceAction }
   | {
       type: "switch";
-      selector?: (store: GameMenusState) => boolean;
+      selectValue?: (store: GameMenusState) => boolean;
       dispatch?: () => GameMenusSliceAction;
     }
   | { type: "key"; action: Action }
-  | { type: "keyPreset"; preset: KeyAssignmentPreset }
+  | { type: "keyPreset"; preset: KeyAssignmentPresetName }
   | { type: "back" }
   | { type: "todo" }
 );

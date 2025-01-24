@@ -1,6 +1,11 @@
+import nanoEqual from "nano-equal";
 import { menus } from "../game/components/dialogs/menuDialog/menus";
 import { useAppSelector } from "./hooks";
 import type { RootState } from "./store";
+import { objectEntriesIter } from "../utils/entries";
+import { iterate } from "../utils/iterate";
+import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
+import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 
 export const useTotalUpscale = () =>
   useAppSelector((state) => {
@@ -32,3 +37,17 @@ export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;
 
 export const useCheatsOn = (): boolean =>
   useAppSelector((state) => state.cheatsOn);
+
+/** selects the name of the current key assignment preset (if any is being used) */
+export const selectCurrentInputPreset = (
+  state: RootState,
+): KeyAssignmentPresetName | undefined => {
+  for (const [name, preset] of iterate(
+    objectEntriesIter(keyAssignmentPresets),
+  )) {
+    if (nanoEqual(preset.inputAssignment, state.userSettings.inputAssignment)) {
+      return name;
+    }
+  }
+  return undefined;
+};
