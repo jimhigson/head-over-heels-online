@@ -10,7 +10,8 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { startingLives } from "../../physics/mechanicsConstants";
+import { originalGameStartingLives } from "../../physics/mechanicsConstants";
+import { store } from "../../../store/store";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -37,6 +38,8 @@ export const defaultPlayerState = () =>
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", SceneryName, RoomId>,
 ): PlayableItem<CharacterName, RoomId> => {
+  const { livesModel } = store.getState().userSettings;
+
   if (jsonItem.config.which === "head") {
     return {
       id: "head",
@@ -50,7 +53,10 @@ export const loadPlayer = <RoomId extends string>(
         hasHooter: false,
         totalWalkDistance: 0,
         fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
-        lives: startingLives,
+        lives:
+          livesModel === "infinite" ?
+            Number.POSITIVE_INFINITY
+          : originalGameStartingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
         doughnuts: 0,
         doughnutLastFireTime: Number.NEGATIVE_INFINITY,
@@ -73,7 +79,10 @@ export const loadPlayer = <RoomId extends string>(
         carrying: null,
         hasBag: false,
         bigJumps: 0,
-        lives: startingLives,
+        lives:
+          livesModel === "infinite" ?
+            Number.POSITIVE_INFINITY
+          : originalGameStartingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),

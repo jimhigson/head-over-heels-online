@@ -43,8 +43,6 @@ export const useActionInput = ({
     "inputStateChanged",
     useCallback(
       (inputStateChangeEvent) => {
-        console.log(inputStateChangeEvent);
-
         if (disabled) {
           return;
         }

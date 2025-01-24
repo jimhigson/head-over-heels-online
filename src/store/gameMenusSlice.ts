@@ -35,10 +35,12 @@ export type DisplaySettings = {
 export type UserSettings = {
   inputAssignment: InputAssignment;
   displaySettings: DisplaySettings;
+  livesModel: "infinite" | "original";
 };
 
+const inBrowser = typeof globalThis.window !== "undefined";
 const cheatsOn =
-  typeof globalThis.window !== "undefined" ?
+  inBrowser ?
     // in a browser
     new URLSearchParams(window.location.search).has("cheats")
     // in node (probably vitest)
@@ -68,6 +70,7 @@ export type GameMenusState = {
 const initialState: GameMenusState = {
   userSettings: {
     inputAssignment: keyAssignmentPresets.default.inputAssignment,
+    livesModel: "original",
     displaySettings: {
       showBoundingBoxes: "none",
       showShadowMasks: false,
@@ -76,10 +79,14 @@ const initialState: GameMenusState = {
       emulatedResolution: zxSpectrumResolution,
     },
   },
-  // we don't want to tie the store to the window object by reading window.innerWidth etc here,
-  // since then the tests wouldn't run under node. Put any value in - it will be updated by
-  // react hooks when they mount, before the first render to pixels
-  upscale: calculateUpscale(zxSpectrumResolution, zxSpectrumResolution, 1),
+  upscale: calculateUpscale(
+    inBrowser ?
+      { x: globalThis.window.innerWidth, y: globalThis.window.innerHeight }
+      // use zx spectrum resolution as a default for node (running tests under vitest)
+    : zxSpectrumResolution,
+    zxSpectrumResolution,
+    1,
+  ),
 
   planetsLiberated: {
     blacktooth: false,
@@ -292,6 +299,10 @@ export const gameMenusSlice = createSlice({
     ) {
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
+    toggleLivesModel(state) {
+      state.userSettings.livesModel =
+        state.userSettings.livesModel === "infinite" ? "original" : "infinite";
+    },
     toggleCrtFilter(state) {
       state.userSettings.displaySettings.crtFilter =
         !state.userSettings.displaySettings.crtFilter;
@@ -330,6 +341,7 @@ export const {
   setShowShadowMasks,
   toggleColourise,
   toggleCrtFilter,
+  toggleLivesModel,
   inputAssigned,
   doneAssigningInput,
   crownCollected,
