@@ -1,6 +1,6 @@
 ## SAFARI
 
-![](texture-safari.wall.shield.left?bg-pureBlack)![](texture-safari.wall.window.away?bg-pureBlack&float-right)A densely vegetated planet, mainly used for hunting.
+![](texture-monkey.right?float-left&relative&z-topSprite)![](texture-homingBot?float-left&clear-left&relative&bottom-bottomStackPullup)![](texture-elephant.towards?float-right&relative&z-topSprite)![](texture-homingBot?float-right&clear-right&relative&bottom-bottomStackPullup)A densely vegetated planet, mainly used for hunting.
 
 The natives live in wooden forts in the jungle, **beware traps!**
 
