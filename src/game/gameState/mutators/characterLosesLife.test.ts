@@ -4,7 +4,7 @@ import {
   individualCharacterNames,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import { startingLives } from "../../physics/mechanicsConstants";
+import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 
 describe("while not in symbiosis", () => {
   describe.each(individualCharacterNames)(
@@ -16,7 +16,10 @@ describe("while not in symbiosis", () => {
         test(`but ${otherName} still has some left`, () => {
           const h = mutatorsTestHarness();
 
-          h.playableLosesLife(playableLosingLifeName, startingLives);
+          h.playableLosesLife(
+            playableLosingLifeName,
+            originalGameStartingLives,
+          );
           expect(h.selectPlayable(playableLosingLifeName)).toBeUndefined();
           expect(h.gameState.currentCharacterName).toEqual(otherName);
           h.expectGameContinues();
@@ -25,11 +28,14 @@ describe("while not in symbiosis", () => {
           const h = mutatorsTestHarness();
 
           // other player loses all their lives:
-          h.playableLosesLife(otherName, startingLives);
+          h.playableLosesLife(otherName, originalGameStartingLives);
           expect(h.selectPlayable(otherName)).toBeUndefined();
 
           expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
-          h.playableLosesLife(playableLosingLifeName, startingLives);
+          h.playableLosesLife(
+            playableLosingLifeName,
+            originalGameStartingLives,
+          );
           expect(h.selectPlayable(playableLosingLifeName)).toBeUndefined();
           h.expectGameOver();
         });
@@ -40,7 +46,7 @@ describe("while not in symbiosis", () => {
           h.carryItemIfHeels(playableLosingLifeName);
 
           // other player loses all their lives:
-          h.playableLosesLife(otherName, startingLives);
+          h.playableLosesLife(otherName, originalGameStartingLives);
           expect(h.selectPlayable(otherName)).toBeUndefined();
 
           // now we lose just one life:
@@ -48,7 +54,7 @@ describe("while not in symbiosis", () => {
           expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
           h.expectLifeCount({
             playableName: playableLosingLifeName,
-            count: startingLives - 1,
+            count: originalGameStartingLives - 1,
           });
           h.expectGameContinues();
           h.expectNotCarryingIfHeels(playableLosingLifeName);
@@ -71,7 +77,7 @@ describe("while not in symbiosis", () => {
             // one life less than starting number:
             h.expectLifeCount({
               playableName: playableLosingLifeName,
-              count: startingLives - 1,
+              count: originalGameStartingLives - 1,
             });
 
             h.expectNotCarryingIfHeels(playableLosingLifeName);
@@ -131,7 +137,7 @@ describe("while not in symbiosis", () => {
               // one life less than starting number:
               h.expectLifeCount({
                 playableName: playableLosingLifeName,
-                count: startingLives - 1,
+                count: originalGameStartingLives - 1,
               });
 
               h.expectNotCarryingIfHeels(playableLosingLifeName);
@@ -162,7 +168,7 @@ describe("while not in symbiosis", () => {
               // one life less than starting number:
               h.expectLifeCount({
                 playableName: playableLosingLifeName,
-                count: startingLives - 1,
+                count: originalGameStartingLives - 1,
               });
 
               h.expectNotCarryingIfHeels(playableLosingLifeName);

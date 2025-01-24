@@ -44,7 +44,7 @@ const sideMultiplier = (character: CharacterName) => {
 };
 
 function* numberSprites(n: number) {
-  const chars = n.toString().split("");
+  const chars = Number.isFinite(n) ? n.toString().split("") : "-";
   const l = chars.length;
   for (let i = 0; i < l; i++) {
     const textureId = `hud.char.${chars[i]}`;

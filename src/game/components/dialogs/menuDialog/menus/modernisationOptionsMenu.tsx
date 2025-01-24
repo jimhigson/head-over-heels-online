@@ -77,7 +77,7 @@ export const modernisationOptionsMenu: Menu = {
     },
     {
       type: "switch",
-      label: "Lives",
+      label: "Lives poke",
       hint: `The original game gave 8 lives to start, with extra life pickups spread thinly through the game.
 
         A true hero leaves this setting alone.
