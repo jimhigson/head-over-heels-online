@@ -36,21 +36,6 @@ const switchCurrentValue =
     );
   };
 
-const LivesValue = () => {
-  const livesModel = useAppSelector((state) => state.userSettings.livesModel);
-
-  return (
-    <BitmapText
-      className={clsx(
-        "inline-block",
-        livesModel === "infinite" ? "bg-shadow" : "bg-redShadow",
-      )}
-    >
-      {livesModel}
-    </BitmapText>
-  );
-};
-
 export const modernisationOptionsMenu: Menu = {
   dialogClassName: "bg-metallicBlue",
   borderClassName: "bg-moss",
@@ -77,13 +62,15 @@ export const modernisationOptionsMenu: Menu = {
     },
     {
       type: "switch",
-      label: "Lives poke",
+      label: "Infinite Lives poke",
       hint: `The original game gave 8 lives to start, with extra life pickups spread thinly through the game.
 
         A true hero leaves this setting alone.
         
         This can't be changed mid-game.`,
-      ValueComponent: LivesValue,
+      ValueComponent: switchCurrentValue(
+        (state) => state.userSettings.livesModel === "infinite",
+      ),
       dispatch: () => toggleLivesModel(),
     },
     {
