@@ -28,4 +28,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Deploy
-        run: pnpm run deploy
+        run: pnpm run predeploy
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist        
