@@ -21,7 +21,7 @@ export const readTheManualMenu: Menu = {
           className={
             `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
             "overflow-y-scroll scrollbar scrollbar-w-1 " +
-            "scrollbar-thumb-midGrey scrollbar-track-highlightBeige " +
+            "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
           }
           selectedClassName="text-shadow zx:text-zxBlack"

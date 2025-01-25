@@ -10,7 +10,7 @@ there, the journey leads to *Moonbase Headquarters*, where you will have to deci
 either to try to escape back to *Freedom* or to be a true hero and teleport to one
 of the slave planets to search for its lost crown!
 
-![](texture-crown)To overthrow the dictatorship on any of the slave planets would be a major blow
+![](texture-crown.bookworld)To overthrow the dictatorship on any of the slave planets would be a major blow
 to Blacktooth and you could return to Freedom in glory. Of course, Blacktooth
 would probably enslave them again eventually but it would slow down any
 expansion plans for now.

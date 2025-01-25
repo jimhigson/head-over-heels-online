@@ -23,7 +23,7 @@ export const markdownMenus = transformObject(
                 className={
                   "overflow-y-scroll " +
                   "scrollbar  scrollbar-w-1 " +
-                  "scrollbar-thumb-midGrey scrollbar-track-highlightBeige " +
+                  "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
                   "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
                 }
               />
