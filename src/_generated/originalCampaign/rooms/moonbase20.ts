@@ -67,6 +67,14 @@ export const room = inferRoomJson({
       position: { x: 5, y: 4, z: 0 },
       type: "slidingBlock",
     },
+    'crownsScroll': {
+      type: 'pickup',
+      config: {
+        gives: 'scroll',
+        page: 'crowns',
+      },
+      position: { x: 5, y: 4, z: 1 },
+    },
     "slidingBlock@5,5,0": {
       config: { style: "puck" },
       position: { x: 5, y: 5, z: 0 },

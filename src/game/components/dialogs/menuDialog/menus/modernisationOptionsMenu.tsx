@@ -24,8 +24,9 @@ const switchCurrentValue =
         <BitmapText
           className={clsx(
             "inline-block",
-            value ? "bg-shadow" : "bg-redShadow",
-            value ? "text-moss" : "text-midRed",
+            value ?
+              "bg-shadow text-moss zx:bg-zxCyanDimmed zx:text-zxGreen"
+            : "bg-redShadow text-midRed zx:bg-zxRedDimmed zx:text-zxRed",
             className,
           )}
           noSlitWords
@@ -37,16 +38,19 @@ const switchCurrentValue =
   };
 
 export const modernisationOptionsMenu: Menu = {
-  dialogClassName: "bg-metallicBlue",
+  dialogClassName: "bg-metallicBlue zx:bg-zxBlue",
   borderClassName: "bg-moss",
   Content() {
     return (
       <>
-        <BitmapText className="ml-3 text-moss sprites-double-height">
+        <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
           Modernisation options
         </BitmapText>
-        <MenuItems className="text-lightGrey" selectedClassName="text-moss" />
-        <SelectedItemHint className="text-moss" />
+        <MenuItems
+          className="text-lightGrey zx:text-zxWhite"
+          selectedClassName="text-moss zx:text-zxGreen"
+        />
+        <SelectedItemHint className="text-moss zx:text-zxGreen" />
       </>
     );
   },
@@ -58,7 +62,7 @@ export const modernisationOptionsMenu: Menu = {
         (state) => state.userSettings.displaySettings.colourise,
       ),
       dispatch: () => toggleColourise(),
-      hint: "Original two-tone graphics, or 16-colour colourised",
+      hint: "Original two-tone spectrum-like graphics, or 16-colour colourised",
     },
     {
       type: "switch",

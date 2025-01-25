@@ -10,7 +10,7 @@ import { twMerge } from "tailwind-merge";
 const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h2 className="mb-1 sprites-double-height text-metallicBlue">
+      <h2 className="mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -19,7 +19,7 @@ const markdownComponents: Components = {
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h3 className="mt-1 mb-1 text-metallicBlue">
+      <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue">
         <RenderTextChildrenAsBitmapText>
           {children}
         </RenderTextChildrenAsBitmapText>
@@ -47,14 +47,14 @@ const markdownComponents: Components = {
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="text-midRed">
+      <RenderTextChildrenAsBitmapText className="text-midRed zx:text-zxRed">
         {children}
       </RenderTextChildrenAsBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="text-moss">
+      <RenderTextChildrenAsBitmapText className="text-moss zx:text-zxBlue">
         {children}
       </RenderTextChildrenAsBitmapText>
     );

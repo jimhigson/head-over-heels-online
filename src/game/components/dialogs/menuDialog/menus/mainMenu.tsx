@@ -5,10 +5,10 @@ import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";
 
 export const mainMenuCycle = [
-  "text-lightGrey",
-  "text-highlightBeige",
-  "text-metallicBlue",
-] satisfies Array<`text-${SpritesheetPaletteColourName}`>;
+  "text-metallicBlue zx:text-zxCyan",
+  "text-highlightBeige zx:text-zxYellow",
+  "text-lightGrey zx:text-zxWhite",
+] satisfies Array<`text-${SpritesheetPaletteColourName} ${string}`>;
 
 const PlayGameLabel = () => {
   const gameRunning = useAppSelector((state) => state.gameRunning);
@@ -19,7 +19,7 @@ const PlayGameLabel = () => {
 };
 
 export const MainMenuHeading = () => (
-  <div className="flex text-highlightBeige ml-3">
+  <div className="flex text-highlightBeige zx:text-zxYellow ml-3">
     <div className="flex flex-col gap-y-oneScaledPix">
       <BitmapText className="sprites-double-height me-1">Head</BitmapText>
       <div className="mt-1 relative">
@@ -47,7 +47,9 @@ const MainMenuFooter = () => (
   <>
     <div className="flex gap-3 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix">
-        <BitmapText className="text-redShadow ml-2">1987 original</BitmapText>
+        <BitmapText className="text-redShadow zx:text-zxRedDimmed ml-2">
+          1987 original
+        </BitmapText>
         <div className="flex gap-2">
           <div className="flex flex-col gap-y-oneScaledPix">
             <BitmapText className="ml-1" classnameCycle={mainMenuCycle}>
@@ -64,7 +66,9 @@ const MainMenuFooter = () => (
         </div>
       </div>
       <div className="flex flex-col gap-y-oneScaledPix">
-        <BitmapText className="text-redShadow">2025 remake</BitmapText>
+        <BitmapText className="text-redShadow zx:text-zxRedDimmed">
+          2025 remake
+        </BitmapText>
         <div className="flex">
           <div className="flex flex-col gap-y-oneScaledPix ml-3">
             <BitmapText className="ml-1" classnameCycle={mainMenuCycle}>
@@ -76,24 +80,30 @@ const MainMenuFooter = () => (
       </div>
     </div>
     <div className="absolute bottom-1">
-      <BitmapText className="text-redShadow">https://</BitmapText>
-      <BitmapText className="text-lightGrey">block</BitmapText>
-      <BitmapText className="text-highlightBeige">stack</BitmapText>
-      <BitmapText className="text-metallicBlue">.</BitmapText>
-      <BitmapText className="text-lightGrey">ing</BitmapText>
+      <BitmapText className="text-redShadow zx:text-zxRedDimmed">
+        https://
+      </BitmapText>
+      <BitmapText className="text-lightGrey zx:text-zxBlack">block</BitmapText>
+      <BitmapText className="text-highlightBeige zx:text-zxBlueDimmed">
+        stack
+      </BitmapText>
+      <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
+        .
+      </BitmapText>
+      <BitmapText className="text-lightGrey zx:text-zxBlack">ing</BitmapText>
     </div>
   </>
 );
 
 export const mainMenu: Menu = {
-  dialogClassName: "bg-midRed",
-  borderClassName: "bg-metallicBlue",
+  dialogClassName: "bg-midRed zx:bg-zxRed",
+  borderClassName: "bg-metallicBlue zx:bg-zxBlue",
   Content() {
     return (
       <>
         <MainMenuHeading />
         <MenuItems
-          className="text-metallicBlue"
+          className="text-metallicBlue zx:text-zxCyan"
           selectedClassName="text-white"
         />
         <MainMenuFooter />

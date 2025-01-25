@@ -1,10 +1,16 @@
 import type { InputAssignmentPreset } from "./InputState";
 import type { Key } from "./keys";
 
-// menu key can't be reconfigured:
+//standard keys that are used in all presets:
+const standardKeys = {
+  menu: ["Escape"],
+  toggleColourisation: ["F6"],
+} as const;
 
+// menu key can't be reconfigured:
 const originalKeyAssignment: InputAssignmentPreset = {
   inputAssignment: {
+    ...standardKeys,
     right: ["P", "7", "joystick:x"],
     towards: ["A", "8", "joystick:y"],
     left: ["O", "6", "joystick:x"],
@@ -20,7 +26,6 @@ const originalKeyAssignment: InputAssignmentPreset = {
     fire: ["Shift", "Z", "X", "C", "V"],
     swop: ["S", "D", "F", "G"],
     hold: ["H"],
-    menu: ["Escape"],
   },
   description: "closely matches zx spectrum keys",
 };
@@ -28,6 +33,7 @@ const originalKeyAssignment: InputAssignmentPreset = {
 // see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
 const standardGamepadAssignment: InputAssignmentPreset = {
   inputAssignment: {
+    ...standardKeys,
     right: ["joystick:15"],
     towards: ["joystick:13"],
     left: ["joystick:14"],
@@ -37,7 +43,7 @@ const standardGamepadAssignment: InputAssignmentPreset = {
     fire: ["joystick:2"],
     swop: ["joystick:3"],
     hold: ["joystick:9"],
-    menu: ["joystick:8", "Escape"],
+    menu: [...standardKeys.menu, "joystick:8"],
   },
   description:
     "Playstation2+, xbox, and similar controllers with dual analogue sticks and lots of buttons",
@@ -46,6 +52,7 @@ const standardGamepadAssignment: InputAssignmentPreset = {
 // a gamepad with less buttons
 const basicGamepadAssignment: InputAssignmentPreset = {
   inputAssignment: {
+    ...standardKeys,
     right: ["joystick:x"],
     towards: ["joystick:y"],
     left: ["joystick:x"],
@@ -55,13 +62,14 @@ const basicGamepadAssignment: InputAssignmentPreset = {
     fire: ["joystick:2"],
     swop: ["joystick:3"],
     hold: ["joystick:5"],
-    menu: ["joystick:6", "Escape"],
+    menu: [...standardKeys.menu, "joystick:6"],
   },
   description: "Controllers with 4-6 buttons",
 };
 
 const defaultAssignment: InputAssignmentPreset = {
   inputAssignment: {
+    ...standardKeys,
     right: [
       "ArrowRight",
       "P",
@@ -130,6 +138,7 @@ const defaultAssignment: InputAssignmentPreset = {
 // left hand on wasd, right hand (optionally) on IOP
 const wasdKeyAssignments: InputAssignmentPreset = {
   inputAssignment: {
+    ...standardKeys,
     right: ["D"],
     towards: ["S"],
     left: ["A"],
@@ -139,7 +148,6 @@ const wasdKeyAssignments: InputAssignmentPreset = {
     fire: ["E", "O", "Control"],
     swop: ["Q"],
     hold: ["H"],
-    menu: ["Escape"],
   },
   description: "Modern, minimalist WASD key layout",
 };
@@ -178,6 +186,7 @@ const mameButtonsP2: MameButtons = {
 
 const mameToHoh = (...mameButtons: MameButtons[]): InputAssignmentPreset => ({
   inputAssignment: {
+    ...standardKeys,
     right: mameButtons.map((mb) => mb.directions.right),
     towards: mameButtons.map((mb) => mb.directions.down),
     left: mameButtons.map((mb) => mb.directions.left),

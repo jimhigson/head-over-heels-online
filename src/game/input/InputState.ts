@@ -11,6 +11,7 @@ export const booleanActions = [
   "swop",
   "hold", // aka pause in modern games
   "menu",
+  "toggleColourisation",
   ...directionsXy4,
 ] as const;
 export type Action = (typeof booleanActions)[number];
