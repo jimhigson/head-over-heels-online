@@ -12,6 +12,11 @@ import { CurrentKeyAssignment } from "../CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 import type { ValueComponent } from "../MenuItem";
 
+const valueClass = (selected: boolean) =>
+  selected ?
+    "text-redShadow zx:text-zxRedDimmed"
+  : "text-midRed zx:text-zxMagentaDimmed";
+
 const MenuItemKeyAssignment =
   (action: Action): ValueComponent =>
   ({ className, selected }) => {
@@ -27,7 +32,7 @@ const MenuItemKeyAssignment =
           className,
         )}
         action={action}
-        keyClassName={selected ? "text-redShadow" : "text-midRed"}
+        keyClassName={valueClass(selected)}
         // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
         deliminatorClassName="me-0"
         flashingCursor={assigningThisAction}
@@ -40,11 +45,7 @@ const CurrentPresetValue: ValueComponent = ({ className, selected }) => {
 
   return (
     <BitmapText
-      className={twMerge(
-        `text-nowrap`,
-        selected ? "text-redShadow" : "text-midRed",
-        className,
-      )}
+      className={twMerge(`text-nowrap`, valueClass(selected), className)}
     >
       {currentPresetName ?? "custom"}
     </BitmapText>
@@ -52,33 +53,37 @@ const CurrentPresetValue: ValueComponent = ({ className, selected }) => {
 };
 
 export const selectKeysMenu: Menu = {
-  dialogClassName: "bg-lightGrey",
-  borderClassName: "bg-redShadow",
+  dialogClassName: "bg-lightGrey zx:bg-zxWhiteDimmed",
+  borderClassName: "bg-redShadow zx:bg-zxRedDimmed",
   Content() {
     return (
       <>
-        <BitmapText className="text-metallicBlue sprites-double-height">
+        <BitmapText className="text-metallicBlue zx:text-zxBlue sprites-double-height">
           Select the keys
         </BitmapText>
         <div
           className={
             "overflow-y-scroll " +
-            "scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-lightGrey"
+            "scrollbar  scrollbar-w-1 " +
+            "scrollbar-thumb-midGrey scrollbar-track-lightGrey " +
+            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhiteDimmed "
           }
         >
           <div className={`mb-1 ${multilineTextClass}`}>
-            <BitmapText className="text-midRed">Note: </BitmapText>
-            <BitmapText className="text-midGrey">
+            <BitmapText className="text-midRed zx:text-zxRed">
+              Note:{" "}
+            </BitmapText>
+            <BitmapText className="text-midGrey zx:text-zxBlack">
               some puzzles require you to jump and pick up simultaneously -
               assign a key for both jump and carry
             </BitmapText>
           </div>
           <MenuItems
-            className="text-metallicBlue !gap-y-1"
-            selectedClassName="text-shadow"
+            className="text-metallicBlue zx:text-zxBlue !gap-y-1"
+            selectedClassName="text-shadow zx:text-zxBlueDimmed"
           />
         </div>
-        <SelectedItemHint className="text-metallicBlue" />
+        <SelectedItemHint className="text-metallicBlue zx:text-zxBlue" />
         <SelectKeysMenuFooter />
       </>
     );
@@ -150,6 +155,12 @@ export const selectKeysMenu: Menu = {
       label: "Menu",
       action: "menu",
       ValueComponent: MenuItemKeyAssignment("menu"),
+    },
+    {
+      type: "key",
+      label: "Colours",
+      action: "toggleColourisation",
+      ValueComponent: MenuItemKeyAssignment("toggleColourisation"),
     },
     backMenuItem,
   ],

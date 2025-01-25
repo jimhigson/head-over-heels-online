@@ -474,6 +474,16 @@
     "value": "dimmed"
   },
   { "op": "replace", "path": "/rooms/moonbase20/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase20/items/crownsScroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "crowns" },
+      "position": { "x": 5, "y": 4, "z": 1 },
+      "type": "pickup",
+      "isExtra": true
+    }
+  },
   { "op": "replace", "path": "/rooms/moonbase2/color/hue", "value": "cyan" },
   {
     "op": "replace",
@@ -520,12 +530,13 @@
       "type": "pickup"
     }
   },
+  { "op": "replace", "path": "/rooms/finalroom/color/hue", "value": "yellow" },
   {
     "op": "add",
-    "path": "/rooms/finalroom/items/crownPenitentiary",
+    "path": "/rooms/finalroom/items/crownBlacktooth",
     "value": {
-      "config": { "gives": "crown", "planet": "penitentiary" },
-      "position": { "x": 7, "y": 0, "z": 0 },
+      "config": { "gives": "crown", "planet": "blacktooth" },
+      "position": { "x": 7, "y": 2, "z": 4 },
       "type": "pickup"
     }
   },
@@ -540,10 +551,19 @@
   },
   {
     "op": "add",
-    "path": "/rooms/finalroom/items/crownBlacktooth",
+    "path": "/rooms/finalroom/items/crownEgyptus",
     "value": {
-      "config": { "gives": "crown", "planet": "blacktooth" },
-      "position": { "x": 7, "y": 2, "z": 4 },
+      "config": { "gives": "crown", "planet": "egyptus" },
+      "position": { "x": 7, "y": 4, "z": 0 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/finalroom/items/crownPenitentiary",
+    "value": {
+      "config": { "gives": "crown", "planet": "penitentiary" },
+      "position": { "x": 7, "y": 0, "z": 0 },
       "type": "pickup"
     }
   },
@@ -553,15 +573,6 @@
     "value": {
       "config": { "gives": "crown", "planet": "safari" },
       "position": { "x": 7, "y": 3, "z": 1 },
-      "type": "pickup"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/finalroom/items/crownEgyptus",
-    "value": {
-      "config": { "gives": "crown", "planet": "egyptus" },
-      "position": { "x": 7, "y": 4, "z": 0 },
       "type": "pickup"
     }
   },
@@ -925,12 +936,12 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth78/items/block@3,7,2",
+    "path": "/rooms/blacktooth78/items/block@3,7,0",
     "value": {
       "config": { "style": "tower" },
-      "position": { "x": 3, "y": 7, "z": 2 },
-      "type": "block",
-      "isExtra": true
+      "isExtra": true,
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "block"
     }
   },
   {
@@ -938,39 +949,19 @@
     "path": "/rooms/blacktooth78/items/block@3,7,1",
     "value": {
       "config": { "style": "tower" },
+      "isExtra": true,
       "position": { "x": 3, "y": 7, "z": 1 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth78/items/block@3,7,0",
+    "path": "/rooms/blacktooth78/items/block@3,7,2",
     "value": {
       "config": { "style": "tower" },
-      "position": { "x": 3, "y": 7, "z": 0 },
-      "type": "block",
-      "isExtra": true
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth78/items/block@4,7,2",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 4, "y": 7, "z": 2 },
-      "type": "block",
-      "isExtra": true
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth78/items/block@4,7,1",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 4, "y": 7, "z": 1 },
-      "type": "block",
-      "isExtra": true
+      "isExtra": true,
+      "position": { "x": 3, "y": 7, "z": 2 },
+      "type": "block"
     }
   },
   {
@@ -978,19 +969,29 @@
     "path": "/rooms/blacktooth78/items/block@4,7,0",
     "value": {
       "config": { "style": "tower" },
+      "isExtra": true,
       "position": { "x": 4, "y": 7, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth78/items/block@7,3,1",
+    "path": "/rooms/blacktooth78/items/block@4,7,1",
     "value": {
       "config": { "style": "tower" },
-      "position": { "x": 7, "y": 3, "z": 1 },
-      "type": "block",
-      "isExtra": true
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth78/items/block@4,7,2",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 2 },
+      "type": "block"
     }
   },
   {
@@ -998,9 +999,19 @@
     "path": "/rooms/blacktooth78/items/block@7,3,0",
     "value": {
       "config": { "style": "tower" },
+      "isExtra": true,
       "position": { "x": 7, "y": 3, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/blacktooth78/items/block@7,3,1",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 7, "y": 3, "z": 1 },
+      "type": "block"
     }
   },
   {

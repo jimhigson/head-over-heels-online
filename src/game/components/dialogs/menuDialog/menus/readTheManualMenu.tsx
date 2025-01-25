@@ -9,20 +9,22 @@ import type { Menu } from "../menus";
 import { multilineTextClass } from "../multilineTextClass";
 
 export const readTheManualMenu: Menu = {
-  dialogClassName: "bg-highlightBeige",
-  borderClassName: "bg-midGrey",
+  dialogClassName: "bg-highlightBeige zx:bg-zxCyanDimmed",
+  borderClassName: "bg-midGrey zx:bg-zxCyan",
   Content() {
     return (
       <>
-        <BitmapText className="ml-3 text-moss sprites-double-height">
+        <BitmapText className="ml-3 text-moss zx:text-zxBlack sprites-double-height">
           Read the manual
         </BitmapText>
         <MenuItems
           className={
-            `text-redShadow ${multilineTextClass} !gap-y-0 ` +
-            "overflow-y-scroll scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-highlightBeige"
+            `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
+            "overflow-y-scroll scrollbar scrollbar-w-1 " +
+            "scrollbar-thumb-midGrey scrollbar-track-highlightBeige " +
+            "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
           }
-          selectedClassName="text-shadow"
+          selectedClassName="text-shadow zx:text-zxBlack"
         />
       </>
     );

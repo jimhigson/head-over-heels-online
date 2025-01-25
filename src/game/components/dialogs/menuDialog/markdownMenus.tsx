@@ -11,7 +11,8 @@ export const markdownMenus = transformObject(
     return [
       `markdown/${pageName}`,
       {
-        dialogClassName: "bg-highlightBeige",
+        dialogClassName:
+          "bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack",
         borderClassName: "bg-midGrey",
         items: [backMenuItem],
         Content() {
@@ -20,8 +21,10 @@ export const markdownMenus = transformObject(
               <MenuMarkdown
                 markdown={markdown}
                 className={
-                  `text-shadow overflow-y-scroll ` +
-                  "scrollbar scrollbar-thumb-midGrey scrollbar-w-1 scrollbar-track-highlightBeige"
+                  "overflow-y-scroll " +
+                  "scrollbar  scrollbar-w-1 " +
+                  "scrollbar-thumb-midGrey scrollbar-track-highlightBeige " +
+                  "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
                 }
               />
               <MenuItems className="hidden" />

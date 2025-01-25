@@ -1,6 +1,6 @@
 ## HISTORY OF THE BLACKTOOTH EMPIRE
 
-![](texture-crown)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
+![](texture-crown.blacktooth)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
 worlds enslaved by the planet Blacktooth.
 
 ![](texture-animated-dalek?float-right)All of the slave worlds bubble with

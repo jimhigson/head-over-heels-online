@@ -32,7 +32,27 @@ export default {
     },
   ],
   theme: {
-    colors: spritesheetPalette,
+    colors: {
+      ...spritesheetPalette,
+
+      // zx-spectrum colours:
+      zxRed: "#f00",
+      zxGreen: "#0f0",
+      zxBlue: "#00f",
+      zxCyan: "#0ff",
+      zxMagenta: "#f0f",
+      zxYellow: "#ff0",
+      zxBlack: "#000",
+      zxWhite: "#fff",
+      zxRedDimmed: "#800",
+      zxGreenDimmed: "#080",
+      zxBlueDimmed: "#008",
+      zxCyanDimmed: "#088",
+      zxMagentaDimmed: "#808",
+      zxYellowDimmed: "#880",
+      zxBlackDimmed: "#000",
+      zxWhiteDimmed: "#888",
+    },
     spacing: {
       // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
       bottomStackPullup: `calc(var(--scale) * 17px)`,
