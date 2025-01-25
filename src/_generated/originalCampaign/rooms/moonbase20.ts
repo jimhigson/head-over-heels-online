@@ -7,6 +7,12 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase20",
   items: {
+    crownsScroll: {
+      config: { gives: "scroll", page: "crowns" },
+      position: { x: 5, y: 4, z: 1 },
+      type: "pickup",
+      isExtra: true,
+    },
     "door@0,3,0": {
       config: { direction: "right", toRoom: "moonbase19" },
       position: { x: 0, y: 3, z: 0 },
@@ -66,14 +72,6 @@ export const room = inferRoomJson({
       config: { style: "puck" },
       position: { x: 5, y: 4, z: 0 },
       type: "slidingBlock",
-    },
-    'crownsScroll': {
-      type: 'pickup',
-      config: {
-        gives: 'scroll',
-        page: 'crowns',
-      },
-      position: { x: 5, y: 4, z: 1 },
     },
     "slidingBlock@5,5,0": {
       config: { style: "puck" },
