@@ -1,14 +1,14 @@
-import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import { BitmapText } from "../../../Sprite";
 import { type Menu } from "../menus";
 import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";
+import type { TailwindPalette } from "../../../../../../tailwind.config";
 
 export const mainMenuCycle = [
-  "text-metallicBlue zx:text-zxCyan",
+  "text-pink zx:text-zxCyan",
   "text-highlightBeige zx:text-zxYellow",
-  "text-lightGrey zx:text-zxWhite",
-] satisfies Array<`text-${SpritesheetPaletteColourName} ${string}`>;
+  "text-moss zx:text-zxWhite",
+] satisfies Array<`text-${TailwindPalette} zx:text-${TailwindPalette}`>;
 
 const PlayGameLabel = () => {
   const gameRunning = useAppSelector((state) => state.gameRunning);
@@ -19,9 +19,11 @@ const PlayGameLabel = () => {
 };
 
 export const MainMenuHeading = () => (
-  <div className="flex text-highlightBeige zx:text-zxYellow ml-3">
+  <div className="flex  ml-3">
     <div className="flex flex-col gap-y-oneScaledPix">
-      <BitmapText className="sprites-double-height me-1">Head</BitmapText>
+      <BitmapText className="sprites-double-height text-metallicBlue zx:text-zxYellow me-1">
+        Head
+      </BitmapText>
       <div className="mt-1 relative">
         <span className="sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
         <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
@@ -31,7 +33,9 @@ export const MainMenuHeading = () => (
       over
     </BitmapText>
     <div className="flex flex-col">
-      <BitmapText className="sprites-double-height me-1">Heels</BitmapText>
+      <BitmapText className="sprites-double-height text-pink zx:text-zxYellow me-1">
+        Heels
+      </BitmapText>
       <div className="mt-1 ml-2 relative">
         <span className="sprite texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
         <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
@@ -47,7 +51,7 @@ const MainMenuFooter = () => (
   <>
     <div className="flex gap-3 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix">
-        <BitmapText className="text-redShadow zx:text-zxRedDimmed ml-2">
+        <BitmapText className="text-metallicBlue zx:text-zxRedDimmed ml-2">
           1987 original
         </BitmapText>
         <div className="flex gap-2">
@@ -66,7 +70,7 @@ const MainMenuFooter = () => (
         </div>
       </div>
       <div className="flex flex-col gap-y-oneScaledPix">
-        <BitmapText className="text-redShadow zx:text-zxRedDimmed">
+        <BitmapText className="text-pink zx:text-zxRedDimmed">
           2025 remake
         </BitmapText>
         <div className="flex">
@@ -80,30 +84,30 @@ const MainMenuFooter = () => (
       </div>
     </div>
     <div className="absolute bottom-1">
-      <BitmapText className="text-redShadow zx:text-zxRedDimmed">
+      <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
         https://
       </BitmapText>
-      <BitmapText className="text-lightGrey zx:text-zxBlack">block</BitmapText>
+      <BitmapText className="text-pink zx:text-zxBlack">block</BitmapText>
       <BitmapText className="text-highlightBeige zx:text-zxBlueDimmed">
         stack
       </BitmapText>
       <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
         .
       </BitmapText>
-      <BitmapText className="text-lightGrey zx:text-zxBlack">ing</BitmapText>
+      <BitmapText className="text-moss zx:text-zxBlack">ing</BitmapText>
     </div>
   </>
 );
 
 export const mainMenu: Menu = {
-  dialogClassName: "bg-midRed zx:bg-zxRed",
-  borderClassName: "bg-metallicBlue zx:bg-zxBlue",
+  dialogClassName: "bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2",
+  borderClassName: "bg-metallicBlue zx:bg-zxRed",
   Content() {
     return (
       <>
         <MainMenuHeading />
         <MenuItems
-          className="text-metallicBlue zx:text-zxCyan"
+          className="text-highlightBeige zx:text-zxCyan"
           selectedClassName="text-white"
         />
         <MainMenuFooter />

@@ -6,7 +6,7 @@ import { useCallback } from "react";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
-    (store) => store.actionBeingAssignedKeys !== undefined,
+    (store) => store.assigningInput !== undefined,
   );
 
   useActionInput({

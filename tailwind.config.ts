@@ -5,6 +5,55 @@ import { zxSpectrumResolution } from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
 import scrollbar from "tailwind-scrollbar";
+import { transformObject } from "./src/utils/entries";
+
+function halfbrite(hex: string) {
+  // Remove the hash (#) if it exists
+  hex = hex.replace(/^#/, "");
+
+  // Parse the RGB values
+  let r = parseInt(hex.substring(0, 2), 16);
+  let g = parseInt(hex.substring(2, 4), 16);
+  let b = parseInt(hex.substring(4, 6), 16);
+
+  // Halve the brightness of each channel
+  r = Math.floor(r / 2);
+  g = Math.floor(g / 2);
+  b = Math.floor(b / 2);
+
+  // Convert back to hex and pad with zeros if necessary
+  const toHex = (val: number) => val.toString(16).padStart(2, "0");
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+const colors = {
+  ...spritesheetPalette,
+  ...transformObject(spritesheetPalette, ([colourName, colourValue]) => [
+    colourName + "Halfbrite",
+    halfbrite(colourValue),
+  ]),
+
+  // zx-spectrum colours:
+  zxRed: "#f00",
+  zxGreen: "#0f0",
+  zxBlue: "#00f",
+  zxCyan: "#0ff",
+  zxMagenta: "#f0f",
+  zxYellow: "#ff0",
+  zxBlack: "#000",
+  zxWhite: "#fff",
+  zxRedDimmed: "#800",
+  zxGreenDimmed: "#080",
+  zxBlueDimmed: "#008",
+  zxCyanDimmed: "#088",
+  zxMagentaDimmed: "#808",
+  zxYellowDimmed: "#880",
+  zxBlackDimmed: "#000",
+  zxWhiteDimmed: "#888",
+} as const;
+
+export type TailwindPalette = keyof typeof colors;
 
 export default {
   /*corePlugins: {
@@ -32,27 +81,7 @@ export default {
     },
   ],
   theme: {
-    colors: {
-      ...spritesheetPalette,
-
-      // zx-spectrum colours:
-      zxRed: "#f00",
-      zxGreen: "#0f0",
-      zxBlue: "#00f",
-      zxCyan: "#0ff",
-      zxMagenta: "#f0f",
-      zxYellow: "#ff0",
-      zxBlack: "#000",
-      zxWhite: "#fff",
-      zxRedDimmed: "#800",
-      zxGreenDimmed: "#080",
-      zxBlueDimmed: "#008",
-      zxCyanDimmed: "#088",
-      zxMagentaDimmed: "#808",
-      zxYellowDimmed: "#880",
-      zxBlackDimmed: "#000",
-      zxWhiteDimmed: "#888",
-    },
+    colors,
     spacing: {
       // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
       bottomStackPullup: `calc(var(--scale) * 17px)`,

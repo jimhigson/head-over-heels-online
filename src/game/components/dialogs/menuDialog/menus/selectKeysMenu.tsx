@@ -14,15 +14,21 @@ import type { ValueComponent } from "../MenuItem";
 
 const valueClass = (selected: boolean) =>
   selected ?
-    "text-redShadow zx:text-zxRedDimmed"
+    "text-midRedHalfbrite zx:text-zxRedDimmed"
   : "text-midRed zx:text-zxMagentaDimmed";
 
 const MenuItemKeyAssignment =
   (action: Action): ValueComponent =>
   ({ className, selected }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const assigningThisAction = useAppSelector(
-      (store) => store.actionBeingAssignedKeys === action,
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
+    const assigning = useAppSelector(
+      (store) => store.assigningInput?.action === action,
+    );
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
+    const inputs = useAppSelector((store) =>
+      store.assigningInput?.action === action ?
+        store.assigningInput?.inputs
+      : store.userSettings.inputAssignment[action],
     );
 
     return (
@@ -31,11 +37,11 @@ const MenuItemKeyAssignment =
           "flex flex-wrap gap-y-oneScaledPix gap-x-1",
           className,
         )}
-        action={action}
+        inputs={inputs}
         keyClassName={valueClass(selected)}
         // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
         deliminatorClassName="me-0"
-        flashingCursor={assigningThisAction}
+        flashingCursor={assigning}
       />
     );
   };
@@ -54,11 +60,11 @@ const CurrentPresetValue: ValueComponent = ({ className, selected }) => {
 
 export const selectKeysMenu: Menu = {
   dialogClassName: "bg-lightGrey zx:bg-zxWhiteDimmed",
-  borderClassName: "bg-redShadow zx:bg-zxRedDimmed",
+  borderClassName: "bg-midRedHalfbrite zx:bg-zxRedDimmed",
   Content() {
     return (
       <>
-        <BitmapText className="text-metallicBlue zx:text-zxBlue sprites-double-height">
+        <BitmapText className="text-metallicBlueHalfbrite zx:text-zxBlue sprites-double-height">
           Select the keys
         </BitmapText>
         <div
@@ -70,17 +76,17 @@ export const selectKeysMenu: Menu = {
           }
         >
           <div className={`mb-1 ${multilineTextClass}`}>
-            <BitmapText className="text-midRed zx:text-zxRed">
-              Note:{" "}
+            <BitmapText className="text-midRed bg-lightGreyHalfbrite inline-block zx:text-zxRed zx:bg-zxYellow me-1">
+              Note:
             </BitmapText>
-            <BitmapText className="text-midGrey zx:text-zxBlack">
+            <BitmapText className="text-lightGreyHalfbrite zx:text-zxBlack">
               some puzzles require you to jump and pick up simultaneously -
               assign a key for both jump and carry
             </BitmapText>
           </div>
           <MenuItems
             className="text-metallicBlue zx:text-zxBlue !gap-y-1"
-            selectedClassName="text-shadow zx:text-zxBlueDimmed"
+            selectedClassName="text-metallicBlueHalfbrite zx:text-zxBlueDimmed"
           />
         </div>
         <SelectedItemHint className="text-metallicBlue zx:text-zxBlue" />
@@ -110,15 +116,15 @@ export const selectKeysMenu: Menu = {
     },
     {
       type: "key",
-      label: "Down ↙",
-      action: "towards",
-      ValueComponent: MenuItemKeyAssignment("towards"),
-    },
-    {
-      type: "key",
       label: "Up ↗",
       action: "away",
       ValueComponent: MenuItemKeyAssignment("away"),
+    },
+    {
+      type: "key",
+      label: "Down ↙",
+      action: "towards",
+      ValueComponent: MenuItemKeyAssignment("towards"),
     },
     {
       type: "key",

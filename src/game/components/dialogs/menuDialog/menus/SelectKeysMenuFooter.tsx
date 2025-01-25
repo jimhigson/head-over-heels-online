@@ -1,21 +1,32 @@
 import { BitmapText } from "../../../Sprite";
 import { useAppSelector } from "../../../../../store/hooks";
+import { multilineTextClass } from "../multilineTextClass";
+
+const highlightTextClass = "text-midRed zx:text-zxCyan";
 
 export const SelectKeysMenuFooter = () => {
-  const assigningKeys = useAppSelector(
-    (store) => store.actionBeingAssignedKeys,
+  const actionBeingAssigned = useAppSelector(
+    (store) => store.assigningInput?.action,
   );
 
-  if (assigningKeys === undefined) {
+  if (actionBeingAssigned === undefined) {
     return null;
   }
 
   return (
-    <div className="bg-metallicBlue text-lightGrey leading-multilineText inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1">
+    <div
+      className={`
+        bg-metallicBlueHalfbrite text-highlightBeige
+        zx:bg-zxBlueDimmed zx:text-zxCyanDimmed
+
+        ${multilineTextClass} inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1`}
+    >
       <BitmapText>Press</BitmapText>
-      <BitmapText className="text-midRed"> escape </BitmapText>
+      <BitmapText className={highlightTextClass}> escape </BitmapText>
       <BitmapText>when done selecting keys for </BitmapText>
-      <BitmapText className="text-midRed">{assigningKeys}</BitmapText>
+      <BitmapText className={highlightTextClass}>
+        {actionBeingAssigned}
+      </BitmapText>
     </div>
   );
 };

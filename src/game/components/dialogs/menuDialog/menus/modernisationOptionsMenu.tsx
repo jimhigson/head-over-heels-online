@@ -25,8 +25,8 @@ const switchCurrentValue =
           className={clsx(
             "inline-block",
             value ?
-              "bg-shadow text-moss zx:bg-zxCyanDimmed zx:text-zxGreen"
-            : "bg-redShadow text-midRed zx:bg-zxRedDimmed zx:text-zxRed",
+              "bg-shadowHalfbrite text-moss zx:bg-zxCyanDimmed zx:text-zxGreen"
+            : "bg-redShadowHalfbrite text-midRed zx:bg-zxRedDimmed zx:text-zxRed",
             className,
           )}
           noSlitWords
@@ -38,7 +38,7 @@ const switchCurrentValue =
   };
 
 export const modernisationOptionsMenu: Menu = {
-  dialogClassName: "bg-metallicBlue zx:bg-zxBlue",
+  dialogClassName: "bg-pinkHalfbrite zx:bg-zxBlue",
   borderClassName: "bg-moss",
   Content() {
     return (
@@ -48,7 +48,7 @@ export const modernisationOptionsMenu: Menu = {
         </BitmapText>
         <MenuItems
           className="text-lightGrey zx:text-zxWhite"
-          selectedClassName="text-moss zx:text-zxGreen"
+          selectedClassName="text-white zx:text-zxGreen"
         />
         <SelectedItemHint className="text-moss zx:text-zxGreen" />
       </>
