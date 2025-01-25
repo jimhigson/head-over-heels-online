@@ -1,5 +1,4 @@
-import { useAppSelector } from "../../../../store/hooks";
-import type { Action, AssignableInput } from "../../../input/InputState";
+import type { AssignableInput } from "../../../input/InputState";
 import { BitmapText, CssSprite } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 
@@ -34,26 +33,22 @@ const friendlyName = (k: AssignableInput) => {
 };
 
 export const CurrentKeyAssignment = ({
-  action,
+  inputs,
   deliminatorClassName,
   keyClassName,
   className,
   flashingCursor = false,
 }: {
-  action: Action;
+  inputs: Readonly<AssignableInput[]>;
   deliminatorClassName?: string;
   keyClassName?: string;
   className?: string;
   flashingCursor?: boolean;
 }) => {
-  const keys = useAppSelector((state) => {
-    return state.userSettings.inputAssignment[action];
-  });
-
   return (
     <div className={className}>
-      {keys.map((k, i) => {
-        const isNotLast = i < keys.length - 1;
+      {inputs.map((k, i) => {
+        const isNotLast = i < inputs.length - 1;
         return (
           <span className="text-nowrap" key={k}>
             <BitmapText className={keyClassName}>{friendlyName(k)}</BitmapText>

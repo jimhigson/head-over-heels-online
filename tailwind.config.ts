@@ -7,7 +7,7 @@ import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 import scrollbar from "tailwind-scrollbar";
 import { transformObject } from "./src/utils/entries";
 
-function halfbrite(hex) {
+function halfbrite(hex: string) {
   // Remove the hash (#) if it exists
   hex = hex.replace(/^#/, "");
 

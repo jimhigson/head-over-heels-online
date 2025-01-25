@@ -20,9 +20,15 @@ const valueClass = (selected: boolean) =>
 const MenuItemKeyAssignment =
   (action: Action): ValueComponent =>
   ({ className, selected }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const assigningThisAction = useAppSelector(
-      (store) => store.actionBeingAssignedKeys === action,
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
+    const assigning = useAppSelector(
+      (store) => store.assigningInput?.action === action,
+    );
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
+    const inputs = useAppSelector((store) =>
+      store.assigningInput?.action === action ?
+        store.assigningInput?.inputs
+      : store.userSettings.inputAssignment[action],
     );
 
     return (
@@ -31,11 +37,11 @@ const MenuItemKeyAssignment =
           "flex flex-wrap gap-y-oneScaledPix gap-x-1",
           className,
         )}
-        action={action}
+        inputs={inputs}
         keyClassName={valueClass(selected)}
         // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
         deliminatorClassName="me-0"
-        flashingCursor={assigningThisAction}
+        flashingCursor={assigning}
       />
     );
   };

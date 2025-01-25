@@ -29,7 +29,7 @@ export const MenuItems = ({
   const selectedItemIndex = useCurrentMenuSelectedItemIndex();
 
   const assigningKeys = useAppSelector(
-    (store) => store.actionBeingAssignedKeys !== undefined,
+    (store) => store.assigningInput !== undefined,
   );
   const dispatch = useAppDispatch();
   if (menu === undefined || selectedItemIndex === undefined) throw new Error();

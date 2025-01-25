@@ -55,7 +55,7 @@ export type GameMenusState = {
   /**
    * for the key assignment menu, the key currently being assigned
    */
-  actionBeingAssignedKeys: Action | undefined;
+  assigningInput: { action: Action; inputs: AssignableInput[] } | undefined;
 
   userSettings: UserSettings;
   upscale: Upscale;
@@ -102,7 +102,7 @@ const initialState: GameMenusState = {
       []
       // normal case: when we first load, show the main menu:
     : [{ selectedIndex: 0, menuId: "mainMenu" }],
-  actionBeingAssignedKeys: undefined,
+  assigningInput: undefined,
 
   // if cheating (debugging), the game is already running
   gameRunning: cheatsOn,
@@ -144,24 +144,32 @@ export const gameMenusSlice = createSlice({
       if (assignableInput === undefined) {
         throw new Error(
           // should be impossible by the types, but who knows?
-          `can not assign undefined to ${state.actionBeingAssignedKeys}`,
+          `can not assign undefined to ${state.assigningInput}`,
         );
       }
-      if (state.actionBeingAssignedKeys === undefined) {
+      if (state.assigningInput === undefined) {
         throw new Error("reducer called while not assigning keys");
       }
 
-      const currentAssignment =
-        state.userSettings.inputAssignment[state.actionBeingAssignedKeys];
-      if (currentAssignment.includes(assignableInput)) {
+      const { inputs } = state.assigningInput;
+      if (inputs.includes(assignableInput)) {
         // already assigned
         return;
       }
 
-      currentAssignment.push(assignableInput);
+      inputs.push(assignableInput);
     },
     doneAssigningInput(state) {
-      state.actionBeingAssignedKeys = undefined;
+      if (state.assigningInput === undefined) {
+        throw new Error("illegal action for state");
+      }
+      const { action, inputs } = state.assigningInput;
+
+      if (inputs.length !== 0) {
+        // stop assigning but don't
+        state.userSettings.inputAssignment[action] = inputs;
+      }
+      state.assigningInput = undefined;
     },
     menuPressed(state) {
       if (state.openMenus.length > 0) {
@@ -204,8 +212,10 @@ export const gameMenusSlice = createSlice({
           break;
         }
         case "key":
-          state.actionBeingAssignedKeys = selectedMenuItem.action;
-          state.userSettings.inputAssignment[selectedMenuItem.action] = [];
+          state.assigningInput = {
+            action: selectedMenuItem.action,
+            inputs: [],
+          };
           break;
 
         case "dispatch":
@@ -236,7 +246,7 @@ export const gameMenusSlice = createSlice({
       }
     },
     menuDown(state) {
-      if (state.actionBeingAssignedKeys !== undefined) {
+      if (state.assigningInput !== undefined) {
         // can't move up or down in menu while assigning keys to an action
         return;
       }
@@ -257,7 +267,7 @@ export const gameMenusSlice = createSlice({
       ];
     },
     menuUp(state) {
-      if (state.actionBeingAssignedKeys !== undefined) {
+      if (state.assigningInput !== undefined) {
         // can't move up or down in menu while assigning keys to an action
         return;
       }

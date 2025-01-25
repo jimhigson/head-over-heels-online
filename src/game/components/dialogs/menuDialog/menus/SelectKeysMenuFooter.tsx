@@ -5,11 +5,11 @@ import { multilineTextClass } from "../multilineTextClass";
 const highlightTextClass = "text-midRed zx:text-zxCyan";
 
 export const SelectKeysMenuFooter = () => {
-  const assigningKeys = useAppSelector(
-    (store) => store.actionBeingAssignedKeys,
+  const actionBeingAssigned = useAppSelector(
+    (store) => store.assigningInput?.action,
   );
 
-  if (assigningKeys === undefined) {
+  if (actionBeingAssigned === undefined) {
     return null;
   }
 
@@ -24,7 +24,9 @@ export const SelectKeysMenuFooter = () => {
       <BitmapText>Press</BitmapText>
       <BitmapText className={highlightTextClass}> escape </BitmapText>
       <BitmapText>when done selecting keys for </BitmapText>
-      <BitmapText className={highlightTextClass}>{assigningKeys}</BitmapText>
+      <BitmapText className={highlightTextClass}>
+        {actionBeingAssigned}
+      </BitmapText>
     </div>
   );
 };
