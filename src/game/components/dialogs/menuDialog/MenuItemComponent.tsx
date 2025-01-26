@@ -1,20 +1,31 @@
 import { BitmapText } from "../../Sprite";
 import type { MenuItem } from "./MenuItem";
 import { twMerge } from "tailwind-merge";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { always } from "../../../../utils/always";
+import {
+  menuItemChosen,
+  menuPointerSelectsItem,
+} from "../../../../store/gameMenusSlice";
+import type { Menu } from "./menus";
 
 type MenuItemComponentProps = {
+  menu: Menu;
   menuItem: MenuItem;
   selected: boolean;
   className?: string;
 };
 export const MenuItemComponent = ({
+  menu,
   menuItem,
   selected,
   className,
 }: MenuItemComponentProps) => {
   const show = useAppSelector(menuItem.showIf ?? always);
+  const dispatch = useAppDispatch();
+  const scrollIntoView = useAppSelector((state) => {
+    return state.openMenus[0].scrollableSelection;
+  });
 
   if (!show) return null;
 
@@ -29,6 +40,19 @@ export const MenuItemComponent = ({
         needsDoubling ? "sprites-double-height" : "",
         className,
       )}
+      onMouseMove={() => {
+        const index = menu.items.indexOf(menuItem);
+        if (!selected) {
+          dispatch(menuPointerSelectsItem(index));
+        }
+      }}
+      onClick={() => {
+        const index = menu.items.indexOf(menuItem);
+        if (!selected) {
+          dispatch(menuPointerSelectsItem(index));
+        }
+        dispatch(menuItemChosen());
+      }}
     >
       {/* first column content (icon thing)... */}
       <BitmapText
@@ -45,7 +69,7 @@ export const MenuItemComponent = ({
       {/* second column content (main label)... */}
       <div
         ref={
-          selected ?
+          selected && scrollIntoView ?
             (ele) =>
               ele?.scrollIntoView({ behavior: "instant", block: "center" })
           : undefined

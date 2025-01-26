@@ -9,7 +9,7 @@ import { useCallback } from "react";
 import {
   menuUp,
   menuDown,
-  menuItemSelected,
+  menuItemChosen,
   doneAssigningInput,
   inputAssigned,
 } from "../../../../store/gameMenusSlice";
@@ -54,7 +54,7 @@ export const MenuItems = ({
     action: "jump",
     key: ["Enter", " ", "ArrowRight"],
     onAction: useCallback(() => {
-      dispatch(menuItemSelected());
+      dispatch(menuItemChosen());
     }, [dispatch]),
     disabled: assigningKeys,
   });
@@ -97,6 +97,7 @@ export const MenuItems = ({
         const isSelected = i === selectedItemIndex;
         return (
           <MenuItemComponent
+            menu={menu}
             className={isSelected ? selectedClassName : ""}
             key={i}
             menuItem={mi}
