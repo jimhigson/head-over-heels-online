@@ -1,12 +1,12 @@
 import { menus } from "../../game/components/dialogs/menuDialog/menus";
-import { menuItemSelected } from "../gameMenusSlice";
+import { menuItemChosen } from "../gameMenusSlice";
 import { startAppListening } from "../listener";
 
 export const addListeners = () => {
   // Add one or more listener entries that look for specific actions.
   // They may contain any sync or async logic, similar to thunks.
   startAppListening({
-    actionCreator: menuItemSelected,
+    actionCreator: menuItemChosen,
     async effect(_action, { dispatch, getState, getOriginalState }) {
       const originalState = getOriginalState();
       const originalMenu = originalState.openMenus.at(0)?.menuId;

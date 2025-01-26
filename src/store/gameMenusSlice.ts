@@ -22,6 +22,8 @@ export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 export type OpenMenu = {
   menuId: MenuId;
   selectedIndex: number;
+  // maintain because selecting by mouse doesn't trigger scrolling in the renderer
+  scrollableSelection: boolean;
 };
 
 export type DisplaySettings = {
@@ -101,7 +103,13 @@ const initialState: GameMenusState = {
       // if cheats are on we skip menus for debugging:
       []
       // normal case: when we first load, show the main menu:
-    : [{ selectedIndex: 0, menuId: "mainMenu" }],
+    : [
+        {
+          selectedIndex: 0,
+          menuId: "mainMenu",
+          scrollableSelection: false,
+        },
+      ],
   assigningInput: undefined,
 
   // if cheating (debugging), the game is already running
@@ -133,7 +141,11 @@ export const gameMenusSlice = createSlice({
       { payload: markdownPageName }: PayloadAction<MarkdownPageName>,
     ) {
       state.openMenus = [
-        { menuId: `markdown/${markdownPageName}`, selectedIndex: 0 },
+        {
+          menuId: `markdown/${markdownPageName}`,
+          selectedIndex: 0,
+          scrollableSelection: false,
+        },
       ];
     },
     /** adds another input to the currently being assigned action */
@@ -181,10 +193,12 @@ export const gameMenusSlice = createSlice({
         const [, ...tail] = state.openMenus;
         state.openMenus = tail;
       } else {
-        state.openMenus = [{ menuId: "mainMenu", selectedIndex: 0 }];
+        state.openMenus = [
+          { menuId: "mainMenu", selectedIndex: 0, scrollableSelection: false },
+        ];
       }
     },
-    menuItemSelected(state) {
+    menuItemChosen(state) {
       const [{ menuId, selectedIndex }] = state.openMenus;
       const menu = menus[menuId];
 
@@ -200,7 +214,11 @@ export const gameMenusSlice = createSlice({
       switch (selectedMenuItem.type) {
         case "submenu":
           state.openMenus = [
-            { menuId: selectedMenuItem.submenu, selectedIndex: 0 },
+            {
+              menuId: selectedMenuItem.submenu,
+              selectedIndex: 0,
+              scrollableSelection: false,
+            },
             ...state.openMenus,
           ];
           break;
@@ -228,7 +246,13 @@ export const gameMenusSlice = createSlice({
             state.openMenus = [];
           } else {
             // go to crowns menu page if not already started the game
-            state.openMenus = [{ menuId: "crowns", selectedIndex: 0 }];
+            state.openMenus = [
+              {
+                menuId: "crowns",
+                selectedIndex: 0,
+                scrollableSelection: false,
+              },
+            ];
             state.gameRunning = true;
           }
           break;
@@ -250,7 +274,8 @@ export const gameMenusSlice = createSlice({
         // can't move up or down in menu while assigning keys to an action
         return;
       }
-      const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
+      const [displayedMenu] = state.openMenus;
+      const { selectedIndex, menuId } = displayedMenu;
       const menu = menus[menuId];
 
       let newSelectedIndex = selectedIndex;
@@ -258,13 +283,8 @@ export const gameMenusSlice = createSlice({
         newSelectedIndex = (newSelectedIndex + 1) % menu.items.length;
       } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
 
-      state.openMenus = [
-        {
-          menuId,
-          selectedIndex: newSelectedIndex,
-        },
-        ...tail,
-      ];
+      displayedMenu.selectedIndex = newSelectedIndex;
+      displayedMenu.scrollableSelection = true;
     },
     menuUp(state) {
       if (state.assigningInput !== undefined) {
@@ -272,7 +292,8 @@ export const gameMenusSlice = createSlice({
         return;
       }
 
-      const [{ selectedIndex, menuId }, ...tail] = state.openMenus;
+      const [displayedMenu] = state.openMenus;
+      const { selectedIndex, menuId } = displayedMenu;
       const menu = menus[menuId];
 
       let newSelectedIndex = selectedIndex;
@@ -281,18 +302,22 @@ export const gameMenusSlice = createSlice({
           (newSelectedIndex - 1 + menu.items.length) % menu.items.length;
       } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
 
-      state.openMenus = [
-        {
-          menuId,
-          selectedIndex: newSelectedIndex,
-        },
-        ...tail,
-      ];
+      displayedMenu.selectedIndex = newSelectedIndex;
+      displayedMenu.scrollableSelection = true;
+    },
+    menuPointerSelectsItem(
+      state,
+      { payload: newSelectedIndex }: PayloadAction<number>,
+    ) {
+      state.openMenus[0].selectedIndex = newSelectedIndex;
+      state.openMenus[0].scrollableSelection = false;
     },
     holdPressed(state) {
       // do nothing if hold pressed while in menus
       if (state.openMenus.length === 0) {
-        state.openMenus = [{ menuId: "hold", selectedIndex: 0 }];
+        state.openMenus = [
+          { menuId: "hold", selectedIndex: 0, scrollableSelection: false },
+        ];
       } else if (state.openMenus[0]?.menuId === "hold") {
         state.openMenus = [];
       }
@@ -323,13 +348,15 @@ export const gameMenusSlice = createSlice({
     },
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
-      state.openMenus = [{ menuId: "crowns", selectedIndex: 0 }];
+      state.openMenus = [
+        { menuId: "crowns", selectedIndex: 0, scrollableSelection: false },
+      ];
     },
     gameOver(state) {
       state.gameRunning = false;
       state.openMenus = [
-        { menuId: "gameOver", selectedIndex: 0 },
-        { menuId: "mainMenu", selectedIndex: 0 },
+        { menuId: "gameOver", selectedIndex: 0, scrollableSelection: false },
+        { menuId: "mainMenu", selectedIndex: 0, scrollableSelection: true },
       ];
     },
   },
@@ -342,10 +369,11 @@ export type GameMenusSliceAction = ReturnType<
 export const {
   setUpscale,
   showScroll,
-  menuItemSelected,
+  menuItemChosen,
   menuDown,
   menuPressed,
   menuUp,
+  menuPointerSelectsItem,
   holdPressed,
   setShowBoundingBoxes,
   setShowShadowMasks,
