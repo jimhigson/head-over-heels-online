@@ -93,6 +93,9 @@ function* generateFloorOverdraws(
   }
 }
 
+/**
+ * creates the floor edge sprites
+ s*/
 const edges = (
   blockXExtent: number,
   blockYExtent: number,

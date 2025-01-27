@@ -42,7 +42,7 @@ export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId>;
   #roomRenderer: RoomRenderer<RoomId, string>;
   #worldContainer: Container = new Container({
-    label: "world",
+    label: "MainLoop/world",
   });
   #app: Application;
   #gameState: GameState<RoomId>;

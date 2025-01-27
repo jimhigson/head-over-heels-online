@@ -42,6 +42,8 @@ export type RoomStateItems<
   head?: ItemInPlay<"head", P, RoomId, "head">;
   heels?: ItemInPlay<"heels", P, RoomId, "heels">;
   headOverHeels?: ItemInPlay<"headOverHeels", P, RoomId, "headOverHeels">;
+  // every room has a floor edge:
+  floorEdge: ItemInPlay<"floorEdge", P, RoomId, "floorEdge">;
 };
 
 /**

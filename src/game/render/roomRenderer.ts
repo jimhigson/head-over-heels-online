@@ -21,7 +21,15 @@ import type { ZxSpectrumRoomColour } from "../../originalGame";
 export class RoomRenderer<RoomId extends string, ItemId extends string>
   implements Renderer
 {
-  #container: Container;
+  /**
+   * renders all items *except* the floor edge, since the floor edge is the only
+   * item that is colourised differently when colourisation is turned off
+   */
+  #itemsContainer: Container = new Container({ label: "items" });
+  #floorEdgeContainer: Container = new Container({ label: "floorEdge" });
+  #container: Container = new Container({
+    children: [this.#itemsContainer, this.#floorEdgeContainer],
+  });
   #everRendered: boolean = false;
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
@@ -56,9 +64,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     this.#gameState = gameState;
     this.#paused = paused;
 
-    this.#container = new Container({
-      label: `RoomRenderer(${roomState.id})`,
-    });
+    this.#container.label = `RoomRenderer(${roomState.id})`;
 
     this.initFilters(!paused && displaySettings.colourise, roomState.color);
 
@@ -80,9 +86,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
    * modern-mode
    */
   initFilters(colourise: boolean, colour: ZxSpectrumRoomColour) {
-    console.log("initing filters for room renderer", colourise, colour);
-
-    this.#container.filters =
+    this.#itemsContainer.filters =
       colourise ? noFilters : (
         new RevertColouriseFilter(getColorScheme(colour).main.original)
       );
@@ -92,7 +96,10 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     for (const item of objectValues(this.#roomState.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as ItemId);
 
-      if (itemRenderer !== undefined /* equivalent to #itemRenderers.has */) {
+      if (
+        itemRenderer !==
+        undefined /* equivalent to if( this.#itemRenderers.has(item.id) ) */
+      ) {
         if (itemRenderer === "not-needed") {
           // we have previously recorded that this item needs no renderer
           continue;
@@ -111,7 +118,13 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
           continue;
         }
         this.#itemRenderers.set(item.id as ItemId, itemRenderer);
-        this.#container.addChild(itemRenderer.container);
+
+        const addToContainer =
+          item.type === "floorEdge" ?
+            this.#floorEdgeContainer
+          : this.#itemsContainer;
+
+        addToContainer.addChild(itemRenderer.container);
         if (item.fixedZIndex) {
           itemRenderer.container.zIndex = item.fixedZIndex;
         }
