@@ -4,7 +4,7 @@ import type { Key } from "./keys";
 //standard keys that are used in all presets:
 const standardKeys = {
   menu: ["Escape"],
-  toggleColourisation: ["F6"],
+  toggleColourisation: ["F6", "joystick:7"],
 } as const;
 
 // menu key can't be reconfigured:

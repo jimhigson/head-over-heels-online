@@ -2,7 +2,7 @@
 
 1. **1** *:* Beginners should aim to escape from Blacktooth and get back to Freedom
    initially. Only the very skillful can hope to liberate a planet or two.
-2. **2** *:* ![](texture-head.walking.towards.2?float-right&relative&z-topSprite)![](texture-heels.walking.towards.2&float-right&clear-right&relative&bottom-bottomStackPullup)When you first get Head and Heels in the same location, practice placing Head
+2. **2** *:* ![](texture-animated-head.idle.towards?float-right&relative&z-topSprite)![](texture-heels.walking.towards.2&float-right&clear-right&relative&bottom-bottomStackPullup)When you first get Head and Heels in the same location, practice placing Head
    on top of Heels and joining them together accurately with the swop key. Both
    of their icons will light up when they are successfully joined.
 3. **3** *:* Remember Head and Heels are a team. Just because both are in the same room

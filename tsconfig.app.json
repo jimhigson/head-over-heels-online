@@ -18,7 +18,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
-    // for shadcn: https://ui.shadcn.com/docs/installation/vite
     "baseUrl": "."
   },
   "include": ["src"]

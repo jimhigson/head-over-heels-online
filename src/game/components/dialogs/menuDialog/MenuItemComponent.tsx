@@ -35,9 +35,11 @@ export const MenuItemComponent = ({
   return (
     // contents div puts children into the grid layout:
     <div
+      tabIndex={0}
       className={twMerge(
         "contents",
         needsDoubling ? "sprites-double-height" : "",
+        selected ? "selectedMenuItem" : "",
         className,
       )}
       onMouseMove={() => {

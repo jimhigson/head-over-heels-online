@@ -93,18 +93,29 @@ function* generateFloorOverdraws(
   }
 }
 
-const edges = (
-  blockXExtent: number,
-  blockYExtent: number,
-  type: "floorOverdraw" | "floorEdge",
-): { right: Container; towards: Container } => {
+type EdgesOptions = {
+  blockXExtent: number;
+  blockYExtent: number;
+  type: "floorOverdraw" | "floorEdge";
+};
+
+/**
+ * creates the floor edge sprites
+ s*/
+const edges = ({
+  blockXExtent,
+  blockYExtent,
+  type,
+}: EdgesOptions): { right: Container; towards: Container } => {
   const towards = new Container({ label: "towards" });
   for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
+    const blockXy = { x: ix, y: 0 };
+    const pivot = { x: 7, y: 0 };
     towards.addChild(
       moveContainerToBlockXyz(
-        { x: ix, y: 0 },
+        blockXy,
         createSprite({
-          pivot: { x: 7, y: 0 },
+          pivot,
           texture: `${type}.towards`,
         }),
       ),
@@ -205,11 +216,11 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       container.addChild(tilesContainer);
     }
 
-    const { towards: towardsOverdraw, right: rightOverdraw } = edges(
+    const { towards: towardsOverdraw, right: rightOverdraw } = edges({
       blockXExtent,
       blockYExtent,
-      "floorOverdraw",
-    );
+      type: "floorOverdraw",
+    });
 
     container.addChild(towardsOverdraw);
     container.addChild(rightOverdraw);
@@ -243,7 +254,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
 );
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
-  ({ room }) => {
+  ({ room, onHold, displaySettings }) => {
     const {
       blockXMin,
       blockYMin,
@@ -276,17 +287,26 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
     overDrawToHideFallenItems.y = 8;
     container.addChild(overDrawToHideFallenItems);
 
-    const { towards: towardsEdge, right: rightEdge } = edges(
+    const { towards: towardsEdgeContainer, right: rightEdgeContainer } = edges({
       blockXExtent,
       blockYExtent,
-      "floorEdge",
+      type: "floorEdge",
+    });
+
+    const colourise = !onHold && displaySettings.colourise;
+    towardsEdgeContainer.filters = edgePaletteSwapFilters(
+      room,
+      "towards",
+      colourise,
+    );
+    rightEdgeContainer.filters = edgePaletteSwapFilters(
+      room,
+      "right",
+      colourise,
     );
 
-    towardsEdge.filters = edgePaletteSwapFilters(room, "towards");
-    rightEdge.filters = edgePaletteSwapFilters(room, "right");
-
-    container.addChild(towardsEdge);
-    container.addChild(rightEdge);
+    container.addChild(towardsEdgeContainer);
+    container.addChild(rightEdgeContainer);
 
     // render black everywhere below the floor edge - this will mean items that fall out of
     // the room via the floor will not show under the hud:

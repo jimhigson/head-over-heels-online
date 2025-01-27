@@ -20,11 +20,11 @@ export const readTheManualMenu: Menu = {
         <MenuItems
           className={
             `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
+            "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
             "overflow-y-scroll scrollbar scrollbar-w-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
           }
-          selectedClassName="text-shadow zx:text-zxBlack"
         />
       </>
     );

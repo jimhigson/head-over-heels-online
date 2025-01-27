@@ -62,6 +62,10 @@ export default {
     accessibility: false,
   },*/
 
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
+
   darkMode: ["class"],
   content: {
     files: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],

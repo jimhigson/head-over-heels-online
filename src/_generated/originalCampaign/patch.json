@@ -1345,33 +1345,6 @@
   { "op": "remove", "path": "/rooms/blacktooth23heels/items/block@3,4,0" },
   {
     "op": "add",
-    "path": "/rooms/blacktooth23heels/items/extra1",
-    "value": {
-      "config": { "movement": "free", "style": "stepStool" },
-      "position": { "x": 1, "y": 3, "z": 0 },
-      "type": "movableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/extra2",
-    "value": {
-      "config": { "movement": "free", "style": "stepStool" },
-      "position": { "x": 1, "y": 4, "z": 0 },
-      "type": "movableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/blacktooth23heels/items/extra3",
-    "value": {
-      "config": { "movement": "free", "style": "stepStool" },
-      "position": { "x": 1, "y": 3, "z": 1 },
-      "type": "movableBlock"
-    }
-  },
-  {
-    "op": "add",
     "path": "/rooms/blacktooth23heels/items/heels",
     "value": {
       "config": { "which": "heels" },
@@ -1385,7 +1358,8 @@
     "value": {
       "config": { "gives": "scroll", "page": "head" },
       "position": { "x": 7, "y": 1, "z": 0 },
-      "type": "pickup"
+      "type": "pickup",
+      "isExtra": true
     }
   },
   {
@@ -1394,7 +1368,8 @@
     "value": {
       "config": { "gives": "scroll", "page": "heels" },
       "position": { "x": 3, "y": 7, "z": 0 },
-      "type": "pickup"
+      "type": "pickup",
+      "isExtra": true
     }
   },
   {

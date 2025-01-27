@@ -2,7 +2,7 @@ import { BitmapText } from "../../../Sprite";
 import { useAppSelector } from "../../../../../store/hooks";
 import { multilineTextClass } from "../multilineTextClass";
 
-const highlightTextClass = "text-midRed zx:text-zxCyan";
+const highlightTextClass = "text-pink zx:text-zxCyan";
 
 export const SelectKeysMenuFooter = () => {
   const actionBeingAssigned = useAppSelector(
@@ -16,7 +16,7 @@ export const SelectKeysMenuFooter = () => {
   return (
     <div
       className={`
-        bg-metallicBlueHalfbrite text-highlightBeige
+        bg-metallicBlueHalfbrite text-white
         zx:bg-zxBlueDimmed zx:text-zxCyanDimmed
 
         ${multilineTextClass} inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1`}

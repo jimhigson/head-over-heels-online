@@ -9,19 +9,16 @@ import { backMenuItem } from "../backMenuItem";
 import { SelectedItemHint } from "../SelectedItemHint";
 
 export const inputPresetMenu: Menu = {
-  dialogClassName: "bg-lightGrey",
+  dialogClassName: "bg-white",
   borderClassName: "bg-midGrey",
   Content() {
     return (
       <>
-        <BitmapText className="text-midRed sprites-double-height">
+        <BitmapText className="text-midRed zx:text-zxRedDimmed sprites-double-height ml-3">
           Key presets
         </BitmapText>
-        <MenuItems
-          className="text-metallicBlue"
-          selectedClassName="text-moss"
-        />
-        <SelectedItemHint className="text-shadow" />
+        <MenuItems className="text-metallicBlue zx:text-zxBlueDimmed selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreenDimmed" />
+        <SelectedItemHint className="text-shadow zx:text-zxWhiteDimmed" />
       </>
     );
   },

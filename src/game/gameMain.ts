@@ -10,6 +10,8 @@ import type { Xy } from "../utils/vectors/vectors";
 import type { InputState } from "./input/InputState";
 import { TextureStyle } from "pixi.js";
 
+import "pixi.js/advanced-blend-modes";
+
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 /**
@@ -21,7 +23,7 @@ export const gameMain = async <RoomId extends string>(
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
 
-  await app.init({ background: "#000000" });
+  await app.init({ background: "#000000", useBackBuffer: true });
 
   const gameState = initGameState({ campaign, inputState });
 

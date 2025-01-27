@@ -13,11 +13,23 @@ import { store } from "../../store/store";
 import type { DisplaySettings } from "../../store/gameMenusSlice";
 import type { Upscale } from "./calculateUpscale";
 import type { RenderContext, Renderer } from "./Renderer";
+import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
+import { getColorScheme } from "../hintColours";
+import { noFilters } from "./filters/paletteSwapFilters";
+import type { ZxSpectrumRoomColour } from "../../originalGame";
 
 export class RoomRenderer<RoomId extends string, ItemId extends string>
   implements Renderer
 {
-  #roomContainer: Container;
+  /**
+   * renders all items *except* the floor edge, since the floor edge is the only
+   * item that is colourised differently when colourisation is turned off
+   */
+  #itemsContainer: Container = new Container({ label: "items" });
+  #floorEdgeContainer: Container = new Container({ label: "floorEdge" });
+  #container: Container = new Container({
+    children: [this.#itemsContainer, this.#floorEdgeContainer],
+  });
   #everRendered: boolean = false;
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
@@ -34,10 +46,12 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   #upscale: Upscale;
   #roomState: RoomState<SceneryName, RoomId, ItemId>;
   #gameState: GameState<RoomId>;
+  #paused: boolean;
 
   constructor(
     gameState: GameState<RoomId>,
     roomState: RoomState<SceneryName, RoomId, ItemId>,
+    paused: boolean,
   ) {
     const {
       userSettings: { displaySettings },
@@ -48,29 +62,44 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     this.#upscale = upscale;
     this.#roomState = roomState;
     this.#gameState = gameState;
+    this.#paused = paused;
 
-    this.#roomContainer = new Container({
-      label: `RoomRenderer(${roomState.id})`,
-    });
+    this.#container.label = `RoomRenderer(${roomState.id})`;
+
+    this.initFilters(!paused && displaySettings.colourise, roomState.color);
 
     if (displaySettings.showBoundingBoxes !== "none") {
       // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
       // any more switches:
-      this.#roomContainer.addChild(showRoomScrollBounds(roomState.roomJson));
+      this.#container.addChild(showRoomScrollBounds(roomState.roomJson));
     }
 
     this.#roomScroller = positionRoom(
       roomState,
-      this.#roomContainer,
+      this.#container,
       upscale.gameEngineScreenSize,
     );
+  }
+
+  /**
+   * set the top-level filters for the room - either to revert colourisation or leave it in
+   * modern-mode
+   */
+  initFilters(colourise: boolean, colour: ZxSpectrumRoomColour) {
+    this.#itemsContainer.filters =
+      colourise ? noFilters : (
+        new RevertColouriseFilter(getColorScheme(colour).main.original)
+      );
   }
 
   #tickItems(renderContext: RenderContext) {
     for (const item of objectValues(this.#roomState.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as ItemId);
 
-      if (itemRenderer !== undefined /* equivalent to #itemRenderers.has */) {
+      if (
+        itemRenderer !==
+        undefined /* equivalent to if( this.#itemRenderers.has(item.id) ) */
+      ) {
         if (itemRenderer === "not-needed") {
           // we have previously recorded that this item needs no renderer
           continue;
@@ -89,7 +118,13 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
           continue;
         }
         this.#itemRenderers.set(item.id as ItemId, itemRenderer);
-        this.#roomContainer.addChild(itemRenderer.container);
+
+        const addToContainer =
+          item.type === "floorEdge" ?
+            this.#floorEdgeContainer
+          : this.#itemsContainer;
+
+        addToContainer.addChild(itemRenderer.container);
         if (item.fixedZIndex) {
           itemRenderer.container.zIndex = item.fixedZIndex;
         }
@@ -153,7 +188,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   }
 
   destroy() {
-    this.#roomContainer.destroy({ children: true });
+    this.#container.destroy({ children: true });
     this.#itemRenderers.forEach((itemRenderer) => {
       if (itemRenderer !== "not-needed") itemRenderer.destroy();
     });
@@ -172,10 +207,14 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   }
 
   get container() {
-    return this.#roomContainer;
+    return this.#container;
   }
 
   get roomState() {
     return this.#roomState;
+  }
+
+  get paused() {
+    return this.#paused;
   }
 }

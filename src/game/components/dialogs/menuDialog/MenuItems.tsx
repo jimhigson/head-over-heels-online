@@ -18,13 +18,7 @@ import { useEvent } from "../../../../utils/react/useEvent";
 import { keys } from "../../../../utils/entries";
 import { useInputState } from "../../../input/InputStateProvider";
 
-export const MenuItems = ({
-  className,
-  selectedClassName,
-}: {
-  className?: string;
-  selectedClassName?: string;
-}) => {
+export const MenuItems = ({ className }: { className?: string }) => {
   const menu = useCurrentMenu();
   const selectedItemIndex = useCurrentMenuSelectedItemIndex();
 
@@ -98,7 +92,6 @@ export const MenuItems = ({
         return (
           <MenuItemComponent
             menu={menu}
-            className={isSelected ? selectedClassName : ""}
             key={i}
             menuItem={mi}
             selected={isSelected}

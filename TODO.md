@@ -27,7 +27,8 @@
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
-[ ] main index loads pixi just for the Color class in the hint colors - let's not do that!    
+[ ] main index loads pixi
+    [?] (maybe) just for the Color class in the hint colors - let's not do that!    
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
 [ ] show FPS counter as an option (lean on pixi to give fps)    
@@ -35,6 +36,13 @@
     - just use whatever scale factor fits the room in?
     - remove blurryness in general - replace css scaling with pixijs resolution setting
 [ ] colourise option should actually work (and switch in first room)
+    [x] works in menus (only)
+    [x] for hud
+    [x] for game (one shade)
+    [x] for room edges
+[ ] checkerboard shadows when not colourising    
+[ ] (maybe) option to turn shadows off
+[ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
 [ ] why doesn't work in Safari/iOS?
 [ ] compare against original for how far player can edge up on a block
 [ ] show some stats in game over menu - at least

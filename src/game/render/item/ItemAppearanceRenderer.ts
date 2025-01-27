@@ -53,6 +53,7 @@ export class ItemAppearanceRenderer<
       room: this.#room,
       currentlyRenderedProps: this.#currentlyRenderedProps,
       displaySettings: renderContext.displaySettings,
+      onHold: renderContext.onHold,
     });
 
     if (rendering !== "no-update") {

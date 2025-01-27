@@ -106,10 +106,7 @@ export const mainMenu: Menu = {
     return (
       <>
         <MainMenuHeading />
-        <MenuItems
-          className="text-highlightBeige zx:text-zxCyan"
-          selectedClassName="text-white"
-        />
+        <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white" />
         <MainMenuFooter />
       </>
     );

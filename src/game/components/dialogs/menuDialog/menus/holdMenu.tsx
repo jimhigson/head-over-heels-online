@@ -6,10 +6,10 @@ import { multilineTextClass } from "../multilineTextClass";
 const HoldDialogContent = () => {
   return (
     <>
-      <BitmapText className="block sprites-double-height text-moss">
+      <BitmapText className="block sprites-double-height text-zxBlue">
         hold
       </BitmapText>
-      <span>
+      <span className="zx">
         <PressToContinueBanner
           className={`text-center ${multilineTextClass}`}
           action="hold"
@@ -20,7 +20,7 @@ const HoldDialogContent = () => {
 };
 
 export const holdMenu: Menu = {
-  dialogClassName: "!h-min bg-pureBlack text-center",
+  dialogClassName: "!h-min !w-max bg-pureBlack text-center p-0",
   Content: HoldDialogContent,
   items: [],
 };

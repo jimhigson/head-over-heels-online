@@ -13,6 +13,7 @@ import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { SetRequired } from "type-fest";
+import { selectIsPaused } from "../../../store/selectors";
 
 export const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
@@ -40,11 +41,13 @@ export const createItemRenderer = <
   room: RoomState<SceneryName, RoomId, ItemId>,
   gameState: GameState<RoomId>,
 ): Renderer | "not-needed" => {
+  const state = store.getState();
   const {
     userSettings: {
-      displaySettings: { showBoundingBoxes },
+      displaySettings: { showBoundingBoxes, colourise },
     },
-  } = store.getState();
+  } = state;
+  const isPaused = selectIsPaused(state);
 
   const renderBoundingBoxes =
     showBoundingBoxes === "all" ||
@@ -54,7 +57,9 @@ export const createItemRenderer = <
 
   if (item.renders) {
     renderers.push(new ItemAppearanceRenderer(item, room, gameState));
-    if (hasShadowMask(item)) {
+    // non-colourised rendering doesn't have shadows (yet) since it prevents
+    // the colour revert shader from properly identifying black/non-black pixels
+    if (!isPaused && colourise && hasShadowMask(item)) {
       renderers.push(new ItemShadowRenderer(item, room));
     }
   }

@@ -43,6 +43,7 @@ function* doorLegsGenerator(
         sprite.filters = edgePaletteSwapFilters(
           room,
           axis === "x" ? "towards" : "right",
+          true,
         );
         yield sprite;
       }

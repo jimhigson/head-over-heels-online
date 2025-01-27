@@ -278,6 +278,24 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             >
               <CssSprite className="texture-doughnuts" />
             </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("portableBlock", { style: "cube" });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-cube" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("spring", {});
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-spring.released" />
+            </Button>
           </div>
           <div className="flex flex-row items-center">
             <Button

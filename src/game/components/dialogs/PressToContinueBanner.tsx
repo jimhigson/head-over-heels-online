@@ -7,7 +7,7 @@ import { useAppSelector } from "../../../store/hooks";
 export const PressToContinueBanner = ({
   action,
   className,
-  keyClassName = "text-pink",
+  keyClassName = "text-pink zx:text-zxRed",
 }: {
   action: Action;
   className?: string;
@@ -18,7 +18,12 @@ export const PressToContinueBanner = ({
   });
 
   return (
-    <div className={twMerge("text-metallicBlue text-left", className)}>
+    <div
+      className={twMerge(
+        "text-metallicBlue zx:text-zxBlue text-left",
+        className,
+      )}
+    >
       <BitmapText className="me-1">Press</BitmapText>
       <BitmapText className={twMerge("me-1", keyClassName)}>
         {action}
