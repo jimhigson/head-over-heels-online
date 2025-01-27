@@ -18,9 +18,16 @@ export const useUniversalKeys = () => {
   });
 
   useActionInput({
-    action: ["hold", "windowBlurred"],
+    action: ["hold"],
     onAction: useCallback(() => {
-      store.dispatch(holdPressed());
+      store.dispatch(holdPressed("toggle"));
+    }, []),
+  });
+
+  useActionInput({
+    action: ["windowBlurred"],
+    onAction: useCallback(() => {
+      store.dispatch(holdPressed("hold"));
     }, []),
   });
 

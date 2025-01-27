@@ -312,14 +312,27 @@ export const gameMenusSlice = createSlice({
       state.openMenus[0].selectedIndex = newSelectedIndex;
       state.openMenus[0].scrollableSelection = false;
     },
-    holdPressed(state) {
-      // do nothing if hold pressed while in menus
-      if (state.openMenus.length === 0) {
-        state.openMenus = [
-          { menuId: "hold", selectedIndex: 0, scrollableSelection: false },
-        ];
-      } else if (state.openMenus[0]?.menuId === "hold") {
-        state.openMenus = [];
+    holdPressed(
+      state,
+      { payload }: PayloadAction<"hold" | "unhold" | "toggle">,
+    ) {
+      const showingAMenu = state.openMenus.length > 0;
+
+      if (showingAMenu) {
+        const onHoldAlready = state.openMenus[0]?.menuId === "hold";
+        if (onHoldAlready && payload !== "hold") {
+          // go off hold:
+          state.openMenus = [];
+        }
+        // else do nothing if hold pressed while in menus
+      } else {
+        // no menus shown
+        if (payload !== "unhold") {
+          // go on hold:
+          state.openMenus = [
+            { menuId: "hold", selectedIndex: 0, scrollableSelection: false },
+          ];
+        }
       }
     },
     setShowBoundingBoxes(
