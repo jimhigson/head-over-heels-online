@@ -1,32 +1,70 @@
 import type { AssignableInput } from "../../../input/InputState";
-import { BitmapText, CssSprite } from "../../Sprite";
+import { BitmapText, CssSprite, MultipleBitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 
 const friendlyName = (k: AssignableInput) => {
+  const specialCharClassName = "text-moss zx:text-zxGreenDimmed";
+
   const joystickRegex = /joystick:((?<button>\d+)|(?<axis>x|y))/;
   const joystickMatch = joystickRegex.exec(k);
   if (joystickMatch !== null) {
     const { button, axis } = joystickMatch.groups!;
 
     if (button) {
-      return `🕹${button}`;
+      return (
+        <>
+          <span className={specialCharClassName}>🕹</span>
+          {axis === "x" ? "⬅➡" : "⬆⬇"}
+        </>
+      );
     }
     if (axis) {
-      return `🕹${axis === "x" ? "⬅➡" : "⬆⬇"}`;
+      return (
+        <>
+          <span className={specialCharClassName}>🕹</span>
+          {axis === "x" ? "⬅➡" : "⬆⬇"}
+        </>
+      );
     }
+  }
+
+  const match = /(Numpad|F)(.*)/.exec(k);
+  if (match !== null) {
+    return (
+      <>
+        <span className={specialCharClassName}>{match[1]}</span>
+        {match[2]}
+      </>
+    );
   }
 
   switch (k) {
     case " ":
       return "space";
     case "ArrowDown":
-      return "Cursor⬇";
+      return (
+        <>
+          <span className={specialCharClassName}>Cursor</span>⬇
+        </>
+      );
     case "ArrowUp":
-      return "Cursor⬆";
+      return (
+        <>
+          <span className={specialCharClassName}>Cursor</span>⬆
+        </>
+      );
     case "ArrowLeft":
-      return "Cursor⬅";
+      return (
+        <>
+          <span className={specialCharClassName}>Cursor</span>⬅
+        </>
+      );
     case "ArrowRight":
-      return "Cursor➡";
+      return (
+        <>
+          <span className={specialCharClassName}>Cursor</span>➡
+        </>
+      );
     default:
       return k;
   }
@@ -38,12 +76,14 @@ export const CurrentKeyAssignment = ({
   keyClassName,
   className,
   flashingCursor = false,
+  noCommas = false,
 }: {
   inputs: Readonly<AssignableInput[]>;
   deliminatorClassName?: string;
   keyClassName?: string;
   className?: string;
   flashingCursor?: boolean;
+  noCommas?: boolean;
 }) => {
   return (
     <div className={className}>
@@ -51,8 +91,10 @@ export const CurrentKeyAssignment = ({
         const isNotLast = i < inputs.length - 1;
         return (
           <span className="text-nowrap" key={k}>
-            <BitmapText className={keyClassName}>{friendlyName(k)}</BitmapText>
-            {isNotLast && (
+            <MultipleBitmapText className={keyClassName}>
+              {friendlyName(k)}
+            </MultipleBitmapText>
+            {!noCommas && isNotLast && (
               <BitmapText className={twMerge("me-1", deliminatorClassName)}>
                 ,
               </BitmapText>

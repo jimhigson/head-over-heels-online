@@ -1,4 +1,10 @@
-import { type PropsWithChildren, type ReactNode } from "react";
+import type { ReactElement } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
@@ -98,23 +104,38 @@ export const BitmapText = ({
     </span>
   );
 };
-export const RenderTextChildrenAsBitmapText = ({
+
+const elementHasChildrenProp = (
+  element: ReactElement,
+): element is ReactElement<{ children: React.ReactNode }> => {
+  return (
+    (element as ReactElement<{ children: React.ReactNode }>).props.children !==
+    undefined
+  );
+};
+
+/** turns any text, at any level deep, in anything it renders into bitmap text */
+export const MultipleBitmapText = ({
   children,
   className,
 }: PropsWithChildren<{
   className?: string;
 }>): ReactNode => {
-  if (Array.isArray(children)) {
-    return children.map((c, i) => (
-      <RenderTextChildrenAsBitmapText key={i} children={c} />
-    ));
-  } else if (typeof children === "string") {
-    return (
-      <span className={className}>
+  return (
+    <div className={`contents ${className}`}>
+      {Array.isArray(children) ?
+        children.map((c, i) => <MultipleBitmapText key={i} children={c} />)
+      : typeof children === "string" ?
         <BitmapText>{children}</BitmapText>
-      </span>
-    );
-  } else {
-    return children;
-  }
+      : isValidElement(children) ?
+        elementHasChildrenProp(children) ?
+          cloneElement(
+            children,
+            undefined,
+            <MultipleBitmapText>{children.props.children}</MultipleBitmapText>,
+          )
+        : children
+      : children}
+    </div>
+  );
 };

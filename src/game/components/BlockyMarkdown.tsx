@@ -2,7 +2,7 @@ import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
 import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
-import { CssSprite, RenderTextChildrenAsBitmapText } from "./Sprite";
+import { CssSprite, MultipleBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -11,27 +11,21 @@ const markdownComponents: Components = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <h2 className="mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue">
-        <RenderTextChildrenAsBitmapText>
-          {children}
-        </RenderTextChildrenAsBitmapText>
+        <MultipleBitmapText>{children}</MultipleBitmapText>
       </h2>
     );
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue">
-        <RenderTextChildrenAsBitmapText>
-          {children}
-        </RenderTextChildrenAsBitmapText>
+        <MultipleBitmapText>{children}</MultipleBitmapText>
       </h3>
     );
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <p className="mb-1">
-        <RenderTextChildrenAsBitmapText>
-          {children}
-        </RenderTextChildrenAsBitmapText>
+        <MultipleBitmapText>{children}</MultipleBitmapText>
       </p>
     );
   },
@@ -39,24 +33,22 @@ const markdownComponents: Components = {
     return (
       // clear left allows to go below other lis that have images in them:
       <p className="mb-1 clear-left">
-        <RenderTextChildrenAsBitmapText>
-          {children}
-        </RenderTextChildrenAsBitmapText>
+        <MultipleBitmapText>{children}</MultipleBitmapText>
       </p>
     );
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="text-midRed zx:text-zxRed">
+      <MultipleBitmapText className="text-midRed zx:text-zxRed">
         {children}
-      </RenderTextChildrenAsBitmapText>
+      </MultipleBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <RenderTextChildrenAsBitmapText className="text-moss zx:text-zxBlue">
+      <MultipleBitmapText className="text-moss zx:text-zxBlue">
         {children}
-      </RenderTextChildrenAsBitmapText>
+      </MultipleBitmapText>
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
