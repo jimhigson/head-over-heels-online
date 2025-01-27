@@ -353,13 +353,13 @@ export class HudRenderer<RoomId extends string> {
   updateCharacterSprite(
     gameState: GameState<RoomId>,
     screenSize: Xy,
+    colourise: boolean,
     characterName: IndividualCharacterName,
   ) {
     const isActive = this.characterIsActive(gameState, characterName);
     const characterSprite = this.#hudElements[characterName].sprite;
 
     if (isActive) {
-      const { colourise } = store.getState().userSettings.displaySettings;
       characterSprite.filters =
         colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
     } else {
@@ -395,9 +395,7 @@ export class HudRenderer<RoomId extends string> {
     showNumberInContainer(livesTextContainer, lives ?? 0);
   }
 
-  updateColours(gameState: GameState<RoomId>) {
-    const { colourise } = store.getState().userSettings.displaySettings;
-
+  updateColours(gameState: GameState<RoomId>, colourise: boolean) {
     const room = selectCurrentRoomState(gameState);
     const colorScheme = getColorScheme(room.color);
 
@@ -427,12 +425,20 @@ export class HudRenderer<RoomId extends string> {
       : this.#livesTextFilter.original;
   }
 
-  tick(gameState: GameState<RoomId>, screenSize: Xy) {
-    this.updateColours(gameState);
+  tick({
+    gameState,
+    screenSize,
+    colourise,
+  }: {
+    gameState: GameState<RoomId>;
+    screenSize: Xy;
+    colourise: boolean;
+  }) {
+    this.updateColours(gameState, colourise);
 
     for (const character of individualCharacterNames) {
       this.updateLivesText(gameState, screenSize, character);
-      this.updateCharacterSprite(gameState, screenSize, character);
+      this.updateCharacterSprite(gameState, screenSize, colourise, character);
       this.updateAbilitiesIcons(gameState, screenSize, character);
     }
 

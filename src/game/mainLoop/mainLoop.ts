@@ -7,9 +7,6 @@ import { progressGameState } from "./progressGameState";
 import { RoomRenderer } from "../render/roomRenderer";
 import { CRTFilter } from "pixi-filters/crt";
 import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
-import { RevertColouriseFilter } from "../render/filters/RevertColouriseFilter";
-import { getColorScheme } from "../hintColours";
-import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import { selectIsPaused } from "../../store/selectors";
@@ -18,18 +15,14 @@ import type { DisplaySettings } from "../../store/gameMenusSlice";
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
   paused: boolean,
-  roomColor: ZxSpectrumRoomColour,
 ): Filter[] => {
   return [
-    paused ?
-      new RevertColouriseFilter(getColorScheme(roomColor).main.original)
-    : undefined,
     crtFilter ?
       new CRTFilter({
         // this is only really being used for the vignette now, and could be
         // rewritten into a simpler filter:
         lineContrast: paused ? 0.3 : 0,
-        vignetting: paused ? 0.5 : 0.2,
+        vignetting: paused ? 0.4 : 0.2,
       })
     : undefined,
     crtFilter ?
@@ -69,6 +62,7 @@ export class MainLoop<RoomId extends string> {
     this.#roomRenderer = new RoomRenderer(
       gameState,
       selectCurrentRoomState(gameState),
+      false,
     );
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
@@ -83,16 +77,8 @@ export class MainLoop<RoomId extends string> {
       userSettings: { displaySettings },
     } = store.getState();
 
-    this.#filtersWhenPaused = topLevelFilters(
-      displaySettings,
-      true,
-      selectCurrentRoomState(this.#gameState).color,
-    );
-    this.#filtersWhenUnpaused = topLevelFilters(
-      displaySettings,
-      false,
-      selectCurrentRoomState(this.#gameState).color,
-    );
+    this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
+    this.#filtersWhenUnpaused = topLevelFilters(displaySettings, false);
   }
 
   private tick = ({ deltaMS }: Ticker) => {
@@ -103,19 +89,33 @@ export class MainLoop<RoomId extends string> {
       upscale: tickUpscale,
     } = store.getState();
 
-    this.#hudRenderer.tick(this.#gameState, tickUpscale.gameEngineScreenSize);
+    this.#hudRenderer.tick({
+      gameState: this.#gameState,
+      screenSize: tickUpscale.gameEngineScreenSize,
+      colourise: !isPaused && tickDisplaySettings.colourise,
+    });
 
     const tickRoom = selectCurrentRoomState(this.#gameState);
 
     if (
+      // for several things that change infrequently, we don't bother to try to adjust the room scene
+      // graph if it changes - we simply destroy and recreate it entirely:
       this.#roomRenderer.roomState !== tickRoom ||
       this.#roomRenderer.upscale !== tickUpscale ||
-      this.#roomRenderer.displaySettings !== tickDisplaySettings
+      this.#roomRenderer.displaySettings !== tickDisplaySettings ||
+      this.#roomRenderer.paused !== isPaused
     ) {
+      console.log("destroying and recreating room renderer");
+
       this.#roomRenderer.destroy();
-      this.#roomRenderer = new RoomRenderer(this.#gameState, tickRoom);
+      this.#roomRenderer = new RoomRenderer(
+        this.#gameState,
+        tickRoom,
+        isPaused,
+      );
       this.#worldContainer.addChild(this.#roomRenderer.container);
-      // this might be a bad place to emit this from
+      // this isn't the ideal place to emit this from - it gets fired even if just the
+      // display settings change
       this.#gameState.events.emit("roomChange", tickRoom.id);
       this.#app.stage.scale = tickUpscale.gameEngineUpscale;
 
