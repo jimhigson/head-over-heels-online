@@ -47,7 +47,7 @@ export const useActionInput = ({
           return;
         }
 
-        if (inputStateChangeEvent.upOrDown !== "down") {
+        if (inputStateChangeEvent.upOrDown === "up") {
           return;
         }
         const { inputState } = inputStateChangeEvent;

@@ -105,8 +105,6 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer.displaySettings !== tickDisplaySettings ||
       this.#roomRenderer.paused !== isPaused
     ) {
-      console.log("destroying and recreating room renderer");
-
       this.#roomRenderer.destroy();
       this.#roomRenderer = new RoomRenderer(
         this.#gameState,
