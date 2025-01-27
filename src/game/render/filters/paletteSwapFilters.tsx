@@ -3,9 +3,10 @@ import { type Filter } from "pixi.js";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
 import { PaletteSwapFilter } from "./PaletteSwapFilter";
 import type { Shades } from "../../hintColours";
-import { colorScheme } from "../../hintColours";
+import { colorScheme, getColorScheme } from "../../hintColours";
 import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
+import { RevertColouriseFilter } from "./RevertColouriseFilter";
 
 const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
   replaceLight: basic,
@@ -43,12 +44,15 @@ export const doughnuttedFilter = new PaletteSwapFilter({
 export const edgePaletteSwapFilters = (
   room: UnknownRoomState,
   side: "right" | "towards",
+  colourise: boolean,
 ): Filter =>
-  new PaletteSwapFilter(
-    replaceMapForShades(
-      colorScheme[room.color.hue][room.color.shade].edges[side],
-    ),
-  );
+  colourise ?
+    new PaletteSwapFilter(
+      replaceMapForShades(
+        colorScheme[room.color.hue][room.color.shade].edges[side],
+      ),
+    )
+  : new RevertColouriseFilter(getColorScheme(room.color).edges[side].original);
 
 export const mainPaletteSwapFilter = (room: UnknownRoomState): Filter =>
   new PaletteSwapFilter(replaceMapForRoom(room));

@@ -38,6 +38,9 @@ export type ItemAppearanceOptions<
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
 
   displaySettings: DisplaySettings;
+
+  /** are we on hold (paused) right now? */
+  onHold: boolean;
 };
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>({
@@ -70,10 +73,10 @@ export const renderOnce =
     ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({ item, room, currentlyRenderedProps, displaySettings }) => {
+  ({ item, room, currentlyRenderedProps, displaySettings, onHold }) => {
     if (currentlyRenderedProps === undefined) {
       return {
-        container: renderWith({ item, room, displaySettings }),
+        container: renderWith({ item, room, displaySettings, onHold }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };
     } else {

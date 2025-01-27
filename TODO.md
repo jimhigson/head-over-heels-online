@@ -38,8 +38,10 @@
 [ ] colourise option should actually work (and switch in first room)
     [x] works in menus (only)
     [x] for hud
-    [ ] for game (one shade)
-    [ ] for room edges
+    [x] for game (one shade)
+    [x] for room edges
+[ ] checkerboard shadows when not colourising    
+[ ] (maybe) option to turn shadows off
 [ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
 [ ] why doesn't work in Safari/iOS?
 [ ] compare against original for how far player can edge up on a block

@@ -128,6 +128,7 @@ export class MainLoop<RoomId extends string> {
         movedItems,
         deltaMS,
         displaySettings: tickDisplaySettings,
+        onHold: false,
       });
     } else {
       this.#app.stage.filters = this.#filtersWhenPaused;
@@ -139,6 +140,7 @@ export class MainLoop<RoomId extends string> {
           movedItems: emptySet,
           deltaMS,
           displaySettings: tickDisplaySettings,
+          onHold: true,
         });
       }
     }

@@ -7,6 +7,7 @@ export type RenderContext = {
   progression: number;
   deltaMS: number;
   displaySettings: DisplaySettings;
+  onHold: boolean;
 };
 
 export interface Renderer {
