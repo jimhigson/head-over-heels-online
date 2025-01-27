@@ -29,7 +29,6 @@ import {
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { iterateToContainer } from "../../iterateToContainer";
-import type { PlayableItem } from "../../physics/itemPredicates";
 import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { store } from "../../../store/store";
@@ -63,6 +62,8 @@ function showNumberInContainer(container: Container, n: number) {
   iterateToContainer(numberSprites(n), container);
 }
 
+type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
+
 export class HudRenderer<RoomId extends string> {
   #container = new Container({ label: "HudRenderer" });
   #uncurrentSpriteFilter: RevertColouriseFilter = new RevertColouriseFilter();
@@ -70,10 +71,37 @@ export class HudRenderer<RoomId extends string> {
     new RevertColouriseFilter();
   #iconFilter = new RevertColouriseFilter();
   #textFilter = new RevertColouriseFilter();
+
   #outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
     store.getState().upscale.gameEngineUpscale,
   );
+
+  /**
+   * without colourisation, the active character gets the same colour as the lives text
+   */
+  #livesOrActiveCharacterOriginalColorFilter = new RevertColouriseFilter();
+
+  #outlinedTextFilters = [
+    this.#outlineFilter,
+    this.#textFilter,
+  ] as OutlineAndColouriseFilter;
+  #livesTextFilter = {
+    original: [
+      this.#outlineFilter,
+      this.#livesOrActiveCharacterOriginalColorFilter,
+    ] as OutlineAndColouriseFilter,
+    colourised: {
+      head: [
+        this.#outlineFilter,
+        new RevertColouriseFilter(spritesheetPalette.metallicBlue),
+      ] as OutlineAndColouriseFilter,
+      heels: [
+        this.#outlineFilter,
+        new RevertColouriseFilter(spritesheetPalette.pink),
+      ] as OutlineAndColouriseFilter,
+    },
+  };
 
   #hudElements = {
     head: {
@@ -214,119 +242,13 @@ export class HudRenderer<RoomId extends string> {
   }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) {
     return new Container({
       label,
-      filters:
-        outline ? [this.#outlineFilter, this.#textFilter] : this.#textFilter,
+      filters: outline ? this.#outlinedTextFilters : this.#textFilter,
       scale: { x: 1, y: doubleHeight ? 2 : 1 },
     });
   }
 
-  tick(gameState: GameState<RoomId>, screenSize: Xy) {
-    const room = selectCurrentRoomState(gameState);
-    const {
-      hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
-    } = getColorScheme(room.color);
-
-    const updateIcons = (characterName: IndividualCharacterName) => {
-      const abilities = selectAbilities(gameState, characterName);
-
-      const { text: shieldText, container: shieldContainer } =
-        this.#hudElements[characterName].shield;
-      const { text: skillText, container: skillContainer } =
-        this.#hudElements[characterName].extraSkill;
-
-      skillContainer.x = shieldContainer.x =
-        (screenSize.x >> 1) +
-        sideMultiplier(characterName) * smallIconsFromCentre;
-
-      showNumberInContainer(shieldText, shieldRemaining(abilities));
-      shieldContainer.y = screenSize.y;
-
-      showNumberInContainer(
-        skillText,
-        abilities === undefined ? 0
-        : characterName === "head" ?
-          fastStepsRemaining(abilities as HeadAbilities)
-        : (abilities as HeelsAbilities<RoomId>).bigJumps,
-      );
-
-      skillContainer.y = screenSize.y - 24;
-    };
-
-    const updateCharacterSprite = (characterName: IndividualCharacterName) => {
-      const { currentCharacterName } = gameState;
-      const isCurrent =
-        currentCharacterName === characterName ||
-        currentCharacterName === "headOverHeels";
-      const characterSprite = this.#hudElements[characterName].sprite;
-
-      if (isCurrent) {
-        characterSprite.filters = noFilters;
-      } else {
-        const highlight = selectCanCombine(gameState);
-
-        if (highlight) {
-          this.#uncurrentButHighlightedSpriteFilter.targetColor =
-            dimmedShade.basic;
-          characterSprite.filters = this.#uncurrentButHighlightedSpriteFilter;
-        } else {
-          characterSprite.filters = this.#uncurrentSpriteFilter;
-        }
-      }
-
-      characterSprite.x =
-        (screenSize.x >> 1) +
-        sideMultiplier(characterName) * playableIconFromCentre;
-
-      characterSprite.y = screenSize.y - smallItemTextureSize.h;
-    };
-    const updateLivesText = (characterName: IndividualCharacterName) => {
-      const abilities = selectAbilities(gameState, characterName);
-
-      const lives = abilities?.lives ?? 0;
-
-      const text = this.#hudElements[characterName].livesText;
-      text.x =
-        (screenSize.x >> 1) +
-        sideMultiplier(characterName) * livesTextFromCentre;
-      text.y = screenSize.y;
-      text.tint = livesShade.basic;
-      showNumberInContainer(text, lives ?? 0);
-    };
-
-    const updateCarrying = (
-      carrying: PlayableItem<"heels", RoomId>["state"]["carrying"],
-    ) => {
-      const { container: carryingContainer } = this.#hudElements.heels.carrying;
-      const hasSprite = carryingContainer.children.length > 0;
-      if (carrying === null && hasSprite) {
-        // was carrying; not now:
-        for (const child of carryingContainer.children) {
-          child.destroy();
-        }
-      }
-      if (carrying !== null && !hasSprite) {
-        carryingContainer.addChild(
-          createSprite(
-            carrying.type === "spring" ? "spring.released"
-            : carrying.type === "sceneryPlayer" ?
-              carrying.config.which === "head" ?
-                "head.walking.towards.2"
-              : "heels.walking.away.2"
-            : carrying.config.style,
-          ),
-        );
-      }
-    };
-
-    this.#uncurrentSpriteFilter.targetColor = dimmedShade.dimmed;
-    this.#textFilter.targetColor = dimmedShade.basic;
-    this.#iconFilter.targetColor = iconShade.basic;
-
-    for (const character of individualCharacterNames) {
-      updateLivesText(character);
-      updateCharacterSprite(character);
-      updateIcons(character);
-    }
+  /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
+  updateElementPositions(screenSize: Xy) {
     this.#hudElements.head.hooter.container.x =
       this.#hudElements.head.doughnuts.container.x =
         (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
@@ -341,7 +263,41 @@ export class HudRenderer<RoomId extends string> {
 
     this.#hudElements.heels.bag.container.y =
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
+  }
 
+  /** update the carrying element for heel's bag contents */
+  tickBagAndCarrying(gameState: GameState<RoomId>) {
+    const heelsAbilities = selectAbilities(gameState, "heels");
+    const hasBag = heelsAbilities?.hasBag ?? false;
+
+    const carrying = heelsAbilities?.carrying ?? null;
+
+    const { container: carryingContainer } = this.#hudElements.heels.carrying;
+    const hasSprite = carryingContainer.children.length > 0;
+    if (carrying === null && hasSprite) {
+      // was carrying; not now:
+      for (const child of carryingContainer.children) {
+        child.destroy();
+      }
+    }
+    if (carrying !== null && !hasSprite) {
+      carryingContainer.addChild(
+        createSprite(
+          carrying.type === "spring" ? "spring.released"
+          : carrying.type === "sceneryPlayer" ?
+            carrying.config.which === "head" ?
+              "head.walking.towards.2"
+            : "heels.walking.away.2"
+          : carrying.config.style,
+        ),
+      );
+    }
+
+    this.#hudElements.heels.bag.icon.filters =
+      hasBag ? noFilters : this.#uncurrentSpriteFilter;
+  }
+
+  tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
     const headAbilities = selectAbilities(gameState, "head");
 
     const hasHooter = headAbilities?.hasHooter ?? false;
@@ -351,15 +307,138 @@ export class HudRenderer<RoomId extends string> {
     this.#hudElements.head.doughnuts.icon.filters =
       doughnutCount !== 0 ? noFilters : this.#uncurrentSpriteFilter;
     showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
-    //this.#hudElements.head.doughnuts.text.text = `${doughnutCount}`;
+  }
 
-    const heelsAbilities = selectAbilities(gameState, "heels");
-    const hasBag = heelsAbilities?.hasBag ?? false;
+  updateAbilitiesIcons(
+    gameState: GameState<RoomId>,
+    screenSize: Xy,
+    characterName: IndividualCharacterName,
+  ) {
+    const abilities = selectAbilities(gameState, characterName);
 
-    updateCarrying(heelsAbilities?.carrying ?? null);
+    const { text: shieldText, container: shieldContainer } =
+      this.#hudElements[characterName].shield;
+    const { text: skillText, container: skillContainer } =
+      this.#hudElements[characterName].extraSkill;
 
-    this.#hudElements.heels.bag.icon.filters =
-      hasBag ? noFilters : this.#uncurrentSpriteFilter;
+    skillContainer.x = shieldContainer.x =
+      (screenSize.x >> 1) +
+      sideMultiplier(characterName) * smallIconsFromCentre;
+
+    showNumberInContainer(shieldText, shieldRemaining(abilities));
+    shieldContainer.y = screenSize.y;
+
+    showNumberInContainer(
+      skillText,
+      abilities === undefined ? 0
+      : characterName === "head" ?
+        fastStepsRemaining(abilities as HeadAbilities)
+      : (abilities as HeelsAbilities<RoomId>).bigJumps,
+    );
+
+    skillContainer.y = screenSize.y - 24;
+  }
+
+  characterIsActive(
+    gameState: GameState<RoomId>,
+    characterName: IndividualCharacterName,
+  ) {
+    const { currentCharacterName } = gameState;
+    return (
+      currentCharacterName === characterName ||
+      currentCharacterName === "headOverHeels"
+    );
+  }
+
+  updateCharacterSprite(
+    gameState: GameState<RoomId>,
+    screenSize: Xy,
+    characterName: IndividualCharacterName,
+  ) {
+    const isActive = this.characterIsActive(gameState, characterName);
+    const characterSprite = this.#hudElements[characterName].sprite;
+
+    if (isActive) {
+      const { colourise } = store.getState().userSettings.displaySettings;
+      characterSprite.filters =
+        colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
+    } else {
+      const highlight = selectCanCombine(gameState);
+
+      if (highlight) {
+        characterSprite.filters = this.#uncurrentButHighlightedSpriteFilter;
+      } else {
+        characterSprite.filters = this.#uncurrentSpriteFilter;
+      }
+    }
+
+    characterSprite.x =
+      (screenSize.x >> 1) +
+      sideMultiplier(characterName) * playableIconFromCentre;
+
+    characterSprite.y = screenSize.y - smallItemTextureSize.h;
+  }
+
+  updateLivesText(
+    gameState: GameState<RoomId>,
+    screenSize: Xy,
+    characterName: IndividualCharacterName,
+  ) {
+    const abilities = selectAbilities(gameState, characterName);
+    const lives = abilities?.lives ?? 0;
+
+    const livesTextContainer = this.#hudElements[characterName].livesText;
+    livesTextContainer.x =
+      (screenSize.x >> 1) + sideMultiplier(characterName) * livesTextFromCentre;
+    livesTextContainer.y = screenSize.y;
+
+    showNumberInContainer(livesTextContainer, lives ?? 0);
+  }
+
+  updateColours(gameState: GameState<RoomId>) {
+    const { colourise } = store.getState().userSettings.displaySettings;
+
+    const room = selectCurrentRoomState(gameState);
+    const colorScheme = getColorScheme(room.color);
+
+    this.#uncurrentSpriteFilter.targetColor =
+      colorScheme.hud.dimmed[colourise ? "dimmed" : "original"];
+    this.#textFilter.targetColor =
+      colorScheme.hud.dimmed[colourise ? "basic" : "original"];
+    this.#iconFilter.targetColor =
+      colorScheme.hud.icons[colourise ? "basic" : "original"];
+    this.#uncurrentButHighlightedSpriteFilter.targetColor =
+      colorScheme.hud.dimmed[colourise ? "basic" : "original"];
+
+    this.#livesOrActiveCharacterOriginalColorFilter.targetColor =
+      colorScheme.hud.lives.original;
+
+    this.#hudElements.head.livesText.filters =
+      colourise ?
+        this.characterIsActive(gameState, "head") ?
+          this.#livesTextFilter.colourised.head
+        : this.#uncurrentSpriteFilter
+      : this.#livesTextFilter.original;
+    this.#hudElements.heels.livesText.filters =
+      colourise ?
+        this.characterIsActive(gameState, "heels") ?
+          this.#livesTextFilter.colourised.heels
+        : this.#uncurrentSpriteFilter
+      : this.#livesTextFilter.original;
+  }
+
+  tick(gameState: GameState<RoomId>, screenSize: Xy) {
+    this.updateColours(gameState);
+
+    for (const character of individualCharacterNames) {
+      this.updateLivesText(gameState, screenSize, character);
+      this.updateCharacterSprite(gameState, screenSize, character);
+      this.updateAbilitiesIcons(gameState, screenSize, character);
+    }
+
+    this.updateElementPositions(screenSize);
+    this.tickHooterAndDoughnuts(gameState);
+    this.tickBagAndCarrying(gameState);
   }
 
   get container() {

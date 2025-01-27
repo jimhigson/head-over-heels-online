@@ -6,7 +6,7 @@ import { multilineTextClass } from "../multilineTextClass";
 const HoldDialogContent = () => {
   return (
     <>
-      <BitmapText className="block sprites-double-height text-moss">
+      <BitmapText className="block sprites-double-height text-moss zx:text-zxGreen">
         hold
       </BitmapText>
       <span>

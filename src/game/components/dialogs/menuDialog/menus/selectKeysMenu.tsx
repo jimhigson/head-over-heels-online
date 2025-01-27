@@ -163,7 +163,11 @@ export const selectKeysMenu: Menu = {
     },
     {
       type: "key",
-      label: "Colours",
+      label: () => (
+        <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          toggle colour- isation
+        </BitmapText>
+      ),
       action: "toggleColourisation",
       ValueComponent: MenuItemKeyAssignment("toggleColourisation"),
     },

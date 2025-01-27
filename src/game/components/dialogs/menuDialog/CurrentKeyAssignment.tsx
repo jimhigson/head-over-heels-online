@@ -15,7 +15,7 @@ const friendlyName = (k: AssignableInput) => {
       return (
         <>
           <span className={specialCharClassName}>🕹</span>
-          {axis === "x" ? "⬅➡" : "⬆⬇"}
+          {button}
         </>
       );
     }

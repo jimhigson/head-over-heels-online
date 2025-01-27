@@ -38,7 +38,7 @@ export const greenShades = {
   dimmed: new Color("hsl(73,50%,25%)"),
 };
 
-type ColorScheme = {
+export type ColorScheme = {
   main: Shades;
   edges: {
     right: Shades;
@@ -161,5 +161,5 @@ export const colorScheme = {
   Record<ZxSpectrumShade, ColorScheme>
 >;
 
-export const getColorScheme = (colour: ZxSpectrumRoomColour) =>
+export const getColorScheme = (colour: ZxSpectrumRoomColour): ColorScheme =>
   colorScheme[colour.hue][colour.shade];
