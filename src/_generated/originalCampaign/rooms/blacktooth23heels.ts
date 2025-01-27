@@ -167,21 +167,6 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    extra1: {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "movableBlock",
-    },
-    extra2: {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 1, y: 4, z: 0 },
-      type: "movableBlock",
-    },
-    extra3: {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 1, y: 3, z: 1 },
-      type: "movableBlock",
-    },
     heels: {
       config: { which: "heels" },
       position: { x: 3.5, y: 3.5, z: 0 },
@@ -189,11 +174,13 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "head" },
+      isExtra: true,
       position: { x: 7, y: 1, z: 0 },
       type: "pickup",
     },
     scroll2: {
       config: { gives: "scroll", page: "heels" },
+      isExtra: true,
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },

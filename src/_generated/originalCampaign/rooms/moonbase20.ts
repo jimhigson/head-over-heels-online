@@ -9,9 +9,9 @@ export const room = inferRoomJson({
   items: {
     crownsScroll: {
       config: { gives: "scroll", page: "crowns" },
+      isExtra: true,
       position: { x: 5, y: 4, z: 1 },
       type: "pickup",
-      isExtra: true,
     },
     "door@0,3,0": {
       config: { direction: "right", toRoom: "moonbase19" },
