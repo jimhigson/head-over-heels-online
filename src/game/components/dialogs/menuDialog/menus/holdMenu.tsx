@@ -20,7 +20,7 @@ const HoldDialogContent = () => {
 };
 
 export const holdMenu: Menu = {
-  dialogClassName: "!h-min bg-pureBlack text-center p-0",
+  dialogClassName: "!h-min !w-max bg-pureBlack text-center p-0",
   Content: HoldDialogContent,
   items: [],
 };
