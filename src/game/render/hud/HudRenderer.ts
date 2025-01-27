@@ -63,110 +63,43 @@ function showNumberInContainer(container: Container, n: number) {
   iterateToContainer(numberSprites(n), container);
 }
 
-export const renderHud = <RoomId extends string>(hudContainer: Container) => {
-  const iconFilter = new RevertColouriseFilter();
-  const textFilter = new RevertColouriseFilter();
-  const outlineFilter = new OutlineFilter(
+export class HudRenderer<RoomId extends string> {
+  #container = new Container({ label: "HudRenderer" });
+  #uncurrentSpriteFilter: RevertColouriseFilter = new RevertColouriseFilter();
+  #uncurrentButHighlightedSpriteFilter: RevertColouriseFilter =
+    new RevertColouriseFilter();
+  #iconFilter = new RevertColouriseFilter();
+  #textFilter = new RevertColouriseFilter();
+  #outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
     store.getState().upscale.gameEngineUpscale,
   );
-  const uncurrentSpriteFilter = new RevertColouriseFilter();
-  const uncurrentButHighlightedSpriteFilter = new RevertColouriseFilter();
 
-  const makeText = ({
-    doubleHeight = false,
-    outline = false,
-    label = "text",
-  }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) => {
-    return new Container({
-      label,
-      filters: outline ? [outlineFilter, textFilter] : textFilter,
-      scale: { x: 1, y: doubleHeight ? 2 : 1 },
-    });
-  };
-
-  const characterSprite = (characterName: IndividualCharacterName) => {
-    const characterSprite = new Sprite(
-      spriteSheet.textures[
-        `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
-      ],
-    );
-
-    characterSprite.anchor = { x: 0.5, y: 0 };
-
-    return characterSprite;
-  };
-
-  const iconWithNumber = ({
-    textureId,
-    textOnTop = false,
-    noText = false,
-    outline = false,
-    label,
-  }: {
-    textureId: TextureId;
-    textOnTop?: boolean;
-    noText?: boolean;
-    outline?: boolean | "text-only";
-    label: string;
-  }) => {
-    const container = new Container({ label });
-    container.pivot = { x: 4, y: 16 };
-
-    const icon = new Sprite({
-      texture: spriteSheet.textures[textureId],
-      anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
-      filters: iconFilter,
-      y: textOnTop ? 0 : 8,
-    });
-    container.addChild(icon);
-
-    const text = makeText({ outline: outline === "text-only" });
-    text.y = textOnTop ? 0 : 16;
-
-    text.x = icon.x = hudCharTextureSize.w / 2;
-    container.addChild(text);
-
-    if (noText) {
-      text.visible = false;
-    }
-
-    if (outline === true) {
-      container.filters = outlineFilter;
-    }
-
-    return {
-      text,
-      icon,
-      container,
-    };
-  };
-
-  const hudElements = {
+  #hudElements = {
     head: {
-      sprite: characterSprite("head"),
-      livesText: makeText({
+      sprite: this.characterSprite("head"),
+      livesText: this.makeText({
         label: "headLives",
         doubleHeight: true,
         outline: true,
       }),
-      shield: iconWithNumber({
+      shield: this.iconWithNumber({
         label: "headShield",
         textureId: "hud.shield",
         outline: true,
       }),
-      extraSkill: iconWithNumber({
+      extraSkill: this.iconWithNumber({
         label: "headFastSteps",
         textureId: "hud.fastSteps",
         outline: true,
       }),
-      doughnuts: iconWithNumber({
+      doughnuts: this.iconWithNumber({
         label: "headDoughnuts",
         textureId: "doughnuts",
         textOnTop: true,
         outline: "text-only",
       }),
-      hooter: iconWithNumber({
+      hooter: this.iconWithNumber({
         label: "headHooter",
         textureId: "hooter",
         textOnTop: true,
@@ -174,23 +107,23 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       }),
     },
     heels: {
-      sprite: characterSprite("heels"),
-      livesText: makeText({
+      sprite: this.characterSprite("heels"),
+      livesText: this.makeText({
         label: "heelsLives",
         doubleHeight: true,
         outline: true,
       }),
-      shield: iconWithNumber({
+      shield: this.iconWithNumber({
         label: "heelsShield",
         textureId: "hud.shield",
         outline: true,
       }),
-      extraSkill: iconWithNumber({
+      extraSkill: this.iconWithNumber({
         label: "heelsBigJumps",
         textureId: "hud.bigJumps",
         outline: true,
       }),
-      bag: iconWithNumber({
+      bag: this.iconWithNumber({
         label: "heelsBag",
         textureId: "bag",
         textOnTop: true,
@@ -202,18 +135,92 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     },
   };
 
-  for (const character of individualCharacterNames) {
-    hudContainer.addChild(hudElements[character].livesText);
-    hudContainer.addChild(hudElements[character].sprite);
-    hudContainer.addChild(hudElements[character].shield.container);
-    hudContainer.addChild(hudElements[character].extraSkill.container);
+  constructor() {
+    for (const character of individualCharacterNames) {
+      this.#container.addChild(this.#hudElements[character].livesText);
+      this.#container.addChild(this.#hudElements[character].sprite);
+      this.#container.addChild(this.#hudElements[character].shield.container);
+      this.#container.addChild(
+        this.#hudElements[character].extraSkill.container,
+      );
+    }
+    this.#container.addChild(this.#hudElements.head.doughnuts.container);
+    this.#container.addChild(this.#hudElements.head.hooter.container);
+    this.#container.addChild(this.#hudElements.heels.bag.container);
+    this.#container.addChild(this.#hudElements.heels.carrying.container);
   }
-  hudContainer.addChild(hudElements.head.doughnuts.container);
-  hudContainer.addChild(hudElements.head.hooter.container);
-  hudContainer.addChild(hudElements.heels.bag.container);
-  hudContainer.addChild(hudElements.heels.carrying.container);
 
-  return (gameState: GameState<RoomId>, screenSize: Xy) => {
+  iconWithNumber({
+    textureId,
+    textOnTop = false,
+    noText = false,
+    outline = false,
+    label,
+  }: {
+    textureId: TextureId;
+    textOnTop?: boolean;
+    noText?: boolean;
+    outline?: boolean | "text-only";
+    label: string;
+  }) {
+    const container = new Container({ label });
+    container.pivot = { x: 4, y: 16 };
+
+    const icon = new Sprite({
+      texture: spriteSheet.textures[textureId],
+      anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
+      filters: this.#iconFilter,
+      y: textOnTop ? 0 : 8,
+    });
+    container.addChild(icon);
+
+    const text = this.makeText({ outline: outline === "text-only" });
+    text.y = textOnTop ? 0 : 16;
+
+    text.x = icon.x = hudCharTextureSize.w / 2;
+    container.addChild(text);
+
+    if (noText) {
+      text.visible = false;
+    }
+
+    if (outline === true) {
+      container.filters = this.#outlineFilter;
+    }
+
+    return {
+      text,
+      icon,
+      container,
+    };
+  }
+
+  characterSprite(characterName: IndividualCharacterName) {
+    const characterSprite = new Sprite(
+      spriteSheet.textures[
+        `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
+      ],
+    );
+
+    characterSprite.anchor = { x: 0.5, y: 0 };
+
+    return characterSprite;
+  }
+
+  makeText({
+    doubleHeight = false,
+    outline = false,
+    label = "text",
+  }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) {
+    return new Container({
+      label,
+      filters:
+        outline ? [this.#outlineFilter, this.#textFilter] : this.#textFilter,
+      scale: { x: 1, y: doubleHeight ? 2 : 1 },
+    });
+  }
+
+  tick(gameState: GameState<RoomId>, screenSize: Xy) {
     const room = selectCurrentRoomState(gameState);
     const {
       hud: { dimmed: dimmedShade, lives: livesShade, icons: iconShade },
@@ -223,9 +230,9 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       const abilities = selectAbilities(gameState, characterName);
 
       const { text: shieldText, container: shieldContainer } =
-        hudElements[characterName].shield;
+        this.#hudElements[characterName].shield;
       const { text: skillText, container: skillContainer } =
-        hudElements[characterName].extraSkill;
+        this.#hudElements[characterName].extraSkill;
 
       skillContainer.x = shieldContainer.x =
         (screenSize.x >> 1) +
@@ -250,7 +257,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       const isCurrent =
         currentCharacterName === characterName ||
         currentCharacterName === "headOverHeels";
-      const characterSprite = hudElements[characterName].sprite;
+      const characterSprite = this.#hudElements[characterName].sprite;
 
       if (isCurrent) {
         characterSprite.filters = noFilters;
@@ -258,10 +265,11 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
         const highlight = selectCanCombine(gameState);
 
         if (highlight) {
-          uncurrentButHighlightedSpriteFilter.targetColor = dimmedShade.basic;
-          characterSprite.filters = uncurrentButHighlightedSpriteFilter;
+          this.#uncurrentButHighlightedSpriteFilter.targetColor =
+            dimmedShade.basic;
+          characterSprite.filters = this.#uncurrentButHighlightedSpriteFilter;
         } else {
-          characterSprite.filters = uncurrentSpriteFilter;
+          characterSprite.filters = this.#uncurrentSpriteFilter;
         }
       }
 
@@ -276,7 +284,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
 
       const lives = abilities?.lives ?? 0;
 
-      const text = hudElements[characterName].livesText;
+      const text = this.#hudElements[characterName].livesText;
       text.x =
         (screenSize.x >> 1) +
         sideMultiplier(characterName) * livesTextFromCentre;
@@ -288,7 +296,7 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
     const updateCarrying = (
       carrying: PlayableItem<"heels", RoomId>["state"]["carrying"],
     ) => {
-      const { container: carryingContainer } = hudElements.heels.carrying;
+      const { container: carryingContainer } = this.#hudElements.heels.carrying;
       const hasSprite = carryingContainer.children.length > 0;
       if (carrying === null && hasSprite) {
         // was carrying; not now:
@@ -310,46 +318,55 @@ export const renderHud = <RoomId extends string>(hudContainer: Container) => {
       }
     };
 
-    uncurrentSpriteFilter.targetColor = dimmedShade.dimmed;
-    textFilter.targetColor = dimmedShade.basic;
-    iconFilter.targetColor = iconShade.basic;
+    this.#uncurrentSpriteFilter.targetColor = dimmedShade.dimmed;
+    this.#textFilter.targetColor = dimmedShade.basic;
+    this.#iconFilter.targetColor = iconShade.basic;
 
     for (const character of individualCharacterNames) {
       updateLivesText(character);
       updateCharacterSprite(character);
       updateIcons(character);
     }
-    hudElements.head.hooter.container.x =
-      hudElements.head.doughnuts.container.x =
+    this.#hudElements.head.hooter.container.x =
+      this.#hudElements.head.doughnuts.container.x =
         (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
-    hudElements.head.doughnuts.container.y =
+    this.#hudElements.head.doughnuts.container.y =
       screenSize.y - smallItemTextureSize.h - 8;
-    hudElements.heels.carrying.container.y =
+    this.#hudElements.heels.carrying.container.y =
       screenSize.y - smallItemTextureSize.h;
 
-    hudElements.heels.carrying.container.x = hudElements.heels.bag.container.x =
-      (screenSize.x >> 1) + sideMultiplier("heels") * playersIconsFromCentre;
+    this.#hudElements.heels.carrying.container.x =
+      this.#hudElements.heels.bag.container.x =
+        (screenSize.x >> 1) + sideMultiplier("heels") * playersIconsFromCentre;
 
-    hudElements.heels.bag.container.y = hudElements.head.hooter.container.y =
-      screenSize.y - 8;
+    this.#hudElements.heels.bag.container.y =
+      this.#hudElements.head.hooter.container.y = screenSize.y - 8;
 
     const headAbilities = selectAbilities(gameState, "head");
 
     const hasHooter = headAbilities?.hasHooter ?? false;
-    hudElements.head.hooter.icon.filters =
-      hasHooter ? noFilters : uncurrentSpriteFilter;
+    this.#hudElements.head.hooter.icon.filters =
+      hasHooter ? noFilters : this.#uncurrentSpriteFilter;
     const doughnutCount = headAbilities?.doughnuts ?? 0;
-    hudElements.head.doughnuts.icon.filters =
-      doughnutCount !== 0 ? noFilters : uncurrentSpriteFilter;
-    showNumberInContainer(hudElements.head.doughnuts.text, doughnutCount);
-    //hudElements.head.doughnuts.text.text = `${doughnutCount}`;
+    this.#hudElements.head.doughnuts.icon.filters =
+      doughnutCount !== 0 ? noFilters : this.#uncurrentSpriteFilter;
+    showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
+    //this.#hudElements.head.doughnuts.text.text = `${doughnutCount}`;
 
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;
 
     updateCarrying(heelsAbilities?.carrying ?? null);
 
-    hudElements.heels.bag.icon.filters =
-      hasBag ? noFilters : uncurrentSpriteFilter;
-  };
-};
+    this.#hudElements.heels.bag.icon.filters =
+      hasBag ? noFilters : this.#uncurrentSpriteFilter;
+  }
+
+  get container() {
+    return this.#container;
+  }
+
+  destroy() {
+    this.#container.destroy();
+  }
+}

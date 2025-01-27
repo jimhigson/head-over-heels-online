@@ -2,7 +2,7 @@ import type { Application, Filter, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/GameState";
-import { renderHud } from "../render/hud/renderHud";
+import { HudRenderer } from "../render/hud/HudRenderer";
 import { progressGameState } from "./progressGameState";
 import { RoomRenderer } from "../render/roomRenderer";
 import { CRTFilter } from "pixi-filters/crt";
@@ -46,12 +46,11 @@ const topLevelFilters = (
 export class MainLoop<RoomId extends string> {
   #filtersWhenPaused!: Filter[];
   #filtersWhenUnpaused!: Filter[];
-  #tickHud: ReturnType<typeof renderHud<RoomId>>;
+  #hudRenderer: HudRenderer<RoomId>;
   #roomRenderer: RoomRenderer<RoomId, string>;
   #worldContainer: Container = new Container({
     label: "world",
   });
-  #hudContainer: Container = new Container({ label: "hud" });
   #app: Application;
   #gameState: GameState<RoomId>;
 
@@ -64,7 +63,7 @@ export class MainLoop<RoomId extends string> {
     } = store.getState();
 
     app.stage.addChild(this.#worldContainer);
-    app.stage.addChild(this.#hudContainer);
+
     app.stage.scale = gameEngineUpscale;
 
     this.#roomRenderer = new RoomRenderer(
@@ -73,7 +72,8 @@ export class MainLoop<RoomId extends string> {
     );
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
-    this.#tickHud = renderHud<RoomId>(this.#hudContainer);
+    this.#hudRenderer = new HudRenderer<RoomId>();
+    app.stage.addChild(this.#hudRenderer.container);
 
     this.#initFilters();
   }
@@ -103,7 +103,7 @@ export class MainLoop<RoomId extends string> {
       upscale: tickUpscale,
     } = store.getState();
 
-    this.#tickHud(this.#gameState, tickUpscale.gameEngineScreenSize);
+    this.#hudRenderer.tick(this.#gameState, tickUpscale.gameEngineScreenSize);
 
     const tickRoom = selectCurrentRoomState(this.#gameState);
 
@@ -152,101 +152,8 @@ export class MainLoop<RoomId extends string> {
   }
   stop() {
     this.#app.stage.removeChild(this.#worldContainer);
-    this.#app.stage.removeChild(this.#hudContainer);
+    this.#roomRenderer.destroy();
+    this.#hudRenderer.destroy();
     this.#app.ticker.remove(this.tick);
   }
 }
-
-/*
-export const mainLoop = <RoomId extends string>(
-  app: Application,
-  gameState: GameState<RoomId>,
-) => {
-  const worldContainer = new Container({ label: "world" });
-  const hudContainer = new Container({ label: "hud" });
-  app.stage.addChild(worldContainer);
-  app.stage.addChild(hudContainer);
-  app.stage.scale = gameState.renderOptions.upscale.gameEngineUpscale;
-
-  let roomRenderer = RoomRenderer(gameState, selectCurrentRoomState(gameState));
-  worldContainer.addChild(roomRenderer.container);
-
-  const tickHud = renderHud<RoomId>(
-    hudContainer,
-    gameState.renderOptions.upscale,
-  );
-
-  let filtersWhenPaused: Filter[] = topLevelFilters(
-    gameState.renderOptions,
-    true,
-    selectCurrentRoomState(gameState).color,
-  );
-  let filtersWhenUnpaused: Filter[] = topLevelFilters(
-    gameState.renderOptions,
-    false,
-    selectCurrentRoomState(gameState).color,
-  );
-
-  const handleTick = ({ deltaMS }: Ticker) => {
-    //worldContainer.x = gameState.renderOptions.upscale.effectiveSize.x / 2;
-
-    const paused = gameState.gameSpeed === 0;
-
-    tickHud(gameState, gameState.renderOptions.upscale.gameEngineScreenSize);
-
-    const tickRoom = selectCurrentRoomState(gameState);
-    if (
-      roomRenderer.room !== tickRoom ||
-      roomRenderer.renderOptions !== gameState.renderOptions
-    ) {
-      roomRenderer.destroy();
-      roomRenderer = RoomRenderer(gameState, tickRoom);
-      worldContainer.addChild(roomRenderer.container);
-      gameState.events.emit("roomChange", tickRoom.id);
-      app.stage.scale = gameState.renderOptions.upscale.gameEngineUpscale;
-
-      filtersWhenPaused = topLevelFilters(
-        gameState.renderOptions,
-        true,
-        tickRoom.color,
-      );
-      filtersWhenUnpaused = topLevelFilters(
-        gameState.renderOptions,
-        false,
-        tickRoom.color,
-      );
-    }
-
-    if (!paused) {
-      app.stage.filters = filtersWhenUnpaused;
-      const movedItems = progressGameState(gameState, deltaMS);
-      roomRenderer.tick({
-        progression: gameState.progression,
-        movedItems,
-        deltaMS,
-      });
-    } else {
-      app.stage.filters = filtersWhenPaused;
-      // render while paused only if the room hasn't been rendered before:
-      if (!roomRenderer.everRendered) {
-        roomRenderer.tick({
-          progression: gameState.progression,
-          movedItems: emptySet,
-          deltaMS,
-        });
-      }
-    }
-  };
-
-  return {
-    start() {
-      app.ticker.add(handleTick);
-      return this;
-    },
-    stop() {
-      app.stage.removeChild(worldContainer);
-      app.ticker.remove(handleTick);
-    },
-  };
-};
-*/
