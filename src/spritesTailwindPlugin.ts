@@ -95,5 +95,14 @@ export const spritesTailwindPlugin = plugin(
     // add a variant for zx-spectrum-colour palette
     // this can be done differently in tw4: https://tailwindcss.com/docs/adding-custom-styles#adding-custom-variants
     addVariant("zx", ".zx &");
+    // for changing the colour of selected menu items:
+    addVariant("selectedMenuItem", [
+      // can put selectedMenuItem:foo on the top of the menu, and it will apply
+      // to menu items with the selectedMenuItem class:
+      "& .selectedMenuItem",
+      // can put selectedMenuItem:foo inside menu items with the selectedMenuItem
+      // class
+      ".selectedMenuItem &",
+    ]);
   },
 );

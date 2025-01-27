@@ -3,7 +3,8 @@ import { BitmapText, CssSprite, MultipleBitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 
 const friendlyName = (k: AssignableInput) => {
-  const specialCharClassName = "text-moss zx:text-zxGreenDimmed";
+  const specialCharClassName =
+    "text-moss zx:text-zxGreenDimmed selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxGreenDimmed";
 
   const joystickRegex = /joystick:((?<button>\d+)|(?<axis>x|y))/;
   const joystickMatch = joystickRegex.exec(k);

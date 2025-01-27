@@ -24,17 +24,17 @@ const markdownComponents: Components = {
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <p className="mb-1">
+      <div className="mb-1">
         <MultipleBitmapText>{children}</MultipleBitmapText>
-      </p>
+      </div>
     );
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
       // clear left allows to go below other lis that have images in them:
-      <p className="mb-1 clear-left">
+      <div className="mb-1 clear-left">
         <MultipleBitmapText>{children}</MultipleBitmapText>
-      </p>
+      </div>
     );
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {

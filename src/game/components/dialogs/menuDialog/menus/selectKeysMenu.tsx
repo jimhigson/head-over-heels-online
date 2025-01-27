@@ -12,13 +12,9 @@ import { CurrentKeyAssignment } from "../CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 import type { ValueComponent } from "../MenuItem";
 
-const valueClass = (selected: boolean) =>
-  // TODO: make selected a variant/css variable etc
-  selected ? "text-pinkHalfbrite zx:text-zxRed" : "text-pink zx:text-zxRed";
-
 const MenuItemKeyAssignment =
   (action: Action): ValueComponent =>
-  ({ className, selected }) => {
+  ({ className }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
     const assigning = useAppSelector(
       (store) => store.assigningInput?.action === action,
@@ -37,7 +33,9 @@ const MenuItemKeyAssignment =
           className,
         )}
         inputs={inputs}
-        keyClassName={valueClass(selected)}
+        keyClassName={
+          "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed"
+        }
         // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
         deliminatorClassName="me-0"
         flashingCursor={assigning}
@@ -46,12 +44,16 @@ const MenuItemKeyAssignment =
     );
   };
 
-const CurrentPresetValue: ValueComponent = ({ className, selected }) => {
+const CurrentPresetValue: ValueComponent = ({ className }) => {
   const currentPresetName = useAppSelector(selectCurrentInputPreset);
 
   return (
     <BitmapText
-      className={twMerge(`text-nowrap`, valueClass(selected), className)}
+      className={twMerge(
+        `text-nowrap`,
+        "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
+        className,
+      )}
     >
       {currentPresetName ?? "custom"}
     </BitmapText>
@@ -84,11 +86,7 @@ export const selectKeysMenu: Menu = {
               assign a key for both jump and carry
             </BitmapText>
           </div>
-          <MenuItems
-            className="text-metallicBlue zx:text-zxBlue !gap-y-1"
-            // TODO: make selected a variant, so just one className here!
-            selectedClassName="text-metallicBlueHalfbrite zx:text-zxGreenDimmed"
-          />
+          <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreenDimmed" />
         </div>
         <SelectedItemHint className="text-metallicBlue zx:text-zxBlue" />
         <SelectKeysMenuFooter />

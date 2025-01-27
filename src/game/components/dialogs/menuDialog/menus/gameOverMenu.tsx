@@ -21,13 +21,13 @@ const GameOverMenuContent = () => {
       >
         Dummy
       </BitmapText>
-      <BitmapText className="mt-4 block text-center mx-auto text-highlightBeige">
+      <BitmapText className="mt-4 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
         Score -
       </BitmapText>
-      <BitmapText className="mt-2 block text-center mx-auto text-metallicBlue">
+      <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">
         Explored - rooms
       </BitmapText>
-      <BitmapText className="mt-2 block text-center mx-auto text-lightGrey">
+      <BitmapText className="mt-2 block text-center mx-auto text-lightGrey zx:text-zxWhite">
         Liberated {String(planetsLiberatedCount)} planets
       </BitmapText>
       <MenuItems className="hidden" />
@@ -36,7 +36,7 @@ const GameOverMenuContent = () => {
 };
 
 export const gameOverMenu: Menu = {
-  dialogClassName: "bg-midRed w-zx h-full block",
+  dialogClassName: "bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block",
   borderClassName: "bg-redShadow",
   Content: GameOverMenuContent,
   // back menu item in the (hidden) menu just allows exiting more easily by pressing any button that

@@ -46,10 +46,7 @@ export const modernisationOptionsMenu: Menu = {
         <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
           Modernisation options
         </BitmapText>
-        <MenuItems
-          className="text-lightGrey zx:text-zxWhite"
-          selectedClassName="text-white zx:text-zxGreen"
-        />
+        <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white zx:selectedMenuItem:text-zxGreen" />
         <SelectedItemHint className="text-moss zx:text-zxGreen" />
       </>
     );

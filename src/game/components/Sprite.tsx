@@ -128,11 +128,18 @@ export const MultipleBitmapText = ({
       : typeof children === "string" ?
         <BitmapText>{children}</BitmapText>
       : isValidElement(children) ?
-        elementHasChildrenProp(children) ?
+        children.type === BitmapText || children.type === MultipleBitmapText ?
+          // avoid double-nesting BitmapText:
+          children
+        : elementHasChildrenProp(children) ?
           cloneElement(
             children,
             undefined,
-            <MultipleBitmapText>{children.props.children}</MultipleBitmapText>,
+            typeof children.props.children === "string" ?
+              <BitmapText>{`${children.props.children}`}</BitmapText>
+            : <MultipleBitmapText>
+                {children.props.children}
+              </MultipleBitmapText>,
           )
         : children
       : children}
