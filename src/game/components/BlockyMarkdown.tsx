@@ -1,13 +1,13 @@
 import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
-import type { Components } from "react-markdown";
-import Markdown from "react-markdown";
 import { CssSprite, MultipleBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
+import type { CustomComponentsOption } from "snarkdown-in-react";
+import { SnarkdownInReact } from "snarkdown-in-react";
 
-const markdownComponents: Components = {
+const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <h2 className="mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue">
@@ -22,7 +22,7 @@ const markdownComponents: Components = {
       </h3>
     );
   },
-  p: function P({ children }: PropsWithChildren<EmptyObject>) {
+  div: function Div({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <div className="mb-1">
         <MultipleBitmapText>{children}</MultipleBitmapText>
@@ -73,31 +73,15 @@ const markdownComponents: Components = {
 
 export type BlockyMarkdownProps = {
   markdown: string;
-  className?: string;
 };
 
 export const BlockyMarkdown = ({
   markdown,
-  className,
 }: BlockyMarkdownProps): ReactElement => {
   return (
-    <Markdown
-      className={className}
-      components={markdownComponents}
-      allowedElements={[
-        "h1",
-        "h2",
-        "h3",
-        "p",
-        "em",
-        "img",
-        "ul",
-        "li",
-        "ol",
-        "strong",
-      ]}
-    >
-      {markdown}
-    </Markdown>
+    <SnarkdownInReact
+      customComponents={markdownComponents}
+      markdown={markdown}
+    />
   );
 };
