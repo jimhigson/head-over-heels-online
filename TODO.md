@@ -11,23 +11,26 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
+    [ ] bug seems resolved, but still jump on top of other items in doorway
+
 [ ] actually use joystick/control pad input
-[x] persist settings
-[x] quit game option in menu (if playing)
-[ ] infinite lives option
-[x] collecting crowns (and screen)
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
 [x] load game initially shows menu, with game not started
     [x] load campaign lazily
 
-[ ] re-org into a mono-repo
+[x] fix new markdown parser bugs:
+    [x] "the game" - too much em at the end
+    [x] "penitentiary" - scrolling in x
+    [x] "hints and tips" - multi-line li not working - fixed of a sort by making single-line
+
+[ ] mono-repo
     - @hohjs/gameEngine = everything while the game is running
     - @hohjs/main = main site
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
-[ ] main index loads pixi
+[ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
