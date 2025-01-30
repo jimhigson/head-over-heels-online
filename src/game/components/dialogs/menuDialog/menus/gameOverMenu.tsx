@@ -1,7 +1,8 @@
 import type { Menu } from "../menus";
 import { BitmapText } from "../../../Sprite";
 import { backMenuItem } from "../backMenuItem";
-import { mainMenuCycle, MainMenuHeading } from "./mainMenu";
+import { mainMenuCycle } from "./mainMenu";
+import { MainMenuHeading } from "./MainMenuHeading";
 import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";
 import { objectValues, size } from "iter-tools";

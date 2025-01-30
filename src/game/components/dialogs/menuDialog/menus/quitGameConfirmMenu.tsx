@@ -3,7 +3,7 @@ import { BitmapText } from "../../../Sprite";
 import { MenuItems } from "../MenuItems";
 import type { Menu } from "../menus";
 import { SelectedItemHint } from "../SelectedItemHint";
-import { MainMenuHeading } from "./mainMenu";
+import { MainMenuHeading } from "./MainMenuHeading";
 
 export const quitGameConfirmMenu: Menu = {
   dialogClassName: "bg-white zx:bg-zxRed",
