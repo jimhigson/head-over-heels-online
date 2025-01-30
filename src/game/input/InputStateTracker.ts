@@ -32,10 +32,10 @@ const isGamepadButtonPressed = (
   button: number,
 ): boolean => {
   for (const gp of frameInput.gamepads) {
-    if (gp === null) {
+    if (gp === null || gp.buttons.length <= button) {
       continue;
     }
-    if (gp.buttons.length > button && gp.buttons[button].pressed) {
+    if (gp.buttons[button].pressed) {
       return true;
     }
   }

@@ -43,6 +43,8 @@ export const useActionTap = ({
         const pressStatus = inputStateTracker.currentActionPress(action);
         if (pressStatus === "tap") {
           handler(action);
+          break; // if we are looking for multiple actions, don't let them
+          // all trigger on the same frame
         }
       }
     };

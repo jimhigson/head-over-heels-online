@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { MenuItemComponent } from "./MenuItemComponent";
 import {
@@ -14,7 +13,8 @@ import {
   menuUp,
 } from "../../../../store/gameMenusSlice";
 import { store } from "../../../../store/store";
-import type { BooleanAction } from "../../../input/InputState";
+
+const chooseMenuItemActions = ["menu_select", "jump"] as const;
 
 const useMenuNavigationInput = () => {
   const disabled = useIsAssigningKeys();
@@ -35,8 +35,10 @@ const useMenuNavigationInput = () => {
     disabled,
   });
   useActionTap({
-    action: useMemo<BooleanAction[]>(() => ["menu_select", "jump"], []),
-    handler: useCallback(() => {
+    action: chooseMenuItemActions,
+    handler: useCallback((a) => {
+      console.log("tap on", a);
+
       store.dispatch(menuItemChosen());
     }, []),
     disabled,

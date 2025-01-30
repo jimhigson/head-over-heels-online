@@ -16,7 +16,6 @@ export const useUniversalKeys = () => {
   useActionTap({
     action: "menu_openOrExit",
     handler: useCallback(() => {
-      console.log("universal keys: menu_openOrExit");
       store.dispatch(menuOpenOrExitPressed());
     }, []),
     disabled: assigningKeys,
