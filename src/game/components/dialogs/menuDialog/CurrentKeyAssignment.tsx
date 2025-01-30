@@ -1,35 +1,13 @@
-import type { AssignableInput } from "../../../input/InputState";
-import { BitmapText, CssSprite, MultipleBitmapText } from "../../Sprite";
-import { twMerge } from "tailwind-merge";
+import { standardControllerButtonNames } from "../../../input/controllers";
+import type { ActionInputAssignment } from "../../../input/InputState";
+import type { Key } from "../../../input/keys";
+import { CssSprite, MultipleBitmapText } from "../../Sprite";
 
-const friendlyName = (k: AssignableInput) => {
-  const specialCharClassName =
-    "text-moss zx:text-zxGreenDimmed selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxGreenDimmed";
+const specialCharClassName =
+  "text-moss zx:text-zxGreenDimmed selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxGreenDimmed";
 
-  const joystickRegex = /joystick:((?<button>\d+)|(?<axis>x|y))/;
-  const joystickMatch = joystickRegex.exec(k);
-  if (joystickMatch !== null) {
-    const { button, axis } = joystickMatch.groups!;
-
-    if (button) {
-      return (
-        <>
-          <span className={specialCharClassName}>🕹</span>
-          {button}
-        </>
-      );
-    }
-    if (axis) {
-      return (
-        <>
-          <span className={specialCharClassName}>🕹</span>
-          {axis === "x" ? "⬅➡" : "⬆⬇"}
-        </>
-      );
-    }
-  }
-
-  const match = /(Numpad|F)(.*)/.exec(k);
+const friendlyKeyName = (key: Key) => {
+  const match = /(Numpad|F)(.*)/.exec(key);
   if (match !== null) {
     return (
       <>
@@ -39,7 +17,7 @@ const friendlyName = (k: AssignableInput) => {
     );
   }
 
-  switch (k) {
+  switch (key) {
     case " ":
       return "space";
     case "ArrowDown":
@@ -67,39 +45,70 @@ const friendlyName = (k: AssignableInput) => {
         </>
       );
     default:
-      return k;
+      return key;
   }
 };
+const friendlyAxisName = (axis: number) => {
+  return (
+    <>
+      <span className={specialCharClassName}>🕹</span>
+      {axis === 0 ?
+        "⬅➡"
+      : axis === 1 ?
+        "⬆⬇"
+      : `axis${axis}`}
+    </>
+  );
+};
 
-export const CurrentKeyAssignment = ({
-  inputs,
-  deliminatorClassName,
-  keyClassName,
-  className,
-  flashingCursor = false,
-  noCommas = false,
-}: {
-  inputs: Readonly<AssignableInput[]>;
-  deliminatorClassName?: string;
+const friendlyButtonName = (button: number) => {
+  return (
+    <>
+      <span className={specialCharClassName}>🕹</span>
+      {standardControllerButtonNames[button] ?? button}
+    </>
+  );
+};
+
+type CurrentKeyAssignmentsProp = {
+  assignments: Readonly<ActionInputAssignment>;
   keyClassName?: string;
   className?: string;
   flashingCursor?: boolean;
-  noCommas?: boolean;
-}) => {
+};
+
+export const CurrentKeyAssignments = ({
+  assignments,
+  keyClassName,
+  className,
+  flashingCursor = false,
+}: CurrentKeyAssignmentsProp) => {
   return (
     <div className={className}>
-      {inputs.map((k, i) => {
-        const isNotLast = i < inputs.length - 1;
+      {assignments.keys.map((k) => {
         return (
-          <span className="text-nowrap" key={k}>
+          <span className="text-nowrap" key={`key:${k}`}>
             <MultipleBitmapText className={keyClassName}>
-              {friendlyName(k)}
+              {friendlyKeyName(k)}
             </MultipleBitmapText>
-            {!noCommas && isNotLast && (
-              <BitmapText className={twMerge("me-1", deliminatorClassName)}>
-                ,
-              </BitmapText>
-            )}
+          </span>
+        );
+      })}
+      {assignments.gamepadAxes.map((k) => {
+        return (
+          <span className="text-nowrap" key={`key:${k}`}>
+            <MultipleBitmapText className={keyClassName}>
+              {friendlyAxisName(k)}
+            </MultipleBitmapText>
+          </span>
+        );
+      })}
+      {assignments.gamepadButtons.map((k) => {
+        return (
+          <span className="text-nowrap" key={`key:${k}`}>
+            <MultipleBitmapText className={keyClassName}>
+              {friendlyButtonName(k)}
+            </MultipleBitmapText>
           </span>
         );
       })}

@@ -11,20 +11,20 @@
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
-    [ ] bug seems resolved, but still jump on top of other items in doorway
 
-[ ] actually use joystick/control pad input
+[ ] use joystick/control pad input
+    new input:
+    [ ] assigning new keys should work
+        - need to be able to mark keys as handled
+    [ ] marking as handled on gamepad inputs
+        - `interpretInputState` marks as handled for all actions...
+        - ... but can only check against handled for keyboard input (not gamepad buttons)
+        - ... because we don't know when they were first pressed
+
+[ ] why doesn't work in Safari/iOS?
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
 [ ] replace vignette with a transparent texture etc
-[x] load game initially shows menu, with game not started
-    [x] load campaign lazily
-
-[x] fix new markdown parser bugs:
-    [x] "the game" - too much em at the end
-    [x] "penitentiary" - scrolling in x
-    [x] "hints and tips" - multi-line li not working - fixed of a sort by making single-line
-
-[ ] mono-repo
+[ ] re-org into a mono-repo
     - @hohjs/gameEngine = everything while the game is running
     - @hohjs/main = main site
     - @hohjs/campaign = conversion and export of the main campaign
@@ -32,6 +32,7 @@
 
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
+        - nope, nothing calls the Color constructor on initial load
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
 [ ] show FPS counter as an option (lean on pixi to give fps)    
@@ -46,7 +47,6 @@
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
 [ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
-[ ] why doesn't work in Safari/iOS?
 [ ] compare against original for how far player can edge up on a block
 [ ] show some stats in game over menu - at least
     [ ] score (???)

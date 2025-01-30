@@ -7,10 +7,10 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 import { selectCurrentRoomState } from "./gameState/GameState";
 import { MainLoop } from "./mainLoop/mainLoop";
 import type { Xy } from "../utils/vectors/vectors";
-import type { InputState } from "./input/InputState";
 import { TextureStyle } from "pixi.js";
 
 import "pixi.js/advanced-blend-modes";
+import type { InputStateInterpretation } from "./input/interpretInputState";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -19,13 +19,13 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
  */
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  inputState: InputState,
+  inputStateInterpretation: InputStateInterpretation,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
 
   await app.init({ background: "#000000", useBackBuffer: true });
 
-  const gameState = initGameState({ campaign, inputState });
+  const gameState = initGameState({ campaign, inputStateInterpretation });
 
   const loop = new MainLoop(app, gameState).start();
 

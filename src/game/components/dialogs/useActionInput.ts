@@ -1,72 +1,116 @@
-import { useCallback, useMemo } from "react";
-import type { ConditionalKeys } from "type-fest";
-import { emptyArray } from "../../../utils/empty";
-import type { InputState } from "../../input/InputState";
-import type { Key } from "../../input/keys";
-import { useEvent } from "../../../utils/react/useEvent";
-import { useInputState } from "../../input/InputStateProvider";
+import { useEffect, useMemo } from "react";
+import { useInputStateInterpretation } from "../../input/InputStateProvider";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { BooleanAction, InputPress } from "../../input/InputState";
+import { useUnchanging } from "../../../utils/react/useEvent";
 
-type BooleanInput = ConditionalKeys<InputState, boolean>;
+import { Ticker } from "pixi.js";
+import { keys } from "../../../utils/entries";
+import type { InputStateInterpretation } from "../../input/interpretInputState";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
-  onAction: () => void;
-  action?: BooleanInput | BooleanInput[];
-  key?: Key | Key[];
+  onAction: (action: BooleanAction | DirectionXy4) => void;
+  action?:
+    | (BooleanAction | DirectionXy4)
+    | Readonly<Array<BooleanAction | DirectionXy4>>;
   disabled?: boolean;
 };
 
 export const useActionInput = ({
   onAction,
-  action: actionProp,
-  key: keyProp,
+  action: actionOrActions,
   disabled = false,
 }: UseActionInputProps) => {
-  const actions: BooleanInput[] = useMemo(
+  const actions: Array<BooleanAction | DirectionXy4> = useMemo(
     () =>
-      actionProp === undefined ? emptyArray
-      : Array.isArray(actionProp) ? actionProp
-      : [actionProp],
-    [actionProp],
+      Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions],
+    [actionOrActions],
   );
 
-  const keys: Key[] = useMemo(
-    () =>
-      keyProp === undefined ? emptyArray
-      : Array.isArray(keyProp) ? keyProp
-      : [keyProp],
-    [keyProp],
-  );
+  const interpretation = useInputStateInterpretation();
 
-  useEvent(
-    useInputState().events,
-    "inputStateChanged",
-    useCallback(
-      (inputStateChangeEvent) => {
-        if (disabled) {
-          return;
+  useUnchanging(actionOrActions);
+  useUnchanging(onAction);
+  useUnchanging(interpretation);
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
+    const check = () => {
+      for (const action of actions) {
+        const isPressed = interpretation.actions[action];
+        if (isPressed) {
+          onAction(action);
+          interpretation.handled(action);
         }
+      }
+    };
 
-        if (inputStateChangeEvent.upOrDown === "up") {
-          return;
+    Ticker.shared.add(check);
+    return () => {
+      Ticker.shared.remove(check);
+    };
+  }, [actions, disabled, interpretation, onAction]);
+};
+
+export type UseInputPressesProps = {
+  onAction: (
+    interpretation: InputStateInterpretation,
+    input: InputPress,
+  ) => void;
+  /** '*' means any and is really only useful for assigning keys */
+  //inputPress: "*" | InputPress;
+  disabled?: boolean;
+};
+
+export const useInputPress = ({
+  onAction,
+  //inputPress,
+  disabled = false,
+}: UseInputPressesProps) => {
+  //useUnchanging(inputPress);
+  useUnchanging(onAction);
+
+  const interpretation = useInputStateInterpretation();
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
+    /**
+     * setInterval loop for the menus (since they don't have a ticker like the game engine does)
+     * this will add latency to input but is not used for anywhere where that matters
+     */
+    const check = () => {
+      for (const k of keys(interpretation.underlying.keyboardState.keys)) {
+        onAction(interpretation, { type: "key", input: k });
+        return;
+      }
+
+      for (const gp of navigator.getGamepads()) {
+        if (gp === null) {
+          continue;
         }
-        const { inputState } = inputStateChangeEvent;
-
-        const action = actions.find((action) => inputState[action]);
-
-        if (action !== undefined && inputState[action]) {
-          onAction();
-          inputState[action] = false; // handled this input
-          return;
+        for (const [buttonNumber, button] of gp.buttons.entries()) {
+          if (button.pressed) {
+            console.log("button pressed", buttonNumber);
+            onAction(interpretation, {
+              type: "gamepadButtons",
+              input: buttonNumber,
+            });
+          }
         }
+        return;
+      }
+    };
 
-        const key = keys.find((key) => inputState.raw[key]);
-        if (key !== undefined && inputState.raw[key]) {
-          onAction();
-          delete inputState.raw[key]; // handled this input
-        }
-      },
-      [actions, disabled, keys, onAction],
-    ),
-  );
+    Ticker.shared.add(check);
+    return () => {
+      Ticker.shared.remove(check);
+    };
+  }, [disabled, interpretation, onAction]);
 };

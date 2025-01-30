@@ -18,7 +18,9 @@ export function teleporting<RoomId extends string>(
   } = playableItem;
 
   const {
-    inputState: { jump: jumpInput },
+    inputStateInterpretation: {
+      actions: { jump: jumpInput },
+    },
   } = gameState;
 
   if (teleporting === null) {

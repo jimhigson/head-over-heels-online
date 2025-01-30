@@ -125,6 +125,8 @@ export const MultipleBitmapText = ({
     <div className={`contents ${className}`}>
       {Array.isArray(children) ?
         children.map((c, i) => <MultipleBitmapText key={i} children={c} />)
+      : typeof children === "number" ?
+        <BitmapText>{String(children)}</BitmapText>
       : typeof children === "string" ?
         <BitmapText>{children}</BitmapText>
       : isValidElement(children) ?

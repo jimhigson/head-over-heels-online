@@ -6,43 +6,54 @@ import { MenuItems } from "../MenuItems";
 import { backMenuItem } from "../backMenuItem";
 import { SelectedItemHint } from "../SelectedItemHint";
 import { multilineTextClass } from "../multilineTextClass";
-import { selectCurrentInputPreset } from "../../../../../store/selectors";
-import type { Action } from "../../../../input/InputState";
-import { CurrentKeyAssignment } from "../CurrentKeyAssignment";
+import {
+  selectCurrentInputPreset,
+  selectIsAssigningKeys,
+  useIsAssigningKeys,
+} from "../../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import type { ValueComponent } from "../MenuItem";
+import { useCallback } from "react";
+import {
+  doneAssigningInput,
+  inputAddedDuringAssignment,
+} from "../../../../../store/gameMenusSlice";
+import { store } from "../../../../../store/store";
+import { useActionInput, useInputPress } from "../../useActionInput";
+import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 
-const MenuItemKeyAssignment =
-  (action: Action): ValueComponent =>
-  ({ className }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
-    const assigning = useAppSelector(
-      (store) => store.assigningInput?.action === action,
-    );
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- this is really a component (a HOC)
-    const inputs = useAppSelector((store) =>
-      store.assigningInput?.action === action ?
-        store.assigningInput?.inputs
-      : store.userSettings.inputAssignment[action],
-    );
+const useKeyAssignmentInput = () => {
+  // TODO: move to the select keys menu
+  const disabled = !useIsAssigningKeys();
 
-    return (
-      <CurrentKeyAssignment
-        className={twMerge(
-          "flex flex-wrap gap-y-oneScaledPix gap-x-1",
-          className,
-        )}
-        inputs={inputs}
-        keyClassName={
-          "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed"
-        }
-        // me-0 prevents a gap after the delim, since we do that with gap-x-1 instead
-        deliminatorClassName="me-0"
-        flashingCursor={assigning}
-        noCommas
-      />
-    );
-  };
+  useActionInput({
+    action: "menu_openOrExit",
+
+    onAction: useCallback(() => {
+      console.log(
+        "got menu_openOrExit action so will dispatch doneAssigningInput",
+      );
+      store.dispatch(doneAssigningInput());
+    }, []),
+    disabled,
+  });
+  useInputPress({
+    onAction: useCallback((interpretation, inputPress) => {
+      if (interpretation.actions.menu_openOrExit) {
+        // the only key that can't be assigned is the action to stop assigning
+        return;
+      }
+      if (!selectIsAssigningKeys(store.getState())) {
+        // it isn't guaranteed we will be disabled in time for a second press
+        return;
+      }
+
+      console.log("dispatching", inputAddedDuringAssignment(inputPress));
+      store.dispatch(inputAddedDuringAssignment(inputPress));
+    }, []),
+    disabled,
+  });
+};
 
 const CurrentPresetValue: ValueComponent = ({ className }) => {
   const currentPresetName = useAppSelector(selectCurrentInputPreset);
@@ -64,6 +75,8 @@ export const selectKeysMenu: Menu = {
   dialogClassName: "bg-white zx:bg-zxWhite",
   borderClassName: "bg-lightGrey zx:bg-zxRedDimmed",
   Content() {
+    useKeyAssignmentInput();
+
     return (
       <>
         <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
@@ -105,61 +118,61 @@ export const selectKeysMenu: Menu = {
       type: "key",
       label: "Left ↖",
       action: "left",
-      ValueComponent: MenuItemKeyAssignment("left"),
+      ValueComponent: SelectKeysMenuAssignmentValue("left"),
     },
     {
       type: "key",
       label: "Right ↘",
       action: "right",
-      ValueComponent: MenuItemKeyAssignment("right"),
+      ValueComponent: SelectKeysMenuAssignmentValue("right"),
     },
     {
       type: "key",
       label: "Up ↗",
       action: "away",
-      ValueComponent: MenuItemKeyAssignment("away"),
+      ValueComponent: SelectKeysMenuAssignmentValue("away"),
     },
     {
       type: "key",
       label: "Down ↙",
       action: "towards",
-      ValueComponent: MenuItemKeyAssignment("towards"),
+      ValueComponent: SelectKeysMenuAssignmentValue("towards"),
     },
     {
       type: "key",
       label: "Jump",
       action: "jump",
-      ValueComponent: MenuItemKeyAssignment("jump"),
+      ValueComponent: SelectKeysMenuAssignmentValue("jump"),
     },
     {
       type: "key",
       label: "Carry",
       action: "carry",
-      ValueComponent: MenuItemKeyAssignment("carry"),
+      ValueComponent: SelectKeysMenuAssignmentValue("carry"),
     },
     {
       type: "key",
       label: "Fire",
       action: "fire",
-      ValueComponent: MenuItemKeyAssignment("fire"),
+      ValueComponent: SelectKeysMenuAssignmentValue("fire"),
     },
     {
       type: "key",
       label: "Swop",
       action: "swop",
-      ValueComponent: MenuItemKeyAssignment("swop"),
+      ValueComponent: SelectKeysMenuAssignmentValue("swop"),
     },
     {
       type: "key",
       label: "Hold",
       action: "hold",
-      ValueComponent: MenuItemKeyAssignment("hold"),
+      ValueComponent: SelectKeysMenuAssignmentValue("hold"),
     },
     {
       type: "key",
       label: "Menu",
-      action: "menu",
-      ValueComponent: MenuItemKeyAssignment("menu"),
+      action: "menu_openOrExit",
+      ValueComponent: SelectKeysMenuAssignmentValue("menu_openOrExit"),
     },
     {
       type: "key",
@@ -169,7 +182,7 @@ export const selectKeysMenu: Menu = {
         </BitmapText>
       ),
       action: "toggleColourisation",
-      ValueComponent: MenuItemKeyAssignment("toggleColourisation"),
+      ValueComponent: SelectKeysMenuAssignmentValue("toggleColourisation"),
     },
     backMenuItem,
   ],

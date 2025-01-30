@@ -5,7 +5,7 @@ import type {
   GameMenusState,
 } from "../../../../store/gameMenusSlice";
 import type { KeyAssignmentPresetName } from "../../../input/keyAssignmentPresets";
-import type { Action } from "../../../input/InputState";
+import type { BooleanAction } from "../../../input/InputState";
 
 export type ValueComponent = FunctionComponent<{
   className?: string;
@@ -35,7 +35,7 @@ export type MenuItem = {
       selectValue?: (store: GameMenusState) => boolean;
       dispatch?: () => GameMenusSliceAction;
     }
-  | { type: "key"; action: Action }
+  | { type: "key"; action: BooleanAction }
   | { type: "keyPreset"; preset: KeyAssignmentPresetName }
   | { type: "back" }
   | { type: "todo" }

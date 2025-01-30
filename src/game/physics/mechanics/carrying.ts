@@ -25,7 +25,7 @@ export const carrying = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
-  const { inputState } = gameState;
+  const { inputStateInterpretation: inputState } = gameState;
 
   const heelsAbilities =
     carrier.type === "heels" ? carrier.state : carrier.state.heels;
@@ -49,7 +49,7 @@ export const carrying = <RoomId extends string>(
   }
   if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
 
-  if (inputState.carry) {
+  if (inputState.actions.carry) {
     if (carrying === null) {
       // trying to pick up
       if (itemToPickup === undefined) {
@@ -102,7 +102,7 @@ export const carrying = <RoomId extends string>(
       // put down
       heelsAbilities.carrying = null;
     }
-    inputState.carry = false; // handled this input
+    inputState.handled("carry"); // handled this input
   }
 };
 

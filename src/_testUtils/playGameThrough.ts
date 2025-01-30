@@ -1,5 +1,4 @@
 import type { GameState } from "../game/gameState/GameState";
-import { createEmptyInputState } from "../game/input/InputState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import type { TestRoomId } from "./basicRoom";
 
@@ -58,7 +57,7 @@ export const stopJumpingAMomentAfterStartingPlay = (
     : {
         ...gameState,
         inputState: {
-          ...gameState.inputState,
+          ...gameState.inputStateInterpretation,
           jump: false,
         },
       };

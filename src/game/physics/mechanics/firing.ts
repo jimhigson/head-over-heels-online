@@ -17,7 +17,9 @@ export const firing = <RoomId extends string>(
   _deltaMS: number,
 ): undefined => {
   const {
-    inputState: { fire: fireInput },
+    inputStateInterpretation: {
+      actions: { fire: fireInput },
+    },
   } = gameState;
 
   const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
@@ -65,6 +67,6 @@ export const firing = <RoomId extends string>(
     headAbilities.doughnuts -= 1;
     headAbilities.doughnutLastFireTime = headAbilities.gameTime;
 
-    gameState.inputState.fire = false; //handled this input
+    gameState.inputStateInterpretation.handled("fire");
   }
 };

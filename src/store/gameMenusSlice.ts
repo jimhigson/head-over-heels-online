@@ -4,9 +4,10 @@ import type { ValueOf } from "type-fest";
 import type { MenuId } from "../game/components/dialogs/menuDialog/menus";
 import { menus } from "../game/components/dialogs/menuDialog/menus";
 import type {
-  Action,
-  AssignableInput,
+  BooleanAction,
+  ActionInputAssignment,
   InputAssignment,
+  InputPress,
 } from "../game/input/InputState";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
@@ -57,7 +58,9 @@ export type GameMenusState = {
   /**
    * for the key assignment menu, the key currently being assigned
    */
-  assigningInput: { action: Action; inputs: AssignableInput[] } | undefined;
+  assigningInput:
+    | { action: BooleanAction; inputs: ActionInputAssignment }
+    | undefined;
 
   userSettings: UserSettings;
   upscale: Upscale;
@@ -149,27 +152,31 @@ export const gameMenusSlice = createSlice({
       ];
     },
     /** adds another input to the currently being assigned action */
-    inputAssigned(
-      state,
-      { payload: assignableInput }: PayloadAction<AssignableInput>,
-    ) {
-      if (assignableInput === undefined) {
-        throw new Error(
-          // should be impossible by the types, but who knows?
-          `can not assign undefined to ${state.assigningInput}`,
-        );
-      }
+    inputAddedDuringAssignment(state, { payload }: PayloadAction<InputPress>) {
       if (state.assigningInput === undefined) {
         throw new Error("reducer called while not assigning keys");
       }
 
-      const { inputs } = state.assigningInput;
-      if (inputs.includes(assignableInput)) {
-        // already assigned
-        return;
-      }
+      const addIfUnique = <E>(arr: E[], el: NoInfer<E>) => {
+        if (!arr.includes(el)) {
+          arr.push(el);
+        }
+      };
 
-      inputs.push(assignableInput);
+      const { inputs } = state.assigningInput;
+      switch (payload.type) {
+        case "key":
+          addIfUnique(inputs.keys, payload.input);
+          break;
+        case "gamepadAxes":
+          addIfUnique(inputs.gamepadAxes, payload.input);
+          break;
+        case "gamepadButtons":
+          addIfUnique(inputs.gamepadButtons, payload.input);
+          break;
+        default:
+          payload satisfies never;
+      }
     },
     doneAssigningInput(state) {
       if (state.assigningInput === undefined) {
@@ -177,13 +184,18 @@ export const gameMenusSlice = createSlice({
       }
       const { action, inputs } = state.assigningInput;
 
-      if (inputs.length !== 0) {
-        // stop assigning but don't
+      const totalInputs =
+        inputs.gamepadAxes.length +
+        inputs.gamepadButtons.length +
+        inputs.gamepadAxes.length;
+
+      if (totalInputs > 0) {
+        // the user inputted something - use it
         state.userSettings.inputAssignment[action] = inputs;
       }
       state.assigningInput = undefined;
     },
-    menuPressed(state) {
+    menuOpenOrExitPressed(state) {
       if (state.openMenus.length > 0) {
         if (state.openMenus.length === 1 && !state.gameRunning) {
           return; // can't exit main menu if game not running
@@ -232,7 +244,7 @@ export const gameMenusSlice = createSlice({
         case "key":
           state.assigningInput = {
             action: selectedMenuItem.action,
-            inputs: [],
+            inputs: { gamepadAxes: [], gamepadButtons: [], keys: [] },
           };
           break;
 
@@ -305,10 +317,14 @@ export const gameMenusSlice = createSlice({
       displayedMenu.selectedIndex = newSelectedIndex;
       displayedMenu.scrollableSelection = true;
     },
-    menuPointerSelectsItem(
+    pointerMovesOnMenuItem(
       state,
       { payload: newSelectedIndex }: PayloadAction<number>,
     ) {
+      if (state.assigningInput) {
+        // ignore while assigning input - we can't change the selected item while assigning
+        return;
+      }
       state.openMenus[0].selectedIndex = newSelectedIndex;
       state.openMenus[0].scrollableSelection = false;
     },
@@ -384,16 +400,16 @@ export const {
   showScroll,
   menuItemChosen,
   menuDown,
-  menuPressed,
+  menuOpenOrExitPressed,
   menuUp,
-  menuPointerSelectsItem,
+  pointerMovesOnMenuItem,
   holdPressed,
   setShowBoundingBoxes,
   setShowShadowMasks,
   toggleColourise,
   toggleCrtFilter,
   toggleLivesModel,
-  inputAssigned,
+  inputAddedDuringAssignment,
   doneAssigningInput,
   crownCollected,
   gameOver,

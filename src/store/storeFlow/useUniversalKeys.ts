@@ -1,5 +1,9 @@
 import { store } from "../store";
-import { holdPressed, menuPressed, toggleColourise } from "../gameMenusSlice";
+import {
+  holdPressed,
+  menuOpenOrExitPressed,
+  toggleColourise,
+} from "../gameMenusSlice";
 import { useActionInput } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
 import { useCallback } from "react";
@@ -10,31 +14,36 @@ export const useUniversalKeys = () => {
   );
 
   useActionInput({
-    action: "menu",
+    action: "menu_openOrExit",
     onAction: useCallback(() => {
-      store.dispatch(menuPressed());
+      console.log("universal keys: menu_openOrExit");
+      store.dispatch(menuOpenOrExitPressed());
     }, []),
     disabled: assigningKeys,
   });
 
   useActionInput({
-    action: ["hold"],
+    action: "hold",
     onAction: useCallback(() => {
       store.dispatch(holdPressed("toggle"));
     }, []),
+    disabled: assigningKeys,
   });
 
+  /*
   useActionInput({
     action: ["windowBlurred"],
     onAction: useCallback(() => {
       store.dispatch(holdPressed("hold"));
     }, []),
   });
+  */
 
   useActionInput({
-    action: ["toggleColourisation"],
+    action: "toggleColourisation",
     onAction: useCallback(() => {
       store.dispatch(toggleColourise());
     }, []),
+    disabled: assigningKeys,
   });
 };

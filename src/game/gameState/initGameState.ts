@@ -2,12 +2,12 @@ import { loadRoom } from "./loadRoom/loadRoom";
 import mitt from "mitt";
 import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
-import type { InputState } from "../input/InputState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { SceneryName } from "../../sprites/planets";
 import { fromAllEntries } from "../../utils/entries";
 import type { GameState, PickupsCollected } from "./GameState";
+import type { InputStateInterpretation } from "../input/interpretInputState";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -44,10 +44,10 @@ export const startingRooms = <RoomId extends string>(
 
 export const initGameState = <RoomId extends string>({
   campaign,
-  inputState,
+  inputStateInterpretation,
 }: {
   campaign: Campaign<RoomId>;
-  inputState: InputState;
+  inputStateInterpretation: InputStateInterpretation;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -84,7 +84,7 @@ export const initGameState = <RoomId extends string>({
           entryState(heelsRoom.items.heels!)
         ),
     },
-    inputState,
+    inputStateInterpretation,
     campaign,
     events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,

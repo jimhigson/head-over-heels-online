@@ -38,6 +38,12 @@ export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;
 export const useCheatsOn = (): boolean =>
   useAppSelector((state) => state.cheatsOn);
 
+export const selectIsAssigningKeys = (state: RootState): boolean =>
+  state.assigningInput !== undefined;
+
+export const useIsAssigningKeys = (): boolean =>
+  useAppSelector(selectIsAssigningKeys);
+
 /** selects the name of the current key assignment preset (if any is being used) */
 export const selectCurrentInputPreset = (
   state: RootState,

@@ -8,7 +8,7 @@ import { CssVariables } from "../CssVariables.tsx";
 import { useAppSelector } from "../../../store/hooks.ts";
 import { ConnectInputToStore } from "../../../store/storeFlow/ConnectInputToStore.tsx";
 import { MenuDialog } from "../dialogs/menuDialog/MenuDialog.tsx";
-import { useInputState } from "../../input/InputStateProvider.tsx";
+import { useInputStateInterpretation } from "../../input/InputStateProvider.tsx";
 import { useCheatsOn } from "../../../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 
@@ -19,7 +19,7 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
     GameApi<OriginalCampaignRoomId> | undefined
   >();
   const gameRunning = useAppSelector((state) => state.gameRunning);
-  const inputState = useInputState();
+  const inputState = useInputStateInterpretation();
   const cheatsOn = useCheatsOn();
 
   useEffect(() => {
@@ -40,9 +40,8 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
           cheatsOn ? import("../../../testCampaign.ts") : undefined,
         ]);
 
-      const campaign =
-        cheatsOn ?
-          {
+      const campaign = cheatsOn
+        ? {
             rooms: {
               ...originalCampaignImport.campaign.rooms,
               ...testCampaignImport?.testCampaign.rooms,

@@ -54,7 +54,9 @@ export const jumping = <RoomId extends string>(
     state: { standingOn },
   } = playableItem;
   const {
-    inputState: { jump: jumpInput },
+    inputStateInterpretation: {
+      actions: { jump: jumpInput },
+    },
   } = gameState;
 
   const standingOnTeleporter =

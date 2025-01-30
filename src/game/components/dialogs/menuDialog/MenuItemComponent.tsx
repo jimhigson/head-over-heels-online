@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { always } from "../../../../utils/always";
 import {
   menuItemChosen,
-  menuPointerSelectsItem,
+  pointerMovesOnMenuItem,
 } from "../../../../store/gameMenusSlice";
 import type { Menu } from "./menus";
 
@@ -45,13 +45,13 @@ export const MenuItemComponent = ({
       onMouseMove={() => {
         const index = menu.items.indexOf(menuItem);
         if (!selected) {
-          dispatch(menuPointerSelectsItem(index));
+          dispatch(pointerMovesOnMenuItem(index));
         }
       }}
       onClick={() => {
         const index = menu.items.indexOf(menuItem);
         if (!selected) {
-          dispatch(menuPointerSelectsItem(index));
+          dispatch(pointerMovesOnMenuItem(index));
         }
         dispatch(menuItemChosen());
       }}

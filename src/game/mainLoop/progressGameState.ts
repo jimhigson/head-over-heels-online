@@ -111,7 +111,7 @@ export const _progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems => {
-  const { inputState } = gameState;
+  const { inputStateInterpretation: inputState } = gameState;
 
   const room = selectCurrentRoomState(gameState);
 
@@ -125,11 +125,11 @@ export const _progressGameState = <RoomId extends string>(
     ]),
   );
 
-  if (inputState.swop) {
+  if (inputState.actions.swop) {
     swopPlayables(gameState);
     // we have now handled that keypress, turn it off until the key is pressed again,
     // which will turn this flag back on
-    inputState.swop = false;
+    inputState.handled("swop");
     // now we let the room play through normally on the assumption it isn't harmful to do so
   }
 

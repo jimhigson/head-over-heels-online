@@ -11,7 +11,7 @@ import { MenuItems } from "../MenuItems";
 import type { Menu } from "../menus";
 import { SelectedItemHint } from "../SelectedItemHint";
 import type { RootState } from "../../../../../store/store";
-import { always } from "../../../../../utils/always";
+import { always, never } from "../../../../../utils/always";
 import type { ValueComponent } from "../MenuItem";
 
 const switchCurrentValue =
@@ -82,6 +82,12 @@ export const modernisationOptionsMenu: Menu = {
         - none of these fundamentally change the gameplay.
         
         Turn off to be completely faithful to the original rooms.`,
+    },
+    {
+      type: "switch",
+      label: "Show FPS",
+      ValueComponent: switchCurrentValue(never),
+      hint: `show frame rate`,
     },
     {
       type: "switch",

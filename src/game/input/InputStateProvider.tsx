@@ -1,34 +1,42 @@
 import type { PropsWithChildren } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import type { InputState } from "./InputState";
-import { createEmptyInputState } from "./InputState";
 import type { EmptyObject } from "type-fest";
-import { listenForInput } from "./listenForInput";
-import { useAppStore } from "../../store/hooks";
+import {
+  createKeyboardState,
+  maintainKeyboardState,
+  type KeyboardState,
+} from "./keyboardState";
+import {
+  interpretInputState,
+  type InputStateInterpretation,
+} from "./interpretInputState";
 
-const InputStateContext = createContext<InputState | null>(null);
+const InputStateContext = createContext<InputStateInterpretation | null>(null);
 
 export const InputStateProvider = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
-  const store = useAppStore();
-  const [inputState] = useState(createEmptyInputState);
+  const [keyboardState] = useState<KeyboardState>(createKeyboardState);
+  const [inputStateInterpretation] = useState<InputStateInterpretation>(() =>
+    interpretInputState(keyboardState),
+  );
 
   // in practice this should never ummount in production, but it will in react dev mode:
   useEffect(() => {
     // listenForInput returns the unmount function:
-    const unsubscribe = listenForInput(
-      inputState,
-      () => store.getState().userSettings.inputAssignment,
-    );
+    const unsubscribe = maintainKeyboardState(keyboardState);
 
     return unsubscribe;
   });
 
-  return <InputStateContext value={inputState}>{children}</InputStateContext>;
+  return (
+    <InputStateContext value={inputStateInterpretation}>
+      {children}
+    </InputStateContext>
+  );
 };
 
-export const useInputState = (): InputState => {
+export const useInputStateInterpretation = (): InputStateInterpretation => {
   const inputState = useContext(InputStateContext);
   if (inputState === null) {
     throw new Error("InputStateProvider required to use useInputState");
