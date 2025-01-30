@@ -201,7 +201,7 @@ describe("jumping", () => {
             // stop pressing jump after a short time
             return {
               ...gameState,
-              inputStateInterpretation: inputState,
+              inputStateTracker: inputState,
             };
           },
         ],
@@ -381,7 +381,7 @@ describe("teleporter", () => {
       frameCallbacks(gameState) {
         if (gameState.characterRooms.heels?.id === "secondRoom") {
           // stop jumping when gone through the teleporter
-          gameState.inputStateInterpretation.jump = false;
+          gameState.inputStateTracker.jump = false;
         }
       },
       until(gameState) {
@@ -932,7 +932,7 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputStateInterpretation: {
+        inputStateTracker: {
           ...createEmptyInputState(),
           jump: true,
           direction: unitVectors.away,
@@ -954,7 +954,7 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameStateWithDisappearingBlocks,
-        inputStateInterpretation: {
+        inputStateTracker: {
           ...createEmptyInputState(),
           direction: unitVectors.away /* not jumping */,
         },
@@ -1016,7 +1016,7 @@ describe("dissapearing items", () => {
     playGameThrough(
       {
         ...gameState,
-        inputStateInterpretation: {
+        inputStateTracker: {
           ...createEmptyInputState(),
           jump: true,
           direction: unitVectors.away,

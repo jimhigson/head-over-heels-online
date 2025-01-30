@@ -10,6 +10,7 @@ import { isItemType, type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "../../../model/modelTypes";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   originXyz,
   lengthXyz,
@@ -21,6 +22,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import type { PressStatus } from "../../input/InputStateTracker";
 
 const stopWalking = {
   movementType: "vel",
@@ -66,10 +68,7 @@ export const walking = <RoomId extends string>(
  */
 const walkingImpl = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
-  {
-    inputStateInterpretation: gameStateInputState,
-    currentCharacterName,
-  }: GameState<RoomId>,
+  { inputStateTracker, currentCharacterName }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId> => {
   const {
@@ -88,10 +87,12 @@ const walkingImpl = <RoomId extends string>(
   const isCurrentCharacter = currentCharacterName === playableItem.id;
   // we allow autowalking when character isn't current, so the walking should still be run,
   // but the input is always empty so all other walking should be cut off"
-  const jumpInput =
-    isCurrentCharacter ? gameStateInputState.actions.jump : false;
-  const directionInput =
-    isCurrentCharacter ? gameStateInputState.direction : originXyz;
+  const jumpInput: PressStatus =
+    isCurrentCharacter ?
+      inputStateTracker.currentActionPress("jump")
+    : "released";
+  const directionInput: Xyz =
+    isCurrentCharacter ? inputStateTracker.directionVector : originXyz;
 
   const isFalling = standingOn === null && gravityVel.z < 0;
   const hasFastSteps =
@@ -139,7 +140,7 @@ const walkingImpl = <RoomId extends string>(
         return stopWalking;
       }
     } else {
-      if (jumpInput) {
+      if (jumpInput !== "released") {
         // standing on something and jumping
         const jumpDirectionXy =
           xyEqual(walkVector, originXy) ? facing : walkVector;

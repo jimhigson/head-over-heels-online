@@ -11,12 +11,6 @@ export const SelectKeysMenuAssignmentValue =
     const assigning = useAppSelector(
       (store) => store.assigningInput?.action === action,
     );
-
-    const assignments = useAppSelector((store) =>
-      store.assigningInput?.action === action
-        ? store.assigningInput?.inputs
-        : store.userSettings.inputAssignment[action],
-    );
     /* eslint-enable prettier/prettier, react-hooks/rules-of-hooks */
 
     return (
@@ -25,7 +19,7 @@ export const SelectKeysMenuAssignmentValue =
           "flex flex-wrap gap-y-oneScaledPix gap-x-1",
           className,
         )}
-        assignments={assignments}
+        action={action}
         keyClassName={
           "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed"
         }

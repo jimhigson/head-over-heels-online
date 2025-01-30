@@ -8,7 +8,7 @@ import type { SceneryName } from "../../sprites/planets";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
-import type { InputStateInterpretation } from "../input/interpretInputState";
+import type { InputStateTracker } from "../input/InputStateTracker";
 
 export const selectCurrentRoomState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -41,7 +41,7 @@ export type GameState<RoomId extends string> = {
     this allows to give the right character control after uncombining
     */
   previousPlayable?: IndividualCharacterName;
-  inputStateInterpretation: InputStateInterpretation;
+  inputStateTracker: InputStateTracker;
 
   characterRooms: CharacterRooms<RoomId>;
   /**

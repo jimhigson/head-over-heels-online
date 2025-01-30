@@ -1,6 +1,6 @@
 import { BlockyMarkdown } from "../../BlockyMarkdown";
 import { useCallback, useRef } from "react";
-import { useActionInput } from "../useActionInput";
+import { useActionTap } from "../useActionInput";
 import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -40,14 +40,14 @@ export const MenuMarkdown = ({
     [scaleFactor],
   );
 
-  useActionInput({
-    onAction: useCallback(() => {
+  useActionTap({
+    handler: useCallback(() => {
       scrollScroll("down");
     }, [scrollScroll]),
     action: "towards",
   });
-  useActionInput({
-    onAction: useCallback(() => {
+  useActionTap({
+    handler: useCallback(() => {
       scrollScroll("up");
     }, [scrollScroll]),
     action: "away",

@@ -7,7 +7,11 @@ import { nextOrder } from "./order";
 //const DOM_KEY_LOCATION_RIGHT = 2;
 const DOM_KEY_LOCATION_NUMPAD = 3;
 
-const getKey = ({ key, location, repeat }: KeyboardEvent): Key | undefined => {
+const stdKeyFromKeyboardEvent = ({
+  key,
+  location,
+  repeat,
+}: KeyboardEvent): Key | undefined => {
   if (repeat) {
     // ignore key repeat from OS (holding down key makes multiple keypresses)
     return undefined;
@@ -26,52 +30,44 @@ const getKey = ({ key, location, repeat }: KeyboardEvent): Key | undefined => {
   return undefined;
 };
 
-export type KeyboardState = {
-  /**
-   * the current state (which keys are pressed) on the keyboard. The number is the
-   * order when it started to be pressed
-   */
-  keys: { [k in Key]?: number };
-  handled: (k: Key) => void;
-};
+/**
+ * the current state (which keys are pressed) on the keyboard. The number is the
+ * order when it started to be pressed.
+ *
+ * Ie, makes keyboard state look a bit like gamepad state
+ */
+export type KeyboardStateMap = Map<Key, number>;
 
-export const createKeyboardState = (): KeyboardState => {
-  return {
-    keys: {},
-    handled() {
-      throw new Error("TODO, not implemented");
-    },
-  };
-};
+export const createEmptyKeyboardState = (): KeyboardStateMap => new Map();
 
 /**
  * @param state mutable state to write the keyboard state to
  */
-export const maintainKeyboardState = (state: KeyboardState) => {
+export const maintainKeyboardState = (state: KeyboardStateMap) => {
   console.log("maintaining keyboard state with", maintainKeyboardState);
 
   const keyDownHandler = (keyboardEvent: KeyboardEvent): void => {
-    const stdKey = getKey(keyboardEvent);
+    const stdKey = stdKeyFromKeyboardEvent(keyboardEvent);
 
     if (stdKey === undefined) {
       return;
     }
 
-    state.keys[stdKey] = nextOrder();
+    state.set(stdKey, nextOrder());
   };
   const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
-    const stdKey = getKey(keyboardEvent);
+    const stdKey = stdKeyFromKeyboardEvent(keyboardEvent);
 
     if (stdKey === undefined) {
       return;
     }
 
-    delete state.keys[stdKey];
+    state.delete(stdKey);
   };
 
   const handleWindowBlur = (): void => {
     // if the window blurs, nothing is pressed:
-    state.keys = {};
+    state.clear();
   };
 
   window.addEventListener("keydown", keyDownHandler, false);

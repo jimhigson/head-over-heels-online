@@ -3,6 +3,7 @@ import type { CharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
+import type { PressStatus } from "../../input/InputStateTracker";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
@@ -17,15 +18,13 @@ export function teleporting<RoomId extends string>(
     state: { teleporting, standingOn },
   } = playableItem;
 
-  const {
-    inputStateInterpretation: {
-      actions: { jump: jumpInput },
-    },
-  } = gameState;
+  const { inputStateTracker } = gameState;
+
+  const jumpInput: PressStatus = inputStateTracker.currentActionPress("jump");
 
   if (teleporting === null) {
     if (
-      jumpInput &&
+      jumpInput === "tap" &&
       standingOn !== null &&
       isItemType("teleporter")(standingOn)
     ) {

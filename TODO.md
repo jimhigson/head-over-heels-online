@@ -23,6 +23,8 @@
 
 [ ] why doesn't work in Safari/iOS?
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
+    - can fix this (I think) by ignoring input while game speed is zero
+
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
     - @hohjs/gameEngine = everything while the game is running

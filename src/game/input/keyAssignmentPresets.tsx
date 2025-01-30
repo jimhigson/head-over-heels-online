@@ -143,7 +143,8 @@ const gamepadAssignment: InputAssignmentPreset = {
       gamepadButtons: [standardControllerLayout.l2],
     },
   }),
-  description: "Gamepads with at least 4 buttons, but preferably 6 or more",
+  description:
+    "Joysticks/gamepads with at least 4 buttons, but preferably 6 or more. Inc Playstation, xbox etc",
 };
 
 const defaultAssignment: InputAssignmentPreset = {

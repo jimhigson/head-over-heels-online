@@ -4,7 +4,7 @@ import {
   menuOpenOrExitPressed,
   toggleColourise,
 } from "../gameMenusSlice";
-import { useActionInput } from "../../game/components/dialogs/useActionInput";
+import { useActionTap } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
 import { useCallback } from "react";
 
@@ -13,18 +13,18 @@ export const useUniversalKeys = () => {
     (store) => store.assigningInput !== undefined,
   );
 
-  useActionInput({
+  useActionTap({
     action: "menu_openOrExit",
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       console.log("universal keys: menu_openOrExit");
       store.dispatch(menuOpenOrExitPressed());
     }, []),
     disabled: assigningKeys,
   });
 
-  useActionInput({
+  useActionTap({
     action: "hold",
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       store.dispatch(holdPressed("toggle"));
     }, []),
     disabled: assigningKeys,
@@ -39,9 +39,9 @@ export const useUniversalKeys = () => {
   });
   */
 
-  useActionInput({
+  useActionTap({
     action: "toggleColourisation",
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       store.dispatch(toggleColourise());
     }, []),
     disabled: assigningKeys,

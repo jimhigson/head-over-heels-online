@@ -57,7 +57,7 @@ export const stopJumpingAMomentAfterStartingPlay = (
     : {
         ...gameState,
         inputState: {
-          ...gameState.inputStateInterpretation,
+          ...gameState.inputStateTracker,
           jump: false,
         },
       };

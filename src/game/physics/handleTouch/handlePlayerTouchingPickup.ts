@@ -100,7 +100,6 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
-      gameState.inputStateInterpretation.handled("jump");
       store.dispatch(showScroll(pickup.config.page));
       break;
 

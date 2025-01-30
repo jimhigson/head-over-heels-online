@@ -19,28 +19,27 @@ import {
   inputAddedDuringAssignment,
 } from "../../../../../store/gameMenusSlice";
 import { store } from "../../../../../store/store";
-import { useActionInput, useInputPress } from "../../useActionInput";
+import { useActionTap, useInputTap } from "../../useActionInput";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 
 const useKeyAssignmentInput = () => {
   // TODO: move to the select keys menu
   const disabled = !useIsAssigningKeys();
 
-  useActionInput({
+  useActionTap({
     action: "menu_openOrExit",
 
-    onAction: useCallback(() => {
-      console.log(
-        "got menu_openOrExit action so will dispatch doneAssigningInput",
-      );
+    handler: useCallback(() => {
       store.dispatch(doneAssigningInput());
     }, []),
     disabled,
   });
-  useInputPress({
-    onAction: useCallback((interpretation, inputPress) => {
-      if (interpretation.actions.menu_openOrExit) {
-        // the only key that can't be assigned is the action to stop assigning
+  useInputTap({
+    handler: useCallback((inputPress, inputStateTracker) => {
+      if (
+        inputStateTracker.currentActionPress("menu_openOrExit") !== "released"
+      ) {
+        // the only key that can't be assigned is one that maps to the action to stop assigning
         return;
       }
       if (!selectIsAssigningKeys(store.getState())) {
@@ -48,7 +47,6 @@ const useKeyAssignmentInput = () => {
         return;
       }
 
-      console.log("dispatching", inputAddedDuringAssignment(inputPress));
       store.dispatch(inputAddedDuringAssignment(inputPress));
     }, []),
     disabled,
@@ -167,12 +165,6 @@ export const selectKeysMenu: Menu = {
       label: "Hold",
       action: "hold",
       ValueComponent: SelectKeysMenuAssignmentValue("hold"),
-    },
-    {
-      type: "key",
-      label: "Menu",
-      action: "menu_openOrExit",
-      ValueComponent: SelectKeysMenuAssignmentValue("menu_openOrExit"),
     },
     {
       type: "key",

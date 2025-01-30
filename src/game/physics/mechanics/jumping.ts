@@ -53,17 +53,13 @@ export const jumping = <RoomId extends string>(
   const {
     state: { standingOn },
   } = playableItem;
-  const {
-    inputStateInterpretation: {
-      actions: { jump: jumpInput },
-    },
-  } = gameState;
+  const { inputStateTracker } = gameState;
 
   const standingOnTeleporter =
     standingOn !== null && isItemType("teleporter")(standingOn);
 
   const startingAJump =
-    jumpInput &&
+    inputStateTracker.currentActionPress("jump") !== "released" &&
     // can't jump if not standing on anything!
     standingOn !== null &&
     // you can't jump from a teleporter!

@@ -7,7 +7,7 @@ import type { RoomJson } from "../../model/RoomJson";
 import type { SceneryName } from "../../sprites/planets";
 import { fromAllEntries } from "../../utils/entries";
 import type { GameState, PickupsCollected } from "./GameState";
-import type { InputStateInterpretation } from "../input/interpretInputState";
+import { InputStateTracker } from "../input/InputStateTracker";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -44,10 +44,10 @@ export const startingRooms = <RoomId extends string>(
 
 export const initGameState = <RoomId extends string>({
   campaign,
-  inputStateInterpretation,
+  inputStateTracker,
 }: {
   campaign: Campaign<RoomId>;
-  inputStateInterpretation: InputStateInterpretation;
+  inputStateTracker: InputStateTracker;
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
@@ -84,7 +84,7 @@ export const initGameState = <RoomId extends string>({
           entryState(heelsRoom.items.heels!)
         ),
     },
-    inputStateInterpretation,
+    inputStateTracker,
     campaign,
     events: mitt<GameEvents<RoomId>>(),
     pickupsCollected,

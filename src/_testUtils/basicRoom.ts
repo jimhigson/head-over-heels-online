@@ -64,7 +64,7 @@ const gameStateWithInput = (
   inputState?: Partial<InputState>,
 ): GameState<TestRoomId> => ({
   ...gameState,
-  inputStateInterpretation: { ...gameState.inputStateInterpretation, ...inputState },
+  inputStateTracker: { ...gameState.inputStateTracker, ...inputState },
 });
 
 export type BasicGameStateOptions = {

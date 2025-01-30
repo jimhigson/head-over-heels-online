@@ -10,7 +10,7 @@ import type { Xy } from "../utils/vectors/vectors";
 import { TextureStyle } from "pixi.js";
 
 import "pixi.js/advanced-blend-modes";
-import type { InputStateInterpretation } from "./input/interpretInputState";
+import type { InputStateTracker } from "./input/InputStateTracker";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -19,13 +19,20 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
  */
 export const gameMain = async <RoomId extends string>(
   campaign: Campaign<RoomId>,
-  inputStateInterpretation: InputStateInterpretation,
+  inputStateTracker: InputStateTracker,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
 
-  await app.init({ background: "#000000", useBackBuffer: true });
+  await app.init({
+    background: "#000000",
+    // run on the shared ticker to keep in sync with the input state tracker
+    sharedTicker: true,
+  });
 
-  const gameState = initGameState({ campaign, inputStateInterpretation });
+  const gameState = initGameState({
+    campaign,
+    inputStateTracker,
+  });
 
   const loop = new MainLoop(app, gameState).start();
 

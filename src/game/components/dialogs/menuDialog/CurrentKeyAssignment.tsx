@@ -1,5 +1,7 @@
+import { twMerge } from "tailwind-merge";
+import { useAppSelector } from "../../../../store/hooks";
 import { standardControllerButtonNames } from "../../../input/controllers";
-import type { ActionInputAssignment } from "../../../input/InputState";
+import type { BooleanAction } from "../../../input/InputState";
 import type { Key } from "../../../input/keys";
 import { CssSprite, MultipleBitmapText } from "../../Sprite";
 
@@ -71,44 +73,54 @@ const friendlyButtonName = (button: number) => {
 };
 
 type CurrentKeyAssignmentsProp = {
-  assignments: Readonly<ActionInputAssignment>;
+  action: BooleanAction;
   keyClassName?: string;
   className?: string;
   flashingCursor?: boolean;
 };
 
 export const CurrentKeyAssignments = ({
-  assignments,
+  action,
   keyClassName,
   className,
   flashingCursor = false,
 }: CurrentKeyAssignmentsProp) => {
+  const assignments = useAppSelector((state) =>
+    state.assigningInput?.action === action ?
+      // assigning input so show provisional:
+      state.assigningInput?.inputs
+    : state.userSettings.inputAssignment[action],
+  );
+
   return (
     <div className={className}>
       {assignments.keys.map((k) => {
         return (
-          <span className="text-nowrap" key={`key:${k}`}>
-            <MultipleBitmapText className={keyClassName}>
-              {friendlyKeyName(k)}
-            </MultipleBitmapText>
+          <span
+            className={twMerge("text-nowrap", keyClassName)}
+            key={`key:${k}`}
+          >
+            <MultipleBitmapText>{friendlyKeyName(k)}</MultipleBitmapText>
           </span>
         );
       })}
       {assignments.gamepadAxes.map((k) => {
         return (
-          <span className="text-nowrap" key={`key:${k}`}>
-            <MultipleBitmapText className={keyClassName}>
-              {friendlyAxisName(k)}
-            </MultipleBitmapText>
+          <span
+            className={twMerge("text-nowrap", keyClassName)}
+            key={`key:${k}`}
+          >
+            <MultipleBitmapText>{friendlyAxisName(k)}</MultipleBitmapText>
           </span>
         );
       })}
       {assignments.gamepadButtons.map((k) => {
         return (
-          <span className="text-nowrap" key={`key:${k}`}>
-            <MultipleBitmapText className={keyClassName}>
-              {friendlyButtonName(k)}
-            </MultipleBitmapText>
+          <span
+            className={twMerge("text-nowrap", keyClassName)}
+            key={`key:${k}`}
+          >
+            <MultipleBitmapText>{friendlyButtonName(k)}</MultipleBitmapText>
           </span>
         );
       })}

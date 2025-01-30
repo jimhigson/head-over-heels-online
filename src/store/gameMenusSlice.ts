@@ -185,7 +185,7 @@ export const gameMenusSlice = createSlice({
       const { action, inputs } = state.assigningInput;
 
       const totalInputs =
-        inputs.gamepadAxes.length +
+        inputs.keys.length +
         inputs.gamepadButtons.length +
         inputs.gamepadAxes.length;
 

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { MenuItemComponent } from "./MenuItemComponent";
 import {
@@ -5,12 +6,12 @@ import {
   useCurrentMenuSelectedItemIndex,
   useIsAssigningKeys,
 } from "../../../../store/selectors";
-import { useActionInput } from "../useActionInput";
-import { useCallback, useMemo } from "react";
+import { useActionTap } from "../useActionInput";
+import { useCallback } from "react";
 import {
-  menuUp,
-  menuItemChosen,
   menuDown,
+  menuItemChosen,
+  menuUp,
 } from "../../../../store/gameMenusSlice";
 import { store } from "../../../../store/store";
 import type { BooleanAction } from "../../../input/InputState";
@@ -18,24 +19,24 @@ import type { BooleanAction } from "../../../input/InputState";
 const useMenuNavigationInput = () => {
   const disabled = useIsAssigningKeys();
 
-  useActionInput({
+  useActionTap({
     action: "away",
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       store.dispatch(menuUp());
     }, []),
     disabled,
   });
 
-  useActionInput({
+  useActionTap({
     action: "towards",
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       store.dispatch(menuDown());
     }, []),
     disabled,
   });
-  useActionInput({
+  useActionTap({
     action: useMemo<BooleanAction[]>(() => ["menu_select", "jump"], []),
-    onAction: useCallback(() => {
+    handler: useCallback(() => {
       store.dispatch(menuItemChosen());
     }, []),
     disabled,

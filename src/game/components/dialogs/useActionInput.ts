@@ -1,24 +1,23 @@
 import { useEffect, useMemo } from "react";
-import { useInputStateInterpretation } from "../../input/InputStateProvider";
+import { useInputStateTracker } from "../../input/InputStateProvider";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { BooleanAction, InputPress } from "../../input/InputState";
 import { useUnchanging } from "../../../utils/react/useEvent";
 
 import { Ticker } from "pixi.js";
-import { keys } from "../../../utils/entries";
-import type { InputStateInterpretation } from "../../input/interpretInputState";
+import type { InputStateTracker } from "../../input/InputStateTracker";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
-  onAction: (action: BooleanAction | DirectionXy4) => void;
+  handler: (action: BooleanAction | DirectionXy4) => void;
   action?:
     | (BooleanAction | DirectionXy4)
     | Readonly<Array<BooleanAction | DirectionXy4>>;
   disabled?: boolean;
 };
 
-export const useActionInput = ({
-  onAction,
+export const useActionTap = ({
+  handler,
   action: actionOrActions,
   disabled = false,
 }: UseActionInputProps) => {
@@ -28,11 +27,11 @@ export const useActionInput = ({
     [actionOrActions],
   );
 
-  const interpretation = useInputStateInterpretation();
+  const inputStateTracker = useInputStateTracker();
 
   useUnchanging(actionOrActions);
-  useUnchanging(onAction);
-  useUnchanging(interpretation);
+  useUnchanging(handler);
+  useUnchanging(inputStateTracker);
 
   useEffect(() => {
     if (disabled) {
@@ -41,10 +40,9 @@ export const useActionInput = ({
 
     const check = () => {
       for (const action of actions) {
-        const isPressed = interpretation.actions[action];
-        if (isPressed) {
-          onAction(action);
-          interpretation.handled(action);
+        const pressStatus = inputStateTracker.currentActionPress(action);
+        if (pressStatus === "tap") {
+          handler(action);
         }
       }
     };
@@ -53,28 +51,21 @@ export const useActionInput = ({
     return () => {
       Ticker.shared.remove(check);
     };
-  }, [actions, disabled, interpretation, onAction]);
+  }, [actions, disabled, inputStateTracker, handler]);
 };
 
 export type UseInputPressesProps = {
-  onAction: (
-    interpretation: InputStateInterpretation,
-    input: InputPress,
-  ) => void;
-  /** '*' means any and is really only useful for assigning keys */
-  //inputPress: "*" | InputPress;
+  handler: (input: InputPress, inputStateTracker: InputStateTracker) => void;
   disabled?: boolean;
 };
 
-export const useInputPress = ({
-  onAction,
-  //inputPress,
+export const useInputTap = ({
+  handler,
   disabled = false,
 }: UseInputPressesProps) => {
-  //useUnchanging(inputPress);
-  useUnchanging(onAction);
+  useUnchanging(handler);
 
-  const interpretation = useInputStateInterpretation();
+  const inputStateTracker = useInputStateTracker();
 
   useEffect(() => {
     if (disabled) {
@@ -86,25 +77,9 @@ export const useInputPress = ({
      * this will add latency to input but is not used for anywhere where that matters
      */
     const check = () => {
-      for (const k of keys(interpretation.underlying.keyboardState.keys)) {
-        onAction(interpretation, { type: "key", input: k });
-        return;
-      }
-
-      for (const gp of navigator.getGamepads()) {
-        if (gp === null) {
-          continue;
-        }
-        for (const [buttonNumber, button] of gp.buttons.entries()) {
-          if (button.pressed) {
-            console.log("button pressed", buttonNumber);
-            onAction(interpretation, {
-              type: "gamepadButtons",
-              input: buttonNumber,
-            });
-          }
-        }
-        return;
+      const inputTap = inputStateTracker.inputTap();
+      if (inputTap !== undefined) {
+        handler(inputTap, inputStateTracker);
       }
     };
 
@@ -112,5 +87,5 @@ export const useInputPress = ({
     return () => {
       Ticker.shared.remove(check);
     };
-  }, [disabled, interpretation, onAction]);
+  }, [disabled, handler, inputStateTracker]);
 };
