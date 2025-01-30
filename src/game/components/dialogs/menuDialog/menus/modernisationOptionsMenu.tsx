@@ -25,8 +25,8 @@ const switchCurrentValue =
           className={clsx(
             "inline-block",
             value ?
-              "bg-shadowHalfbrite text-moss zx:bg-zxCyanDimmed zx:text-zxGreen"
-            : "bg-redShadowHalfbrite text-midRed zx:bg-zxRedDimmed zx:text-zxRed",
+              "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
+            : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
             className,
           )}
           noSlitWords
@@ -88,6 +88,12 @@ export const modernisationOptionsMenu: Menu = {
       label: "Show FPS",
       ValueComponent: switchCurrentValue(never),
       hint: `show frame rate`,
+    },
+    {
+      type: "switch",
+      label: "Analogue control",
+      ValueComponent: switchCurrentValue(never),
+      hint: `if you have an analogue joystick or gamepad with analogue sticks, enable this to walk in any direction, not just the usual four. This makes some original rooms easier.`,
     },
     {
       type: "switch",

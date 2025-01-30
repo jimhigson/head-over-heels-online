@@ -6,6 +6,7 @@ import { type BooleanAction } from "./InputState";
 import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 
 export type PressStatus =
   /** just started pressing this frame */
@@ -70,8 +71,57 @@ const isActionPressed = (
  */
 export class InputStateTracker {
   #lastFrame: FrameInput | undefined = undefined;
+  #directionVector: Xyz = originXyz;
+
+  /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
+  #tickUpdatedDirectionXy4 = () => {
+    let l;
+    let r;
+    let a;
+    let t;
+
+    // any new direction automatically wins
+    switch ("tap") {
+      case (l = this.currentActionPress("left")):
+        return unitVectors.left;
+      case (r = this.currentActionPress("right")):
+        return unitVectors.right;
+      case (a = this.currentActionPress("away")):
+        return unitVectors.away;
+      case (t = this.currentActionPress("towards")):
+        return unitVectors.towards;
+    }
+
+    const inputsCount =
+      (l !== "released" ? 1 : 0) +
+      (r !== "released" ? 1 : 0) +
+      (a !== "released" ? 1 : 0) +
+      (t !== "released" ? 1 : 0);
+
+    if (inputsCount > 1) {
+      // more than one input, and none just started (none was tap) use whatever we already had set
+      return this.#directionVector;
+    }
+    if (inputsCount === 1) {
+      switch ("hold") {
+        case l:
+          return unitVectors.left;
+        case r:
+          return unitVectors.right;
+        case a:
+          return unitVectors.away;
+        case t:
+          return unitVectors.towards;
+      }
+    }
+
+    // input count is zero, return the origin
+    return originXyz;
+  };
 
   #tick = () => {
+    this.#directionVector = this.#tickUpdatedDirectionXy4();
+
     this.#lastFrame = {
       // keyboardstate is modified in-place, so we need a copy:
       keyboardState: new Map(this.keyboardStateMap),
@@ -134,7 +184,7 @@ export class InputStateTracker {
   }
 
   get directionVector(): Xyz {
-    return originXyz;
+    return this.#directionVector;
   }
 
   startTicking() {

@@ -97,7 +97,7 @@ export const selectKeysMenu: Menu = {
               assign a key for both jump and carry
             </BitmapText>
           </div>
-          <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreenDimmed" />
+          <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreen" />
         </div>
         <SelectedItemHint className="text-metallicBlue zx:text-zxBlue" />
         <SelectKeysMenuFooter />

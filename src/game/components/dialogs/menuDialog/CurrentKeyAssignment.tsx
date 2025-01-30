@@ -6,7 +6,7 @@ import type { Key } from "../../../input/keys";
 import { CssSprite, MultipleBitmapText } from "../../Sprite";
 
 const specialCharClassName =
-  "text-moss zx:text-zxGreenDimmed selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxGreenDimmed";
+  "text-moss zx:text-zxGreen selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxGreen";
 
 const friendlyKeyName = (key: Key) => {
   const match = /(Numpad|F)(.*)/.exec(key);

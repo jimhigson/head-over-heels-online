@@ -14,11 +14,11 @@ export const inputPresetMenu: Menu = {
   Content() {
     return (
       <>
-        <BitmapText className="text-midRed zx:text-zxRedDimmed sprites-double-height ml-3">
+        <BitmapText className="text-midRed zx:text-zxRed sprites-double-height ml-3">
           Key presets
         </BitmapText>
-        <MenuItems className="text-metallicBlue zx:text-zxBlueDimmed selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreenDimmed" />
-        <SelectedItemHint className="text-shadow zx:text-zxWhiteDimmed" />
+        <MenuItems className="text-metallicBlue zx:text-zxBlue selectedMenuItem:text-moss zx:selectedMenuItem:text-zxMagenta" />
+        <SelectedItemHint className="text-shadow zx:text-zxMagenta" />
       </>
     );
   },

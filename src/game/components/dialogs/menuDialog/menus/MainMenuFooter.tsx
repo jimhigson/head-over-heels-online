@@ -5,7 +5,7 @@ export const MainMenuFooter = () => (
   <>
     <div className="flex justify-center gap-2 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix items-center">
-        <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
+        <BitmapText className="text-metallicBlue zx:text-zxBlack">
           1987 original
         </BitmapText>
         <div className="flex gap-1">
@@ -20,7 +20,7 @@ export const MainMenuFooter = () => (
         </div>
       </div>
       <div className="flex flex-col gap-y-oneScaledPix items-center">
-        <BitmapText className="text-pink zx:text-zxRedDimmed">
+        <BitmapText className="text-pink zx:text-zxBlack">
           2025 remake
         </BitmapText>
         <div className="flex">
@@ -32,17 +32,15 @@ export const MainMenuFooter = () => (
       </div>
     </div>
     <div className="absolute bottom-1">
-      <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
+      <BitmapText className="text-metallicBlue zx:text-zxBlack">
         https://
       </BitmapText>
-      <BitmapText className="text-pink zx:text-zxBlack">block</BitmapText>
-      <BitmapText className="text-highlightBeige zx:text-zxBlueDimmed">
+      <BitmapText className="text-pink zx:text-zxCyan">block</BitmapText>
+      <BitmapText className="text-highlightBeige zx:text-zxYellow">
         stack
       </BitmapText>
-      <BitmapText className="text-metallicBlue zx:text-zxRedDimmed">
-        .
-      </BitmapText>
-      <BitmapText className="text-moss zx:text-zxBlack">ing</BitmapText>
+      <BitmapText className="text-metallicBlue zx:text-zxBlack">.</BitmapText>
+      <BitmapText className="text-moss zx:text-zxWhite">ing</BitmapText>
     </div>
   </>
 );
