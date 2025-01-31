@@ -5,7 +5,7 @@ import type { BooleanAction, InputPress } from "../../input/InputState";
 import { useUnchanging } from "../../../utils/react/useEvent";
 
 import { Ticker } from "pixi.js";
-import type { InputStateTracker } from "../../input/InputStateTracker";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
@@ -57,7 +57,10 @@ export const useActionTap = ({
 };
 
 export type UseInputPressesProps = {
-  handler: (input: InputPress, inputStateTracker: InputStateTracker) => void;
+  handler: (
+    input: InputPress,
+    inputStateTracker: InputStateTrackerInterface,
+  ) => void;
   disabled?: boolean;
 };
 

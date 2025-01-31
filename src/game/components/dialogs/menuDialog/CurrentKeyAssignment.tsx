@@ -98,7 +98,11 @@ export const CurrentKeyAssignments = ({
     if (axisForAction === undefined) {
       return emptyArray;
     }
-    return state.userSettings.inputAssignment.axes[axisForAction.axis];
+    if (state.assigningInput?.action === action) {
+      return state.assigningInput.axes;
+    } else {
+      return state.userSettings.inputAssignment.axes[axisForAction.axis];
+    }
   });
 
   return (

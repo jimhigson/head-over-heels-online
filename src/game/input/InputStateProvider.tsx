@@ -6,15 +6,17 @@ import {
   maintainKeyboardState,
   type KeyboardStateMap,
 } from "./keyboardState";
+import type { InputStateTrackerInterface } from "./InputStateTracker";
 import { InputStateTracker } from "./InputStateTracker";
 
-const InputStateTrackerContext = createContext<InputStateTracker | null>(null);
+const InputStateTrackerContext =
+  createContext<InputStateTrackerInterface | null>(null);
 
 export const InputStateProvider = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
   const [keyboardState] = useState<KeyboardStateMap>(createEmptyKeyboardState);
-  const [inputStateTracker] = useState<InputStateTracker>(
+  const [inputStateTracker] = useState<InputStateTrackerInterface>(
     () => new InputStateTracker(keyboardState),
   );
 
@@ -37,7 +39,7 @@ export const InputStateProvider = ({
   );
 };
 
-export const useInputStateTracker = (): InputStateTracker => {
+export const useInputStateTracker = (): InputStateTrackerInterface => {
   const inputStateTracker = useContext(InputStateTrackerContext);
   if (inputStateTracker === null) {
     throw new Error("InputStateProvider required to use useInputState");

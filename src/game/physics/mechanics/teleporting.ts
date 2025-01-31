@@ -24,7 +24,7 @@ export function teleporting<RoomId extends string>(
 
   if (teleporting === null) {
     if (
-      jumpInput === "tap" &&
+      jumpInput !== "released" &&
       standingOn !== null &&
       isItemType("teleporter")(standingOn)
     ) {

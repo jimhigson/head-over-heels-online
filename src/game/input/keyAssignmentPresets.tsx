@@ -287,5 +287,3 @@ export const keyAssignmentPresets = {
 } satisfies Record<string, InputAssignmentPreset>;
 
 export type KeyAssignmentPresetName = keyof typeof keyAssignmentPresets;
-
-console.log(keyAssignmentPresets);

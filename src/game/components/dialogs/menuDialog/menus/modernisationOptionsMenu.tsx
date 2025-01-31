@@ -93,7 +93,7 @@ export const modernisationOptionsMenu: Menu = {
       type: "switch",
       label: "Analogue control",
       ValueComponent: switchCurrentValue(never),
-      hint: `*off*: walk in the original 4 directions: ⬅, ➡, ⬆, ⬇.
+      hint: `**off**: walk in the original 4 directions: *⬅, ➡, ⬆, ⬇*.
       
       controller/joystick with analogue sticks: "on" to walk in any direction, not just along the two axes.
       

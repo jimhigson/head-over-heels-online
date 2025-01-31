@@ -48,14 +48,26 @@ const axisPressThreshold = 0.5;
 const isGamepadAxisPressed = (
   frameInput: FrameInput,
   axis: number,
-  direction: 1 | -1,
+  /**
+   * if given, will only return true if the axis is moving in that direction. Otherwise,
+   * returns true if it is more than the threshold in either direction
+   */
+  direction?: 1 | -1,
 ) => {
   for (const gp of frameInput.gamepads) {
     if (gp === null || gp.axes.length <= axis) {
       continue;
     }
-    if (gp.axes[axis] * direction > axisPressThreshold) {
-      return true;
+    if (direction === undefined) {
+      // any direction
+      if (Math.abs(gp.axes[axis]) > axisPressThreshold) {
+        return true;
+      }
+    } else {
+      // specific direction only
+      if (gp.axes[axis] * direction > axisPressThreshold) {
+        return true;
+      }
     }
   }
   return false;
@@ -215,6 +227,16 @@ export class InputStateTracker {
           }
         }
       }
+      for (const [axisNumber, axisValue] of gp.axes.entries()) {
+        if (Math.abs(axisValue) > axisPressThreshold) {
+          if (
+            this.#lastFrame === undefined ||
+            !isGamepadAxisPressed(this.#lastFrame, axisNumber)
+          ) {
+            return { type: "gamepadAxes", input: axisNumber };
+          }
+        }
+      }
     }
   }
 
@@ -232,3 +254,14 @@ export class InputStateTracker {
     Ticker.shared.remove(this.#tick);
   }
 }
+
+// this is necessary to have a type that doesn't include the #hidden fields - why these stay
+// ont the class type I'm not sure
+export type InputStateTrackerInterface = Pick<
+  InputStateTracker,
+  | "currentActionPress"
+  | "inputTap"
+  | "directionVector"
+  | "startTicking"
+  | "stopTicking"
+>;

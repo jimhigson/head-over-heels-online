@@ -42,7 +42,7 @@ export type InputPress =
       /** for when an axis is used like a button (non-analogue mode) */
       type: "gamepadAxes";
       input: number;
-      direction: -1 | 1;
+      //direction: -1 | 1; nothing uses this
     }
   | {
       type: "gamepadButtons";

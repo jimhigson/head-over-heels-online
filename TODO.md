@@ -12,14 +12,7 @@
     [?] should portals only work for the current char/
     [?] make portals solid?    
 
-[ ] use joystick/control pad input
-    new input:
-    [ ] assigning new keys should work
-        - need to be able to mark keys as handled
-    [ ] marking as handled on gamepad inputs
-        - `interpretInputState` marks as handled for all actions...
-        - ... but can only check against handled for keyboard input (not gamepad buttons)
-        - ... because we don't know when they were first pressed
+
 
 [ ] why doesn't work in Safari/iOS?
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels

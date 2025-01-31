@@ -22,7 +22,7 @@ const PlayGameLabel = () => {
 
 export const mainMenu: Menu = {
   dialogClassName: "bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2",
-  borderClassName: "bg-metallicBlue zx:bg-zxRed",
+  borderClassName: "bg-metallicBlueHalfbrite zx:bg-zxRed",
   Content() {
     return (
       <>

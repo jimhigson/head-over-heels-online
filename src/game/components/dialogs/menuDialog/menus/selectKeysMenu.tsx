@@ -36,6 +36,8 @@ const useKeyAssignmentInput = () => {
   });
   useInputTap({
     handler: useCallback((inputPress, inputStateTracker) => {
+      console.log("useKeyAssignmentInput:: got input press", inputPress);
+
       if (
         inputStateTracker.currentActionPress("menu_openOrExit") !== "released"
       ) {

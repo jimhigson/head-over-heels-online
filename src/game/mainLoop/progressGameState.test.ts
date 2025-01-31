@@ -3,13 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/GameState";
 
 import type { PlayableItem } from "../physics/itemPredicates";
 import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
-import { createEmptyInputState } from "../input/InputState";
 
 import type {
   TestRoomId,
@@ -32,22 +30,11 @@ import {
 } from "../../_testUtils/playGameThrough";
 import type { ItemInPlay } from "../../model/ItemInPlay";
 import { blockSizePx } from "../../sprites/spritePivots";
-import { unitVectors } from "../../utils/vectors/unitVectors";
-const testFrameRates = [
-  25, // original game, PAL
-  29.97, // NTSC real
-  30, // NTSC almost
-  50, // double original (interlaced)
-  50.04, // double original (interlaced, measured)
-  60, // typical default
-  75, // typical/high
-  144, // high update rate
-  500, // highest available currently (2024) and maybe a bit silly!
-];
+import { testFrameRates } from "../../_testUtils/testFrameRates";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
@@ -71,13 +58,16 @@ describe("pickups", () => {
           },
         },
       },
-      inputState: { direction: unitVectors.left },
     });
 
     expect(headState(gameState).lives).toBe(8);
 
     // walk left for one second at 60fps:
-    playGameThrough(gameState);
+    playGameThrough(gameState, {
+      setupInitialInput(inputState) {
+        inputState.mockDirectionPressed = "left";
+      },
+    });
 
     // should have recorded collecting the pickup:
     expect(
@@ -103,7 +93,7 @@ describe("pickups", () => {
   });
 
   test("pickup can land on character", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -150,7 +140,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "head can jump between two blocks forming a ladder (%fHz)",
     (frameRate) => {
-      const gameState: GameState<TestRoomId> = basicGameState({
+      const gameState = basicGameState({
         firstRoomItems: {
           head: {
             type: "player",
@@ -170,39 +160,28 @@ describe("jumping", () => {
             config: { style: "organic" },
           },
         },
-        inputState: { direction: unitVectors.towards },
       });
 
       playGameThrough(gameState, {
         frameRate,
         until: 1200,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "towards";
+        },
         frameCallbacks: [
           function startJumpingSoonAfterTheStart(gameState) {
-            const inputState = {
-              ...createEmptyInputState(),
-              direction: unitVectors.towards,
-              jump:
-                gameState.gameTime > 100 &&
-                headState(gameState).position.z === 0,
-            };
+            const shouldPressJump =
+              gameState.gameTime > 100 && headState(gameState).position.z === 0;
+
+            gameState.inputStateTracker.setMockPressing(
+              "jump",
+              shouldPressJump,
+            );
 
             // since head gets into the gap, should not go past one block of height:
             expect(headState(gameState).position.z).toBeLessThan(
               blockSizePx.h + 1,
             );
-
-            /*            console.log(
-              headState(gameState).position,
-              headState(gameState).standingOn?.id ?? null,
-              "inputState.jump:",
-              inputState.jump,
-            );*/
-
-            // stop pressing jump after a short time
-            return {
-              ...gameState,
-              inputStateTracker: inputState,
-            };
           },
         ],
       });
@@ -215,7 +194,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "doesn't snag on the boundary between bounding boxes on the way up a jump (%iHz)",
     (frameRate) => {
-      const gameState: GameState<TestRoomId> = basicGameState({
+      const gameState = basicGameState({
         firstRoomItems: {
           head: {
             type: "player",
@@ -236,12 +215,15 @@ describe("jumping", () => {
             config: { style: "organic" },
           },
         },
-        inputState: { direction: unitVectors.towards, jump: true },
       });
 
       playGameThrough(gameState, {
         until: 1_500,
         frameRate,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "towards";
+          mockInputStateTracker.mockPressing("jump");
+        },
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
 
@@ -254,7 +236,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "doesn't snag on the boundary between bounding boxes while falling (%iHz)",
     (frameRate) => {
-      const gameState: GameState<TestRoomId> = basicGameState({
+      const gameState = basicGameState({
         firstRoomItems: {
           head: {
             type: "player",
@@ -280,7 +262,6 @@ describe("jumping", () => {
             config: { style: "organic" },
           },
         },
-        inputState: { direction: unitVectors.towards },
       });
 
       // TODO: test that standing on is ull all the way though the fall - should never be a block
@@ -289,6 +270,9 @@ describe("jumping", () => {
         // plenty of time to reach the floor:
         until: 3_000,
         frameRate,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "towards";
+        },
         frameCallbacks: [
           stopJumpingAMomentAfterStartingPlay,
           (gameState) => {
@@ -318,7 +302,7 @@ describe("doors", () => {
       z: 0,
     },
   ])("moving from first room to second through door", (startPosition) => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
@@ -340,10 +324,12 @@ describe("doors", () => {
           config: { direction: "left", toRoom: firstRoomId },
         },
       },
-      inputState: { direction: unitVectors.right },
     });
 
     playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
       until: 2_000,
     });
     expect(selectCurrentRoomState(gameState).id).toBe("secondRoom");
@@ -352,7 +338,7 @@ describe("doors", () => {
 
 describe("teleporter", () => {
   test("can teleport to the next room", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
@@ -374,14 +360,18 @@ describe("teleporter", () => {
           config: { style: "organic" },
         },
       },
-      inputState: { jump: true },
     });
 
     playGameThrough(gameState, {
+      frameRate: 15,
+
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockPressing("jump");
+      },
       frameCallbacks(gameState) {
         if (gameState.characterRooms.heels?.id === "secondRoom") {
           // stop jumping when gone through the teleporter
-          gameState.inputStateTracker.jump = false;
+          gameState.inputStateTracker.mockNotPressing("jump");
         }
       },
       until(gameState) {
@@ -393,7 +383,7 @@ describe("teleporter", () => {
 
 describe("conveyors", () => {
   test("items move on conveyors and can slide on top of other items", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         portableBlock: {
           type: "portableBlock",
@@ -446,7 +436,7 @@ describe("conveyors", () => {
   });
 
   test("conveyors can take item around corners (see blacktooth26)", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         portableBlock: {
           type: "portableBlock",
@@ -499,7 +489,7 @@ describe("conveyors", () => {
 
 describe("deadly blocks", () => {
   test("player loses life on touching volcano", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
@@ -538,7 +528,7 @@ describe("deadly blocks", () => {
 
 describe("snapping stationary items to pixel grid", () => {
   test("snaps to grid after moving and stopping", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         head: {
           type: "player",
@@ -548,10 +538,12 @@ describe("snapping stationary items to pixel grid", () => {
           },
         },
       },
-      inputState: { direction: unitVectors.away },
     });
 
     playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+      },
       frameCallbacks: stopAllInputAfter(400),
       until: 500,
     });
@@ -592,7 +584,7 @@ describe("lifts", () => {
   test("heels stays stood on a lift", () => {
     // this is failing because heels hasn't had enough time to fall fast enough to match the lift's fall speed
 
-    const gameState: GameState<TestRoomId> = basicGameState(playerOnALift);
+    const gameState = basicGameState(playerOnALift);
     const heelsStandingOnPerFrame: Array<
       PlayableItem<"heels", TestRoomId>["state"]["standingOn"]
     > = [];
@@ -612,7 +604,7 @@ describe("lifts", () => {
   });
 
   test("player on a lift reaches lift height", () => {
-    const gameState: GameState<TestRoomId> = basicGameState(playerOnALift);
+    const gameState = basicGameState(playerOnALift);
 
     let maxHeight = 0;
 
@@ -629,7 +621,7 @@ describe("lifts", () => {
   });
 
   test("player under a lift blocks it", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -660,7 +652,7 @@ describe("lifts", () => {
   });
 
   test("lift can take player to next room vertically", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -704,7 +696,7 @@ describe("lifts", () => {
   });
 
   test("player partially on lift can be deposited and picked up", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -757,7 +749,7 @@ describe("lifts", () => {
   });
 
   test("player squashed between rising lift and higher block stays in place standing on lift", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -816,13 +808,15 @@ describe("pushing", () => {
         },
       },
     },
-    inputState: { direction: unitVectors.away },
   };
 
   test("player pushes a block until reaching an obstruction", () => {
-    const gameState: GameState<TestRoomId> = basicGameState(withBlockToPush);
+    const gameState = basicGameState(withBlockToPush);
 
     playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+      },
       until: 2_000,
     });
 
@@ -835,7 +829,7 @@ describe("pushing", () => {
   });
 
   test("can push multiple blocks in a row", () => {
-    const gameState: GameState<TestRoomId> = basicGameState({
+    const gameState = basicGameState({
       ...withBlockToPush,
       firstRoomItems: {
         ...withBlockToPush.firstRoomItems,
@@ -850,6 +844,9 @@ describe("pushing", () => {
     });
 
     playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+      },
       until: 2_000,
     });
 
@@ -870,8 +867,8 @@ describe("jumping", () => {
 });
 
 describe("dissapearing items", () => {
-  const gameStateWithDisappearingBlocks: GameState<TestRoomId> = basicGameState(
-    {
+  const gameStateWithDisappearingBlocks = () =>
+    basicGameState({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -925,47 +922,35 @@ describe("dissapearing items", () => {
       firstRoomProps: {
         floor: "deadly",
       },
-    },
-  );
+    });
 
   test("can jump along a line of disappearing blocks", () => {
-    playGameThrough(
-      {
-        ...gameStateWithDisappearingBlocks,
-        inputStateTracker: {
-          ...createEmptyInputState(),
-          jump: true,
-          direction: unitVectors.away,
-        },
+    playGameThrough(gameStateWithDisappearingBlocks(), {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+        mockInputStateTracker.mockPressing("jump");
       },
-      {
-        frameCallbacks(gameState) {
-          // should not lose any lives
-          expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
-        },
-        until(gameState) {
-          // got two more lives
-          return heelsState(gameState).lives === 10;
-        },
+      frameCallbacks(gameState) {
+        // should not lose any lives
+        expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
       },
-    );
+      until(gameState) {
+        // got two more lives
+        return heelsState(gameState).lives === 10;
+      },
+    });
   });
   test("can not walk along a line of disappearing blocks", () => {
-    playGameThrough(
-      {
-        ...gameStateWithDisappearingBlocks,
-        inputStateTracker: {
-          ...createEmptyInputState(),
-          direction: unitVectors.away /* not jumping */,
-        },
+    playGameThrough(gameStateWithDisappearingBlocks(), {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+        // not jumping
       },
-      {
-        until(gameState) {
-          // lost a life
-          return heelsState(gameState).lives === 7;
-        },
+      until(gameState) {
+        // lost a life
+        return heelsState(gameState).lives === 7;
       },
-    );
+    });
   });
   test("can jump along a line of pickups, collecting them", () => {
     const gameState = basicGameState({
@@ -1013,27 +998,21 @@ describe("dissapearing items", () => {
       },
     });
 
-    playGameThrough(
-      {
-        ...gameState,
-        inputStateTracker: {
-          ...createEmptyInputState(),
-          jump: true,
-          direction: unitVectors.away,
-        },
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "away";
+        mockInputStateTracker.mockPressing("jump");
       },
-      {
-        frameCallbacks(gameState) {
-          // should not lose any lives. If this happens, was not able to jump off pickups as they are collected
-          // and fell onto the deadly floor
-          expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
-        },
-        until(gameState) {
-          // got 4 x 2 more lives
-          return heelsState(gameState).lives === 16;
-        },
+      frameCallbacks(gameState) {
+        // should not lose any lives. If this happens, was not able to jump off pickups as they are collected
+        // and fell onto the deadly floor
+        expect(heelsState(gameState).lives).toBeGreaterThanOrEqual(8);
       },
-    );
+      until(gameState) {
+        // got 4 x 2 more lives
+        return heelsState(gameState).lives === 16;
+      },
+    });
   });
 });
 

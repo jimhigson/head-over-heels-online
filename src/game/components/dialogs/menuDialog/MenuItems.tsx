@@ -14,7 +14,7 @@ import {
 } from "../../../../store/gameMenusSlice";
 import { store } from "../../../../store/store";
 
-const chooseMenuItemActions = ["menu_select", "jump"] as const;
+const menuSelectOrJump = ["menu_select", "jump"] as const;
 
 const useMenuNavigationInput = () => {
   const disabled = useIsAssigningKeys();
@@ -35,10 +35,8 @@ const useMenuNavigationInput = () => {
     disabled,
   });
   useActionTap({
-    action: chooseMenuItemActions,
-    handler: useCallback((a) => {
-      console.log("tap on", a);
-
+    action: menuSelectOrJump,
+    handler: useCallback(() => {
       store.dispatch(menuItemChosen());
     }, []),
     disabled,
