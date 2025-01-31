@@ -2,7 +2,7 @@ import { store } from "../../store/store";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import type { InputPress } from "./InputState";
-import { type BooleanAction } from "./InputState";
+import { actionToAxis, type BooleanAction } from "./InputState";
 import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";
@@ -43,12 +43,31 @@ const isGamepadButtonPressed = (
   return false;
 };
 
+const axisPressThreshold = 0.5;
+
+const isGamepadAxisPressed = (
+  frameInput: FrameInput,
+  axis: number,
+  direction: 1 | -1,
+) => {
+  for (const gp of frameInput.gamepads) {
+    if (gp === null || gp.axes.length <= axis) {
+      continue;
+    }
+    if (gp.axes[axis] * direction > axisPressThreshold) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const isActionPressed = (
   frameInput: FrameInput,
   action: BooleanAction,
 ): boolean => {
-  const inputAssignmentForAction =
-    store.getState().userSettings.inputAssignment[action];
+  const { inputAssignment } = store.getState().userSettings;
+
+  const inputAssignmentForAction = inputAssignment.presses[action];
 
   for (const key of inputAssignmentForAction.keys) {
     if (isKeyPressed(frameInput, key)) {
@@ -59,6 +78,22 @@ const isActionPressed = (
   for (const button of inputAssignmentForAction.gamepadButtons) {
     if (isGamepadButtonPressed(frameInput, button)) {
       return true;
+    }
+  }
+
+  // axis that are faking being buttons. Eg, lots of gamepads without analogue sticks use axes even for
+  // binary input (dpads), rather than follow the w3c 'standard' layout of representing
+  // dpads as buttons
+  const actionAsAxis = actionToAxis(action);
+  if (actionAsAxis !== undefined) {
+    const gamepadAxes = inputAssignment.axes[actionAsAxis.axis];
+
+    for (const gamepadAxis of gamepadAxes) {
+      if (
+        isGamepadAxisPressed(frameInput, gamepadAxis, actionAsAxis.direction)
+      ) {
+        return true;
+      }
     }
   }
 

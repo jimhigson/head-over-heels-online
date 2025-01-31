@@ -2,7 +2,6 @@ import { BitmapText } from "../Sprite";
 import type { BooleanAction } from "../../input/InputState";
 import { CurrentKeyAssignments } from "./menuDialog/CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
-import { useAppSelector } from "../../../store/hooks";
 
 export const PressToContinueBanner = ({
   action,
@@ -13,10 +12,6 @@ export const PressToContinueBanner = ({
   className?: string;
   keyClassName?: string;
 }) => {
-  const inputAssignment = useAppSelector((state) => {
-    return state.userSettings.inputAssignment.hold;
-  });
-
   return (
     <div
       className={twMerge(
@@ -34,7 +29,7 @@ export const PressToContinueBanner = ({
         <CurrentKeyAssignments
           className="inline"
           keyClassName={keyClassName}
-          assignments={inputAssignment}
+          action="hold"
         />
         <BitmapText>)</BitmapText>
       </div>

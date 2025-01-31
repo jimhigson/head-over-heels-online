@@ -93,7 +93,11 @@ export const modernisationOptionsMenu: Menu = {
       type: "switch",
       label: "Analogue control",
       ValueComponent: switchCurrentValue(never),
-      hint: `if you have an analogue joystick or gamepad with analogue sticks, enable this to walk in any direction, not just the usual four. This makes some original rooms easier.`,
+      hint: `*off*: walk in the original 4 directions: ⬅, ➡, ⬆, ⬇.
+      
+      controller/joystick with analogue sticks: "on" to walk in any direction, not just along the two axes.
+      
+      Or, with a keyboard/dpad, "on" allows walking in eight directions. This makes some original rooms easier.`,
     },
     {
       type: "switch",

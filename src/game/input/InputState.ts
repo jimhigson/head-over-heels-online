@@ -1,4 +1,4 @@
-import type { DirectionXy4 } from "../../utils/vectors/vectors";
+import type { AxisXy, DirectionXy4 } from "../../utils/vectors/vectors";
 import { directionsXy4 } from "../../utils/vectors/vectors";
 import type { Key } from "./keys";
 
@@ -20,14 +20,13 @@ export type BooleanAction = (typeof booleanActions)[number];
 
 export type ActionInputAssignment = {
   keys: Key[];
-  gamepadAxes: number[];
   gamepadButtons: number[];
 };
 
-export type InputAssignment = Record<
-  BooleanAction | DirectionXy4,
-  ActionInputAssignment
->;
+export type InputAssignment = {
+  presses: Record<BooleanAction | DirectionXy4, ActionInputAssignment>;
+  axes: { x: number[]; y: number[] };
+};
 
 export type InputAssignmentPreset = {
   inputAssignment: InputAssignment;
@@ -40,10 +39,41 @@ export type InputPress =
       input: ActionInputAssignment["keys"][number];
     }
   | {
+      /** for when an axis is used like a button (non-analogue mode) */
       type: "gamepadAxes";
-      input: ActionInputAssignment["gamepadAxes"][number];
+      input: number;
+      direction: -1 | 1;
     }
   | {
       type: "gamepadButtons";
       input: ActionInputAssignment["gamepadButtons"][number];
     };
+
+// for actions with an axis equivalent, get the axis and direction of the action:
+export const actionToAxis = (
+  action: BooleanAction,
+): { axis: AxisXy; direction: -1 | 1 } | undefined => {
+  return (
+    action === "left" ?
+      {
+        axis: "x",
+        direction: -1,
+      }
+    : action === "right" ?
+      {
+        axis: "x",
+        direction: 1,
+      }
+    : action === "towards" ?
+      {
+        axis: "y",
+        direction: 1,
+      }
+    : action === "away" ?
+      {
+        axis: "y",
+        direction: -1,
+      }
+    : undefined
+  );
+};

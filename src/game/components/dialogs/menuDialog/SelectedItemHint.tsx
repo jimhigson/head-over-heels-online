@@ -3,8 +3,8 @@ import {
   useCurrentMenu,
   useCurrentMenuSelectedItemIndex,
 } from "../../../../store/selectors";
-import { BitmapText } from "../../Sprite";
 import { multilineTextClass } from "./multilineTextClass";
+import { BitmapText } from "../../Sprite";
 
 export const SelectedItemHint = ({ className }: { className?: string }) => {
   const menu = useCurrentMenu();

@@ -13,7 +13,7 @@ import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
 import { calculateUpscale } from "../game/render/calculateUpscale";
 import { zxSpectrumResolution } from "../originalGame";
-import type { Xy } from "../utils/vectors/vectors";
+import { directionsXy4, type Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
 import { always } from "../utils/always";
@@ -59,7 +59,11 @@ export type GameMenusState = {
    * for the key assignment menu, the key currently being assigned
    */
   assigningInput:
-    | { action: BooleanAction; inputs: ActionInputAssignment }
+    | {
+        action: BooleanAction;
+        presses: ActionInputAssignment;
+        axes: number[];
+      }
     | undefined;
 
   userSettings: UserSettings;
@@ -163,17 +167,24 @@ export const gameMenusSlice = createSlice({
         }
       };
 
-      const { inputs } = state.assigningInput;
+      const { presses: actionInput, axes, action } = state.assigningInput;
       switch (payload.type) {
         case "key":
-          addIfUnique(inputs.keys, payload.input);
-          break;
-        case "gamepadAxes":
-          addIfUnique(inputs.gamepadAxes, payload.input);
+          addIfUnique(actionInput.keys, payload.input);
           break;
         case "gamepadButtons":
-          addIfUnique(inputs.gamepadButtons, payload.input);
+          addIfUnique(actionInput.gamepadButtons, payload.input);
           break;
+        case "gamepadAxes": {
+          const actionCanHaveAxisAssigned = (
+            directionsXy4 as Readonly<string[]>
+          ).includes(action);
+
+          if (actionCanHaveAxisAssigned) {
+            addIfUnique(axes, payload.input);
+          }
+          break;
+        }
         default:
           payload satisfies never;
       }
@@ -182,16 +193,23 @@ export const gameMenusSlice = createSlice({
       if (state.assigningInput === undefined) {
         throw new Error("illegal action for state");
       }
-      const { action, inputs } = state.assigningInput;
+      const { action, presses: actionInput, axes } = state.assigningInput;
 
       const totalInputs =
-        inputs.keys.length +
-        inputs.gamepadButtons.length +
-        inputs.gamepadAxes.length;
+        actionInput.keys.length +
+        actionInput.gamepadButtons.length +
+        axes.length;
 
       if (totalInputs > 0) {
-        // the user inputted something - use it
-        state.userSettings.inputAssignment[action] = inputs;
+        // the user inputted something - use the boolean actions:
+        state.userSettings.inputAssignment.presses[action] = actionInput;
+        // copy axes if we're assigning something that can use them
+        if (action === "left" || action === "right") {
+          state.userSettings.inputAssignment.axes.x = axes;
+        }
+        if (action === "towards" || action === "away") {
+          state.userSettings.inputAssignment.axes.y = axes;
+        }
       }
       state.assigningInput = undefined;
     },
@@ -244,7 +262,8 @@ export const gameMenusSlice = createSlice({
         case "key":
           state.assigningInput = {
             action: selectedMenuItem.action,
-            inputs: { gamepadAxes: [], gamepadButtons: [], keys: [] },
+            presses: { gamepadButtons: [], keys: [] },
+            axes: [],
           };
           break;
 
