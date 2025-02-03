@@ -6,7 +6,7 @@ import { touchTriggersOnStand } from "./touchTriggersOnStand";
 import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { setStandingOn } from "../../gameState/mutators/modifyStandingOn";
-import { applyMechanicsResults } from "../../mainLoop/tickItem";
+import { applyMechanicsResults } from "src/game/mainLoop/applyMechanicsResults";
 
 export const handleItemTouchingDissapearing = <RoomId extends string>(
   e: ItemTouchEvent<RoomId>,

@@ -1,10 +1,11 @@
 import { twMerge } from "tailwind-merge";
+
+import { multilineTextClass } from "./multilineTextClass";
+import { BitmapText } from "../../Sprite";
 import {
   useCurrentMenu,
   useCurrentMenuSelectedItemIndex,
-} from "../../../../store/selectors";
-import { multilineTextClass } from "./multilineTextClass";
-import { BitmapText } from "../../Sprite";
+} from "../../../../store/menuSelectors";
 
 export const SelectedItemHint = ({ className }: { className?: string }) => {
   const menu = useCurrentMenu();

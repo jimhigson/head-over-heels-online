@@ -2,8 +2,8 @@ import type { EmptyObject } from "type-fest";
 import { menus } from "./menus";
 import { twMerge } from "tailwind-merge";
 import type { OpenMenu } from "../../../../store/gameMenusSlice";
-import { useMenus } from "../../../../store/selectors";
 import { Dialog } from "../../../../components/ui/dialog";
+import { useMenus } from "../../../../store/menuSelectors";
 
 const MenuDialogInner = (props: { openMenus: OpenMenu[] }) => {
   const { openMenus } = props;

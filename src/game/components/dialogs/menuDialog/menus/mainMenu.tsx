@@ -2,15 +2,8 @@ import { BitmapText } from "../../../Sprite";
 import { type Menu } from "../menus";
 import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";
-import type { TailwindPalette } from "../../../../../../tailwind.config";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
-
-export const mainMenuCycle = [
-  "text-pink zx:text-zxCyan",
-  "text-highlightBeige zx:text-zxYellow",
-  "text-moss zx:text-zxWhite",
-] satisfies Array<`text-${TailwindPalette} zx:text-${TailwindPalette}`>;
 
 const PlayGameLabel = () => {
   const gameRunning = useAppSelector((state) => state.gameRunning);

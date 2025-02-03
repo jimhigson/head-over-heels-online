@@ -1,7 +1,7 @@
 import type { Menu } from "../menus";
 import { BitmapText } from "../../../Sprite";
 import { backMenuItem } from "../backMenuItem";
-import { mainMenuCycle } from "./mainMenu";
+import { mainMenuCycle } from "./mainMenuCycle";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { MenuItems } from "../MenuItems";
 import { useAppSelector } from "../../../../../store/hooks";

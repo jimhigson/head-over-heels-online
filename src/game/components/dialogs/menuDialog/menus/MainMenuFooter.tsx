@@ -1,5 +1,5 @@
 import { BitmapText } from "../../../Sprite";
-import { mainMenuCycle } from "./mainMenu";
+import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuFooter = () => (
   <>

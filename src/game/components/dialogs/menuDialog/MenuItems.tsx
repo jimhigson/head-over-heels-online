@@ -1,10 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { MenuItemComponent } from "./MenuItemComponent";
-import {
-  useCurrentMenu,
-  useCurrentMenuSelectedItemIndex,
-  useIsAssigningKeys,
-} from "../../../../store/selectors";
+import { useIsAssigningKeys } from "../../../../store/selectors";
 import { useActionTap } from "../useActionInput";
 import { useCallback } from "react";
 import {
@@ -13,6 +9,10 @@ import {
   menuUp,
 } from "../../../../store/gameMenusSlice";
 import { store } from "../../../../store/store";
+import {
+  useCurrentMenu,
+  useCurrentMenuSelectedItemIndex,
+} from "../../../../store/menuSelectors";
 
 const menuSelectOrJump = ["menu_select", "jump"] as const;
 

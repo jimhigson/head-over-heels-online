@@ -1,5 +1,9 @@
 import { Container } from "pixi.js";
-import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  ItemInPlayType,
+  ItemInPlay,
+  AnyItemInPlay,
+} from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
@@ -7,7 +11,19 @@ import type { ItemAppearance } from "../itemAppearances/appearanceUtils";
 import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { ItemRenderProps } from "../itemAppearances/ItemRenderProps";
 import type { Renderer, RenderContext } from "../Renderer";
-import { assignMouseActions } from "./createItemRenderer";
+
+const assignMouseActions = <RoomId extends string>(
+  item: AnyItemInPlay<RoomId>,
+  container: Container,
+  gameState: GameState<RoomId>,
+) => {
+  if (container !== undefined) {
+    container.eventMode = "static";
+    container.on("pointertap", () => {
+      gameState.events.emit("itemClicked", { item, container });
+    });
+  }
+};
 
 export class ItemAppearanceRenderer<
   T extends ItemInPlayType,

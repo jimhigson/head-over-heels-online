@@ -3,7 +3,6 @@ import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type {
-  AnyItemInPlay,
   UnknownItemInPlay,
 } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
@@ -14,19 +13,6 @@ import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { SetRequired } from "type-fest";
 import { selectIsPaused } from "../../../store/selectors";
-
-export const assignMouseActions = <RoomId extends string>(
-  item: AnyItemInPlay<RoomId>,
-  container: Container,
-  gameState: GameState<RoomId>,
-) => {
-  if (container !== undefined) {
-    container.eventMode = "static";
-    container.on("pointertap", () => {
-      gameState.events.emit("itemClicked", { item, container });
-    });
-  }
-};
 
 const hasShadowMask = (
   item: UnknownItemInPlay,

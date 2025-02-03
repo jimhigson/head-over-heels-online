@@ -7,8 +7,8 @@ import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import {
   loadItemFromJson,
-  defaultBaseState,
 } from "../gameState/loadRoom/loadItem";
+import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 
 const player = loadPlayer({
   type: "player",
