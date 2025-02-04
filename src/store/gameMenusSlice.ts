@@ -77,7 +77,7 @@ export type GameMenusState = {
   cheatsOn: boolean;
 };
 
-const initialState: GameMenusState = {
+export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     inputAssignment: keyAssignmentPresets.default.inputAssignment,
     livesModel: "original",
@@ -131,7 +131,7 @@ const initialState: GameMenusState = {
  */
 export const gameMenusSlice = createSlice({
   name: "gameMenus",
-  initialState,
+  initialState: initialGameMenuSliceState,
   reducers: {
     setUpscale(state, { payload: upscale }: PayloadAction<Upscale>) {
       state.upscale = upscale;

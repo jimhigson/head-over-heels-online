@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import type { GameMenusState } from "./gameMenusSlice";
-import { gameMenusSlice } from "./gameMenusSlice";
+import { gameMenusSlice, initialGameMenuSliceState } from "./gameMenusSlice";
 import { listenerMiddleware } from "./listener";
 import storage from "redux-persist/lib/storage";
+import type { PersistConfig, PersistedState } from "redux-persist";
 import {
   persistReducer,
   FLUSH,
@@ -13,16 +14,44 @@ import {
   PURGE,
   REGISTER,
   persistStore,
+  createMigrate,
 } from "redux-persist";
+import { pick } from "../utils/pick";
 
-const gameMenusSlicePersistConfig = {
+/**
+ * A non-migration migration - just throws the user's config away and reverts to
+ * the original starting state of the store
+ */
+const revertToOriginalStateMigration = (
+  state: PersistedState,
+): PersistedState => {
+  const migrateTo = pick(initialGameMenuSliceState, "userSettings");
+
+  console.log(
+    "migrating state: persisted is:",
+    state,
+    "am reverting to initial (partial) state:",
+    migrateTo,
+  );
+
+  // have to hack it to accept this without the _persist key:
+  // but docs seem to say it isn't needed. I think redux-persist has its
+  // types wrong here.
+  // https://github.com/rt2zz/redux-persist/blob/master/docs/migrations.md
+  return migrateTo as unknown as PersistedState;
+};
+
+const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 2,
-  migrations: {
-    // migrating to v2 - throw out old config - not enough users yet to
-    // be worth writing a migration script
-    2: () => ({}),
-  },
+  version: 3,
+  migrate: createMigrate(
+    {
+      1: revertToOriginalStateMigration,
+      2: revertToOriginalStateMigration,
+      3: revertToOriginalStateMigration,
+    },
+    { debug: true },
+  ),
   storage,
   whitelist: [`userSettings` satisfies keyof GameMenusState],
 };
