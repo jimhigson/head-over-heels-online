@@ -33,7 +33,7 @@ const markdownComponents: CustomComponentsOption = {
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
       // clear left allows to go below other lis that have images in them:
-      <div className="mb-1 clear-left">
+      <div className={`mb-1 clear-left ${multilineTextClass}`}>
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </div>
     );

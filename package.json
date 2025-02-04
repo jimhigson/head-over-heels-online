@@ -43,7 +43,7 @@
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
-    "snarkdown-in-react": "^2.0.0",
+    "snarkdown-in-react": "^2.0.1",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
     "wouter": "^3.3.5"
