@@ -25,9 +25,13 @@
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
+
+
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
         - nope, nothing calls the Color constructor on initial load
+    look into: https://www.npmjs.com/package/madge https://www.npmjs.com/package/dependency-cruiser
+    - we now use the ticker, but could load just @pixi/ticker
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
 [ ] show FPS counter as an option (lean on pixi to give fps)    
@@ -43,6 +47,9 @@
 [ ] (maybe) option to turn shadows off
 [ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
 [ ] compare against original for how far player can edge up on a block
+[ ] upgrade to tw 4
+[ ] tailwind - zx class to do dimmed on fg and bg in one
+[ ] remove radix form dialogs - isn't really doing much for us!
 [ ] show some stats in game over menu - at least
     [ ] score (???)
     [ ] rooms explored 
@@ -57,6 +64,13 @@
 [ ] option to turn off extra items should work
 [ ] ELERI cheat
 
+```
+// behavour to 'smooth' without ruining the appearnce to scroll immediately (maybe instant first time)
+.scrollTo({
+        top: newScrollTop,
+        behavior: "instant",
+      });
+```
 
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
@@ -121,3 +135,13 @@ Level ideas
 ===========
 [ ] have to shoot a switch with donuts
 [ ] have to make monster touch joystick
+
+
+
+
+  • Circular Dependencies
+  1) src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx -> src/store/menuSelectors.ts
+  2) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx -> src/game/components/dialogs/useActionInput.ts -> src/game/input/InputStateProvider.tsx -> src/game/input/InputStateTracker.ts
+  3) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx
+  4) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/selectKeysMenu.tsx
+  5) src/game/physics/moveItem.ts -> src/game/physics/handleTouch/handleItemsTouchingItems.ts -> src/game/physics/handleTouch/handlePlayerTouchingJoystick.ts

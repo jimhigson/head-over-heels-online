@@ -32,6 +32,8 @@ export const manualPages = {
   credits: rawPages["./credits.md"],
 };
 
+export type ManualPageName = keyof typeof manualPages;
+
 export const markdownPages = {
   ...manualPages,
   teleportBack: rawPages["./teleportBack.md"],

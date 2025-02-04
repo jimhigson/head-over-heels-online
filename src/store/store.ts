@@ -14,7 +14,6 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
-import { addListeners } from "./storeFlow/addListeners";
 
 const gameMenusSlicePersistConfig = {
   key: "hohol/gameMenus/userSettings",
@@ -42,8 +41,6 @@ export const store = configureStore({
       },
     }).prepend(listenerMiddleware.middleware),
 });
-
-addListeners();
 
 export const persistor = persistStore(store);
 

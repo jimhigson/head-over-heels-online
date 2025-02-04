@@ -2,7 +2,7 @@ import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import { transformObject } from "../../../../utils/entries";
 import { backMenuItem } from "./backMenuItem";
 import { MenuItems } from "./MenuItems";
-import { MenuMarkdown } from "./MenuMarkdown";
+import { MarkdownDialog } from "./MarkdownDialog";
 import type { Menu } from "./menus";
 
 export const markdownMenus = transformObject(
@@ -18,7 +18,7 @@ export const markdownMenus = transformObject(
         Content() {
           return (
             <>
-              <MenuMarkdown
+              <MarkdownDialog
                 markdown={markdown}
                 className={
                   "overflow-y-scroll " +

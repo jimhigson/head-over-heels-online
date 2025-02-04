@@ -44,8 +44,6 @@ export const createEmptyKeyboardState = (): KeyboardStateMap => new Map();
  * @param state mutable state to write the keyboard state to
  */
 export const maintainKeyboardState = (state: KeyboardStateMap) => {
-  console.log("maintaining keyboard state with", maintainKeyboardState);
-
   const keyDownHandler = (keyboardEvent: KeyboardEvent): void => {
     const stdKey = stdKeyFromKeyboardEvent(keyboardEvent);
 

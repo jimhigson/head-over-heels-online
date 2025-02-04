@@ -1,4 +1,4 @@
-import type { TailwindPalette } from "../../../../../../tailwind.config";
+import type { TailwindPalette } from "../../../../../../../tailwind.config";
 
 export const mainMenuCycle = [
   "text-pink zx:text-zxCyan",

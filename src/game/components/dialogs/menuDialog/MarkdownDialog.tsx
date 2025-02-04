@@ -5,19 +5,22 @@ import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import { multilineTextClass } from "./multilineTextClass";
+import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
+import { Dialog } from "../../../../components/ui/dialog";
+import { MenuItems } from "./MenuItems";
+import { BackMenuItem } from "./BackMenuItem";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
 
-export const MenuMarkdown = ({
-  markdown,
-  className,
+export const MarkdownDialog = ({
+  pageName,
 }: {
-  markdown: string;
-  className?: string;
+  pageName: MarkdownPageName;
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const scaleFactor = useTotalUpscale();
+  const markdown = markdownPages[pageName];
 
   const scrollScroll = useCallback(
     (direction: "down" | "up") => {
@@ -54,8 +57,25 @@ export const MenuMarkdown = ({
   });
 
   return (
-    <div className={twMerge(multilineTextClass, className)} ref={contentRef}>
-      <BlockyMarkdown markdown={markdown} />
-    </div>
+    <Dialog
+      className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack"
+      borderClassName="bg-midGrey"
+    >
+      <div
+        className={twMerge(
+          multilineTextClass,
+          "overflow-y-scroll " +
+            "scrollbar  scrollbar-w-1 " +
+            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
+            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan",
+        )}
+        ref={contentRef}
+      >
+        <BlockyMarkdown markdown={markdown} />
+      </div>
+      <MenuItems className="hidden">
+        <BackMenuItem />
+      </MenuItems>
+    </Dialog>
   );
 };

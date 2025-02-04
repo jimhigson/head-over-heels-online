@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../Sprite";
+import { BitmapText } from "../../../../Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuHeading = () => (

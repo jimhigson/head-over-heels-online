@@ -1,15 +1,5 @@
-import { twMerge } from "tailwind-merge";
-
-import { multilineTextClass } from "./multilineTextClass";
-import { BitmapText } from "../../Sprite";
-import {
-  useCurrentMenu,
-  useCurrentMenuSelectedItemIndex,
-} from "../../../../store/menuSelectors";
-
 export const SelectedItemHint = ({ className }: { className?: string }) => {
-  const menu = useCurrentMenu();
-  const selectedItemIndex = useCurrentMenuSelectedItemIndex();
+  /* TODO: portal through from menuitem to here
 
   const selectedItemHint =
     menu === undefined || selectedItemIndex === undefined ?
@@ -24,5 +14,7 @@ export const SelectedItemHint = ({ className }: { className?: string }) => {
     <BitmapText className={twMerge("block", multilineTextClass, className)}>
       {selectedItemHint}
     </BitmapText>
-  );
+  );*/
+
+  return null;
 };

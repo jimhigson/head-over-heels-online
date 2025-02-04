@@ -1,6 +1,15 @@
-import type { MenuItem } from "./MenuItem";
+import { backToParentMenu } from "../../../../store/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
+import { MenuItem } from "./MenuItem";
 
-export const backMenuItem: MenuItem = {
-  label: "Back",
-  type: "back",
+export const BackMenuItem = () => {
+  return (
+    <MenuItem
+      id="back"
+      label="Back"
+      flipLeader
+      doubleHeightWhenFocussed
+      onSelect={useDispatchActionCallback(backToParentMenu)}
+    />
+  );
 };

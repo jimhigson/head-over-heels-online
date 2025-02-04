@@ -1,6 +1,5 @@
 import type { Emitter, EventType } from "mitt";
 import { useEffect } from "react";
-import { useRef } from "react";
 
 export const useEvent = <
   Events extends Record<EventType, unknown>,
@@ -21,13 +20,4 @@ export const useEvent = <
       events.off(type, handler);
     };
   }, [events, handler, type]);
-};
-
-export const useUnchanging = <T>(latest: T) => {
-  const { current: original } = useRef(latest);
-
-  if (original !== latest)
-    throw new Error(
-      `Value should not change between renders: ${original} => ${latest}`,
-    );
 };

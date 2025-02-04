@@ -1,35 +1,17 @@
-import type { ReactElement } from "react";
-import { inputPresetMenu } from "./menus/inputPresetMenu";
-import { mainMenu } from "./menus/mainMenu";
-import { modernisationOptionsMenu } from "./menus/modernisationOptionsMenu";
-import { selectKeysMenu } from "./menus/selectKeysMenu";
-import { readTheManualMenu } from "./menus/readTheManualMenu";
-import type { MenuItem } from "./MenuItem";
-import { holdMenu } from "./menus/holdMenu";
 import { markdownMenus } from "./markdownMenus";
-import { crownsMenu } from "./menus/crownsMenu";
-import { gameOverMenu } from "./menus/gameOverMenu";
-import { quitGameConfirmMenu } from "./menus/quitGameConfirmMenu";
+import { keys } from "../../../../utils/entries";
 
-export type Menu = {
-  Content: () => ReactElement;
-  items: MenuItem[];
-  dialogClassName?: string;
-  borderClassName?: string;
-};
-export const menus = {
-  ...{
-    mainMenu,
-    selectKeys: selectKeysMenu,
-    modernisationOptions: modernisationOptionsMenu,
-    inputPreset: inputPresetMenu,
-    readTheManual: readTheManualMenu,
-    hold: holdMenu,
-    crowns: crownsMenu,
-    gameOver: gameOverMenu,
-    quitGameConfirm: quitGameConfirmMenu,
-  },
-  ...markdownMenus,
-} as const;
+export const dialogIds = [
+  "mainMenu",
+  "selectKeys",
+  "modernisationOptions",
+  "inputPreset",
+  "readTheManual",
+  "hold",
+  "crowns",
+  "gameOver",
+  "quitGameConfirm",
+  ...keys(markdownMenus),
+] as const;
 
-export type MenuId = keyof typeof menus;
+export type DialogId = (typeof dialogIds)[number];

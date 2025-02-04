@@ -1,14 +1,14 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
-import type { MenuId } from "../game/components/dialogs/menuDialog/menus";
-import { menus } from "../game/components/dialogs/menuDialog/menus";
+import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
 import type {
   BooleanAction,
   ActionInputAssignment,
   InputAssignment,
   InputPress,
 } from "../game/input/InputState";
+import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
 import { calculateUpscale } from "../game/render/calculateUpscale";
@@ -16,13 +16,14 @@ import { zxSpectrumResolution } from "../originalGame";
 import { directionsXy4, type Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
-import { always } from "../utils/always";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
 export type OpenMenu = {
-  menuId: MenuId;
-  selectedIndex: number;
+  menuId: DialogId;
+  // will be undefined if the menu items have not been rendered yet, since relies
+  // on rendering to discover the ids
+  focussedItemId?: string;
   // maintain because selecting by mouse doesn't trigger scrolling in the renderer
   scrollableSelection: boolean;
 };
@@ -112,7 +113,6 @@ const initialState: GameMenusState = {
       // normal case: when we first load, show the main menu:
     : [
         {
-          selectedIndex: 0,
           menuId: "mainMenu",
           scrollableSelection: false,
         },
@@ -150,7 +150,6 @@ export const gameMenusSlice = createSlice({
       state.openMenus = [
         {
           menuId: `markdown/${markdownPageName}`,
-          selectedIndex: 0,
           scrollableSelection: false,
         },
       ];
@@ -223,129 +222,66 @@ export const gameMenusSlice = createSlice({
         const [, ...tail] = state.openMenus;
         state.openMenus = tail;
       } else {
+        state.openMenus = [{ menuId: "mainMenu", scrollableSelection: false }];
+      }
+    },
+    goToSubmenu(state, { payload: dialogId }: PayloadAction<DialogId>) {
+      state.openMenus = [
+        {
+          menuId: dialogId,
+          scrollableSelection: false,
+        },
+        ...state.openMenus,
+      ];
+    },
+    gameStarted(state) {
+      if (state.gameRunning) {
+        state.openMenus = [];
+      } else {
+        // go to crowns menu page if not already started the game
         state.openMenus = [
-          { menuId: "mainMenu", selectedIndex: 0, scrollableSelection: false },
+          {
+            menuId: "crowns",
+            scrollableSelection: false,
+          },
         ];
+        state.gameRunning = true;
       }
     },
-    menuItemChosen(state) {
-      const [{ menuId, selectedIndex }] = state.openMenus;
-      const menu = menus[menuId];
-
-      if (selectedIndex === menu.items.length) {
-        // a menu item 'after' the end of the menu is the back item:
-        const [, ...tail] = state.openMenus;
-        state.openMenus = tail;
-        return;
-      }
-
-      const selectedMenuItem = menu.items[selectedIndex];
-
-      switch (selectedMenuItem.type) {
-        case "submenu":
-          state.openMenus = [
-            {
-              menuId: selectedMenuItem.submenu,
-              selectedIndex: 0,
-              scrollableSelection: false,
-            },
-            ...state.openMenus,
-          ];
-          break;
-        case "keyPreset": {
-          const [, ...tail] = state.openMenus;
-          state.openMenus = tail;
-          (state as GameMenusState).userSettings.inputAssignment =
-            keyAssignmentPresets[selectedMenuItem.preset].inputAssignment;
-          break;
-        }
-        case "key":
-          state.assigningInput = {
-            action: selectedMenuItem.action,
-            presses: { gamepadButtons: [], keys: [] },
-            axes: [],
-          };
-          break;
-
-        case "dispatch":
-        case "switch":
-          // we rely on the listener api to pick this up and re-dispatch the appropriate action
-          // to change the value represented by the switch
-          break;
-        case "toGame": {
-          if (state.gameRunning) {
-            state.openMenus = [];
-          } else {
-            // go to crowns menu page if not already started the game
-            state.openMenus = [
-              {
-                menuId: "crowns",
-                selectedIndex: 0,
-                scrollableSelection: false,
-              },
-            ];
-            state.gameRunning = true;
-          }
-          break;
-        }
-        case "back": {
-          const [, ...tail] = state.openMenus;
-          state.openMenus = tail;
-          break;
-        }
-        case "todo":
-          // not implemented - do nothing
-          break;
-        default:
-          selectedMenuItem satisfies never;
-      }
+    backToParentMenu(state) {
+      const [, ...tail] = state.openMenus;
+      state.openMenus = tail;
     },
-    menuDown(state) {
-      if (state.assigningInput !== undefined) {
-        // can't move up or down in menu while assigning keys to an action
-        return;
-      }
-      const [displayedMenu] = state.openMenus;
-      const { selectedIndex, menuId } = displayedMenu;
-      const menu = menus[menuId];
-
-      let newSelectedIndex = selectedIndex;
-      do {
-        newSelectedIndex = (newSelectedIndex + 1) % menu.items.length;
-      } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
-
-      displayedMenu.selectedIndex = newSelectedIndex;
-      displayedMenu.scrollableSelection = true;
+    assignInputStart(state, { payload: action }: PayloadAction<BooleanAction>) {
+      state.assigningInput = {
+        action,
+        presses: { gamepadButtons: [], keys: [] },
+        axes: [],
+      };
     },
-    menuUp(state) {
-      if (state.assigningInput !== undefined) {
-        // can't move up or down in menu while assigning keys to an action
-        return;
-      }
-
-      const [displayedMenu] = state.openMenus;
-      const { selectedIndex, menuId } = displayedMenu;
-      const menu = menus[menuId];
-
-      let newSelectedIndex = selectedIndex;
-      do {
-        newSelectedIndex =
-          (newSelectedIndex - 1 + menu.items.length) % menu.items.length;
-      } while (!(menu.items[newSelectedIndex].showIf ?? always)(state));
-
-      displayedMenu.selectedIndex = newSelectedIndex;
-      displayedMenu.scrollableSelection = true;
-    },
-    pointerMovesOnMenuItem(
+    keyAssignmentPresetChosen(
       state,
-      { payload: newSelectedIndex }: PayloadAction<number>,
+      {
+        payload: keyAssignmentPresetName,
+      }: PayloadAction<KeyAssignmentPresetName>,
     ) {
-      if (state.assigningInput) {
-        // ignore while assigning input - we can't change the selected item while assigning
-        return;
-      }
-      state.openMenus[0].selectedIndex = newSelectedIndex;
-      state.openMenus[0].scrollableSelection = false;
+      const [, ...tail] = state.openMenus;
+      state.openMenus = tail;
+      (state as GameMenusState).userSettings.inputAssignment =
+        keyAssignmentPresets[keyAssignmentPresetName].inputAssignment;
+    },
+    setFocussedMenuItemId(
+      state,
+      {
+        payload: { focussedItemId, scrollableSelection },
+      }: PayloadAction<{
+        focussedItemId: string;
+        scrollableSelection: boolean;
+      }>,
+    ) {
+      const [displayedMenu] = state.openMenus;
+      displayedMenu.focussedItemId = focussedItemId;
+      displayedMenu.scrollableSelection = scrollableSelection;
     },
     holdPressed(
       state,
@@ -364,9 +300,7 @@ export const gameMenusSlice = createSlice({
         // no menus shown
         if (payload !== "unhold") {
           // go on hold:
-          state.openMenus = [
-            { menuId: "hold", selectedIndex: 0, scrollableSelection: false },
-          ];
+          state.openMenus = [{ menuId: "hold", scrollableSelection: false }];
         }
       }
     },
@@ -396,15 +330,13 @@ export const gameMenusSlice = createSlice({
     },
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
-      state.openMenus = [
-        { menuId: "crowns", selectedIndex: 0, scrollableSelection: false },
-      ];
+      state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
     },
     gameOver(state) {
       state.gameRunning = false;
       state.openMenus = [
-        { menuId: "gameOver", selectedIndex: 0, scrollableSelection: false },
-        { menuId: "mainMenu", selectedIndex: 0, scrollableSelection: true },
+        { menuId: "gameOver", scrollableSelection: false },
+        { menuId: "mainMenu", scrollableSelection: true },
       ];
     },
   },
@@ -414,22 +346,29 @@ export type GameMenusSliceAction = ReturnType<
   ValueOf<typeof gameMenusSlice.actions>
 >;
 
+export type GameMenusSliceActionCreator = ValueOf<
+  typeof gameMenusSlice.actions
+>;
+
 export const {
-  setUpscale,
-  showScroll,
-  menuItemChosen,
-  menuDown,
-  menuOpenOrExitPressed,
-  menuUp,
-  pointerMovesOnMenuItem,
+  assignInputStart,
+  backToParentMenu,
+  crownCollected,
+  doneAssigningInput,
+  gameOver,
+  gameStarted,
+  goToSubmenu,
   holdPressed,
+  inputAddedDuringAssignment,
+  keyAssignmentPresetChosen,
+  menuOpenOrExitPressed,
+  setEmulatedResolution,
+  setFocussedMenuItemId,
   setShowBoundingBoxes,
   setShowShadowMasks,
+  setUpscale,
+  showScroll,
   toggleColourise,
   toggleCrtFilter,
   toggleLivesModel,
-  inputAddedDuringAssignment,
-  doneAssigningInput,
-  crownCollected,
-  gameOver,
 } = gameMenusSlice.actions;

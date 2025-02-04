@@ -2,10 +2,10 @@ import { useEffect, useMemo } from "react";
 import { useInputStateTracker } from "../../input/InputStateProvider";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { BooleanAction, InputPress } from "../../input/InputState";
-import { useUnchanging } from "../../../utils/react/useEvent";
 
 import { Ticker } from "pixi.js";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import { useUnchanging } from "../../../utils/react/useUnchanging";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
@@ -29,9 +29,10 @@ export const useActionTap = ({
 
   const inputStateTracker = useInputStateTracker();
 
-  useUnchanging(actionOrActions);
-  useUnchanging(handler);
-  useUnchanging(inputStateTracker);
+  // these are correct but they break HMR:
+  // useUnchanging(actionOrActions);
+  // useUnchanging(handler);
+  // useUnchanging(inputStateTracker);
 
   useEffect(() => {
     if (disabled) {
