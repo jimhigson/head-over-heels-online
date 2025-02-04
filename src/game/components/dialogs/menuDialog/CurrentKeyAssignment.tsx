@@ -53,24 +53,27 @@ const friendlyKeyName = (key: Key) => {
 };
 const friendlyAxisName = (axis: number) => {
   return (
-    <>
-      <span className={specialCharClassName}>🕹</span>
-      {axis === 0 ?
-        "⬅➡"
-      : axis === 1 ?
-        "⬆⬇"
-      : `axis${axis}`}
-    </>
+    axis === 0 ? "⬅➡"
+    : axis === 1 ? "⬆⬇"
+    : `axis${axis}`
   );
 };
 
 const friendlyButtonName = (button: number) => {
-  return (
-    <>
-      <span className={specialCharClassName}>🕹</span>
-      {standardControllerButtonNames[button] ?? button}
-    </>
-  );
+  const buttonName = standardControllerButtonNames[button];
+
+  switch (buttonName) {
+    case "dPadDown":
+      return "d-Pad⬇";
+    case "dPadUp":
+      return "d-Pad⬆";
+    case "dPadLeft":
+      return "d-Pad⬅";
+    case "dPadRight":
+      return "d-Pad➡";
+  }
+
+  return standardControllerButtonNames[button] ?? button;
 };
 
 type CurrentKeyAssignmentsProp = {
@@ -124,6 +127,7 @@ export const CurrentKeyAssignments = ({
             key={`gamePadAxis:${gamepadAxis}`}
           >
             <MultipleBitmapText>
+              <span className={specialCharClassName}>🕹</span>
               {friendlyAxisName(gamepadAxis)}
             </MultipleBitmapText>
           </span>
@@ -135,7 +139,10 @@ export const CurrentKeyAssignments = ({
             className={twMerge("text-nowrap", keyClassName)}
             key={`gamePadButton:${k}`}
           >
-            <MultipleBitmapText>{friendlyButtonName(k)}</MultipleBitmapText>
+            <MultipleBitmapText>
+              <span className={specialCharClassName}>🕹</span>
+              {friendlyButtonName(k)}
+            </MultipleBitmapText>
           </span>
         );
       })}
