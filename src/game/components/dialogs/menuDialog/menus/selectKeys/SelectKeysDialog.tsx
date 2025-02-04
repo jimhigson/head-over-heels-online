@@ -25,7 +25,6 @@ import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 
 const useKeyAssignmentInput = () => {
-  // TODO: move to the select keys menu
   const disabled = !useIsAssigningKeys();
 
   useActionTap({
@@ -74,6 +73,8 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
 };
 
 export const SelectKeysDialog = () => {
+  useKeyAssignmentInput();
+
   return (
     <Dialog
       className="bg-white zx:bg-zxWhite"

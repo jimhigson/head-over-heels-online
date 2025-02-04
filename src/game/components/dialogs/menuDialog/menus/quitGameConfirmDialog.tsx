@@ -27,16 +27,18 @@ export const QuitGameConfirmDialog = () => {
       <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow">
         <MenuItemSeparator />
         <MenuItem
-          id="yes"
-          label="Yes"
-          onSelect={useDispatchActionCallback(gameOver)}
-          hint="Warning! This game will end!"
-        />
-        <MenuItem
+          doubleHeightWhenFocussed
           id="no"
           label="No"
           onSelect={useDispatchActionCallback(backToParentMenu)}
           hint="Go back to the game"
+        />
+        <MenuItem
+          doubleHeightWhenFocussed
+          id="yes"
+          label="Yes"
+          onSelect={useDispatchActionCallback(gameOver)}
+          hint="Warning! This game will end!"
         />
       </MenuItems>
       <SelectedItemHint className="text-midRed zx:text-zxWhite" />
