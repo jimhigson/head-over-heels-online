@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import type { GameMenusState } from "./gameMenusSlice";
 import { gameMenusSlice, initialGameMenuSliceState } from "./gameMenusSlice";
-import { listenerMiddleware } from "./listener";
 import storage from "redux-persist/lib/storage";
 import type { PersistConfig, PersistedState } from "redux-persist";
 import {
@@ -68,7 +67,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).prepend(listenerMiddleware.middleware),
+    }),
 });
 
 export const persistor = persistStore(store);
