@@ -1,4 +1,3 @@
-import { store } from "../store";
 import {
   holdPressed,
   menuOpenOrExitPressed,
@@ -6,26 +5,29 @@ import {
 } from "../gameMenusSlice";
 import { useActionTap } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
-import { useCallback } from "react";
+import { useDispatchActionCallback } from "../useDispatchCallback";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
     (store) => store.assigningInput !== undefined,
   );
+  const menuOpen = useAppSelector((store) => store.openMenus.length > 0);
 
   useActionTap({
     action: "menu_openOrExit",
-    handler: useCallback(() => {
-      store.dispatch(menuOpenOrExitPressed());
-    }, []),
+    handler: useDispatchActionCallback(menuOpenOrExitPressed),
     disabled: assigningKeys,
   });
 
   useActionTap({
+    action: "menu_exit",
+    handler: useDispatchActionCallback(menuOpenOrExitPressed),
+    disabled: !menuOpen,
+  });
+
+  useActionTap({
     action: "hold",
-    handler: useCallback(() => {
-      store.dispatch(holdPressed("toggle"));
-    }, []),
+    handler: useDispatchActionCallback(holdPressed, "toggle"),
     disabled: assigningKeys,
   });
 
@@ -40,9 +42,7 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "toggleColourisation",
-    handler: useCallback(() => {
-      store.dispatch(toggleColourise());
-    }, []),
+    handler: useDispatchActionCallback(toggleColourise),
     disabled: assigningKeys,
   });
 };
