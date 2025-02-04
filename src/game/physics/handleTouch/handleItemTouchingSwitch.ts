@@ -1,4 +1,6 @@
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import { gameMenusSliceActions } from "../../../store/gameMenusSlice";
+import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
@@ -8,7 +10,7 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
   room,
 }: ItemTouchEventByItemType<RoomId, ItemInPlayType, "switch">) => {
   const {
-    config: { activates },
+    config: { activates, store: switchStoreConfig },
     state: { setting, touchedOnProgression },
   } = switchItem;
 
@@ -24,18 +26,25 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
     return;
   }
 
-  const newSetting = (switchItem.state.setting =
-    setting === "left" ? "right" : "left");
+  if (activates) {
+    const newSetting = (switchItem.state.setting =
+      setting === "left" ? "right" : "left");
 
-  for (const [k, v] of objectEntriesIter(activates)) {
-    const affectedItem = room.items[k];
+    for (const [k, v] of objectEntriesIter(activates)) {
+      const affectedItem = room.items[k];
 
-    if (affectedItem === undefined) {
-      // item could have been deleted from the room (ie, be a disappearing block
-      // that's already been stood on)
-      continue;
+      if (affectedItem === undefined) {
+        // item could have been deleted from the room (ie, be a disappearing block
+        // that's already been stood on)
+        continue;
+      }
+
+      affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
     }
+  }
 
-    affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
+  if (switchStoreConfig) {
+    const actionCreator = gameMenusSliceActions[switchStoreConfig.dispatches];
+    store.dispatch(actionCreator());
   }
 };

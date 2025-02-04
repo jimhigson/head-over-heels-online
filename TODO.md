@@ -38,11 +38,9 @@
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
     - remove blurryness in general - replace css scaling with pixijs resolution setting
-[ ] colourise option should actually work (and switch in first room)
-    [x] works in menus (only)
-    [x] for hud
-    [x] for game (one shade)
-    [x] for room edges
+[x] switch in first room does colourise
+[ ] window losing focus should pause the game (again)
+    
 [ ] change from `pixi.js` package to `@pixi/*` packages
     Import from **`pixi.js`** for a bundled version.  
         https://chatgpt.com/c/679cecd2-71a0-8007-b3dc-2166e61c75b7

@@ -479,9 +479,9 @@
     "path": "/rooms/moonbase20/items/crownsScroll",
     "value": {
       "config": { "gives": "scroll", "page": "crowns" },
+      "isExtra": true,
       "position": { "x": 5, "y": 4, "z": 1 },
-      "type": "pickup",
-      "isExtra": true
+      "type": "pickup"
     }
   },
   { "op": "replace", "path": "/rooms/moonbase2/color/hue", "value": "cyan" },
@@ -1357,9 +1357,9 @@
     "path": "/rooms/blacktooth23heels/items/scroll",
     "value": {
       "config": { "gives": "scroll", "page": "head" },
+      "isExtra": true,
       "position": { "x": 7, "y": 1, "z": 0 },
-      "type": "pickup",
-      "isExtra": true
+      "type": "pickup"
     }
   },
   {
@@ -1367,9 +1367,9 @@
     "path": "/rooms/blacktooth23heels/items/scroll2",
     "value": {
       "config": { "gives": "scroll", "page": "heels" },
+      "isExtra": true,
       "position": { "x": 3, "y": 7, "z": 0 },
-      "type": "pickup",
-      "isExtra": true
+      "type": "pickup"
     }
   },
   {
@@ -1453,7 +1453,13 @@
     "op": "add",
     "path": "/rooms/blacktooth1head/items/colouriseSwitch",
     "value": {
-      "config": { "activates": {} },
+      "config": {
+        "store": {
+          "dispatches": "toggleColourise",
+          "selectsPath": "userSettings.displaySettings.colourise"
+        }
+      },
+      "isExtra": true,
       "position": { "x": 5, "y": 3, "z": 0 },
       "type": "switch"
     }
