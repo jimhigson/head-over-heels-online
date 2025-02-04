@@ -11,6 +11,7 @@ import clsx from "clsx";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
 import { spriteSheet } from "../../sprites/spriteSheet";
+import { ClassnameWrap } from "../../utils/react/ClassnameWrap";
 
 export interface CssSpriteProps {
   className?: string;
@@ -122,7 +123,7 @@ export const MultipleBitmapText = ({
   className?: string;
 }>): ReactNode => {
   return (
-    <div className={`contents ${className}`}>
+    <ClassnameWrap className={className}>
       {Array.isArray(children) ?
         children.map((c, i) => <MultipleBitmapText key={i} children={c} />)
       : typeof children === "number" ?
@@ -145,6 +146,6 @@ export const MultipleBitmapText = ({
           )
         : children
       : children}
-    </div>
+    </ClassnameWrap>
   );
 };
