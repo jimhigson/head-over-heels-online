@@ -40,14 +40,14 @@ const markdownComponents: CustomComponentsOption = {
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <MultipleBitmapText className="text-midRed zx:text-zxRed">
+      <MultipleBitmapText className="strong text-midRed zx:text-zxRed">
         {children}
       </MultipleBitmapText>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <MultipleBitmapText className="text-moss zx:text-zxBlue">
+      <MultipleBitmapText className="em text-moss zx:text-zxBlue">
         {children}
       </MultipleBitmapText>
     );
@@ -74,15 +74,19 @@ const markdownComponents: CustomComponentsOption = {
 
 export type BlockyMarkdownProps = {
   markdown: string;
+  className?: string;
 };
 
 export const BlockyMarkdown = ({
   markdown,
+  className,
 }: BlockyMarkdownProps): ReactElement => {
   return (
-    <SnarkdownInReact
-      customComponents={markdownComponents}
-      markdown={markdown}
-    />
+    <div className={`contents ${className}`}>
+      <SnarkdownInReact
+        customComponents={markdownComponents}
+        markdown={markdown}
+      />
+    </div>
   );
 };

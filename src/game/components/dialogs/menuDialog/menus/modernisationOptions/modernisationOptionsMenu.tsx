@@ -16,24 +16,26 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
-const colouriseMarkdown = `**off**: Original two-tone spectrum-like graphics
+const markdownClassname = "[&_.em]:text-lightBeige";
 
-**on**: 16-colour palette with colourised sprites`;
+const colouriseMarkdown = `**off**: Original *two-tone* spectrum-like graphics
+
+**on**: *16-colour* palette with colourised sprites`;
 
 const infiniteLivesMarkdown = `can't be changed mid-game
 
-**off**: 8 lives to start; extra life rabbits spread thinly through the game
+**off**: *8* lives to start; extra life rabbits spread thinly through the game
 
-A true hero leaves this off`;
+*A true hero leaves this off*`;
 
-const extraItemsMarkdown = `**off**: faithful to the original rooms
+const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 
-**on**: extra items to slightly modernise the gameplay.
+**on**: *extra items* slightly modernisess the gameplay.
 none of these fundamentally change how the rooms play.`;
 
-const analogueControlHintMarkdown = `**off**: original 4 walk directions only: *⬅ ➡ ⬆ ⬇*.
+const analogueControlHintMarkdown = `**off**: original *4* walk directions: press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*
 
-**on**: walk in any direction. Makes the game easier.`;
+**on**: walk in *any* direction; makes the game easier`;
 
 const resolutionHintMarkdown = `*zx spectrum* (**256**x**192**)
 
@@ -84,13 +86,23 @@ export const ModernisationOptionsDialog = () => {
               />
             }
             onSelect={useDispatchActionCallback(toggleColourise)}
-            hint={<BlockyMarkdown markdown={colouriseMarkdown} />}
+            hint={
+              <BlockyMarkdown
+                className={markdownClassname}
+                markdown={colouriseMarkdown}
+              />
+            }
           />
           <MenuItem
             doubleHeightWhenFocussed
             id="livesModel"
             label="Infinite Lives poke"
-            hint={<BlockyMarkdown markdown={infiniteLivesMarkdown} />}
+            hint={
+              <BlockyMarkdown
+                className={markdownClassname}
+                markdown={infiniteLivesMarkdown}
+              />
+            }
             valueElement={
               <ValueSwitch
                 value={useAppSelector(
@@ -105,7 +117,12 @@ export const ModernisationOptionsDialog = () => {
             id="extraItems"
             label="Extra items"
             valueElement={<ValueSwitch value={true} />}
-            hint={<BlockyMarkdown markdown={extraItemsMarkdown} />}
+            hint={
+              <BlockyMarkdown
+                className={markdownClassname}
+                markdown={extraItemsMarkdown}
+              />
+            }
           />
           <MenuItem
             doubleHeightWhenFocussed
@@ -119,7 +136,12 @@ export const ModernisationOptionsDialog = () => {
             id="analogueControl"
             label="Analogue control"
             valueElement={<ValueSwitch value={true} />}
-            hint={<BlockyMarkdown markdown={analogueControlHintMarkdown} />}
+            hint={
+              <BlockyMarkdown
+                className={markdownClassname}
+                markdown={analogueControlHintMarkdown}
+              />
+            }
           />
           <MenuItem
             doubleHeightWhenFocussed
@@ -140,7 +162,12 @@ export const ModernisationOptionsDialog = () => {
             id="emulatedResolution"
             label="Emulated resolution"
             valueElement={<BitmapText className="mr-1">specy</BitmapText>}
-            hint={<BlockyMarkdown markdown={resolutionHintMarkdown} />}
+            hint={
+              <BlockyMarkdown
+                className={markdownClassname}
+                markdown={resolutionHintMarkdown}
+              />
+            }
           />
           <MenuItemSeparator />
           <BackMenuItem />
