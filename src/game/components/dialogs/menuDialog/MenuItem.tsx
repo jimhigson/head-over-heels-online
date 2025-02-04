@@ -6,6 +6,8 @@ import { useActionTap } from "../useActionInput";
 import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
 import { MenuItemLeader } from "./menus/MenuItemLeader";
+import Portal from "@mutabazia/react-portal";
+import { multilineTextClass } from "./multilineTextClass";
 
 export type MenuItemProps = {
   id: string;
@@ -105,6 +107,15 @@ export const MenuItem = ({
 
       {/* third column content (values etc) */}
       {valueElement !== undefined && valueElement}
+      {!focussed || hint === undefined ? null : (
+        <Portal>
+          {typeof hint === "string" ?
+            <BitmapText className={`${multilineTextClass} className`}>
+              {hint}
+            </BitmapText>
+          : { hint }}
+        </Portal>
+      )}
     </div>
   );
 };

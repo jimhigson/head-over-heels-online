@@ -145,7 +145,11 @@ export const SelectKeysDialog = () => {
           />
           <MenuItem
             id="fire"
-            label="Fire"
+            label={
+              <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+                fire dough- nuts
+              </BitmapText>
+            }
             valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
             onSelect={useDispatchActionCallback(assignInputStart, "fire")}
           />

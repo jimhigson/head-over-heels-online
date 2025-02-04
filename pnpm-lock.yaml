@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@mutabazia/react-portal':
+        specifier: ^1.0.7
+        version: 1.0.7
       '@radix-ui/react-collapsible':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.0.2(@types/react@19.0.2))(@types/react@19.0.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -717,6 +720,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@mutabazia/react-portal@1.0.7':
+    resolution: {integrity: sha512-JSuevhk4uwQ86H+ZfDIqSCFeu6SEpv1PY59f9Ji7Ac+E8NuL8F7sj6dtpPdFQaZOryCpzcQM7FZE6lhXtKSHNQ==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3566,6 +3572,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
     optional: true
+
+  '@mutabazia/react-portal@1.0.7': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

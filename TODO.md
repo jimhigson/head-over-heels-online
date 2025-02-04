@@ -43,6 +43,9 @@
     [x] for hud
     [x] for game (one shade)
     [x] for room edges
+[ ] change from `pixi.js` package to `@pixi/*` packages
+    Import from **`pixi.js`** for a bundled version.  
+        https://chatgpt.com/c/679cecd2-71a0-8007-b3dc-2166e61c75b7
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
 [ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)

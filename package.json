@@ -25,6 +25,7 @@
     "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx"
   },
   "dependencies": {
+    "@mutabazia/react-portal": "^1.0.7",
     "@radix-ui/react-collapsible": "^1.1.2",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.4",
