@@ -1,27 +1,10 @@
+import Portal from "@mutabazia/react-portal";
 import { twMerge } from "tailwind-merge";
-import {
-  useCurrentMenu,
-  useCurrentMenuSelectedItemIndex,
-} from "../../../../store/selectors";
-import { BitmapText } from "../../Sprite";
-import { multilineTextClass } from "./multilineTextClass";
 
 export const SelectedItemHint = ({ className }: { className?: string }) => {
-  const menu = useCurrentMenu();
-  const selectedItemIndex = useCurrentMenuSelectedItemIndex();
-
-  const selectedItemHint =
-    menu === undefined || selectedItemIndex === undefined ?
-      undefined
-    : menu.items[selectedItemIndex].hint;
-
-  if (selectedItemHint === undefined) {
-    return null;
-  }
-
   return (
-    <BitmapText className={twMerge("block", multilineTextClass, className)}>
-      {selectedItemHint}
-    </BitmapText>
+    <div className={twMerge("contents", className)}>
+      <Portal.Placeholder />
+    </div>
   );
 };

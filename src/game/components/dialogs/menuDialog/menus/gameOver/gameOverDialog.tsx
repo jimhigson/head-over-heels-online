@@ -1,19 +1,22 @@
-import type { Menu } from "../menus";
-import { BitmapText } from "../../../Sprite";
-import { backMenuItem } from "../backMenuItem";
-import { mainMenuCycle, MainMenuHeading } from "./mainMenu";
-import { MenuItems } from "../MenuItems";
-import { useAppSelector } from "../../../../../store/hooks";
+import { BitmapText } from "../../../../Sprite";
+import { MenuItems } from "../../MenuItems";
+import { useAppSelector } from "../../../../../../store/hooks";
 import { objectValues, size } from "iter-tools";
-import { iterate } from "../../../../../utils/iterate";
+import { iterate } from "../../../../../../utils/iterate";
+import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
+import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
+import { Dialog } from "../../../../../../components/ui/dialog";
+import { BackMenuItem } from "../../BackMenuItem";
 
-const GameOverMenuContent = () => {
+export const GameOverDialog = () => {
   const planetsLiberatedCount = useAppSelector((state) =>
     size(iterate(objectValues(state.planetsLiberated)).filter(Boolean)),
   );
-
   return (
-    <>
+    <Dialog
+      className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
+      borderClassName="bg-redShadow"
+    >
       <MainMenuHeading />
       <BitmapText
         classnameCycle={mainMenuCycle}
@@ -30,16 +33,9 @@ const GameOverMenuContent = () => {
       <BitmapText className="mt-2 block text-center mx-auto text-lightGrey zx:text-zxWhite">
         Liberated {String(planetsLiberatedCount)} planets
       </BitmapText>
-      <MenuItems className="hidden" />
-    </>
+      <MenuItems className="hidden">
+        <BackMenuItem />
+      </MenuItems>
+    </Dialog>
   );
-};
-
-export const gameOverMenu: Menu = {
-  dialogClassName: "bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block",
-  borderClassName: "bg-redShadow",
-  Content: GameOverMenuContent,
-  // back menu item in the (hidden) menu just allows exiting more easily by pressing any button that
-  // would normally select an item
-  items: [backMenuItem],
 };

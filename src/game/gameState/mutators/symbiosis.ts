@@ -5,7 +5,10 @@ import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { doubleHeightCharacter } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { defaultBaseState, defaultFreeItemState } from "../loadRoom/loadItem";
+import {
+  defaultBaseState,
+  defaultFreeItemState,
+} from "../loadRoom/itemDefaultStates";
 import {
   defaultPlayableRootAttributes,
   defaultPlayerState,

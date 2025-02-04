@@ -7,8 +7,8 @@ import type Cheats from "../cheats/Cheats.tsx";
 import { CssVariables } from "../CssVariables.tsx";
 import { useAppSelector } from "../../../store/hooks.ts";
 import { ConnectInputToStore } from "../../../store/storeFlow/ConnectInputToStore.tsx";
-import { MenuDialog } from "../dialogs/menuDialog/MenuDialog.tsx";
-import { useInputState } from "../../input/InputStateProvider.tsx";
+import { Dialogs } from "../dialogs/menuDialog/Dialogs.tsx";
+import { useInputStateTracker } from "../../input/InputStateProvider.tsx";
 import { useCheatsOn } from "../../../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 
@@ -19,7 +19,7 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
     GameApi<OriginalCampaignRoomId> | undefined
   >();
   const gameRunning = useAppSelector((state) => state.gameRunning);
-  const inputState = useInputState();
+  const inputState = useInputStateTracker();
   const cheatsOn = useCheatsOn();
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export const GamePage = () => {
         ref={setGameDiv}
       />
       <ConnectInputToStore />
-      <MenuDialog />
+      <Dialogs />
       {gameApi && (
         <GameApiProvider gameApi={gameApi}>
           {cheatsOn && (

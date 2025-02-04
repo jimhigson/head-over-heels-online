@@ -1,8 +1,10 @@
-- why all sprites have an extra 1px transparency
+- why all sprites have an extra 1px transparency (rounding errors in texels)
 - why dpaint still the best for sprite work (30 years later)
     - continuous vs discrete
         - eg, stencil - simple selection from palette in dpaint vs complex ranges and feathering
         - for cutting out, for putting the cutots on the screen with another stencil (eg, making bottom of wall tiles transparent)
+    - putting the saves on a hard drive visible to host os
+    - using ffmpeg to converts
 - animation in dpaint for sprite work
 
 - how to work with dpaint in 202x?        

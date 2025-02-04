@@ -1,37 +1,48 @@
 import type { PropsWithChildren } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import type { InputState } from "./InputState";
-import { createEmptyInputState } from "./InputState";
 import type { EmptyObject } from "type-fest";
-import { listenForInput } from "./listenForInput";
-import { useAppStore } from "../../store/hooks";
+import {
+  createEmptyKeyboardState,
+  maintainKeyboardState,
+  type KeyboardStateMap,
+} from "./keyboardState";
+import type { InputStateTrackerInterface } from "./InputStateTracker";
+import { InputStateTracker } from "./InputStateTracker";
 
-const InputStateContext = createContext<InputState | null>(null);
+const InputStateTrackerContext =
+  createContext<InputStateTrackerInterface | null>(null);
 
 export const InputStateProvider = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
-  const store = useAppStore();
-  const [inputState] = useState(createEmptyInputState);
+  const [keyboardState] = useState<KeyboardStateMap>(createEmptyKeyboardState);
+  const [inputStateTracker] = useState<InputStateTrackerInterface>(
+    () => new InputStateTracker(keyboardState),
+  );
 
-  // in practice this should never ummount in production, but it will in react dev mode:
   useEffect(() => {
     // listenForInput returns the unmount function:
-    const unsubscribe = listenForInput(
-      inputState,
-      () => store.getState().userSettings.inputAssignment,
-    );
+    const stopMaintainingKeyboardState = maintainKeyboardState(keyboardState);
+    inputStateTracker.startTicking();
 
-    return unsubscribe;
-  });
+    // in practice this should never ummount in production, but it will in react dev mode:
+    return () => {
+      stopMaintainingKeyboardState();
+      inputStateTracker.stopTicking();
+    };
+  }, [inputStateTracker, keyboardState]);
 
-  return <InputStateContext value={inputState}>{children}</InputStateContext>;
+  return (
+    <InputStateTrackerContext value={inputStateTracker}>
+      {children}
+    </InputStateTrackerContext>
+  );
 };
 
-export const useInputState = (): InputState => {
-  const inputState = useContext(InputStateContext);
-  if (inputState === null) {
+export const useInputStateTracker = (): InputStateTrackerInterface => {
+  const inputStateTracker = useContext(InputStateTrackerContext);
+  if (inputStateTracker === null) {
     throw new Error("InputStateProvider required to use useInputState");
   }
-  return inputState;
+  return inputStateTracker;
 };

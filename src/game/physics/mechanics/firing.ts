@@ -16,9 +16,7 @@ export const firing = <RoomId extends string>(
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
-  const {
-    inputState: { fire: fireInput },
-  } = gameState;
+  const { inputStateTracker } = gameState;
 
   const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
 
@@ -31,7 +29,7 @@ export const firing = <RoomId extends string>(
   const maxFireRate = 500;
 
   if (
-    fireInput &&
+    inputStateTracker.currentActionPress("fire") === "tap" &&
     hasHooter &&
     doughnuts > 0 &&
     doughnutLastFireTime + maxFireRate < gameTime
@@ -64,7 +62,5 @@ export const firing = <RoomId extends string>(
 
     headAbilities.doughnuts -= 1;
     headAbilities.doughnutLastFireTime = headAbilities.gameTime;
-
-    gameState.inputState.fire = false; //handled this input
   }
 };

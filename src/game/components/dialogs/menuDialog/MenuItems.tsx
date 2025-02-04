@@ -1,103 +1,124 @@
 import { twMerge } from "tailwind-merge";
-import { MenuItemComponent } from "./MenuItemComponent";
+import { useIsAssigningKeys } from "../../../../store/selectors";
+import { useActionTap } from "../useActionInput";
+import type { PropsWithChildren, RefObject } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { store } from "../../../../store/store";
 import {
-  useCurrentMenu,
-  useCurrentMenuSelectedItemIndex,
-} from "../../../../store/selectors";
-import { useActionInput } from "../useActionInput";
-import { useCallback } from "react";
-import {
-  menuUp,
-  menuDown,
-  menuItemChosen,
-  doneAssigningInput,
-  inputAssigned,
-} from "../../../../store/gameMenusSlice";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { useEvent } from "../../../../utils/react/useEvent";
-import { keys } from "../../../../utils/entries";
-import { useInputState } from "../../../input/InputStateProvider";
+  menuItemDataAttributeId,
+  menuItemDataAttributeHidden,
+} from "./MenuItem";
+import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
 
-export const MenuItems = ({ className }: { className?: string }) => {
-  const menu = useCurrentMenu();
-  const selectedItemIndex = useCurrentMenuSelectedItemIndex();
-
-  const assigningKeys = useAppSelector(
-    (store) => store.assigningInput !== undefined,
+const findMenuItems = (container: HTMLDivElement) => {
+  const menuItemsDom = container.querySelectorAll(
+    `[${menuItemDataAttributeId}]`,
   );
-  const dispatch = useAppDispatch();
-  if (menu === undefined || selectedItemIndex === undefined) throw new Error();
+  return Array.from(menuItemsDom);
+};
 
-  useActionInput({
+const moveFocus = (container: HTMLDivElement, direction: 1 | -1) => {
+  const curFocusId = store.getState().openMenus[0].focussedItemId;
+
+  if (curFocusId === undefined) {
+    return; // nothing is selected yet, so can't move the selection up
+  }
+
+  const menuItemsDom = findMenuItems(container);
+
+  if (menuItemsDom.length === 0) {
+    return; // no menu items to select
+  }
+
+  const curFocusIndex = menuItemsDom.findIndex(
+    (miDom) => miDom.getAttribute(menuItemDataAttributeId) === curFocusId,
+  );
+
+  if (curFocusIndex === -1) {
+    return; // whatever is focussed isn't in virtual dom any more - not sure if this is possible
+  }
+
+  let newFocusIndex = curFocusIndex;
+  do {
+    newFocusIndex =
+      (newFocusIndex + direction + menuItemsDom.length) % menuItemsDom.length;
+  } while (
+    menuItemsDom[newFocusIndex].getAttribute(menuItemDataAttributeHidden) ===
+    "true"
+  );
+
+  store.dispatch(
+    setFocussedMenuItemId({
+      focussedItemId: menuItemsDom[newFocusIndex].getAttribute(
+        menuItemDataAttributeId,
+      )!,
+      scrollableSelection: true,
+    }),
+  );
+};
+
+const useMenuNavigationInput = (
+  containerRef: RefObject<HTMLDivElement | null>,
+) => {
+  const disabled = useIsAssigningKeys();
+
+  useActionTap({
     action: "away",
-    key: ["ArrowUp"],
-    onAction: useCallback(() => {
-      dispatch(menuUp());
-    }, [dispatch]),
-    disabled: assigningKeys,
+    handler: useCallback(() => {
+      if (containerRef.current !== null) {
+        moveFocus(containerRef.current, -1);
+      }
+    }, [containerRef]),
+    disabled,
   });
-  useActionInput({
+
+  useActionTap({
     action: "towards",
-    key: ["ArrowDown"],
-    onAction: useCallback(() => {
-      dispatch(menuDown());
-    }, [dispatch]),
-    disabled: assigningKeys,
+    handler: useCallback(() => {
+      if (containerRef.current !== null) {
+        moveFocus(containerRef.current, 1);
+      }
+    }, [containerRef]),
+    disabled,
   });
-  useActionInput({
-    action: "jump",
-    key: ["Enter", " ", "ArrowRight"],
-    onAction: useCallback(() => {
-      dispatch(menuItemChosen());
-    }, [dispatch]),
-    disabled: assigningKeys,
-  });
+};
 
-  // really just for the select they keys menu - dispatch keys as new assignments if
-  // we are currently assigning keys
-  useEvent(
-    useInputState().events,
-    "inputStateChanged",
-    useCallback(
-      (inputStateEvent) => {
-        if (!assigningKeys) {
-          return;
-        }
-        if (inputStateEvent.upOrDown !== "down") {
-          return;
-        }
-        const assignableInput = keys(inputStateEvent.inputState.raw).at(0);
-        if (assignableInput === undefined) {
-          throw new Error(
-            "no assignableInput: inputStateEvent.inputState.raw seems to be empty",
-          );
-        }
+export const MenuItems = ({
+  className = "",
+  children,
+}: PropsWithChildren<{ className?: string }>) => {
+  const ref = useRef<HTMLDivElement>(null);
 
-        if (assignableInput === "Escape") dispatch(doneAssigningInput());
-        else dispatch(inputAssigned(assignableInput));
-      },
-      [assigningKeys, dispatch],
-    ),
-  );
+  useEffect(() => {
+    if (ref.current === null) {
+      return;
+    }
+    if (store.getState().openMenus[0].focussedItemId !== undefined) {
+      // have already a selection, no need to select the first item
+      return;
+    }
+
+    const menuItemsDom = findMenuItems(ref.current);
+
+    store.dispatch(
+      setFocussedMenuItemId({
+        focussedItemId: menuItemsDom[0].getAttribute(menuItemDataAttributeId)!,
+        scrollableSelection: true,
+      }),
+    );
+  }, []);
+
+  useMenuNavigationInput(ref);
 
   return (
     <div
+      ref={ref}
       className={twMerge(
         "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix",
         className,
       )}
     >
-      {menu.items.map((mi, i) => {
-        const isSelected = i === selectedItemIndex;
-        return (
-          <MenuItemComponent
-            menu={menu}
-            key={i}
-            menuItem={mi}
-            selected={isSelected}
-          />
-        );
-      })}
+      {children}
     </div>
   );
 };

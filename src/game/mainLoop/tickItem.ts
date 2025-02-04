@@ -31,15 +31,9 @@ import type {
 } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
-import { objectEntriesIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
-import type { Xyz } from "../../utils/vectors/vectors";
-import {
-  addXyz,
-  scaleXyz,
-  lengthXyz,
-  originXyz,
-} from "../../utils/vectors/vectors";
+import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
+import { applyMechanicsResults } from "./applyMechanicsResults";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -194,45 +188,4 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       deltaMS,
     });
   }
-};
-
-export const applyMechanicsResults = <
-  RoomId extends string,
-  T extends ItemInPlayType,
->(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  mechanicsResults: Array<MechanicResult<T, RoomId>>,
-) => {
-  let accumulatedPosDelta = originXyz;
-
-  for (const mechanicResult of mechanicsResults) {
-    if (mechanicResult.movementType === "position") {
-      accumulatedPosDelta = addXyz(
-        accumulatedPosDelta,
-        mechanicResult.posDelta,
-      );
-    }
-
-    // update item.state.vels
-    if (
-      mechanicResult.movementType === "vel" &&
-      (isFreeItem(item) || isItemType("lift")(item))
-    ) {
-      for (const [mechanic, velPartial] of objectEntriesIter(
-        mechanicResult.vels,
-      )) {
-        const vel: Xyz = { ...originXyz, ...velPartial };
-
-        (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
-      }
-    }
-
-    // update item.state.*
-    const mrStateDelta = mechanicResult.stateDelta;
-    if (mrStateDelta !== undefined) {
-      item.state = { ...item.state, ...mrStateDelta };
-    }
-  }
-
-  return accumulatedPosDelta;
 };

@@ -28,4 +28,4 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Check all
-        run: pnpm run check:all
+        run: pnpm run check

@@ -1,5 +1,5 @@
 import { positionCentredInBlock } from "./positionCentredInBlock";
-import { defaultBaseState, defaultFreeItemState } from "./loadItem";
+import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { PlayableState } from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";

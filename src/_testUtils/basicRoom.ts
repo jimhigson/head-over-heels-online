@@ -1,11 +1,8 @@
 import { produce } from "immer";
-import type { GameState } from "../game/gameState/GameState";
 import { initGameState } from "../game/gameState/initGameState";
-import {
-  createEmptyInputState,
-  type InputState,
-} from "../game/input/InputState";
 import type { RoomJson } from "../model/RoomJson";
+import type { GameStateWithMockInput } from "./MockInputStateTracker";
+import { MockInputStateTracker } from "./MockInputStateTracker";
 
 /**
  * Utilities for setting up a basic example room - for testing
@@ -59,20 +56,20 @@ const basicEmptyRoomWithItems = (
   };
 };
 
-const gameStateWithInput = (
+/*const gameStateWithInput = (
   gameState: GameState<TestRoomId>,
   inputState?: Partial<InputState>,
 ): GameState<TestRoomId> => ({
   ...gameState,
-  inputState: { ...gameState.inputState, ...inputState },
-});
+  inputStateTracker: { ...gameState.inputStateTracker, ...inputState },
+});*/
 
 export type BasicGameStateOptions = {
   firstRoomItems: ItemsInTestRoomJson;
   firstRoomProps?: Partial<TestRoomJson>;
   secondRoomItems?: ItemsInTestRoomJson;
   secondRoomProps?: Partial<TestRoomJson>;
-  inputState?: Partial<InputState>;
+  //inputState?: Partial<InputState>;
 };
 
 export const basicGameState = ({
@@ -80,8 +77,8 @@ export const basicGameState = ({
   firstRoomProps = {},
   secondRoomItems = {},
   secondRoomProps = {},
-  inputState,
-}: BasicGameStateOptions) => {
+  //inputState,
+}: BasicGameStateOptions): GameStateWithMockInput => {
   const campaign = {
     rooms: {
       [firstRoomId]: {
@@ -96,8 +93,10 @@ export const basicGameState = ({
   };
   const gameState = initGameState<TestRoomId>({
     campaign,
-    inputState: createEmptyInputState(),
-  });
+    inputStateTracker: new MockInputStateTracker(),
+  }) as GameStateWithMockInput;
 
-  return gameStateWithInput(gameState, inputState);
+  return gameState;
+
+  //return gameStateWithInput(gameState, inputState);
 };

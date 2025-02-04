@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import type { GameMenusState } from "./gameMenusSlice";
 import { gameMenusSlice } from "./gameMenusSlice";
 import { listenerMiddleware } from "./listener";
@@ -13,11 +14,15 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
-import { addListeners } from "./storeFlow/addListeners";
 
 const gameMenusSlicePersistConfig = {
   key: "hohol/gameMenus/userSettings",
-  version: 1,
+  version: 2,
+  migrations: {
+    // migrating to v2 - throw out old config - not enough users yet to
+    // be worth writing a migration script
+    2: () => ({}),
+  },
   storage,
   whitelist: [`userSettings` satisfies keyof GameMenusState],
 };
@@ -36,8 +41,6 @@ export const store = configureStore({
       },
     }).prepend(listenerMiddleware.middleware),
 });
-
-addListeners();
 
 export const persistor = persistStore(store);
 

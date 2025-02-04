@@ -8,7 +8,7 @@ import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { floorBlockMinMax } from "../../render/renderExtent";
-import { defaultBaseState } from "./loadItem";
+import { defaultBaseState } from "./itemDefaultStates";
 
 export function* loadFloorAndCeiling<RoomId extends string>(
   roomJson: RoomJson<SceneryName, RoomId>,

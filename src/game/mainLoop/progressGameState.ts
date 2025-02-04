@@ -5,7 +5,7 @@ import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
-import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
+import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
@@ -111,7 +111,7 @@ export const _progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems => {
-  const { inputState } = gameState;
+  const { inputStateTracker } = gameState;
 
   const room = selectCurrentRoomState(gameState);
 
@@ -125,12 +125,8 @@ export const _progressGameState = <RoomId extends string>(
     ]),
   );
 
-  if (inputState.swop) {
+  if (inputStateTracker.currentActionPress("swop") === "tap") {
     swopPlayables(gameState);
-    // we have now handled that keypress, turn it off until the key is pressed again,
-    // which will turn this flag back on
-    inputState.swop = false;
-    // now we let the room play through normally on the assumption it isn't harmful to do so
   }
 
   for (const item of objectValues(room.items)) {
@@ -171,7 +167,7 @@ export const _progressGameState = <RoomId extends string>(
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
   );
-  assignLatentMovement(movedItems, room, startingPositions);
+  assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 
   advanceTime(gameState, room, deltaMS);

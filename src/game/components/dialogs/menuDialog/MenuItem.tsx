@@ -1,42 +1,119 @@
-import type { FunctionComponent } from "react";
-import type { MenuId } from "./menus";
-import type {
-  GameMenusSliceAction,
-  GameMenusState,
-} from "../../../../store/gameMenusSlice";
-import type { KeyAssignmentPresetName } from "../../../input/keyAssignmentPresets";
-import type { Action } from "../../../input/InputState";
+import { BitmapText } from "../../Sprite";
+import { twMerge } from "tailwind-merge";
+import { useAppSelector } from "../../../../store/hooks";
+import { type ReactElement } from "react";
+import { useActionTap } from "../useActionInput";
+import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
+import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
+import { MenuItemLeader } from "./menus/MenuItemLeader";
+import Portal from "@mutabazia/react-portal";
+import { multilineTextClass } from "./multilineTextClass";
 
-export type ValueComponent = FunctionComponent<{
+export type MenuItemProps = {
+  id: string;
+  label: string | ReactElement;
+  valueElement?: ReactElement;
+  flipLeader?: boolean;
+  doubleHeightWhenFocussed?: boolean;
+  hidden?: boolean;
+  onSelect?: () => void;
   className?: string;
-  selected: boolean;
-}>;
+  hint?: string | ReactElement;
+};
 
-export type MenuItem = {
-  label: string | FunctionComponent<{ selected: boolean; menuItem: MenuItem }>;
-  disableDoubling?: boolean;
-  /* test for if this menu item should be shown */
-  showIf?: (state: GameMenusState) => boolean;
-  hint?: string;
-  /** select from the store - a value to display on the menuitem */
-  //selectValue?: (store: GameMenusState) => string | boolean | number;
-  /** used to render the value selected by selectValue. If not given, is just text */
-  ValueComponent?: ValueComponent;
-  className?: string;
-} & (
-  | {
-      type: "submenu";
-      submenu: MenuId;
-    }
-  | { type: "toGame" }
-  | { type: "dispatch"; dispatch: () => GameMenusSliceAction }
-  | {
-      type: "switch";
-      selectValue?: (store: GameMenusState) => boolean;
-      dispatch?: () => GameMenusSliceAction;
-    }
-  | { type: "key"; action: Action }
-  | { type: "keyPreset"; preset: KeyAssignmentPresetName }
-  | { type: "back" }
-  | { type: "todo" }
-);
+const menuSelectOrJump = ["menu_select", "jump"] as const;
+
+export const menuItemDataAttributeId = "data-menuitem_id";
+export const menuItemDataAttributeHidden = "data-menuitem_hidden";
+
+const noop = () => {};
+
+export const MenuItem = ({
+  id,
+  label,
+  valueElement,
+  flipLeader = false,
+  doubleHeightWhenFocussed,
+  onSelect = noop,
+  hidden = false,
+  className,
+  hint,
+}: MenuItemProps) => {
+  //useUnchanging(onSelect, "onSelect"); <- commented out, breaks HMR
+
+  const scrollIntoView = useAppSelector((state) => {
+    return state.openMenus[0].scrollableSelection;
+  });
+
+  const focussed = useAppSelector(
+    (state) => state.openMenus[0].focussedItemId === id,
+  );
+
+  useActionTap({
+    action: menuSelectOrJump,
+    handler: onSelect,
+    disabled: !focussed || hidden,
+  });
+
+  return (
+    // contents div puts children into the grid layout:
+    <div
+      {...{
+        // data attributes required for MenuItems to this this MenuItem in the dom:
+        [menuItemDataAttributeId]: id,
+        [menuItemDataAttributeHidden]: hidden,
+      }}
+      tabIndex={0}
+      className={twMerge(
+        "contents",
+        hidden ? "hidden" : "",
+        doubleHeightWhenFocussed && focussed ? "sprites-double-height" : "",
+        focussed ? "selectedMenuItem" : "",
+        className,
+      )}
+      onMouseMove={useDispatchActionCallback(setFocussedMenuItemId, {
+        focussedItemId: id,
+        scrollableSelection: false,
+      })}
+      onClick={onSelect}
+    >
+      {/* first column content (leader/icon thing)... */}
+      <MenuItemLeader flip={flipLeader} focussed={focussed} />
+
+      {/* second column content (main label)... */}
+      <div
+        ref={
+          focussed && scrollIntoView ?
+            (ele) =>
+              ele?.scrollIntoView({ behavior: "instant", block: "center" })
+          : undefined
+        }
+        className={twMerge(
+          // if there is no value to show, take up the third column too:
+          valueElement === undefined ? "col-span-2" : "",
+
+          // back buttons are usually at the bottom so set them away
+          // from the normal menu items:
+          // menuItem.type === "back" ? "mt-1" : "",
+          // menuItem.className ?? "",
+        )}
+      >
+        {typeof label === "string" ?
+          <>
+            <BitmapText>{label}</BitmapText>
+          </>
+        : label}
+      </div>
+
+      {/* third column content (values etc) */}
+      {valueElement !== undefined && valueElement}
+      {!focussed || hint === undefined ? null : (
+        <Portal>
+          {typeof hint === "string" ?
+            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
+          : hint}
+        </Portal>
+      )}
+    </div>
+  );
+};

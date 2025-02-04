@@ -38,9 +38,9 @@ export const fromEntries = Object.fromEntries as ObjectFromEntries;
 export const fromAllEntries = Object.fromEntries as ObjectFromAllEntries;
 
 export const transformObject = <
-  KIn extends string,
+  KIn extends string | number,
   VIn,
-  KOut extends string,
+  KOut extends string | number,
   VOut,
 >(
   object: Partial<Record<KIn, VIn>>,

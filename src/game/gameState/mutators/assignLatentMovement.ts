@@ -3,9 +3,25 @@ import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { subXyz, xyzEqual, originXyz } from "../../../utils/vectors/vectors";
+import type { FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
+const latency = 2 * originalFramePeriod;
+
 export const assignLatentMovement = <RoomId extends string>(
+  itemToMove: FreeItem<SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
+  movementDelta: Xyz,
+) => {
+  itemToMove.state.latentMovement.push({
+    // since the original game pushes items every other frame, the practical latency
+    // for standing-on items is two frames
+    moveAtRoomTime: room.roomTime + latency,
+    positionDelta: movementDelta,
+  });
+};
+
+export const assignLatentMovementFromStandingOn = <RoomId extends string>(
   movedItems: Set<AnyItemInPlay>,
   room: RoomState<SceneryName, RoomId>,
   startingPositions: Record<string, Xyz>,
@@ -31,12 +47,7 @@ export const assignLatentMovement = <RoomId extends string>(
 
     if (!xyzEqual(latentMovement, originXyz)) {
       for (const stander of moverItem.state.stoodOnBy) {
-        stander.state.latentMovement.push({
-          // since the original game pushes items every other frame, the practical latency
-          // for standing-on items is two frames
-          moveAtRoomTime: room.roomTime + 2 * originalFramePeriod,
-          positionDelta: latentMovement,
-        });
+        assignLatentMovement(stander, room, latentMovement);
       }
     }
   }

@@ -1,72 +1,97 @@
-import { useCallback, useMemo } from "react";
-import type { ConditionalKeys } from "type-fest";
-import { emptyArray } from "../../../utils/empty";
-import type { InputState } from "../../input/InputState";
-import type { Key } from "../../input/keys";
-import { useEvent } from "../../../utils/react/useEvent";
-import { useInputState } from "../../input/InputStateProvider";
+import { useEffect, useMemo } from "react";
+import { useInputStateTracker } from "../../input/InputStateProvider";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { BooleanAction, InputPress } from "../../input/InputState";
 
-type BooleanInput = ConditionalKeys<InputState, boolean>;
+import { Ticker } from "pixi.js";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import { useUnchanging } from "../../../utils/react/useUnchanging";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
-  onAction: () => void;
-  action?: BooleanInput | BooleanInput[];
-  key?: Key | Key[];
+  handler: (action: BooleanAction | DirectionXy4) => void;
+  action?:
+    | (BooleanAction | DirectionXy4)
+    | Readonly<Array<BooleanAction | DirectionXy4>>;
   disabled?: boolean;
 };
 
-export const useActionInput = ({
-  onAction,
-  action: actionProp,
-  key: keyProp,
+export const useActionTap = ({
+  handler,
+  action: actionOrActions,
   disabled = false,
 }: UseActionInputProps) => {
-  const actions: BooleanInput[] = useMemo(
+  const actions: Array<BooleanAction | DirectionXy4> = useMemo(
     () =>
-      actionProp === undefined ? emptyArray
-      : Array.isArray(actionProp) ? actionProp
-      : [actionProp],
-    [actionProp],
+      Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions],
+    [actionOrActions],
   );
 
-  const keys: Key[] = useMemo(
-    () =>
-      keyProp === undefined ? emptyArray
-      : Array.isArray(keyProp) ? keyProp
-      : [keyProp],
-    [keyProp],
-  );
+  const inputStateTracker = useInputStateTracker();
 
-  useEvent(
-    useInputState().events,
-    "inputStateChanged",
-    useCallback(
-      (inputStateChangeEvent) => {
-        if (disabled) {
-          return;
+  // these are correct but they break HMR:
+  // useUnchanging(actionOrActions);
+  // useUnchanging(handler);
+  // useUnchanging(inputStateTracker);
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
+    const check = () => {
+      for (const action of actions) {
+        const pressStatus = inputStateTracker.currentActionPress(action);
+        if (pressStatus === "tap") {
+          handler(action);
+          break; // if we are looking for multiple actions, don't let them
+          // all trigger on the same frame
         }
+      }
+    };
 
-        if (inputStateChangeEvent.upOrDown === "up") {
-          return;
-        }
-        const { inputState } = inputStateChangeEvent;
+    Ticker.shared.add(check);
+    return () => {
+      Ticker.shared.remove(check);
+    };
+  }, [actions, disabled, inputStateTracker, handler]);
+};
 
-        const action = actions.find((action) => inputState[action]);
+export type UseInputPressesProps = {
+  handler: (
+    input: InputPress,
+    inputStateTracker: InputStateTrackerInterface,
+  ) => void;
+  disabled?: boolean;
+};
 
-        if (action !== undefined && inputState[action]) {
-          onAction();
-          inputState[action] = false; // handled this input
-          return;
-        }
+export const useInputTap = ({
+  handler,
+  disabled = false,
+}: UseInputPressesProps) => {
+  useUnchanging(handler);
 
-        const key = keys.find((key) => inputState.raw[key]);
-        if (key !== undefined && inputState.raw[key]) {
-          onAction();
-          delete inputState.raw[key]; // handled this input
-        }
-      },
-      [actions, disabled, keys, onAction],
-    ),
-  );
+  const inputStateTracker = useInputStateTracker();
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
+    /**
+     * setInterval loop for the menus (since they don't have a ticker like the game engine does)
+     * this will add latency to input but is not used for anywhere where that matters
+     */
+    const check = () => {
+      const inputTap = inputStateTracker.inputTap();
+      if (inputTap !== undefined) {
+        handler(inputTap, inputStateTracker);
+      }
+    };
+
+    Ticker.shared.add(check);
+    return () => {
+      Ticker.shared.remove(check);
+    };
+  }, [disabled, handler, inputStateTracker]);
 };

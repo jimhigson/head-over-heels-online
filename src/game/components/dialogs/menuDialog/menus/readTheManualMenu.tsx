@@ -1,46 +1,62 @@
+import { Dialog } from "../../../../../components/ui/dialog";
+import type { ManualPageName } from "../../../../../manual/pages";
 import { manualPages, pageTitle } from "../../../../../manual/pages";
-import { objectEntriesIter } from "../../../../../utils/entries";
+import { goToSubmenu } from "../../../../../store/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
+import { keys } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";
 import { BitmapText } from "../../../Sprite";
-import { backMenuItem } from "../backMenuItem";
-import type { MenuItem } from "../MenuItem";
+import { MenuItem } from "../MenuItem";
+import { BackMenuItem } from "../BackMenuItem";
+import { MenuItemSeparator } from "../MenuItemSeparator";
 import { MenuItems } from "../MenuItems";
-import type { Menu } from "../menus";
 import { multilineTextClass } from "../multilineTextClass";
+import type { DialogId } from "../menus";
 
-export const readTheManualMenu: Menu = {
-  dialogClassName: "bg-highlightBeige zx:bg-zxCyanDimmed",
-  borderClassName: "bg-midGrey zx:bg-zxCyan",
-  Content() {
-    return (
-      <>
-        <BitmapText className="ml-3 text-moss zx:text-zxBlack sprites-double-height">
-          Read the manual
-        </BitmapText>
-        <MenuItems
-          className={
-            `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
-            "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
-            "overflow-y-scroll scrollbar scrollbar-w-1 " +
-            "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
-          }
-        />
-      </>
-    );
-  },
-  items: [
-    ...iterate(objectEntriesIter(manualPages)).map(
-      ([pageName, pageContent]): MenuItem => {
-        const title = pageTitle(pageContent);
+const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
+  const pageContent = manualPages[pageName];
+  const title = pageTitle(pageContent);
 
-        return {
-          type: "submenu",
-          label: title,
-          submenu: `markdown/${pageName}`,
-        };
-      },
-    ),
-    backMenuItem,
-  ],
+  return (
+    <MenuItem
+      id={`markdown/${pageName}`}
+      label={title}
+      onSelect={useDispatchActionCallback(
+        goToSubmenu,
+        `markdown/${pageName}` as DialogId,
+      )}
+      doubleHeightWhenFocussed
+    />
+  );
+};
+
+export const ReadTheManualMenu = () => {
+  return (
+    <Dialog
+      className="bg-highlightBeige zx:bg-zxCyanDimmed"
+      borderClassName="bg-midGrey zx:bg-zxCyan"
+    >
+      <BitmapText className="ml-3 text-moss zx:text-zxBlack sprites-double-height">
+        Read the manual
+      </BitmapText>
+      <MenuItems
+        className={
+          `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
+          "overflow-y-scroll scrollbar scrollbar-w-1 " +
+          "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
+          "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
+        }
+      >
+        {[
+          ...iterate(keys(manualPages)).map((pageName) => {
+            return <MarkdownMenuItem key={pageName} pageName={pageName} />;
+          }),
+        ]}
+
+        <MenuItemSeparator />
+        <BackMenuItem />
+      </MenuItems>
+    </Dialog>
+  );
 };
