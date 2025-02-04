@@ -2,9 +2,7 @@ import type { GameState } from "../../gameState/GameState";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import type {
-  UnknownItemInPlay,
-} from "../../../model/ItemInPlay";
+import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
 import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";

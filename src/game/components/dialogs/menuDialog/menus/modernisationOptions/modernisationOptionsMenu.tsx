@@ -155,7 +155,7 @@ export const ModernisationOptionsDialog = () => {
               />
             }
             onSelect={useDispatchActionCallback(toggleCrtFilter)}
-            hint="Screen glows a bit like an old tv"
+            hint="Subtle screen glow a bit like an old tv"
           />
           <MenuItem
             doubleHeightWhenFocussed

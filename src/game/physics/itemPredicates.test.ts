@@ -5,9 +5,7 @@ import { first } from "iter-tools";
 import type { AnyItemInPlay } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
-import {
-  loadItemFromJson,
-} from "../gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 
 const player = loadPlayer({

@@ -40,8 +40,9 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
           cheatsOn ? import("../../../testCampaign.ts") : undefined,
         ]);
 
-      const campaign = cheatsOn
-        ? {
+      const campaign =
+        cheatsOn ?
+          {
             rooms: {
               ...originalCampaignImport.campaign.rooms,
               ...testCampaignImport?.testCampaign.rooms,

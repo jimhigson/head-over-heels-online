@@ -8,7 +8,6 @@ import type { SceneryName } from "../../sprites/planets";
 import { fromAllEntries } from "../../utils/entries";
 import type { GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
-import { InputStateTracker } from "../input/InputStateTracker";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>

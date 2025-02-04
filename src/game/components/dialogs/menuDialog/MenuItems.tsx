@@ -1,22 +1,14 @@
 import { twMerge } from "tailwind-merge";
 import { useIsAssigningKeys } from "../../../../store/selectors";
 import { useActionTap } from "../useActionInput";
-import type { PropsWithChildren, ReactElement, RefObject } from "react";
+import type { PropsWithChildren, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { store } from "../../../../store/store";
-import type { MenuItemProps } from "./MenuItem";
 import {
   menuItemDataAttributeId,
-  MenuItem,
   menuItemDataAttributeHidden,
 } from "./MenuItem";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
-
-const isMenuItem = (
-  e: ReactElement,
-): e is ReactElement<MenuItemProps, typeof MenuItem> => {
-  return e.type === MenuItem;
-};
 
 const findMenuItems = (container: HTMLDivElement) => {
   const menuItemsDom = container.querySelectorAll(

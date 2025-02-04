@@ -5,7 +5,7 @@ import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
-import { assignLatentMovement } from "../gameState/mutators/assignLatentMovement";
+import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
@@ -167,7 +167,7 @@ export const _progressGameState = <RoomId extends string>(
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
   );
-  assignLatentMovement(movedItems, room, startingPositions);
+  assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 
   advanceTime(gameState, room, deltaMS);
