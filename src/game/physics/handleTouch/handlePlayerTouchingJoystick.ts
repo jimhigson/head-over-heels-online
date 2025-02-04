@@ -1,13 +1,12 @@
 import { mtv } from "../slidingCollision";
-import { moveItem } from "../moveItem";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
 import type { SceneryName } from "../../../sprites/planets";
 import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
+import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
 
 export const handlePlayerTouchingJoystick = <RoomId extends string>({
-  gameState,
   movingItem,
   room,
   touchedItem: joystickItem,
@@ -41,13 +40,9 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>({
 
     const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
     sillyOldFace.state.facing = posDelta;
-    moveItem({
-      subjectItem: sillyOldFace,
-      posDelta,
-      gameState,
-      room,
-      pusher: joystickItem,
-      deltaMS,
-    });
+
+    // unlike the original, there is latency in controlling the charles - this
+    // also avoids a circular dependency moveItem -> handleJoystick -> moveItem
+    assignLatentMovement(sillyOldFace, room, posDelta);
   }
 };
