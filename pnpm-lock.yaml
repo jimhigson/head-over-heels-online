@@ -63,8 +63,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react@19.0.0)(redux@5.0.1)
       snarkdown-in-react:
-        specifier: ^1.0.4
-        version: 1.0.4
+        specifier: ^2.0.0
+        version: 2.0.0
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -2799,8 +2799,8 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
-  snarkdown-in-react@1.0.4:
-    resolution: {integrity: sha512-Kni09gicxTDCW569xkSJLwhBmO4PS6LtKp3KuqZGkoWGc5fQgm5g/NLa2glyNC3GmnBaZPYsR+KYlCX/ZgxVWA==}
+  snarkdown-in-react@2.0.0:
+    resolution: {integrity: sha512-Z5/1fhh+N12p6DSFUDOYi9qAJJ3xWYeThT3AdEmVIJc36drLp73OjZujOEvWDy3yJzIrg3RMwY8huDzY8W9aXA==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -5771,7 +5771,7 @@ snapshots:
 
   slash@3.0.0: {}
 
-  snarkdown-in-react@1.0.4:
+  snarkdown-in-react@2.0.0:
     dependencies:
       react: 19.0.0
 

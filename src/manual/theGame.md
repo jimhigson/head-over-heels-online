@@ -4,7 +4,7 @@
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb.
 
-![](texture-market.wall.fruits.left?bg-pureBlack)![](texture-moonbase.wall.window2.away?bg-pureBlack&float-right) Your job is to get them both
+![](texture-market.wall.fruits.left?bg-pureBlack)![](texture-moonbase.wall.window2.away?bg-pureBlack&float-right)Your job is to get them both
 out of the castle and into the *marketplace* so they can join up again. From
 there, the journey leads to *Moonbase Headquarters*, where you will have to decide
 either to try to escape back to *Freedom* or to be a true hero and teleport to one

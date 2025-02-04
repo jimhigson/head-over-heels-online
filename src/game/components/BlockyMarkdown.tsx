@@ -6,6 +6,7 @@ import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import type { CustomComponentsOption } from "snarkdown-in-react";
 import { SnarkdownInReact } from "snarkdown-in-react";
+import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
@@ -22,9 +23,9 @@ const markdownComponents: CustomComponentsOption = {
       </h3>
     );
   },
-  div: function Div({ children }: PropsWithChildren<EmptyObject>) {
+  p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <div className="mb-1">
+      <div className={`mb-1 ${multilineTextClass}`}>
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </div>
     );

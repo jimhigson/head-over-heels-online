@@ -4,7 +4,6 @@ import { useActionTap } from "../useActionInput";
 import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
-import { multilineTextClass } from "./multilineTextClass";
 import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import { Dialog } from "../../../../components/ui/dialog";
 import { MenuItems } from "./MenuItems";
@@ -63,7 +62,6 @@ export const MarkdownDialog = ({
     >
       <div
         className={twMerge(
-          multilineTextClass,
           "overflow-y-scroll " +
             "scrollbar  scrollbar-w-1 " +
             "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +

@@ -110,10 +110,8 @@ export const MenuItem = ({
       {!focussed || hint === undefined ? null : (
         <Portal>
           {typeof hint === "string" ?
-            <BitmapText className={`${multilineTextClass} className`}>
-              {hint}
-            </BitmapText>
-          : { hint }}
+            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
+          : hint}
         </Portal>
       )}
     </div>
