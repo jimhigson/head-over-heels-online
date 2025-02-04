@@ -33,6 +33,7 @@ import {
   itemRidingOnBubblesSpritesOptions,
 } from "./stackedSprites";
 import { store } from "../../../store/store";
+import { getAtPath } from "../../../utils/getAtPath";
 
 const blockTextureId = (
   isDark: boolean,
@@ -172,10 +173,18 @@ export const itemAppearances: {
 
   switch({
     item: {
-      state: { setting },
+      state: { setting: stateSetting },
+      config: { store: switchStoreConfig },
     },
     currentlyRenderedProps,
   }) {
+    // for store switches, ignore the switch's own state and read from the store:
+    const setting =
+      switchStoreConfig ?
+        getAtPath(store.getState(), switchStoreConfig.selectsPath) ? "right"
+        : "left"
+      : stateSetting;
+
     const render =
       currentlyRenderedProps === undefined ||
       setting !== currentlyRenderedProps.setting;

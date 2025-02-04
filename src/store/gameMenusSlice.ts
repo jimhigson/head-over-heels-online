@@ -372,3 +372,5 @@ export const {
   toggleCrtFilter,
   toggleLivesModel,
 } = gameMenusSlice.actions;
+
+export const gameMenusSliceActions = gameMenusSlice.actions;

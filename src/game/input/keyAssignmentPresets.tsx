@@ -19,6 +19,7 @@ import {
 const standardAssignment = {
   presses: {
     menu_openOrExit: { keys: ["Escape"] },
+    menu_exit: { gamepadButtons: [standardControllerLayout.x] },
     // menu_up: { keys: ["ArrowUp"] },
     // menu_down: { keys: ["ArrowDown"] },
     menu_select: {

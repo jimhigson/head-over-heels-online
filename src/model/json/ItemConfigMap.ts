@@ -1,3 +1,4 @@
+import type { ConditionalKeys, Paths } from "type-fest";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
 import type { DirectionXy4, Xyz, AxisXy } from "../../utils/vectors/vectors";
@@ -7,6 +8,11 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
+import type {
+  gameMenusSliceActions,
+  GameMenusState,
+} from "../../store/gameMenusSlice";
+import type { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 
@@ -210,12 +216,22 @@ export type ItemConfigMap<
   };
   switch: {
     // list of all items (de)activated by this switch
-    activates: {
+    activates?: {
       [I in ItemId]?: {
         // state deltas for the impacted items
         left: Record<string, unknown>;
         right: Record<string, unknown>;
       };
+    };
+
+    // special case for switches that read from and dispatch to the store:
+    store?: {
+      selectsPath: Paths<GameMenusState>;
+      // names of the actions that don't need a parameter/payload to create:
+      dispatches: ConditionalKeys<
+        typeof gameMenusSliceActions,
+        ActionCreatorWithoutPayload
+      >;
     };
   };
   joystick: {
