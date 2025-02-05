@@ -41,3 +41,6 @@ export const selectCurrentInputPreset = (
   }
   return undefined;
 };
+
+export const selectShowFps = (state: RootState): boolean =>
+  state.userSettings.showFps;

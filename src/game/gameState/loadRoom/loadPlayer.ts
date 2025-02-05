@@ -8,7 +8,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { smallItemAabb } from "../../collision/boundingBoxes";
+import { mediumItemAabb } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { store } from "../../../store/store";
@@ -17,7 +17,7 @@ export const defaultPlayableRootAttributes = {
   config: emptyObject,
   shadowCastTexture: "shadow.smallRound",
   // head's nose is rendered outside of his bb in the original
-  aabb: smallItemAabb,
+  aabb: mediumItemAabb,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
 export const defaultPlayerState = () =>

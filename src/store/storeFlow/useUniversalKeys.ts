@@ -2,6 +2,7 @@ import {
   holdPressed,
   menuOpenOrExitPressed,
   toggleColourise,
+  toggleShowFps,
 } from "../gameMenusSlice";
 import { useActionTap } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
@@ -23,6 +24,12 @@ export const useUniversalKeys = () => {
     action: "menu_exit",
     handler: useDispatchActionCallback(menuOpenOrExitPressed),
     disabled: !menuOpen,
+  });
+
+  useActionTap({
+    action: "toggleShowFps",
+    handler: useDispatchActionCallback(toggleShowFps),
+    disabled: menuOpen,
   });
 
   useActionTap({

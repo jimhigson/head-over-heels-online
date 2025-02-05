@@ -42,7 +42,7 @@ export const handlePlayerTouchingJoystick = <RoomId extends string>({
     sillyOldFace.state.facing = posDelta;
 
     // unlike the original, there is latency in controlling the charles - this
-    // also avoids a circular dependency moveItem -> handleJoystick -> moveItem
+    // also avoids a circular dependency moveItem -> handleJoystick ->
     assignLatentMovement(sillyOldFace, room, posDelta);
   }
 };

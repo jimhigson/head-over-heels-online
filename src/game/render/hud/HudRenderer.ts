@@ -1,5 +1,5 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { Container, Sprite } from "pixi.js";
+import { Container, Sprite, Ticker } from "pixi.js";
 import { OutlineFilter } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { getColorScheme } from "../../hintColours";
@@ -32,6 +32,9 @@ import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/paletteSwapFilters";
 import { store } from "../../../store/store";
+import { selectShowFps } from "../../../store/selectors";
+
+const fpsUpdatePeriod = 250;
 
 const livesTextFromCentre = 24;
 const playableIconFromCentre = 56;
@@ -42,8 +45,11 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-function* numberSprites(n: number) {
-  const chars = Number.isFinite(n) ? n.toString().split("") : "-";
+function* numberSprites(n: number | string) {
+  const chars =
+    typeof n === "string" ? n.split("")
+    : Number.isFinite(n) ? n.toString().split("")
+    : "-";
   const l = chars.length;
   for (let i = 0; i < l; i++) {
     const textureId = `hud.char.${chars[i]}`;
@@ -55,10 +61,8 @@ function* numberSprites(n: number) {
   }
 }
 
-function showNumberInContainer(container: Container, n: number) {
-  for (const c of container.children) {
-    c.destroy();
-  }
+function showNumberInContainer(container: Container, n: number | string) {
+  container.removeChildren();
   iterateToContainer(numberSprites(n), container);
 }
 
@@ -71,6 +75,7 @@ export class HudRenderer<RoomId extends string> {
     new RevertColouriseFilter();
   #iconFilter = new RevertColouriseFilter();
   #textFilter = new RevertColouriseFilter();
+  #fpsColourFilter = new RevertColouriseFilter(spritesheetPalette.moss);
 
   #outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
@@ -105,29 +110,29 @@ export class HudRenderer<RoomId extends string> {
 
   #hudElements = {
     head: {
-      sprite: this.characterSprite("head"),
-      livesText: this.makeText({
+      sprite: this.#characterSprite("head"),
+      livesText: this.#makeText({
         label: "headLives",
         doubleHeight: true,
         outline: true,
       }),
-      shield: this.iconWithNumber({
+      shield: this.#iconWithNumber({
         label: "headShield",
         textureId: "hud.shield",
         outline: true,
       }),
-      extraSkill: this.iconWithNumber({
+      extraSkill: this.#iconWithNumber({
         label: "headFastSteps",
         textureId: "hud.fastSteps",
         outline: true,
       }),
-      doughnuts: this.iconWithNumber({
+      doughnuts: this.#iconWithNumber({
         label: "headDoughnuts",
         textureId: "doughnuts",
         textOnTop: true,
         outline: "text-only",
       }),
-      hooter: this.iconWithNumber({
+      hooter: this.#iconWithNumber({
         label: "headHooter",
         textureId: "hooter",
         textOnTop: true,
@@ -135,23 +140,23 @@ export class HudRenderer<RoomId extends string> {
       }),
     },
     heels: {
-      sprite: this.characterSprite("heels"),
-      livesText: this.makeText({
+      sprite: this.#characterSprite("heels"),
+      livesText: this.#makeText({
         label: "heelsLives",
         doubleHeight: true,
         outline: true,
       }),
-      shield: this.iconWithNumber({
+      shield: this.#iconWithNumber({
         label: "heelsShield",
         textureId: "hud.shield",
         outline: true,
       }),
-      extraSkill: this.iconWithNumber({
+      extraSkill: this.#iconWithNumber({
         label: "heelsBigJumps",
         textureId: "hud.bigJumps",
         outline: true,
       }),
-      bag: this.iconWithNumber({
+      bag: this.#iconWithNumber({
         label: "heelsBag",
         textureId: "bag",
         textOnTop: true,
@@ -161,6 +166,7 @@ export class HudRenderer<RoomId extends string> {
         container: new Container({ label: "heelsCarrying" }),
       },
     },
+    fps: this.#makeText({ label: "fps", outline: true }),
   };
 
   constructor() {
@@ -176,9 +182,17 @@ export class HudRenderer<RoomId extends string> {
     this.#container.addChild(this.#hudElements.head.hooter.container);
     this.#container.addChild(this.#hudElements.heels.bag.container);
     this.#container.addChild(this.#hudElements.heels.carrying.container);
+
+    this.#container.addChild(this.#hudElements.fps);
+    this.#hudElements.fps.filters = [
+      this.#fpsColourFilter,
+      //this.#outlineFilter,
+    ];
+    this.#hudElements.fps.y = hudCharTextureSize.h;
+    this.#hudElements.fps.x = hudCharTextureSize.w * 3;
   }
 
-  iconWithNumber({
+  #iconWithNumber({
     textureId,
     textOnTop = false,
     noText = false,
@@ -202,7 +216,7 @@ export class HudRenderer<RoomId extends string> {
     });
     container.addChild(icon);
 
-    const text = this.makeText({ outline: outline === "text-only" });
+    const text = this.#makeText({ outline: outline === "text-only" });
     text.y = textOnTop ? 0 : 16;
 
     text.x = icon.x = hudCharTextureSize.w / 2;
@@ -223,7 +237,7 @@ export class HudRenderer<RoomId extends string> {
     };
   }
 
-  characterSprite(characterName: IndividualCharacterName) {
+  #characterSprite(characterName: IndividualCharacterName) {
     const characterSprite = new Sprite(
       spriteSheet.textures[
         `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
@@ -235,7 +249,7 @@ export class HudRenderer<RoomId extends string> {
     return characterSprite;
   }
 
-  makeText({
+  #makeText({
     doubleHeight = false,
     outline = false,
     label = "text",
@@ -248,7 +262,7 @@ export class HudRenderer<RoomId extends string> {
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
-  updateElementPositions(screenSize: Xy) {
+  #updateElementPositions(screenSize: Xy) {
     this.#hudElements.head.hooter.container.x =
       this.#hudElements.head.doughnuts.container.x =
         (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
@@ -266,7 +280,7 @@ export class HudRenderer<RoomId extends string> {
   }
 
   /** update the carrying element for heel's bag contents */
-  tickBagAndCarrying(gameState: GameState<RoomId>) {
+  #tickBagAndCarrying(gameState: GameState<RoomId>) {
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;
 
@@ -297,7 +311,7 @@ export class HudRenderer<RoomId extends string> {
       hasBag ? noFilters : this.#uncurrentSpriteFilter;
   }
 
-  tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
+  #tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
     const headAbilities = selectAbilities(gameState, "head");
 
     const hasHooter = headAbilities?.hasHooter ?? false;
@@ -309,7 +323,7 @@ export class HudRenderer<RoomId extends string> {
     showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
   }
 
-  updateAbilitiesIcons(
+  #updateAbilitiesIcons(
     gameState: GameState<RoomId>,
     screenSize: Xy,
     characterName: IndividualCharacterName,
@@ -339,7 +353,7 @@ export class HudRenderer<RoomId extends string> {
     skillContainer.y = screenSize.y - 24;
   }
 
-  characterIsActive(
+  #characterIsActive(
     gameState: GameState<RoomId>,
     characterName: IndividualCharacterName,
   ) {
@@ -350,13 +364,13 @@ export class HudRenderer<RoomId extends string> {
     );
   }
 
-  updateCharacterSprite(
+  #updateCharacterSprite(
     gameState: GameState<RoomId>,
     screenSize: Xy,
     colourise: boolean,
     characterName: IndividualCharacterName,
   ) {
-    const isActive = this.characterIsActive(gameState, characterName);
+    const isActive = this.#characterIsActive(gameState, characterName);
     const characterSprite = this.#hudElements[characterName].sprite;
 
     if (isActive) {
@@ -379,7 +393,7 @@ export class HudRenderer<RoomId extends string> {
     characterSprite.y = screenSize.y - smallItemTextureSize.h;
   }
 
-  updateLivesText(
+  #updateLivesText(
     gameState: GameState<RoomId>,
     screenSize: Xy,
     characterName: IndividualCharacterName,
@@ -395,7 +409,7 @@ export class HudRenderer<RoomId extends string> {
     showNumberInContainer(livesTextContainer, lives ?? 0);
   }
 
-  updateColours(gameState: GameState<RoomId>, colourise: boolean) {
+  #updateColours(gameState: GameState<RoomId>, colourise: boolean) {
     const room = selectCurrentRoomState(gameState);
     const colorScheme = getColorScheme(room.color);
 
@@ -413,16 +427,37 @@ export class HudRenderer<RoomId extends string> {
 
     this.#hudElements.head.livesText.filters =
       colourise ?
-        this.characterIsActive(gameState, "head") ?
+        this.#characterIsActive(gameState, "head") ?
           this.#livesTextFilter.colourised.head
         : this.#uncurrentSpriteFilter
       : this.#livesTextFilter.original;
     this.#hudElements.heels.livesText.filters =
       colourise ?
-        this.characterIsActive(gameState, "heels") ?
+        this.#characterIsActive(gameState, "heels") ?
           this.#livesTextFilter.colourised.heels
         : this.#uncurrentSpriteFilter
       : this.#livesTextFilter.original;
+  }
+
+  #fpsLastUpdated: number = Number.NEGATIVE_INFINITY;
+  #updateFps() {
+    if (selectShowFps(store.getState())) {
+      if (performance.now() > this.#fpsLastUpdated + fpsUpdatePeriod) {
+        const fpsValue = Ticker.shared.FPS;
+        showNumberInContainer(this.#hudElements.fps, Math.round(fpsValue));
+
+        this.#fpsColourFilter.targetColor =
+          fpsValue > 56 ? spritesheetPalette.moss
+          : fpsValue > 50 ? spritesheetPalette.metallicBlue
+          : fpsValue > 40 ? spritesheetPalette.pink
+          : spritesheetPalette.midRed;
+
+        this.#fpsLastUpdated = performance.now();
+      }
+      this.#hudElements.fps.visible = true;
+    } else {
+      this.#hudElements.fps.visible = false;
+    }
   }
 
   tick({
@@ -434,17 +469,19 @@ export class HudRenderer<RoomId extends string> {
     screenSize: Xy;
     colourise: boolean;
   }) {
-    this.updateColours(gameState, colourise);
+    this.#updateColours(gameState, colourise);
 
     for (const character of individualCharacterNames) {
-      this.updateLivesText(gameState, screenSize, character);
-      this.updateCharacterSprite(gameState, screenSize, colourise, character);
-      this.updateAbilitiesIcons(gameState, screenSize, character);
+      this.#updateLivesText(gameState, screenSize, character);
+      this.#updateCharacterSprite(gameState, screenSize, colourise, character);
+      this.#updateAbilitiesIcons(gameState, screenSize, character);
     }
 
-    this.updateElementPositions(screenSize);
-    this.tickHooterAndDoughnuts(gameState);
-    this.tickBagAndCarrying(gameState);
+    this.#updateElementPositions(screenSize);
+    this.#tickHooterAndDoughnuts(gameState);
+    this.#tickBagAndCarrying(gameState);
+
+    this.#updateFps();
   }
 
   get container() {

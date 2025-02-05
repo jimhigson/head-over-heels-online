@@ -27,6 +27,7 @@ const standardAssignment = {
       gamepadButtons: [standardControllerLayout.a],
     },
     toggleColourisation: { keys: ["F6"] },
+    toggleShowFps: { keys: ["F9"] },
   },
   axes: {
     x: [0],
