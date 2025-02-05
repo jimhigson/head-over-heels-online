@@ -36,6 +36,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "es-iterator-helpers": "^1.2.1",
     "nano-equal": "^2.0.2",
     "natural-orderby": "^5.0.0",
     "pixi.js": "^8.6.6",

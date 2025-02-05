@@ -26,4 +26,9 @@ export default defineConfig({
       gfx: path.resolve(__dirname, "./gfx"),
     },
   },
+
+  server: {
+    // want to test on my iphone
+    host: true,
+  },
 });

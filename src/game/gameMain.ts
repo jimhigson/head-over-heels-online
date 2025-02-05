@@ -71,3 +71,5 @@ export const gameMain = async <RoomId extends string>(
     },
   };
 };
+
+export default gameMain;
