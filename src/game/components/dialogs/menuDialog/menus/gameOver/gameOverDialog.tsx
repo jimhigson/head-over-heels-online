@@ -7,6 +7,8 @@ import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
 import { Dialog } from "../../../../../../components/ui/dialog";
 import { BackMenuItem } from "../../BackMenuItem";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 
 export const GameOverDialog = () => {
   const planetsLiberatedCount = useAppSelector((state) =>
@@ -16,6 +18,7 @@ export const GameOverDialog = () => {
     <Dialog
       className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
       borderClassName="bg-redShadow"
+      onClick={useDispatchActionCallback(backToParentMenu)}
     >
       <MainMenuHeading />
       <BitmapText

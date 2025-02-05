@@ -189,7 +189,7 @@ export class HudRenderer<RoomId extends string> {
       //this.#outlineFilter,
     ];
     this.#hudElements.fps.y = hudCharTextureSize.h;
-    this.#hudElements.fps.x = hudCharTextureSize.w * 3;
+    this.#hudElements.fps.x = hudCharTextureSize.w * 2;
   }
 
   #iconWithNumber({
