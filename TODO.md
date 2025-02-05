@@ -12,11 +12,10 @@
     [?] should portals only work for the current char/
     [?] make portals solid?    
 
-
-
-[ ] why doesn't work in Safari/iOS?
+[ ] window losing focus should pause the game (again)
+[x] make work in Safari/iOS?
     [x] loads/plays now
-    [ ] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
+    [x] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
     - can fix this (I think) by ignoring input while game speed is zero
 
@@ -37,12 +36,11 @@
     - we now use the ticker, but could load just @pixi/ticker
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
-[ ] show FPS counter as an option (lean on pixi to give fps)    
+[x] show FPS counter as an option (lean on pixi to give fps)    
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
     - remove blurryness in general - replace css scaling with pixijs resolution setting
 [x] switch in first room does colourise
-[ ] window losing focus should pause the game (again)
 [ ] iter-tools brings in `@babel/runtime` = not good!
     - maybe drop it
     
@@ -54,8 +52,8 @@
 [ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
-[ ] tailwind - zx class to do dimmed on fg and bg in one
-[ ] remove radix form dialogs - isn't really doing much for us!
+[x] tailwind - zx class to do dimmed on fg and bg in one
+[x] remove radix form dialogs - isn't really doing much for us!
 [ ] show some stats in game over menu - at least
     [ ] score (???)
     [ ] rooms explored 
