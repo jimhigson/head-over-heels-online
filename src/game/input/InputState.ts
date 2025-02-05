@@ -9,6 +9,7 @@ export const booleanActions = [
   "swop",
   "hold", // aka pause in modern games
   "toggleColourisation",
+  "toggleShowFps",
 
   // non- re-assignable keys to ensure there are always keys assigned to
   // use the menus, no matter what the user selects in their key mappings

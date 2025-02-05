@@ -169,7 +169,7 @@ export const room = inferRoomJson({
     },
     heels: {
       config: { which: "heels" },
-      position: { x: 3.5, y: 3.5, z: 0 },
+      position: { x: 3, y: 3.5, z: 0 },
       type: "player",
     },
     scroll: {

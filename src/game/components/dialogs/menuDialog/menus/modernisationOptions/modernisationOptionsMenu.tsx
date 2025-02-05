@@ -3,6 +3,7 @@ import {
   toggleColourise,
   toggleCrtFilter,
   toggleLivesModel,
+  toggleShowFps,
 } from "../../../../../../store/gameMenusSlice";
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
@@ -15,6 +16,7 @@ import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { useAppSelector } from "../../../../../../store/hooks";
 import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { selectShowFps } from "../../../../../../store/selectors";
 
 const markdownClassname = "[&_.em]:text-lightBeige";
 
@@ -128,7 +130,8 @@ export const ModernisationOptionsDialog = () => {
             doubleHeightWhenFocussed
             id="showFps"
             label="Show FPS"
-            valueElement={<ValueSwitch value={false} />}
+            valueElement={<ValueSwitch value={useAppSelector(selectShowFps)} />}
+            onSelect={useDispatchActionCallback(toggleShowFps)}
             hint={`show frame rate`}
           />
           <MenuItem

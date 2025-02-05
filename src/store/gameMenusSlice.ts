@@ -40,6 +40,8 @@ export type UserSettings = {
   inputAssignment: InputAssignment;
   displaySettings: DisplaySettings;
   livesModel: "infinite" | "original";
+  // optional because was introduced without a version bump in persist. Select with !!
+  showFps?: boolean;
 };
 
 const inBrowser = typeof globalThis.window !== "undefined";
@@ -81,6 +83,7 @@ export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     inputAssignment: keyAssignmentPresets.default.inputAssignment,
     livesModel: "original",
+
     displaySettings: {
       showBoundingBoxes: "none",
       showShadowMasks: false,
@@ -88,6 +91,8 @@ export const initialGameMenuSliceState: GameMenusState = {
       colourise: true,
       emulatedResolution: zxSpectrumResolution,
     },
+
+    showFps: false,
   },
   upscale: calculateUpscale(
     inBrowser ?
@@ -328,6 +333,9 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.colourise =
         !state.userSettings.displaySettings.colourise;
     },
+    toggleShowFps(state) {
+      state.userSettings.showFps = !state.userSettings.showFps;
+    },
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
       state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
@@ -371,6 +379,7 @@ export const {
   toggleColourise,
   toggleCrtFilter,
   toggleLivesModel,
+  toggleShowFps,
 } = gameMenusSlice.actions;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;
