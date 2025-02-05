@@ -15,5 +15,10 @@ try {
 
 export const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);
 
-await spriteSheet.parse();
-spriteSheet.textureSource.scaleMode = "nearest";
+// must be called before spritesheet is used. Safari doesn't like top-level
+// await so can't do that here
+export const load = async () => {
+  await spriteSheet.parse();
+  spriteSheet.textureSource.scaleMode = "nearest";
+  return spriteSheet;
+};

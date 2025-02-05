@@ -11,8 +11,19 @@ import { Dialogs } from "../dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../../input/InputStateProvider.tsx";
 import { useCheatsOn } from "../../../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
+import { importOnce } from "../../../utils/importOnce.ts";
 
-const LazyCheats = lazy(() => import("../cheats/Cheats.tsx")) as typeof Cheats;
+const importCheats = importOnce(() => import("../cheats/Cheats.tsx"));
+const importGameMain = importOnce(() => import("../../gameMain.ts"));
+const importOriginalCampaign = importOnce(
+  () => import("../../../_generated/originalCampaign/campaign.ts"),
+);
+const importTestCampaign = importOnce(() => import("../../../testCampaign.ts"));
+const importSpritesheet = importOnce(
+  () => import("../../../sprites/spriteSheet.ts"),
+);
+
+const LazyCheats = lazy(importCheats) as typeof Cheats;
 
 const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const [gameApi, setGameApi] = useState<
@@ -27,18 +38,26 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
       setGameApi(undefined);
       return;
     }
-
     let stopped = false;
     let thisEffectGameApi: GameApi<OriginalCampaignRoomId> | undefined;
 
     const go = async () => {
-      // lazy-load things we need to play the game
-      const [{ gameMain }, originalCampaignImport, testCampaignImport] =
-        await Promise.all([
-          import("../../gameMain.ts"),
-          import("../../../_generated/originalCampaign/campaign.ts"),
-          cheatsOn ? import("../../../testCampaign.ts") : undefined,
-        ]);
+      // to avoid top-level await in Safari, load the sprites early:
+
+      const [
+        spriteSheet,
+        gameMain,
+        originalCampaignImport,
+        testCampaignImport,
+      ] = await Promise.all([
+        importSpritesheet(),
+        importGameMain(),
+        importOriginalCampaign(),
+        cheatsOn ? importTestCampaign() : undefined,
+      ]);
+
+      // top-level await in safari is not great, so the spritesheet doesn't self-load
+      await spriteSheet.load();
 
       const campaign =
         cheatsOn ?
@@ -50,7 +69,7 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
           }
         : originalCampaignImport.campaign;
 
-      thisEffectGameApi = await gameMain(campaign, inputState);
+      thisEffectGameApi = await gameMain.default(campaign, inputState);
 
       if (stopped) {
         thisEffectGameApi.stop();
@@ -82,6 +101,7 @@ export const GamePage = () => {
 
   useEffect(() => {
     if (gameDiv === null || gameApi === undefined) return;
+
     gameApi.renderIn(gameDiv);
   }, [gameApi, gameDiv]);
 
@@ -105,7 +125,7 @@ export const GamePage = () => {
       <Dialogs />
       {gameApi && (
         <GameApiProvider gameApi={gameApi}>
-          {cheatsOn && (
+          {cheatsOn && gameApi && (
             <Suspense fallback={null}>
               <CssVariables>
                 <LazyCheats />

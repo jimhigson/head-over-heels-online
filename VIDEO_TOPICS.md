@@ -27,4 +27,8 @@
     - why the floor is a chessboard (rendering chequred squares)
     - ... and then overdraw with a mask
 
-    
+- why (and how) I wrote my own markdown parser
+
+- Safari's issues with dynamic imports and how I fixed them
+
+- Iter helper methods and polyfilling with dynamic imports

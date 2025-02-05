@@ -15,6 +15,8 @@
 
 
 [ ] why doesn't work in Safari/iOS?
+    [x] loads/plays now
+    [ ] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
     - can fix this (I think) by ignoring input while game speed is zero
 
@@ -24,6 +26,7 @@
     - @hohjs/main = main site
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
+
 
 
 
@@ -40,6 +43,8 @@
     - remove blurryness in general - replace css scaling with pixijs resolution setting
 [x] switch in first room does colourise
 [ ] window losing focus should pause the game (again)
+[ ] iter-tools brings in `@babel/runtime` = not good!
+    - maybe drop it
     
 [ ] change from `pixi.js` package to `@pixi/*` packages
     Import from **`pixi.js`** for a bundled version.  
