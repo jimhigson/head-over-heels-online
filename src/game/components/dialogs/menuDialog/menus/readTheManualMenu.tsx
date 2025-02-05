@@ -1,7 +1,10 @@
 import { Border, Dialog } from "../../../../../components/ui/dialog";
 import type { ManualPageName } from "../../../../../manual/pages";
 import { manualPages, pageTitle } from "../../../../../manual/pages";
-import { goToSubmenu } from "../../../../../store/gameMenusSlice";
+import {
+  backToParentMenu,
+  goToSubmenu,
+} from "../../../../../store/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
 import { keys } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";
@@ -33,7 +36,10 @@ const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
 export const ReadTheManualMenu = () => {
   return (
     <>
-      <Border className="bg-midGrey zx:bg-zxCyan" />
+      <Border
+        className="bg-midGrey zx:bg-zxCyan"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      />
       <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed">
         <BitmapText className="ml-3 text-moss zx:text-zxBlack sprites-double-height">
           Read the manual

@@ -4,6 +4,7 @@ import {
   gameOver,
 } from "../../../../../store/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
+import { BlockyMarkdown } from "../../../BlockyMarkdown";
 import { BitmapText } from "../../../Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
@@ -23,7 +24,7 @@ export const QuitGameConfirmDialog = () => {
             className="ml-3 sprites-double-height"
             classnameCycle={[
               "text-redShadow zx:text-zxWhite",
-              "text-shadow zx:text-zxYellow",
+              "text-midRed zx:text-zxYellow",
             ]}
           >
             Quit the game?
@@ -42,10 +43,15 @@ export const QuitGameConfirmDialog = () => {
               id="yes"
               label="Yes"
               onSelect={useDispatchActionCallback(gameOver)}
-              hint="Warning! This game will end!"
+              hint={
+                <BlockyMarkdown
+                  className="zx:[&_.strong]:text-zxYellow"
+                  markdown="**Warning!** This game will end!"
+                />
+              }
             />
           </MenuItems>
-          <SelectedItemHint className="text-midRed zx:text-zxWhite" />
+          <SelectedItemHint className="text-shadow zx:text-zxWhite" />
         </Portal.Provider>
       </Dialog>
     </>
