@@ -7,6 +7,30 @@ import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";
 import { unitVectors } from "../../utils/vectors/unitVectors";
+import type { PickDeep } from "type-fest";
+
+/**
+ * a cut-down version of Gamepad with only the stuff we need to carry
+ * forward a record of to the next frame, so that we can compare the
+ * state between one frame and the next.
+ *
+ * In Chrome, navigator.getGamepads() return is immutable, so it can be stored
+ * directly. Whereas in Safari, this fails because the object is live.
+ */
+type GamepadState = PickDeep<Gamepad, `buttons.${number}.pressed` | "axes">;
+
+const extractGamepadsState = (
+  gp: Array<Gamepad | null>,
+): Array<GamepadState | null> => {
+  return gp.map((gp) =>
+    gp === null ? null : (
+      {
+        buttons: gp.buttons.map((b) => ({ pressed: b.pressed })),
+        axes: gp.axes.map((a) => a),
+      }
+    ),
+  );
+};
 
 export type PressStatus =
   /** just started pressing this frame */
@@ -18,7 +42,7 @@ export type PressStatus =
 
 type FrameInput = {
   keyboardState: KeyboardStateMap;
-  gamepads: (Gamepad | null)[];
+  gamepads: (GamepadState | null)[];
 };
 
 const isKeyPressed = (frameInput: FrameInput, key: Key): boolean => {
@@ -172,8 +196,7 @@ export class InputStateTracker {
     this.#lastFrame = {
       // keyboardstate is modified in-place, so we need a copy:
       keyboardState: new Map(this.keyboardStateMap),
-      // navigator.getGamepads is not mutated after being returned so no need to copy:
-      gamepads: navigator.getGamepads(),
+      gamepads: extractGamepadsState(navigator.getGamepads()),
     };
   };
 
@@ -194,11 +217,17 @@ export class InputStateTracker {
         : isActionPressed(this.#lastFrame, action);
 
       if (pressedLastFrame) {
+        // if (action === "towards")
+        //   console.log(action, "was pressed last frame and this one");
+
         return "hold";
       } else {
+        // if (action === "towards")
+        //   console.log(action, "was pressed this frame and NOT the last one");
         return "tap";
       }
     }
+    //if (action === "towards") console.log(action, "was not pressed this frame");
 
     return "released";
   }
