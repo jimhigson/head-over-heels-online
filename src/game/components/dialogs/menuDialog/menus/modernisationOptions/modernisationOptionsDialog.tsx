@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import {
+  backToParentMenu,
   toggleColourise,
   toggleCrtFilter,
   toggleLivesModel,
@@ -18,7 +19,7 @@ import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { selectShowFps } from "../../../../../../store/selectors";
 
-const markdownClassname = "[&_.em]:text-lightBeige";
+const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
 const colouriseMarkdown = `**off**: Original *two-tone* spectrum-like graphics
 
@@ -71,7 +72,10 @@ const ValueSwitch = ({
 export const ModernisationOptionsDialog = () => {
   return (
     <>
-      <Border className="bg-moss zx:bg-zxGreenDimmed" />
+      <Border
+        className="bg-moss zx:bg-zxGreenDimmed"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      />
       <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue">
         <Portal.Provider>
           <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">

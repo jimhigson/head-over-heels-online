@@ -12,6 +12,7 @@ import { MenuItem } from "../../MenuItem";
 import { useCallback } from "react";
 import {
   assignInputStart,
+  backToParentMenu,
   doneAssigningInput,
   goToSubmenu,
   inputAddedDuringAssignment,
@@ -77,7 +78,10 @@ export const SelectKeysDialog = () => {
 
   return (
     <>
-      <Border className="bg-lightGrey zx:bg-zxRedDimmed" />
+      <Border
+        className="bg-lightGrey zx:bg-zxRedDimmed"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      />
       <Dialog className="bg-white zx:bg-zxWhite">
         <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
           Select the keys

@@ -32,6 +32,18 @@ export const spritesTailwindPlugin = plugin(
         ...spriteStyles("mask"),
         backgroundColor: `currentColor`,
       },
+
+      // eg, on the original title screen, the sprites were white, and had none of their black pixels
+      // shown due to colour-clash
+      ".sprite-revert-to-white": {
+        filter: "brightness(1.8) contrast(999)",
+        mixBlendMode: "color-dodge",
+      },
+      ".sprite-revert-to-two-tone": {
+        filter: "brightness(1.8) grayscale(100%) contrast(999)",
+        mixBlendMode: "luminosity",
+      },
+
       /**
        * sets the (unchanging during run time) vars to describe the spritesheet
        */

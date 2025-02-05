@@ -9,7 +9,7 @@ import { MainMenuDialog } from "./menus/mainMenu/mainMenuDialog";
 import { QuitGameConfirmDialog } from "./menus/quitGameConfirmDialog";
 import { GameOverDialog } from "./menus/gameOver/gameOverDialog";
 import { HoldDialog } from "./menus/holdDialog";
-import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsMenu";
+import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
 import { SelectKeysDialog } from "./menus/selectKeys/SelectKeysDialog";
 import { Dialog } from "../../../../components/ui/dialog";
 import { BitmapText } from "../../Sprite";
