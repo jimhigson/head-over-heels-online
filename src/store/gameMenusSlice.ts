@@ -41,7 +41,7 @@ export type UserSettings = {
   displaySettings: DisplaySettings;
   livesModel: "infinite" | "original";
   // optional because was introduced without a version bump in persist. Select with !!
-  showFps?: boolean;
+  showFps: boolean;
 };
 
 const inBrowser = typeof globalThis.window !== "undefined";

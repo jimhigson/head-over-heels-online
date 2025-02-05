@@ -43,4 +43,4 @@ export const selectCurrentInputPreset = (
 };
 
 export const selectShowFps = (state: RootState): boolean =>
-  !!state.userSettings.showFps;
+  state.userSettings.showFps;
