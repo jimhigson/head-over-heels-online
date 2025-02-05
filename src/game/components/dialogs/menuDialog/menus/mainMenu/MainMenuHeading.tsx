@@ -8,8 +8,8 @@ export const MainMenuHeading = () => (
         Head
       </BitmapText>
       <div className="mt-1 relative">
-        <span className="sprite texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
-        <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+        <span className="sprite zx:sprite-revert-to-white texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
+        <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
       </div>
     </div>
     <BitmapText classnameCycle={mainMenuCycle} className="mt-1 me-1">
@@ -20,8 +20,8 @@ export const MainMenuHeading = () => (
         Heels
       </BitmapText>
       <div className="mt-1 relative">
-        <span className="sprite texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
-        <span className="sprite texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+        <span className="sprite zx:sprite-revert-to-white texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
+        <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
       </div>
     </div>
     <BitmapText classnameCycle={mainMenuCycle} className="mt-1">

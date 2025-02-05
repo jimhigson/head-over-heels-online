@@ -65,7 +65,10 @@ const markdownComponents: CustomComponentsOption = {
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>
         <CssSprite
-          className={twMerge("float-left mr-1 mb-1", classes.join(" "))}
+          className={twMerge(
+            "float-left mr-1 mb-1 zx:sprite-revert-to-two-tone",
+            classes.join(" "),
+          )}
         />
       </span>
     );
