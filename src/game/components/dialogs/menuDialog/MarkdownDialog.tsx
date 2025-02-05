@@ -5,7 +5,7 @@ import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
-import { Dialog } from "../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../components/ui/dialog";
 import { MenuItems } from "./MenuItems";
 import { BackMenuItem } from "./BackMenuItem";
 
@@ -56,24 +56,24 @@ export const MarkdownDialog = ({
   });
 
   return (
-    <Dialog
-      className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack"
-      borderClassName="bg-midGrey"
-    >
-      <div
-        className={twMerge(
-          "overflow-y-scroll " +
-            "scrollbar  scrollbar-w-1 " +
-            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan",
-        )}
-        ref={contentRef}
-      >
-        <BlockyMarkdown markdown={markdown} />
-      </div>
-      <MenuItems className="hidden">
-        <BackMenuItem />
-      </MenuItems>
-    </Dialog>
+    <>
+      <Border className="bg-midGrey zx:bg-zxWhiteDimmed" />
+      <Dialog className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack">
+        <div
+          className={twMerge(
+            "overflow-y-scroll " +
+              "scrollbar  scrollbar-w-1 " +
+              "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
+              "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan",
+          )}
+          ref={contentRef}
+        >
+          <BlockyMarkdown markdown={markdown} />
+        </div>
+        <MenuItems className="hidden">
+          <BackMenuItem />
+        </MenuItems>
+      </Dialog>
+    </>
   );
 };

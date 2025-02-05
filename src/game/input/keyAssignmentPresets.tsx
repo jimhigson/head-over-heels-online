@@ -18,7 +18,10 @@ import {
 //standard keys that are used in all presets:
 const standardAssignment = {
   presses: {
-    menu_openOrExit: { keys: ["Escape"] },
+    menu_openOrExit: {
+      // escape alone isn't good because it can leave fullscreen in browser sometimes - use the others!
+      keys: ["Escape", "Tab", "§"],
+    },
     menu_exit: { gamepadButtons: [standardControllerLayout.x] },
     // menu_up: { keys: ["ArrowUp"] },
     // menu_down: { keys: ["ArrowDown"] },

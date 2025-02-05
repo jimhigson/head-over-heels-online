@@ -4,7 +4,7 @@ import { TitledCrown } from "./TitledCrown";
 export const FiveCrownsDisplay = () => {
   return (
     <>
-      <BitmapText className="block sprites-double-height text-highlightBeige ml-6">
+      <BitmapText className="block sprites-double-height text-highlightBeige zx:text-zxYellow ml-6">
         The blacktooth empire
       </BitmapText>
       <TitledCrown

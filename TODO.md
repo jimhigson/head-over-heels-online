@@ -28,7 +28,7 @@
 
 
 
-
+[ ] decolourise sprites in css
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
         - nope, nothing calls the Color constructor on initial load
@@ -49,7 +49,8 @@
         https://chatgpt.com/c/679cecd2-71a0-8007-b3dc-2166e61c75b7
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
-[ ] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
+[x] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
+    [x] and also by tapping on screen for mobile
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
 [x] tailwind - zx class to do dimmed on fg and bg in one

@@ -111,6 +111,7 @@ const keys = [
   "F11",
   "F12",
   "Escape",
+  "§", // under escape in macos, same place as ` in windows
 ] as const;
 
 export type Key = (typeof keys)[number];
