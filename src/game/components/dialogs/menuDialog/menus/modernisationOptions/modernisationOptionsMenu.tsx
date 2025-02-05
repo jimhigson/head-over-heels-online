@@ -8,7 +8,7 @@ import {
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import { Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
@@ -24,7 +24,7 @@ const colouriseMarkdown = `**off**: Original *two-tone* spectrum-like graphics
 
 **on**: *16-colour* palette with colourised sprites`;
 
-const infiniteLivesMarkdown = `can't be changed mid-game
+const infiniteLivesMarkdown = `can’t be changed mid-game
 
 **off**: *8* lives to start; extra life rabbits spread thinly through the game
 
@@ -70,113 +70,118 @@ const ValueSwitch = ({
 
 export const ModernisationOptionsDialog = () => {
   return (
-    <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue" borderClassName="bg-moss">
-      <Portal.Provider>
-        <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
-          Modernisation options
-        </BitmapText>
-        <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white zx:selectedMenuItem:text-zxGreen">
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="colourise"
-            label="Colourise"
-            valueElement={
-              <ValueSwitch
-                value={useAppSelector(
-                  (state) => state.userSettings.displaySettings.colourise,
-                )}
-              />
-            }
-            onSelect={useDispatchActionCallback(toggleColourise)}
-            hint={
-              <BlockyMarkdown
-                className={markdownClassname}
-                markdown={colouriseMarkdown}
-              />
-            }
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="livesModel"
-            label="Infinite Lives poke"
-            hint={
-              <BlockyMarkdown
-                className={markdownClassname}
-                markdown={infiniteLivesMarkdown}
-              />
-            }
-            valueElement={
-              <ValueSwitch
-                value={useAppSelector(
-                  (state) => state.userSettings.livesModel === "infinite",
-                )}
-              />
-            }
-            onSelect={useDispatchActionCallback(toggleLivesModel)}
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="extraItems"
-            label="Extra items"
-            valueElement={<ValueSwitch value={true} />}
-            hint={
-              <BlockyMarkdown
-                className={markdownClassname}
-                markdown={extraItemsMarkdown}
-              />
-            }
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="showFps"
-            label="Show FPS"
-            valueElement={<ValueSwitch value={useAppSelector(selectShowFps)} />}
-            onSelect={useDispatchActionCallback(toggleShowFps)}
-            hint={`show frame rate`}
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="analogueControl"
-            label="Analogue control"
-            valueElement={<ValueSwitch value={true} />}
-            hint={
-              <BlockyMarkdown
-                className={markdownClassname}
-                markdown={analogueControlHintMarkdown}
-              />
-            }
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="crtFilter"
-            label="CRT TV effect"
-            valueElement={
-              <ValueSwitch
-                value={useAppSelector(
-                  (state) => state.userSettings.displaySettings.crtFilter,
-                )}
-              />
-            }
-            onSelect={useDispatchActionCallback(toggleCrtFilter)}
-            hint="Subtle screen glow a bit like an old tv"
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="emulatedResolution"
-            label="Emulated resolution"
-            valueElement={<BitmapText className="mr-1">specy</BitmapText>}
-            hint={
-              <BlockyMarkdown
-                className={markdownClassname}
-                markdown={resolutionHintMarkdown}
-              />
-            }
-          />
-          <MenuItemSeparator />
-          <BackMenuItem />
-        </MenuItems>
-        <SelectedItemHint className="text-moss zx:text-zxGreen" />
-      </Portal.Provider>
-    </Dialog>
+    <>
+      <Border className="bg-moss zx:bg-zxGreenDimmed" />
+      <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue">
+        <Portal.Provider>
+          <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
+            Modernisation options
+          </BitmapText>
+          <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white zx:selectedMenuItem:text-zxGreen">
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="colourise"
+              label="Colourise"
+              valueElement={
+                <ValueSwitch
+                  value={useAppSelector(
+                    (state) => state.userSettings.displaySettings.colourise,
+                  )}
+                />
+              }
+              onSelect={useDispatchActionCallback(toggleColourise)}
+              hint={
+                <BlockyMarkdown
+                  className={markdownClassname}
+                  markdown={colouriseMarkdown}
+                />
+              }
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="livesModel"
+              label="Infinite Lives poke"
+              hint={
+                <BlockyMarkdown
+                  className={markdownClassname}
+                  markdown={infiniteLivesMarkdown}
+                />
+              }
+              valueElement={
+                <ValueSwitch
+                  value={useAppSelector(
+                    (state) => state.userSettings.livesModel === "infinite",
+                  )}
+                />
+              }
+              onSelect={useDispatchActionCallback(toggleLivesModel)}
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="extraItems"
+              label="Extra items"
+              valueElement={<ValueSwitch value={true} />}
+              hint={
+                <BlockyMarkdown
+                  className={markdownClassname}
+                  markdown={extraItemsMarkdown}
+                />
+              }
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="showFps"
+              label="Show FPS"
+              valueElement={
+                <ValueSwitch value={useAppSelector(selectShowFps)} />
+              }
+              onSelect={useDispatchActionCallback(toggleShowFps)}
+              hint={`show frame rate`}
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="analogueControl"
+              label="Analogue control"
+              valueElement={<ValueSwitch value={true} />}
+              hint={
+                <BlockyMarkdown
+                  className={markdownClassname}
+                  markdown={analogueControlHintMarkdown}
+                />
+              }
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="crtFilter"
+              label="CRT TV effect"
+              valueElement={
+                <ValueSwitch
+                  value={useAppSelector(
+                    (state) => state.userSettings.displaySettings.crtFilter,
+                  )}
+                />
+              }
+              onSelect={useDispatchActionCallback(toggleCrtFilter)}
+              hint="Subtle screen glow a bit like an old tv"
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="emulatedResolution"
+              label="Emulated resolution"
+              valueElement={<BitmapText className="mr-1">specy</BitmapText>}
+              hint={
+                <BlockyMarkdown
+                  className={markdownClassname}
+                  markdown={resolutionHintMarkdown}
+                />
+              }
+            />
+            <MenuItemSeparator />
+            <BackMenuItem />
+          </MenuItems>
+          <SelectedItemHint className="text-moss zx:text-zxGreen" />
+        </Portal.Provider>
+      </Dialog>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
@@ -7,15 +7,17 @@ import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 
 export const CrownsDialog = () => {
   return (
-    <Dialog
-      className="bg-pureBlack w-zx h-full block p-0"
-      borderClassName="bg-pureBlack"
-      onClick={useDispatchActionCallback(backToParentMenu)}
-    >
-      <FiveCrownsDisplay />
-      <MenuItems className="hidden">
-        <BackMenuItem />
-      </MenuItems>
-    </Dialog>
+    <>
+      <Border className="bg-pureBlack zx:bg-zxBlack" />
+      <Dialog
+        className="bg-pureBlack w-zx h-full block p-0"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      >
+        <FiveCrownsDisplay />
+        <MenuItems className="hidden">
+          <BackMenuItem />
+        </MenuItems>
+      </Dialog>
+    </>
   );
 };

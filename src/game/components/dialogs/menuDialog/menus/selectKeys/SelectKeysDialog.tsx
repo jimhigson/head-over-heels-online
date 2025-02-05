@@ -19,7 +19,7 @@ import {
 import { store } from "../../../../../../store/store";
 import { useActionTap, useInputTap } from "../../../useActionInput";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
-import { Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
@@ -76,114 +76,118 @@ export const SelectKeysDialog = () => {
   useKeyAssignmentInput();
 
   return (
-    <Dialog
-      className="bg-white zx:bg-zxWhite"
-      borderClassName="bg-lightGrey zx:bg-zxRedDimmed"
-    >
-      <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
-        Select the keys
-      </BitmapText>
-      <div
-        className={
-          "overflow-y-scroll " +
-          "scrollbar  scrollbar-w-1 " +
-          "scrollbar-thumb-midGrey scrollbar-track-white " +
-          "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite "
-        }
-      >
-        <div className={`mb-1 ${multilineTextClass}`}>
-          <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
-            Note:
-          </BitmapText>
-          <BitmapText className="text-midGrey zx:text-zxBlack">
-            some puzzles require you to jump and pick up simultaneously - assign
-            a key for both jump and carry
-          </BitmapText>
+    <>
+      <Border className="bg-lightGrey zx:bg-zxRedDimmed" />
+      <Dialog className="bg-white zx:bg-zxWhite">
+        <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
+          Select the keys
+        </BitmapText>
+        <div
+          className={
+            "overflow-y-scroll " +
+            "scrollbar  scrollbar-w-1 " +
+            "scrollbar-thumb-midGrey scrollbar-track-white " +
+            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite "
+          }
+        >
+          <div className={`mb-1 ${multilineTextClass}`}>
+            <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
+              Note:
+            </BitmapText>
+            <BitmapText className="text-midGrey zx:text-zxBlack">
+              some puzzles require you to jump and pick up simultaneously -
+              assign a key for both jump and carry
+            </BitmapText>
+          </div>
+          <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreen">
+            <MenuItem
+              id="preset"
+              label="preset:"
+              valueElement={<CurrentPresetValue />}
+              onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
+            />
+            <MenuItem
+              id="left"
+              label="Left ↖"
+              valueElement={<SelectKeysMenuAssignmentValue action="left" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "left")}
+            />
+            <MenuItem
+              id="right"
+              label="Right ↘"
+              valueElement={<SelectKeysMenuAssignmentValue action="right" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "right")}
+            />
+            <MenuItem
+              id="up"
+              label="Up ↗"
+              valueElement={<SelectKeysMenuAssignmentValue action="away" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "away")}
+            />
+            <MenuItem
+              id="down"
+              label="Down ↙"
+              valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "towards")}
+            />
+            <MenuItem
+              id="jump"
+              label="Jump"
+              valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "jump")}
+            />
+            <MenuItem
+              id="carry"
+              label="Carry"
+              valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "carry")}
+            />
+            <MenuItem
+              id="fire"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  fire dough- nuts
+                </BitmapText>
+              }
+              valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "fire")}
+            />
+            <MenuItem
+              id="swop"
+              label="Swop"
+              valueElement={<SelectKeysMenuAssignmentValue action="swop" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "swop")}
+            />
+            <MenuItem
+              id="hold"
+              label="Hold"
+              valueElement={<SelectKeysMenuAssignmentValue action="hold" />}
+              onSelect={useDispatchActionCallback(assignInputStart, "hold")}
+            />
+            <MenuItem
+              id="toggleColourisation"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  toggle colour- isation
+                </BitmapText>
+              }
+              valueElement={
+                <SelectKeysMenuAssignmentValue action="toggleColourisation" />
+              }
+              onSelect={useDispatchActionCallback(
+                assignInputStart,
+                "toggleColourisation",
+              )}
+            />
+            <BackMenuItem />
+          </MenuItems>
         </div>
-        <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreen">
-          <MenuItem
-            id="preset"
-            label="preset:"
-            valueElement={<CurrentPresetValue />}
-            onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
-          />
-          <MenuItem
-            id="left"
-            label="Left ↖"
-            valueElement={<SelectKeysMenuAssignmentValue action="left" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "left")}
-          />
-          <MenuItem
-            id="right"
-            label="Right ↘"
-            valueElement={<SelectKeysMenuAssignmentValue action="right" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "right")}
-          />
-          <MenuItem
-            id="up"
-            label="Up ↗"
-            valueElement={<SelectKeysMenuAssignmentValue action="away" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "away")}
-          />
-          <MenuItem
-            id="down"
-            label="Down ↙"
-            valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "towards")}
-          />
-          <MenuItem
-            id="jump"
-            label="Jump"
-            valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "jump")}
-          />
-          <MenuItem
-            id="carry"
-            label="Carry"
-            valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "carry")}
-          />
-          <MenuItem
-            id="fire"
-            label={
-              <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-                fire dough- nuts
-              </BitmapText>
-            }
-            valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "fire")}
-          />
-          <MenuItem
-            id="swop"
-            label="Swop"
-            valueElement={<SelectKeysMenuAssignmentValue action="swop" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "swop")}
-          />
-          <MenuItem
-            id="hold"
-            label="Hold"
-            valueElement={<SelectKeysMenuAssignmentValue action="hold" />}
-            onSelect={useDispatchActionCallback(assignInputStart, "hold")}
-          />
-          <MenuItem
-            id="toggleColourisation"
-            label={
-              <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-                toggle colour- isation
-              </BitmapText>
-            }
-            valueElement={
-              <SelectKeysMenuAssignmentValue action="toggleColourisation" />
-            }
-            onSelect={useDispatchActionCallback(
-              assignInputStart,
-              "toggleColourisation",
-            )}
-          />
-          <BackMenuItem />
-        </MenuItems>
-      </div>
-      <SelectKeysMenuFooter />
-    </Dialog>
+        <SelectKeysMenuFooter />
+      </Dialog>
+    </>
   );
 };

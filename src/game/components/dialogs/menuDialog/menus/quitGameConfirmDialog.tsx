@@ -1,4 +1,4 @@
-import { Dialog } from "../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../components/ui/dialog";
 import {
   backToParentMenu,
   gameOver,
@@ -14,37 +14,40 @@ import Portal from "@mutabazia/react-portal";
 
 export const QuitGameConfirmDialog = () => {
   return (
-    <Dialog className="bg-white zx:bg-zxRed" borderClassName="bg-shadow">
-      <Portal.Provider>
-        <MainMenuHeading />
-        <BitmapText
-          className="ml-3 sprites-double-height"
-          classnameCycle={[
-            "text-redShadow zx:text-zxWhite",
-            "text-shadow zx:text-zxYellow",
-          ]}
-        >
-          Quit the game?
-        </BitmapText>
-        <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow">
-          <MenuItemSeparator />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="no"
-            label="No"
-            onSelect={useDispatchActionCallback(backToParentMenu)}
-            hint="Go back to the game"
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="yes"
-            label="Yes"
-            onSelect={useDispatchActionCallback(gameOver)}
-            hint="Warning! This game will end!"
-          />
-        </MenuItems>
-        <SelectedItemHint className="text-midRed zx:text-zxWhite" />
-      </Portal.Provider>
-    </Dialog>
+    <>
+      <Border className="bg-shadow zx:bg-zxYellow" />
+      <Dialog className="bg-white zx:bg-zxRed">
+        <Portal.Provider>
+          <MainMenuHeading />
+          <BitmapText
+            className="ml-3 sprites-double-height"
+            classnameCycle={[
+              "text-redShadow zx:text-zxWhite",
+              "text-shadow zx:text-zxYellow",
+            ]}
+          >
+            Quit the game?
+          </BitmapText>
+          <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow">
+            <MenuItemSeparator />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="no"
+              label="No"
+              onSelect={useDispatchActionCallback(backToParentMenu)}
+              hint="Go back to the game"
+            />
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="yes"
+              label="Yes"
+              onSelect={useDispatchActionCallback(gameOver)}
+              hint="Warning! This game will end!"
+            />
+          </MenuItems>
+          <SelectedItemHint className="text-midRed zx:text-zxWhite" />
+        </Portal.Provider>
+      </Dialog>
+    </>
   );
 };
