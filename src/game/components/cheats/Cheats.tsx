@@ -39,6 +39,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { Switch } from "../../../components/ui/switch";
+import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -78,8 +79,47 @@ const SummonPlayableButton = <RoomId extends string>({
     <Button
       className="flex-1"
       onClick={(e) => {
+        if (gameApi.gameState.currentCharacterName === playableName) {
+          return;
+        }
+
         const roomId = selectCurrentRoomState(gameApi.gameState).id;
         gameApi.gameState.currentCharacterName = playableName;
+
+        if (playableName === "headOverHeels") {
+          //sneakily combine the players by moving them to the final room first:
+          const head = gameApi.gameState.characterRooms.head?.items.head;
+          const heels = gameApi.gameState.characterRooms.heels?.items.heels;
+          if (!head || !heels) {
+            console.log(
+              "cant summon headOverHeels - one of the individuals is not in the game to combine",
+            );
+          } else {
+            changeCharacterRoom({
+              playableItem: head,
+              gameState: gameApi.gameState,
+              changeType: "level-select",
+              toRoomId: "finalroom" as RoomId,
+            });
+            changeCharacterRoom({
+              playableItem: heels,
+              gameState: gameApi.gameState,
+              changeType: "level-select",
+              toRoomId: "finalroom" as RoomId,
+            });
+
+            swopFromUncombinedToCombinedPlayables(gameApi.gameState);
+            changeCharacterRoom({
+              playableItem:
+                gameApi.gameState.characterRooms.headOverHeels!.items
+                  .headOverHeels!,
+              gameState: gameApi.gameState,
+              changeType: "level-select",
+              toRoomId: roomId,
+            });
+          }
+        }
+
         const playableItem = selectPlayableItem(
           gameApi.gameState,
           playableName,
@@ -88,6 +128,7 @@ const SummonPlayableButton = <RoomId extends string>({
           console.error(`can't summon ${playableName} who is not in the game`);
           return;
         }
+
         changeCharacterRoom({
           playableItem,
           gameState: gameApi.gameState,
