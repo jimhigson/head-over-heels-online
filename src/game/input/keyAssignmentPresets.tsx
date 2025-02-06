@@ -168,14 +168,14 @@ const gamepadAssignment: InputAssignmentPreset = {
           ],
         },
         fire: { gamepadButtons: [standardControllerLayout.x] },
-        swop: { gamepadButtons: [standardControllerLayout.l1] },
+        swop: { gamepadButtons: [standardControllerLayout.r1] },
         hold: { gamepadButtons: [standardControllerLayout.start] },
         menu_openOrExit: {
           gamepadButtons: [
             // allow r1 because 3-6 button controllers probably won't have a start button
             // - and, on macOS by default select opens the 'select a game' type screen so
             // that's unusable without OS config
-            standardControllerLayout.r1,
+            standardControllerLayout.l1,
             standardControllerLayout.select,
           ],
         },

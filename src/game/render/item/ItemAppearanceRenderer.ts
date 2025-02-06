@@ -69,12 +69,13 @@ export class ItemAppearanceRenderer<
       room: this.#room,
       currentlyRenderedProps: this.#currentlyRenderedProps,
       displaySettings: renderContext.displaySettings,
+      previousRendering: this.#container.children.at(0) ?? null,
       onHold: renderContext.onHold,
     });
 
     if (rendering !== "no-update") {
       this.#currentlyRenderedProps = rendering.renderProps;
-      this.#container.children.forEach((child) => child.destroy());
+      this.#container.removeChildren();
       if (rendering.container !== null)
         this.#container.addChild(rendering.container);
     }

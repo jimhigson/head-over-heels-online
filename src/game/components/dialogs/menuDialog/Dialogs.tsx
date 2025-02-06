@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 import { useAppSelector } from "../../../../store/hooks";
-import { ReadTheManualMenu } from "./menus/readTheManualMenu";
+import { ReadTheManualDialog } from "./menus/readTheManualDialog";
 import type { DialogId } from "./menus";
 import { MarkdownDialog } from "./MarkdownDialog";
 import type { MarkdownPageName } from "../../../../manual/pages";
@@ -40,7 +40,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "quitGameConfirm":
       return <QuitGameConfirmDialog />;
     case "readTheManual":
-      return <ReadTheManualMenu />;
+      return <ReadTheManualDialog />;
     case "crowns":
       return <CrownsDialog />;
     case "gameOver":

@@ -1,5 +1,5 @@
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import { gameMenusSliceActions } from "../../../store/gameMenusSlice";
+import { toggleBoolean } from "../../../store/gameMenusSlice";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
@@ -44,7 +44,6 @@ export const handleItemTouchingSwitch = <RoomId extends string>({
   }
 
   if (switchStoreConfig) {
-    const actionCreator = gameMenusSliceActions[switchStoreConfig.dispatches];
-    store.dispatch(actionCreator());
+    store.dispatch(toggleBoolean(switchStoreConfig.path));
   }
 };

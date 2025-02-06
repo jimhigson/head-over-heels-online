@@ -16,9 +16,14 @@ import type {
   CharacterName,
 } from "../../../model/modelTypes";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
+import {
+  lengthXyz,
+  vectorClosestDirectionXy4,
+} from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
+import type { AnimatedSprite } from "pixi.js";
+import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 
 const renderSprite = ({
   name,
@@ -96,6 +101,7 @@ export const isHighlighted = ({
 export const playableAppearance = <C extends CharacterName>({
   item,
   currentlyRenderedProps,
+  previousRendering,
 }: ItemAppearanceOptions<C, string>): ItemAppearanceReturn<CharacterName> => {
   const {
     type,
@@ -111,50 +117,73 @@ export const playableAppearance = <C extends CharacterName>({
       isHighlighted((item as PlayableItem<"headOverHeels">).state.head)
     : isHighlighted((item as PlayableItem<"head" | "heels">).state);
 
-  const render =
+  const walkSpeed = lengthXyz(facing);
+
+  const needNewSprites =
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
     currentlyRenderedProps.facingXy4 !== facingXy4 ||
     currentlyRenderedProps.teleportingPhase !== (teleporting?.phase ?? null) ||
     currentlyRenderedProps.highlighted !== highlighted;
 
-  if (!render) {
+  if (needNewSprites) {
+    return {
+      container:
+        type === "headOverHeels" ?
+          stackedSprites({
+            top: renderSprite({
+              name: "head",
+              action,
+              facingXy4,
+              teleporting,
+              highlighted,
+            }),
+            bottom: renderSprite({
+              name: "heels",
+              action,
+              facingXy4,
+              teleporting,
+              highlighted,
+            }),
+          })
+        : createSprite(
+            renderSprite({
+              name: type,
+              action,
+              facingXy4,
+              teleporting,
+              highlighted,
+            }),
+          ),
+      renderProps: {
+        action,
+        facingXy4,
+        teleportingPhase: teleporting?.phase ?? null,
+        highlighted,
+        walkSpeed,
+      },
+    };
+  }
+
+  const needToAdjustMovingSpriteAnimSpeed =
+    action === "moving" && currentlyRenderedProps.walkSpeed !== walkSpeed;
+
+  if (!needToAdjustMovingSpriteAnimSpeed) {
     return "no-update";
   }
 
+  // update the animated sprite's speed:
+  (previousRendering as AnimatedSprite).animationSpeed =
+    walkSpeed * playableWalkAnimationSpeed;
+
   return {
-    container:
-      type === "headOverHeels" ?
-        stackedSprites({
-          top: renderSprite({
-            name: "head",
-            action,
-            facingXy4,
-            teleporting,
-            highlighted,
-          }),
-          bottom: renderSprite({
-            name: "heels",
-            action,
-            facingXy4,
-            teleporting,
-            highlighted,
-          }),
-        })
-      : createSprite(
-          renderSprite({
-            name: type,
-            action,
-            facingXy4,
-            teleporting,
-            highlighted,
-          }),
-        ),
+    container: previousRendering,
     renderProps: {
       action,
       facingXy4,
       teleportingPhase: teleporting?.phase ?? null,
       highlighted,
+      walkSpeed,
     },
   };
 };

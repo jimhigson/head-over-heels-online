@@ -37,6 +37,9 @@ export type ItemAppearanceOptions<
    */
   currentlyRenderedProps: ItemRenderProps<T> | undefined;
 
+  /** the rendering that already exists for this item, or null if it was not rendered previously */
+  previousRendering: Container | null;
+
   displaySettings: DisplaySettings;
 
   /** are we on hold (paused) right now? */
@@ -76,7 +79,13 @@ export const renderOnce =
   ({ item, room, currentlyRenderedProps, displaySettings, onHold }) => {
     if (currentlyRenderedProps === undefined) {
       return {
-        container: renderWith({ item, room, displaySettings, onHold }),
+        container: renderWith({
+          item,
+          room,
+          displaySettings,
+          onHold,
+          previousRendering: null,
+        }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };
     } else {

@@ -9,6 +9,8 @@ import { zxSpectrumFrameRate } from "../originalGame";
 import type { FramesWithSpeed } from "./spriteSheetData";
 import { withSpeed } from "./withSpeed";
 
+export const playableWalkAnimationSpeed = 0.5;
+
 function walkingFrames<P extends CharacterName>(p: P) {
   function* walkingFramesGen<P extends CharacterName, D extends DirectionXy4>(
     p: P,
@@ -28,7 +30,7 @@ function walkingFrames<P extends CharacterName>(p: P) {
       ...ac,
       [`${p}.walking.${d}`]: withSpeed(
         [...walkingFramesGen(p, d)] as const,
-        0.5,
+        playableWalkAnimationSpeed,
       ),
     }),
     {},

@@ -92,6 +92,9 @@ export const boundingBoxForItem = (
     case "monster":
       switch (item.config.which) {
         case "skiHead":
+          // this not being a full two blocks (24px) high is experimental and may break some rooms,
+          // but is truer to the rendering
+          return { aabb: { ...smallItemAabb, z: 21 } };
         case "bubbleRobot":
         case "cyberman":
         case "elephant":

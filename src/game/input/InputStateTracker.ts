@@ -1,6 +1,12 @@
 import { store } from "../../store/store";
 import type { Xyz } from "../../utils/vectors/vectors";
-import { originXyz } from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  directionsXy4,
+  lengthXyz,
+  originXyz,
+  scaleXyz,
+} from "../../utils/vectors/vectors";
 import type { InputPress } from "./InputState";
 import { actionToAxis, type BooleanAction } from "./InputState";
 import type { KeyboardStateMap } from "./keyboardState";
@@ -18,6 +24,8 @@ import type { PickDeep } from "type-fest";
  * directly. Whereas in Safari, this fails because the object is live.
  */
 type GamepadState = PickDeep<Gamepad, `buttons.${number}.pressed` | "axes">;
+
+const analogueDeadzone = 0.1;
 
 const extractGamepadsState = (
   gp: Array<Gamepad | null>,
@@ -100,6 +108,7 @@ const isGamepadAxisPressed = (
 const isActionPressed = (
   frameInput: FrameInput,
   action: BooleanAction,
+  useAxes: boolean = true,
 ): boolean => {
   const { inputAssignment } = store.getState().userSettings;
 
@@ -117,18 +126,20 @@ const isActionPressed = (
     }
   }
 
-  // axis that are faking being buttons. Eg, lots of gamepads without analogue sticks use axes even for
-  // binary input (dpads), rather than follow the w3c 'standard' layout of representing
-  // dpads as buttons
-  const actionAsAxis = actionToAxis(action);
-  if (actionAsAxis !== undefined) {
-    const gamepadAxes = inputAssignment.axes[actionAsAxis.axis];
+  if (useAxes) {
+    // axis that are faking being buttons. Eg, lots of gamepads without analogue sticks use axes even for
+    // binary input (dpads), rather than follow the w3c 'standard' layout of representing
+    // dpads as buttons
+    const actionAsAxis = actionToAxis(action);
+    if (actionAsAxis !== undefined) {
+      const gamepadAxes = inputAssignment.axes[actionAsAxis.axis];
 
-    for (const gamepadAxis of gamepadAxes) {
-      if (
-        isGamepadAxisPressed(frameInput, gamepadAxis, actionAsAxis.direction)
-      ) {
-        return true;
+      for (const gamepadAxis of gamepadAxes) {
+        if (
+          isGamepadAxisPressed(frameInput, gamepadAxis, actionAsAxis.direction)
+        ) {
+          return true;
+        }
       }
     }
   }
@@ -190,8 +201,60 @@ export class InputStateTracker {
     return originXyz;
   };
 
+  /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
+  #tickUpdatedDirectionAnalogue = () => {
+    const currentFrameInput: FrameInput = {
+      keyboardState: this.keyboardStateMap,
+      gamepads: navigator.getGamepads(),
+    };
+
+    function* vectors(): Generator<Xyz> {
+      for (const d of directionsXy4) {
+        if (isActionPressed(currentFrameInput, d, false)) yield unitVectors[d];
+      }
+
+      const {
+        userSettings: {
+          inputAssignment: {
+            axes: { x: axesX, y: axesY },
+          },
+        },
+      } = store.getState();
+      for (const gp of currentFrameInput.gamepads) {
+        if (gp === null) {
+          continue;
+        }
+
+        for (const a of axesX) {
+          if (gp.axes.length <= a) continue;
+          const axisValue = gp.axes[a];
+          if (Math.abs(axisValue) > analogueDeadzone) {
+            yield scaleXyz(unitVectors.right, axisValue);
+          }
+        }
+        for (const a of axesY) {
+          if (gp.axes.length <= a) continue;
+          const axisValue = gp.axes[a];
+          if (Math.abs(axisValue) > analogueDeadzone) {
+            yield scaleXyz(unitVectors.towards, axisValue);
+          }
+        }
+      }
+    }
+
+    const v = addXyz(originXyz, ...vectors());
+    const vl = lengthXyz(v);
+    return vl > 1 ? scaleXyz(v, 1 / vl) : v;
+  };
+
   #tick = () => {
-    this.#directionVector = this.#tickUpdatedDirectionXy4();
+    const {
+      userSettings: { analogueControl },
+    } = store.getState();
+    this.#directionVector =
+      analogueControl ?
+        this.#tickUpdatedDirectionAnalogue()
+      : this.#tickUpdatedDirectionXy4();
 
     this.#lastFrame = {
       // keyboardstate is modified in-place, so we need a copy:
