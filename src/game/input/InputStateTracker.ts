@@ -135,8 +135,18 @@ const isActionPressed = (
  * of the input, according to the
  */
 export class InputStateTracker {
-  #lastFrame: FrameInput | undefined = undefined;
+  // snapshot of the input at the start of the current frame
+  #currentFrameInput: FrameInput;
+  // snapshot of the input at the start of the previous frame, for comparison
+  #lastFrameInput: FrameInput | undefined = undefined;
   #directionVector: Xyz = originXyz;
+
+  constructor(private keyboardStateMap: KeyboardStateMap) {
+    this.#currentFrameInput = {
+      keyboardState: new Map(keyboardStateMap),
+      gamepads: extractGamepadsState(navigator.getGamepads()),
+    };
+  }
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
   #tickUpdatedDirectionXy4 = () => {
@@ -185,11 +195,8 @@ export class InputStateTracker {
   };
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
-  #tickUpdatedDirectionAnalogue = () => {
-    const currentFrameInput: FrameInput = {
-      keyboardState: this.keyboardStateMap,
-      gamepads: navigator.getGamepads(),
-    };
+  #tickUpdatedDirectionAnalogue() {
+    const currentFrameInput = this.#currentFrameInput;
 
     function* pressVectors(): Generator<Xyz> {
       for (const d of directionsXy4) {
@@ -237,7 +244,7 @@ export class InputStateTracker {
     const vl = lengthXyz(v);
 
     return vl > 1 ? scaleXyz(v, 1 / vl) : v;
-  };
+  }
 
   #tick = () => {
     const {
@@ -248,28 +255,24 @@ export class InputStateTracker {
         this.#tickUpdatedDirectionAnalogue()
       : this.#tickUpdatedDirectionXy4();
 
-    this.#lastFrame = {
-      // keyboardstate is modified in-place, so we need a copy:
+    this.#lastFrameInput = this.#currentFrameInput;
+
+    // input snapshot to use for the rest of this frame (until the next call to tick)
+    this.#currentFrameInput = {
+      // keyboard state is modified in-place, so we need a copy:
       keyboardState: new Map(this.keyboardStateMap),
       gamepads: extractGamepadsState(navigator.getGamepads()),
     };
   };
 
-  constructor(private keyboardStateMap: KeyboardStateMap) {}
-
   currentActionPress(action: BooleanAction): PressStatus {
-    const currentFrameInput: FrameInput = {
-      keyboardState: this.keyboardStateMap,
-      gamepads: navigator.getGamepads(),
-    };
-
-    const pressedNow = isActionPressed(currentFrameInput, action);
+    const pressedNow = isActionPressed(this.#currentFrameInput, action);
 
     if (pressedNow) {
       const pressedLastFrame =
-        this.#lastFrame === undefined ?
+        this.#lastFrameInput === undefined ?
           false
-        : isActionPressed(this.#lastFrame, action);
+        : isActionPressed(this.#lastFrameInput, action);
 
       if (pressedLastFrame) {
         // if (action === "towards")
@@ -291,21 +294,21 @@ export class InputStateTracker {
   inputTap(): InputPress | undefined {
     for (const key of this.keyboardStateMap.keys()) {
       if (
-        this.#lastFrame === undefined ||
-        !this.#lastFrame.keyboardState.has(key)
+        this.#lastFrameInput === undefined ||
+        !this.#lastFrameInput.keyboardState.has(key)
       ) {
         return { type: "key", input: key };
       }
     }
-    for (const gp of navigator.getGamepads()) {
+    for (const gp of this.#currentFrameInput.gamepads) {
       if (gp === null) {
         continue;
       }
       for (const [buttonNumber, button] of gp.buttons.entries()) {
         if (button.pressed) {
           if (
-            this.#lastFrame === undefined ||
-            !isGamepadButtonPressed(this.#lastFrame, buttonNumber)
+            this.#lastFrameInput === undefined ||
+            !isGamepadButtonPressed(this.#lastFrameInput, buttonNumber)
           ) {
             return { type: "gamepadButtons", input: buttonNumber };
           }
@@ -314,8 +317,8 @@ export class InputStateTracker {
       for (const [axisNumber, axisValue] of gp.axes.entries()) {
         if (Math.abs(axisValue) > axisPressThreshold) {
           if (
-            this.#lastFrame === undefined ||
-            !isGamepadAxisPressed(this.#lastFrame, axisNumber)
+            this.#lastFrameInput === undefined ||
+            !isGamepadAxisPressed(this.#lastFrameInput, axisNumber)
           ) {
             return { type: "gamepadAxes", input: axisNumber };
           }
