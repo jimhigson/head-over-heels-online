@@ -26,8 +26,12 @@
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
+[ ] bug: game goes weird if go through door with other char on top, but not joined - char below thinks char on top is still on top
 
+[ ] analogue control
+    [ ] 8-way sprites
 
+[ ] freeze all player movement while teleporting - it is possible to move off the teleporter currently while teleporting
 [ ] decolourise sprites in css
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
