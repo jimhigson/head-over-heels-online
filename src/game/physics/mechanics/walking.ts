@@ -142,8 +142,9 @@ const walkingImpl = <RoomId extends string>(
     } else {
       if (jumpInput !== "released") {
         // standing on something and jumping
-        const jumpDirectionXy =
-          xyEqual(walkVector, originXy) ? facing : walkVector;
+        const jumpDirectionXy = unitVector(
+          xyEqual(walkVector, originXy) ? facing : walkVector,
+        );
         const isStandingOnSpring = isItemType("spring")(standingOn);
         const walkJumpFraction =
           isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
@@ -155,7 +156,7 @@ const walkingImpl = <RoomId extends string>(
               maxWalkSpeed * walkJumpFraction,
             ),
           },
-          stateDelta: { facing: unitVector(jumpDirectionXy) },
+          stateDelta: { facing: jumpDirectionXy },
         };
       }
     }
