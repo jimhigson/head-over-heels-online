@@ -45,17 +45,21 @@ export const initialState = (jsonItem: UnknownJsonItem) => {
           ...((slidingItemTypes as string[]).includes(jsonItem.type) ?
             { sliding: originXyz }
           : {}),
+          ...((
+            (jsonItem.type === "monster" || jsonItem.type === "movableBlock") &&
+            jsonItem.config.movement &&
+            jsonItem.config.movement !== "free"
+          ) ?
+            {
+              walking: originXyz,
+            }
+          : {}),
         },
         latentMovement: [],
       }
     : {}),
     ...(jsonItem.type === "monster" ?
       {
-        vels: {
-          gravity: originXyz,
-          movingFloor: originXyz,
-          walking: originXyz,
-        },
         activated: jsonItem.config.activated,
         ...((
           jsonItem.config.which === "skiHead" ||
