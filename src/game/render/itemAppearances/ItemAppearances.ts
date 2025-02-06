@@ -181,7 +181,7 @@ export const itemAppearances: {
     // for store switches, ignore the switch's own state and read from the store:
     const setting =
       switchStoreConfig ?
-        getAtPath(store.getState(), switchStoreConfig.selectsPath) ? "right"
+        getAtPath(store.getState(), switchStoreConfig.path) ? "right"
         : "left"
       : stateSetting;
 

@@ -1,10 +1,7 @@
 import clsx from "clsx";
 import {
   backToParentMenu,
-  toggleColourise,
-  toggleCrtFilter,
-  toggleLivesModel,
-  toggleShowFps,
+  toggleBoolean,
 } from "../../../../../../store/gameMenusSlice";
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
@@ -93,7 +90,10 @@ export const ModernisationOptionsDialog = () => {
                   )}
                 />
               }
-              onSelect={useDispatchActionCallback(toggleColourise)}
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.displaySettings.colourise",
+              )}
               hint={
                 <BlockyMarkdown
                   className={markdownClassname}
@@ -114,11 +114,14 @@ export const ModernisationOptionsDialog = () => {
               valueElement={
                 <ValueSwitch
                   value={useAppSelector(
-                    (state) => state.userSettings.livesModel === "infinite",
+                    (state) => state.userSettings.infiniteLivesPoke,
                   )}
                 />
               }
-              onSelect={useDispatchActionCallback(toggleLivesModel)}
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.infiniteLivesPoke",
+              )}
             />
             <MenuItem
               doubleHeightWhenFocussed
@@ -139,14 +142,27 @@ export const ModernisationOptionsDialog = () => {
               valueElement={
                 <ValueSwitch value={useAppSelector(selectShowFps)} />
               }
-              onSelect={useDispatchActionCallback(toggleShowFps)}
-              hint={`show frame rate`}
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.showFps",
+              )}
+              hint={`show frame rate (frames per second) in the top-left corner`}
             />
             <MenuItem
               doubleHeightWhenFocussed
               id="analogueControl"
               label="Analogue control"
-              valueElement={<ValueSwitch value={true} />}
+              valueElement={
+                <ValueSwitch
+                  value={useAppSelector(
+                    (state) => state.userSettings.analogueControl,
+                  )}
+                />
+              }
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.analogueControl",
+              )}
               hint={
                 <BlockyMarkdown
                   className={markdownClassname}
@@ -165,7 +181,10 @@ export const ModernisationOptionsDialog = () => {
                   )}
                 />
               }
-              onSelect={useDispatchActionCallback(toggleCrtFilter)}
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.displaySettings.crtFilter",
+              )}
               hint="Subtle screen glow a bit like an old tv"
             />
             <MenuItem

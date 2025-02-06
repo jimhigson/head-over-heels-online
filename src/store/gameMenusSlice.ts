@@ -16,6 +16,8 @@ import { zxSpectrumResolution } from "../originalGame";
 import { directionsXy4, type Xy } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
+import type { ToggleablePaths } from "../utils/Toggleable";
+import { getAtPath, setAtPath } from "../utils/getAtPath";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -39,9 +41,10 @@ export type DisplaySettings = {
 export type UserSettings = {
   inputAssignment: InputAssignment;
   displaySettings: DisplaySettings;
-  livesModel: "infinite" | "original";
+  infiniteLivesPoke: boolean;
   // optional because was introduced without a version bump in persist. Select with !!
   showFps: boolean;
+  analogueControl: boolean;
 };
 
 const inBrowser = typeof globalThis.window !== "undefined";
@@ -79,10 +82,12 @@ export type GameMenusState = {
   cheatsOn: boolean;
 };
 
+type BooleanStatePaths = ToggleablePaths<GameMenusState>;
+
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     inputAssignment: keyAssignmentPresets.default.inputAssignment,
-    livesModel: "original",
+    infiniteLivesPoke: false,
 
     displaySettings: {
       showBoundingBoxes: "none",
@@ -93,6 +98,7 @@ export const initialGameMenuSliceState: GameMenusState = {
     },
 
     showFps: false,
+    analogueControl: false,
   },
   upscale: calculateUpscale(
     inBrowser ?
@@ -321,21 +327,11 @@ export const gameMenusSlice = createSlice({
     ) {
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
-    toggleLivesModel(state) {
-      state.userSettings.livesModel =
-        state.userSettings.livesModel === "infinite" ? "original" : "infinite";
+
+    toggleBoolean(state, { payload }: PayloadAction<BooleanStatePaths>) {
+      setAtPath(state, payload, !getAtPath(state, payload));
     },
-    toggleCrtFilter(state) {
-      state.userSettings.displaySettings.crtFilter =
-        !state.userSettings.displaySettings.crtFilter;
-    },
-    toggleColourise(state) {
-      state.userSettings.displaySettings.colourise =
-        !state.userSettings.displaySettings.colourise;
-    },
-    toggleShowFps(state) {
-      state.userSettings.showFps = !state.userSettings.showFps;
-    },
+
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
       state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
@@ -376,10 +372,7 @@ export const {
   setShowShadowMasks,
   setUpscale,
   showScroll,
-  toggleColourise,
-  toggleCrtFilter,
-  toggleLivesModel,
-  toggleShowFps,
+  toggleBoolean,
 } = gameMenusSlice.actions;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;

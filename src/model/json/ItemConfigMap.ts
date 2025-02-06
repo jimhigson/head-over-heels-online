@@ -1,4 +1,3 @@
-import type { ConditionalKeys, Paths } from "type-fest";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
 import type { DirectionXy4, Xyz, AxisXy } from "../../utils/vectors/vectors";
@@ -9,10 +8,9 @@ import type {
   DeadlyItemStyle,
 } from "./JsonItem";
 import type {
-  gameMenusSliceActions,
   GameMenusState,
 } from "../../store/gameMenusSlice";
-import type { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
+import type { ToggleablePaths } from "../../utils/Toggleable";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 
@@ -226,12 +224,7 @@ export type ItemConfigMap<
 
     // special case for switches that read from and dispatch to the store:
     store?: {
-      selectsPath: Paths<GameMenusState>;
-      // names of the actions that don't need a parameter/payload to create:
-      dispatches: ConditionalKeys<
-        typeof gameMenusSliceActions,
-        ActionCreatorWithoutPayload
-      >;
+      path: ToggleablePaths<GameMenusState>;
     };
   };
   joystick: {

@@ -30,8 +30,7 @@ export const room = inferRoomJson({
     colouriseSwitch: {
       config: {
         store: {
-          dispatches: "toggleColourise",
-          selectsPath: "userSettings.displaySettings.colourise",
+          path: "userSettings.displaySettings.colourise",
         },
       },
       isExtra: true,

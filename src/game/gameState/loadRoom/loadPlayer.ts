@@ -38,7 +38,7 @@ export const defaultPlayerState = () =>
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", SceneryName, RoomId>,
 ): PlayableItem<CharacterName, RoomId> => {
-  const { livesModel } = store.getState().userSettings;
+  const { infiniteLivesPoke } = store.getState().userSettings;
 
   if (jsonItem.config.which === "head") {
     return {
@@ -54,7 +54,7 @@ export const loadPlayer = <RoomId extends string>(
         totalWalkDistance: 0,
         fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
         lives:
-          livesModel === "infinite" ?
+          infiniteLivesPoke ?
             Number.POSITIVE_INFINITY
           : originalGameStartingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
@@ -80,7 +80,7 @@ export const loadPlayer = <RoomId extends string>(
         hasBag: false,
         bigJumps: 0,
         lives:
-          livesModel === "infinite" ?
+          infiniteLivesPoke ?
             Number.POSITIVE_INFINITY
           : originalGameStartingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
