@@ -2,6 +2,7 @@ import type { AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { isFreeItem } from "../../physics/itemPredicates";
+import { removeStandingOn } from "./modifyStandingOn";
 
 export const deleteItemFromRoom = <
   RoomId extends string,
@@ -23,14 +24,12 @@ export const deleteItemFromRoom = <
     delete room.items[item.id as K];
   }
 
-  // whatever the deleted item had standing on it, it ain't no more:
-  for (const s of item.state.stoodOnBy) {
-    s.state.standingOn = null;
-  }
-
   // whatever the deleted item was standing on, it aim't no more:
-  if (isFreeItem(item) && item.state.standingOn !== null) {
-    item.state.standingOn.state.stoodOnBy.delete(item);
-    item.state.standingOn = null;
+  if (isFreeItem(item)) {
+    removeStandingOn(item);
+  }
+  // and nothing can be stood on us either:
+  for (const standerOn of item.state.stoodOnBy) {
+    removeStandingOn(standerOn);
   }
 };

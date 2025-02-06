@@ -25,7 +25,10 @@ import type {
   JsonItemType,
   JsonItemConfig,
 } from "../../../model/json/JsonItem";
-import type { CharacterName } from "../../../model/modelTypes";
+import {
+  otherIndividualCharacterName,
+  type CharacterName,
+} from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
@@ -169,7 +172,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <CssSprite className="texture-helicopterBug.1" />
+        <CssSprite className="texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]">
@@ -402,15 +405,27 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               className="flex-grow"
               onClick={(e) => {
                 if (gameApi) {
+                  const { currentCharacterName } = gameApi.gameState;
                   const playable =
-                    gameApi.currentRoom.items[
-                      gameApi.gameState.currentCharacterName
-                    ];
+                    gameApi.currentRoom.items[currentCharacterName];
 
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (window as any).playable = playable;
-                  console.log(playable);
+                  console.log("currentCharacterName:", playable);
                   console.log("playable on window.playable");
+
+                  if (currentCharacterName !== "headOverHeels") {
+                    const otherName =
+                      otherIndividualCharacterName(currentCharacterName);
+                    const otherPlayableRoom =
+                      gameApi.gameState.characterRooms[otherName];
+                    console.log(
+                      otherName,
+                      "in room",
+                      otherPlayableRoom?.id,
+                      otherPlayableRoom?.items[otherName],
+                    );
+                  }
                 }
 
                 e.currentTarget.blur();
