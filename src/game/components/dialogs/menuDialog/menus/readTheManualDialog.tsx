@@ -33,7 +33,7 @@ const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   );
 };
 
-export const ReadTheManualMenu = () => {
+export const ReadTheManualDialog = () => {
   return (
     <>
       <Border

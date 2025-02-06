@@ -8,6 +8,8 @@ import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
 import { Border, Dialog } from "../../../../components/ui/dialog";
 import { MenuItems } from "./MenuItems";
 import { BackMenuItem } from "./BackMenuItem";
+import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
+import { backToParentMenu } from "../../../../store/gameMenusSlice";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
@@ -57,7 +59,10 @@ export const MarkdownDialog = ({
 
   return (
     <>
-      <Border className="bg-midGrey zx:bg-zxWhiteDimmed" />
+      <Border
+        className="bg-midGrey zx:bg-zxWhiteDimmed"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      />
       <Dialog className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack">
         <div
           className={twMerge(
