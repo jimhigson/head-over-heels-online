@@ -7,9 +7,7 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type {
-  GameMenusState,
-} from "../../store/gameMenusSlice";
+import type { GameMenusState } from "../../store/gameMenusSlice";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
