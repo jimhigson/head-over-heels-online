@@ -21,6 +21,7 @@ import {
 } from "./analogueControlAdjustments";
 
 const analogueDeadzone = 0.1;
+const snapAngleRadians = 13 * (Math.PI / 180);
 
 export type PressStatus =
   /** just started pressing this frame */
@@ -228,7 +229,7 @@ export class InputStateTracker {
     const pressVector = addXyz(originXyz, ...pressVectors());
     const axisVector = snapToCardinal(
       isometricInputVector(addXyz(originXyz, ...axisVectors())),
-      17 * (Math.PI / 180),
+      snapAngleRadians,
     );
 
     const v = addXyz(pressVector, axisVector);
