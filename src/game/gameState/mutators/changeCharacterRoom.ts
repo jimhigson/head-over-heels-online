@@ -4,7 +4,6 @@ import { objectValues } from "iter-tools";
 import { entryState } from "../PlayableEntryState";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
-import { removeStandingOn } from "./modifyStandingOn";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName, RoomState } from "../../../model/modelTypes";
@@ -302,10 +301,10 @@ export const changeCharacterRoom = <RoomId extends string>(
   // still have their standing on set to an item in the previous room) - for example, they might
   // be already on the floor or a teleporter in the new room. By setting this to null, gravity will
   // apply to them and they will collide with the item below them and get standingOn set:
-  removeStandingOn(playableItem);
-  for (const standerOn of playableItem.state.stoodOnBy) {
-    removeStandingOn(standerOn);
-  }
+
+  console.log(playableItem, "is now stood on by", [
+    ...playableItem.state.stoodOnBy,
+  ]);
 
   // heels can't carry items to different rooms:
   const heelsAbilities = selectHeelsAbilities(playableItem);
