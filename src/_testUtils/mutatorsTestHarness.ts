@@ -23,7 +23,7 @@ import { blockSizePx } from "../sprites/spritePivots";
 import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
-import { InputStateTracker } from "../game/input/InputStateTracker";
+import { MockInputStateTracker } from "./MockInputStateTracker";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -107,7 +107,7 @@ export const testCampaign = {
 export const mutatorsTestHarness = () => {
   const gameState = initGameState({
     campaign: testCampaign,
-    inputStateTracker: new InputStateTracker(new Map()),
+    inputStateTracker: new MockInputStateTracker(),
   });
 
   const gameOverFn = vi.fn();
