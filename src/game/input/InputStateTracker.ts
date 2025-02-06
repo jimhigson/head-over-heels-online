@@ -13,32 +13,14 @@ import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import type { PickDeep } from "type-fest";
-
-/**
- * a cut-down version of Gamepad with only the stuff we need to carry
- * forward a record of to the next frame, so that we can compare the
- * state between one frame and the next.
- *
- * In Chrome, navigator.getGamepads() return is immutable, so it can be stored
- * directly. Whereas in Safari, this fails because the object is live.
- */
-type GamepadState = PickDeep<Gamepad, `buttons.${number}.pressed` | "axes">;
+import type { GamepadState } from "./GamepadState";
+import { extractGamepadsState } from "./GamepadState";
+import {
+  isometricInputVector,
+  snapToCardinal,
+} from "./analogueControlAdjustments";
 
 const analogueDeadzone = 0.1;
-
-const extractGamepadsState = (
-  gp: Array<Gamepad | null>,
-): Array<GamepadState | null> => {
-  return gp.map((gp) =>
-    gp === null ? null : (
-      {
-        buttons: gp.buttons.map((b) => ({ pressed: b.pressed })),
-        axes: gp.axes.map((a) => a),
-      }
-    ),
-  );
-};
 
 export type PressStatus =
   /** just started pressing this frame */
@@ -208,11 +190,12 @@ export class InputStateTracker {
       gamepads: navigator.getGamepads(),
     };
 
-    function* vectors(): Generator<Xyz> {
+    function* pressVectors(): Generator<Xyz> {
       for (const d of directionsXy4) {
         if (isActionPressed(currentFrameInput, d, false)) yield unitVectors[d];
       }
-
+    }
+    function* axisVectors(): Generator<Xyz> {
       const {
         userSettings: {
           inputAssignment: {
@@ -242,8 +225,16 @@ export class InputStateTracker {
       }
     }
 
-    const v = addXyz(originXyz, ...vectors());
+    const pressVector = addXyz(originXyz, ...pressVectors());
+    const axisVector = snapToCardinal(
+      isometricInputVector(addXyz(originXyz, ...axisVectors())),
+      17 * (Math.PI / 180),
+    );
+
+    const v = addXyz(pressVector, axisVector);
+
     const vl = lengthXyz(v);
+
     return vl > 1 ? scaleXyz(v, 1 / vl) : v;
   };
 
