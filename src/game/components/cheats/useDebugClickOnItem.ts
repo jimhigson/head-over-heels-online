@@ -24,6 +24,7 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           if (toRoom) gameApi.changeRoom(toRoom);
         }
         console.log(
+          item.id,
           "item (live):",
           item,
           "\nstate (shallow copy):",
