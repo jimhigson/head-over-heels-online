@@ -3,8 +3,6 @@ import {
   heelsJumpForwardDecel,
   moveSpeedPixPerMs,
   playerWalkAcceldPixPerMsSq,
-  playerWalkStopAccelPixPerMsSq,
-  walkMinSpeedPixPerMs,
 } from "../mechanicsConstants";
 import { isItemType, type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
@@ -201,7 +199,7 @@ const walkingImpl = <RoomId extends string>(
   }
 
   // no direction pressed - we are not walking. Fade the velocity.
-  const previousSpeed = lengthXyz(previousWalkingVel);
+  //const previousSpeed = lengthXyz(previousWalkingVel);
 
   if (walkDistance > 0 && walkDistance < 1) {
     // stopped walking, having moved some distance but less than a pixel - one pixel
@@ -213,24 +211,23 @@ const walkingImpl = <RoomId extends string>(
     };
   }
 
+  /*
   const previousDirection =
     previousSpeed === 0 ? originXyz : (
       scaleXyz(previousWalkingVel, 1 / previousSpeed)
     );
-
   // decelerate down towards stationary:
-  const newSpeed = Math.max(
+  /*const newSpeed = Math.max(
     previousSpeed -
       playerWalkStopAccelPixPerMsSq[useSpeedOfCharacter] * deltaMS,
     0,
   );
+  actually, we'll just come to an instant stop, thanks
+  */
   return {
     movementType: "vel",
     vels: {
-      walking: scaleXyz(
-        previousDirection,
-        newSpeed < walkMinSpeedPixPerMs[useSpeedOfCharacter] ? 0 : newSpeed,
-      ),
+      walking: originXyz,
     },
     stateDelta: { action: isFalling ? "falling" : "idle" },
   };
