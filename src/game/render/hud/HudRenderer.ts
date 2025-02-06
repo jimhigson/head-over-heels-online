@@ -280,7 +280,7 @@ export class HudRenderer<RoomId extends string> {
   }
 
   /** update the carrying element for heel's bag contents */
-  #tickBagAndCarrying(gameState: GameState<RoomId>) {
+  #tickBagAndCarrying(gameState: GameState<RoomId>, colourise: boolean) {
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;
 
@@ -306,9 +306,14 @@ export class HudRenderer<RoomId extends string> {
         ),
       );
     }
+    carryingContainer.filters =
+      colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
 
     this.#hudElements.heels.bag.icon.filters =
-      hasBag ? noFilters : this.#uncurrentSpriteFilter;
+      hasBag ?
+        colourise ? noFilters
+        : this.#livesOrActiveCharacterOriginalColorFilter
+      : this.#uncurrentSpriteFilter;
   }
 
   #tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
@@ -479,7 +484,7 @@ export class HudRenderer<RoomId extends string> {
 
     this.#updateElementPositions(screenSize);
     this.#tickHooterAndDoughnuts(gameState);
-    this.#tickBagAndCarrying(gameState);
+    this.#tickBagAndCarrying(gameState, colourise);
 
     this.#updateFps();
   }
