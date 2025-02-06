@@ -4,11 +4,22 @@ import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
-import { addXyz, scaleXyz, originXyz } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  scaleXyz,
+  originXyz,
+  unitVector,
+} from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
+
+/**
+ * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
+ * even when shooting them diagonally
+ */
+const aheadStart = blockSizePx.w * Math.sqrt(2) + 1;
 
 export const firing = <RoomId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId>,
@@ -28,6 +39,8 @@ export const firing = <RoomId extends string>(
 
   const maxFireRate = 500;
 
+  const direction = unitVector(facing);
+
   if (
     inputStateTracker.currentActionPress("fire") === "tap" &&
     hasHooter &&
@@ -43,11 +56,11 @@ export const firing = <RoomId extends string>(
       state: {
         position: addXyz(
           position,
-          scaleXyz(facing, blockSizePx.w),
+          scaleXyz(direction, aheadStart),
           firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
         ),
         vels: {
-          fired: scaleXyz(facing, moveSpeedPixPerMs.firedDoughnut),
+          fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),
         },
         disappear: "onTouch",
         expires: null,
