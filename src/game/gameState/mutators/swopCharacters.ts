@@ -12,7 +12,7 @@ import {
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 
-const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
+export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ) => {
   const room = gameState.characterRooms["head"]!;
