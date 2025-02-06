@@ -131,11 +131,161 @@
     "path": "/rooms/penitentiary5/color/hue",
     "value": "green"
   },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra1",
+    "value": {
+      "isExtra": true,
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 5, "z": 4 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra2",
+    "value": {
+      "isExtra": true,
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 5, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra3",
+    "value": {
+      "isExtra": true,
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 5, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra4",
+    "value": {
+      "isExtra": true,
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 5, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra5",
+    "value": {
+      "isExtra": true,
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra6",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 5, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary5/items/extra7",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
   { "op": "add", "path": "/rooms/penitentiary5/size/z", "value": 12 },
   {
     "op": "replace",
     "path": "/rooms/penitentiary4/color/hue",
     "value": "green"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra1",
+    "value": {
+      "config": { "style": "artificial" },
+      "position": { "x": 4, "y": 5, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra5",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 0, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra6",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 0, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra7",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 0, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra8",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra3",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 1, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra4",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 1, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary4/items/extra2",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 5, "z": 1 },
+      "type": "block"
+    }
   },
   { "op": "add", "path": "/rooms/penitentiary4/size/z", "value": 12 },
   {
@@ -346,6 +496,36 @@
     "op": "replace",
     "path": "/rooms/penitentiary13/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary13/items/block@1,0,1/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary13/items/block@2,0,1/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary13/items/block@0,3,5/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary13/items/block@4,3,2/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary13/items/extra1",
+    "value": {
+      "isExtra": true,
+      "config": { "style": "artificial" },
+      "position": { "x": 5, "y": 3, "z": 0 },
+      "type": "block"
+    }
   },
   {
     "op": "replace",
@@ -931,6 +1111,11 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/blacktooth81/items/movableBlock@6,7,0/config/activated",
+    "value": true
+  },
+  {
+    "op": "replace",
     "path": "/rooms/blacktooth78/items/lift@1,1,0/config/top",
     "value": 11
   },
@@ -1454,10 +1639,7 @@
     "path": "/rooms/blacktooth1head/items/colouriseSwitch",
     "value": {
       "config": {
-        "store": {
-          "dispatches": "toggleColourise",
-          "selectsPath": "userSettings.displaySettings.colourise"
-        }
+        "store": { "path": "userSettings.displaySettings.colourise" }
       },
       "isExtra": true,
       "position": { "x": 5, "y": 3, "z": 0 },
