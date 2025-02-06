@@ -99,11 +99,14 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <CssSprite className="texture-head.walking.right.2" />
+          <CssSprite className="texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
           over
-          <CssSprite className="texture-heels.walking.right.2" />
+          <CssSprite className="texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
         </>
-      : <CssSprite className={`texture-${playableName}.walking.right.2`} />}
+      : <CssSprite
+          className={`texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
+        />
+      }
     </Button>
   );
 };
@@ -175,7 +178,10 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         <CssSprite className="texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]">
+        <div
+          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]"
+          style={{ "--scale": 2 }}
+        >
           <Heading>room select:</Heading>
           <RoomSelect gameApi={gameApi} className="w-full" />
           <div className="flex flex-row items-center">
@@ -431,7 +437,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-head.walking.right.2" />|
+              <CssSprite className="texture-head.walking.right.2" />
               <CssSprite className="texture-heels.walking.right.2" />
             </Button>
           </div>
