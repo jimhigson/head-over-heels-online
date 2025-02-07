@@ -1,5 +1,5 @@
 import type { PlayableItem, PortableItemType } from "../itemPredicates";
-import { isPortable } from "../itemPredicates";
+import { isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
@@ -147,11 +147,28 @@ export const checkSpaceAvailableToPutDown = <T extends AnyItemInPlay>(
   );
 
   for (const collision of collisions) {
+    if (!isSolid(collision, item)) {
+      continue;
+    }
+
     if (!isFreeItem(collision)) {
+      console.log(
+        "carrying: cannot put down due to collision: item:",
+        item,
+        "can't move up because it would collide with non-free",
+        collision,
+      );
       return false;
     }
 
     if (!checkSpaceAvailableToPutDown(collision, roomItems)) {
+      console.log(
+        "carrying: cannot put down due to collision: item:",
+        item,
+        "can't move up because it would collide with free that has nowhere to go:",
+        collision,
+      );
+
       return false;
     }
   }
