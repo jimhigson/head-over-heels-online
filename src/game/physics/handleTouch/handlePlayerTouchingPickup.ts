@@ -1,7 +1,7 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import { crownCollected, showScroll } from "../../../store/gameMenusSlice";
+import { crownCollected, scrollRead } from "../../../store/gameMenusSlice";
 import { store } from "../../../store/store";
 import {
   selectHeadAbilities,
@@ -100,7 +100,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
-      store.dispatch(showScroll(pickup.config.page));
+      store.dispatch(scrollRead(pickup.config.page));
       break;
 
     case "reincarnation":

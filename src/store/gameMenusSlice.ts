@@ -55,6 +55,10 @@ const cheatsOn =
     // in node (probably vitest)
   : false;
 
+export type ScrollsRead = {
+  [m in MarkdownPageName]?: true;
+};
+
 export type GameMenusState = {
   /**
    * stack of menus currently open - empty if none are
@@ -78,6 +82,11 @@ export type GameMenusState = {
   planetsLiberated: Record<PlanetName, boolean>;
   roomsExplored: Record<string, true>; // RoomId ?
   gameRunning: boolean;
+  /**
+    we don't want to show the same scroll twice, even if it is in a different room
+    so record what we've read:
+  */
+  scrollsRead: ScrollsRead;
 
   // if cheats are on, some cheat/debugging options are available
   cheatsOn: boolean;
@@ -120,6 +129,7 @@ export const initialGameMenuSliceState: GameMenusState = {
 
   planetsLiberated: noPlanetsLiberated,
   roomsExplored: {},
+  scrollsRead: {},
   gameRunning: cheatsOn,
 
   openMenus:
@@ -156,10 +166,11 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
     },
-    showScroll(
+    scrollRead(
       state,
       { payload: markdownPageName }: PayloadAction<MarkdownPageName>,
     ) {
+      state.scrollsRead[markdownPageName] = true;
       state.openMenus = [
         {
           menuId: `markdown/${markdownPageName}`,
@@ -261,6 +272,7 @@ export const gameMenusSlice = createSlice({
         state.gameRunning = true;
         state.planetsLiberated = noPlanetsLiberated;
         state.roomsExplored = {};
+        state.scrollsRead = {};
       }
     },
     backToParentMenu(state) {
@@ -378,7 +390,7 @@ export const {
   setShowBoundingBoxes,
   setShowShadowMasks,
   setUpscale,
-  showScroll,
+  scrollRead,
   toggleBoolean,
   roomExplored,
 } = gameMenusSlice.actions;

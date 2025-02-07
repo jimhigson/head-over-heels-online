@@ -11,14 +11,25 @@ import type { UnknownJsonItem } from "../../../model/json/JsonItem";
 import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
+import type { ScrollsRead } from "../../../store/gameMenusSlice";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
   jsonItem: UnknownJsonItem<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
+  /** may be safely omitted if we know that the item is not a scroll */
+  scrollsRead: ScrollsRead = {},
 ): Generator<UnknownItemInPlay<RoomId>, undefined> {
   if (roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
+    return;
+  }
+  if (
+    jsonItem.type === "pickup" &&
+    jsonItem.config.gives === "scroll" &&
+    scrollsRead[jsonItem.config.page]
+  ) {
+    // don't show scrolls the player has already read
     return;
   }
 
