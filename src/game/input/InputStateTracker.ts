@@ -20,7 +20,7 @@ import {
   snapToCardinal,
 } from "./analogueControlAdjustments";
 
-const analogueDeadzone = 0.1;
+const analogueDeadzone = 0.2;
 const snapAngleRadians = 13 * (Math.PI / 180);
 
 export type PressStatus =
@@ -216,20 +216,21 @@ export class InputStateTracker {
           continue;
         }
 
+        let x = 0,
+          y = 0;
+
         for (const a of axesX) {
           if (gp.axes.length <= a) continue;
-          const axisValue = gp.axes[a];
-          if (Math.abs(axisValue) > analogueDeadzone) {
-            yield scaleXyz(unitVectors.right, axisValue);
-          }
+          x -= gp.axes[a];
         }
         for (const a of axesY) {
           if (gp.axes.length <= a) continue;
-          const axisValue = gp.axes[a];
-          if (Math.abs(axisValue) > analogueDeadzone) {
-            yield scaleXyz(unitVectors.towards, axisValue);
-          }
+          y -= gp.axes[a];
         }
+
+        const v: Xyz = { x, y, z: 0 };
+
+        if (lengthXyz(v) > analogueDeadzone) yield v;
       }
     }
 
