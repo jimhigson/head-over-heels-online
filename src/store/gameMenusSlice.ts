@@ -341,9 +341,6 @@ export const gameMenusSlice = createSlice({
       state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
     },
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
-      if (!state.gameRunning) {
-        throw new Error("room explored without game running");
-      }
       state.roomsExplored[roomId] = true;
     },
     gameOver(state) {
