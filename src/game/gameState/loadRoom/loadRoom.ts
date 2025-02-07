@@ -11,6 +11,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
+import { store } from "../../../store/store";
 
 // might do this again later, or use it as a template to gather other item types
 /*
@@ -89,12 +90,14 @@ function* loadItems<RoomId extends string>(
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad: boolean,
 ): Generator<UnknownItemInPlay<RoomId>> {
+  const { scrollsRead } = store.getState();
+
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
     if (item.type === "player" && !isFirstLoad) {
       continue;
     }
-    yield* loadItemFromJson(id, item, roomPickupsCollected);
+    yield* loadItemFromJson(id, item, roomPickupsCollected, scrollsRead);
   }
 }
 
