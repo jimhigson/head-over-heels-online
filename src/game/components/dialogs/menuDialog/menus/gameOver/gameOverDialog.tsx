@@ -14,6 +14,9 @@ export const GameOverDialog = () => {
   const planetsLiberatedCount = useAppSelector((state) =>
     size(iterate(objectValues(state.planetsLiberated)).filter(Boolean)),
   );
+  const roomsExploredCount = useAppSelector((state) =>
+    size(iterate(objectValues(state.roomsExplored))),
+  );
   return (
     <>
       <Border className="bg-redShadow zx:bg-zxCyan" />
@@ -32,7 +35,7 @@ export const GameOverDialog = () => {
           Score -
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">
-          Explored - rooms
+          Explored {String(roomsExploredCount)} rooms
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-lightGrey zx:text-zxWhite">
           Liberated {String(planetsLiberatedCount)} planets

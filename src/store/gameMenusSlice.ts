@@ -76,6 +76,7 @@ export type GameMenusState = {
   upscale: Upscale;
 
   planetsLiberated: Record<PlanetName, boolean>;
+  roomsExplored: Record<string, true>; // RoomId ?
   gameRunning: boolean;
 
   // if cheats are on, some cheat/debugging options are available
@@ -83,6 +84,14 @@ export type GameMenusState = {
 };
 
 type BooleanStatePaths = ToggleablePaths<GameMenusState>;
+
+const noPlanetsLiberated = {
+  blacktooth: false,
+  bookworld: false,
+  egyptus: false,
+  penitentiary: false,
+  safari: false,
+};
 
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
@@ -109,13 +118,9 @@ export const initialGameMenuSliceState: GameMenusState = {
     1,
   ),
 
-  planetsLiberated: {
-    blacktooth: false,
-    bookworld: false,
-    egyptus: false,
-    penitentiary: false,
-    safari: false,
-  },
+  planetsLiberated: noPlanetsLiberated,
+  roomsExplored: {},
+  gameRunning: cheatsOn,
 
   openMenus:
     cheatsOn ?
@@ -129,9 +134,6 @@ export const initialGameMenuSliceState: GameMenusState = {
         },
       ],
   assigningInput: undefined,
-
-  // if cheating (debugging), the game is already running
-  gameRunning: cheatsOn,
 
   cheatsOn,
 };
@@ -257,6 +259,8 @@ export const gameMenusSlice = createSlice({
           },
         ];
         state.gameRunning = true;
+        state.planetsLiberated = noPlanetsLiberated;
+        state.roomsExplored = {};
       }
     },
     backToParentMenu(state) {
@@ -336,6 +340,12 @@ export const gameMenusSlice = createSlice({
       state.planetsLiberated[planet] = true;
       state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
     },
+    roomExplored(state, { payload: roomId }: PayloadAction<string>) {
+      if (!state.gameRunning) {
+        throw new Error("room explored without game running");
+      }
+      state.roomsExplored[roomId] = true;
+    },
     gameOver(state) {
       state.gameRunning = false;
       state.openMenus = [
@@ -373,6 +383,7 @@ export const {
   setUpscale,
   showScroll,
   toggleBoolean,
+  roomExplored,
 } = gameMenusSlice.actions;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;
