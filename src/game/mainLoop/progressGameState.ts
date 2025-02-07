@@ -4,7 +4,7 @@ import { tickItem } from "./tickItem";
 import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
-import { removeNoLongerStandingOn } from "../gameState/mutators/removeNoLongerStandingOn";
+import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
 import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import {
   selectCurrentPlayableItem,
@@ -156,7 +156,7 @@ export const _progressGameState = <RoomId extends string>(
     tickItem(item, room, gameState, deltaMS);
   }
 
-  removeNoLongerStandingOn(room);
+  updateStandingOn(room);
 
   const movedItems = new Set<AnyItemInPlay>(
     iterate(objectValues(room.items)).filter(

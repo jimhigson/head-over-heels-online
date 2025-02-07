@@ -238,7 +238,7 @@ export const moveItem = <RoomId extends string>({
         );
     }
 
-    // check if we landed on the item to take over the standingOn slot::
+    // check if we landed on the item we collided with to take over the standingOn slot::
     if (isFreeItem(subjectItem) && backingOffMtv.z > 0) {
       // moving vertically down onto the item
       if (

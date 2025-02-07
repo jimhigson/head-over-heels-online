@@ -34,6 +34,7 @@ import type { SceneryName } from "../../sprites/planets";
 import { iterate } from "../../utils/iterate";
 import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
 import { applyMechanicsResults } from "./applyMechanicsResults";
+import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -92,26 +93,45 @@ const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
   item: ItemInPlay<T, SceneryName, RoomId>,
   room: RoomState<SceneryName, RoomId>,
   gameState: GameState<RoomId>,
+  deltaMS: number,
 ) => {
+  if (!isFreeItem(item) || item.state.standingOn === null) {
+    return;
+  }
+
+  // walking onto a platform that is activate on stand
+  if (isPlayableItem(item)) {
+    if (
+      item.state.standingOn.type === "movableBlock" &&
+      item.state.standingOn.config.movement !== "free" &&
+      item.state.standingOn.config.activated === "onStand"
+    ) {
+      item.state.standingOn.state.activated = true;
+    }
+
+    // case of walking onto a pickup from another platform, not colliding with it
+    if (item.state.standingOn.type === "pickup") {
+      handlePlayerTouchingPickup({
+        gameState,
+        movingItem: item,
+        touchedItem: item.state.standingOn,
+        room,
+        movementVector: { x: 0, y: 0, z: -1 },
+        deltaMS,
+      });
+    }
+  }
+
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
   // by walking onto it from another item, there would have been no collision with it
   // to set the standing on property
   if (
-    isFreeItem(item) &&
-    item.state.standingOn !== null &&
-    item.state.standingOn.state.disappear === "onStand"
+    item.state.standingOn.state.disappear === "onStand" ||
+    item.state.standingOn.state.disappear === "onTouch" ||
+    (isPlayableItem(item) &&
+      item.state.standingOn.state.disappear === "onTouchByPlayer")
   ) {
     makeItemFadeOut({ touchedItem: item.state.standingOn, gameState, room });
-  }
-  // walking onto a platform that is activate on stand
-  if (
-    isPlayableItem(item) &&
-    item.state.standingOn !== null &&
-    item.state.standingOn.type === "movableBlock" &&
-    item.state.standingOn.config.movement !== "free" &&
-    item.state.standingOn.config.activated === "onStand"
-  ) {
-    item.state.standingOn.state.activated = true;
   }
 };
 
@@ -153,7 +173,10 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
     ...itemMechanicResultGen(item, room, gameState, deltaMS),
   ];
 
-  tickItemStandingOn(item, room, gameState);
+  // this is done after the mechanicsResults are generated, so that the player
+  // can do one more jump on a dissapearing block before the touch on that block
+  // is handled
+  tickItemStandingOn(item, room, gameState, deltaMS);
 
   // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired doughnut)
 
