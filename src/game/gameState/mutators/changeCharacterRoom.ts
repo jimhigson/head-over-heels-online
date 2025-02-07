@@ -22,6 +22,8 @@ import { collision1toMany } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { isPortal } from "../../physics/itemPredicates";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { store } from "../../../store/store";
+import { roomExplored } from "../../../store/gameMenusSlice";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -362,4 +364,6 @@ export const changeCharacterRoom = <RoomId extends string>(
     }
     delete gameState.entryState.headOverHeels;
   }
+
+  store.dispatch(roomExplored(toRoomId));
 };

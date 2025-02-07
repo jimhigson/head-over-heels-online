@@ -3,7 +3,6 @@ import {
   gameStarted,
   goToSubmenu,
 } from "../../../../../../store/gameMenusSlice";
-import { useAppSelector } from "../../../../../../store/hooks";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -11,17 +10,20 @@ import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { BitmapText } from "../../../../Sprite";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { useIsGameRunning } from "../../../../../../store/selectors";
 
 const PlayGameLabel = () => {
-  const gameRunning = useAppSelector((state) => state.gameRunning);
+  const isGameRunning = useIsGameRunning();
 
   return (
-    <BitmapText>{gameRunning ? "Resume the game" : "Play the game"}</BitmapText>
+    <BitmapText>
+      {isGameRunning ? "Resume the game" : "Play the game"}
+    </BitmapText>
   );
 };
 
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
-  const gameRunning = useAppSelector((state) => state.gameRunning);
+  const isGameRunning = useIsGameRunning();
 
   return (
     <>
@@ -40,7 +42,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             label="Quit this game"
             onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
             doubleHeightWhenFocussed
-            hidden={!gameRunning}
+            hidden={!isGameRunning}
           />
           <MenuItem
             id="selectKeys"
@@ -68,35 +70,4 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
       </Dialog>
     </>
   );
-
-  /*
-  Content() {
-    return (
-      <>
-        
-      </>
-    );
-  },
-  items: [
-    { label: PlayGameLabel, type: "toGame" },
-    {
-      label: "Quit this game",
-      type: "submenu",
-      submenu: "quitGameConfirm",
-      showIf: (state) => state.gameRunning,
-    },
-    {
-      label: "Select the keys",
-
-      type: "submenu",
-      submenu: "selectKeys",
-    },
-    {
-      label: "Modernisation options",
-      type: "submenu",
-      submenu: "modernisationOptions",
-    },
-    { label: "Read the manual", type: "submenu", submenu: "readTheManual" },
-  ],
-  */
 };

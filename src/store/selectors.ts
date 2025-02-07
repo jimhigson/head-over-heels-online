@@ -44,3 +44,6 @@ export const selectCurrentInputPreset = (
 
 export const selectShowFps = (state: RootState): boolean =>
   state.userSettings.showFps;
+
+export const useIsGameRunning = () =>
+  useAppSelector((state: RootState): boolean => state.gameRunning);

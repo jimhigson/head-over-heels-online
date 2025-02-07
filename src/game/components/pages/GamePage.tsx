@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../store/hooks.ts";
 import { ConnectInputToStore } from "../../../store/storeFlow/ConnectInputToStore.tsx";
 import { Dialogs } from "../dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../../input/InputStateProvider.tsx";
-import { useCheatsOn } from "../../../store/selectors.ts";
+import { useCheatsOn, useIsGameRunning } from "../../../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 import { importOnce } from "../../../utils/importOnce.ts";
 
@@ -29,12 +29,12 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const [gameApi, setGameApi] = useState<
     GameApi<OriginalCampaignRoomId> | undefined
   >();
-  const gameRunning = useAppSelector((state) => state.gameRunning);
+  const isGameRunning = useIsGameRunning();
   const inputState = useInputStateTracker();
   const cheatsOn = useCheatsOn();
 
   useEffect(() => {
-    if (!gameRunning) {
+    if (!isGameRunning) {
       setGameApi(undefined);
       return;
     }
@@ -84,7 +84,7 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
       thisEffectGameApi?.stop();
       stopped = true;
     };
-  }, [cheatsOn, gameRunning, inputState]);
+  }, [cheatsOn, isGameRunning, inputState]);
 
   return gameApi;
 };

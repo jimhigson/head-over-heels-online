@@ -11,6 +11,8 @@ import { TextureStyle } from "pixi.js";
 
 import "pixi.js/advanced-blend-modes";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
+import { store } from "../store/store";
+import { roomExplored } from "../store/gameMenusSlice";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -33,6 +35,8 @@ export const gameMain = async <RoomId extends string>(
     campaign,
     inputStateTracker,
   });
+  store.dispatch(roomExplored(gameState.characterRooms.head!.id));
+  store.dispatch(roomExplored(gameState.characterRooms.heels!.id));
 
   const loop = new MainLoop(app, gameState).start();
 
