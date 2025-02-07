@@ -25,6 +25,11 @@ import {
   directionsXy4,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
+import { emptyObject } from "../../../utils/empty";
+
+// either how long it takes after touching an item to turn around, or how long has to
+// pass between turning and turning again, depending on the movement pattern
+const turnAroundTime = 150;
 
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
@@ -142,7 +147,7 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
   _deltaMS: number,
 ): MechanicResult<"monster", RoomId> => {
   const {
-    state: { position, standingOn },
+    state: { position, standingOn, timeOfLastDirectionChange, facing },
   } = itemWithMovement;
 
   if (standingOn === null) {
@@ -153,6 +158,11 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
+    return unitMechanicalResult;
+  }
+
+  if (timeOfLastDirectionChange + turnAroundTime > room.roomTime) {
+    // only walk straight, already turned around recently:
     return unitMechanicalResult;
   }
 
@@ -178,13 +188,19 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
     ...originXyz,
     [travelAxis]: vectorXyToClosestPlayer[travelAxis] > 0 ? speed : -speed,
   };
+  const newFacing = unitVector(walkVelocity);
+
+  const changedDirection = !xyEqual(newFacing, facing);
   return {
     movementType: "vel",
     vels: {
       walking: walkVelocity,
     },
     stateDelta: {
-      facing: unitVector(walkVelocity),
+      facing: newFacing,
+      ...(changedDirection ?
+        { timeOfLastDirectionChange: room.roomTime }
+      : emptyObject),
     },
   };
 };
@@ -364,10 +380,7 @@ const handleMonsterTouchingItemByTurning = <RoomId extends string>(
     },
     deltaMS,
   }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>,
-  {
-    touchDurationBeforeTurn,
-    turnStrategy,
-  }: { touchDurationBeforeTurn: number; turnStrategy: TurnStrategy },
+  turnStrategy: TurnStrategy,
 ) => {
   const {
     state: {
@@ -382,7 +395,7 @@ const handleMonsterTouchingItemByTurning = <RoomId extends string>(
 
   itemWithMovement.state.durationOfTouch += deltaMS;
 
-  if (itemWithMovement.state.durationOfTouch < touchDurationBeforeTurn) return;
+  if (itemWithMovement.state.durationOfTouch < turnAroundTime) return;
 
   const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
 
@@ -488,24 +501,15 @@ export const handleItemWithMovementTouchingItem = <RoomId extends string>(
 
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":
-      handleMonsterTouchingItemByTurning(e, {
-        touchDurationBeforeTurn: 150,
-        turnStrategy: "perpendicular",
-      });
+      handleMonsterTouchingItemByTurning(e, "perpendicular");
       break;
     case "back-forth":
     case "patrol-randomly-diagonal":
     case "patrol-randomly-xy8":
-      handleMonsterTouchingItemByTurning(e, {
-        touchDurationBeforeTurn: 150,
-        turnStrategy: "opposite",
-      });
+      handleMonsterTouchingItemByTurning(e, "opposite");
       break;
     case "clockwise":
-      handleMonsterTouchingItemByTurning(e, {
-        touchDurationBeforeTurn: 150,
-        turnStrategy: "clockwise",
-      });
+      handleMonsterTouchingItemByTurning(e, "clockwise");
       break;
     case "towards-tripped-on-axis-xy4":
       handleMonsterTouchingItemByStopping(e);

@@ -61,6 +61,7 @@ export const initialState = (jsonItem: UnknownJsonItem) => {
     ...(jsonItem.type === "monster" ?
       {
         activated: jsonItem.config.activated,
+        timeOfLastDirectionChange: Number.NEGATIVE_INFINITY,
         ...((
           jsonItem.config.which === "skiHead" ||
           jsonItem.config.which === "turtle" ||
