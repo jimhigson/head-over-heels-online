@@ -6,6 +6,8 @@ import {
 import { useActionTap } from "../../game/components/dialogs/useActionInput";
 import { useAppSelector } from "../hooks";
 import { useDispatchActionCallback } from "../useDispatchCallback";
+import { store } from "../store";
+import { useEffect } from "react";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
@@ -37,14 +39,15 @@ export const useUniversalKeys = () => {
     disabled: assigningKeys,
   });
 
-  /*
-  useActionInput({
-    action: ["windowBlurred"],
-    onAction: useCallback(() => {
+  useEffect(() => {
+    const handleWindowBlur = (): void => {
       store.dispatch(holdPressed("hold"));
-    }, []),
+    };
+    window.addEventListener("blur", handleWindowBlur, false);
+    return () => {
+      window.removeEventListener("blur", handleWindowBlur, false);
+    };
   });
-  */
 
   useActionTap({
     action: "toggleColourisation",
