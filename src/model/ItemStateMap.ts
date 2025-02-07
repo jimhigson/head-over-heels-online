@@ -139,6 +139,28 @@ export type HeelsAbilities<RoomId extends string> = {
   switchedToAt: number;
 };
 
+type ItemWithMovementState = {
+  /**
+   * enemies turn around when they hit things but they have to be touching
+   * for a certain amount of time before they do, so they can push items more
+   * than a miniscule amount in a single frame
+   */
+  durationOfTouch: number;
+
+  /**
+   * some enemies need to be protected from changing direction too often
+   * so track when they last changed. This looks bad at 60fps if they start to
+   * change every frame.
+   */
+  timeOfLastDirectionChange: number;
+  facing: Xyz; // used for moving platforms
+  activated: boolean; // ie, can be turned on/off by a switch
+  vels: {
+    // for movable blocks that function as movable platforms, these are treated as 'walking':
+    walking: Xyz;
+  };
+};
+
 export type ItemStateMap<RoomId extends string> = {
   head: PlayableState<RoomId> & HeadAbilities;
   heels: PlayableState<RoomId> & HeelsAbilities<RoomId>;
@@ -149,33 +171,15 @@ export type ItemStateMap<RoomId extends string> = {
   spring: PortableItemState<RoomId>;
   portableBlock: PortableItemState<RoomId>;
   sceneryPlayer: PortableItemState<RoomId>;
-  movableBlock: FreeItemState<RoomId> & {
-    activated: boolean; // ie, can be turned on/off by a switch
-    facing: Xyz; // used for moving platforms
-    vels: {
-      // for movable blocks that function as movable platforms, these are treated as 'walking':
-      walking: Xyz;
-    };
-    durationOfTouch: number;
-  };
+  movableBlock: FreeItemState<RoomId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomId>;
   slidingDeadly: SlidingItemState<RoomId>;
   slidingBlock: SlidingItemState<RoomId>;
 
-  monster: FreeItemState<RoomId> & {
-    activated: boolean;
-    busyLickingDoughnutsOffFace: boolean;
-    facing: Xyz;
-    vels: {
-      walking: Xyz;
+  monster: FreeItemState<RoomId> &
+    ItemWithMovementState & {
+      busyLickingDoughnutsOffFace: boolean;
     };
-    /**
-     * enemies turn around when they hit things but they have to be touching
-     * for a certain amount of time before they do, so they can push items more
-     * than a miniscule amount in a single frame
-     */
-    durationOfTouch: number;
-  };
   pickup: FreeItemState<RoomId>;
   aliveFish: FreeItemState<RoomId>;
   lift: {
