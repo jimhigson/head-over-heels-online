@@ -92,6 +92,68 @@ describe("pickups", () => {
     ).not.toBeUndefined();
   });
 
+  test("character stand on pickup by walking off adjacent block", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 0, y: 0, z: 1 },
+          config: {
+            which: "head",
+          },
+        },
+        block0: {
+          type: "block",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            style: "organic",
+          },
+        },
+        block1: {
+          type: "block",
+          position: { x: 1, y: 0, z: 0 },
+          config: {
+            style: "organic",
+          },
+        },
+        block2: {
+          type: "block",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            style: "organic",
+          },
+        },
+        pickupOnTheFloor: {
+          type: "pickup",
+          position: { x: 3, y: 0, z: 0 },
+          config: {
+            gives: "extra-life",
+          },
+        },
+      },
+    });
+
+    expect(headState(gameState).lives).toBe(8);
+
+    // walk left for one second at 60fps:
+    playGameThrough(gameState, {
+      until: 3_000,
+      setupInitialInput(inputState) {
+        inputState.mockDirectionPressed = "left";
+      },
+    });
+
+    // should have recorded collecting the pickup:
+    expect(gameState.pickupsCollected[firstRoomId]["pickupOnTheFloor"]).toBe(
+      true,
+    );
+    // the pickup should have disappeared:
+    expect(
+      selectCurrentRoomState(gameState).items["pickupOnTheFloor"],
+    ).toBeUndefined();
+    expect(headState(gameState).lives).toBe(10);
+  });
+
   test("pickup can land on character", () => {
     const gameState = basicGameState({
       firstRoomItems: {
@@ -1013,6 +1075,44 @@ describe("dissapearing items", () => {
         return heelsState(gameState).lives === 16;
       },
     });
+  });
+});
+
+test("platforms that move on stand", () => {
+  const gameState = basicGameState({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 3 },
+        config: {
+          which: "heels",
+        },
+      },
+      // heels falls onto this, activating it:
+      moving: {
+        type: "movableBlock",
+        config: {
+          activated: "onStand",
+          movement: "back-forth",
+          startDirection: "left",
+          style: "sandwich",
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      // it takes her into this, losing a life:
+      deadly: {
+        type: "deadlyBlock",
+        position: { x: 4, y: 0, z: 1 },
+        config: {
+          style: "volcano",
+        },
+      },
+    },
+  });
+  playGameThrough(gameState, {
+    until(gameState) {
+      return heelsState(gameState).lives === 7;
+    },
   });
 });
 

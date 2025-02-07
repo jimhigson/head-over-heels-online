@@ -7,7 +7,11 @@ import {
   findStandingOnWithHighestPriorityAndMostOverlap,
 } from "../../collision/checkStandingOn";
 
-export const removeNoLongerStandingOn = <RoomId extends string>(
+/**
+ * remove the standing on if not still applies, and
+ * set a new standing on if that applies instead
+ */
+export const updateStandingOn = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
 ) => {
   /**

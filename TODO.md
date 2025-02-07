@@ -18,6 +18,7 @@
     [x] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
 [ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
     - can fix this (I think) by ignoring input while game speed is zero
+    [ ] also, pressing jump to leave a scroll is bad    
 
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
@@ -26,13 +27,45 @@
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
-[ ] bug: game goes weird if go through door with other char on top, but not joined - char below thinks char on top is still on top
+[x] bug: game goes weird if go through door with other char on top, but not joined - char below thinks char on top is still on top
 
-[ ] analogue control
+[?] move more state to the store?
+    [ ] is easier to render with react
+    [ ] reducers are nice
+    [ ] fast enough foreverything except room state
+    cons:    
+    [ ] in testing, easier for state to leak between tests since the store is universal        
+    [ ] tests can't run in parallel if they need the store, unless I come up with something clever to manage that 
+        - really, want a new store per-test = store can't be a singleton
+        - in react-redux, can just use a new provider
+        - would have to change *all* direct use of the store
+        - would probably have to put the store instance on GameState or pass both around together
+
+[ ] write test - 
+    collect scroll in room
+    go to next room with same scroll
+    scroll is not in the next room
+    !THIS NEEDS STORE TO NOT BE A SINGLETON!
+
+[ ] split store into slices:
+    * game
+    * menus
+    * user settings
+
+[ ] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
+    - crash because head doesn't have a renderer
+
+[x] analogue control
     [ ] 8-way sprites
 
 [ ] freeze all player movement while teleporting - it is possible to move off the teleporter currently while teleporting
-[ ] decolourise sprites in css
+[x] decolourise sprites in css
+
+[ ] handle z of overlapping aabbs - may require some thinking!
+    [ ] then use small aabb for collision, medium for rendering - for player 
+
+[ ] bug? - both chars in room, heels picks up portable block; heels leaves - what should happen to the block?
+    - check against original
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
         - nope, nothing calls the Color constructor on initial load
@@ -72,6 +105,8 @@
     [ ] allow to be dynamic
 [ ] option to turn off extra items should work
 [ ] ELERI cheat
+
+translate: https://hoh.helmantika.com/jon-ritman/
 
 ```
 // behavour to 'smooth' without ruining the appearnce to scroll immediately (maybe instant first time)
