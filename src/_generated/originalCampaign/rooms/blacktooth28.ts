@@ -119,15 +119,15 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "bag" },
+      isExtra: true,
       position: { x: 3, y: 0, z: 1 },
       type: "pickup",
-      isExtra: true,
     },
     scrollBlock: {
       config: { style: "organic" },
+      isExtra: true,
       position: { x: 3, y: 0, z: 0 },
       type: "block",
-      isExtra: true,
     },
   },
   planet: "blacktooth",

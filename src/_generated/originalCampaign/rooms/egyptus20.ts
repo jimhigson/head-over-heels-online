@@ -32,11 +32,6 @@ export const room = inferRoomJson({
       position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
-    "newBlockForLongerRoom": {
-      config: { style: "organic" },
-      position: { x: 7, y: 7, z: 0 },
-      type: "block",
-    },
     "block@7,7,0": {
       config: { style: "organic" },
       position: { x: 7, y: 9, z: 0 },
@@ -46,6 +41,11 @@ export const room = inferRoomJson({
       config: { direction: "left", toRoom: "egyptus21" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
+    },
+    newBlockForLongerRoom: {
+      config: { style: "organic" },
+      position: { x: 7, y: 7, z: 0 },
+      type: "block",
     },
   },
   planet: "egyptus",
