@@ -8,7 +8,15 @@
 
 ### Big ideas
 [ ] add sound to the game
+    * start small:
+        1 start game sound
+        2 walking sound w/repeat frequency by number of stepsh
+
 [ ] 8-way sprites
+
+[ ] level editor
+
+[ ] own levels
 
 ### Details ad bugs
 
@@ -17,7 +25,7 @@
     [?] should portals only work for the current char/
     [?] make portals solid?    
 
-[ ] firefox bug: manuals (and really any multi-line blocky text) shows poorly in firefox
+[x] firefox bug: manuals (and really any multi-line blocky text) shows poorly in firefox
     * this is because `text-wrap` on words causes FF to not wrap not just the word, but
     also to not wrap between them
     * if words are display: inline-block this seems to somewhat fix it
@@ -28,8 +36,6 @@
     - @hohjs/main = main site
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
-
-[x] bug: game goes weird if go through door with other char on top, but not joined - char below thinks char on top is still on top
 
 carrying bugs: 
     [ ] carrying rules are slightly wrong/different from original:
@@ -98,8 +104,6 @@ carrying bugs:
         https://chatgpt.com/c/679cecd2-71a0-8007-b3dc-2166e61c75b7
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
-[x] allow to click on crowns screen (and others) to move past it (since can get there with the mouse via menus)
-    [x] and also by tapping on screen for mobile
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
 [ ] original game had a score - how to calculate/reproduce this?
