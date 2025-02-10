@@ -64,7 +64,7 @@ export const TitledCrown = ({
         className={`block ${collected ? crownTextureClasses[planet] : "texture-crown.dark"} mx-auto`}
       />
       <CssSprite
-        className={`block texture-ball mx-auto ${colourCycle[planet][0]}`}
+        className={`block texture-ball zx:sprite-revert-zxYellow mx-auto ${colourCycle[planet][0]}`}
       />
       <BitmapText
         classnameCycle={colourCycle[planet]}
