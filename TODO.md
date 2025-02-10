@@ -20,6 +20,8 @@
 
 ### Details ad bugs
 
+[ ] several rooms change the default height of 11 - is the defualt just wrong?
+
 [ ] bug: can make a character fall off the world if on top of other character while the go through a portal
     [?] or push through door by other char?
     [?] should portals only work for the current char/
