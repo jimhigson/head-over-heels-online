@@ -3,7 +3,7 @@ import {
   menuOpenOrExitPressed,
   toggleBoolean,
 } from "../gameMenusSlice";
-import { useActionTap } from "../../game/components/dialogs/useActionInput";
+import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { useAppSelector } from "../hooks";
 import { useDispatchActionCallback } from "../useDispatchCallback";
 import { store } from "../store";

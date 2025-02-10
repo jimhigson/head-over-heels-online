@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { useIsAssigningKeys } from "../../../../store/selectors";
-import { useActionTap } from "../useActionInput";
+import { useActionTap } from "../useActionTap";
 import type { PropsWithChildren, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { store } from "../../../../store/store";
@@ -17,17 +17,18 @@ const findMenuItems = (container: HTMLDivElement) => {
   return Array.from(menuItemsDom);
 };
 
+/** @returns true iff declined to handle */
 const moveFocus = (container: HTMLDivElement, direction: 1 | -1) => {
   const curFocusId = store.getState().openMenus[0].focussedItemId;
 
   if (curFocusId === undefined) {
-    return; // nothing is selected yet, so can't move the selection up
+    return true; // nothing is selected yet, so can't move the selection up
   }
 
   const menuItemsDom = findMenuItems(container);
 
-  if (menuItemsDom.length === 0) {
-    return; // no menu items to select
+  if (menuItemsDom.length <= 1) {
+    return true; // no menu items to select, or just one item so no movement possible
   }
 
   const curFocusIndex = menuItemsDom.findIndex(
@@ -35,7 +36,7 @@ const moveFocus = (container: HTMLDivElement, direction: 1 | -1) => {
   );
 
   if (curFocusIndex === -1) {
-    return; // whatever is focussed isn't in virtual dom any more - not sure if this is possible
+    return true; // whatever is focussed isn't in virtual dom any more - not sure if this is possible
   }
 
   let newFocusIndex = curFocusIndex;
@@ -55,6 +56,8 @@ const moveFocus = (container: HTMLDivElement, direction: 1 | -1) => {
       scrollableSelection: true,
     }),
   );
+
+  return false;
 };
 
 const useMenuNavigationInput = (
@@ -65,9 +68,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "away",
     handler: useCallback(() => {
-      if (containerRef.current !== null) {
-        moveFocus(containerRef.current, -1);
-      }
+      if (containerRef.current === null) return;
+
+      return moveFocus(containerRef.current, -1);
     }, [containerRef]),
     disabled,
   });
@@ -75,9 +78,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "towards",
     handler: useCallback(() => {
-      if (containerRef.current !== null) {
-        moveFocus(containerRef.current, 1);
-      }
+      if (containerRef.current === null) return;
+
+      return moveFocus(containerRef.current, 1);
     }, [containerRef]),
     disabled,
   });
@@ -89,6 +92,7 @@ export const MenuItems = ({
 }: PropsWithChildren<{ className?: string }>) => {
   const ref = useRef<HTMLDivElement>(null);
 
+  // on mount, find the first menu item and set it to selected in the store
   useEffect(() => {
     if (ref.current === null) {
       return;

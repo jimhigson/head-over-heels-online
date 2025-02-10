@@ -1,6 +1,6 @@
 import { BlockyMarkdown } from "../../BlockyMarkdown";
 import { useCallback, useRef } from "react";
-import { useActionTap } from "../useActionInput";
+import { useActionTap } from "../useActionTap";
 import { hudCharTextureSize } from "../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../store/selectors";
 import { twMerge } from "tailwind-merge";

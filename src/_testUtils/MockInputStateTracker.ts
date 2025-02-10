@@ -23,6 +23,8 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   mockActionsPressed: { [a in BooleanAction]?: true } = {};
   mockActionsPressedLastFrame: { [a in BooleanAction]?: true } = {};
 
+  actionsHandled: Set<BooleanAction> = new Set();
+
   mockTick = () => {
     this.mockActionsPressedLastFrame = { ...this.mockActionsPressed };
   };

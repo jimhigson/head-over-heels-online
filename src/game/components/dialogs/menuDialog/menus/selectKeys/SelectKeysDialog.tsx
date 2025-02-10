@@ -18,7 +18,7 @@ import {
   inputAddedDuringAssignment,
 } from "../../../../../../store/gameMenusSlice";
 import { store } from "../../../../../../store/store";
-import { useActionTap, useInputTap } from "../../../useActionInput";
+import { useActionTap, useInputTap } from "../../../useActionTap";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
