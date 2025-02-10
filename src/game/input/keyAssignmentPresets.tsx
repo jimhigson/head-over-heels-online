@@ -29,7 +29,14 @@ const standardAssignment = {
       keys: ["Enter"],
       gamepadButtons: [standardControllerLayout.a],
     },
-    toggleColourisation: { keys: ["F6"] },
+    // not many f-keys are available for us!
+    // f3 is search in firefox
+    // f5 is reload in most browsers
+    // f6 in firefox is taken - focusses the address bar
+    // f7 is taken in chrome/firefox - toggles caret browsing
+    // f11 clashes with macos defaults, and browser fullscreen!
+    // f12 is taken in chrome/firefox - opens dev tools
+    toggleColourisation: { keys: ["F10"] },
     toggleShowFps: { keys: ["F9"] },
   },
   axes: {
