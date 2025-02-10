@@ -68,8 +68,10 @@ export const moveItem = <RoomId extends string>({
     return;
   }
 
-  if (recursionDepth > 16) {
-    throw new Error("this probably means a non-terminating issue");
+  if (recursionDepth > 24) {
+    throw new Error(
+      "this probably means a non-terminating issue, or you're testing by adding an unreasonable number of items to a room",
+    );
   }
 
   const {
