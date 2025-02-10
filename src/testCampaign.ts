@@ -950,6 +950,26 @@ const rooms = {
         position: { x: 2, y: 10, z: 3 },
       },
       {
+        type: "pickup",
+        config: { gives: "crown", planet: "egyptus" },
+        position: { x: 0, y: 10, z: 8 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "crown", planet: "bookworld" },
+        position: { x: 0, y: 10, z: 10 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "crown", planet: "penitentiary" },
+        position: { x: 0, y: 10, z: 12 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "crown", planet: "safari" },
+        position: { x: 0, y: 10, z: 6 },
+      },
+      {
         type: "monster",
         config: {
           activated: true,
@@ -1115,7 +1135,7 @@ const rooms = {
         config: {
           activated: true,
           which: "emperorsGuardian",
-          movement: "towards-when-in-square-xy8",
+          movement: "towards-when-in-square-xy8-unless-planet-crowns",
         },
         position: { x: 0, y: 10, z: 0 },
       },

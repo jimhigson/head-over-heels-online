@@ -19,6 +19,8 @@ export type JsonMovement =
   | "back-forth"
   | "towards-on-shortest-axis-xy4"
   | "towards-when-in-square-xy8"
+  // special case for emperor's guardian - moves away if you have all the other crowns
+  | "towards-when-in-square-xy8-unless-planet-crowns"
   | "towards-tripped-on-axis-xy4"
   | "patrol-randomly-diagonal"
   | "patrol-randomly-xy4"
@@ -122,7 +124,11 @@ export type ItemConfigMap<
     activated: boolean;
   } & (
     | {
-        which: "emperorsGuardian" | "emperor";
+        which: "emperorsGuardian";
+        movement: MovementsSubset<"towards-when-in-square-xy8-unless-planet-crowns">;
+      }
+    | {
+        which: "emperor";
         movement: MovementsSubset<"towards-when-in-square-xy8">;
       }
     | {

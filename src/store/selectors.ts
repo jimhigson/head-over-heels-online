@@ -47,3 +47,12 @@ export const selectShowFps = (state: RootState): boolean =>
 
 export const useIsGameRunning = () =>
   useAppSelector((state: RootState): boolean => state.gameRunning);
+
+export const selectHasAllPlanetCrowns = (state: RootState) => {
+  return (
+    state.planetsLiberated.egyptus &&
+    state.planetsLiberated.bookworld &&
+    state.planetsLiberated.penitentiary &&
+    state.planetsLiberated.safari
+  );
+};
