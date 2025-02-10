@@ -346,6 +346,69 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             >
               <CssSprite className="texture-spring.released" />
             </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("monster", {
+                  which: "dalek",
+                  activated: true,
+                  movement: "patrol-randomly-diagonal",
+                });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-dalek.1 hover:texture-animated-dalek" />
+            </Button>
+          </div>
+          <div className="flex flex-row items-center">
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("pickup", { gives: "crown", planet: "bookworld" });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-crown.bookworld" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("pickup", { gives: "crown", planet: "egyptus" });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-crown.egyptus" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("pickup", { gives: "crown", planet: "safari" });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-crown.safari" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("pickup", {
+                  gives: "crown",
+                  planet: "penitentiary",
+                });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-crown.penitentiary" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("pickup", { gives: "crown", planet: "blacktooth" });
+                e.currentTarget.blur();
+              }}
+            >
+              <CssSprite className="texture-crown.blacktooth" />
+            </Button>
           </div>
           <div className="flex flex-row items-center">
             <Button
