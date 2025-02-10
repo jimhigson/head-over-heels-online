@@ -35,6 +35,9 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
   const headHasLives = headOverHeels.state.head.lives > 0;
   const heelsHasLives = headOverHeels.state.heels.lives > 0;
 
+  //whatever else we're doing, heels can't keep her item:
+  headOverHeels.state.heels.carrying = null;
+
   const continuingWithOneCharacter =
     (headHasLives && !heelsHasLives) || (!headHasLives && heelsHasLives);
 

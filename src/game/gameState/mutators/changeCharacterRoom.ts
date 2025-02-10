@@ -299,14 +299,6 @@ export const changeCharacterRoom = <RoomId extends string>(
       }
     }
   }
-  // when we put the playableItem in their new room, they won't be standing on anything yet (or will
-  // still have their standing on set to an item in the previous room) - for example, they might
-  // be already on the floor or a teleporter in the new room. By setting this to null, gravity will
-  // apply to them and they will collide with the item below them and get standingOn set:
-
-  console.log(playableItem, "is now stood on by", [
-    ...playableItem.state.stoodOnBy,
-  ]);
 
   // heels can't carry items to different rooms:
   const heelsAbilities = selectHeelsAbilities(playableItem);

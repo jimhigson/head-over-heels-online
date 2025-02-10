@@ -877,8 +877,10 @@ describe("lifts", () => {
     const fractionOnLanding =
       (categories.landing?.length ?? 0) / heelsStandingOnPerFrame.length;
     // should have spent about half the time on the lift and half on the landing
-    expect(fractionOnLanding).toBeLessThan(0.6);
-    expect(fractionOnLanding).toBeGreaterThan(0.4);
+    // although this needs some slack due to acceleration at the end of the lift's journey
+    // making it take more time
+    expect(fractionOnLanding).toBeLessThan(0.65);
+    expect(fractionOnLanding).toBeGreaterThan(0.35);
   });
 
   test("player squashed between rising lift and higher block stays in place standing on lift", () => {

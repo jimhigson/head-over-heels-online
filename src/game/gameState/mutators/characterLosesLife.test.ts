@@ -5,6 +5,7 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
+import { selectAbilities } from "../gameStateSelectors/selectPlayableItem";
 
 describe("while not in symbiosis", () => {
   describe.each(individualCharacterNames)(
@@ -255,6 +256,9 @@ describe("while in symbiosis", () => {
       h.putIntoSymbiosis();
       h.playableWalksToRoom("headOverHeels", "thirdRoom");
 
+      h.carryItemIfHeels("headOverHeels");
+      expect(selectAbilities(h.gameState, "heels")!.carrying).not.toBeNull();
+
       // now: we have walked into the third room in symbiosis from heel's starting room:
 
       const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
@@ -266,6 +270,7 @@ describe("while in symbiosis", () => {
       });
 
       h.expectPlayableToBeInGame("headOverHeels");
+      expect(selectAbilities(h.gameState, "heels")!.carrying).toBeNull();
       h.expectPlayableToBeOutOfTheGame("heels");
       h.expectPlayableToBeOutOfTheGame("head");
     });
@@ -285,7 +290,11 @@ describe("while in symbiosis", () => {
         // both enter thirdRoom from heelsStartingRoom
         h.playableWalksToRoom("head", "thirdRoom");
         h.playableWalksToRoom("heels", "thirdRoom");
+        h.carryItemIfHeels("heels");
         h.putIntoSymbiosis();
+
+        // still has the item heels was carrying
+        expect(selectAbilities(h.gameState, "heels")!.carrying).not.toBeNull();
 
         const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
         h.playableLosesLife("headOverHeels");
@@ -307,6 +316,8 @@ describe("while in symbiosis", () => {
           "thirdRoom",
           "doorToHeelsStartingRoom",
         );
+        // should no longer be carrying after death:
+        expect(selectAbilities(h.gameState, "heels")!.carrying).toBeNull();
         h.expectPlayableAction("headOverHeels", "moving");
       });
       test("having entered via different doors, room is reloaded with characters separate and at their respective doors", () => {

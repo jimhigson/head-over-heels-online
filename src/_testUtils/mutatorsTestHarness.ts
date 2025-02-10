@@ -3,6 +3,7 @@ import { vi, expect } from "vitest";
 import {
   selectPlayableItem,
   selectHeelsAbilities,
+  selectCurrentPlayableItem,
 } from "../game/gameState/gameStateSelectors/selectPlayableItem";
 import type { StartingRooms } from "../game/gameState/initGameState";
 import { initGameState, startingRooms } from "../game/gameState/initGameState";
@@ -114,6 +115,9 @@ export const mutatorsTestHarness = () => {
   gameState.events.on("gameOver", gameOverFn);
 
   return {
+    get currentPlayable() {
+      return selectCurrentPlayableItem(gameState);
+    },
     gameState,
     gameOverFn,
     startingRooms: startingRooms(testCampaign) as Required<
