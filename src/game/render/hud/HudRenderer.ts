@@ -4,6 +4,7 @@ import { OutlineFilter } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { getColorScheme } from "../../hintColours";
 import type {
+  CarriedItem,
   HeadAbilities,
   HeelsAbilities,
 } from "../../../model/ItemStateMap";
@@ -279,6 +280,26 @@ export class HudRenderer<RoomId extends string> {
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
   }
 
+  #createCarriedSprite(carrying: CarriedItem<string>) {
+    return createSprite(
+      carrying.type === "spring" ? "spring.released"
+      : carrying.type === "sceneryPlayer" ?
+        carrying.config.which === "head" ?
+          "head.walking.towards.2"
+        : "heels.walking.away.2"
+      : carrying.config.style,
+    );
+  }
+
+  #itemFilter(highlighted: boolean, colourise: boolean) {
+    return (
+      highlighted ?
+        colourise ? noFilters
+        : this.#livesOrActiveCharacterOriginalColorFilter
+      : this.#uncurrentSpriteFilter
+    );
+  }
+
   /** update the carrying element for heel's bag contents */
   #tickBagAndCarrying(gameState: GameState<RoomId>, colourise: boolean) {
     const heelsAbilities = selectAbilities(gameState, "heels");
@@ -295,36 +316,30 @@ export class HudRenderer<RoomId extends string> {
       }
     }
     if (carrying !== null && !hasSprite) {
-      carryingContainer.addChild(
-        createSprite(
-          carrying.type === "spring" ? "spring.released"
-          : carrying.type === "sceneryPlayer" ?
-            carrying.config.which === "head" ?
-              "head.walking.towards.2"
-            : "heels.walking.away.2"
-          : carrying.config.style,
-        ),
-      );
+      carryingContainer.addChild(this.#createCarriedSprite(carrying));
     }
-    carryingContainer.filters =
-      colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
+    carryingContainer.filters = this.#itemFilter(true, colourise);
 
-    this.#hudElements.heels.bag.icon.filters =
-      hasBag ?
-        colourise ? noFilters
-        : this.#livesOrActiveCharacterOriginalColorFilter
-      : this.#uncurrentSpriteFilter;
+    this.#hudElements.heels.bag.icon.filters = this.#itemFilter(
+      hasBag,
+      colourise,
+    );
   }
 
-  #tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
+  #tickHooterAndDoughnuts(gameState: GameState<RoomId>, colourise: boolean) {
     const headAbilities = selectAbilities(gameState, "head");
 
     const hasHooter = headAbilities?.hasHooter ?? false;
-    this.#hudElements.head.hooter.icon.filters =
-      hasHooter ? noFilters : this.#uncurrentSpriteFilter;
     const doughnutCount = headAbilities?.doughnuts ?? 0;
-    this.#hudElements.head.doughnuts.icon.filters =
-      doughnutCount !== 0 ? noFilters : this.#uncurrentSpriteFilter;
+
+    this.#hudElements.head.hooter.icon.filters = this.#itemFilter(
+      hasHooter,
+      colourise,
+    );
+    this.#hudElements.head.doughnuts.icon.filters = this.#itemFilter(
+      doughnutCount !== 0,
+      colourise,
+    );
     showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
   }
 
@@ -483,7 +498,7 @@ export class HudRenderer<RoomId extends string> {
     }
 
     this.#updateElementPositions(screenSize);
-    this.#tickHooterAndDoughnuts(gameState);
+    this.#tickHooterAndDoughnuts(gameState, colourise);
     this.#tickBagAndCarrying(gameState, colourise);
 
     this.#updateFps();
