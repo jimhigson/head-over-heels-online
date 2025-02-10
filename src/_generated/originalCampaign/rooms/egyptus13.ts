@@ -70,7 +70,7 @@ export const room = inferRoomJson({
   },
   planet: "egyptus",
   roomAbove: "egyptus14",
-  size: { x: 8, y: 8, z: 13 },
+  size: { x: 8, y: 10, z: 13 },
   walls: {
     away: [
       "hieroglyphics",
@@ -85,10 +85,12 @@ export const room = inferRoomJson({
     left: [
       "hieroglyphics",
       "hieroglyphics",
+      "hieroglyphics",
       "sarcophagus",
       "hieroglyphics",
       "hieroglyphics",
       "sarcophagus",
+      "hieroglyphics",
       "hieroglyphics",
       "hieroglyphics",
     ],

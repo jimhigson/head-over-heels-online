@@ -9,7 +9,7 @@ export const room = inferRoomJson({
   items: {
     "block@5,7,0": {
       config: { style: "organic" },
-      position: { x: 5, y: 7, z: 0 },
+      position: { x: 5, y: 9, z: 0 },
       type: "block",
     },
     "block@7,0,0": {
@@ -32,9 +32,14 @@ export const room = inferRoomJson({
       position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
-    "block@7,7,0": {
+    "newBlockForLongerRoom": {
       config: { style: "organic" },
       position: { x: 7, y: 7, z: 0 },
+      type: "block",
+    },
+    "block@7,7,0": {
+      config: { style: "organic" },
+      position: { x: 7, y: 9, z: 0 },
       type: "block",
     },
     "door@8,3,2": {
@@ -45,7 +50,7 @@ export const room = inferRoomJson({
   },
   planet: "egyptus",
   roomBelow: "egyptus19",
-  size: { x: 8, y: 8 },
+  size: { x: 8, y: 10 },
   walls: {
     away: [
       "hieroglyphics",
@@ -63,6 +68,8 @@ export const room = inferRoomJson({
       "hieroglyphics",
       "none",
       "none",
+      "hieroglyphics",
+      "sarcophagus",
       "hieroglyphics",
       "sarcophagus",
       "hieroglyphics",
