@@ -15,6 +15,7 @@ import { MenuItemSeparator } from "../MenuItemSeparator";
 import { MenuItems } from "../MenuItems";
 import { multilineTextClass } from "../multilineTextClass";
 import type { DialogId } from "../menus";
+import { DialogPortal } from "../../../../../components/ui/DialogPortal";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   const pageContent = manualPages[pageName];
@@ -35,7 +36,7 @@ const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
 
 export const ReadTheManualDialog = () => {
   return (
-    <>
+    <DialogPortal>
       <Border
         className="bg-midGrey zx:bg-zxCyan"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -63,6 +64,6 @@ export const ReadTheManualDialog = () => {
           <BackMenuItem />
         </MenuItems>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

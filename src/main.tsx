@@ -1,16 +1,15 @@
-import { StrictMode } from "react";
+import type { FunctionComponent } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { importOnce } from "./utils/importOnce";
 import "./index.css";
+import { Border, Dialog } from "./components/ui/dialog";
 
-const importEsIteratorPolyfills = importOnce(
+const importEsIteratorPolyfillsOnce = importOnce(
   // TODO: this could be made smaller by only importing the methods we need
   () => import("es-iterator-helpers/auto"),
 );
-const importApp = importOnce(() => import("./game/components/App"));
-
-//import "es-iterator-helpers/auto"; // auto = shim all of the methods
-//import { App } from "./game/components/App";
+const importAppOnce = importOnce(() => import("./game/components/App"));
 
 const loadPolyfillIfNeeded = async () => {
   const polyfillNeeded =
@@ -18,20 +17,35 @@ const loadPolyfillIfNeeded = async () => {
     typeof globalThis.Iterator.prototype.map !== "function";
   if (polyfillNeeded) {
     console.info("loading iterator helper polyfill (needed on this browser)");
-    importEsIteratorPolyfills();
+    importEsIteratorPolyfillsOnce();
     console.info("polyfill loaded");
   } else {
     console.info("iterator helper polyfill not needed on this browser");
   }
 };
 
-loadPolyfillIfNeeded().then(() => {
-  // can only load the app once the polyfill is loaded (if it is needed)
-  importApp().then(({ App }) => {
-    createRoot(document.getElementById("root")!).render(
-      <StrictMode>
-        <App />
-      </StrictMode>,
-    );
-  });
-});
+const AppLoader = () => {
+  const [App, setApp] = useState<FunctionComponent | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      await loadPolyfillIfNeeded();
+      const { App } = await importAppOnce();
+      setApp(() => App);
+    };
+    load();
+  }, []);
+
+  return App ?
+      <App />
+    : <>
+        <Border className="loading-border" />
+        <Dialog className="bg-zxWhite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
+      </>;
+};
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <AppLoader />
+  </StrictMode>,
+);

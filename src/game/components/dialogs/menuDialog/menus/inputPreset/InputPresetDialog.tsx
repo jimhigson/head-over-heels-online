@@ -4,6 +4,7 @@ import { keyAssignmentPresets } from "../../../../../input/keyAssignmentPresets"
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 import { InputPresetMenuItem } from "./InputPresetMenuItem";
 import Portal from "@mutabazia/react-portal";
 import { BackMenuItem } from "../../BackMenuItem";
@@ -13,7 +14,7 @@ import { MenuItemSeparator } from "../../MenuItemSeparator";
 
 export const InputPresetDialog = () => {
   return (
-    <>
+    <DialogPortal>
       <Border
         className="bg-midGrey zx:bg-zxWhiteDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -33,6 +34,6 @@ export const InputPresetDialog = () => {
           <SelectedItemHint className="text-shadow zx:text-zxMagenta" />
         </Portal.Provider>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };
