@@ -6,24 +6,21 @@
         
 ## General
 
+### Big ideas
+[ ] add sound to the game
+[ ] 8-way sprites
 
-[ ] bug: can make a character fall off the world if on top of other character while they go through a portal
+### Details ad bugs
+
+[ ] bug: can make a character fall off the world if on top of other character while the go through a portal
     [?] or push through door by other char?
     [?] should portals only work for the current char/
     [?] make portals solid?    
 
-[x] window losing focus should pause the game (again)
-[x] make work in Safari/iOS?
-    [x] loads/plays now
-    [x] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
-
-THIS NEXT:
-[1]!!!    
-[x] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
-    - can fix this (I think) by ignoring input while game speed is zero
-
-
-[x] can accidentally jump off a scroll
+[ ] firefox bug: manuals (and really any multi-line blocky text) shows poorly in firefox
+    * this is because `text-wrap` on words causes FF to not wrap not just the word, but
+    also to not wrap between them
+    * if words are display: inline-block this seems to somewhat fix it
 
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
@@ -33,6 +30,21 @@ THIS NEXT:
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
 [x] bug: game goes weird if go through door with other char on top, but not joined - char below thinks char on top is still on top
+
+carrying bugs: 
+    [ ] carrying rules are slightly wrong/different from original:
+        * original: carrying state belongs to the room
+        * remake: carrying state belongs to heels and is cleared on leaving room
+        * if heels leaves and comes back, item should be back in the bag
+        * heel's pickups don't show when not in the room heels is in    
+        * only resets on death if the *room* is reloaded
+    [fixed] can duplicate items:
+        * hoh does while carrying
+        * spawns back into room and still carrying
+    [ ] can delete items:
+        * heels picks up while head in room
+        * heels dies
+        * item gone forever!
 
 [?] move more state to the store?
     [ ] is easier to render with react
@@ -60,16 +72,11 @@ THIS NEXT:
 [ ] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
     - crash because head doesn't have a renderer
 
-[x] analogue control
-    [ ] 8-way sprites
-
 [ ] repeat moving on scrolls etc (hold to keep scrolling) + analogue control    
-
-[ ] freeze all player movement while teleporting - it is possible to move off the teleporter currently while teleporting
-[x] decolourise sprites in css
 
 [ ] handle z of overlapping aabbs - may require some thinking!
     [ ] then use small aabb for collision, medium for rendering - for player 
+    [ ] ball needs a bigger render aabb
 
 [ ] bug? - both chars in room, heels picks up portable block; heels leaves - what should happen to the block?
     - check against original
@@ -80,11 +87,9 @@ THIS NEXT:
     - we now use the ticker, but could load just @pixi/ticker
 [ ] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
-[x] show FPS counter as an option (lean on pixi to give fps)    
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
     - remove blurryness in general - replace css scaling with pixijs resolution setting
-[x] switch in first room does colourise
 [ ] iter-tools brings in `@babel/runtime` = not good!
     - maybe drop it
     
@@ -97,20 +102,12 @@ THIS NEXT:
     [x] and also by tapping on screen for mobile
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
-[x] tailwind - zx class to do dimmed on fg and bg in one
-[x] remove radix form dialogs - isn't really doing much for us!
-[ ] show some stats in game over menu - at least
-    [ ] score (???)
-    [ ] rooms explored 
-    [x] planets liberated
+[ ] original game had a score - how to calculate/reproduce this?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
-[NO] put menus/dialogs through pixijs rendering pipeline (hidden canvas trick)
-    - not possible, and initial load is faster without pixi anyway
-    [ ] no way to capture pixels from html - will need some experimentation, maybe with a transparent pixi overlay
 [ ] shadow masks/cast provided by appearance
     [ ] allow to be dynamic
-[ ] option to turn off extra items should work
+[ ] option to turn off extra items
 [ ] ELERI cheat
 
 translate: https://hoh.helmantika.com/jon-ritman/
@@ -132,31 +129,11 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # Rooms
 
-# blacktoothhead1
-[ ] colourise on/off switch should work
-
 # blacktooth20
 [ ] [MINOR] corner of room not shown in shadow
 
-# blacktooth25
-[ ] fall off lift when heading up if not near its centre
-
-# blacktooth29
-[ ] when on lift, monster turns around too quickly
-
 # (heels) blacktooth35
 [ ] room positioning (scrolling) on screen is poor
-
-# blacktooth45market
-[ ] can walk onto and stand on powerup without collecting it
-    - remove dissapearing block but fall onto other block
-    - walk on top of rabbit
-
-# pen 4/8 egyptus 13/14/19
-[ ] seems like the ceiling isn't high enough? - too easy to jump into room above by mistake
-
-# egyptus12    
-[x] lift doesn't lift charles up
 
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away
