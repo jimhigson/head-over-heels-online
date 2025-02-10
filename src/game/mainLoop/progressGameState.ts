@@ -93,11 +93,21 @@ export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems => {
+  // DEBUG CODE:
+  // force extra sub-ticks when gameSpeed > 1, to emulate the game being
+  // progressed that many times
   if (gameState.gameSpeed > 1) {
     let movedItems = new Set<AnyItemInPlay>();
     for (let i = 0; i < gameState.gameSpeed; i++) {
+      const subtickMoves = _progressGameState(gameState, deltaMS);
+      const itemsAtEndOfSubtick = selectCurrentRoomState(gameState).items;
       movedItems = new Set(
-        concat(movedItems, _progressGameState(gameState, deltaMS)),
+        iterate(
+          // add the new moved items onto the old one:
+          concat(movedItems, subtickMoves),
+        )
+          // remove from movedItems any items that no longer exist in the room:
+          .filter(({ id }) => itemsAtEndOfSubtick[id] !== undefined),
       );
     }
     return movedItems;

@@ -382,7 +382,7 @@ describe("cyclic dependencies", () => {
         },
         renders: true,
       },
-    };
+    } as const;
 
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
     for (const i of Object.values(items)) {
@@ -406,7 +406,7 @@ describe("cyclic dependencies", () => {
       }
     `);
 
-    let result: SortByZPairsReturn | undefined;
+    let result: SortByZPairsReturn<keyof TestItems> | undefined;
     expect(() => (result = sortByZPairs(relations, items))).not.toThrow();
     expect(result?.impossible).toBe(true);
   });
