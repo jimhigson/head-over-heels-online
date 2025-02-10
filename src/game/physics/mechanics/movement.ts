@@ -180,7 +180,10 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
     : "y";
 
   const travelAxis =
-    Math.abs(vectorXyToClosestPlayer[axisOfShortestDistance]) > 1 ?
+    (
+      Math.abs(vectorXyToClosestPlayer[axisOfShortestDistance]) >
+      blockSizePx.w / 4
+    ) ?
       axisOfShortestDistance
     : perpendicularAxisXy(axisOfShortestDistance);
 
