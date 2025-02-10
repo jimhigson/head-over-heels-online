@@ -11,6 +11,7 @@ import { MainMenuHeading } from "./MainMenuHeading";
 import { BitmapText } from "../../../../Sprite";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
+import { MenuItemSeparator } from "../../MenuItemSeparator";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -38,15 +39,15 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             onSelect={useDispatchActionCallback(gameStarted)}
           />
           <MenuItem
-            id="quitGame"
-            label="Quit this game"
-            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+            id="viewCrowns"
+            label="View the crowns"
+            onSelect={useDispatchActionCallback(goToSubmenu, "crowns")}
             doubleHeightWhenFocussed
             hidden={!isGameRunning}
           />
           <MenuItem
             id="selectKeys"
-            label="Select the keys"
+            label="Select the controls"
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "selectKeys")}
           />
@@ -65,8 +66,17 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
           />
+          <MenuItemSeparator />
+          <MenuItem
+            id="quitGame"
+            label="Quit this game"
+            className="text-midRed zx:text-zxYellow"
+            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+            doubleHeightWhenFocussed
+            hidden={!isGameRunning}
+          />
         </MenuItems>
-        <MainMenuFooter />
+        {!isGameRunning && <MainMenuFooter />}
       </Dialog>
     </>
   );
