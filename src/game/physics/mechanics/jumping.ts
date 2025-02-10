@@ -1,9 +1,14 @@
+import type { FreeItemState } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import { originalGameFrameDuration } from "../../../originalGame";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
-import { type PlayableItem } from "../itemPredicates";
-import { isItemType } from "../itemPredicates";
+import {
+  isPickup,
+  isSpring,
+  isTeleporter,
+  type PlayableItem,
+} from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import {
   fallG,
@@ -45,6 +50,24 @@ const getJumpInitialVelocity = (
   ];
 };
 
+const isJumpOffable = <RoomId extends string>(
+  item: FreeItemState<RoomId>["standingOn"],
+): item is NonNullable<typeof item> => {
+  if (item === null) {
+    return false;
+  }
+  if (isTeleporter(item)) {
+    // can't jump from a teleporter (jump key teleports)
+    return false;
+  }
+  if (isPickup(item) && item.config.gives === "scroll") {
+    // can't jump off of scrolls - the jump after reading is jarring
+    return false;
+  }
+
+  return true;
+};
+
 export const jumping = <RoomId extends string>(
   playableItem: PlayableItem,
   gameState: GameState<RoomId>,
@@ -55,15 +78,11 @@ export const jumping = <RoomId extends string>(
   } = playableItem;
   const { inputStateTracker } = gameState;
 
-  const standingOnTeleporter =
-    standingOn !== null && isItemType("teleporter")(standingOn);
-
   const startingAJump =
     inputStateTracker.currentActionPress("jump") !== "released" &&
-    // can't jump if not standing on anything!
-    standingOn !== null &&
-    // you can't jump from a teleporter!
-    !standingOnTeleporter;
+    isJumpOffable(standingOn);
+
+  if (startingAJump) console.log("starting a jump!");
 
   if (!startingAJump) {
     if (standingOn !== null) {
@@ -77,7 +96,7 @@ export const jumping = <RoomId extends string>(
     return unitMechanicalResult;
   }
 
-  const standingOnSpring = isItemType("spring")(standingOn);
+  const standingOnSpring = isSpring(standingOn);
   const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
 
   // handled this input but don't set jump input flat off - it is

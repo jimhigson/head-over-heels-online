@@ -157,5 +157,7 @@ export const isLift = isItemType("lift");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isMovableBlock = isItemType("movableBlock");
+export const isPickup = isItemType("pickup");
+export const isSpring = isItemType("spring");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movableBlock");
