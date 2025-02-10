@@ -15,7 +15,7 @@
  * @returns {Array}
  */
 
-export type GraphEdges<T> = Map<T, Set<T>>;
+export type GraphEdges<NodeId> = Map<NodeId, Set<NodeId>>;
 
 export class CyclicDependencyError<T> extends Error {
   constructor(
@@ -37,7 +37,7 @@ export class CyclicDependencyError<T> extends Error {
  * @returns a list of vertices, sorted from "start" to "end"
  * @throws if there are any cycles in the graph
  */
-export const toposort = <T>(outgoingEdges: GraphEdges<T>): T[] => {
+export const toposort = <N>(outgoingEdges: GraphEdges<N>): N[] => {
   const nodes = uniqueNodes(outgoingEdges);
 
   let cursor = nodes.length;
@@ -53,7 +53,7 @@ export const toposort = <T>(outgoingEdges: GraphEdges<T>): T[] => {
 
   return sorted;
 
-  function visit(node: T, i: number, predecessors: Set<T>) {
+  function visit(node: N, i: number, predecessors: Set<N>) {
     if (predecessors.has(node)) {
       throw new CyclicDependencyError(
         [node],
@@ -79,7 +79,7 @@ export const toposort = <T>(outgoingEdges: GraphEdges<T>): T[] => {
               // the error already describes a loop - no need to add more nodes on the way up the call stack
               throw e;
             } else {
-              throw new CyclicDependencyError<T>(
+              throw new CyclicDependencyError<N>(
                 [node, ...e.cyclicDependency],
                 e.cyclicDependency.includes(node),
               );

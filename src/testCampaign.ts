@@ -181,15 +181,15 @@ const rooms = {
       //   position: { x: 0, y: 3, z: 0 },
       // },
       {
-        type: "block",
-        config: { style: "book" },
+        type: "deadlyBlock",
+        config: { style: "volcano" },
         position: { x: 0, y: 2, z: 0 },
       },
-      {
-        type: "block",
-        config: { style: "book" },
-        position: { x: 0, y: 2, z: 2 },
-      },
+      // {
+      //   type: "block",
+      //   config: { style: "book" },
+      //   position: { x: 0, y: 2, z: 2 },
+      // },
       // {
       //   type: "pickup",
       //   config: { gives: "bag" },

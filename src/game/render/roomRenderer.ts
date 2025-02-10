@@ -3,7 +3,7 @@ import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { createItemRenderer } from "./item/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
-import type { GameState } from "../gameState/GameState";
+import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
 import type { UnknownItemInPlay } from "../../model/ItemInPlay";

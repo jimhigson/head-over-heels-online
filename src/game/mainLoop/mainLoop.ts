@@ -95,6 +95,11 @@ export class MainLoop<RoomId extends string> {
       colourise: !isPaused && tickDisplaySettings.colourise,
     });
 
+    // note that progressing the game state can change/reload the room,
+    // so we need to do this before considering recreating the room renderer
+    const movedItems =
+      isPaused ? emptySet : progressGameState(this.#gameState, deltaMS);
+
     const tickRoom = selectCurrentRoomState(this.#gameState);
 
     if (
@@ -120,29 +125,20 @@ export class MainLoop<RoomId extends string> {
       this.#initFilters();
     }
 
+    // the room renderer runs even while paused - it is its responsibility to
+    // exit quickly when nothing has changed
+    this.#roomRenderer.tick({
+      progression: this.#gameState.progression,
+      movedItems,
+      deltaMS,
+      displaySettings: tickDisplaySettings,
+      onHold: false,
+    });
+
     if (!isPaused) {
       this.#app.stage.filters = this.#filtersWhenUnpaused;
-      const movedItems = progressGameState(this.#gameState, deltaMS);
-      this.#roomRenderer.tick({
-        progression: this.#gameState.progression,
-        movedItems,
-        deltaMS,
-        displaySettings: tickDisplaySettings,
-        onHold: false,
-      });
     } else {
       this.#app.stage.filters = this.#filtersWhenPaused;
-      // render while paused only if the room hasn't been rendered before, so we don't
-      // pause on a blank world:
-      if (!this.#roomRenderer.everRendered) {
-        this.#roomRenderer.tick({
-          progression: this.#gameState.progression,
-          movedItems: emptySet,
-          deltaMS,
-          displaySettings: tickDisplaySettings,
-          onHold: true,
-        });
-      }
     }
   };
 

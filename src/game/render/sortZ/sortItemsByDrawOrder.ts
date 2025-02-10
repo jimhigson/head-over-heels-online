@@ -21,13 +21,13 @@ const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
   }
 };
 
-export const zEdges = <TItem extends DrawOrderComparable>(
-  items: Record<string, TItem>,
+export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
+  items: Record<Tid, TItem>,
   // the nodes that have moved - nodes that did not move are not considered
   moved: Set<TItem> = new Set(objectValues(items)),
   // if given, will create an incremental update starting from the previous edges
-  inFrontOf: GraphEdges<string> = new Map(),
-): GraphEdges<string> => {
+  inFrontOf: GraphEdges<Tid> = new Map(),
+): GraphEdges<Tid> => {
   // track items that have already been compared to cut out duplicate comparisons:
   const comparisonsDone: GraphEdges<TItem> = new Map();
 
@@ -53,7 +53,7 @@ export const zEdges = <TItem extends DrawOrderComparable>(
     // moved nodes are compared against all nodes (moving or not):
     // - only unmoved/umomved pairs can be skipped since they
     // are known not to have changed
-    for (const itemJ of objectValues(items)) {
+    for (const itemJ of objectValues(items) as Iterable<TItem>) {
       if (
         !itemJ.renders ||
         // already compared the other way:
@@ -88,8 +88,8 @@ export const zEdges = <TItem extends DrawOrderComparable>(
   return inFrontOf;
 };
 
-export type SortByZPairsReturn = {
-  order: string[];
+export type SortByZPairsReturn<ItemId extends string> = {
+  order: ItemId[];
   impossible: boolean;
 };
 
@@ -97,16 +97,16 @@ export type SortByZPairsReturn = {
  *
  * Note that in the case of cyclic dependencies, this function MODIFIED the @param edges until it can run
  */
-export const sortByZPairs = (
-  edges: GraphEdges<string>,
-  items: Record<string, DrawOrderComparable>,
+export const sortByZPairs = <ItemId extends string>(
+  edges: GraphEdges<ItemId>,
+  items: Record<ItemId, DrawOrderComparable>,
   retries: number = 3,
-): SortByZPairsReturn => {
+): SortByZPairsReturn<ItemId> => {
   try {
     return { order: toposort(edges), impossible: false };
   } catch (e) {
     if (e instanceof CyclicDependencyError) {
-      const cyclicItemIds = e.cyclicDependency as Array<string>;
+      const cyclicItemIds = e.cyclicDependency as Array<ItemId>;
 
       // it is inevitable that cyclist dependencies will happen in very rare cases (the test room contains one on purpose) - in
       // this case there is no way to render the nodes correctly using z-order and painters algorithm. All I can do is break the
