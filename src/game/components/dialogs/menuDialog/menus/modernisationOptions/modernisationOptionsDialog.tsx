@@ -73,7 +73,7 @@ export const ModernisationOptionsDialog = () => {
         className="bg-moss zx:bg-zxGreenDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue">
+      <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue pr-1">
         <Portal.Provider>
           <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
             Modernisation options

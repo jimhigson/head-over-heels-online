@@ -65,7 +65,8 @@ export const BitmapText = ({
           // me- is margin end - for a space before the next word
           <span
             className={twMerge(
-              `text-nowrap`,
+              // inline-block only needed for Firefox, no-wrap is enough in Chrome/Safari
+              `text-nowrap inline-block`,
               wordIndex === words.length - 1 ? "" : "me-1",
             )}
             key={wordIndex}
