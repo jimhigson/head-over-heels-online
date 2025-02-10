@@ -2,7 +2,7 @@ import { BitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { type ReactElement } from "react";
-import { useActionTap } from "../useActionInput";
+import { useActionTap } from "../useActionTap";
 import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
 import { MenuItemLeader } from "./menus/MenuItemLeader";
@@ -22,7 +22,9 @@ export type MenuItemProps = {
   hint?: string | ReactElement;
 };
 
-const menuSelectOrJump = ["menu_select", "jump"] as const;
+// having swop in here marks the swop key as handled, so the game can't immediately
+// swap chars on loading
+const menuSelectOrJump = ["menu_select", "swop", "jump"] as const;
 
 export const menuItemDataAttributeId = "data-menuitem_id";
 export const menuItemDataAttributeHidden = "data-menuitem_hidden";

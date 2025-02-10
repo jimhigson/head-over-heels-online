@@ -141,6 +141,13 @@ export class InputStateTracker {
   #lastFrameInput: FrameInput | undefined = undefined;
   #directionVector: Xyz = originXyz;
 
+  /**
+   * latches set to true if an action should be ignored until it is released
+   * and inputted again. Ie, pressing jump to leave a scroll shouldn't make the character
+   * jump when the scroll is closed because it was handled
+   */
+  actionsHandled: Set<BooleanAction> = new Set();
+
   constructor(private keyboardStateMap: KeyboardStateMap) {
     this.#currentFrameInput = {
       keyboardState: new Map(keyboardStateMap),
@@ -264,10 +271,21 @@ export class InputStateTracker {
       keyboardState: new Map(this.keyboardStateMap),
       gamepads: extractGamepadsState(navigator.getGamepads()),
     };
+
+    for (const action of this.actionsHandled) {
+      if (!isActionPressed(this.#currentFrameInput, action)) {
+        console.log(action, "no longer");
+        this.actionsHandled.delete(action);
+      }
+    }
   };
 
   currentActionPress(action: BooleanAction): PressStatus {
     const pressedNow = isActionPressed(this.#currentFrameInput, action);
+
+    if (this.actionsHandled.has(action)) {
+      return "released"; // treat as released if was already handled
+    }
 
     if (pressedNow) {
       const pressedLastFrame =
@@ -286,7 +304,6 @@ export class InputStateTracker {
         return "tap";
       }
     }
-    //if (action === "towards") console.log(action, "was not pressed this frame");
 
     return "released";
   }
@@ -352,4 +369,5 @@ export type InputStateTrackerInterface = Pick<
   | "directionVector"
   | "startTicking"
   | "stopTicking"
+  | "actionsHandled"
 >;

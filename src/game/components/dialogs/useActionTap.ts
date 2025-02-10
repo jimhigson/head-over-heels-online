@@ -5,11 +5,13 @@ import type { BooleanAction, InputPress } from "../../input/InputState";
 
 import { Ticker } from "pixi.js";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
-import { useUnchanging } from "../../../utils/react/useUnchanging";
 
 export type UseActionInputProps = {
-  /** MUST be cached using useCallback or useMemo, or will re-assign on every render */
-  handler: (action: BooleanAction | DirectionXy4) => void;
+  /** MUST be cached using useCallback or useMemo, or will re-assign on every render
+   * @returns true of declined to handle the action; otherwise the default is to
+   * handle it
+   */
+  handler: (action: BooleanAction | DirectionXy4) => boolean | void;
   action?:
     | (BooleanAction | DirectionXy4)
     | Readonly<Array<BooleanAction | DirectionXy4>>;
@@ -29,7 +31,7 @@ export const useActionTap = ({
 
   const inputStateTracker = useInputStateTracker();
 
-  // these are correct but they break HMR:
+  // correct but breaks HMR:
   // useUnchanging(actionOrActions);
   // useUnchanging(handler);
   // useUnchanging(inputStateTracker);
@@ -40,10 +42,14 @@ export const useActionTap = ({
     }
 
     const check = () => {
-      for (const action of actions) {
-        const pressStatus = inputStateTracker.currentActionPress(action);
+      for (const a of actions) {
+        const pressStatus = inputStateTracker.currentActionPress(a);
         if (pressStatus === "tap") {
-          handler(action);
+          const declinedToHandle = handler(a);
+          if (!declinedToHandle) {
+            for (const a2 of actions) inputStateTracker.actionsHandled.add(a2);
+          }
+
           break; // if we are looking for multiple actions, don't let them
           // all trigger on the same frame
         }
@@ -69,7 +75,8 @@ export const useInputTap = ({
   handler,
   disabled = false,
 }: UseInputPressesProps) => {
-  useUnchanging(handler);
+  // correct but breaks HMR:
+  //useUnchanging(handler);
 
   const inputStateTracker = useInputStateTracker();
 

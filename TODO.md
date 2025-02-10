@@ -12,13 +12,18 @@
     [?] should portals only work for the current char/
     [?] make portals solid?    
 
-[ ] window losing focus should pause the game (again)
+[x] window losing focus should pause the game (again)
 [x] make work in Safari/iOS?
     [x] loads/plays now
     [x] gamepad - not all buttons work in safari (?) - maybe hold and not 'tap' working only? - could be a timing issue
-[ ] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
+
+THIS NEXT:
+[1]!!!    
+[x] bug: pressing return to start a game (or exit crowns screen) shouldn't immediately switch to heels
     - can fix this (I think) by ignoring input while game speed is zero
-    [ ] also, pressing jump to leave a scroll is bad    
+
+
+[x] can accidentally jump off a scroll
 
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
@@ -57,6 +62,8 @@
 
 [x] analogue control
     [ ] 8-way sprites
+
+[ ] repeat moving on scrolls etc (hold to keep scrolling) + analogue control    
 
 [ ] freeze all player movement while teleporting - it is possible to move off the teleporter currently while teleporting
 [x] decolourise sprites in css
@@ -150,6 +157,9 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # egyptus12    
 [x] lift doesn't lift charles up
+
+# egyptus34fish
+[ ] ball clips poorly when pushed all the way away
 
 # safari35
 [ ] [MINOR] sandwich should fall in the gap between blocks
