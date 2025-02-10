@@ -16,7 +16,7 @@ import { unitVectors } from "../../utils/vectors/unitVectors";
 import type { GamepadState } from "./GamepadState";
 import { extractGamepadsState } from "./GamepadState";
 import {
-  isometricInputVector,
+  rotateInputVector45,
   snapToCardinal,
 } from "./analogueControlAdjustments";
 
@@ -236,7 +236,7 @@ export class InputStateTracker {
 
     const pressVector = addXyz(originXyz, ...pressVectors());
     const axisVector = snapToCardinal(
-      isometricInputVector(addXyz(originXyz, ...axisVectors())),
+      rotateInputVector45(addXyz(originXyz, ...axisVectors())),
       snapAngleRadians,
     );
 
@@ -336,7 +336,7 @@ export class InputStateTracker {
     // we want this to run at a lower update priority than anything else so that it back-runs
     // the interactions and only updates the last frame's record after everything else has had
     // a change to query it
-    Ticker.shared.add(this.#tick, undefined, UPDATE_PRIORITY.UTILITY);
+    Ticker.shared.add(this.#tick, undefined, UPDATE_PRIORITY.INTERACTION);
   }
   stopTicking() {
     Ticker.shared.remove(this.#tick);
