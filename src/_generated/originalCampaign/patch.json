@@ -81,7 +81,7 @@
     "path": "/rooms/safari15/items/monsterpen",
     "value": {
       "config": { "axis": "x" },
-      "position": { "x": 1, "y": 9, "z": 0 },
+      "position": { "x": 1, "y": 9.5, "z": 0 },
       "type": "barrier"
     }
   },
@@ -107,22 +107,12 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary8/items/extra3",
-    "value": {
-      "config": { "style": "artificial" },
-      "position": { "x": 0, "y": 4, "z": 6 },
-      "type": "block",
-      "isExtra": true
-    }
-  },
-  {
-    "op": "add",
     "path": "/rooms/penitentiary8/items/extra1",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 0, "y": 5, "z": 5 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
@@ -130,9 +120,19 @@
     "path": "/rooms/penitentiary8/items/extra2",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 0, "y": 5, "z": 4 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary8/items/extra3",
+    "value": {
+      "config": { "style": "artificial" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 4, "z": 6 },
+      "type": "block"
     }
   },
   { "op": "add", "path": "/rooms/penitentiary8/size/z", "value": 12 },
