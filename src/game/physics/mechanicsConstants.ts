@@ -33,7 +33,7 @@ export const terminalVelocityPixPerMs = {
   others: (blockSizePx.h * 6) / 1000,
 };
 
-export const maxLiftAcc = fallG * 0.5;
+export const maxLiftAcc = fallG * 0.35;
 export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.5;
 
 /**
