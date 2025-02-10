@@ -111,7 +111,7 @@ export const room = inferRoomJson({
     },
     monsterpen: {
       config: { axis: "x" },
-      position: { x: 1, y: 9, z: 0 },
+      position: { x: 1, y: 9.5, z: 0 },
       type: "barrier",
     },
   },
