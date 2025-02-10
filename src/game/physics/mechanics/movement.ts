@@ -26,6 +26,8 @@ import {
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { emptyObject } from "../../../utils/empty";
+import { selectHasAllPlanetCrowns } from "../../../store/selectors";
+import { store } from "../../../store/store";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -210,6 +212,8 @@ const walkTowardIfInSquare = <RoomId extends string>(
   room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
+  // set to -1 to run away instead of towards player
+  opposite: boolean = false,
 ): MechanicResult<"monster", RoomId> => {
   const {
     state: { position: monsterPosition, standingOn },
@@ -255,7 +259,7 @@ const walkTowardIfInSquare = <RoomId extends string>(
 
   const walkVelocity = scaleXyz(
     { ...vectorXyToClosestPlayer, z: 0 },
-    adjustedSpeed / lengthXy(vectorXyToClosestPlayer),
+    (adjustedSpeed / lengthXy(vectorXyToClosestPlayer)) * (opposite ? -1 : 1),
   );
 
   return {
@@ -485,6 +489,15 @@ export const tickMovement = <RoomId extends string>(
     case "towards-when-in-square-xy8":
       return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
 
+    case "towards-when-in-square-xy8-unless-planet-crowns":
+      return walkTowardIfInSquare(
+        itemWithMovement,
+        room,
+        gameState,
+        deltaMS,
+        selectHasAllPlanetCrowns(store.getState()),
+      );
+
     default:
       itemWithMovement.config satisfies never;
       throw new Error("this should be unreachable");
@@ -516,6 +529,7 @@ export const handleItemWithMovementTouchingItem = <RoomId extends string>(
       break;
     case "towards-on-shortest-axis-xy4":
     case "towards-when-in-square-xy8":
+    case "towards-when-in-square-xy8-unless-planet-crowns":
     case "unmoving":
     case "free":
       // these don't need anything on touching:

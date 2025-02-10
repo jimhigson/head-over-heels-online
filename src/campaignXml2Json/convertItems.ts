@@ -648,13 +648,23 @@ const convertItem = async ({
     }
 
     case "emperor":
+      return {
+        type: "monster",
+        config: {
+          which: "emperor",
+          activated: true,
+          movement: "towards-when-in-square-xy8",
+        },
+        position,
+      };
+
     case "throne-guard":
       return {
         type: "monster",
         config: {
-          which: monsterConversions[xml2JsonItem.kind],
+          which: "emperorsGuardian",
           activated: true,
-          movement: "towards-when-in-square-xy8",
+          movement: "towards-when-in-square-xy8-unless-planet-crowns",
         },
         position,
       };

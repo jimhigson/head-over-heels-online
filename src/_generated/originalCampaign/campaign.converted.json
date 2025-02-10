@@ -7402,7 +7402,7 @@
           "config": {
             "which": "emperorsGuardian",
             "activated": true,
-            "movement": "towards-when-in-square-xy8"
+            "movement": "towards-when-in-square-xy8-unless-planet-crowns"
           },
           "position": { "x": 1, "y": 3, "z": 0 }
         },
