@@ -24,6 +24,7 @@ import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -77,7 +78,7 @@ export const SelectKeysDialog = () => {
   useKeyAssignmentInput();
 
   return (
-    <>
+    <DialogPortal>
       <Border
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -215,6 +216,6 @@ export const SelectKeysDialog = () => {
         </div>
         <SelectKeysMenuFooter />
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

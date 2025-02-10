@@ -1,4 +1,5 @@
 import { Border, Dialog } from "../../../../../components/ui/dialog";
+import { DialogPortal } from "../../../../../components/ui/DialogPortal";
 import {
   backToParentMenu,
   gameOver,
@@ -15,7 +16,7 @@ import Portal from "@mutabazia/react-portal";
 
 export const QuitGameConfirmDialog = () => {
   return (
-    <>
+    <DialogPortal>
       <Border className="bg-shadow zx:bg-zxYellow" />
       <Dialog className="bg-white zx:bg-zxRed">
         <Portal.Provider>
@@ -54,6 +55,6 @@ export const QuitGameConfirmDialog = () => {
           <SelectedItemHint className="text-shadow zx:text-zxWhite" />
         </Portal.Provider>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

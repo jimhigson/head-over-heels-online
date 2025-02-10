@@ -1,4 +1,5 @@
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
@@ -7,7 +8,7 @@ import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 
 export const CrownsDialog = () => {
   return (
-    <>
+    <DialogPortal>
       <Border className="bg-pureBlack zx:bg-zxBlack" />
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"
@@ -18,6 +19,6 @@ export const CrownsDialog = () => {
           <BackMenuItem />
         </MenuItems>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

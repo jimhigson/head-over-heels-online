@@ -7,6 +7,7 @@ import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
@@ -68,7 +69,7 @@ const ValueSwitch = ({
 
 export const ModernisationOptionsDialog = () => {
   return (
-    <>
+    <DialogPortal>
       <Border
         className="bg-moss zx:bg-zxGreenDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -205,6 +206,6 @@ export const ModernisationOptionsDialog = () => {
           <SelectedItemHint className="text-moss zx:text-zxGreen" />
         </Portal.Provider>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

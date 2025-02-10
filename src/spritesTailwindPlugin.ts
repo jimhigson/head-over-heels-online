@@ -4,13 +4,15 @@ import { spritesheetData } from "./sprites/spriteSheetData";
 import { objectEntriesIter } from "./utils/entries";
 import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
-import { zxSpectrumFrameRate } from "./originalGame";
+import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
   ({ addUtilities, addBase, addVariant, e }) => {
+    const animations: CSSRuleObject = {};
+
     const spriteStyles = (type: "background" | "mask") => ({
       [`${type}Image`]: `var(--spritesheetUrl)`,
       [`${type}Position`]: `calc(-1 * var(--x) * var(--scale, 1)) calc(-1 * var(--y) * var(--scale, 1) * var(--doubleHeight, 1))`,
@@ -61,6 +63,25 @@ export const spritesTailwindPlugin = plugin(
       },
     };
 
+    utilities[".loading-border"] = {
+      background: `repeating-linear-gradient(
+          to bottom,
+          ${zxSpectrumColors.zxCyan} 0, ${zxSpectrumColors.zxCyan} var(--block, 8px),
+          ${zxSpectrumColors.zxRed} var(--block, 8px), ${zxSpectrumColors.zxRed} calc(2 * var(--block, 8px))
+        )`,
+      // smooth scrolling effect:
+      backgroundSize: "100% calc(2 * var(--block, 8px))",
+      animation: "spectrum-load 0.5s linear infinite",
+    };
+    animations["@keyframes spectrum-load"] = {
+      from: {
+        backgroundPosition: "0 0",
+      },
+      to: {
+        backgroundPosition: "0 calc(2 * var(--block, 8px))",
+      },
+    };
+
     for (const [
       textureId,
       {
@@ -75,7 +96,6 @@ export const spritesTailwindPlugin = plugin(
       };
     }
 
-    const animations: CSSRuleObject = {};
     for (const [animationName, frames] of objectEntriesIter(
       spritesheetData.animations as Record<
         string,

@@ -2,7 +2,7 @@ import type { EmptyObject } from "type-fest";
 import { useAppSelector } from "../../../../store/hooks";
 import { ReadTheManualDialog } from "./menus/readTheManualDialog";
 import type { DialogId } from "./menus";
-import { MarkdownDialog } from "./MarkdownDialog";
+import { MarkdownDialog } from "./menus/markdown/MarkdownDialog";
 import type { MarkdownPageName } from "../../../../manual/pages";
 import { CrownsDialog } from "./menus/crowns/crownsDialog";
 import { MainMenuDialog } from "./menus/mainMenu/mainMenuDialog";

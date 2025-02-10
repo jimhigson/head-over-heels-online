@@ -1,15 +1,19 @@
-import { BlockyMarkdown } from "../../BlockyMarkdown";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useCallback, useRef } from "react";
-import { useActionTap } from "../useActionTap";
-import { hudCharTextureSize } from "../../../../sprites/textureSizes";
-import { useTotalUpscale } from "../../../../store/selectors";
+import { useActionTap } from "../../../useActionTap";
+import { hudCharTextureSize } from "../../../../../../sprites/textureSizes";
+import { useTotalUpscale } from "../../../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
-import { markdownPages, type MarkdownPageName } from "../../../../manual/pages";
-import { Border, Dialog } from "../../../../components/ui/dialog";
-import { MenuItems } from "./MenuItems";
-import { BackMenuItem } from "./BackMenuItem";
-import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../store/gameMenusSlice";
+import {
+  markdownPages,
+  type MarkdownPageName,
+} from "../../../../../../manual/pages";
+import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { MenuItems } from "../../MenuItems";
+import { BackMenuItem } from "../../BackMenuItem";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
@@ -58,7 +62,7 @@ export const MarkdownDialog = ({
   });
 
   return (
-    <>
+    <DialogPortal>
       <Border
         className="bg-midGrey zx:bg-zxWhiteDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -79,6 +83,6 @@ export const MarkdownDialog = ({
           <BackMenuItem />
         </MenuItems>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

@@ -12,6 +12,7 @@ import { BitmapText } from "../../../../Sprite";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -27,7 +28,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
 
   return (
-    <>
+    <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2">
         <MainMenuHeading />
@@ -78,6 +79,6 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
         </MenuItems>
         {!isGameRunning && <MainMenuFooter />}
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };

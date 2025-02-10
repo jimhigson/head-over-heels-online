@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 import spritesheetPalette from "./gfx/spritesheetPalette.json";
-import { zxSpectrumResolution } from "./src/originalGame";
+import { zxSpectrumColors, zxSpectrumResolution } from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
 import scrollbar from "tailwind-scrollbar";
@@ -34,23 +34,7 @@ const colors = {
     halfbrite(colourValue),
   ]),
 
-  // zx-spectrum colours:
-  zxRed: "#f00",
-  zxGreen: "#0f0",
-  zxBlue: "#00f",
-  zxCyan: "#0ff",
-  zxMagenta: "#f0f",
-  zxYellow: "#ff0",
-  zxBlack: "#000",
-  zxWhite: "#fff",
-  zxRedDimmed: "#800",
-  zxGreenDimmed: "#080",
-  zxBlueDimmed: "#008",
-  zxCyanDimmed: "#088",
-  zxMagentaDimmed: "#808",
-  zxYellowDimmed: "#880",
-  zxBlackDimmed: "#000",
-  zxWhiteDimmed: "#888",
+  ...zxSpectrumColors,
 } as const;
 
 export type TailwindPalette = keyof typeof colors;
@@ -157,6 +141,9 @@ export default {
     },
     animation: {
       flash: "flash 1s steps(1, end) infinite",
+    },
+    aspectRatio: {
+      pal: "4 / 3",
     },
   },
   plugins: [

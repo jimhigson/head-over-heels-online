@@ -2,11 +2,9 @@
 
 import type { MouseEvent, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
-import { CssVariables } from "../../game/components/CssVariables";
-import { createPortal } from "react-dom";
 
 export type DialogProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   closed?: boolean;
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
@@ -14,20 +12,17 @@ export type DialogProps = {
 };
 
 export const Dialog = ({ children, className, onClick }: DialogProps) => {
-  return createPortal(
-    <CssVariables>
-      <div
-        className={twMerge(
-          // pr-0: put scroll bar on menu items up against the edge of the dialog
-          `p-1 pr-0 w-zx fixed left-[50%] z-50 top-[50%] translate-y-[-50%] translate-x-[-50%] h-zx leading-none flex flex-col gap-y-1`,
-          className,
-        )}
-        onClick={onClick}
-      >
-        {children}
-      </div>
-    </CssVariables>,
-    document.body,
+  return (
+    <div
+      className={twMerge(
+        // pr-0: put scroll bar on menu items up against the edge of the dialog
+        `p-1 pr-0 fixed left-[50%] z-50 top-[50%] translate-y-[-50%] translate-x-[-50%] h-zx w-zx leading-none flex flex-col gap-y-1`,
+        className,
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </div>
   );
 };
 
@@ -39,9 +34,14 @@ export const Border = ({
   className,
   onClick,
 }: {
-  className: string;
+  className?: string;
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
   onClick?: (e: MouseEvent) => void;
 }) => {
-  return <div className={`fixed inset-0 ${className}`} onClick={onClick} />;
+  return (
+    <div
+      className={`fixed inset-0 ${className ? className : ""}`}
+      onClick={onClick}
+    />
+  );
 };

@@ -6,6 +6,7 @@ import { iterate } from "../../../../../../utils/iterate";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
 import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
@@ -18,7 +19,7 @@ export const GameOverDialog = () => {
     size(iterate(objectValues(state.roomsExplored))),
   );
   return (
-    <>
+    <DialogPortal>
       <Border className="bg-redShadow zx:bg-zxCyan" />
       <Dialog
         className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
@@ -44,6 +45,6 @@ export const GameOverDialog = () => {
           <BackMenuItem />
         </MenuItems>
       </Dialog>
-    </>
+    </DialogPortal>
   );
 };
