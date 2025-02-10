@@ -84,7 +84,7 @@ export const SelectKeysDialog = () => {
       />
       <Dialog className="bg-white zx:bg-zxWhite pr-0">
         <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
-          Select the keys
+          Select the controls
         </BitmapText>
         <div
           className={
