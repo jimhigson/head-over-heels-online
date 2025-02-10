@@ -15,6 +15,7 @@ export type MenuItemProps = {
   valueElement?: ReactElement;
   flipLeader?: boolean;
   doubleHeightWhenFocussed?: boolean;
+  leader?: ReactElement;
   hidden?: boolean;
   onSelect?: () => void;
   className?: string;
@@ -38,6 +39,7 @@ export const MenuItem = ({
   hidden = false,
   className,
   hint,
+  leader,
 }: MenuItemProps) => {
   //useUnchanging(onSelect, "onSelect"); <- commented out, breaks HMR
 
@@ -78,7 +80,7 @@ export const MenuItem = ({
       onClick={onSelect}
     >
       {/* first column content (leader/icon thing)... */}
-      <MenuItemLeader flip={flipLeader} focussed={focussed} />
+      {leader || <MenuItemLeader flip={flipLeader} focussed={focussed} />}
 
       {/* second column content (main label)... */}
       <div

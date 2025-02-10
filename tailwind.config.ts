@@ -137,7 +137,8 @@ export default {
       max: "max-content",
     },
     gridTemplateColumns: {
-      menuItems: "calc(var(--block) * 2) max-content 1fr",
+      // min-content - typically 2 blocks but some menus can have custom leaders
+      menuItems: "min-content max-content 1fr",
     },
     zIndex: {
       topSprite: "1",

@@ -82,7 +82,7 @@ export const SelectKeysDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite">
+      <Dialog className="bg-white zx:bg-zxWhite pr-0">
         <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
           Select the keys
         </BitmapText>
@@ -108,29 +108,46 @@ export const SelectKeysDialog = () => {
               id="preset"
               label="preset:"
               valueElement={<CurrentPresetValue />}
+              doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
             />
             <MenuItem
               id="left"
-              label="Left ↖"
+              label={
+                <>
+                  <BitmapText>Left ↖</BitmapText>
+                </>
+              }
+              leader={
+                <span className="sprite texture-head.walking.left.2 selectedMenuItem:texture-animated-head.walking.left zx:sprite-revert-to-two-tone" />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="left" />}
               onSelect={useDispatchActionCallback(assignInputStart, "left")}
             />
             <MenuItem
               id="right"
               label="Right ↘"
+              leader={
+                <span className="sprite texture-head.walking.right.2 selectedMenuItem:texture-animated-head.walking.right zx:sprite-revert-to-two-tone" />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="right" />}
               onSelect={useDispatchActionCallback(assignInputStart, "right")}
             />
             <MenuItem
               id="up"
               label="Up ↗"
+              leader={
+                <span className="sprite texture-head.walking.away.2 selectedMenuItem:texture-animated-head.walking.away zx:sprite-revert-to-two-tone" />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="away" />}
               onSelect={useDispatchActionCallback(assignInputStart, "away")}
             />
             <MenuItem
               id="down"
               label="Down ↙"
+              leader={
+                <span className="sprite texture-head.walking.towards.2 selectedMenuItem:texture-animated-head.walking.towards zx:sprite-revert-to-two-tone" />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
               onSelect={useDispatchActionCallback(assignInputStart, "towards")}
             />
@@ -143,6 +160,9 @@ export const SelectKeysDialog = () => {
             <MenuItem
               id="carry"
               label="Carry"
+              leader={
+                <span className="sprite texture-bag zx:sprite-revert-to-two-tone" />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
               onSelect={useDispatchActionCallback(assignInputStart, "carry")}
             />
@@ -154,6 +174,9 @@ export const SelectKeysDialog = () => {
                 >
                   fire dough- nuts
                 </BitmapText>
+              }
+              leader={
+                <span className="sprite texture-doughnuts zx:sprite-revert-to-two-tone" />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
               onSelect={useDispatchActionCallback(assignInputStart, "fire")}
