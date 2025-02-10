@@ -20,6 +20,11 @@ describe("projectWorldXyzToScreenXy", () => {
       y: -1,
     });
   });
+  /*
+  all these tests are disabled - previously we checked if a number was an integer, or almost
+  and integer, and projected to screen-integers if so, but this created an unpleasant jumping
+  when something had finished moving (and its world co-ords are snapped). Turning this off means 
+  when world co-ords are snapped, the y rendering is actually to half-pixels in y
   test("projects almost-integers integers (only slight rounding-down required to integers)", () => {
     expect(projectWorldXyzToScreenXy({ x: 1, y: 1.000_001, z: 0 })).toEqual({
       x: 0,
@@ -73,4 +78,5 @@ describe("projectWorldXyzToScreenXy", () => {
       y: -2,
     });
   });
+  */
 });

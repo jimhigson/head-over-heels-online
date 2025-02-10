@@ -1,6 +1,6 @@
 import type { Sprite } from "pixi.js";
 import { AlphaFilter, Container } from "pixi.js";
-import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../projectToScreen";
 import { createSprite } from "../createSprite";
 import type { Collideable } from "../../collision/aabbCollision";
 import { collision1to1 } from "../../collision/aabbCollision";
@@ -146,7 +146,7 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
     for (const casterItem of concat(bins.create, bins.update)) {
       const { sprite } = this.#casts[casterItem.id];
 
-      const screenXy = projectWorldXyzToScreenXyFloat({
+      const screenXy = projectWorldXyzToScreenXy({
         ...subXy(casterItem.state.position, this.item.state.position),
         z: this.item.aabb.z,
       });
