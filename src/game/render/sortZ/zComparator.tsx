@@ -1,7 +1,7 @@
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../projectToScreen";
 
 export type DrawOrderComparable = Pick<
   AnyItemInPlay,
@@ -15,11 +15,11 @@ export type DrawOrderComparable = Pick<
  * two projection-hexagons
  */
 const projectionCorners = (position: Xyz, aabb: Xyz) => {
-  const bottomCentre = projectWorldXyzToScreenXyFloat(position);
-  const topLeft = projectWorldXyzToScreenXyFloat(
+  const bottomCentre = projectWorldXyzToScreenXy(position);
+  const topLeft = projectWorldXyzToScreenXy(
     addXyz(position, { x: aabb.x, z: aabb.z }),
   );
-  const topRight = projectWorldXyzToScreenXyFloat(
+  const topRight = projectWorldXyzToScreenXy(
     addXyz(position, { y: aabb.y, z: aabb.z }),
   );
   return { bottomCentre, topLeft, topRight };

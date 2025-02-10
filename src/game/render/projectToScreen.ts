@@ -1,7 +1,6 @@
 import type { Container } from "pixi.js";
 import { blockSizePx } from "../../sprites/spritePivots";
 import type { XyMaybeZ, Xyz, Xy } from "../../utils/vectors/vectors";
-import { isIntegerXyzOrCloseTo } from "../../utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (
   blockXyz: XyMaybeZ,
@@ -21,32 +20,7 @@ export const projectWorldXyzToScreenX = ({
   y = 0,
 }: Partial<Xyz>): number => y - x;
 
-/* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectWorldXyzToScreenXy = (position: Partial<Xyz>): Xy => {
-  const coordinatesAreInteger = isIntegerXyzOrCloseTo(position);
-
-  return coordinatesAreInteger ?
-      projectWorldXyzToScreenXyInteger(position)
-    : projectWorldXyzToScreenXyFloat(position);
-};
-
-export const projectWorldXyzToScreenXyInteger = ({
-  x = 0,
-  y = 0,
-  z = 0,
-}: Partial<Xyz>): Xy => {
-  const xRounded = Math.round(x);
-  const yRounded = Math.round(y);
-  return {
-    x: yRounded - xRounded,
-    y:
-      // avoid case where a floating point error causes a number like 16.500000001
-      // >> 1 is /2 but rounded down
-      Math.floor(-((xRounded + yRounded) / 2) - z),
-  };
-};
-
-export const projectWorldXyzToScreenXyFloat = ({
+export const projectWorldXyzToScreenXy = ({
   x = 0,
   y = 0,
   z = 0,
@@ -54,7 +28,7 @@ export const projectWorldXyzToScreenXyFloat = ({
   return {
     x: y - x,
     y:
-      // >> 1 is /2 but rounded down
+      // >> 1 is /2 but rounded down. I'm not rounding, so /2
       -(x + y) / 2 - z,
   };
 };

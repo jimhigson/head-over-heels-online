@@ -4,42 +4,42 @@ import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Aabb } from "../../../utils/vectors/vectors";
 import { isItemType } from "../../physics/itemPredicates";
-import { projectWorldXyzToScreenXyFloat } from "../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../projectToScreen";
 import type { RenderContext, Renderer } from "../Renderer";
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
   const graphics = new Graphics()
     // bottom:
     .poly([
-      projectWorldXyzToScreenXyFloat({}),
-      projectWorldXyzToScreenXyFloat({ x: aabb.x }),
-      projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
-      projectWorldXyzToScreenXyFloat({ y: aabb.y }),
+      projectWorldXyzToScreenXy({}),
+      projectWorldXyzToScreenXy({ x: aabb.x }),
+      projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
+      projectWorldXyzToScreenXy({ y: aabb.y }),
     ])
     // right:
     .poly([
-      projectWorldXyzToScreenXyFloat({}),
-      projectWorldXyzToScreenXyFloat({ z: aabb.z }),
-      projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
-      projectWorldXyzToScreenXyFloat({ y: aabb.y }),
+      projectWorldXyzToScreenXy({}),
+      projectWorldXyzToScreenXy({ z: aabb.z }),
+      projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
+      projectWorldXyzToScreenXy({ y: aabb.y }),
     ])
     // left:
     .poly([
-      projectWorldXyzToScreenXyFloat({ x: aabb.x }),
-      projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
-      projectWorldXyzToScreenXyFloat(aabb),
-      projectWorldXyzToScreenXyFloat({ x: aabb.x, y: aabb.y }),
+      projectWorldXyzToScreenXy({ x: aabb.x }),
+      projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
+      projectWorldXyzToScreenXy(aabb),
+      projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
     ])
     // top:
     .poly([
-      projectWorldXyzToScreenXyFloat({ z: aabb.z }),
-      projectWorldXyzToScreenXyFloat({ x: aabb.x, z: aabb.z }),
-      projectWorldXyzToScreenXyFloat({
+      projectWorldXyzToScreenXy({ z: aabb.z }),
+      projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
+      projectWorldXyzToScreenXy({
         x: aabb.x,
         y: aabb.y,
         z: aabb.z,
       }),
-      projectWorldXyzToScreenXyFloat({ y: aabb.y, z: aabb.z }),
+      projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
     ])
     .stroke({
       width: 0.5,
@@ -81,7 +81,7 @@ export class ItemBoundingBoxRenderer<
     });
 
     if (isItemType("portal")(item)) {
-      const relativePointScreenXy = projectWorldXyzToScreenXyFloat(
+      const relativePointScreenXy = projectWorldXyzToScreenXy(
         item.config.relativePoint,
       );
       this.#container.addChild(
