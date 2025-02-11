@@ -2,38 +2,15 @@ import type { TailwindPalette } from "../../../../../../../tailwind.config";
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
+import { useIsColourised } from "../../../../../../store/selectors";
 import { CssSprite, BitmapText } from "../../../../Sprite";
 
-const colourCycle: Record<
-  PlanetName,
-  `text-${TailwindPalette} zx:text-${TailwindPalette}`[]
-> = {
-  egyptus: [
-    "text-lightBeige zx:text-zxYellowDimmed",
-    "text-midRed zx:text-zxRed",
-    "text-highlightBeige zx:text-zxYellow",
-  ],
-  blacktooth: [
-    "text-midGrey zx:text-zxWhiteDimmed",
-    "text-lightGrey zx:text-zxWhite",
-    "text-moss zx:text-zxGreenDimmed",
-    "text-midRed zx:text-zxRed",
-  ],
-  safari: [
-    "text-moss zx:text-zxGreen",
-    "text-midRed zx:text-zxRed",
-    "text-highlightBeige zx:text-zxYellowDimmed",
-  ],
-  bookworld: [
-    "text-midRed zx:text-zxRed",
-    "text-redShadow zx:text-zxRedDimmed",
-    "text-midGrey zx:text-zxWhiteDimmed",
-  ],
-  penitentiary: [
-    "text-shadow zx:text-zxWhiteDimmed",
-    "text-metallicBlue zx:text-zxBlue",
-    "text-midGrey zx:text-zxMagentaDimmed",
-  ],
+const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
+  egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
+  blacktooth: ["text-midGrey", "text-lightGrey", "text-moss", "text-midRed"],
+  safari: ["text-moss", "text-midRed", "text-highlightBeige"],
+  bookworld: ["text-midRed", "text-redShadow", "text-midGrey"],
+  penitentiary: ["text-shadow", "text-metallicBlue", "text-midGrey"],
 };
 
 const crownTextureClasses: {
@@ -57,18 +34,19 @@ export const TitledCrown = ({
   className?: string;
 }) => {
   const collected = useAppSelector((state) => state.planetsLiberated[planet]);
+  const colourised = useIsColourised();
 
   return (
     <div className={`flex flex-col ${className}`}>
       <CssSprite
-        className={`block ${collected ? crownTextureClasses[planet] : "texture-crown.dark"} mx-auto`}
+        className={`block ${collected ? `${crownTextureClasses[planet]} zx:sprite-revert-zxYellow` : "texture-crown.dark colourised:opacity-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
       />
       <CssSprite
         className={`block texture-ball zx:sprite-revert-zxYellow mx-auto ${colourCycle[planet][0]}`}
       />
       <BitmapText
-        classnameCycle={colourCycle[planet]}
-        className="block mx-auto"
+        classnameCycle={colourised ? colourCycle[planet] : undefined}
+        className="block mx-auto zx:text-zxMagenta"
       >
         {label}
       </BitmapText>
