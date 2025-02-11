@@ -4,6 +4,11 @@
     "path": "/rooms/safari9/items/movableBlock@0,1,3/config/activated",
     "value": "onStand"
   },
+  {
+    "op": "add",
+    "path": "/rooms/safari6triple/items/block@10,4,0/config/disappearing",
+    "value": "onStand"
+  },
   { "op": "replace", "path": "/rooms/safari6triple/size/y", "value": 12 },
   { "op": "replace", "path": "/rooms/safari6triple/size/x", "value": 12 },
   {
@@ -31,9 +36,9 @@
     "path": "/rooms/safari3/items/liftExtra",
     "value": {
       "config": { "bottom": 0, "top": 8 },
+      "isExtra": true,
       "position": { "x": 2, "y": 4, "z": 0 },
-      "type": "lift",
-      "isExtra": true
+      "type": "lift"
     }
   },
   {
