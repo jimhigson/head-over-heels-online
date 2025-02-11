@@ -50,6 +50,10 @@ export const spritesTailwindPlugin = plugin(
         filter:
           "brightness(1.8) grayscale(100%) contrast(999) brightness(0.5) sepia(1)  hue-rotate(30deg) saturate(5) brightness(5)",
       },
+      ".sprite-revert-zxMagenta": {
+        filter:
+          "brightness(1.8) grayscale(100%) contrast(999) brightness(0.5) sepia(1)  hue-rotate(262deg) saturate(8)",
+      },
 
       /**
        * sets the (unchanging during run time) vars to describe the spritesheet
@@ -135,6 +139,7 @@ export const spritesTailwindPlugin = plugin(
     // add a variant for zx-spectrum-colour palette
     // this can be done differently in tw4: https://tailwindcss.com/docs/adding-custom-styles#adding-custom-variants
     addVariant("zx", ".zx &");
+    addVariant("colourised", ".colourised &");
     // for changing the colour of selected menu items:
     addVariant("selectedMenuItem", [
       // can put selectedMenuItem:foo on the top of the menu, and it will apply

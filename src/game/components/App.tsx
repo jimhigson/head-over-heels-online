@@ -15,6 +15,7 @@ const AppInner = () => {
   );
   useEffect(() => {
     document.body.classList.toggle("zx", revertColours);
+    document.body.classList.toggle("colourised", !revertColours);
   }, [revertColours]);
 
   return (
