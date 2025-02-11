@@ -19,7 +19,7 @@ import { selectShowFps } from "../../../../../../store/selectors";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
-const colouriseMarkdown = `**off**: Original *two-tone* spectrum-like graphics
+const colouriseMarkdown = `![](texture-animated-head.walking.towards?float-right)**off**: Original *two-tone* spectrum graphics
 
 **on**: *16-colour* palette with colourised sprites`;
 
@@ -27,7 +27,7 @@ const infiniteLivesMarkdown = `can’t be changed mid-game
 
 **off**: *8* lives to start; extra life rabbits spread thinly through the game
 
-*A true hero leaves this off*`;
+*A true hero leaves this* **off**`;
 
 const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 
@@ -36,7 +36,7 @@ none of these fundamentally change how the rooms play.`;
 
 const analogueControlHintMarkdown = `**off**: original *4* walk directions: press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*
 
-**on**: walk in *any* direction; makes the game easier`;
+**on**: *any* direction with analogue stick, or *8-way* with d-pad/keys. Easier.`;
 
 const resolutionHintMarkdown = `*zx spectrum* (**256**x**192**)
 
