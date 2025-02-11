@@ -21,6 +21,9 @@ import {
   originXy,
 } from "../../../utils/vectors/vectors";
 import { iterateToContainer } from "../../iterateToContainer";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
+import type { JsonItem } from "../../../model/json/JsonItem";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
@@ -96,20 +99,36 @@ function* generateFloorOverdraws(
 type EdgesOptions = {
   blockXExtent: number;
   blockYExtent: number;
+  blockXMin: number;
+  blockYMin: number;
   type: "floorOverdraw" | "floorEdge";
+  extraWalls: Iterable<JsonItem<"wall">>;
 };
 
 /**
- * creates the floor edge sprites
+ * creates the floor edge sprites - either the actual edge, or the overdraw for the edges
  s*/
 const edges = ({
   blockXExtent,
   blockYExtent,
+  blockXMin,
+  blockYMin,
   type,
+  extraWalls,
 }: EdgesOptions): { right: Container; towards: Container } => {
   const towards = new Container({ label: "towards" });
   for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
-    const blockXy = { x: ix, y: 0 };
+    // for moonbase33 really - the only room with an edge caused by 'extra' walls:
+    const worldX = ix + blockXMin + 0.5;
+    const wall = iterate(extraWalls).find(
+      (w) =>
+        w.config.side === "towards" &&
+        w.position.x <= worldX &&
+        w.position.x >= worldX - 1,
+    );
+    const y = wall === undefined ? 0 : wall.position.y + 1 - blockYMin;
+
+    const blockXy = { x: ix, y };
     const pivot = { x: 7, y: 0 };
     towards.addChild(
       moveContainerToBlockXyz(
@@ -123,9 +142,18 @@ const edges = ({
   }
   const right = new Container({ label: "right" });
   for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
+    const worldY = iy + blockYMin + 0.5;
+    const wall = iterate(extraWalls).find(
+      (w) =>
+        w.config.side === "right" &&
+        w.position.y <= worldY &&
+        w.position.y >= worldY - 1,
+    );
+    const x = wall === undefined ? 0 : wall.position.x + 1 - blockXMin;
+
     right.addChild(
       moveContainerToBlockXyz(
-        { x: 0, y: iy },
+        { x, y: iy },
         createSprite({
           pivot: { x: 0, y: 0 },
           texture: `${type}.right`,
@@ -134,6 +162,14 @@ const edges = ({
     );
   }
   return { right, towards };
+};
+
+const extraWalls = (
+  items: RoomJson<SceneryName, string, string>["items"],
+): Iterable<JsonItem<"wall">> => {
+  return [
+    ...iterate(objectValues(items)).filter((item) => item.type === "wall"),
+  ];
 };
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
@@ -153,6 +189,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     const {
       floor: floorType,
       color: { shade },
+      roomJson: { items: jsonItems },
     } = room;
 
     const container = new Container({ label: `floor(${room.id})` });
@@ -219,7 +256,10 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     const { towards: towardsOverdraw, right: rightOverdraw } = edges({
       blockXExtent,
       blockYExtent,
+      blockXMin,
+      blockYMin,
       type: "floorOverdraw",
+      extraWalls: extraWalls(jsonItems),
     });
 
     container.addChild(towardsOverdraw);
@@ -290,7 +330,10 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
     const { towards: towardsEdgeContainer, right: rightEdgeContainer } = edges({
       blockXExtent,
       blockYExtent,
+      blockXMin,
+      blockYMin,
       type: "floorEdge",
+      extraWalls: extraWalls(room.roomJson.items),
     });
 
     const colourise = !onHold && displaySettings.colourise;
