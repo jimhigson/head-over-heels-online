@@ -632,33 +632,6 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary14/items/liftshaftToward2",
-    "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 2 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/penitentiary14/items/liftshaftToward4",
-    "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 4 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/penitentiary14/items/liftshaftToward6",
-    "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 6 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
     "path": "/rooms/penitentiary14/items/liftshaftRight1",
     "value": {
       "config": { "axis": "y" },
@@ -690,6 +663,33 @@
     "value": {
       "config": { "axis": "y" },
       "position": { "x": 6.5, "y": 1, "z": 7 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward2",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 2 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward4",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward6",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 6 },
       "type": "barrier"
     }
   },
@@ -1379,8 +1379,113 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/bookworld29/items/lift@3,3,0/config/bottom",
+    "value": -7
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld28/items/lift@3,3,1/position/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
     "path": "/rooms/bookworld28/items/lift@3,3,1/config/top",
-    "value": 11
+    "value": 16
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld28/items/block@3,0,0/config/style",
+    "value": "artificial"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/bookworld28/items/block@0,3,0/config/style",
+    "value": "artificial"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,10,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 10, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,11,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 11, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,12,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 12, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,13,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 13, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,14,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 14, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@3,15,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 15, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@4,8,1",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 8, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/items/block@4,9,1",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 9, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/bookworld28/ceilingRelativePoint",
+    "value": { "x": 4, "y": 4 }
   },
   { "op": "replace", "path": "/rooms/bookworld27/color/hue", "value": "green" },
   {
@@ -1397,7 +1502,7 @@
   {
     "op": "replace",
     "path": "/rooms/bookworld24/items/movableBlock@7,2,0/config/activated",
-    "value": true
+    "value": "onStand"
   },
   {
     "op": "replace",

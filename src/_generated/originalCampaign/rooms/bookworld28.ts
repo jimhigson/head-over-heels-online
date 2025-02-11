@@ -3,6 +3,7 @@ import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
+  ceilingRelativePoint: { x: 4, y: 4 },
   color: { hue: "white", shade: "basic" },
   floor: "deadly",
   id: "bookworld28",
@@ -23,7 +24,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@0,3,0": {
-      config: { style: "organic" },
+      config: { style: "artificial" },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
@@ -68,8 +69,44 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@3,0,0": {
-      config: { style: "organic" },
+      config: { style: "artificial" },
       position: { x: 3, y: 0, z: 0 },
+      type: "block",
+    },
+    "block@3,10,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 10, z: 0 },
+      type: "block",
+    },
+    "block@3,11,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 11, z: 0 },
+      type: "block",
+    },
+    "block@3,12,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 12, z: 0 },
+      type: "block",
+    },
+    "block@3,13,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 13, z: 0 },
+      type: "block",
+    },
+    "block@3,14,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 14, z: 0 },
+      type: "block",
+    },
+    "block@3,15,0": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 15, z: 0 },
       type: "block",
     },
     "block@3,7,0": {
@@ -122,9 +159,21 @@ export const room = inferRoomJson({
       position: { x: 4, y: 8, z: 0 },
       type: "block",
     },
+    "block@4,8,1": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 8, z: 0 },
+      type: "block",
+    },
     "block@4,9,0": {
       config: { style: "organic" },
       position: { x: 4, y: 9, z: 0 },
+      type: "block",
+    },
+    "block@4,9,1": {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 9, z: 0 },
       type: "block",
     },
     "block@5,0,0": {
@@ -233,8 +282,8 @@ export const room = inferRoomJson({
       type: "door",
     },
     "lift@3,3,1": {
-      config: { bottom: 0, top: 11 },
-      position: { x: 3, y: 3, z: 1 },
+      config: { bottom: 0, top: 16 },
+      position: { x: 3, y: 3, z: 3 },
       type: "lift",
     },
   },

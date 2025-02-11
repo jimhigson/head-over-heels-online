@@ -238,7 +238,16 @@ export const changeCharacterRoom = <RoomId extends string>(
         // an extra boost of one block when travelling up - this is because the room above won't have a floor
         // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
         changeType === "portal" && sourceItem.config.direction.z > 0 ?
-          { z: blockSizePx.h }
+          {
+            z: blockSizePx.h,
+            // *
+            // (playableItem.type === "headOverHeels" ?
+            //   // headOverHeels is taller, so they hit the ceiling portal earlier (bookworld28 -> bookworld29) so they need
+            //   // two extra blocks of height. Actually, bw28/29 is a heads room, but the same principle should apply
+            //   // and there's no known case where this is needed - left commented just in case
+            //   2
+            // : 1),
+          }
         : {},
       );
 
