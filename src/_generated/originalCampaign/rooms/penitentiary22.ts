@@ -187,6 +187,36 @@ export const room = inferRoomJson({
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
+    extra1: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 1 },
+      type: "block",
+    },
+    extra2: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 2 },
+      type: "block",
+    },
+    extra3: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 3 },
+      type: "block",
+    },
+    extra4: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 4 },
+      type: "block",
+    },
+    extra5: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 5 },
+      type: "block",
+    },
+    extra6: {
+      config: { style: "tower" },
+      position: { x: 0, y: 4, z: 6 },
+      type: "block",
+    },
     "pickup@4,4,5": {
       config: { gives: "extra-life" },
       position: { x: 4, y: 4, z: 5 },

@@ -17,11 +17,6 @@ export const room = inferRoomJson({
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
-    "deadlyBlock@0,5,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@1,5,0": {
       config: { style: "volcano" },
       position: { x: 1, y: 5, z: 0 },

@@ -1,7 +1,7 @@
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { objectValues, size } from "iter-tools";
+import { size, objectKeys, objectValues } from "iter-tools";
 import { iterate } from "../../../../../../utils/iterate";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
@@ -10,6 +10,7 @@ import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
 
 export const GameOverDialog = () => {
   const planetsLiberatedCount = useAppSelector((state) =>
@@ -18,6 +19,9 @@ export const GameOverDialog = () => {
   const roomsExploredCount = useAppSelector((state) =>
     size(iterate(objectValues(state.roomsExplored))),
   );
+  // we are assuming the original campaign - will need to be changed
+  // when others are supported
+  const roomCount = size(objectKeys(campaign.rooms));
   return (
     <DialogPortal>
       <Border className="bg-redShadow zx:bg-zxCyan" />
@@ -36,7 +40,7 @@ export const GameOverDialog = () => {
           Score -
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">
-          Explored {String(roomsExploredCount)} rooms
+          Explored {String(roomsExploredCount)} / {String(roomCount)} rooms
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-lightGrey zx:text-zxWhite">
           Liberated {String(planetsLiberatedCount)} planets
