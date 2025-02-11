@@ -94,8 +94,63 @@ export const room = inferRoomJson({
     },
     "lift@0,1,0": {
       config: { bottom: 0, top: 11 },
-      position: { x: 0, y: 1, z: 0 },
+      position: { x: 7, y: 1, z: 0 },
       type: "lift",
+    },
+    liftshaftAway0: {
+      config: { axis: "x" },
+      position: { x: 7, y: 1.5, z: 0 },
+      type: "barrier",
+    },
+    liftshaftAway2: {
+      config: { axis: "x" },
+      position: { x: 7, y: 1.5, z: 2 },
+      type: "barrier",
+    },
+    liftshaftAway4: {
+      config: { axis: "x" },
+      position: { x: 7, y: 1.5, z: 4 },
+      type: "barrier",
+    },
+    liftshaftAway6: {
+      config: { axis: "x" },
+      position: { x: 7, y: 1.5, z: 6 },
+      type: "barrier",
+    },
+    liftshaftRight1: {
+      config: { axis: "y" },
+      position: { x: 6.5, y: 1, z: 1 },
+      type: "barrier",
+    },
+    liftshaftRight3: {
+      config: { axis: "y" },
+      position: { x: 6.5, y: 1, z: 3 },
+      type: "barrier",
+    },
+    liftshaftRight5: {
+      config: { axis: "y" },
+      position: { x: 6.5, y: 1, z: 5 },
+      type: "barrier",
+    },
+    liftshaftRight7: {
+      config: { axis: "y" },
+      position: { x: 6.5, y: 1, z: 7 },
+      type: "barrier",
+    },
+    liftshaftToward2: {
+      config: { axis: "x" },
+      position: { x: 7, y: 0.5, z: 2 },
+      type: "barrier",
+    },
+    liftshaftToward4: {
+      config: { axis: "x" },
+      position: { x: 7, y: 0.5, z: 4 },
+      type: "barrier",
+    },
+    liftshaftToward6: {
+      config: { axis: "x" },
+      position: { x: 7, y: 0.5, z: 6 },
+      type: "barrier",
     },
     "portableBlock@6,5,1": {
       config: { style: "sticks" },
