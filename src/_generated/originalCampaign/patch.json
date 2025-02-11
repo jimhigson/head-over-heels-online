@@ -27,6 +27,16 @@
     }
   },
   {
+    "op": "add",
+    "path": "/rooms/safari3/items/liftExtra",
+    "value": {
+      "config": { "bottom": 0, "top": 8 },
+      "position": { "x": 2, "y": 4, "z": 0 },
+      "type": "lift",
+      "isExtra": true
+    }
+  },
+  {
     "op": "replace",
     "path": "/rooms/safari24/items/movableBlock@0,2,0/config/activated",
     "value": "onStand"
@@ -564,9 +574,9 @@
     "path": "/rooms/penitentiary2/items/extra0",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
@@ -574,9 +584,9 @@
     "path": "/rooms/penitentiary2/items/extra1",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 1 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
@@ -584,9 +594,9 @@
     "path": "/rooms/penitentiary2/items/extra2",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 2 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
