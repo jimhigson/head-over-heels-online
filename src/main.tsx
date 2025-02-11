@@ -40,7 +40,7 @@ const AppLoader = () => {
       <App />
     : <>
         <Border className="loading-border" />
-        <Dialog className="bg-zxWhite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
+        <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
       </>;
 };
 
