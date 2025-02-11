@@ -8,7 +8,8 @@ import { playableAppearance } from "./playableAppearance";
 import type { ItemAppearance } from "./appearanceUtils";
 import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
-import { floorAppearance, floorEdgeAppearance } from "./floorAppearance";
+import { floorAppearance } from "./floorAppearance/floorAppearance";
+import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
 import {
   doughnuttedFilter,
   greyFilter,
