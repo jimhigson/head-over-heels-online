@@ -4,7 +4,6 @@ import { type GameApi } from "../../GameApi.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { GameApiProvider } from "../GameApiContext.tsx";
 import type Cheats from "../cheats/Cheats.tsx";
-import { CssVariables } from "../CssVariables.tsx";
 import { useAppSelector } from "../../../store/hooks.ts";
 import { ConnectInputToStore } from "../../../store/storeFlow/ConnectInputToStore.tsx";
 import { Dialogs } from "../dialogs/menuDialog/Dialogs.tsx";
@@ -122,18 +121,14 @@ export const GamePage = () => {
         ref={setGameDiv}
       />
       <ConnectInputToStore />
-      <Dialogs />
-      {gameApi && (
-        <GameApiProvider gameApi={gameApi}>
-          {cheatsOn && gameApi && (
-            <Suspense fallback={null}>
-              <CssVariables>
-                <LazyCheats />
-              </CssVariables>
-            </Suspense>
-          )}
-        </GameApiProvider>
-      )}
+      <GameApiProvider gameApi={gameApi}>
+        <Dialogs />
+        {gameApi && cheatsOn && (
+          <Suspense fallback={null}>
+            <LazyCheats />
+          </Suspense>
+        )}
+      </GameApiProvider>
     </>
   );
 };

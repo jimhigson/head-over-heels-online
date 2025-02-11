@@ -1,7 +1,22 @@
-import { spriteSheet } from "../../../sprites/spriteSheet";
+import { useEffect, useState } from "react";
+import { load, spriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 
 export const SpritePage = () => {
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const go = async () => {
+      await load();
+      setLoaded(true);
+    };
+    go();
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];
   return (
     <div className="flex flex-wrap p-[8px] bg-pureBlack">

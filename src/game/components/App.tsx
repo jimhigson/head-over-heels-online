@@ -18,7 +18,7 @@ const AppInner = () => {
   }, [revertColours]);
 
   return (
-    <>
+    <CssVariables>
       <Route path="/">
         <InputStateProvider>
           <GamePage />
@@ -29,7 +29,7 @@ const AppInner = () => {
           <SpritePage />
         </CssVariables>
       </Route>
-    </>
+    </CssVariables>
   );
 };
 

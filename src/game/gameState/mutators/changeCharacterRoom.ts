@@ -96,6 +96,14 @@ const findDestinationPortal = <RoomId extends string>(
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) ??
+        iterate(objectValues(toRoom.items)).find(
+          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+            isPortal(i) &&
+            // any ceiling portal - the floor would mean falling
+            // instantly out of the room
+            i.config.direction.z > 0,
+        ) ??
+        // fall back to any portal:
         iterate(objectValues(toRoom.items)).find(isPortal)
       );
 
