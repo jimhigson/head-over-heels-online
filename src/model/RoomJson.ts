@@ -1,5 +1,6 @@
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
+import type { Xy } from "../utils/vectors/vectors";
 import type { UnknownJsonItem } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 
@@ -24,8 +25,13 @@ export type RoomJson<
   };
   planet: P;
   floor: Floor;
-  //floorSkip: Xy[];
   roomAbove?: RoomId;
+  /**
+   * usually, the ceiling portal's relative point is the centre of the room. However, in cases
+   * where multi-rooms are stitched together into a single room, this relationship is broken.
+   * Ie, bookworld28/ bookworld29. In this case, this point is used instead
+   */
+  ceilingRelativePoint?: Xy;
   roomBelow?: RoomId;
   walls: RoomWalls<P>;
   // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
