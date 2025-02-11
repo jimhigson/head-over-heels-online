@@ -11,6 +11,7 @@
     "path": "/rooms/safari35/items/movableBlock@7,5,1/config/activated",
     "value": "onStand"
   },
+  { "op": "remove", "path": "/rooms/safari35/items/deadlyBlock@0,5,0" },
   {
     "op": "replace",
     "path": "/rooms/safari34/items/lift@7,7,0/config/top",
@@ -259,6 +260,16 @@
   },
   {
     "op": "add",
+    "path": "/rooms/penitentiary4/items/extra2b",
+    "value": {
+      "config": { "style": "artificial" },
+      "isExtra": true,
+      "position": { "x": 5, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
     "path": "/rooms/penitentiary4/items/extra3",
     "value": {
       "config": { "style": "artificial" },
@@ -451,6 +462,60 @@
     "op": "replace",
     "path": "/rooms/penitentiary23/items/lift@4,3,0/config/top",
     "value": 11
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra6",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 6 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra5",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 5 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra4",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 4 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra3",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra2",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 1 },
+      "type": "block"
+    }
   },
   { "op": "add", "path": "/rooms/penitentiary22/size/z", "value": 13 },
   { "op": "add", "path": "/rooms/penitentiary21/size/z", "value": 13 },
