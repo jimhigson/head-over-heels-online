@@ -586,8 +586,112 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary14/items/lift@0,1,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary14/items/lift@0,1,0/config/top",
     "value": 11
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftAway0",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 1.5, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftAway2",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 1.5, "z": 2 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftAway4",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 1.5, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftAway6",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 1.5, "z": 6 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward2",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 2 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward4",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftToward6",
+    "value": {
+      "config": { "axis": "x" },
+      "position": { "x": 7, "y": 0.5, "z": 6 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftRight1",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 6.5, "y": 1, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftRight3",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 6.5, "y": 1, "z": 3 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftRight5",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 6.5, "y": 1, "z": 5 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary14/items/liftshaftRight7",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 6.5, "y": 1, "z": 7 },
+      "type": "barrier"
+    }
   },
   {
     "op": "replace",
