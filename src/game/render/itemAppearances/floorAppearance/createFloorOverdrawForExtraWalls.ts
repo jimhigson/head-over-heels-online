@@ -36,9 +36,30 @@ export const createFloorOverdrawForExtraWalls = ({
             y: extraWallRanges.right[1] + 0.5 - blockYMin,
           },
         ]
-      : []
+      : [
+          // bottom
+          {
+            x: extraWallRanges.left[0] + 0.5 - blockXMin,
+            y: extraWallRanges.away[0] + 0.5,
+          },
+          // left
+          {
+            x: extraWallRanges.left[1] + 2.5 - blockXMin,
+            y: extraWallRanges.away[0],
+          },
+          // top
+          {
+            x: extraWallRanges.left[1] + 2.5 - blockXMin,
+            y: extraWallRanges.away[1] + 2.5,
+          },
+          // right
+          {
+            x: extraWallRanges.left[0] + 0.5 - blockXMin,
+            y: extraWallRanges.away[1] + 2.5,
+          },
+        ]
       ).map(projectBlockXyzToScreenXy),
       true,
     )
-    .fill(0x000);
+    .fill(0x000000);
 };

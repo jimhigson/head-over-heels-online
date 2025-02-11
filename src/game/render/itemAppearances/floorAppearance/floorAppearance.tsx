@@ -215,7 +215,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
 
     container.addChild(floorMaskCutOffLeftAndRight);
 
-    const extraWallRanges = findExtraWallRanges([...extraWalls], room.size);
+    const extraWallRanges = findExtraWallRanges([...extraWalls]);
 
     if (extraWallRanges !== undefined) {
       const floorOverdrawForExtraWalls = createFloorOverdrawForExtraWalls({
