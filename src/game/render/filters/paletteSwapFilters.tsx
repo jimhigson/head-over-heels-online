@@ -8,10 +8,17 @@ import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
 
-const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
-  replaceLight: basic,
-  replaceDark: dimmed,
-});
+const replaceMapForShades = ({
+  basic,
+  dimmed,
+  shadow,
+}: Shades): PaletteSwaps => {
+  return {
+    replaceLight: basic,
+    replaceDark: dimmed,
+    shadow,
+  };
+};
 
 const replaceMapForRoom = (room: UnknownRoomState): PaletteSwaps =>
   replaceMapForShades(colorScheme[room.color.hue][room.color.shade].main);
