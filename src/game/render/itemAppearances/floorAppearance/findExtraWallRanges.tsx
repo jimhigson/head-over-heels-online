@@ -1,5 +1,5 @@
 import type { JsonItem } from "../../../../model/json/JsonItem";
-import type { Xy, DirectionXy4 } from "../../../../utils/vectors/vectors";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 
 export type ExtraWallRanges =
   | {
@@ -18,18 +18,12 @@ export type ExtraWallRanges =
 // get min/max of the extra walls
 export const findExtraWallRanges = (
   extraWalls: Array<JsonItem<"wall">>,
-  roomSize: Xy,
 ): ExtraWallRanges | undefined => {
   if (extraWalls.length === 0) {
     return undefined;
   }
 
-  const ranges: Record<DirectionXy4, [number, number] | undefined> = {
-    left: [roomSize.y, 0],
-    right: [roomSize.y, 0],
-    towards: [roomSize.x, 0],
-    away: [roomSize.x, 0],
-  };
+  const ranges: { [d in DirectionXy4]?: [number, number] } = {};
 
   for (const wall of extraWalls) {
     const {
