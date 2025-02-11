@@ -465,37 +465,10 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary22/items/extra6",
+    "path": "/rooms/penitentiary22/items/extra1",
     "value": {
       "config": { "style": "tower" },
-      "position": { "x": 0, "y": 4, "z": 6 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/penitentiary22/items/extra5",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 4, "z": 5 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/penitentiary22/items/extra4",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 4, "z": 4 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/penitentiary22/items/extra3",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 4, "z": 3 },
+      "position": { "x": 0, "y": 4, "z": 1 },
       "type": "block"
     }
   },
@@ -510,10 +483,37 @@
   },
   {
     "op": "add",
-    "path": "/rooms/penitentiary22/items/extra1",
+    "path": "/rooms/penitentiary22/items/extra3",
     "value": {
       "config": { "style": "tower" },
-      "position": { "x": 0, "y": 4, "z": 1 },
+      "position": { "x": 0, "y": 4, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra4",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 4 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra5",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 5 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary22/items/extra6",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 4, "z": 6 },
       "type": "block"
     }
   },
