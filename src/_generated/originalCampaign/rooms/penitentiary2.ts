@@ -29,7 +29,7 @@ export const room = inferRoomJson({
     },
     "block@4,7,3": {
       config: { style: "artificial" },
-      position: { x: 4, y: 7, z: 3 },
+      position: { x: 4, y: 9, z: 3 },
       type: "block",
     },
     "block@6,3,0": {
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
     },
     "door@3,8,5": {
       config: { direction: "away", toRoom: "penitentiary13" },
-      position: { x: 3, y: 8, z: 5 },
+      position: { x: 3, y: 10, z: 5 },
       type: "door",
     },
     "door@8,3,5": {
@@ -72,19 +72,37 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 5 },
       type: "door",
     },
+    extra0: {
+      config: { style: "artificial" },
+      isExtra: true,
+      position: { x: 4, y: 9, z: 0 },
+      type: "block",
+    },
+    extra1: {
+      config: { style: "artificial" },
+      isExtra: true,
+      position: { x: 4, y: 9, z: 1 },
+      type: "block",
+    },
+    extra2: {
+      config: { style: "artificial" },
+      isExtra: true,
+      position: { x: 4, y: 9, z: 2 },
+      type: "block",
+    },
     "hushPuppy@1,7,0": {
       config: {},
-      position: { x: 1, y: 7, z: 0 },
+      position: { x: 1, y: 9, z: 0 },
       type: "hushPuppy",
     },
     "hushPuppy@2,7,1": {
       config: {},
-      position: { x: 2, y: 7, z: 1 },
+      position: { x: 2, y: 9, z: 1 },
       type: "hushPuppy",
     },
     "hushPuppy@3,7,2": {
       config: {},
-      position: { x: 3, y: 7, z: 2 },
+      position: { x: 3, y: 9, z: 2 },
       type: "hushPuppy",
     },
     "monster@6,3,2": {
@@ -98,7 +116,7 @@ export const room = inferRoomJson({
     },
   },
   planet: "penitentiary",
-  size: { x: 8, y: 8 },
+  size: { x: 8, y: 10 },
   walls: {
     away: [
       "loop",
@@ -117,7 +135,9 @@ export const room = inferRoomJson({
       "none",
       "none",
       "loop",
+      "loop",
       "skeleton",
+      "loop",
       "loop",
     ],
   },

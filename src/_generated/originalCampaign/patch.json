@@ -536,6 +536,74 @@
   },
   {
     "op": "replace",
+    "path": "/rooms/penitentiary2/items/door@3,8,5/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/items/hushPuppy@1,7,0/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/items/hushPuppy@2,7,1/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/items/hushPuppy@3,7,2/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/items/block@4,7,3/position/y",
+    "value": 9
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary2/items/extra0",
+    "value": {
+      "config": { "style": "artificial" },
+      "position": { "x": 4, "y": 9, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary2/items/extra1",
+    "value": {
+      "config": { "style": "artificial" },
+      "position": { "x": 4, "y": 9, "z": 1 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/penitentiary2/items/extra2",
+    "value": {
+      "config": { "style": "artificial" },
+      "position": { "x": 4, "y": 9, "z": 2 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/walls/left/7",
+    "value": "skeleton"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/penitentiary2/walls/left/6",
+    "value": "loop"
+  },
+  { "op": "add", "path": "/rooms/penitentiary2/walls/left/8", "value": "loop" },
+  { "op": "add", "path": "/rooms/penitentiary2/walls/left/9", "value": "loop" },
+  { "op": "replace", "path": "/rooms/penitentiary2/size/y", "value": 10 },
+  {
+    "op": "replace",
     "path": "/rooms/penitentiary19/color/shade",
     "value": "dimmed"
   },
