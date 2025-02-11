@@ -42,6 +42,12 @@ export const room = inferRoomJson({
       position: { x: 1, y: 4, z: 0 },
       type: "lift",
     },
+    liftExtra: {
+      config: { bottom: 0, top: 8 },
+      isExtra: true,
+      position: { x: 2, y: 4, z: 0 },
+      type: "lift",
+    },
   },
   planet: "safari",
   size: { x: 4, y: 8 },

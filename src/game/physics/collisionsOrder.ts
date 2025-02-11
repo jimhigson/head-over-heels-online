@@ -75,29 +75,31 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   sceneryPlayer: 0,
   bubbles: 0, // actually never solid so won't collide
 
-  block: 1,
-  barrier: 1,
-  floor: 1,
-  floorEdge: 1, // not actually possible to touch
-  hushPuppy: 1,
-  teleporter: 1,
-  doorFrame: 1,
+  // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
+  switch: 1,
 
-  lift: 2,
-  movableBlock: 2,
-  portableBlock: 2,
-  slidingBlock: 2,
-  spring: 2,
+  block: 2,
+  barrier: 2,
+  floor: 2,
+  floorEdge: 2, // not actually possible to touch
+  hushPuppy: 2,
+  teleporter: 2,
+  doorFrame: 2,
 
-  ball: 3,
-  joystick: 3,
-  switch: 3,
-  charles: 3,
-  conveyor: 3,
+  lift: 3,
+  movableBlock: 3,
+  portableBlock: 3,
+  slidingBlock: 3,
+  spring: 3,
 
-  head: 4,
-  heels: 4,
-  headOverHeels: 4,
+  ball: 4,
+  joystick: 4,
+  charles: 4,
+  conveyor: 4,
+
+  head: 5,
+  heels: 5,
+  headOverHeels: 5,
 
   pickup: 8,
 

@@ -4,6 +4,11 @@
     "path": "/rooms/safari9/items/movableBlock@0,1,3/config/activated",
     "value": "onStand"
   },
+  {
+    "op": "add",
+    "path": "/rooms/safari6triple/items/block@10,4,0/config/disappearing",
+    "value": "onStand"
+  },
   { "op": "replace", "path": "/rooms/safari6triple/size/y", "value": 12 },
   { "op": "replace", "path": "/rooms/safari6triple/size/x", "value": 12 },
   {
@@ -24,6 +29,16 @@
       "config": { "gives": "scroll", "page": "teleportBack" },
       "position": { "x": 3, "y": 6, "z": 0 },
       "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/safari3/items/liftExtra",
+    "value": {
+      "config": { "bottom": 0, "top": 8 },
+      "isExtra": true,
+      "position": { "x": 2, "y": 4, "z": 0 },
+      "type": "lift"
     }
   },
   {
@@ -564,9 +579,9 @@
     "path": "/rooms/penitentiary2/items/extra0",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
@@ -574,9 +589,9 @@
     "path": "/rooms/penitentiary2/items/extra1",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 1 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
@@ -584,9 +599,9 @@
     "path": "/rooms/penitentiary2/items/extra2",
     "value": {
       "config": { "style": "artificial" },
+      "isExtra": true,
       "position": { "x": 4, "y": 9, "z": 2 },
-      "type": "block",
-      "isExtra": true
+      "type": "block"
     }
   },
   {
