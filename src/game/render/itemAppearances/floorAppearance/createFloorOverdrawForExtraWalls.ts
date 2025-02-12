@@ -11,8 +11,6 @@ export const createFloorOverdrawForExtraWalls = ({
   blockXMin: number;
   blockYMin: number;
 }) => {
-  console.log(extraWallRanges);
-
   return new Graphics()
     .poly(
       (extraWallRanges.towards ?

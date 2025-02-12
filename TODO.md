@@ -20,6 +20,9 @@
 
 ### Details ad bugs
 
+[ ] move items collected into store, and show % on final screen 
+ - this is selected from in tests, so would need store to be non-singleton maybe
+
 [ ] disable infinite lives while playing
 
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
