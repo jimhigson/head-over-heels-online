@@ -56,6 +56,7 @@ const speedForItem = (itemWithMovement: ItemWithMovement<string>) => {
   }
 };
 
+const rushTripThreshold = blockSizePx.w / 2;
 const rushTowardPlayerXy4 = <RoomId extends string>(
   {
     state: {
@@ -84,7 +85,7 @@ const rushTowardPlayerXy4 = <RoomId extends string>(
 
     const vectorXyToPlayer = subXy(player.state.position, position);
 
-    if (Math.abs(vectorXyToPlayer.y) < 2) {
+    if (Math.abs(vectorXyToPlayer.y) < rushTripThreshold) {
       return {
         movementType: "vel",
         vels: {
@@ -97,7 +98,7 @@ const rushTowardPlayerXy4 = <RoomId extends string>(
       };
     }
 
-    if (Math.abs(vectorXyToPlayer.x) < 2) {
+    if (Math.abs(vectorXyToPlayer.x) < rushTripThreshold) {
       return {
         movementType: "vel",
         vels: {
@@ -418,7 +419,13 @@ const handleMonsterTouchingItemByTurning = <RoomId extends string>(
 
 const handleMonsterTouchingItemByStopping = <RoomId extends string>({
   movingItem: itemWithMovement,
+  movementVector,
 }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>) => {
+  if (movementVector.z < 0) {
+    // don't stop if fell onto the item
+    return;
+  }
+
   itemWithMovement.state.vels.walking = originXyz;
 };
 
