@@ -141,7 +141,7 @@ export const room = inferRoomJson({
     },
     "movableBlock@1,1,1": {
       config: {
-        activated: false,
+        activated: true,
         movement: "back-forth",
         startDirection: "right",
         style: "stepStool",

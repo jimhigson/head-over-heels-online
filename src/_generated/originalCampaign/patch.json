@@ -1041,6 +1041,96 @@
   { "op": "replace", "path": "/rooms/moonbase10/color/hue", "value": "yellow" },
   {
     "op": "add",
+    "path": "/rooms/moonbase10/items/extra0a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extra1a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extra2a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrab0",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrab1",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrab2",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrac0",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrac1",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/moonbase10/items/extrac2",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
     "path": "/rooms/moonbase1/items/scroll",
     "value": {
       "config": { "gives": "scroll", "page": "hushPuppies" },
@@ -1723,6 +1813,16 @@
   {
     "op": "replace",
     "path": "/rooms/blacktooth81/items/movableBlock@6,7,0/config/activated",
+    "value": true
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth80/items/monster@2,4,0/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/blacktooth78/items/movableBlock@1,1,1/config/activated",
     "value": true
   },
   {
