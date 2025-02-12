@@ -6,7 +6,7 @@ import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
-import { handlePlayerTouchingJoystick } from "./handlePlayerTouchingJoystick";
+import { handleItemTouchingJoystick } from "./handleItemTouchingJoystick";
 import {
   movingItemIsPlayable,
   movingItemIsType,
@@ -61,7 +61,7 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   }
 
   if (touchedItemIsType(e, "joystick")) {
-    handlePlayerTouchingJoystick(e);
+    handleItemTouchingJoystick(e);
   }
 
   if (e.touchedItem.state.disappear) {

@@ -6,7 +6,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
 
-export const handlePlayerTouchingJoystick = <RoomId extends string>({
+export const handleItemTouchingJoystick = <RoomId extends string>({
   movingItem,
   room,
   touchedItem: joystickItem,

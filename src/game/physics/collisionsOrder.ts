@@ -152,6 +152,16 @@ export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
       obstaclePointEarliestPointInVector(vector, obsB),
     );
 
+    if (Math.abs(aDistance - bDistance) < 0.0001) {
+      // these are effectively being touched at the same time. Arbitrarily
+      // choose based on the alphabetical order of the ids. This means that
+      // the order is stable between frames. Otherwise, it would flicker back
+      // and forth due to floating point errors, for example if in a nest of
+      // joysticks like on#blacktooth47market an moving at exactly 45 degrees,
+      // so both joysticks touched have equal claim at being touched first
+      return obsA.id < obsB.id ? -1 : 1;
+    }
+
     return aDistance - bDistance;
   });
 };

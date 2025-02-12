@@ -1,4 +1,4 @@
-import { isItemType, isSlidingItem } from "./itemPredicates";
+import { isItemType, isJoystick, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
@@ -78,13 +78,6 @@ export const moveItem = <RoomId extends string>({
     state: { position: originalPosition },
   } = subjectItem;
 
-  // strategy is to move to the target position, then back off as needed
-  subjectItem.state.position = addXyz(originalPosition, posDelta);
-  if (isFreeItem(subjectItem)) {
-    // it isn't clear why subjectItem would ever *not* be a freeItem
-    subjectItem.state.actedOnAt = room.roomTime;
-  }
-
   if (log)
     console.log(
       `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
@@ -98,6 +91,13 @@ export const moveItem = <RoomId extends string>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
       : (subjectItem.state as any).vels,
     );
+
+  // strategy is to move to the target position, then back off as needed
+  subjectItem.state.position = addXyz(originalPosition, posDelta);
+  if (isFreeItem(subjectItem)) {
+    // it isn't clear why subjectItem would ever *not* be a freeItem
+    subjectItem.state.actedOnAt = room.roomTime;
+  }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
     posDelta,
@@ -115,6 +115,7 @@ export const moveItem = <RoomId extends string>({
       room.items,
     );
 
+  let touchedJoystick = false;
   for (const collision of sortedCollisions) {
     if (
       //dist - 0.001 > lastProcessedDistance &&
@@ -125,7 +126,18 @@ export const moveItem = <RoomId extends string>({
       continue;
     }
 
-    if (pusher !== collision)
+    const collisionIsWithJoystick = isJoystick(collision);
+
+    if (
+      pusher !== collision &&
+      /* each item is only allowed to touch one joystick per frame. Otherwise,
+      in rooms such as #blacktooth47market it is possible to touch two at
+      once and make silly old face go super-quick */
+      !(touchedJoystick && collisionIsWithJoystick)
+    ) {
+      if (log) {
+        console.log(`handling ${subjectItem.id} touching ${collision.id}`);
+      }
       handleItemsTouchingItems({
         movingItem: subjectItem,
         touchedItem: collision,
@@ -134,6 +146,9 @@ export const moveItem = <RoomId extends string>({
         deltaMS,
         room,
       });
+
+      touchedJoystick = touchedJoystick || collisionIsWithJoystick;
+    }
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
     if (room.items[subjectItem.id] === undefined) {
@@ -181,7 +196,7 @@ export const moveItem = <RoomId extends string>({
       // the vector in the direction of the push:
       const forwardPushVector = scaleXyz(backingOffMtv, pushCoefficient);
 
-      // we are going slower due to pushing so back off some more:
+      // we are going slower due to pushing so back off, but not completely:
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         backingOffMtv,
