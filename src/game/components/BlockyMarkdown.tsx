@@ -28,7 +28,7 @@ const markdownComponents: CustomComponentsOption = {
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <div className={`mb-1 ${multilineTextClass}`}>
+      <div className={`mb-1 last:mb-0 ${multilineTextClass}`}>
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </div>
     );
