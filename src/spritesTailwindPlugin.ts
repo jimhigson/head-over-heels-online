@@ -149,5 +149,13 @@ export const spritesTailwindPlugin = plugin(
       // class
       ".selectedMenuItem &",
     ]);
+    addVariant("disabledMenuItem", [
+      // can put selectedMenuItem:foo on the top of the menu, and it will apply
+      // to menu items with the selectedMenuItem class:
+      "& [data-menuitem_disabled=true]",
+      // can put selectedMenuItem:foo inside menu items with the selectedMenuItem
+      // class
+      "[data-menuitem_disabled=true] &",
+    ]);
   },
 );

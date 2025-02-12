@@ -15,7 +15,10 @@ import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { useAppSelector } from "../../../../../../store/hooks";
 import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { selectShowFps } from "../../../../../../store/selectors";
+import {
+  selectShowFps,
+  useIsGameRunning,
+} from "../../../../../../store/selectors";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
@@ -23,7 +26,7 @@ const colouriseMarkdown = `![](texture-animated-head.walking.towards?float-right
 
 **on**: *16-colour* palette with colourised sprites`;
 
-const infiniteLivesMarkdown = `can’t be changed mid-game
+const infiniteLivesMarkdown = `pokes can’t be set mid-game
 
 **off**: *8* lives to start; extra life rabbits spread thinly through the game
 
@@ -79,7 +82,7 @@ export const ModernisationOptionsDialog = () => {
           <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height">
             Modernisation options
           </BitmapText>
-          <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white zx:selectedMenuItem:text-zxGreen">
+          <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white disabledMenuItem:text-midGrey zx:selectedMenuItem:text-zxGreen">
             <MenuItem
               doubleHeightWhenFocussed
               id="colourise"
@@ -123,6 +126,7 @@ export const ModernisationOptionsDialog = () => {
                 toggleBoolean,
                 "userSettings.infiniteLivesPoke",
               )}
+              disabled={useIsGameRunning()}
             />
             <MenuItem
               doubleHeightWhenFocussed
@@ -135,6 +139,7 @@ export const ModernisationOptionsDialog = () => {
                   markdown={extraItemsMarkdown}
                 />
               }
+              disabled={true}
             />
             <MenuItem
               doubleHeightWhenFocussed
@@ -199,6 +204,7 @@ export const ModernisationOptionsDialog = () => {
                   markdown={resolutionHintMarkdown}
                 />
               }
+              disabled={true}
             />
             <MenuItemSeparator />
             <BackMenuItem />

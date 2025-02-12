@@ -42,9 +42,13 @@ export const ReadTheManualDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed">
-        <BitmapText className="ml-3 text-moss zx:text-zxBlack sprites-double-height">
-          Read the manual
-        </BitmapText>
+        <div className="text-moss zx:text-zxBlack mx-auto">
+          <span className="sprite texture-book.x zx:sprite-revert-to-white" />
+          <BitmapText className="sprites-double-height mx-1">
+            Read the manual
+          </BitmapText>
+          <span className="sprite texture-book.y zx:sprite-revert-to-white" />
+        </div>
         <MenuItems
           className={
             `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +

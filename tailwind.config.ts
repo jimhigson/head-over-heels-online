@@ -125,8 +125,9 @@ export default {
       menuItems: "min-content max-content 1fr",
     },
     zIndex: {
-      topSprite: "1",
-      dialogChrome: "2",
+      border: "10",
+      dialog: "20",
+      topSprite: "30",
     },
     keyframes: {
       // cursor flash - for when selecting the keys for an action

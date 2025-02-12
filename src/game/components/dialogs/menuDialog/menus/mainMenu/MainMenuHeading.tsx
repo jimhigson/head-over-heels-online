@@ -2,7 +2,7 @@ import { BitmapText } from "../../../../Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuHeading = () => (
-  <div className="flex  ml-3">
+  <div className="flex ml-3">
     <div className="flex flex-col gap-y-oneScaledPix items-center me-1">
       <BitmapText className="sprites-double-height text-metallicBlue zx:text-zxYellow">
         Head
