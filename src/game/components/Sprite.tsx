@@ -32,7 +32,7 @@ export const CssSprite = ({ className, tint }: CssSpriteProps) => {
 };
 
 export interface BitmapTextProps {
-  children: string | string[];
+  children: number | string | (string | number)[];
   /**
    * per-char colour (or any other style) cycling
    */
@@ -49,7 +49,9 @@ export const BitmapText = ({
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
-    Array.isArray(text) ? text.join(" ") : text;
+    Array.isArray(text) ? text.join(" ")
+    : typeof text === "number" ? `${text}`
+    : text;
   if (textString.length === 0) {
     return null;
   }

@@ -26,8 +26,9 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
 } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/modelTypes";
+import type { RoomState, RoomStateItems } from "../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../model/modelTypes";
+import { emptyObject, emptySet } from "../../utils/empty";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnknownItemInPlay,
@@ -89,6 +90,8 @@ const itemTickOrderComparator = (
 /* the items that moved while progressing the game state */
 export type MovedItems = Set<AnyItemInPlay>;
 
+const noItems = emptyObject as RoomStateItems<SceneryName, string>;
+
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -100,7 +103,8 @@ export const progressGameState = <RoomId extends string>(
     let movedItems = new Set<AnyItemInPlay>();
     for (let i = 0; i < gameState.gameSpeed; i++) {
       const subtickMoves = _progressGameState(gameState, deltaMS);
-      const itemsAtEndOfSubtick = selectCurrentRoomState(gameState).items;
+      const itemsAtEndOfSubtick =
+        selectCurrentRoomState(gameState)?.items ?? noItems;
       movedItems = new Set(
         iterate(
           // add the new moved items onto the old one:
@@ -124,6 +128,11 @@ export const _progressGameState = <RoomId extends string>(
   const { inputStateTracker } = gameState;
 
   const room = selectCurrentRoomState(gameState);
+
+  if (room === undefined) {
+    // no playables in rooms - game over
+    return emptySet;
+  }
 
   // take a snapshot of item positions before any physics ticks so we
   // can check later what has moved. DOne per physics tick, not render-tick
@@ -154,8 +163,10 @@ export const _progressGameState = <RoomId extends string>(
   const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
 
   for (const item of sortedItems) {
-    if (selectCurrentPlayableItem(gameState).state.action === "death") {
-      // all physics is suspended while death animation plays
+    const playable = selectCurrentPlayableItem(gameState);
+    if (playable === undefined || playable.state.action === "death") {
+      // all physics is suspended if no characters left (lost all lives) or
+      // while death animation plays
       break;
     }
 
@@ -194,6 +205,10 @@ const advanceTime = <RoomId extends string>(
   gameState.gameTime += deltaMS;
   room.roomTime += deltaMS;
   const playable = selectCurrentPlayableItem(gameState);
+
+  if (playable === undefined) {
+    return;
+  }
 
   if (playable.type === "headOverHeels") {
     playable.state.head.gameTime += deltaMS;

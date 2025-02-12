@@ -431,6 +431,10 @@ export class HudRenderer<RoomId extends string> {
 
   #updateColours(gameState: GameState<RoomId>, colourise: boolean) {
     const room = selectCurrentRoomState(gameState);
+    if (room === undefined) {
+      // game over, keep current colours
+      return;
+    }
     const colorScheme = getColorScheme(room.color);
 
     this.#uncurrentSpriteFilter.targetColor =

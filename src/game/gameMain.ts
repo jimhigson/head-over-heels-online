@@ -54,8 +54,12 @@ export const gameMain = async <RoomId extends string>(
       app.renderer?.resize(newSize.x, newSize.y);
     },
     changeRoom(roomId: RoomId) {
+      const currentPlayable = selectCurrentPlayableItem(gameState);
+      if (currentPlayable === undefined) {
+        return;
+      }
       changeCharacterRoom({
-        playableItem: selectCurrentPlayableItem(gameState),
+        playableItem: currentPlayable,
         gameState,
         toRoomId: roomId,
         changeType: "level-select",

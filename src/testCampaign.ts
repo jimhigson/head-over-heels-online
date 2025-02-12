@@ -183,7 +183,7 @@ const rooms = {
       {
         type: "deadlyBlock",
         config: { style: "volcano" },
-        position: { x: 0, y: 2, z: 0 },
+        position: { x: 0, y: 0, z: 0 },
       },
       // {
       //   type: "block",

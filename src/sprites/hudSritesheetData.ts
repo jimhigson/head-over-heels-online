@@ -60,6 +60,7 @@ const punctuation = [
   "`",
   "-",
   "+",
+  "%",
 ] as const;
 
 const brackets = ["(", ")", "[", "]", "<", ">"] as const;

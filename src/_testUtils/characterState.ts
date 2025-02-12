@@ -1,5 +1,7 @@
-import type { GameState } from "../game/gameState/GameState";
-import { selectCurrentRoomState } from "../game/gameState/GameState";
+import {
+  selectCurrentRoomState,
+  type GameState,
+} from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";
 
 export const headState = (gameState: GameState<TestRoomId>) => {
@@ -11,5 +13,5 @@ export const heelsState = (gameState: GameState<TestRoomId>) => {
 };
 
 export const itemState = (gameState: GameState<TestRoomId>, itemId: string) => {
-  return selectCurrentRoomState(gameState).items[itemId]!.state;
+  return selectCurrentRoomState(gameState)?.items[itemId]?.state;
 };

@@ -18,8 +18,11 @@ export type GameApi<RoomId extends string> = {
   /** Instantly move to a different room. Mostly for testing, debugging etc */
   changeRoom: (newRoom: RoomId) => void;
   resizeTo: (newSize: Xy) => void;
-  /** gets the game state for the room that is currently being viewed */
-  currentRoom: RoomState<SceneryName, RoomId>;
+  /**
+   * @returns the state for the room that is currently being viewed, or undefined if
+   * none (game over)
+   */
+  currentRoom: RoomState<SceneryName, RoomId> | undefined;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;

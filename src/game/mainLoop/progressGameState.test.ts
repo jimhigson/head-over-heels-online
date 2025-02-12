@@ -75,7 +75,7 @@ describe("pickups", () => {
     ).toBe(true);
     // the pickup should have disappeared:
     expect(
-      selectCurrentRoomState(gameState).items["pickupTwoSquaresFromHead"],
+      selectCurrentRoomState(gameState)?.items["pickupTwoSquaresFromHead"],
     ).toBeUndefined();
     expect(headState(gameState).lives).toBe(10);
 
@@ -86,7 +86,7 @@ describe("pickups", () => {
       ],
     ).toBeFalsy();
     expect(
-      selectCurrentRoomState(gameState).items[
+      selectCurrentRoomState(gameState)?.items[
         "pickupCharactersWillNotGetInThisTest"
       ],
     ).not.toBeUndefined();
@@ -149,7 +149,7 @@ describe("pickups", () => {
     );
     // the pickup should have disappeared:
     expect(
-      selectCurrentRoomState(gameState).items["pickupOnTheFloor"],
+      selectCurrentRoomState(gameState)?.items["pickupOnTheFloor"],
     ).toBeUndefined();
     expect(headState(gameState).lives).toBe(10);
   });
@@ -184,7 +184,7 @@ describe("pickups", () => {
     expect(heelsState(gameState).lives).toBe(10);
     // the pickup should have disappeared:
     expect(
-      selectCurrentRoomState(gameState).items["pickupAboveHeels"],
+      selectCurrentRoomState(gameState)?.items["pickupAboveHeels"],
     ).toBeUndefined();
   });
 
@@ -394,7 +394,7 @@ describe("doors", () => {
       },
       until: 2_000,
     });
-    expect(selectCurrentRoomState(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoomState(gameState)?.id).toBe("secondRoom");
   });
 });
 
@@ -457,14 +457,14 @@ describe("scrolls", () => {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
       until: (gameState) =>
-        selectCurrentRoomState(gameState).id === "secondRoom",
+        selectCurrentRoomState(gameState)?.id === "secondRoom",
     });
 
     expect(
-      selectCurrentRoomState(gameState).items["scrollThatShouldNotLoad"],
+      selectCurrentRoomState(gameState)?.items["scrollThatShouldNotLoad"],
     ).toBeUndefined();
     expect(
-      selectCurrentRoomState(gameState).items["scrollThatShouldLoad"],
+      selectCurrentRoomState(gameState)?.items["scrollThatShouldLoad"],
     ).toBeDefined();
   });
 });
@@ -548,7 +548,7 @@ describe("conveyors", () => {
     });
     const {
       items: { portableBlock },
-    } = selectCurrentRoomState(gameState);
+    } = selectCurrentRoomState(gameState)!;
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOn).toMatchObject({ id: "floor" });
     expect(heelsState(gameState).position).toEqual({
@@ -655,7 +655,7 @@ describe("deadly blocks", () => {
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
     expect(gameState.characterRooms.head).toBe(undefined);
     expect(gameState.currentCharacterName).toBe("heels");
-    expect(selectCurrentRoomState(gameState).id).toBe("secondRoom");
+    expect(selectCurrentRoomState(gameState)?.id).toBe("secondRoom");
   });
 });
 
@@ -779,7 +779,7 @@ describe("lifts", () => {
     });
 
     // lift is now stuck on top of the player
-    expect(itemState(gameState, "lift").position.z).toBe(12);
+    expect(itemState(gameState, "lift")?.position.z).toBe(12);
     // player hasn't moved
     expect(heelsState(gameState).position.z).toBe(0);
   });
@@ -955,7 +955,7 @@ describe("pushing", () => {
       until: 2_000,
     });
 
-    expect(itemState(gameState, "somethingToPush").position.y).toBe(
+    expect(itemState(gameState, "somethingToPush")?.position.y).toBe(
       // the edge of the block we are pushing into:
       blockSizePx.w * 3 +
         // a bit extra because the portable block does not fill up a full tile:
@@ -985,7 +985,7 @@ describe("pushing", () => {
       until: 2_000,
     });
 
-    expect(itemState(gameState, "somethingToPush2").position.y).toBe(
+    expect(itemState(gameState, "somethingToPush2")?.position.y).toBe(
       // the edge of the block we are pushing into:
       blockSizePx.w * 3 +
         // a bit extra because the portable block does not fill up a full tile:

@@ -20,6 +20,8 @@
 
 ### Details ad bugs
 
+[ ] disable infinite lives while playing
+
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
 
 [ ] bug: can make a character fall off the world if on top of other character while the go through a portal
@@ -134,6 +136,9 @@ translate: https://hoh.helmantika.com/jon-ritman/
     - should allow multi-line, eg when a loy of keys mapped
 
 # Rooms
+
+#bookworld 28/29
+[ ] lift up doesn't locate properly due to rooms being stitched together
 
 # blacktooth20
 [ ] [MINOR] corner of room not shown in shadow

@@ -22,7 +22,7 @@ export const useLevelSelectByUrlHash = <RoomId extends string>(
 
       if (
         roomIdFromHash !== undefined &&
-        gameApi.currentRoom.id !== roomIdFromHash
+        gameApi.currentRoom?.id !== roomIdFromHash
       )
         gameApi.changeRoom(roomIdFromHash);
     }
@@ -32,7 +32,7 @@ export const useLevelSelectByUrlHash = <RoomId extends string>(
 
       if (
         roomIdFromHash !== undefined &&
-        roomIdFromHash !== gameApi.currentRoom.id
+        roomIdFromHash !== gameApi.currentRoom?.id
       ) {
         gameApi.changeRoom(roomIdFromHash as RoomId);
       }

@@ -58,7 +58,19 @@ export const positionRoom = (
   // scrollable up in y if the top of the room is off the top of the screen when in the home position:
   const scrollableUp = roomHomePosition.y + topEdgeY - wallHeight < 0;
 
-  return (playable: PlayableItem, deltaMS: number, snapInstantly: boolean) => {
+  /**
+   * @param playable - undefined only if game over (both players have no lives)
+   */
+  return (
+    playable: PlayableItem | undefined,
+    deltaMS: number,
+    snapInstantly: boolean,
+  ) => {
+    if (playable === undefined) {
+      // don't scroll if no lives left for either character
+      return;
+    }
+
     const characterProjectionInRoom = projectWorldXyzToScreenXy(
       playable.state.position,
     );
