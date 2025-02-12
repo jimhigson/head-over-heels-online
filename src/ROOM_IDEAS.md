@@ -5,3 +5,5 @@ tricky/puzzle rooms
 * room to shoot switch (with doughnuts)
 
 * room with lots (>50) daleks and a bunny, have to walk over them (or through)
+
+* use anvil/stepstool (heavy) to manipulate lifts (push on for example)

@@ -71,7 +71,7 @@ export const room = inferRoomJson({
       config: {
         activated: true,
         movement: "clockwise",
-        startDirection: "towards",
+        startDirection: "right",
         style: "greenAndPink",
         which: "skiHead",
       },

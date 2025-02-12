@@ -134,7 +134,7 @@ const frames = {
     frame: { x: 127, y: 449, ...largeItemTextureSize },
   },
   "block.artificial.disappearing": {
-    frame: { x: 127, y: 449, ...largeItemTextureSize },
+    frame: { x: 127, y: 420, ...largeItemTextureSize },
   },
   "block.tower": {
     frame: { x: 27, y: 374, ...smallItemTextureSize },
