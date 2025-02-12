@@ -8,11 +8,14 @@ export const HoldDialog = () => {
   return (
     <DialogPortal>
       <Dialog className="!h-min !w-max text-center text-zxBlue p-0">
-        <BitmapText className="block sprites-double-height bg-zxBlack py-oneScaledPix">
+        <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix">
           hold
         </BitmapText>
         <span className="zx">
-          <PressToContinueBanner className={multilineTextClass} action="hold" />
+          <PressToContinueBanner
+            className={`${multilineTextClass} px-1`}
+            action="hold"
+          />
         </span>
       </Dialog>
     </DialogPortal>

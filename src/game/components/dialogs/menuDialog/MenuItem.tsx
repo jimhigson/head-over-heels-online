@@ -17,6 +17,7 @@ export type MenuItemProps = {
   doubleHeightWhenFocussed?: boolean;
   leader?: ReactElement;
   hidden?: boolean;
+  disabled?: boolean;
   onSelect?: () => void;
   className?: string;
   hint?: string | ReactElement;
@@ -28,6 +29,7 @@ const menuSelectOrJump = ["menu_select", "swop", "jump"] as const;
 
 export const menuItemDataAttributeId = "data-menuitem_id";
 export const menuItemDataAttributeHidden = "data-menuitem_hidden";
+export const menuItemDataAttributeDisabled = "data-menuitem_disabled";
 
 const noop = () => {};
 
@@ -39,6 +41,7 @@ export const MenuItem = ({
   doubleHeightWhenFocussed,
   onSelect = noop,
   hidden = false,
+  disabled = false,
   className,
   hint,
   leader,
@@ -56,7 +59,7 @@ export const MenuItem = ({
   useActionTap({
     action: menuSelectOrJump,
     handler: onSelect,
-    disabled: !focussed || hidden,
+    disabled: !focussed || hidden || disabled,
   });
 
   return (
@@ -66,6 +69,7 @@ export const MenuItem = ({
         // data attributes required for MenuItems to this this MenuItem in the dom:
         [menuItemDataAttributeId]: id,
         [menuItemDataAttributeHidden]: hidden,
+        [menuItemDataAttributeDisabled]: disabled,
       }}
       tabIndex={0}
       className={twMerge(

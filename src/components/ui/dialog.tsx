@@ -16,7 +16,7 @@ export const Dialog = ({ children, className, onClick }: DialogProps) => {
     <div
       className={twMerge(
         // pr-0: put scroll bar on menu items up against the edge of the dialog
-        `p-1 pr-0 fixed left-[50%] z-50 top-[50%] translate-y-[-50%] translate-x-[-50%] h-zx w-zx leading-none flex flex-col gap-y-1`,
+        `p-1 pr-0 fixed left-[50%] z-dialog top-[50%] translate-y-[-50%] translate-x-[-50%] h-zx w-zx leading-none flex flex-col gap-y-1`,
         className,
       )}
       onClick={onClick}
@@ -40,7 +40,7 @@ export const Border = ({
 }) => {
   return (
     <div
-      className={`fixed inset-0 ${className ? className : ""}`}
+      className={`fixed inset-0 z-border ${className ? className : ""}`}
       onClick={onClick}
     />
   );

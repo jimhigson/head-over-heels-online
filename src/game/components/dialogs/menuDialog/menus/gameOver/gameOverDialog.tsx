@@ -36,7 +36,7 @@ export const GameOverDialog = () => {
   const roomCount = size(objectKeys(campaign.rooms));
   return (
     <DialogPortal>
-      <Border className="bg-redShadow zx:bg-zxCyan" />
+      <Border className="bg-metallicBlue zx:bg-zxCyan" />
       <Dialog
         className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -49,7 +49,7 @@ export const GameOverDialog = () => {
           {scoreLabel}
         </BitmapText>
         <BitmapText className="mt-4 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
-          Score {String(score)}
+          Score {score.toLocaleString()}
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">
           Explored {roomsExploredCount} / {roomCount} rooms{" "}

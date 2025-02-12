@@ -13,6 +13,7 @@ import { Border, Dialog } from "../../../../../../components/ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { useCallback } from "react";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -26,6 +27,14 @@ const PlayGameLabel = () => {
 
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
+
+  const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");
+  const showStats = useDispatchActionCallback(goToSubmenu, "gameOver");
+
+  const showProgress = useCallback(() => {
+    showCrowns();
+    showStats();
+  }, [showCrowns, showStats]);
 
   return (
     <DialogPortal>
@@ -41,11 +50,20 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           />
           <MenuItem
             id="viewCrowns"
-            label="View the crowns"
-            onSelect={useDispatchActionCallback(goToSubmenu, "crowns")}
+            label="Progress so far"
+            onSelect={showProgress}
             doubleHeightWhenFocussed
             hidden={!isGameRunning}
           />
+          <MenuItem
+            id="quitGame"
+            label="Quit this game"
+            className="text-midRed zx:text-zxYellow"
+            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+            doubleHeightWhenFocussed
+            hidden={!isGameRunning}
+          />
+          {isGameRunning && <MenuItemSeparator />}
           <MenuItem
             id="selectKeys"
             label="Select the controls"
@@ -66,15 +84,6 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             label="Read the manual"
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
-          />
-          <MenuItemSeparator />
-          <MenuItem
-            id="quitGame"
-            label="Quit this game"
-            className="text-midRed zx:text-zxYellow"
-            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
-            doubleHeightWhenFocussed
-            hidden={!isGameRunning}
           />
         </MenuItems>
         {!isGameRunning && <MainMenuFooter />}
