@@ -1,6 +1,9 @@
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
-import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
+import {
+  selectCurrentPlayableItem,
+  selectPlayableItem,
+} from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import {
   combinePlayablesInSymbiosis,
@@ -15,6 +18,8 @@ import type {
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import { collision1to1 } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
+import { gameOver } from "../../../store/gameMenusSlice";
+import { store } from "../../../store/store";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -270,5 +275,9 @@ export const playableLosesLife = <RoomId extends string>(
     combinedPlayableLosesLife(gameState, characterLosingLifeItem);
   } else {
     individualPlayableLosesLife(gameState, characterLosingLifeItem);
+  }
+
+  if (selectCurrentPlayableItem(gameState) === undefined) {
+    store.dispatch(gameOver());
   }
 };

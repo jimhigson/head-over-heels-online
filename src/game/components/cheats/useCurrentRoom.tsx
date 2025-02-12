@@ -7,11 +7,11 @@ export const useCurrentlyViewedRoom = <RoomId extends string>():
   const gameApi = useGameApi<RoomId>();
 
   const [currentRoom, setCurrentRoom] = useState<RoomId | undefined>(
-    gameApi?.currentRoom.id,
+    gameApi?.currentRoom?.id,
   );
 
   useEffect(() => {
-    setCurrentRoom(gameApi.currentRoom.id);
+    setCurrentRoom(gameApi.currentRoom?.id);
 
     const roomChangeHandler = (roomId: RoomId) => {
       setCurrentRoom(roomId);

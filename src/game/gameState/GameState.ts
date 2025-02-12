@@ -10,11 +10,14 @@ import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 
+/**
+ * @returns undefined only if both chars have lost all lives (no current room)
+ */
 export const selectCurrentRoomState = <RoomId extends string>(
   gameState: GameState<RoomId>,
-): RoomState<SceneryName, RoomId> =>
+): RoomState<SceneryName, RoomId> | undefined =>
   // use a ! here because so long as a game is in progress, there should be a current room
-  gameState.characterRooms[gameState.currentCharacterName]!;
+  gameState.characterRooms[gameState.currentCharacterName];
 
 export type RoomPickupsCollected = Record<string, true>;
 

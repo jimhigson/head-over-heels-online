@@ -26,9 +26,12 @@ export const selectPlayableItem = <
     | undefined;
 };
 
+/**
+ * @returns undefined only if both players have lost all lives
+ */
 export const selectCurrentPlayableItem = <RoomId extends string>(
   gameState: GameState<RoomId>,
-): PlayableItem<CharacterName, RoomId> =>
+): PlayableItem<CharacterName, RoomId> | undefined =>
   // assuming both players haven't lost all their lives, or this is not reliable!
   selectPlayableItem(gameState, gameState.currentCharacterName)!;
 

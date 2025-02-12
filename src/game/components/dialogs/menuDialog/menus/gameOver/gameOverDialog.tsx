@@ -19,6 +19,18 @@ export const GameOverDialog = () => {
   const roomsExploredCount = useAppSelector((state) =>
     size(iterate(objectValues(state.roomsExplored))),
   );
+
+  // source: https://github.com/dougmencken/HeadOverHeels/blob/0babd055e91dee980bedce403ef53a35c8c526ef/source/guiactions/CreateGameOverSlide.cpp#L74
+  const score = roomsExploredCount * 160 + planetsLiberatedCount * 10_000;
+
+  const scoreLabel =
+    score < 8_000 ? "dummy"
+    : score < 20_000 ? "novice"
+    : score < 30_000 ? "spy"
+    : score < 55_000 ? "master-spy"
+    : score < 84_000 ? "hero"
+    : "liberator";
+
   // we are assuming the original campaign - will need to be changed
   // when others are supported
   const roomCount = size(objectKeys(campaign.rooms));
@@ -34,16 +46,17 @@ export const GameOverDialog = () => {
           classnameCycle={mainMenuCycle}
           className="mt-2 block text-center mx-auto sprites-double-height"
         >
-          Dummy
+          {scoreLabel}
         </BitmapText>
         <BitmapText className="mt-4 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
-          Score -
+          Score {String(score)}
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">
-          Explored {String(roomsExploredCount)} / {String(roomCount)} rooms
+          Explored {roomsExploredCount} / {roomCount} rooms{" "}
+          {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-lightGrey zx:text-zxWhite">
-          Liberated {String(planetsLiberatedCount)} planets
+          Liberated {planetsLiberatedCount} planets
         </BitmapText>
         <MenuItems className="hidden">
           <BackMenuItem />

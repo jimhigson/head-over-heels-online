@@ -16,11 +16,11 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           gameApi.changeRoom(toRoom);
         }
         if (item.type === "lift") {
-          const toRoom = gameApi.currentRoom.roomAbove;
+          const toRoom = gameApi.currentRoom?.roomAbove;
           if (toRoom) gameApi.changeRoom(toRoom);
         }
-        if (item.type === "floor") {
-          const toRoom = gameApi.currentRoom.roomBelow;
+        if (item.type === "floorEdge") {
+          const toRoom = gameApi.currentRoom?.roomBelow;
           if (toRoom) gameApi.changeRoom(toRoom);
         }
         console.log(

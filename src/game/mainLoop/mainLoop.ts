@@ -40,7 +40,11 @@ export class MainLoop<RoomId extends string> {
   #filtersWhenPaused!: Filter[];
   #filtersWhenUnpaused!: Filter[];
   #hudRenderer: HudRenderer<RoomId>;
-  #roomRenderer: RoomRenderer<RoomId, string>;
+  /**
+   * room renderer can only be undefined if there is no current room - both
+   * players have lost all lives
+   */
+  #roomRenderer: RoomRenderer<RoomId, string> | undefined;
   #worldContainer: Container = new Container({
     label: "MainLoop/world",
   });
@@ -59,11 +63,11 @@ export class MainLoop<RoomId extends string> {
 
     app.stage.scale = gameEngineUpscale;
 
-    this.#roomRenderer = new RoomRenderer(
-      gameState,
-      selectCurrentRoomState(gameState),
-      false,
-    );
+    const startingRoom = selectCurrentRoomState(gameState);
+    if (startingRoom === undefined) {
+      throw new Error("main loop with no starting room");
+    }
+    this.#roomRenderer = new RoomRenderer(gameState, startingRoom, false);
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
     this.#hudRenderer = new HudRenderer<RoomId>();
@@ -105,29 +109,34 @@ export class MainLoop<RoomId extends string> {
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
-      this.#roomRenderer.roomState !== tickRoom ||
-      this.#roomRenderer.upscale !== tickUpscale ||
-      this.#roomRenderer.displaySettings !== tickDisplaySettings ||
-      this.#roomRenderer.paused !== isPaused
+      this.#roomRenderer?.roomState !== tickRoom ||
+      this.#roomRenderer?.upscale !== tickUpscale ||
+      this.#roomRenderer?.displaySettings !== tickDisplaySettings ||
+      this.#roomRenderer?.paused !== isPaused
     ) {
-      this.#roomRenderer.destroy();
-      this.#roomRenderer = new RoomRenderer(
-        this.#gameState,
-        tickRoom,
-        isPaused,
-      );
-      this.#worldContainer.addChild(this.#roomRenderer.container);
-      // this isn't the ideal place to emit this from - it gets fired even if just the
-      // display settings change
-      this.#gameState.events.emit("roomChange", tickRoom.id);
-      this.#app.stage.scale = tickUpscale.gameEngineUpscale;
+      this.#roomRenderer?.destroy();
 
+      if (tickRoom) {
+        this.#roomRenderer = new RoomRenderer(
+          this.#gameState,
+          tickRoom,
+          isPaused,
+        );
+        this.#worldContainer.addChild(this.#roomRenderer.container);
+        // this isn't the ideal place to emit this from - it gets fired even if just the
+        // display settings change. but only the cheats needs this currently
+        this.#gameState.events.emit("roomChange", tickRoom.id);
+      } else {
+        this.#roomRenderer = undefined;
+      }
+
+      this.#app.stage.scale = tickUpscale.gameEngineUpscale;
       this.#initFilters();
     }
 
     // the room renderer runs even while paused - it is its responsibility to
     // exit quickly when nothing has changed
-    this.#roomRenderer.tick({
+    this.#roomRenderer?.tick({
       progression: this.#gameState.progression,
       movedItems,
       deltaMS,
@@ -148,7 +157,7 @@ export class MainLoop<RoomId extends string> {
   }
   stop() {
     this.#app.stage.removeChild(this.#worldContainer);
-    this.#roomRenderer.destroy();
+    this.#roomRenderer?.destroy();
     this.#hudRenderer.destroy();
     this.#app.ticker.remove(this.tick);
   }

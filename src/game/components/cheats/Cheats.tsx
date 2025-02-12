@@ -83,7 +83,10 @@ const SummonPlayableButton = <RoomId extends string>({
           return;
         }
 
-        const roomId = selectCurrentRoomState(gameApi.gameState).id;
+        const roomId = selectCurrentRoomState(gameApi.gameState)?.id;
+        if (roomId === undefined) {
+          return;
+        }
         gameApi.gameState.currentCharacterName = playableName;
 
         if (playableName === "headOverHeels") {
@@ -181,7 +184,6 @@ const Heading = ({ children }: { children: string }) => {
 
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const gameApi = useGameApi<RoomId>();
-  const { campaign } = gameApi.gameState;
 
   useDebugClickOnItem();
 
@@ -198,11 +200,21 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   ) => {
     const { gameState } = gameApi;
     const playable = selectCurrentPlayableItem(gameState);
+    if (playable === undefined) {
+      // probably can't click this button when there is no playable (game over)
+      // but protect anyway
+      return;
+    }
+    const room = selectCurrentRoomState(gameState);
+    if (room === undefined) {
+      return;
+    }
     addItemFromJsonToRoom({
       gameState,
-      room: selectCurrentRoomState(gameState),
+      room,
       itemType,
       config,
+      // locate the item above the player
       position: {
         ...playable.state.position,
         z: playable.state.position.z + blockSizePx.h * 2,
@@ -486,10 +498,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               className="flex-grow"
               onClick={(e) => {
                 if (gameApi) {
+                  const roomJson = selectCurrentRoomState(
+                    gameApi.gameState,
+                  )?.roomJson;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).roomJson = gameApi.gameState;
-                  const roomJson = campaign.rooms[gameApi.currentRoom.id];
-                  console.log(roomJson);
+                  (window as any).roomJson = roomJson;
+                  console.log("roomJson:", roomJson);
                   console.log("roomJson on window.roomJson");
                 }
                 e.currentTarget.blur();
@@ -515,18 +529,19 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               className="flex-grow"
               onClick={(e) => {
                 if (gameApi) {
-                  const { currentCharacterName } = gameApi.gameState;
-                  const playable =
-                    gameApi.currentRoom.items[currentCharacterName];
+                  const playable = selectCurrentPlayableItem(gameApi.gameState);
+                  if (playable === undefined) {
+                    console.log("no playable item");
+                    return;
+                  }
 
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (window as any).playable = playable;
                   console.log("currentCharacterName:", playable);
                   console.log("playable on window.playable");
 
-                  if (currentCharacterName !== "headOverHeels") {
-                    const otherName =
-                      otherIndividualCharacterName(currentCharacterName);
+                  if (playable.id !== "headOverHeels") {
+                    const otherName = otherIndividualCharacterName(playable.id);
                     const otherPlayableRoom =
                       gameApi.gameState.characterRooms[otherName];
                     console.log(
