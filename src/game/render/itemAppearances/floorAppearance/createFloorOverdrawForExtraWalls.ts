@@ -11,6 +11,8 @@ export const createFloorOverdrawForExtraWalls = ({
   blockXMin: number;
   blockYMin: number;
 }) => {
+  console.log(extraWallRanges);
+
   return new Graphics()
     .poly(
       (extraWallRanges.towards ?
@@ -39,23 +41,23 @@ export const createFloorOverdrawForExtraWalls = ({
       : [
           // bottom
           {
-            x: extraWallRanges.left[0] + 0.5 - blockXMin,
-            y: extraWallRanges.away[0] + 0.5,
+            x: extraWallRanges.away[0] + 1,
+            y: extraWallRanges.left[0] + 0.5 - blockYMin,
           },
           // left
           {
-            x: extraWallRanges.left[1] + 2.5 - blockXMin,
-            y: extraWallRanges.away[0],
+            x: extraWallRanges.away[1] + 2.5,
+            y: extraWallRanges.left[0] + 0.5 - blockYMin,
           },
           // top
           {
-            x: extraWallRanges.left[1] + 2.5 - blockXMin,
-            y: extraWallRanges.away[1] + 2.5,
+            x: extraWallRanges.away[1] + 2.5,
+            y: extraWallRanges.left[1] + 2.5 - blockYMin,
           },
           // right
           {
-            x: extraWallRanges.left[0] + 0.5 - blockXMin,
-            y: extraWallRanges.away[1] + 2.5,
+            x: extraWallRanges.away[0] + 1,
+            y: extraWallRanges.left[1] + 2.5 - blockYMin,
           },
         ]
       ).map(projectBlockXyzToScreenXy),
