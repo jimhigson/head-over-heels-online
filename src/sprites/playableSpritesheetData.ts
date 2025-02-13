@@ -2,11 +2,7 @@ import type { SpritesheetData } from "pixi.js";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { smallItemGridLocation, smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "../model/modelTypes";
-import {
-  directionsXy8,
-  type DirectionXy4,
-  type DirectionXy8,
-} from "../utils/vectors/vectors";
+import { directionsXy8, type DirectionXy8 } from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { zxSpectrumFrameRate } from "../originalGame";
 import type { FramesWithSpeed } from "./spriteSheetData";
@@ -38,8 +34,8 @@ function walkingFrames<P extends CharacterName>(p: P) {
     }),
     {},
   ) as Record<
-    `${P}.walking.${DirectionXy4}`,
-    FramesWithSpeed<Array<`${P}.walking.${DirectionXy4}.${"1" | "2" | "3"}`>>
+    `${P}.walking.${DirectionXy8}`,
+    FramesWithSpeed<Array<`${P}.walking.${DirectionXy8}.${"1" | "2" | "3"}`>>
   >;
 }
 
@@ -95,7 +91,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "head.walking.awayLeft",
     3,
-    smallItemGridLocation({ x: 1, y: 8 }),
+    smallItemGridLocation({ x: 1, y: 7 }),
     smallItemTextureSize,
   ),
   "head.blinking.towards": {
