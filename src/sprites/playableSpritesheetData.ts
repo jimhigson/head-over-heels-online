@@ -116,7 +116,14 @@ const frames = {
     { x: 159, y: 215 },
     smallItemTextureSize,
   ),
-} as const;
+  "head.walking.towardsRight.2": {
+    frame: {
+      x: 80,
+      y: 291,
+      ...smallItemTextureSize,
+    },
+  },
+} as const satisfies SpritesheetData["frames"];
 
 // head blinks every 5s in the original game
 const headBlinkPeriod = 5_000;
@@ -127,6 +134,10 @@ export const playableSpritesheetData = {
   animations: {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
+    "head.walking.towardsRight": withSpeed(
+      ["head.walking.towardsRight.2"],
+      playableWalkAnimationSpeed,
+    ),
     "head.idle.right": withSpeed(
       [
         // 50 frames of non-blinking confirmed against original to be about the same rate

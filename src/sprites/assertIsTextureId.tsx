@@ -1,5 +1,5 @@
 import { spritesheetData } from "./spriteSheetData";
-import type { TextureId } from "./spriteSheetData";
+import type { AnimationId, TextureId } from "./spriteSheetData";
 
 export function assertIsTextureId(
   textureId: string,
@@ -11,4 +11,8 @@ export function assertIsTextureId(
 
 export function isTextureId(textureId: string): textureId is TextureId {
   return spritesheetData.frames[textureId as TextureId] !== undefined;
+}
+
+export function isAnimationId(animationId: string): animationId is AnimationId {
+  return spritesheetData.animations[animationId as AnimationId] !== undefined;
 }

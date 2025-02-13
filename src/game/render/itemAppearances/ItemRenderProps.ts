@@ -5,14 +5,17 @@ import type {
   ItemInPlayType,
 } from "../../../model/ItemInPlay";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type {
+  DirectionXy4,
+  DirectionXy8,
+} from "../../../utils/vectors/vectors";
 
 type PortableItemRenderProps = {
   highlighted: boolean;
 };
 
 type PlayableRenderProps = {
-  facingXy4: DirectionXy4;
+  facingXy8: DirectionXy8;
   // used to change the speed of the walking animation
   walkSpeed: number;
   action: PlayableActionState;

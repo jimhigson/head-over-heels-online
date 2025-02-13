@@ -3,9 +3,9 @@ export type DirectionXy4 = (typeof directionsXy4)[number];
 
 export const directionsXyDiagonal = [
   "awayRight",
-  "rightTowards",
+  "towardsRight",
   "towardsLeft",
-  "leftAway",
+  "awayLeft",
 ] as const;
 
 export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
@@ -204,18 +204,19 @@ export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
 };
 
 const directionsXy8Octants: DirectionXy8[] = [
+  // these need to be in order clockwise
   "right",
-  "rightTowards",
+  "towardsRight",
   "towards",
   "towardsLeft",
   "left",
-  "leftAway",
+  "awayLeft",
   "away",
   "awayRight",
 ];
 
 export const vectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 => {
-  const angle = Math.atan2(-y, x); // Flip the y-axis for angle calculation
+  const angle = Math.atan2(-y, -x); // Flip the y-axis for angle calculation
   const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
 
   return directionsXy8Octants[octant];

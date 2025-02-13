@@ -44,18 +44,18 @@ describe("addXyz", () => {
 
 describe("vectorClosestDirectionXy8", () => {
   test.each([
-    [{ x: 1, y: 0 }, "right"],
-    [{ x: 1, y: -1 }, "rightTowards"],
+    [{ x: -1, y: 0 }, "right"],
+    [{ x: -1, y: -1 }, "towardsRight"],
     [{ x: 0, y: -1 }, "towards"],
-    [{ x: -1, y: -1 }, "towardsLeft"],
-    [{ x: -1, y: 0 }, "left"],
-    [{ x: -1, y: 1 }, "leftAway"],
+    [{ x: 1, y: -1 }, "towardsLeft"],
+    [{ x: 1, y: 0 }, "left"],
+    [{ x: 1, y: 1 }, "awayLeft"],
     [{ x: 0, y: 1 }, "away"],
-    [{ x: 1, y: 1 }, "awayRight"],
-    [{ x: 0.707, y: -0.707 }, "rightTowards"], // Close to 45 degrees
-    [{ x: -0.707, y: -0.707 }, "towardsLeft"], // Close to 135 degrees
-    [{ x: -0.707, y: 0.707 }, "leftAway"], // Close to 225 degrees
-    [{ x: 0.707, y: 0.707 }, "awayRight"], // Close to 315 degrees
+    [{ x: -1, y: 1 }, "awayRight"],
+    [{ x: -0.707, y: -0.707 }, "towardsRight"], // Close to 45 degrees
+    [{ x: 0.707, y: -0.707 }, "towardsLeft"], // Close to 135 degrees
+    [{ x: 0.707, y: 0.707 }, "awayLeft"], // Close to 225 degrees
+    [{ x: -0.707, y: 0.707 }, "awayRight"], // Close to 315 degrees
   ])("given input %o, returns %s", (input, expected) => {
     expect(vectorClosestDirectionXy8(input)).toBe(expected);
   });
