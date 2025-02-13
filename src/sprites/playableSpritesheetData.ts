@@ -134,25 +134,25 @@ const frames = {
   ...seriesOfNumberedTextures(
     "heels.walking.towards",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 6, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.right",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 9, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.left",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 6, y: 8 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.away",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 9, y: 8 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
