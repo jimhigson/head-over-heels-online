@@ -3,12 +3,15 @@ import {
   seriesOfNumberedTextures,
   fourDirections,
   seriesOfAnimationFrameTextureIds,
+  fourDirectionsOfNumberedTextures,
 } from "./spriteGenerators";
 import {
   wallTileSize,
   floorTileSize,
   largeItemTextureSize,
   smallItemTextureSize,
+  smallItemGridLocation,
+  largeItemGridLocation,
 } from "./textureSizes";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -19,6 +22,506 @@ import { doorSpritesheetData } from "./doorSpritesheetData";
 import { withSpeed } from "./withSpeed";
 
 const frames = {
+  ...seriesOfNumberedTextures(
+    "dalek",
+    2,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  "shadowMask.dalek": {
+    frame: {
+      ...smallItemGridLocation({ x: 2, y: 0 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...seriesOfNumberedTextures(
+    "bubbles.cold",
+    2,
+    smallItemGridLocation({ x: 3, y: 0 }),
+    smallItemTextureSize,
+  ),
+
+  homingBot: {
+    frame: {
+      ...smallItemGridLocation({ x: 5, y: 0 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ball: {
+    frame: {
+      ...smallItemGridLocation({ x: 0, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...fourDirections(
+    "cyberman",
+    smallItemGridLocation({ x: 1, y: 1 }),
+    smallItemTextureSize,
+  ),
+
+  ...fourDirections(
+    "charles",
+    smallItemGridLocation({ x: 4, y: 1 }),
+    smallItemTextureSize,
+  ),
+
+  ...fourDirections(
+    "elephant",
+    smallItemGridLocation({ x: 6, y: 1 }),
+    smallItemTextureSize,
+  ),
+
+  "crown.blacktooth": {
+    frame: {
+      ...smallItemGridLocation({ x: 7, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.safari": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.egyptus": {
+    frame: {
+      ...smallItemGridLocation({ x: 9, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.penitentiary": {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.bookworld": {
+    frame: {
+      ...smallItemGridLocation({ x: 11, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.dark": {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  sticks: {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  cube: {
+    frame: {
+      ...smallItemGridLocation({ x: 9, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  drum: {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  hooter: {
+    frame: {
+      ...smallItemGridLocation({ x: 11, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  bag: {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  joystick: {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.joystick": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...fourDirectionsOfNumberedTextures(
+    "turtle",
+    2,
+    smallItemGridLocation({ x: 0, y: 3 }),
+    smallItemTextureSize,
+  ),
+
+  ...fourDirections(
+    "monkey",
+    smallItemGridLocation({ x: 4, y: 3 }),
+    smallItemTextureSize,
+  ),
+
+  ...fourDirections(
+    "computerBot",
+    smallItemGridLocation({ x: 6, y: 3 }),
+    smallItemTextureSize,
+  ),
+
+  "spring.compressed": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "spring.released": {
+    frame: {
+      ...smallItemGridLocation({ x: 9, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "switch.left": {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "switch.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 11, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.switch": {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  tower: {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "shadowMask.tower": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  scroll: {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 4 }),
+      ...smallItemTextureSize,
+      pivot: { x: 19, y: 24 },
+    },
+  },
+  "shadow.scroll": {
+    frame: {
+      ...smallItemGridLocation({ x: 9, y: 4 }),
+      ...smallItemTextureSize,
+      pivot: { x: 19, y: 24 },
+    },
+  },
+  "shadowMask.scroll": {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 4 }),
+      ...smallItemTextureSize,
+      pivot: { x: 19, y: 24 },
+    },
+  },
+
+  puck: {
+    frame: {
+      ...smallItemGridLocation({ x: 11, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "puck.deadly": {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadow.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...seriesOfNumberedTextures(
+    "helicopterBug",
+    4,
+    smallItemGridLocation({ x: 0, y: 5 }),
+    smallItemTextureSize,
+  ),
+
+  "barrier.x": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 5 }),
+      ...smallItemTextureSize,
+      pivot: { x: 18, y: 23 },
+    },
+  },
+  "barrier.y": {
+    frame: {
+      ...smallItemGridLocation({ x: 5, y: 5 }),
+      ...smallItemTextureSize,
+      pivot: { x: 6, y: 23 },
+    },
+  },
+  "shadow.barrier.y": {
+    frame: {
+      ...smallItemGridLocation({ x: 6, y: 5 }),
+      ...smallItemTextureSize,
+      pivot: { x: 6, y: 22 },
+    },
+  },
+  "shadowMask.barrier.y": {
+    frame: {
+      ...smallItemGridLocation({ x: 7, y: 5 }),
+      ...smallItemTextureSize,
+      pivot: { x: 6, y: 22 },
+    },
+  },
+
+  doughnuts: {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 5 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...seriesOfNumberedTextures(
+    "bubbles.taupe",
+    3,
+    smallItemGridLocation({ x: 9, y: 5 }),
+    smallItemTextureSize,
+  ),
+
+  whiteRabbit: {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 5 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...seriesOfNumberedTextures(
+    "bubbles.white",
+    3,
+    smallItemGridLocation({ x: 13, y: 5 }),
+    smallItemTextureSize,
+  ),
+
+  ...seriesOfNumberedTextures(
+    "fish",
+    2,
+    smallItemGridLocation({ x: 12, y: 6 }),
+    smallItemTextureSize,
+  ),
+
+  ...seriesOfNumberedTextures(
+    "lift",
+    4,
+    smallItemGridLocation({ x: 0, y: 12 }),
+    smallItemTextureSize,
+  ),
+  "lift.static": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 12 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...fourDirections("skiHead.greenAndPink", { x: 1, y: 327 }, { w: 24, h: 32 }),
+  ...fourDirections(
+    "skiHead.starsAndStripes",
+    { x: 51, y: 327 },
+    { w: 24, h: 32 },
+  ),
+
+  "block.organic": {
+    frame: {
+      ...largeItemGridLocation({ x: 0, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "block.organic.disappearing": {
+    frame: {
+      ...largeItemGridLocation({ x: 1, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "block.organic.dark": {
+    frame: {
+      ...largeItemGridLocation({ x: 2, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "block.organic.dark.disappearing": {
+    frame: {
+      ...largeItemGridLocation({ x: 3, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "block.artificial": {
+    frame: {
+      ...largeItemGridLocation({ x: 4, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "block.artificial.disappearing": {
+    frame: {
+      ...largeItemGridLocation({ x: 5, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "book.x": {
+    frame: {
+      ...largeItemGridLocation({ x: 6, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "book.y": {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadow.fullBlock": {
+    frame: {
+      ...largeItemGridLocation({ x: 8, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.fullBlock": {
+    frame: {
+      ...largeItemGridLocation({ x: 9, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  stepStool: {
+    frame: {
+      ...largeItemGridLocation({ x: 0, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.stepStool": {
+    frame: {
+      ...largeItemGridLocation({ x: 1, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  volcano: {
+    frame: {
+      ...largeItemGridLocation({ x: 2, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.volcano": {
+    frame: {
+      ...largeItemGridLocation({ x: 3, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  hushPuppy: {
+    frame: {
+      ...largeItemGridLocation({ x: 4, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.hushPuppy": {
+    frame: {
+      ...largeItemGridLocation({ x: 5, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  toaster: {
+    frame: {
+      ...largeItemGridLocation({ x: 6, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  sandwich: {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  spikes: {
+    frame: {
+      ...largeItemGridLocation({ x: 8, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.spikes": {
+    frame: {
+      ...largeItemGridLocation({ x: 9, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "conveyor.x",
+    7,
+    largeItemGridLocation({ x: 0, y: 2 }),
+    largeItemTextureSize,
+  ),
+  "shadowMask.conveyor": {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: 2 }),
+      ...largeItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "conveyor.y",
+    7,
+    largeItemGridLocation({ x: 0, y: 3 }),
+    largeItemTextureSize,
+  ),
+  teleporter: {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: 3 }),
+      ...largeItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "teleporter.flashing",
+    2,
+    largeItemGridLocation({ x: 8, y: 3 }),
+    largeItemTextureSize,
+  ),
+  "shadowMask.teleporter": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 3 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  //----
+
   "floorEdge.right": {
     frame: { x: 400, y: 502, w: 8, h: 9 },
   },
@@ -93,200 +596,7 @@ const frames = {
       pivot: { x: 8, y: 20 },
     },
   },
-  teleporter: {
-    frame: { x: 2, y: 478, ...largeItemTextureSize },
-  },
-  ...seriesOfNumberedTextures(
-    "teleporter.flashing",
-    2,
-    { x: 35, y: 478 },
-    largeItemTextureSize,
-  ),
-  "shadowMask.teleporter": {
-    frame: { x: 101, y: 478, ...largeItemTextureSize },
-  },
 
-  "barrier.x": {
-    frame: { x: 335, y: 241, ...smallItemTextureSize, pivot: { x: 18, y: 23 } },
-  },
-  "barrier.y": {
-    frame: { x: 310, y: 241, ...smallItemTextureSize, pivot: { x: 6, y: 23 } },
-  },
-  "shadowMask.barrier.y": {
-    frame: { x: 310, y: 216, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
-  },
-  "shadow.barrier.y": {
-    frame: { x: 310, y: 266, ...smallItemTextureSize, pivot: { x: 6, y: 22 } },
-  },
-  "block.organic": {
-    frame: { x: 160, y: 449, ...largeItemTextureSize },
-  },
-  "block.organic.dark": {
-    frame: { x: 160, y: 391, ...largeItemTextureSize },
-  },
-  "block.organic.disappearing": {
-    frame: { x: 160, y: 420, ...largeItemTextureSize },
-  },
-  "block.organic.dark.disappearing": {
-    frame: { x: 127, y: 391, ...largeItemTextureSize },
-  },
-  "block.artificial": {
-    frame: { x: 127, y: 449, ...largeItemTextureSize },
-  },
-  "block.artificial.disappearing": {
-    frame: { x: 127, y: 420, ...largeItemTextureSize },
-  },
-  "block.tower": {
-    frame: { x: 27, y: 374, ...smallItemTextureSize },
-  },
-  "block.tower.disappearing": {
-    frame: { x: 27, y: 374, ...smallItemTextureSize },
-  },
-  volcano: {
-    frame: { x: 193, y: 420, ...largeItemTextureSize },
-  },
-  "shadowMask.volcano": {
-    frame: { x: 193, y: 449, ...largeItemTextureSize },
-  },
-  toaster: {
-    frame: { x: 226, y: 449, ...largeItemTextureSize },
-  },
-  spikes: {
-    frame: { x: 333, y: 427, ...largeItemTextureSize },
-  },
-  "shadowMask.spikes": {
-    frame: { x: 333, y: 397, ...largeItemTextureSize },
-  },
-  ...seriesOfNumberedTextures(
-    "conveyor.x",
-    7,
-    { x: 409, y: 454 },
-    largeItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "conveyor.y",
-    7,
-    { x: 409, y: 483 },
-    largeItemTextureSize,
-  ),
-  bunny: {
-    frame: { x: 77, y: 349, ...smallItemTextureSize },
-  },
-  scroll: {
-    frame: { x: 52, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
-  },
-  "shadowMask.scroll": {
-    frame: { x: 27, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
-  },
-  "shadow.scroll": {
-    frame: { x: 2, y: 324, ...smallItemTextureSize, pivot: { x: 19, y: 24 } },
-  },
-  doughnuts: {
-    frame: { x: 77, y: 324, ...smallItemTextureSize },
-  },
-  "crown.blacktooth": {
-    frame: { x: 186, y: 40, ...smallItemTextureSize },
-  },
-  "crown.safari": {
-    frame: { x: 211, y: 40, ...smallItemTextureSize },
-  },
-  "crown.egyptus": {
-    frame: { x: 236, y: 40, ...smallItemTextureSize },
-  },
-  "crown.penitentiary": {
-    frame: { x: 261, y: 40, ...smallItemTextureSize },
-  },
-  "crown.bookworld": {
-    frame: { x: 286, y: 40, ...smallItemTextureSize },
-  },
-  "crown.dark": {
-    frame: { x: 311, y: 40, ...smallItemTextureSize },
-  },
-  hooter: {
-    frame: { x: 202, y: 349, ...smallItemTextureSize },
-  },
-  bag: {
-    frame: { x: 227, y: 349, ...smallItemTextureSize },
-  },
-  ...seriesOfNumberedTextures(
-    "fish",
-    2,
-    { x: 177, y: 324 },
-    smallItemTextureSize,
-  ),
-  "spring.compressed": {
-    frame: { x: 2, y: 453, ...smallItemTextureSize },
-  },
-  "spring.released": {
-    frame: { x: 27, y: 453, ...smallItemTextureSize },
-  },
-
-  ...seriesOfNumberedTextures(
-    "lift",
-    4,
-    { x: 233, y: 481 },
-    smallItemTextureSize,
-  ),
-  "lift.static": { frame: { x: 333, y: 481, ...smallItemTextureSize } },
-
-  ...seriesOfNumberedTextures("dalek", 2, { x: 4, y: 4 }, smallItemTextureSize),
-  "shadowMask.dalek": {
-    frame: { x: 4, y: 29, ...smallItemTextureSize },
-  },
-
-  homingBot: {
-    frame: { x: 93, y: 102, ...smallItemTextureSize },
-  },
-  joystick: {
-    frame: { x: 2, y: 374, ...smallItemTextureSize },
-  },
-  "shadowMask.joystick": {
-    frame: { x: 2, y: 349, ...smallItemTextureSize },
-  },
-  stepStool: {
-    frame: { x: 252, y: 366, ...largeItemTextureSize },
-  },
-  "shadowMask.stepStool": {
-    frame: { x: 285, y: 366, ...largeItemTextureSize },
-  },
-  "book.x": {
-    frame: { x: 167, y: 478, ...largeItemTextureSize },
-  },
-  "book.y": {
-    frame: { x: 200, y: 478, ...largeItemTextureSize },
-  },
-  sandwich: {
-    frame: { x: 2, y: 399, ...largeItemTextureSize },
-  },
-  sticks: {
-    frame: { x: 2, y: 428, ...smallItemTextureSize },
-  },
-  cube: {
-    frame: { x: 27, y: 428, ...smallItemTextureSize },
-  },
-  drum: {
-    frame: { x: 52, y: 428, ...smallItemTextureSize },
-  },
-  "switch.left": {
-    frame: { x: 52, y: 453, ...smallItemTextureSize },
-  },
-  "switch.right": {
-    frame: { x: 77, y: 453, ...smallItemTextureSize },
-  },
-  "shadowMask.switch": {
-    frame: { x: 77, y: 428, ...smallItemTextureSize },
-  },
-  ...fourDirections(
-    "skiHead.starsAndStripes",
-    { x: 274, y: 131 },
-    { w: 24, h: 32 },
-  ),
-  ...fourDirections(
-    "skiHead.greenAndPink",
-    { x: 224, y: 131 },
-    { w: 24, h: 32 },
-  ),
-  ...fourDirections("charles", { x: 118, y: 34 }, smallItemTextureSize),
   /*
   charles doesn't work because can't (yet) have direction-specific (changing) maps
   "shadowMask.charles.x": {
@@ -296,83 +606,6 @@ const frames = {
     frame: { x: 93, y: 59, ...smallItemTextureSize },
   },
   */
-  ...fourDirections("cyberman", { x: 29, y: 29 }, smallItemTextureSize),
-  ...fourDirections("monkey", { x: 118, y: 90 }, smallItemTextureSize),
-  ...fourDirections("elephant", { x: 118, y: 146 }, smallItemTextureSize),
-  ...fourDirections("computerBot", { x: 173, y: 146 }, smallItemTextureSize),
-
-  ...seriesOfNumberedTextures(
-    "bubbles.cold",
-    2,
-    { x: 79, y: 4 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "bubbles.taupe",
-    3,
-    { x: 102, y: 324 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "bubbles.white",
-    3,
-    { x: 102, y: 349 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "bubbles.fish",
-    3,
-    { x: 227, y: 324 },
-    smallItemTextureSize,
-  ),
-
-  ...seriesOfNumberedTextures(
-    "turtle.left",
-    2,
-    { x: 4, y: 137 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "turtle.away",
-    2,
-    { x: 55, y: 137 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "turtle.towards",
-    2,
-    { x: 4, y: 163 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "turtle.right",
-    2,
-    { x: 55, y: 163 },
-    smallItemTextureSize,
-  ),
-
-  ...seriesOfNumberedTextures(
-    "helicopterBug",
-    4,
-    { x: 4, y: 188 },
-    smallItemTextureSize,
-  ),
-
-  hushPuppy: {
-    frame: { x: 209, y: 291, ...largeItemTextureSize },
-  },
-  "shadowMask.hushPuppy": {
-    frame: { x: 242, y: 291, ...largeItemTextureSize },
-  },
-  ball: {
-    frame: { x: 54, y: 4, ...smallItemTextureSize },
-  },
-  puck: {
-    frame: { x: 102, y: 428, ...smallItemTextureSize },
-  },
-  "puck.deadly": {
-    frame: { x: 102, y: 453, ...smallItemTextureSize },
-  },
 
   ...playableSpritesheetData.frames,
   ...scenerySpritesheetData.frames,

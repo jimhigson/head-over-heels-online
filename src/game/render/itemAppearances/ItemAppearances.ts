@@ -41,6 +41,9 @@ const blockTextureId = (
   style: BlockStyle,
   disappear: boolean,
 ): TextureId => {
+  if (style === "tower") {
+    return "tower";
+  }
   if (style === "book") {
     return `book.x`;
   }
@@ -298,10 +301,10 @@ export const itemAppearances: {
     }
 
     const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
-      shield: "bunny",
-      jumps: "bunny",
-      fast: "bunny",
-      "extra-life": "bunny",
+      shield: "whiteRabbit",
+      jumps: "whiteRabbit",
+      fast: "whiteRabbit",
+      "extra-life": "whiteRabbit",
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",

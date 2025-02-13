@@ -135,7 +135,7 @@ export const playableSpritesheetData = {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
     "head.walking.towardsRight": withSpeed(
-      ["head.walking.towardsRight.2"],
+      ["head.walking.towardsRight.2"] as const,
       playableWalkAnimationSpeed,
     ),
     "head.idle.right": withSpeed(
