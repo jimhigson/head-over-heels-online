@@ -21,7 +21,7 @@ import {
   lengthXy,
   xyzEqual,
   directionsXyDiagonal,
-  directions8Xy,
+  directionsXy8,
   directionsXy4,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
@@ -461,7 +461,7 @@ export const tickMovement = <RoomId extends string>(
         room,
         gameState,
         deltaMS,
-        directions8Xy,
+        directionsXy8,
       );
     }
     case "patrol-randomly-xy4": {

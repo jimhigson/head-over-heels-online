@@ -2,8 +2,11 @@ import type { SpritesheetData } from "pixi.js";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { smallItemGridLocation, smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "../model/modelTypes";
-import type { DirectionXy4 } from "../utils/vectors/vectors";
-import { directionsXy4 } from "../utils/vectors/vectors";
+import {
+  directionsXy8,
+  type DirectionXy4,
+  type DirectionXy8,
+} from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import { zxSpectrumFrameRate } from "../originalGame";
 import type { FramesWithSpeed } from "./spriteSheetData";
@@ -12,7 +15,7 @@ import { withSpeed } from "./withSpeed";
 export const playableWalkAnimationSpeed = 0.5;
 
 function walkingFrames<P extends CharacterName>(p: P) {
-  function* walkingFramesGen<P extends CharacterName, D extends DirectionXy4>(
+  function* walkingFramesGen<P extends CharacterName, D extends DirectionXy8>(
     p: P,
     d: D,
   ): Generator<`${P}.walking.${D}.${"1" | "2" | "3"}`> {
@@ -25,7 +28,7 @@ function walkingFrames<P extends CharacterName>(p: P) {
     yield `${p}.walking.${d}.2`;
   }
 
-  return directionsXy4.reduce(
+  return directionsXy8.reduce(
     (ac, d) => ({
       ...ac,
       [`${p}.walking.${d}`]: withSpeed(
@@ -42,87 +45,140 @@ function walkingFrames<P extends CharacterName>(p: P) {
 
 const frames = {
   ...seriesOfNumberedTextures(
-    "head.walking.towards",
-    3,
-    { x: 4, y: 266 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "head.walking.right",
-    3,
-    { x: 80, y: 266 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "head.walking.left",
-    3,
-    { x: 4, y: 240 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "head.walking.away",
-    3,
-    { x: 80, y: 240 },
-    smallItemTextureSize,
-  ),
-  "head.blinking.towards": {
-    frame: { x: 54, y: 291, ...smallItemTextureSize },
-  },
-  "head.blinking.right": {
-    frame: { x: 130, y: 291, ...smallItemTextureSize },
-  },
-  "head.falling.towards": {
-    frame: { x: 29, y: 291, ...smallItemTextureSize },
-  },
-  "head.falling.right": {
-    frame: { x: 105, y: 291, ...smallItemTextureSize },
-  },
-  ...seriesOfNumberedTextures(
     "bubbles.head",
     6,
     smallItemGridLocation({ x: 0, y: 6 }),
     smallItemTextureSize,
   ),
+  ...seriesOfNumberedTextures(
+    "head.walking.towards",
+    3,
+    smallItemGridLocation({ x: 0, y: 10 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.right",
+    3,
+    smallItemGridLocation({ x: 3, y: 10 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.left",
+    3,
+    smallItemGridLocation({ x: 0, y: 8 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.away",
+    3,
+    smallItemGridLocation({ x: 3, y: 8 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.towardsRight",
+    3,
+    smallItemGridLocation({ x: 1, y: 11 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.towardsLeft",
+    3,
+    smallItemGridLocation({ x: 0, y: 9 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.awayRight",
+    3,
+    smallItemGridLocation({ x: 3, y: 9 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "head.walking.awayLeft",
+    3,
+    smallItemGridLocation({ x: 1, y: 8 }),
+    smallItemTextureSize,
+  ),
+  "head.blinking.towards": {
+    frame: {
+      ...smallItemGridLocation({ x: 0, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.blinking.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.towards": {
+    frame: {
+      ...smallItemGridLocation({ x: 0, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   // Heels
   // ------------
-  ...seriesOfNumberedTextures(
-    "heels.walking.towards",
-    3,
-    { x: 159, y: 266 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "heels.walking.right",
-    3,
-    { x: 235, y: 266 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "heels.walking.left",
-    3,
-    { x: 159, y: 240 },
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "heels.walking.away",
-    3,
-    { x: 235, y: 240 },
-    smallItemTextureSize,
-  ),
   ...seriesOfNumberedTextures(
     "bubbles.heels",
     6,
     smallItemGridLocation({ x: 6, y: 6 }),
     smallItemTextureSize,
   ),
-  "head.walking.towardsRight.2": {
-    frame: {
-      x: 80,
-      y: 291,
-      ...smallItemTextureSize,
-    },
-  },
+  ...seriesOfNumberedTextures(
+    "heels.walking.towards",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.right",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.left",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.away",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.towardsRight",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.towardsLeft",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.awayRight",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "heels.walking.awayLeft",
+    3,
+    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemTextureSize,
+  ),
 } as const satisfies SpritesheetData["frames"];
 
 // head blinks every 5s in the original game
@@ -134,10 +190,6 @@ export const playableSpritesheetData = {
   animations: {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
-    "head.walking.towardsRight": withSpeed(
-      ["head.walking.towardsRight.2"] as const,
-      playableWalkAnimationSpeed,
-    ),
     "head.idle.right": withSpeed(
       [
         // 50 frames of non-blinking confirmed against original to be about the same rate
