@@ -1,6 +1,6 @@
 import type { SpritesheetData } from "pixi.js";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
-import { smallItemTextureSize } from "./textureSizes";
+import { smallItemGridLocation, smallItemTextureSize } from "./textureSizes";
 import type { CharacterName } from "../model/modelTypes";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { directionsXy4 } from "../utils/vectors/vectors";
@@ -80,7 +80,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.head",
     6,
-    { x: 4, y: 215 },
+    smallItemGridLocation({ x: 0, y: 6 }),
     smallItemTextureSize,
   ),
 
@@ -113,7 +113,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.heels",
     6,
-    { x: 159, y: 215 },
+    smallItemGridLocation({ x: 6, y: 6 }),
     smallItemTextureSize,
   ),
   "head.walking.towardsRight.2": {

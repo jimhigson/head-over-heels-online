@@ -108,7 +108,7 @@ export const fourDirectionsOfNumberedTextures = <
     ...seriesOfNumberedTextures(
       `${name}.towards`,
       n,
-      addXy(position, { y: (textureSize.h + 1) * n }),
+      addXy(position, { y: textureSize.h + 1 }),
       textureSize,
     ),
     ...seriesOfNumberedTextures(
@@ -116,7 +116,7 @@ export const fourDirectionsOfNumberedTextures = <
       n,
       addXy(position, {
         x: (textureSize.w + 1) * n,
-        y: (textureSize.h + 1) * n,
+        y: textureSize.h + 1,
       }),
       textureSize,
     ),

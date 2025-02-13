@@ -78,83 +78,83 @@ const backgroundFrames = <
 };
 
 const frames = {
-  ...backgroundFrames("blacktooth", 544, 148, ".dark"), // same really
-  ...backgroundFrames("blacktooth", 544, 76, ""),
-  ...backgroundFrames("bookworld", 382, 16, ".dark"), // same really
-  ...backgroundFrames("bookworld", 382, 16, ""),
-  ...backgroundFrames("egyptus", 447, 16, ""),
-  ...backgroundFrames("egyptus", 447, 89, ".dark"), // actually different
-  ...backgroundFrames("jail", 512, 76, ".dark"), // same really
-  ...backgroundFrames("jail", 512, 76, ""),
-  ...backgroundFrames("market", 440, 386, ".dark"), // same really
-  ...backgroundFrames("market", 440, 386, ""),
-  ...backgroundFrames("moonbase", 453, 305, ".dark"), // actually different
-  ...backgroundFrames("moonbase", 453, 233, ""),
-  ...backgroundFrames("penitentiary", 372, 389, ".dark"), // same really
-  ...backgroundFrames("penitentiary", 372, 389, ""),
-  ...backgroundFrames("safari", 544, 386, ".dark"), // same really
-  ...backgroundFrames("safari", 544, 386, ""),
+  ...backgroundFrames("blacktooth", 542, 29, ".dark"), // same really
+  ...backgroundFrames("blacktooth", 542, 104, ""),
+  ...backgroundFrames("bookworld", 408, 29, ".dark"), // same really
+  ...backgroundFrames("bookworld", 408, 29, ""),
+  ...backgroundFrames("egyptus", 475, 29, ""),
+  ...backgroundFrames("egyptus", 475, 104, ".dark"), // actually different
+  ...backgroundFrames("jail", 440, 104, ".dark"), // same really
+  ...backgroundFrames("jail", 440, 104, ""),
+  ...backgroundFrames("market", 443, 356, ".dark"), // same really
+  ...backgroundFrames("market", 443, 356, ""),
+  ...backgroundFrames("moonbase", 453, 204, ".dark"), // actually different
+  ...backgroundFrames("moonbase", 453, 204, ""),
+  ...backgroundFrames("penitentiary", 376, 357, ".dark"), // same really
+  ...backgroundFrames("penitentiary", 376, 357, ""),
+  ...backgroundFrames("safari", 542, 357, ".dark"), // same really
+  ...backgroundFrames("safari", 542, 357, ""),
 
   "floorEdge.right": {
-    frame: { x: 400, y: 502, w: 8, h: 9 },
+    frame: { x: 423, y: 442, w: 8, h: 9 },
   },
   "floorEdge.towards": {
-    frame: { x: 391, y: 502, w: 8, h: 9 },
+    frame: { x: 414, y: 442, w: 8, h: 9 },
   },
   "floorOverdraw.right": {
-    frame: { x: 400, y: 492, w: 8, h: 9 },
+    frame: { x: 423, y: 432, w: 8, h: 9 },
   },
   "floorOverdraw.towards": {
-    frame: { x: 391, y: 492, w: 8, h: 9 },
+    frame: { x: 414, y: 432, w: 8, h: 9 },
   },
   "generic.floor.overdraw": {
-    frame: { x: 180, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 435, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "generic.wall.overdraw": {
-    frame: { x: 197, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 452, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "shadow.wall.y": {
-    frame: { x: 410, y: 129, w: 36, h: 16 },
+    frame: { x: 432, y: 435, w: 36, h: 16 },
   },
   "generic.floor.deadly": {
-    frame: { x: 376, y: 454, ...floorTileSize },
+    frame: { x: 407, y: 143, ...floorTileSize },
   },
   "generic.dark.floor.deadly": {
-    frame: { x: 376, y: 471, ...floorTileSize },
+    frame: { x: 407, y: 160, ...floorTileSize },
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
   "generic.door.legs.pillar": {
-    frame: { x: 237, y: 92, w: wallTileSize.w, h: 12 },
+    frame: { x: 524, y: 476, w: wallTileSize.w, h: 12 },
   },
   "generic.door.legs.base": {
-    frame: { x: 237, y: 104, w: wallTileSize.w, h: 9 },
+    frame: { x: 524, y: 488, w: wallTileSize.w, h: 9 },
   },
   "generic.door.legs.threshold.double.x": {
-    frame: { x: 221, y: 68, w: wallTileSize.w * 2, h: 24 },
+    frame: { x: 508, y: 452, w: wallTileSize.w * 2, h: 24 },
   },
   "generic.door.legs.threshold.double.y": {
-    frame: { x: 186, y: 68, w: wallTileSize.w * 2, h: 24 },
+    frame: { x: 469, y: 452, w: wallTileSize.w * 2, h: 24 },
   },
   "shadowMask.door.legs.threshold.double.y": {
     frame: {
-      x: 254,
-      y: 68,
+      x: 469,
+      y: 430,
       w: wallTileSize.w * 2,
       h: 21,
       pivot: { x: 0, y: 21 },
     },
   },
   "generic.door.floatingThreshold.x": {
-    frame: { x: 209, y: 93, w: 26, h: 19 },
+    frame: { x: 496, y: 477, w: 26, h: 19 },
   },
   "generic.door.floatingThreshold.y": {
-    frame: { x: 180, y: 93, w: 26, h: 19 },
+    frame: { x: 469, y: 477, w: 26, h: 19 },
   },
   "shadowMask.door.floatingThreshold.double.y": {
     frame: {
-      x: 254,
-      y: 90,
+      x: 541,
+      y: 480,
       w: 42,
       h: 21,
       pivot: { x: 8, y: 20 },
@@ -162,8 +162,8 @@ const frames = {
   },
   "shadow.door.floatingThreshold.double.y": {
     frame: {
-      x: 297,
-      y: 90,
+      x: 584,
+      y: 480,
       w: 42,
       h: 21,
       pivot: { x: 8, y: 20 },
