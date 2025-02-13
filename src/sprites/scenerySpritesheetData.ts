@@ -94,6 +94,81 @@ const frames = {
   ...backgroundFrames("penitentiary", 372, 389, ""),
   ...backgroundFrames("safari", 544, 386, ".dark"), // same really
   ...backgroundFrames("safari", 544, 386, ""),
+
+  "floorEdge.right": {
+    frame: { x: 400, y: 502, w: 8, h: 9 },
+  },
+  "floorEdge.towards": {
+    frame: { x: 391, y: 502, w: 8, h: 9 },
+  },
+  "floorOverdraw.right": {
+    frame: { x: 400, y: 492, w: 8, h: 9 },
+  },
+  "floorOverdraw.towards": {
+    frame: { x: 391, y: 492, w: 8, h: 9 },
+  },
+  "generic.floor.overdraw": {
+    frame: { x: 180, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
+  },
+  "generic.wall.overdraw": {
+    frame: { x: 197, y: 113, w: wallTileSize.w, h: floorTileSize.h * 2 },
+  },
+  "shadow.wall.y": {
+    frame: { x: 410, y: 129, w: 36, h: 16 },
+  },
+  "generic.floor.deadly": {
+    frame: { x: 376, y: 454, ...floorTileSize },
+  },
+  "generic.dark.floor.deadly": {
+    frame: { x: 376, y: 471, ...floorTileSize },
+  },
+
+  // doors names after the axis they go along: x=towards/away, y=left/right
+  "generic.door.legs.pillar": {
+    frame: { x: 237, y: 92, w: wallTileSize.w, h: 12 },
+  },
+  "generic.door.legs.base": {
+    frame: { x: 237, y: 104, w: wallTileSize.w, h: 9 },
+  },
+  "generic.door.legs.threshold.double.x": {
+    frame: { x: 221, y: 68, w: wallTileSize.w * 2, h: 24 },
+  },
+  "generic.door.legs.threshold.double.y": {
+    frame: { x: 186, y: 68, w: wallTileSize.w * 2, h: 24 },
+  },
+  "shadowMask.door.legs.threshold.double.y": {
+    frame: {
+      x: 254,
+      y: 68,
+      w: wallTileSize.w * 2,
+      h: 21,
+      pivot: { x: 0, y: 21 },
+    },
+  },
+  "generic.door.floatingThreshold.x": {
+    frame: { x: 209, y: 93, w: 26, h: 19 },
+  },
+  "generic.door.floatingThreshold.y": {
+    frame: { x: 180, y: 93, w: 26, h: 19 },
+  },
+  "shadowMask.door.floatingThreshold.double.y": {
+    frame: {
+      x: 254,
+      y: 90,
+      w: 42,
+      h: 21,
+      pivot: { x: 8, y: 20 },
+    },
+  },
+  "shadow.door.floatingThreshold.double.y": {
+    frame: {
+      x: 297,
+      y: 90,
+      w: 42,
+      h: 21,
+      pivot: { x: 8, y: 20 },
+    },
+  },
 } as const;
 
 export const scenerySpritesheetData = {
