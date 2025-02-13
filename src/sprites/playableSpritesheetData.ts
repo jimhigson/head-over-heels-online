@@ -158,25 +158,25 @@ const frames = {
   ...seriesOfNumberedTextures(
     "heels.walking.towardsRight",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 8, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.towardsLeft",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 6, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayRight",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 9, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayLeft",
     3,
-    smallItemGridLocation({ x: 0, y: 0 }),
+    smallItemGridLocation({ x: 8, y: 7 }),
     smallItemTextureSize,
   ),
 } as const satisfies SpritesheetData["frames"];
