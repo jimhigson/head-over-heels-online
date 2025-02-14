@@ -22,7 +22,7 @@ const standardAssignment = {
       // escape alone isn't good because it can leave fullscreen in browser sometimes - use the others!
       keys: ["Escape", "Tab", "§"],
     },
-    menu_exit: { gamepadButtons: [standardControllerLayout.x] },
+    menu_exit: { gamepadButtons: [standardControllerLayout.b] },
     // menu_up: { keys: ["ArrowUp"] },
     // menu_down: { keys: ["ArrowDown"] },
     menu_select: {
@@ -175,19 +175,19 @@ const gamepadAssignment: InputAssignmentPreset = {
           ],
         },
         fire: { gamepadButtons: [standardControllerLayout.x] },
-        swop: { gamepadButtons: [standardControllerLayout.r1] },
+        swop: { gamepadButtons: [standardControllerLayout.rb] },
         hold: { gamepadButtons: [standardControllerLayout.start] },
         menu_openOrExit: {
           gamepadButtons: [
             // allow r1 because 3-6 button controllers probably won't have a start button
             // - and, on macOS by default select opens the 'select a game' type screen so
             // that's unusable without OS config
-            standardControllerLayout.l1,
+            standardControllerLayout.lb,
             standardControllerLayout.select,
           ],
         },
         toggleColourisation: {
-          gamepadButtons: [standardControllerLayout.l2],
+          gamepadButtons: [standardControllerLayout.lt],
         },
       },
       axes: {
