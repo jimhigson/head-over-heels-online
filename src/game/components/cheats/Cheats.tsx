@@ -433,7 +433,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-whiteRabbit" />
               <CssSprite className="texture-hud.char.2" />
             </Button>
             <Button
@@ -443,7 +443,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-whiteRabbit" />
               <CssSprite className="texture-hud.shield" />
             </Button>
             <Button
@@ -453,7 +453,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-whiteRabbit" />
               <CssSprite className="texture-hud.fastSteps" />
             </Button>
             <Button
@@ -463,7 +463,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
+              <CssSprite className="texture-whiteRabbit" />
               <CssSprite className="texture-hud.bigJumps" />
             </Button>
           </div>
