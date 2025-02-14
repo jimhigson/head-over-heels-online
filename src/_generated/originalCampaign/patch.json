@@ -1357,6 +1357,26 @@
     "path": "/rooms/egyptus15/items/block@3,5,4/config/disappearing",
     "value": "onStand"
   },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus15/items/extra2",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus15/items/extra1",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 3, "y": 5, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
   { "op": "replace", "path": "/rooms/egyptus14/color/hue", "value": "yellow" },
   {
     "op": "replace",

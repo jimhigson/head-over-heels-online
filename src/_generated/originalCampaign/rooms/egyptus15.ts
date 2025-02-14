@@ -57,6 +57,18 @@ export const room = inferRoomJson({
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
+    extra1: {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 3, y: 5, z: 0 },
+      type: "block",
+    },
+    extra2: {
+      config: { style: "organic" },
+      isExtra: true,
+      position: { x: 1, y: 5, z: 0 },
+      type: "block",
+    },
     "spring@0,5,7": {
       config: {},
       position: { x: 0, y: 5, z: 7 },
