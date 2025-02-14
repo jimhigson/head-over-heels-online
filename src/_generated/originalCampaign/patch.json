@@ -1207,6 +1207,76 @@
     "value": 11
   },
   { "op": "replace", "path": "/rooms/egyptus35/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extra3",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 2, "z": 3 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extra2",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 2, "z": 2 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extra1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 2, "z": 1 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extra0",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 2, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extrab1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 5, "z": 1 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/rooms/egyptus35/items/extrab0",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus35/walls/left/5",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/egyptus35/walls/left/2",
+    "value": "hieroglyphics"
+  },
   { "op": "replace", "path": "/rooms/egyptus33/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/egyptus32/color/hue", "value": "green" },
   { "op": "replace", "path": "/rooms/egyptus31/color/hue", "value": "yellow" },
@@ -1359,22 +1429,22 @@
   },
   {
     "op": "add",
-    "path": "/rooms/egyptus15/items/extra2",
+    "path": "/rooms/egyptus15/items/extra1",
     "value": {
       "config": { "style": "organic" },
-      "position": { "x": 1, "y": 5, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "isExtra": true,
+      "position": { "x": 3, "y": 5, "z": 0 },
+      "type": "block"
     }
   },
   {
     "op": "add",
-    "path": "/rooms/egyptus15/items/extra1",
+    "path": "/rooms/egyptus15/items/extra2",
     "value": {
       "config": { "style": "organic" },
-      "position": { "x": 3, "y": 5, "z": 0 },
-      "type": "block",
-      "isExtra": true
+      "isExtra": true,
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "type": "block"
     }
   },
   { "op": "replace", "path": "/rooms/egyptus14/color/hue", "value": "yellow" },
