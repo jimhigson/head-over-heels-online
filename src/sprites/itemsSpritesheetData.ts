@@ -68,37 +68,37 @@ const frames = {
 
   "crown.blacktooth": {
     frame: {
-      ...smallItemGridLocation({ x: 7, y: 1 }),
+      ...smallItemGridLocation({ x: 8, y: 1 }),
       ...smallItemTextureSize,
     },
   },
   "crown.safari": {
     frame: {
-      ...smallItemGridLocation({ x: 8, y: 1 }),
+      ...smallItemGridLocation({ x: 9, y: 1 }),
       ...smallItemTextureSize,
     },
   },
   "crown.egyptus": {
     frame: {
-      ...smallItemGridLocation({ x: 9, y: 1 }),
+      ...smallItemGridLocation({ x: 10, y: 1 }),
       ...smallItemTextureSize,
     },
   },
   "crown.penitentiary": {
     frame: {
-      ...smallItemGridLocation({ x: 10, y: 1 }),
+      ...smallItemGridLocation({ x: 11, y: 1 }),
       ...smallItemTextureSize,
     },
   },
   "crown.bookworld": {
     frame: {
-      ...smallItemGridLocation({ x: 11, y: 1 }),
+      ...smallItemGridLocation({ x: 12, y: 1 }),
       ...smallItemTextureSize,
     },
   },
   "crown.dark": {
     frame: {
-      ...smallItemGridLocation({ x: 12, y: 1 }),
+      ...smallItemGridLocation({ x: 13, y: 1 }),
       ...smallItemTextureSize,
     },
   },
