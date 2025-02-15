@@ -22,6 +22,8 @@ export interface CssSpriteProps {
 /**
  * css sprite is much lighter than using pixi, and can tint the sprite to any colour,
  * but doesn't support filters like pixi does
+ *
+ * @deprecated - use tailwind classes directly instead
  */
 export const CssSprite = ({ className, tint }: CssSpriteProps) => {
   return (

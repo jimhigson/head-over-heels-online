@@ -179,7 +179,7 @@ export const GoToRoomButton = <RoomId extends string>({
 };
 
 const Heading = ({ children }: { children: string }) => {
-  return <h4 className="bg-redShadow pl-1">{children}</h4>;
+  return <h4 className="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
 };
 
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
@@ -232,7 +232,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
-          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]"
+          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white"
           style={{ "--scale": 2 }}
         >
           <Heading>room select:</Heading>
