@@ -13,6 +13,8 @@ import { iterate } from "../../../utils/iterate";
 import { subXy } from "../../../utils/vectors/vectors";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
+import { isMultipliable } from "../../physics/itemPredicates";
+import { omit } from "../../../utils/pick";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -56,8 +58,18 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
       this.#container.filters = new AlphaFilter({ alpha: 0.5 });
     }
 
-    if (item.shadowMask.spriteOptions) {
-      const shadowMaskSprite = createSprite(item.shadowMask.spriteOptions);
+    const {
+      shadowMask: { spriteOptions },
+    } = item;
+    if (spriteOptions) {
+      const shadowMaskSprite = createSprite({
+        ...(typeof spriteOptions === "string" ?
+          { texture: spriteOptions }
+        : spriteOptions),
+        ...(isMultipliable(item) ?
+          { times: item.config.times && omit(item.config.times, "z") }
+        : undefined),
+      });
       if (item.shadowMask.relativeTo === "top") {
         shadowMaskSprite.y = -item.aabb.z;
       }
