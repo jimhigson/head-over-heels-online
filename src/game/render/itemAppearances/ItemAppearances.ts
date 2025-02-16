@@ -121,12 +121,12 @@ export const itemAppearances: {
   barrier: renderOnce(
     ({
       item: {
-        config: { axis },
+        config: { axis, times },
       },
     }) => {
       return createSprite({
         texture: `barrier.${axis}`,
-        //pivot: barrierPivot[axis],
+        times,
       });
     },
   ),
@@ -134,13 +134,14 @@ export const itemAppearances: {
   deadlyBlock: renderOnce(
     ({
       item: {
-        config: { style },
+        config: { style, times },
       },
       room,
     }) =>
       createSprite({
         texture: style,
         filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
+        times,
       }),
   ),
   slidingDeadly: singleRenderWithStyleAsTexture,
@@ -148,7 +149,7 @@ export const itemAppearances: {
 
   block({
     item: {
-      config: { style },
+      config: { style, times },
       state: { disappear },
     },
     room,
@@ -170,6 +171,7 @@ export const itemAppearances: {
           disappear !== null,
         ),
         filter: style === "organic" ? mainPaletteSwapFilter(room) : undefined,
+        times,
       }),
       renderProps: { disappear },
     };

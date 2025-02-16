@@ -65,14 +65,17 @@ export type ItemConfigMap<
     // the axis the barrier runs along
     axis: AxisXy;
     disappearing?: "onTouch";
+    times?: Partial<Xyz>;
   };
   block: {
     style: BlockStyle;
     disappearing?: "onStand";
+    times?: Partial<Xyz>;
   };
   deadlyBlock: {
     // these don't move, and the differences are purely in their rendering:
     style: DeadlyItemStyle;
+    times?: Partial<Xyz>;
   };
   moveableDeadly: {
     // these can move (fall, be pushed etc) and are deadly

@@ -77,6 +77,11 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   y: xy.y * scale,
   z: xy.z * scale,
 });
+export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
+  x: a.x * b.x,
+  y: a.y * b.y,
+  z: a.z * b.z,
+});
 
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.sqrt(x * x + y * y + z * z);
 export const lengthXy = ({ x, y }: Xy) => Math.sqrt(x * x + y * y);

@@ -1,4 +1,3 @@
-import type { Sprite } from "pixi.js";
 import { AlphaFilter, Container } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
 import { createSprite } from "../createSprite";
@@ -17,7 +16,7 @@ import type { RenderContext, Renderer } from "../Renderer";
 
 type Cast = {
   /* the sprite of the shadow */
-  sprite: Sprite;
+  sprite: Container;
   /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
   renderedOnProgression: number;
 };

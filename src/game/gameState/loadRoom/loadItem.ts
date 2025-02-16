@@ -1,4 +1,7 @@
-import { boundingBoxForItem } from "../../collision/boundingBoxes";
+import {
+  boundingBoxForItem,
+  multiplyBoundingBox,
+} from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
@@ -44,10 +47,24 @@ export function* loadItemFromJson<RoomId extends string>(
 
     // catch-all for all items that don't need special handling:
     default: {
+      const boundingBoxes = boundingBoxForItem(jsonItem);
+
+      const boundingBoxesMultiplied: typeof boundingBoxes =
+        jsonItem.type === "barrier" || jsonItem.type === "block" ?
+          {
+            aabb: multiplyBoundingBox(
+              boundingBoxes.aabb,
+              jsonItem.config.times,
+            ),
+            // multiplied items can't have a separate render bb:
+            renderAabb: undefined,
+          }
+        : boundingBoxes;
+
       yield {
         ...jsonItem,
         ...defaultItemProperties,
-        ...boundingBoxForItem(jsonItem),
+        ...boundingBoxesMultiplied,
         renders: !(
           jsonItem.type === "wall" &&
           (jsonItem.config.side === "right" ||

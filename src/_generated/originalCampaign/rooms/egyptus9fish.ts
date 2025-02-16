@@ -62,6 +62,16 @@ export const room = inferRoomJson({
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
+    extrapillar: {
+      config: { style: "tower", times: { z: 4 } },
+      position: { x: 3, y: 0, z: 0 },
+      type: "block",
+    },
+    extrapillar2: {
+      config: { style: "tower", times: { z: 4 } },
+      position: { x: 3, y: 7, z: 0 },
+      type: "block",
+    },
     "pickup@3,3,5": {
       config: { gives: "reincarnation" },
       position: { x: 3, y: 3, z: 5 },
