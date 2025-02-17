@@ -1,3 +1,4 @@
+import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
@@ -47,12 +48,19 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   #roomState: RoomState<SceneryName, RoomId, ItemId>;
   #gameState: GameState<RoomId>;
   #paused: boolean;
+  #pixiRenderer: PixiRenderer;
 
-  constructor(
-    gameState: GameState<RoomId>,
-    roomState: RoomState<SceneryName, RoomId, ItemId>,
-    paused: boolean,
-  ) {
+  constructor({
+    gameState,
+    roomState,
+    paused,
+    pixiRenderer,
+  }: {
+    gameState: GameState<RoomId>;
+    roomState: RoomState<SceneryName, RoomId, ItemId>;
+    paused: boolean;
+    pixiRenderer: PixiRenderer;
+  }) {
     const {
       userSettings: { displaySettings },
       upscale,
@@ -63,6 +71,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     this.#roomState = roomState;
     this.#gameState = gameState;
     this.#paused = paused;
+    this.#pixiRenderer = pixiRenderer;
 
     this.#container.label = `RoomRenderer(${roomState.id})`;
 
@@ -107,11 +116,12 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
       } else {
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
-        itemRenderer = createItemRenderer(
-          item as UnknownItemInPlay<RoomId, ItemId>,
-          this.#roomState,
-          this.#gameState,
-        );
+        itemRenderer = createItemRenderer({
+          item: item as UnknownItemInPlay<RoomId, ItemId>,
+          room: this.#roomState,
+          gameState: this.#gameState,
+          pixiRenderer: this.#pixiRenderer,
+        });
         if (itemRenderer === "not-needed") {
           // createItemRenderer declined to create a render for this item - record that:
           this.#itemRenderers.set(item.id as ItemId, "not-needed");

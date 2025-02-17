@@ -85,8 +85,6 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
     if (times !== undefined) {
       const completeTimes = { x: 1, y: 1, z: 1, ...times };
 
-      console.log("times", times, options);
-
       const container = new Container({ label: "timesXyz" });
       for (let { x } = completeTimes; x >= 1; x--) {
         for (let { y } = completeTimes; y >= 1; y--) {

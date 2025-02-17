@@ -185,6 +185,11 @@ const rooms = {
         config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
         position: { x: 0, y: 2, z: 0 },
       },
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 0, y: 3, z: 3 },
+      },
       // {
       //   type: "block",
       //   config: { style: "book" },
