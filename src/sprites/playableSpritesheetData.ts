@@ -10,6 +10,26 @@ import { withSpeed } from "./withSpeed";
 
 export const playableWalkAnimationSpeed = 0.5;
 
+export const headBlinking = (
+  direction: DirectionXy8,
+  neutralWalkFrame: number,
+) => {
+  // head blinks every 5s in the original game
+  const headBlinkPeriod = 5_000;
+  const nonBlinkingFrames =
+    Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4)) - 3;
+
+  const blinkingFrames: Array<keyof typeof frames> = [
+    ...new Array(nonBlinkingFrames).fill(
+      `head.walking.${direction}.${neutralWalkFrame}`,
+    ),
+    `head.blinking.${direction}`,
+    `head.walking.${direction}.${neutralWalkFrame}`,
+    `head.blinking.${direction}`,
+  ];
+  return withSpeed(blinkingFrames, 0.5);
+};
+
 function walkingFrames<P extends CharacterName>(p: P) {
   function* walkingFramesGen<P extends CharacterName, D extends DirectionXy8>(
     p: P,
@@ -102,6 +122,12 @@ const frames = {
   },
   "head.blinking.right": {
     frame: {
+      ...smallItemGridLocation({ x: 5, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.blinking.towardsRight": {
+    frame: {
       ...smallItemGridLocation({ x: 4, y: 11 }),
       ...smallItemTextureSize,
     },
@@ -177,34 +203,14 @@ const frames = {
   ),
 } as const satisfies SpritesheetData["frames"];
 
-// head blinks every 5s in the original game
-const headBlinkPeriod = 5_000;
-const nonBlinkingFrames =
-  Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4)) - 3;
 export const playableSpritesheetData = {
   frames,
   animations: {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
-    "head.idle.right": withSpeed(
-      [
-        // 50 frames of non-blinking confirmed against original to be about the same rate
-        ...new Array(nonBlinkingFrames).fill("head.walking.right.3"),
-        "head.blinking.right",
-        "head.walking.right.3",
-        "head.blinking.right",
-      ] as const,
-      0.5,
-    ),
-    "head.idle.towards": withSpeed(
-      [
-        ...new Array(nonBlinkingFrames).fill("head.walking.towards.3"),
-        "head.blinking.towards",
-        "head.walking.towards.3",
-        "head.blinking.towards",
-      ] as const,
-      0.5,
-    ),
+    "head.idle.right": headBlinking("right", 3),
+    "head.idle.towards": headBlinking("towards", 3),
+    "head.idle.towardsRight": headBlinking("towardsRight", 2),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5

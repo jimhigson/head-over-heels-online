@@ -24,6 +24,7 @@ import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import type { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
+import { isAnimationId } from "../../../sprites/assertIsTextureId";
 
 const renderSprite = ({
   name,
@@ -80,12 +81,15 @@ const renderSprite = ({
   ) {
     return { texture: `head.falling.${facingXy8}`, filter };
   } else {
-    if (name === "head" && (facingXy8 === "towards" || facingXy8 === "right")) {
+    const idleAnimationId = `head.idle.${facingXy8}` as const;
+    if (isAnimationId(idleAnimationId)) {
+      // we have an idle anim for this character/direction
       return {
-        animationId: `head.idle.${facingXy8}`,
+        animationId: idleAnimationId,
         filter,
       };
     }
+    console.log("no idel anim", idleAnimationId);
     return { texture: `${name}.walking.${facingXy8}.2`, filter };
   }
 };
