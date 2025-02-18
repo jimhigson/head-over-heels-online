@@ -40,7 +40,16 @@ export const createItemRenderer = <
   const renderers: Renderer[] = [];
 
   if (item.renders) {
-    renderers.push(new ItemAppearanceRenderer(item, room, gameState));
+    const itemAppearanceRenderer = new ItemAppearanceRenderer(
+      item,
+      room,
+      gameState,
+    );
+    renderers.push(itemAppearanceRenderer);
+    if (renderBoundingBoxes) {
+      itemAppearanceRenderer.container.alpha = 0.5;
+    }
+
     // non-colourised rendering doesn't have shadows (yet) since it prevents
     // the colour revert shader from properly identifying black/non-black pixels
     if (!isPaused && colourise && hasShadowMask(item)) {
