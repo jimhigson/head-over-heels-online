@@ -6,7 +6,6 @@ import {
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { useAppSelector } from "../hooks";
 import { useDispatchActionCallback } from "../useDispatchCallback";
-import { store } from "../store";
 import { useEffect } from "react";
 
 export const useUniversalKeys = () => {
@@ -41,7 +40,7 @@ export const useUniversalKeys = () => {
 
   useEffect(() => {
     const handleWindowBlur = (): void => {
-      store.dispatch(holdPressed("hold"));
+      //store.dispatch(holdPressed("hold"));
     };
     window.addEventListener("blur", handleWindowBlur, false);
     return () => {

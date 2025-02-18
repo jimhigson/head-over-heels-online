@@ -6,6 +6,7 @@ import {
   selectCurrentInputPreset,
   selectIsAssigningKeys,
   useIsAssigningKeys,
+  useIsScreenRelativeControl,
 } from "../../../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import { MenuItem } from "../../MenuItem";
@@ -16,6 +17,7 @@ import {
   doneAssigningInput,
   goToSubmenu,
   inputAddedDuringAssignment,
+  toggleBoolean,
 } from "../../../../../../store/gameMenusSlice";
 import { store } from "../../../../../../store/store";
 import { useActionTap, useInputTap } from "../../../useActionTap";
@@ -74,8 +76,23 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
   );
 };
 
+const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
+  return (
+    <BitmapText
+      className={twMerge(
+        `text-nowrap`,
+        "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
+        className,
+      )}
+    >
+      {useIsScreenRelativeControl() ? "screen" : "world"}
+    </BitmapText>
+  );
+};
+
 export const SelectKeysDialog = () => {
   useKeyAssignmentInput();
+  const isScreenRelativeControl = useIsScreenRelativeControl();
 
   return (
     <DialogPortal>
@@ -113,41 +130,71 @@ export const SelectKeysDialog = () => {
               onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
             />
             <MenuItem
+              id="screenRelativeControl"
+              label="direction"
+              valueElement={<ScreenRelativeControlValue />}
+              doubleHeightWhenFocussed
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.screenRelativeControl",
+              )}
+            />
+            <MenuItem
               id="left"
-              label={
-                <>
-                  <BitmapText>Left ↖</BitmapText>
-                </>
-              }
+              label={`Left ${isScreenRelativeControl ? "⬅" : "↖"}`}
               leader={
-                <span className="sprite texture-head.walking.left.2 selectedMenuItem:texture-animated-head.walking.left zx:sprite-revert-to-two-tone" />
+                <span
+                  className={`sprite zx:sprite-revert-to-two-tone ${
+                    isScreenRelativeControl ?
+                      "texture-head.walking.towardsLeft.2 selectedMenuItem:texture-animated-head.walking.towardsLeft"
+                    : "texture-head.walking.left.2 selectedMenuItem:texture-animated-head.walking.left"
+                  }`}
+                />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="left" />}
               onSelect={useDispatchActionCallback(assignInputStart, "left")}
             />
             <MenuItem
               id="right"
-              label="Right ↘"
+              label={`Right ${isScreenRelativeControl ? "➡" : "↘"}`}
               leader={
-                <span className="sprite texture-head.walking.right.2 selectedMenuItem:texture-animated-head.walking.right zx:sprite-revert-to-two-tone" />
+                <span
+                  className={`sprite zx:sprite-revert-to-two-tone ${
+                    isScreenRelativeControl ?
+                      "texture-head.walking.awayRight.2 selectedMenuItem:texture-animated-head.walking.awayRight"
+                    : "texture-head.walking.right.2 selectedMenuItem:texture-animated-head.walking.right"
+                  }`}
+                />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="right" />}
               onSelect={useDispatchActionCallback(assignInputStart, "right")}
             />
             <MenuItem
               id="up"
-              label="Up ↗"
+              label={`Up ${isScreenRelativeControl ? "⬆" : "↗"}`}
               leader={
-                <span className="sprite texture-head.walking.away.2 selectedMenuItem:texture-animated-head.walking.away zx:sprite-revert-to-two-tone" />
+                <span
+                  className={`sprite zx:sprite-revert-to-two-tone ${
+                    isScreenRelativeControl ?
+                      "texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.awayLeft"
+                    : "texture-head.walking.away.2 selectedMenuItem:texture-animated-head.walking.away"
+                  }`}
+                />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="away" />}
               onSelect={useDispatchActionCallback(assignInputStart, "away")}
             />
             <MenuItem
               id="down"
-              label="Down ↙"
+              label={`Down ${isScreenRelativeControl ? "⬇" : "↙"}`}
               leader={
-                <span className="sprite texture-head.walking.towards.2 selectedMenuItem:texture-animated-head.walking.towards zx:sprite-revert-to-two-tone" />
+                <span
+                  className={`sprite zx:sprite-revert-to-two-tone ${
+                    isScreenRelativeControl ?
+                      "texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight"
+                    : "texture-head.walking.towards.2 selectedMenuItem:texture-animated-head.walking.towards"
+                  }`}
+                />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
               onSelect={useDispatchActionCallback(assignInputStart, "towards")}
