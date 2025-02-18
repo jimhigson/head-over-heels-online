@@ -66,7 +66,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           {isGameRunning && <MenuItemSeparator />}
           <MenuItem
             id="selectKeys"
-            label="Select the controls"
+            label="Control options"
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "selectKeys")}
           />

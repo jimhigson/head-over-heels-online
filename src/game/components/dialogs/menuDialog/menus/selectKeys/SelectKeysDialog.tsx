@@ -5,6 +5,7 @@ import { multilineTextClass } from "../../multilineTextClass";
 import {
   selectCurrentInputPreset,
   selectIsAssigningKeys,
+  useIsAnalogueControl,
   useIsAssigningKeys,
   useIsScreenRelativeControl,
 } from "../../../../../../store/selectors";
@@ -27,6 +28,20 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchCa
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { ValueSwitch } from "../../ValueSwitch";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+
+const analogueControlOffHintMarkdown =
+  "**analog off**: original *4* walk directions.";
+
+const analogueControlOnHintMarkdown =
+  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys. Easier.";
+
+const screenRelativeControlOffHintMarkdown =
+  "**world**: Control is relative to directions in the isometric world. Press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*";
+
+const screenRelativeControlOnHintMarkdown =
+  "**screen**: Control is relative to the screen. More intuitive for people who find the directions hard in isometric games";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -90,6 +105,32 @@ const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   );
 };
 
+const ScreenRelativeControlSection = () => {
+  return (
+    <>
+      <MenuItem
+        id="screenRelativeControl"
+        label="axes"
+        valueElement={<ScreenRelativeControlValue />}
+        onSelect={useDispatchActionCallback(
+          toggleBoolean,
+          "userSettings.screenRelativeControl",
+        )}
+      />
+      <div className="col-span-2 col-start-2">
+        <BlockyMarkdown
+          className={`text-midGrey zx:text-zxBlack`}
+          markdown={
+            useIsScreenRelativeControl() ?
+              screenRelativeControlOnHintMarkdown
+            : screenRelativeControlOffHintMarkdown
+          }
+        />
+      </div>
+    </>
+  );
+};
+
 export const SelectKeysDialog = () => {
   useKeyAssignmentInput();
   const isScreenRelativeControl = useIsScreenRelativeControl();
@@ -101,9 +142,6 @@ export const SelectKeysDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog className="bg-white zx:bg-zxWhite pr-0">
-        <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto">
-          Select the controls
-        </BitmapText>
         <div
           className={
             "overflow-y-scroll " +
@@ -112,32 +150,57 @@ export const SelectKeysDialog = () => {
             "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite "
           }
         >
-          <div className={`mb-1 ${multilineTextClass}`}>
-            <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
-              Note:
-            </BitmapText>
-            <BitmapText className="text-midGrey zx:text-zxBlack">
-              some puzzles require you to jump and pick up simultaneously -
-              assign a key for both jump and carry
-            </BitmapText>
-          </div>
+          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto mb-1">
+            control options
+          </BitmapText>
           <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreen">
             <MenuItem
-              id="preset"
-              label="preset:"
-              valueElement={<CurrentPresetValue />}
-              doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
-            />
-            <MenuItem
-              id="screenRelativeControl"
-              label="direction"
-              valueElement={<ScreenRelativeControlValue />}
-              doubleHeightWhenFocussed
+              id="analogueControl"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  Analog control
+                </BitmapText>
+              }
+              leader={
+                <span className="sprite zx:sprite-revert-to-two-tone texture-joystick" />
+              }
+              valueElement={
+                <ValueSwitch
+                  value={useAppSelector(
+                    (state) => state.userSettings.analogueControl,
+                  )}
+                />
+              }
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
-                "userSettings.screenRelativeControl",
+                "userSettings.analogueControl",
               )}
+            />
+            <div className="col-span-2 col-start-2">
+              <BlockyMarkdown
+                className="text-midGrey zx:text-zxBlack"
+                markdown={
+                  useIsAnalogueControl() ?
+                    analogueControlOnHintMarkdown
+                  : analogueControlOffHintMarkdown
+                }
+              />
+            </div>
+            {useIsAnalogueControl() && <ScreenRelativeControlSection />}
+
+            <MenuItem
+              id="preset"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  key/ button preset
+                </BitmapText>
+              }
+              valueElement={<CurrentPresetValue />}
+              onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
             />
             <MenuItem
               id="left"
@@ -199,6 +262,15 @@ export const SelectKeysDialog = () => {
               valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
               onSelect={useDispatchActionCallback(assignInputStart, "towards")}
             />
+            <div className={`${multilineTextClass} col-span-3`}>
+              <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
+                Note:
+              </BitmapText>
+              <BitmapText className="text-midGrey zx:text-zxBlack">
+                some puzzles require you to jump and pick up simultaneously -
+                assign a key for both jump and carry
+              </BitmapText>
+            </div>
             <MenuItem
               id="jump"
               label="Jump"

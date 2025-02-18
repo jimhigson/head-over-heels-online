@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import {
   backToParentMenu,
   toggleBoolean,
@@ -19,6 +18,7 @@ import {
   selectShowFps,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
+import { ValueSwitch } from "../../ValueSwitch";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
@@ -37,38 +37,9 @@ const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 **on**: *extra items* slightly modernisess the gameplay.
 none of these fundamentally change how the rooms play.`;
 
-const analogueControlHintMarkdown = `**off**: original *4* walk directions: press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*
-
-**on**: *any* direction with analogue stick, or *8-way* with d-pad/keys. Easier.`;
-
 const resolutionHintMarkdown = `*zx spectrum* (**256**x**192**)
 
 *Amiga*/*c64*/*Atari-ST* PAL (**320**x**256**)`;
-
-const ValueSwitch = ({
-  className,
-  value,
-}: {
-  value: boolean;
-  className?: string;
-}) => {
-  return (
-    <div>
-      <BitmapText
-        className={clsx(
-          "inline-block",
-          value ?
-            "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
-          : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
-          className,
-        )}
-        noSlitWords
-      >
-        {value ? "  ON" : "OFF "}
-      </BitmapText>
-    </div>
-  );
-};
 
 export const ModernisationOptionsDialog = () => {
   return (
@@ -153,28 +124,6 @@ export const ModernisationOptionsDialog = () => {
                 "userSettings.showFps",
               )}
               hint={`show frame rate (frames per second) in the top-left corner`}
-            />
-            <MenuItem
-              doubleHeightWhenFocussed
-              id="analogueControl"
-              label="Analogue control"
-              valueElement={
-                <ValueSwitch
-                  value={useAppSelector(
-                    (state) => state.userSettings.analogueControl,
-                  )}
-                />
-              }
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.analogueControl",
-              )}
-              hint={
-                <BlockyMarkdown
-                  className={markdownClassname}
-                  markdown={analogueControlHintMarkdown}
-                />
-              }
             />
             <MenuItem
               doubleHeightWhenFocussed

@@ -3,9 +3,10 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import {
   addXyz,
   directionsXy4,
+  lengthXy,
   lengthXyz,
   originXyz,
-  scaleXyz,
+  scaleXy,
 } from "../../utils/vectors/vectors";
 import type { InputPress } from "./InputState";
 import { actionToAxis, type BooleanAction } from "./InputState";
@@ -242,26 +243,33 @@ export class InputStateTracker {
     }
 
     const pressVector = addXyz(originXyz, ...pressVectors());
-    const axisVector = snapToCardinal(
-      rotateInputVector45(addXyz(originXyz, ...axisVectors())),
-      snapAngleRadians,
-    );
 
-    const v = addXyz(pressVector, axisVector);
-
-    const vl = lengthXyz(v);
-
-    return vl > 1 ? scaleXyz(v, 1 / vl) : v;
+    return addXyz(originXyz, pressVector, ...axisVectors());
   }
 
   #tick = () => {
     const {
-      userSettings: { analogueControl },
+      userSettings: { analogueControl, screenRelativeControl },
     } = store.getState();
-    this.#directionVector =
-      analogueControl ?
-        this.#tickUpdatedDirectionAnalogue()
-      : this.#tickUpdatedDirectionXy4();
+
+    const maybeRotate =
+      screenRelativeControl ? rotateInputVector45 : (v: Xyz) => v;
+
+    const v = snapToCardinal(
+      maybeRotate(
+        analogueControl ?
+          this.#tickUpdatedDirectionAnalogue()
+        : this.#tickUpdatedDirectionXy4(),
+      ),
+      snapAngleRadians,
+    );
+
+    const vl = lengthXy(v);
+
+    this.#directionVector = {
+      ...(vl > 1 ? scaleXy(v, 1 / vl) : v),
+      z: 0,
+    };
 
     this.#lastFrameInput = this.#currentFrameInput;
 
@@ -274,7 +282,6 @@ export class InputStateTracker {
 
     for (const action of this.actionsHandled) {
       if (!isActionPressed(this.#currentFrameInput, action)) {
-        console.log(action, "no longer");
         this.actionsHandled.delete(action);
       }
     }
