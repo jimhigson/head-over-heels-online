@@ -24,6 +24,7 @@ import { isPortal } from "../../physics/itemPredicates";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
 import { roomExplored } from "../../../store/gameMenusSlice";
+import { moveItem } from "../../physics/moveItem";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -112,6 +113,32 @@ const findDestinationPortal = <RoomId extends string>(
   }
 };
 
+const backOffAndPushBack = <RoomId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId>,
+  portalDirectionXy: Xyz,
+  gameState: GameState<RoomId>,
+  toRoom: RoomState<SceneryName, RoomId>,
+) => {
+  // back off one square, and push progressively into the room:
+  const backOffAndPushLength = 1 * blockSizePx.w;
+  playableItem.state.position = addXyz(
+    playableItem.state.position,
+    scaleXyz(portalDirectionXy, backOffAndPushLength),
+  );
+  // push in increments of 1px
+  for (let i = 0; i < backOffAndPushLength; i++) {
+    moveItem({
+      subjectItem: playableItem,
+      posDelta: scaleXyz(portalDirectionXy, -1),
+      gameState,
+      room: toRoom,
+      deltaMS: 16, //fiction
+      forceful: true,
+      skipTouchHandlers: true,
+    });
+  }
+};
+
 export const changeCharacterRoom = <RoomId extends string>(
   changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId>,
 ) => {
@@ -162,12 +189,11 @@ export const changeCharacterRoom = <RoomId extends string>(
       break;
     }
     case "level-select":
-      // clear the player of the portal by putting a bit more in the room:
       positionRelativeToSourcePortal = { x: 0, y: 0, z: 0 };
       break;
     default:
       changeType satisfies "never";
-      throw new Error("unknown changeType" + changeType);
+      throw new Error();
   }
 
   const otherCharacterLoadedRoom =
@@ -188,6 +214,29 @@ export const changeCharacterRoom = <RoomId extends string>(
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
 
+  // heels can't carry items to different rooms:
+  const heelsAbilities = selectHeelsAbilities(playableItem);
+  if (heelsAbilities !== undefined) {
+    heelsAbilities.carrying = null;
+  }
+
+  // hush puppies vanish the moment head enters:
+  if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
+    removeHushPuppiesFromRoom(toRoom, gameState);
+  }
+
+  // remove the character from the new room if they're already there - this only really happens
+  // if the room is their starting room (so they're in it twice since they appear in the starting room
+  // by default):
+  deleteItemFromRoom({ room: toRoom, item: playableItem });
+
+  // but the character into the (probably newly loaded) room:
+  (toRoom.items[playableItem.id] as typeof playableItem) = playableItem;
+
+  // update game state to know which room this character is now in:
+  gameState.characterRooms[playableItem.id] = toRoom;
+
+  // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
     const {
       config: { toPosition: teleporterToBlockPosition },
@@ -251,18 +300,6 @@ export const changeCharacterRoom = <RoomId extends string>(
         : {},
       );
 
-      /*console.log(
-      "character put down at",
-      playableItem.state.position,
-      "which is relative to",
-      "destination portal position:",
-      destinationPortal.state.position,
-      "relative point:",
-      destinationPortal.config.relativePoint,
-      "positionRelativeToSourcePortal:",
-      positionRelativeToSourcePortal,
-    );*/
-
       const {
         config: { direction: portalDirection },
       } = destinationPortal;
@@ -270,71 +307,26 @@ export const changeCharacterRoom = <RoomId extends string>(
         // portal is horizontal (door) - not up or down (floor/ceiling)
         portalDirection.z === 0
       ) {
-        const portalDirectionXy = portalDirection;
         // automatically walk forward a short way in the new room to put character properly
         // inside the room (this doesn't happen for entering a room via teleporting or falling/climbing
         //  - only doors)
-        // TODO: maybe this should be side-effect free
         playableItem.state.autoWalk = true;
 
         // face the character the way they should have walked through the portal - this
         // is usually a no-op since they had to be walking that way to get through, but
         // it is possible they were pushed through and the autowalk needs to go in
         // the right direction
-        playableItem.state.facing = scaleXyz(portalDirectionXy, -1);
-
-        // if the new position collides with the other character, back off some more so we can push them into
-        // the room - serves them right for standing in the way:
-        /*
-      // this isn't quite right and is causing bugs - should only actually move by the amount of the overlap
-      // alternatively, make the floor bigger and start futher back
-      const collisionsWithPlayers = collision1toMany(
-        playableItem,
-        objectValues(toRoom.items),
-      ).filter(isPlayableItem);
-      for (const otherPlayer of collisionsWithPlayers) {
-        console.log(
-          "pushing other player in doorway by",
-          scaleXyz(unitVectors[portalDirectionXy], playableItem.aabb.x),
-        );        
-        moveItem({
-          gameState,
-          room: toRoom,
-          subjectItem: otherPlayer,
-          pusher: playableItem,
-          forceful: true,
-          deltaMS: 15,
-          posDelta: scaleXyz(
-            unitVectors[oppositeDirection(portalDirectionXy)],
-            playableItem.aabb.x,
-          ),
-        });
-      }*/
+        playableItem.state.facing = scaleXyz(portalDirection, -1);
 
         if (playableItem.state.action === "idle")
           playableItem.state.action = "moving";
       }
+
+      if (destinationPortal !== undefined) {
+        backOffAndPushBack(playableItem, portalDirection, gameState, toRoom);
+      }
     }
   }
-
-  // heels can't carry items to different rooms:
-  const heelsAbilities = selectHeelsAbilities(playableItem);
-  if (heelsAbilities !== undefined) {
-    heelsAbilities.carrying = null;
-  }
-
-  // hush puppies vanish the moment head enters:
-  if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
-    removeHushPuppiesFromRoom(toRoom, gameState);
-  }
-
-  // remove the character from the new room if they're already there - this only really happens
-  // if the room is their starting room (so they're in it twice since they appear in the starting room
-  // by default):
-  deleteItemFromRoom({ room: toRoom, item: playableItem });
-
-  // but the character into the (probably newly loaded) room:
-  (toRoom.items[playableItem.id] as typeof playableItem) = playableItem;
 
   const collisionsInDestinationRoom = collision1toMany(
     playableItem,
@@ -353,8 +345,6 @@ export const changeCharacterRoom = <RoomId extends string>(
     );
   }
 
-  // update game state to know which room this character is now in:
-  gameState.characterRooms[playableItem.id] = toRoom;
   gameState.entryState[playableItem.id] = entryState(playableItem);
 
   // delete entry states that no longer apply:

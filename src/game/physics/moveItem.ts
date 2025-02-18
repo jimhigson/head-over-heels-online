@@ -48,6 +48,8 @@ type MoveItemOptions<RoomId extends string> = {
   forceful?: boolean;
 
   recursionDepth?: number;
+
+  skipTouchHandlers?: boolean;
 };
 
 /**
@@ -63,6 +65,7 @@ export const moveItem = <RoomId extends string>({
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
   recursionDepth = 0,
+  skipTouchHandlers = false,
 }: MoveItemOptions<RoomId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     return;
@@ -90,6 +93,7 @@ export const moveItem = <RoomId extends string>({
       pusher ? ""
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
       : (subjectItem.state as any).vels,
+      skipTouchHandlers ? "skipping touch handlers" : "",
     );
 
   // strategy is to move to the target position, then back off as needed
@@ -135,26 +139,38 @@ export const moveItem = <RoomId extends string>({
       once and make silly old face go super-quick */
       !(touchedJoystick && collisionIsWithJoystick)
     ) {
-      if (log) {
-        console.log(`handling ${subjectItem.id} touching ${collision.id}`);
-      }
-      handleItemsTouchingItems({
-        movingItem: subjectItem,
-        touchedItem: collision,
-        movementVector: subXyz(subjectItem.state.position, originalPosition),
-        gameState,
-        deltaMS,
-        room,
-      });
+      if (!skipTouchHandlers) {
+        if (log) {
+          console.log(`handling ${subjectItem.id} touching ${collision.id}`);
+        }
+        handleItemsTouchingItems({
+          movingItem: subjectItem,
+          touchedItem: collision,
+          movementVector: subXyz(subjectItem.state.position, originalPosition),
+          gameState,
+          deltaMS,
+          room,
+        });
 
-      touchedJoystick = touchedJoystick || collisionIsWithJoystick;
+        touchedJoystick = touchedJoystick || collisionIsWithJoystick;
+      }
     }
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
     if (room.items[subjectItem.id] === undefined) {
+      if (log) {
+        console.log(
+          `mover ${subjectItem.id} is not in the room, so will halt processing their movement`,
+        );
+      }
       return;
     }
     if (room.items[collision.id] === undefined) {
+      if (log) {
+        console.log(
+          `collided item ${subjectItem.id} is not in the room, will skip that collision`,
+        );
+      }
       continue;
     }
 

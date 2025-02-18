@@ -35,6 +35,12 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
     return;
   }
 
+  if (playableItem.state.action === "death") {
+    // a dying player should not be able to be pushed through a portal; there is no
+    // sensible entrystate that can be applied to their entrance in the new room
+    return;
+  }
+
   changeCharacterRoom({
     playableItem,
     gameState,
