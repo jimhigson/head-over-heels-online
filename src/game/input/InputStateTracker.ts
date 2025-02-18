@@ -252,8 +252,8 @@ export class InputStateTracker {
       userSettings: { analogueControl, screenRelativeControl },
     } = store.getState();
 
-    const maybeRotate =
-      screenRelativeControl ? rotateInputVector45 : (v: Xyz) => v;
+    const shouldRotate = screenRelativeControl && analogueControl;
+    const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
     const v = snapToCardinal(
       maybeRotate(
