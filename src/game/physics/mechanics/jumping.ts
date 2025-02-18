@@ -5,6 +5,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
 import {
   isPickup,
+  isPlayableItem,
   isSpring,
   isTeleporter,
   type PlayableItem,
@@ -62,6 +63,12 @@ const isJumpOffable = <RoomId extends string>(
   }
   if (isPickup(item) && item.config.gives === "scroll") {
     // can't jump off of scrolls - the jump after reading is jarring
+    return false;
+  }
+  if (isPlayableItem(item) && item.state.standingOn === null) {
+    // can't jump off of a character that is jumping. This prevents
+    // a 'superjump' by going out of symbiosis while jumping and
+    // holding jump
     return false;
   }
 
