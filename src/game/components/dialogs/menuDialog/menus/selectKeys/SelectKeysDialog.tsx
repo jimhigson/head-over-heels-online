@@ -32,10 +32,10 @@ import { ValueSwitch } from "../../ValueSwitch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 const analogueControlOffHintMarkdown =
-  "**analog off**: true to the original. *4* walk directions.";
+  "**analog off**: true to the original. *4* walk directions";
 
 const analogueControlOnHintMarkdown =
-  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys; makes the game easier.";
+  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys";
 
 const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";
