@@ -40,11 +40,27 @@ export function* loadDoor<RoomId extends string>(
 
   const inHiddenWall = doorIsInHiddenWall(jsonDoor);
 
-  // doors on the left/front are moved back half a square to embed them inside the unseen near-side wall:
-  const crossAxisDisplacement: Xyz = {
+  // doors on the left/towards side are set back half a square to embed them inside the unseen near-side wall:
+  const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
     [crossAxis]: inHiddenWall ? -0.5 : 0,
   };
+
+  // bounding boxes for doors form a long tunnel-like structure longer than the door's rendering
+  // that extends out of the room. This helps with collision detection for items entering the room
+  // to not have MTVs that snag behind the door
+  const doorTunnelLengthBlocks = 1;
+  const tunnelSetbackBlocks = {
+    [crossAxis]: inHiddenWall ? -doorTunnelLengthBlocks : 0,
+  };
+  // the extra to put onto door frame AABBs to make them longer for the tunnel
+  const doorTunnelAabb = {
+    [crossAxis]: doorTunnelLengthBlocks * blockSizePx.w,
+  };
+
+  const nearPostWidthInAxis = 9;
+  const farPostWidthInAxis = 8;
+  const postWidthInCrossAxis = 8;
 
   yield {
     ...jsonDoor,
@@ -59,18 +75,27 @@ export function* loadDoor<RoomId extends string>(
       },
       state: {
         position: blockXyzToFineXyz(
-          addXyz(position, { [axis]: 1.5 }, crossAxisDisplacement),
+          addXyz(
+            position,
+            { [axis]: 1.5 },
+            invisibleWallSetBackBlocks,
+            tunnelSetbackBlocks,
+          ),
         ),
         expires: null,
         stoodOnBy: emptySet,
         disappear: null,
       },
-      aabb: { x: 8, y: 8, z: doorPostHeight },
+      aabb: addXyz(
+        {
+          [axis]: farPostWidthInAxis,
+          [crossAxis]: postWidthInCrossAxis,
+          z: doorPostHeight,
+        } as Xyz,
+        doorTunnelAabb,
+      ),
     },
   };
-  const doorNearPosition = blockXyzToFineXyz(
-    addXyz(position, crossAxisDisplacement),
-  );
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
@@ -83,14 +108,23 @@ export function* loadDoor<RoomId extends string>(
         part: "near",
       },
       state: {
-        position: doorNearPosition,
+        position: blockXyzToFineXyz(
+          addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+        ),
         expires: null,
         stoodOnBy: emptySet,
         disappear: null,
       },
       /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
          the bb very well */
-      aabb: { [axis]: 9, [crossAxis]: 8, z: doorPostHeight } as Xyz,
+      aabb: addXyz(
+        {
+          [axis]: nearPostWidthInAxis,
+          [crossAxis]: postWidthInCrossAxis,
+          z: doorPostHeight,
+        } as Xyz,
+        doorTunnelAabb,
+      ),
     },
   };
   yield {
@@ -106,9 +140,11 @@ export function* loadDoor<RoomId extends string>(
       },
       state: {
         position: addXyz(
-          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          blockXyzToFineXyz(
+            addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+          ),
           {
-            [axis]: 9,
+            [axis]: nearPostWidthInAxis,
             z: doorPortalHeight,
           },
         ),
@@ -116,13 +152,18 @@ export function* loadDoor<RoomId extends string>(
         stoodOnBy: emptySet,
         disappear: null,
       },
-      aabb: {
-        [axis]: 2 * blockSizePx.w - 8 - 9,
-        [crossAxis]: 8,
-        z: doorPostHeight - doorPortalHeight,
-      } as Xyz,
+      aabb: addXyz(
+        {
+          [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
+          [crossAxis]: postWidthInCrossAxis,
+          z: doorPostHeight - doorPortalHeight,
+        } as Xyz,
+        doorTunnelAabb,
+      ),
     },
   };
+
+  // wall above the door
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
@@ -136,7 +177,7 @@ export function* loadDoor<RoomId extends string>(
       type: "wall",
       state: {
         position: addXyz(
-          blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+          blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
           {
             z: doorPostHeight,
           },
@@ -152,6 +193,8 @@ export function* loadDoor<RoomId extends string>(
       }),
     },
   };
+
+  // door portal:
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
@@ -161,7 +204,6 @@ export function* loadDoor<RoomId extends string>(
       config: {
         ...jsonDoor.config,
         inHiddenWall,
-        // TODO: make relativePoint relative to the portal's position, not absolute like it is here
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
           [crossAxis]: inHiddenWall ? 0.25 : -0.25,
@@ -170,27 +212,31 @@ export function* loadDoor<RoomId extends string>(
       },
       renders: false,
       state: {
-        position: blockXyzToFineXyz(
-          addXyz(
-            position,
-            { [axis]: 0.5 },
-            {
-              [crossAxis]: inHiddenWall ? -0.5 : 0.5,
-            },
+        position: addXyz(
+          blockXyzToFineXyz(
+            addXyz(
+              position,
+
+              {
+                [crossAxis]: inHiddenWall ? -0.5 : 0.5,
+              },
+            ),
           ),
+          { [axis]: nearPostWidthInAxis },
         ),
         expires: null,
         stoodOnBy: emptySet,
         disappear: null,
       },
       aabb: {
-        [axis]: blockSizePx.w,
+        [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
         [crossAxis]: 0,
         z: doorPortalHeight,
       } as Xyz,
     },
   };
 
+  // door legs
   if (position.z !== 0)
     yield {
       ...jsonDoor,
@@ -220,7 +266,7 @@ export function* loadDoor<RoomId extends string>(
         },
         state: {
           position: addXyz({
-            ...blockXyzToFineXyz(addXyz(position, crossAxisDisplacement)),
+            ...blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
             z: 0,
           }),
           expires: null,
