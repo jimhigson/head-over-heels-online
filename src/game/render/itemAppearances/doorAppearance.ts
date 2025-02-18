@@ -11,7 +11,7 @@ import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
-import type { Xy } from "../../../utils/vectors/vectors";
+import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
 import {
   doorAlongAxis,
   originXy,
@@ -85,12 +85,35 @@ function* doorLegsGenerator(
     });
   }
 }
+
+/**
+ * since door aabbs are like tunnels that extend out of the room, render on the other side of the aabb (the side in the room)
+ */
+const xyToTranslateToInsideOfRoom = (
+  direction: DirectionXy4,
+  aabb: Xyz,
+): Xy => {
+  const axis = doorAlongAxis(direction);
+  const crossAxis = perpendicularAxisXy(axis);
+
+  const doorPostRenderedDepth = 8;
+  return direction === "towards" || direction === "right" ?
+      projectWorldXyzToScreenXy({
+        [crossAxis]: aabb[crossAxis] - doorPostRenderedDepth,
+      })
+    : originXy;
+};
+
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
   ({ item: doorLegsItem, room }) => {
     return iterateToContainer(
       doorLegsGenerator(doorLegsItem, room),
       new Container({
         filters: mainPaletteSwapFilter(room),
+        ...xyToTranslateToInsideOfRoom(
+          doorLegsItem.config.direction,
+          doorLegsItem.aabb,
+        ),
       }),
     );
   },
@@ -105,21 +128,10 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
     room,
   }) => {
     const axis = doorAlongAxis(direction);
-    const crossAxis = perpendicularAxisXy(axis);
-
-    const doorPostRenderedDepth = 8;
-    const xy: Xy =
-      direction === "away" || direction === "right" ?
-        // since door aabbs are like tunnels that extend out of the room, render on the other side of the aabb (the side in the room)
-        projectWorldXyzToScreenXy({
-          [crossAxis]: aabb[crossAxis] - doorPostRenderedDepth,
-        })
-      : originXy;
-
     return createSprite({
       texture: doorTexture(room, axis, part),
       filter: mainPaletteSwapFilter(room),
-      ...xy,
+      ...xyToTranslateToInsideOfRoom(direction, aabb),
     });
   },
 );

@@ -54,7 +54,7 @@ export function* loadDoor<RoomId extends string>(
     [crossAxis]: inHiddenWall ? -doorTunnelLengthBlocks : 0,
   };
   // the extra to put onto door frame AABBs to make them longer for the tunnel
-  const doorTunnelAabb = {
+  const doorTunnelAabbPx = {
     [crossAxis]: doorTunnelLengthBlocks * blockSizePx.w,
   };
 
@@ -92,7 +92,7 @@ export function* loadDoor<RoomId extends string>(
           [crossAxis]: postWidthInCrossAxis,
           z: doorPostHeight,
         } as Xyz,
-        doorTunnelAabb,
+        doorTunnelAabbPx,
       ),
     },
   };
@@ -123,7 +123,7 @@ export function* loadDoor<RoomId extends string>(
           [crossAxis]: postWidthInCrossAxis,
           z: doorPostHeight,
         } as Xyz,
-        doorTunnelAabb,
+        doorTunnelAabbPx,
       ),
     },
   };
@@ -158,7 +158,7 @@ export function* loadDoor<RoomId extends string>(
           [crossAxis]: postWidthInCrossAxis,
           z: doorPostHeight - doorPortalHeight,
         } as Xyz,
-        doorTunnelAabb,
+        doorTunnelAabbPx,
       ),
     },
   };
@@ -237,6 +237,7 @@ export function* loadDoor<RoomId extends string>(
   };
 
   // door legs
+  // door legs currently aren't tunnels - this might need to be
   if (position.z !== 0)
     yield {
       ...jsonDoor,
@@ -265,15 +266,20 @@ export function* loadDoor<RoomId extends string>(
           relativeTo: "top",
         },
         state: {
-          position: addXyz({
-            ...blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
+          position: {
+            ...blockXyzToFineXyz(
+              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+            ),
             z: 0,
-          }),
+          },
           expires: null,
           stoodOnBy: new Set(),
           disappear: null,
         },
-        aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
+        aabb: addXyz(
+          blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
+          doorTunnelAabbPx,
+        ),
       },
     };
   yield {
