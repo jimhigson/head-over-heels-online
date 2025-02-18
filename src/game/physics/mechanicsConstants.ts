@@ -67,7 +67,9 @@ export const moveSpeedPixPerMs = {
   elephant: onePxPerFrameInOriginalGamePxPerMs,
   elephantHead: 0,
   emperor: onePxPerFrameInOriginalGamePxPerMs,
-  emperorsGuardian: onePxPerFrameInOriginalGamePxPerMs,
+  // needs to be quite fast, or he is possible to run around using
+  // analogue control. Match heels' speed.
+  emperorsGuardian: 2 * onePxPerFrameInOriginalGamePxPerMs,
   bubbleRobot: onePxPerFrameInOriginalGamePxPerMs,
   computerBot: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
