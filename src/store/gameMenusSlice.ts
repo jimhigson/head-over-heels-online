@@ -117,7 +117,7 @@ export const initialGameMenuSliceState: GameMenusState = {
     },
 
     showFps: false,
-    analogueControl: false,
+    analogueControl: true,
     screenRelativeControl: false,
   },
   upscale: calculateUpscale(

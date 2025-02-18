@@ -35,10 +35,10 @@ const analogueControlOffHintMarkdown =
   "**analog off**: original *4* walk directions.";
 
 const analogueControlOnHintMarkdown =
-  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys. Easier.";
+  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys; makes the game easier.";
 
 const screenRelativeControlOffHintMarkdown =
-  "**world**: Control is relative to directions in the isometric world. Press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*";
+  "**world**: Control is relative to directions in the isometric world";
 
 const screenRelativeControlOnHintMarkdown =
   "**screen**: Control is relative to the screen. More intuitive for people who find the directions hard in isometric games";
@@ -93,31 +93,41 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
 
 const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   return (
-    <BitmapText
-      className={twMerge(
-        `text-nowrap`,
-        "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
-        className,
-      )}
-    >
-      {useIsScreenRelativeControl() ? "screen" : "world"}
-    </BitmapText>
+    <span>
+      <BitmapText
+        className={twMerge(
+          `text-nowrap me-1`,
+          "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
+          className,
+        )}
+      >
+        {useIsScreenRelativeControl() ? "screen" : "world"}
+      </BitmapText>
+      <BitmapText
+        className={twMerge(
+          `text-nowrap`,
+          "text-moss zx:text-zxBlue selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxBlue",
+          className,
+        )}
+      >
+        {useIsScreenRelativeControl() ? "⬅ ➡ ⬆ ⬇" : "↖ ↘ ↗ ↙"}
+      </BitmapText>
+    </span>
   );
 };
 
 const ScreenRelativeControlSection = () => {
   return (
-    <>
-      <MenuItem
-        id="screenRelativeControl"
-        label="axes"
-        valueElement={<ScreenRelativeControlValue />}
-        onSelect={useDispatchActionCallback(
-          toggleBoolean,
-          "userSettings.screenRelativeControl",
-        )}
-      />
-      <div className="col-span-2 col-start-2">
+    <MenuItem
+      id="screenRelativeControl"
+      label="axes"
+      valueElement={<ScreenRelativeControlValue />}
+      onSelect={useDispatchActionCallback(
+        toggleBoolean,
+        "userSettings.screenRelativeControl",
+      )}
+      hintInline
+      hint={
         <BlockyMarkdown
           className={`text-midGrey zx:text-zxBlack`}
           markdown={
@@ -126,8 +136,8 @@ const ScreenRelativeControlSection = () => {
             : screenRelativeControlOffHintMarkdown
           }
         />
-      </div>
-    </>
+      }
+    />
   );
 };
 
@@ -160,7 +170,7 @@ export const SelectKeysDialog = () => {
                 <BitmapText
                   className={`inline-block w-6 ${multilineTextClass}`}
                 >
-                  Analog control
+                  Analog/ 8-way control
                 </BitmapText>
               }
               leader={
@@ -177,17 +187,18 @@ export const SelectKeysDialog = () => {
                 toggleBoolean,
                 "userSettings.analogueControl",
               )}
+              hintInline
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={
+                    useIsAnalogueControl() ?
+                      analogueControlOnHintMarkdown
+                    : analogueControlOffHintMarkdown
+                  }
+                />
+              }
             />
-            <div className="col-span-2 col-start-2">
-              <BlockyMarkdown
-                className="text-midGrey zx:text-zxBlack"
-                markdown={
-                  useIsAnalogueControl() ?
-                    analogueControlOnHintMarkdown
-                  : analogueControlOffHintMarkdown
-                }
-              />
-            </div>
             {useIsAnalogueControl() && <ScreenRelativeControlSection />}
 
             <MenuItem
