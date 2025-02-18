@@ -81,7 +81,7 @@ const renderSprite = ({
   ) {
     return { texture: `head.falling.${facingXy8}`, filter };
   } else {
-    const idleAnimationId = `head.idle.${facingXy8}` as const;
+    const idleAnimationId = `${name}.idle.${facingXy8}` as const;
     if (isAnimationId(idleAnimationId)) {
       // we have an idle anim for this character/direction
       return {
@@ -89,7 +89,6 @@ const renderSprite = ({
         filter,
       };
     }
-    console.log("no idel anim", idleAnimationId);
     return { texture: `${name}.walking.${facingXy8}.2`, filter };
   }
 };
