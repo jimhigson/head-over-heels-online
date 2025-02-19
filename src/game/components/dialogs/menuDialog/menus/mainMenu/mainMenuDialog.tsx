@@ -63,7 +63,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             doubleHeightWhenFocussed
             hidden={!isGameRunning}
           />
-          {isGameRunning && <MenuItemSeparator />}
+          <MenuItemSeparator />
           <MenuItem
             id="selectKeys"
             label="Control options"
