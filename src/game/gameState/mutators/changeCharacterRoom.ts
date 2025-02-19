@@ -320,9 +320,7 @@ export const changeCharacterRoom = <RoomId extends string>(
 
         if (playableItem.state.action === "idle")
           playableItem.state.action = "moving";
-      }
 
-      if (destinationPortal !== undefined) {
         backOffAndPushBack(playableItem, portalDirection, gameState, toRoom);
       }
     }
