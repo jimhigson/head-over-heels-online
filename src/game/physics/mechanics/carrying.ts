@@ -15,6 +15,7 @@ import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision
 import type { GameState } from "../../gameState/GameState";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
+import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -94,6 +95,7 @@ export const carrying = <RoomId extends string>(
         pusher: carrier,
         forceful: true,
         deltaMS,
+        onTouch: handleItemsTouchingItems,
       });
 
       // don't set heels as standing on the put-down item - normal gravity and movement

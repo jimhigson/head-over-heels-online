@@ -84,15 +84,20 @@ export const testCampaign = {
     thirdRoom: {
       ...roomProperties,
       id: "thirdRoom",
+      walls: {
+        // leave gaps in the away wall for doors:
+        away: ["armour", "none", "none", "none", "none", "armour"],
+        left: [],
+      },
       items: {
         doorToHeelsStartingRoom: {
           type: "door",
-          position: { x: 3, y: 5, z: 0 },
+          position: { x: 3, y: 6, z: 0 },
           config: { toRoom: "heelsStartingRoom", direction: "away" },
         },
         doorToHeadStartingRoom: {
           type: "door",
-          position: { x: 1, y: 5, z: 0 },
+          position: { x: 1, y: 6, z: 0 },
           config: { toRoom: "headStartingRoom", direction: "away" },
         },
         hushPuppy: {

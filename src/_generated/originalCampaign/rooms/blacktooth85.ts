@@ -49,7 +49,7 @@ export const room = inferRoomJson({
     },
     "door@8,3,0": {
       config: { direction: "left", toRoom: "blacktooth84" },
-      position: { x: 8, y: 3, z: 0 },
+      position: { x: 8, y: 6, z: 0 },
       type: "door",
     },
     "monster@0,7,1": {
@@ -89,11 +89,11 @@ export const room = inferRoomJson({
       "plain",
       "shield",
       "plain",
-      "none",
-      "none",
       "plain",
       "shield",
       "plain",
+      "none",
+      "none",
     ],
   },
 }) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

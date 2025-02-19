@@ -1,15 +1,23 @@
 import { Container } from "pixi.js";
 import { createSprite } from "../createSprite";
 import { doorTexture } from "./doorTexture";
-import { projectBlockXyzToScreenXy } from "../projectToScreen";
+import {
+  projectBlockXyzToScreenXy,
+  projectWorldXyzToScreenXy,
+} from "../projectToScreen";
 import type { UnknownRoomState } from "../../../model/modelTypes";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
 } from "../filters/paletteSwapFilters";
-import type { Xy } from "../../../utils/vectors/vectors";
-import { doorAlongAxis, originXy, addXy } from "../../../utils/vectors/vectors";
+import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
+import {
+  doorAlongAxis,
+  originXy,
+  addXy,
+  perpendicularAxisXy,
+} from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
 import type { ItemAppearance } from "./appearanceUtils";
@@ -77,30 +85,53 @@ function* doorLegsGenerator(
     });
   }
 }
+
+/**
+ * since door aabbs are like tunnels that extend out of the room, render on the other side of the aabb (the side in the room)
+ */
+const xyToTranslateToInsideOfRoom = (
+  direction: DirectionXy4,
+  aabb: Xyz,
+): Xy => {
+  const axis = doorAlongAxis(direction);
+  const crossAxis = perpendicularAxisXy(axis);
+
+  const doorPostRenderedDepth = 8;
+  return direction === "towards" || direction === "right" ?
+      projectWorldXyzToScreenXy({
+        [crossAxis]: aabb[crossAxis] - doorPostRenderedDepth,
+      })
+    : originXy;
+};
+
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
   ({ item: doorLegsItem, room }) => {
     return iterateToContainer(
       doorLegsGenerator(doorLegsItem, room),
       new Container({
         filters: mainPaletteSwapFilter(room),
+        ...xyToTranslateToInsideOfRoom(
+          doorLegsItem.config.direction,
+          doorLegsItem.aabb,
+        ),
       }),
     );
   },
 );
 
-function* doorFrameGenerator(
-  { config: { direction, part } }: ItemInPlay<"doorFrame">,
-  room: UnknownRoomState,
-): Generator<Container> {
-  const axis = doorAlongAxis(direction);
-
-  yield createSprite({
-    texture: doorTexture(room, axis, part),
-    filter: mainPaletteSwapFilter(room),
-  });
-}
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
-  ({ item: doorFrameItem, room }) => {
-    return iterateToContainer(doorFrameGenerator(doorFrameItem, room));
+  ({
+    item: {
+      config: { direction, part },
+      aabb,
+    },
+    room,
+  }) => {
+    const axis = doorAlongAxis(direction);
+    return createSprite({
+      texture: doorTexture(room, axis, part),
+      filter: mainPaletteSwapFilter(room),
+      ...xyToTranslateToInsideOfRoom(direction, aabb),
+    });
   },
 );
