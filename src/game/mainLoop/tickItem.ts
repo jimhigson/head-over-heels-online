@@ -35,6 +35,7 @@ import { iterate } from "../../utils/iterate";
 import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
+import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -209,6 +210,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
       gameState,
       room,
       deltaMS,
+      onTouch: handleItemsTouchingItems,
     });
   }
 };

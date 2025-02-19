@@ -397,7 +397,7 @@ describe("doors", () => {
     expect(selectCurrentRoomState(gameState)?.id).toBe("secondRoom");
   });
 
-  test.only("character can push each other through a door", () => {
+  test("character can push each other through a door", () => {
     const gameState = basicGameState({
       firstRoomItems: {
         head: {

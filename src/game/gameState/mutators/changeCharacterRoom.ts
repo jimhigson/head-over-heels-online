@@ -134,7 +134,8 @@ const backOffAndPushBack = <RoomId extends string>(
       room: toRoom,
       deltaMS: 16, //fiction
       forceful: true,
-      skipTouchHandlers: true,
+      // don't handle any touches, otherwise would collide with the portal
+      onTouch: undefined,
     });
   }
 };

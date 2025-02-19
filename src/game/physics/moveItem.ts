@@ -5,7 +5,6 @@ import type { GameState } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
 import { mtv } from "./slidingCollision";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
-import { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { objectValues } from "iter-tools";
 import {
   removeStandingOn,
@@ -22,6 +21,7 @@ import {
   subXyz,
   scaleXyz,
 } from "../../utils/vectors/vectors";
+import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 
 const log = 0;
 
@@ -49,7 +49,7 @@ type MoveItemOptions<RoomId extends string> = {
 
   recursionDepth?: number;
 
-  skipTouchHandlers?: boolean;
+  onTouch?: (e: ItemTouchEvent<RoomId>) => void;
 };
 
 /**
@@ -65,7 +65,7 @@ export const moveItem = <RoomId extends string>({
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
   recursionDepth = 0,
-  skipTouchHandlers = false,
+  onTouch,
 }: MoveItemOptions<RoomId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     return;
@@ -93,7 +93,7 @@ export const moveItem = <RoomId extends string>({
       pusher ? ""
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
       : (subjectItem.state as any).vels,
-      skipTouchHandlers ? "skipping touch handlers" : "",
+      onTouch ? "with touch handling callback" : "skipping touch handling",
     );
 
   // strategy is to move to the target position, then back off as needed
@@ -139,11 +139,11 @@ export const moveItem = <RoomId extends string>({
       once and make silly old face go super-quick */
       !(touchedJoystick && collisionIsWithJoystick)
     ) {
-      if (!skipTouchHandlers) {
+      if (onTouch !== undefined) {
         if (log) {
           console.log(`handling ${subjectItem.id} touching ${collision.id}`);
         }
-        handleItemsTouchingItems({
+        onTouch({
           movingItem: subjectItem,
           touchedItem: collision,
           movementVector: subXyz(subjectItem.state.position, originalPosition),
@@ -236,6 +236,7 @@ export const moveItem = <RoomId extends string>({
         deltaMS,
         forceful,
         recursionDepth: recursionDepth + 1,
+        onTouch,
       });
 
       // it is possible we pushed the other item out of the room:
