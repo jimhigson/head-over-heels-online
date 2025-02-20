@@ -86,7 +86,7 @@ export const MenuItem = ({
         focussedItemId: id,
         scrollableSelection: false,
       })}
-      onClick={onSelect}
+      onClick={disabled ? undefined : onSelect}
     >
       {/* first column content (leader/icon thing)... */}
       {leader || <MenuItemLeader flip={flipLeader} focussed={focussed} />}
