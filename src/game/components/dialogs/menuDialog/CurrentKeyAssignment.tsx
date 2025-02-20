@@ -1,6 +1,9 @@
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
-import { standardControllerButtonNames } from "../../../input/controllers";
+import {
+  standardControllerButtonClassnames,
+  standardControllerButtonNames,
+} from "../../../input/controllers";
 import { actionToAxis, type BooleanAction } from "../../../input/InputState";
 import type { Key } from "../../../input/keys";
 import { MultipleBitmapText } from "../../Sprite";
@@ -71,6 +74,13 @@ const friendlyButtonName = (button: number) => {
       return "d-Pad⬅";
     case "dPadRight":
       return "d-Pad➡";
+  }
+
+  const buttonClassname = (
+    standardControllerButtonClassnames as Record<string, unknown>
+  )[buttonName] as string;
+  if (buttonClassname !== undefined) {
+    return <span className={buttonClassname}>{buttonName}</span>;
   }
 
   return standardControllerButtonNames[button] ?? button;
