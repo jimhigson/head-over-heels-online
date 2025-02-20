@@ -34,6 +34,7 @@ export const defaultPlayerState = () =>
       gravity: originXyz,
       movingFloor: originXyz,
     },
+    actedOnAt: Number.NEGATIVE_INFINITY,
   }) satisfies Partial<PlayableState<string>>;
 
 export const loadPlayer = <RoomId extends string>(
@@ -63,8 +64,8 @@ export const loadPlayer = <RoomId extends string>(
         doughnutLastFireTime: Number.NEGATIVE_INFINITY,
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
+        lastDiedAt: Number.NEGATIVE_INFINITY,
         gameTime: 0,
-        actedOnAt: Number.NEGATIVE_INFINITY,
       },
     };
   } else {
@@ -87,8 +88,8 @@ export const loadPlayer = <RoomId extends string>(
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
+        lastDiedAt: Number.NEGATIVE_INFINITY,
         gameTime: 0,
-        actedOnAt: Number.NEGATIVE_INFINITY,
       },
     };
   }

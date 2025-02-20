@@ -107,3 +107,7 @@ export const shieldDuration = 60_000;
 export const veryHighZ = 9999;
 
 export const originalGameStartingLives = 8;
+
+export const switchCharacterHighlightTime = 750;
+export const afterDeathInvulnerabilityTime = 2_500;
+export const afterDeathInvulnerabilityFlashPeriod = 150;

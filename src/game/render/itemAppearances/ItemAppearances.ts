@@ -30,9 +30,9 @@ import {
 } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import {
-  stackedSprites,
+  createStackedSprites,
   itemRidingOnBubblesSpritesOptions,
-} from "./stackedSprites";
+} from "./createStackedSprites";
 import { store } from "../../../store/store";
 import { getAtPath } from "../../../utils/getAtPath";
 
@@ -344,7 +344,7 @@ export const itemAppearances: {
       return "no-update";
     }
     return {
-      container: stackedSprites({ top: `charles.${facingXy4}` }),
+      container: createStackedSprites({ top: `charles.${facingXy4}` }),
       renderProps: { facingXy4 },
     };
   },
@@ -425,7 +425,7 @@ export const itemAppearances: {
             return {
               container:
                 state.activated || state.busyLickingDoughnutsOffFace ?
-                  stackedSprites({
+                  createStackedSprites({
                     top: {
                       texture: `${config.which}.${facingXy4}`,
                       filter: filter || mainPaletteSwapFilter(room),
@@ -444,7 +444,7 @@ export const itemAppearances: {
           case "monkey":
             // directional, not animated, stacked (base)
             return {
-              container: stackedSprites({
+              container: createStackedSprites({
                 top: `${config.which}.${facingXy4}`,
                 filter,
               }),
@@ -508,7 +508,7 @@ export const itemAppearances: {
           case "bubbleRobot":
             //not directional, animated, stacked (base):
             return {
-              container: stackedSprites({
+              container: createStackedSprites({
                 top: itemRidingOnBubblesSpritesOptions,
                 filter,
               }),
@@ -518,7 +518,7 @@ export const itemAppearances: {
           case "emperorsGuardian":
             //not directional, stacked (bubbles):
             return {
-              container: stackedSprites({
+              container: createStackedSprites({
                 top: `ball`,
                 bottom: itemRidingOnBubblesSpritesOptions,
                 filter,
@@ -660,7 +660,7 @@ export const itemAppearances: {
     return {
       container:
         which === "headOverHeels" ?
-          stackedSprites({
+          createStackedSprites({
             top: { texture: `head.walking.${startDirection}.2`, filter },
             bottom: { texture: `heels.walking.${startDirection}.2`, filter },
           })

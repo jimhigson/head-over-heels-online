@@ -30,7 +30,7 @@ type AnimatedCreateSpriteOptions = {
   x?: number;
   y?: number;
 
-  filter?: Filter;
+  filter?: Filter | Filter[];
 
   /**
    * If true, will play once and vanish. Otherwise, (by default) will loop
@@ -50,7 +50,7 @@ export type CreateSpriteOptions =
       texture: TextureId;
       x?: number;
       y?: number;
-      filter?: Filter;
+      filter?: Filter | Filter[];
       times?: Partial<Xyz>;
     }
   | AnimatedCreateSpriteOptions;

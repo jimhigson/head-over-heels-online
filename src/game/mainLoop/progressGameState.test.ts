@@ -710,7 +710,9 @@ describe("deadly blocks", () => {
     });
 
     playGameThrough(gameState, {
-      until: 20_000,
+      // this needs a long time now that the player gets invulnerability after dying for a few seconds
+      until: (gameState) => gameState.characterRooms.head === undefined,
+      frameRate: 15, // keep frame rate low to reduce computation since this runs for a long time
     });
 
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
