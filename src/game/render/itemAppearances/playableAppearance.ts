@@ -24,7 +24,7 @@ import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import type { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
-import { isAnimationId } from "../../../sprites/assertIsTextureId";
+import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 
 const renderSprite = ({
   name,
@@ -74,23 +74,24 @@ const renderSprite = ({
       animationId: `${name}.walking.${facingXy8}`,
       filter,
     };
-  } else if (
-    action === "falling" &&
-    name === "head" &&
-    (facingXy8 === "towards" || facingXy8 === "right")
-  ) {
-    return { texture: `head.falling.${facingXy8}`, filter };
-  } else {
-    const idleAnimationId = `${name}.idle.${facingXy8}` as const;
-    if (isAnimationId(idleAnimationId)) {
-      // we have an idle anim for this character/direction
-      return {
-        animationId: idleAnimationId,
-        filter,
-      };
-    }
-    return { texture: `${name}.walking.${facingXy8}.2`, filter };
   }
+
+  if (action === "falling") {
+    const fallingTextureName = `${name}.falling.${facingXy8}`;
+
+    if (isTextureId(fallingTextureName))
+      return { texture: fallingTextureName, filter };
+  }
+
+  const idleAnimationId = `${name}.idle.${facingXy8}` as const;
+  if (isAnimationId(idleAnimationId)) {
+    // we have an idle anim for this character/direction
+    return {
+      animationId: idleAnimationId,
+      filter,
+    };
+  }
+  return { texture: `${name}.walking.${facingXy8}.2`, filter };
 };
 
 export const isHighlighted = ({

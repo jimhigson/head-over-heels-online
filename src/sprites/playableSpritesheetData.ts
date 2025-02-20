@@ -69,78 +69,96 @@ const frames = {
   ...seriesOfNumberedTextures(
     "head.walking.towards",
     3,
-    smallItemGridLocation({ x: 0, y: 10 }),
+    smallItemGridLocation({ x: 1, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.right",
     3,
-    smallItemGridLocation({ x: 3, y: 10 }),
+    smallItemGridLocation({ x: 4, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.left",
     3,
-    smallItemGridLocation({ x: 0, y: 8 }),
+    smallItemGridLocation({ x: 1, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.away",
     3,
-    smallItemGridLocation({ x: 3, y: 8 }),
+    smallItemGridLocation({ x: 4, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.towardsRight",
     3,
-    smallItemGridLocation({ x: 1, y: 11 }),
+    smallItemGridLocation({ x: 2, y: 12 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.towardsLeft",
     3,
-    smallItemGridLocation({ x: 0, y: 9 }),
+    smallItemGridLocation({ x: 1, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.awayRight",
     3,
-    smallItemGridLocation({ x: 3, y: 9 }),
+    smallItemGridLocation({ x: 4, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "head.walking.awayLeft",
     3,
-    smallItemGridLocation({ x: 1, y: 7 }),
+    smallItemGridLocation({ x: 2, y: 8 }),
     smallItemTextureSize,
   ),
   "head.blinking.towards": {
     frame: {
-      ...smallItemGridLocation({ x: 0, y: 11 }),
+      ...smallItemGridLocation({ x: 0, y: 12 }),
       ...smallItemTextureSize,
     },
   },
   "head.blinking.right": {
     frame: {
-      ...smallItemGridLocation({ x: 5, y: 11 }),
+      ...smallItemGridLocation({ x: 7, y: 12 }),
       ...smallItemTextureSize,
     },
   },
   "head.blinking.towardsRight": {
     frame: {
-      ...smallItemGridLocation({ x: 4, y: 11 }),
+      ...smallItemGridLocation({ x: 5, y: 12 }),
       ...smallItemTextureSize,
     },
   },
   "head.falling.towards": {
     frame: {
-      ...smallItemGridLocation({ x: 0, y: 7 }),
+      ...smallItemGridLocation({ x: 0, y: 11 }),
       ...smallItemTextureSize,
     },
   },
   "head.falling.right": {
     frame: {
-      ...smallItemGridLocation({ x: 4, y: 7 }),
+      ...smallItemGridLocation({ x: 7, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.towardsRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 6, y: 12 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.awayRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 7, y: 10 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.towardsLeft": {
+    frame: {
+      ...smallItemGridLocation({ x: 0, y: 10 }),
       ...smallItemTextureSize,
     },
   },
@@ -156,49 +174,49 @@ const frames = {
   ...seriesOfNumberedTextures(
     "heels.walking.towards",
     3,
-    smallItemGridLocation({ x: 6, y: 10 }),
+    smallItemGridLocation({ x: 8, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.right",
     3,
-    smallItemGridLocation({ x: 9, y: 10 }),
+    smallItemGridLocation({ x: 11, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.left",
     3,
-    smallItemGridLocation({ x: 6, y: 8 }),
+    smallItemGridLocation({ x: 8, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.away",
     3,
-    smallItemGridLocation({ x: 9, y: 8 }),
+    smallItemGridLocation({ x: 11, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.towardsRight",
     3,
-    smallItemGridLocation({ x: 8, y: 11 }),
+    smallItemGridLocation({ x: 10, y: 12 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.towardsLeft",
     3,
-    smallItemGridLocation({ x: 6, y: 9 }),
+    smallItemGridLocation({ x: 8, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayRight",
     3,
-    smallItemGridLocation({ x: 9, y: 9 }),
+    smallItemGridLocation({ x: 11, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayLeft",
     3,
-    smallItemGridLocation({ x: 8, y: 7 }),
+    smallItemGridLocation({ x: 10, y: 8 }),
     smallItemTextureSize,
   ),
 } as const satisfies SpritesheetData["frames"];
