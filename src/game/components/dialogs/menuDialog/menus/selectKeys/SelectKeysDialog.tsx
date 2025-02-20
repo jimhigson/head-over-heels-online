@@ -30,18 +30,13 @@ import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { ScreenRelativeControlSection } from "./ScreenRelativeControlSection";
 
 const analogueControlOffHintMarkdown =
   "**analog off**: true to the original with *4-way* movement";
 
 const analogueControlOnHintMarkdown =
   "**analog on**: move in *any* direction with analogue stick, or *8-way* with d-pad/keys";
-
-const screenRelativeControlOffHintMarkdown =
-  "**world**: Control is relative to directions in the isometric world";
-
-const screenRelativeControlOnHintMarkdown =
-  "**screen**: Control is relative to the screen. More intuitive if you find directions confusing in isometric games";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -88,56 +83,6 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
     >
       {currentPresetName ?? "custom"}
     </BitmapText>
-  );
-};
-
-const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
-  return (
-    <span>
-      <BitmapText
-        className={twMerge(
-          `text-nowrap me-1`,
-          "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
-          className,
-        )}
-      >
-        {useIsScreenRelativeControl() ? "screen" : "world"}
-      </BitmapText>
-      <BitmapText
-        className={twMerge(
-          `text-nowrap`,
-          "text-moss zx:text-zxBlue selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxBlue",
-          className,
-        )}
-      >
-        {useIsScreenRelativeControl() ? "⬅ ➡ ⬆ ⬇" : "↖ ↘ ↗ ↙"}
-      </BitmapText>
-    </span>
-  );
-};
-
-const ScreenRelativeControlSection = () => {
-  return (
-    <MenuItem
-      id="screenRelativeControl"
-      label="axes"
-      valueElement={<ScreenRelativeControlValue />}
-      onSelect={useDispatchActionCallback(
-        toggleBoolean,
-        "userSettings.screenRelativeControl",
-      )}
-      hintInline
-      hint={
-        <BlockyMarkdown
-          className={`text-midGrey zx:text-zxBlack`}
-          markdown={
-            useIsScreenRelativeControl() ?
-              screenRelativeControlOnHintMarkdown
-            : screenRelativeControlOffHintMarkdown
-          }
-        />
-      }
-    />
   );
 };
 

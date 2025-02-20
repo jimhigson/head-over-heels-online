@@ -1,7 +1,7 @@
 import { BitmapText } from "../../Sprite";
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
-import { type ReactElement } from "react";
+import { useRef, type ReactElement } from "react";
 import { useActionTap } from "../useActionTap";
 import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
@@ -49,6 +49,7 @@ export const MenuItem = ({
   leader,
 }: MenuItemProps) => {
   //useUnchanging(onSelect, "onSelect"); <- commented out, breaks HMR
+  const isFirstRender = useRef<boolean>(true);
 
   const scrollIntoView = useAppSelector((state) => {
     return state.openMenus[0].scrollableSelection;
@@ -92,12 +93,21 @@ export const MenuItem = ({
 
       {/* second column content (main label)... */}
       <div
-        ref={
-          focussed && scrollIntoView ?
-            (ele) =>
-              ele?.scrollIntoView({ behavior: "instant", block: "center" })
-          : undefined
-        }
+        ref={(ele) => {
+          if (focussed && scrollIntoView) {
+            ele?.scrollIntoView({
+              behavior:
+                isFirstRender.current ?
+                  // instant: ie, if coming back to a menu from a child menu with an item half-way down
+                  // already selected (ie, reading the manual and going back up to manual index)
+                  //  - in this case we don't want to smoothly scroll
+                  "instant"
+                : "smooth",
+              block: "center",
+            });
+          }
+          isFirstRender.current = false;
+        }}
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
