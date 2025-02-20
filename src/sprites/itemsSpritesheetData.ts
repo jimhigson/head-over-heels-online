@@ -248,18 +248,6 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
-  "shadow.smallBlock": {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.smallBlock": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
   "shadow.smallRound": {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 4 }),
@@ -347,12 +335,25 @@ const frames = {
   ...seriesOfNumberedTextures(
     "lift",
     4,
-    smallItemGridLocation({ x: 0, y: 12 }),
+    smallItemGridLocation({ x: 7, y: 7 }),
     smallItemTextureSize,
   ),
   "lift.static": {
     frame: {
-      ...smallItemGridLocation({ x: 4, y: 12 }),
+      ...smallItemGridLocation({ x: 11, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "shadow.smallBlock": {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallBlock": {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 7 }),
       ...smallItemTextureSize,
     },
   },
