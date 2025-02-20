@@ -30,6 +30,9 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
   headOverHeels.state.head.lives--;
   headOverHeels.state.heels.lives--;
 
+  headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
+  headOverHeels.state.heels.lastDiedAt = headOverHeels.state.heels.gameTime;
+
   const totalLivesRemaining =
     headOverHeels.state.head.lives + headOverHeels.state.heels.lives;
   if (totalLivesRemaining === 0) {
@@ -181,6 +184,7 @@ export const individualPlayableLosesLife = <RoomId extends string>(
   );
 
   characterLosingLife.state.lives--;
+  characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
   if (characterLosingLife.type === "heels") {
     characterLosingLife.state.carrying = null;

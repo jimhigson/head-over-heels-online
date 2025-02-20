@@ -5,6 +5,7 @@ import type { CharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
+import { afterDeathInvulnerabilityTime } from "../mechanicsConstants";
 
 /**
  *
@@ -32,6 +33,13 @@ export function handlePlayerTouchingDeadly<RoomId extends string>({
 
   if (shieldRemaining(abilities) > 0) {
     // has shield - ignore touching the deadly item
+    return;
+  }
+
+  const { gameTime, lastDiedAt } = abilities;
+  const timeSinceLastDied = gameTime - lastDiedAt;
+  if (timeSinceLastDied < afterDeathInvulnerabilityTime) {
+    // player is invulnerable after death
     return;
   }
 

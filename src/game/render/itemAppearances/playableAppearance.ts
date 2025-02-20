@@ -4,40 +4,39 @@ import type {
   ItemAppearanceOptions,
   ItemAppearanceReturn,
 } from "./appearanceUtils";
-import { stackedSprites } from "./stackedSprites";
+import { stackSprites } from "./createStackedSprites";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
-import type {
-  PlayableActionState,
-  PlayableTeleportingState,
-} from "../../../model/ItemStateMap";
 import type {
   IndividualCharacterName,
   CharacterName,
 } from "../../../model/modelTypes";
-import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import {
   lengthXyz,
   vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
-import type { AnimatedSprite } from "pixi.js";
+import type { Container, Filter } from "pixi.js";
+import { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
+import type { ItemRenderProps } from "./ItemRenderProps";
+import { noFilters } from "../filters/paletteSwapFilters";
+import { OneColourFilter } from "../filters/oneColourFilter";
+import {
+  afterDeathInvulnerabilityFlashPeriod,
+  afterDeathInvulnerabilityTime,
+  switchCharacterHighlightTime,
+} from "../../physics/mechanicsConstants";
 
-const renderSprite = ({
+const playableCreateSpriteOptions = ({
   name,
   action,
   facingXy8,
-  teleporting,
-  highlighted,
-}: {
+  teleportingPhase,
+}: ItemRenderProps<CharacterName> & {
   name: IndividualCharacterName;
-  action: PlayableActionState;
-  facingXy8: DirectionXy8;
-  teleporting: PlayableTeleportingState | null;
-  highlighted: boolean;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
@@ -45,42 +44,28 @@ const renderSprite = ({
     };
   }
 
-  if (teleporting !== null) {
-    if (teleporting.phase === "out") {
-      return {
-        animationId: `${name}.fadeOut`,
-      };
-    }
-
-    if (teleporting.phase === "in") {
-      return {
-        animationId: `${name}.fadeOut`,
-      };
-    }
+  if (teleportingPhase === "out") {
+    return {
+      animationId: `${name}.fadeOut`,
+    };
   }
 
-  const filter =
-    highlighted ?
-      new OutlineFilter(
-        name === "head" ?
-          spritesheetPalette.metallicBlue
-        : spritesheetPalette.pink,
-        store.getState().upscale.gameEngineUpscale,
-      )
-    : undefined;
+  if (teleportingPhase === "in") {
+    return {
+      animationId: `${name}.fadeOut`,
+    };
+  }
 
   if (action === "moving") {
     return {
       animationId: `${name}.walking.${facingXy8}`,
-      filter,
     };
   }
 
   if (action === "falling") {
     const fallingTextureName = `${name}.falling.${facingXy8}`;
 
-    if (isTextureId(fallingTextureName))
-      return { texture: fallingTextureName, filter };
+    if (isTextureId(fallingTextureName)) return { texture: fallingTextureName };
   }
 
   const idleAnimationId = `${name}.idle.${facingXy8}` as const;
@@ -88,10 +73,9 @@ const renderSprite = ({
     // we have an idle anim for this character/direction
     return {
       animationId: idleAnimationId,
-      filter,
     };
   }
-  return { texture: `${name}.walking.${facingXy8}.2`, filter };
+  return { texture: `${name}.walking.${facingXy8}.2` };
 };
 
 export const isHighlighted = ({
@@ -100,7 +84,84 @@ export const isHighlighted = ({
 }: {
   switchedToAt: number;
   gameTime: number;
-}) => switchedToAt + 500 > gameTime;
+}): boolean => switchedToAt + switchCharacterHighlightTime > gameTime;
+
+export const isFlashing = ({
+  gameTime,
+  lastDiedAt,
+}: {
+  gameTime: number;
+  lastDiedAt: number;
+}): boolean => {
+  const timeSinceLastDied = gameTime - lastDiedAt;
+  if (timeSinceLastDied > afterDeathInvulnerabilityTime) {
+    return false;
+  }
+  return (
+    timeSinceLastDied % afterDeathInvulnerabilityFlashPeriod <
+    afterDeathInvulnerabilityFlashPeriod * 0.15
+  );
+};
+
+const highlightColours = {
+  head: spritesheetPalette.metallicBlue,
+  heels: spritesheetPalette.pink,
+};
+
+const addFilterToContainer = (container: Container, newFilter: Filter) => {
+  if (!container.filters) {
+    // If no filters exist, assign the new filter directly
+    container.filters = newFilter;
+  } else if (Array.isArray(container.filters)) {
+    // If filters exist as an array, append the new filter
+    container.filters = [...container.filters, newFilter];
+  } else {
+    // If a single filter exists, convert to an array and append
+    container.filters = [container.filters, newFilter];
+  }
+};
+
+const removeFilterFromContainer = (
+  container: Container,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filterClass: new (...args: any[]) => Filter,
+): void => {
+  container.filters =
+    Array.isArray(container.filters) ?
+      container.filters.filter((f): f is Filter => !(f instanceof filterClass))
+    : container.filters instanceof filterClass ? noFilters
+    : container.filters;
+};
+
+const applyFilters = (
+  name: IndividualCharacterName,
+  { highlighted, flashing }: ItemRenderProps<CharacterName>,
+  currentlyRenderedProps: ItemRenderProps<CharacterName> | undefined,
+  container: Container,
+) => {
+  const currentlyHighlighted = currentlyRenderedProps?.highlighted ?? false;
+  if (highlighted && !currentlyHighlighted) {
+    addFilterToContainer(
+      container,
+      new OutlineFilter(
+        highlightColours[name],
+        store.getState().upscale.gameEngineUpscale,
+      ),
+    );
+  } else if (!highlighted && currentlyHighlighted) {
+    removeFilterFromContainer(container, OutlineFilter);
+  }
+
+  const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
+  if (flashing && !currentlyFlashing) {
+    addFilterToContainer(
+      container,
+      new OneColourFilter(highlightColours[name]),
+    );
+  } else if (!flashing && currentlyFlashing) {
+    removeFilterFromContainer(container, OneColourFilter);
+  }
+};
 
 export const playableAppearance = <C extends CharacterName>({
   item,
@@ -121,73 +182,85 @@ export const playableAppearance = <C extends CharacterName>({
       isHighlighted((item as PlayableItem<"headOverHeels">).state.head)
     : isHighlighted((item as PlayableItem<"head" | "heels">).state);
 
+  const flashing =
+    item.type === "headOverHeels" ?
+      // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
+      // characters - they were switched to at the same time so it doesn't matter:
+      isFlashing((item as PlayableItem<"headOverHeels">).state.head)
+    : isFlashing((item as PlayableItem<"head" | "heels">).state);
+
   const walkSpeed = lengthXyz(facing);
 
+  const teleportingPhase = teleporting?.phase ?? null;
+
+  const renderProps: ItemRenderProps<CharacterName> = {
+    action,
+    facingXy8,
+    teleportingPhase,
+    flashing,
+    highlighted,
+  };
+
   const needNewSprites =
+    // note: not all props are used here!
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
     currentlyRenderedProps.facingXy8 !== facingXy8 ||
-    currentlyRenderedProps.teleportingPhase !== (teleporting?.phase ?? null) ||
-    currentlyRenderedProps.highlighted !== highlighted;
+    currentlyRenderedProps.teleportingPhase !== teleportingPhase;
 
-  if (needNewSprites) {
-    return {
-      container:
-        type === "headOverHeels" ?
-          stackedSprites({
-            top: renderSprite({
-              name: "head",
-              action,
-              facingXy8,
-              teleporting,
-              highlighted,
-            }),
-            bottom: renderSprite({
-              name: "heels",
-              action,
-              facingXy8,
-              teleporting,
-              highlighted,
-            }),
-          })
-        : createSprite(
-            renderSprite({
-              name: type,
-              action,
-              facingXy8,
-              teleporting,
-              highlighted,
-            }),
-          ),
-      renderProps: {
-        action,
-        facingXy8,
-        teleportingPhase: teleporting?.phase ?? null,
-        highlighted,
-        walkSpeed,
-      },
-    };
-  }
+  const outputContainer: Container =
+    !needNewSprites ? previousRendering!
+    : type === "headOverHeels" ?
+      stackSprites({
+        top: createSprite(
+          playableCreateSpriteOptions({
+            name: "head",
+            ...renderProps,
+          }),
+        ),
+        bottom: createSprite(
+          playableCreateSpriteOptions({
+            name: "heels",
+            ...renderProps,
+          }),
+        ),
+      })
+    : createSprite(
+        playableCreateSpriteOptions({
+          name: type,
+          ...renderProps,
+        }),
+      );
 
-  const needToAdjustMovingSpriteAnimSpeed =
-    action === "moving" && currentlyRenderedProps.walkSpeed !== walkSpeed;
-
-  if (!needToAdjustMovingSpriteAnimSpeed) {
-    return "no-update";
+  if (type === "headOverHeels") {
+    applyFilters(
+      "head",
+      renderProps,
+      needNewSprites ? undefined : currentlyRenderedProps,
+      outputContainer.getChildAt(0),
+    );
+    applyFilters(
+      "heels",
+      renderProps,
+      needNewSprites ? undefined : currentlyRenderedProps,
+      outputContainer.getChildAt(1),
+    );
+  } else {
+    applyFilters(
+      type,
+      renderProps,
+      needNewSprites ? undefined : currentlyRenderedProps,
+      outputContainer,
+    );
   }
 
   // update the animated sprite's speed:
-  (previousRendering as AnimatedSprite).animationSpeed =
-    walkSpeed * playableWalkAnimationSpeed;
+  if (action === "moving" && previousRendering instanceof AnimatedSprite) {
+    previousRendering.animationSpeed = walkSpeed * playableWalkAnimationSpeed;
+  }
 
   return {
-    container: previousRendering,
-    renderProps: {
-      action,
-      facingXy8,
-      teleportingPhase: teleporting?.phase ?? null,
-      highlighted,
-      walkSpeed,
-    },
+    container: outputContainer,
+    renderProps,
   };
 };

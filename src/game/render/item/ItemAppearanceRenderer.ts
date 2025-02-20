@@ -75,9 +75,12 @@ export class ItemAppearanceRenderer<
 
     if (rendering !== "no-update") {
       this.#currentlyRenderedProps = rendering.renderProps;
-      this.#container.removeChildren();
-      if (rendering.container !== null)
-        this.#container.addChild(rendering.container);
+      // it is ok to return the same container back, in which case we don't need to do anything:
+      if (this.#container.children.at(0) !== rendering.container) {
+        this.#container.removeChildren();
+        if (rendering.container !== null)
+          this.#container.addChild(rendering.container);
+      }
     }
   }
 

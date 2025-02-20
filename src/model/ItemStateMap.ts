@@ -113,7 +113,26 @@ export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
   teleporting: PlayableTeleportingState | null;
 };
 
-export type HeadAbilities = {
+type CommonAbilities = {
+  lives: number;
+  gameTime: number;
+  /**
+   * the time a shield was collected at, or null if no shield. The hud should show
+   * seconds remaining based off of this value
+   */
+  shieldCollectedAt: number;
+
+  /** when we switched to this character. Used to show their highlight outline */
+  switchedToAt: number;
+
+  /**
+   * the character's gameTime of their last death. This is used to make the character invulnerable
+   * for a short time after they die
+   */
+  lastDiedAt: number;
+};
+
+export type HeadAbilities = CommonAbilities & {
   hasHooter: boolean;
   doughnuts: number;
   /** time in ms doughnut was last fired, used to limit rate of fire */
@@ -125,26 +144,13 @@ export type HeadAbilities = {
   gameWalkDistance: number;
   /** how far (what gameWalkDistance) we'd walked when we got the fast steps? */
   fastStepsStartedAtDistance: number;
-
-  lives: number;
-  gameTime: number;
-  // the time a shield was collected at, or null if no shield. The hud should show
-  // seconds remaining based off of this value
-  shieldCollectedAt: number;
-  switchedToAt: number;
 };
 
-export type HeelsAbilities<RoomId extends string> = {
+export type HeelsAbilities<RoomId extends string> = CommonAbilities & {
   hasBag: boolean;
   /** how many big jumps we can do (from picking up a bunny) */
   bigJumps: number;
   carrying: CarriedItem<RoomId> | null;
-  lives: number;
-  gameTime: number;
-  // the time a shield was collected at, or null if no shield. The hud should show
-  // seconds remaining based off of this value
-  shieldCollectedAt: number;
-  switchedToAt: number;
 };
 
 type ItemWithMovementState = {

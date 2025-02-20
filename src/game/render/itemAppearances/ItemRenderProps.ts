@@ -16,11 +16,11 @@ type PortableItemRenderProps = {
 
 type PlayableRenderProps = {
   facingXy8: DirectionXy8;
-  // used to change the speed of the walking animation
-  walkSpeed: number;
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
+
   highlighted: boolean;
+  flashing: boolean;
 };
 
 type ItemRenderPropsMap = {

@@ -4,7 +4,7 @@ import { type CreateSpriteOptions, createSprite } from "../createSprite";
 export const itemRidingOnBubblesSpritesOptions: CreateSpriteOptions = {
   animationId: "bubbles.cold",
 };
-export const stackedSprites = ({
+export const createStackedSprites = ({
   top,
   bottom = "homingBot",
   filter,
@@ -18,5 +18,19 @@ export const stackedSprites = ({
   const headSprite = createSprite(top);
   headSprite.y = -12;
   container.addChild(headSprite);
+  return container;
+};
+
+export const stackSprites = ({
+  top,
+  bottom,
+}: {
+  top: Container;
+  bottom: Container;
+}): Container => {
+  const container = new Container();
+  container.addChild(bottom);
+  top.y = -12;
+  container.addChild(top);
   return container;
 };
