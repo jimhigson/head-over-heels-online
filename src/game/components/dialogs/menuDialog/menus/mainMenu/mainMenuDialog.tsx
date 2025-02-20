@@ -78,7 +78,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
           />
-          <MenuItemSeparator />
+          {isGameRunning && <MenuItemSeparator />}
           <MenuItem
             id="quitGame"
             label="Quit this game"
