@@ -17,6 +17,7 @@ import {
   xyEqual,
   originXy,
   unitVector,
+  xyzEqual,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
@@ -38,10 +39,11 @@ export const walking = <RoomId extends string>(
   if (result.movementType === "vel" && result.vels.walking !== undefined) {
     const speed = lengthXyz(result.vels.walking);
 
-    result.stateDelta = Object.assign(result.stateDelta || {}, {
+    result.stateDelta = {
+      ...result.stateDelta,
       walkDistance:
         speed === 0 ? 0 : playableItem.state.walkDistance + speed * deltaMS,
-    });
+    };
 
     if (
       playableItem.type === "head" &&
@@ -50,11 +52,23 @@ export const walking = <RoomId extends string>(
       // fast steps, and they don't tick down while in the air:
       playableItem.state.standingOn !== null
     ) {
-      result.stateDelta = Object.assign(result.stateDelta || {}, {
-        totalWalkDistance:
-          playableItem.state.totalWalkDistance + speed * deltaMS,
-      });
+      result.stateDelta = {
+        ...result.stateDelta,
+        gameWalkDistance: playableItem.state.gameWalkDistance + speed * deltaMS,
+      };
     }
+  }
+
+  if (
+    playableItem.state.action === "idle" &&
+    result.movementType === "vel" &&
+    result.vels.walking !== undefined &&
+    !xyzEqual(result.vels.walking, originXyz)
+  ) {
+    result.stateDelta = {
+      ...result.stateDelta,
+      walkStartFacing: playableItem.state.facing,
+    };
   }
 
   return result;
@@ -78,6 +92,7 @@ const walkingImpl = <RoomId extends string>(
       facing,
       teleporting,
       walkDistance,
+      walkStartFacing,
       vels: { walking: previousWalkingVel, gravity: gravityVel },
     },
   } = playableItem;
@@ -115,7 +130,7 @@ const walkingImpl = <RoomId extends string>(
   const maxWalkSpeed = moveSpeedPixPerMs[useSpeedOfCharacter];
 
   if (teleporting !== null || action === "death") {
-    // do no walking while teleporting or showing dying animation:
+    // do not walk while teleporting or showing dying animation:
     return stopWalking;
   }
 
@@ -139,7 +154,7 @@ const walkingImpl = <RoomId extends string>(
       }
     } else {
       if (jumpInput !== "released") {
-        // standing on something and jumping
+        // standing on something and jumping - mandatory forwards motion
         const jumpDirectionXy = unitVector(
           xyEqual(walkVector, originXy) ? facing : walkVector,
         );
@@ -198,32 +213,23 @@ const walkingImpl = <RoomId extends string>(
     }
   }
 
-  // no direction pressed - we are not walking. Fade the velocity.
-  //const previousSpeed = lengthXyz(previousWalkingVel);
-
   if (walkDistance > 0 && walkDistance < 1) {
-    // stopped walking, having moved some distance but less than a pixel - one pixel
-    // is the minimum move distance so add on the remaining to round up to a pixel:
+    const targetDistance =
+      xyzEqual(walkStartFacing, facing) ?
+        // stopped walking, having moved some distance but less than a pixel - one pixel
+        // is the minimum move distance so add on the remaining to round up to a pixel:
+        1
+        // turning around without walking forward - we will put the player back slightly
+        // to their starting position.
+      : 0;
+
     return {
       movementType: "position",
-      posDelta: scaleXyz(facing, 1 - walkDistance),
+      posDelta: scaleXyz(facing, targetDistance - walkDistance),
       stateDelta: { action: isFalling ? "falling" : "idle", walkDistance: 0 },
     };
   }
 
-  /*
-  const previousDirection =
-    previousSpeed === 0 ? originXyz : (
-      scaleXyz(previousWalkingVel, 1 / previousSpeed)
-    );
-  // decelerate down towards stationary:
-  /*const newSpeed = Math.max(
-    previousSpeed -
-      playerWalkStopAccelPixPerMsSq[useSpeedOfCharacter] * deltaMS,
-    0,
-  );
-  actually, we'll just come to an instant stop, thanks
-  */
   return {
     movementType: "vel",
     vels: {

@@ -100,6 +100,11 @@ export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
   walkDistance: number;
 
   /**
+   * what direction were we facing just before we started walking?
+   */
+  walkStartFacing: Xyz;
+
+  /**
    * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
    * we fall (vertical falling, no forward motion)
    */
@@ -113,9 +118,12 @@ export type HeadAbilities = {
   doughnuts: number;
   /** time in ms doughnut was last fired, used to limit rate of fire */
   doughnutLastFireTime: number;
-  /** how far have we walked ever, total? Head tracks this to maintain the fast steps */
-  totalWalkDistance: number;
-  /** how far (what totalWalkDistance) we'd walked when we got the fast steps? */
+  /**
+   * how far have we walked ever, total in this game?
+   * Head tracks this so we know when the fast steps power-up runs out
+   */
+  gameWalkDistance: number;
+  /** how far (what gameWalkDistance) we'd walked when we got the fast steps? */
   fastStepsStartedAtDistance: number;
 
   lives: number;

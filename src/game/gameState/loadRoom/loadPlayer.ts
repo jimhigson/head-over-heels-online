@@ -27,6 +27,7 @@ export const defaultPlayerState = () =>
     teleporting: null,
     autoWalk: false,
     facing: unitVectors["towards"],
+    walkStartFacing: unitVectors["towards"],
     walkDistance: 0,
     vels: {
       walking: originXyz,
@@ -51,7 +52,7 @@ export const loadPlayer = <RoomId extends string>(
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         hasHooter: false,
-        totalWalkDistance: 0,
+        gameWalkDistance: 0,
         fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
         lives:
           infiniteLivesPoke ?

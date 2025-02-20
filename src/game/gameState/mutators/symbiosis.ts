@@ -85,7 +85,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
           "doughnuts",
           "doughnutLastFireTime",
           "fastStepsStartedAtDistance",
-          "totalWalkDistance",
+          "gameWalkDistance",
           "lives",
           "gameTime",
           "shieldCollectedAt",

@@ -25,7 +25,7 @@ export const fastStepsRemaining = (abilities: HeadAbilities) => {
   const quickStepsDistance = 100 * blockSizePx.w;
 
   const hasFastSteps =
-    abilities.totalWalkDistance <=
+    abilities.gameWalkDistance <=
     abilities.fastStepsStartedAtDistance + quickStepsDistance;
 
   if (!hasFastSteps) {
@@ -35,7 +35,7 @@ export const fastStepsRemaining = (abilities: HeadAbilities) => {
   const fastStepsRemaining =
     100 -
     Math.ceil(
-      (abilities.totalWalkDistance - abilities.fastStepsStartedAtDistance) /
+      (abilities.gameWalkDistance - abilities.fastStepsStartedAtDistance) /
         blockSizePx.w,
     );
 
