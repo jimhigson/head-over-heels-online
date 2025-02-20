@@ -20,6 +20,8 @@
 
 ### Details ad bugs
 
+[ ] turn around without moving for small presses (round down to zero, not up to one)
+
 [ ] move items collected into store, and show % on final screen 
  - this is selected from in tests, so would need store to be non-singleton maybe
 
@@ -70,6 +72,10 @@ carrying bugs:
         - in react-redux, can just use a new provider
         - would have to change *all* direct use of the store
         - would probably have to put the store instance on GameState or pass both around together
+
+[ ] guardian can push player through floor repeatedly if in the doorway and player is respawning on top of them (other player also in room)
+    * flash for a few seconds (1.5/2/?) after respawning
+    * forcefully push when entering a doorway
 
 [ ] write test - 
     collect scroll in room
@@ -148,6 +154,9 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # (heels) blacktooth35
 [ ] room positioning (scrolling) on screen is poor
+
+# egyptus7
+[ ] too easy with analogue control (jump straight to end)
 
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away

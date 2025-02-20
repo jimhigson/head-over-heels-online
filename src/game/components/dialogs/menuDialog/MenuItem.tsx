@@ -21,6 +21,7 @@ export type MenuItemProps = {
   onSelect?: () => void;
   className?: string;
   hint?: string | ReactElement;
+  hintInline?: boolean;
 };
 
 // having swop in here marks the swop key as handled, so the game can't immediately
@@ -42,6 +43,7 @@ export const MenuItem = ({
   onSelect = noop,
   hidden = false,
   disabled = false,
+  hintInline = false,
   className,
   hint,
   leader,
@@ -62,7 +64,7 @@ export const MenuItem = ({
     disabled: !focussed || hidden || disabled,
   });
 
-  return (
+  const menuItem = (
     // contents div puts children into the grid layout:
     <div
       {...{
@@ -115,7 +117,7 @@ export const MenuItem = ({
 
       {/* third column content (values etc) */}
       {valueElement !== undefined && valueElement}
-      {!focussed || hint === undefined ? null : (
+      {!focussed || hint === undefined || hintInline ? null : (
         <Portal>
           {typeof hint === "string" ?
             <BitmapText className={multilineTextClass}>{hint}</BitmapText>
@@ -124,4 +126,15 @@ export const MenuItem = ({
       )}
     </div>
   );
+
+  if (hintInline && hint && focussed) {
+    return (
+      <>
+        {menuItem}
+        <div className="col-span-2 col-start-2">{hint}</div>
+      </>
+    );
+  } else {
+    return menuItem;
+  }
 };

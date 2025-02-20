@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import {
   backToParentMenu,
   toggleBoolean,
@@ -6,8 +5,8 @@ import {
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { Border, Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
@@ -19,6 +18,7 @@ import {
   selectShowFps,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
+import { Switch } from "../../../../../../ui/Switch";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
@@ -37,38 +37,9 @@ const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 **on**: *extra items* slightly modernisess the gameplay.
 none of these fundamentally change how the rooms play.`;
 
-const analogueControlHintMarkdown = `**off**: original *4* walk directions: press: *⬅ ➡ ⬆ ⬇* for: *↖ ↘ ↗ ↙*
-
-**on**: *any* direction with analogue stick, or *8-way* with d-pad/keys. Easier.`;
-
 const resolutionHintMarkdown = `*zx spectrum* (**256**x**192**)
 
 *Amiga*/*c64*/*Atari-ST* PAL (**320**x**256**)`;
-
-const ValueSwitch = ({
-  className,
-  value,
-}: {
-  value: boolean;
-  className?: string;
-}) => {
-  return (
-    <div>
-      <BitmapText
-        className={clsx(
-          "inline-block",
-          value ?
-            "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
-          : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
-          className,
-        )}
-        noSlitWords
-      >
-        {value ? "  ON" : "OFF "}
-      </BitmapText>
-    </div>
-  );
-};
 
 export const ModernisationOptionsDialog = () => {
   return (
@@ -88,7 +59,7 @@ export const ModernisationOptionsDialog = () => {
               id="colourise"
               label="Colourise"
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.displaySettings.colourise,
                   )}
@@ -116,7 +87,7 @@ export const ModernisationOptionsDialog = () => {
                 />
               }
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.infiniteLivesPoke,
                   )}
@@ -132,7 +103,7 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="extraItems"
               label="Extra items"
-              valueElement={<ValueSwitch value={true} />}
+              valueElement={<Switch value={true} />}
               hint={
                 <BlockyMarkdown
                   className={markdownClassname}
@@ -145,9 +116,7 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="showFps"
               label="Show FPS"
-              valueElement={
-                <ValueSwitch value={useAppSelector(selectShowFps)} />
-              }
+              valueElement={<Switch value={useAppSelector(selectShowFps)} />}
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.showFps",
@@ -156,32 +125,10 @@ export const ModernisationOptionsDialog = () => {
             />
             <MenuItem
               doubleHeightWhenFocussed
-              id="analogueControl"
-              label="Analogue control"
-              valueElement={
-                <ValueSwitch
-                  value={useAppSelector(
-                    (state) => state.userSettings.analogueControl,
-                  )}
-                />
-              }
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.analogueControl",
-              )}
-              hint={
-                <BlockyMarkdown
-                  className={markdownClassname}
-                  markdown={analogueControlHintMarkdown}
-                />
-              }
-            />
-            <MenuItem
-              doubleHeightWhenFocussed
               id="crtFilter"
               label="CRT TV effect"
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.displaySettings.crtFilter,
                   )}

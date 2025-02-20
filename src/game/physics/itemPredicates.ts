@@ -162,3 +162,4 @@ export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movableBlock");
+export const isMultipliable = isItemType("block", "deadlyBlock", "barrier");

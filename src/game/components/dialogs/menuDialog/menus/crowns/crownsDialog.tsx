@@ -1,5 +1,5 @@
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { Border, Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";

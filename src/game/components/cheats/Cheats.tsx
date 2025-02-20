@@ -3,7 +3,6 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { Label } from "@radix-ui/react-label";
 
 import { selectCurrentRoomState } from "../../gameState/GameState";
 import {
@@ -12,7 +11,6 @@ import {
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "./RoomSelect";
-import { CssSprite } from "../Sprite";
 
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
@@ -20,7 +18,7 @@ import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
 import { useGameApi } from "../GameApiContext";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../ui/button";
 import type {
   JsonItemType,
   JsonItemConfig,
@@ -38,8 +36,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
-import { Switch } from "../../../components/ui/switch";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
+import { Switch } from "../../../ui/Switch";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -143,12 +141,12 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <CssSprite className="texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
+          <span className="sprite texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
           over
-          <CssSprite className="texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
+          <span className="sprite texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
         </>
-      : <CssSprite
-          className={`texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
+      : <span
+          className={`sprite texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
         />
       }
     </Button>
@@ -179,7 +177,7 @@ export const GoToRoomButton = <RoomId extends string>({
 };
 
 const Heading = ({ children }: { children: string }) => {
-  return <h4 className="bg-redShadow pl-1">{children}</h4>;
+  return <h4 className="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
 };
 
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
@@ -228,11 +226,11 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <CssSprite className="texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
+        <span className="sprite texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
-          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px]"
+          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white"
           style={{ "--scale": 2 }}
         >
           <Heading>room select:</Heading>
@@ -255,6 +253,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             >
               Market
             </GoToRoomButton>
+            <GoToRoomButton gameApi={gameApi} roomId={"moonbase1" as RoomId}>
+              Moonbase
+            </GoToRoomButton>
             <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId}>
               Egyptus
             </GoToRoomButton>
@@ -274,32 +275,29 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
           <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-1 pt-1 bg-shadow text-white">
             <Switch
-              id="showbbs"
-              checked={showBoundingBoxes !== "none"}
-              onCheckedChange={(checked) =>
-                dispatch(setShowBoundingBoxes(checked ? "non-wall" : "none"))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showBoundingBoxes !== "none"}
+              onClick={(e, newValue) => {
+                dispatch(setShowBoundingBoxes(newValue ? "non-wall" : "none"));
+                e.currentTarget.blur();
+              }}
             />
-            <Label htmlFor="showbbs">BBs</Label>
+            <label htmlFor="showbbs">BBs</label>
             <Switch
-              id="showAllBbs"
-              checked={showBoundingBoxes === "all"}
-              onCheckedChange={(checked) =>
-                dispatch(setShowBoundingBoxes(checked ? "all" : "non-wall"))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showBoundingBoxes === "all"}
+              onClick={(e, newValue) => {
+                dispatch(setShowBoundingBoxes(newValue ? "all" : "non-wall"));
+                e.currentTarget.blur();
+              }}
             />
-            <Label htmlFor="showAllBbs">wall BBs</Label>
+            <label htmlFor="showAllBbs">wall BBs</label>
             <Switch
-              id="showshadows"
-              checked={showShadowMasks}
-              onCheckedChange={(checked) =>
-                dispatch(setShowShadowMasks(checked))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showShadowMasks}
+              onClick={(e, newValue) => {
+                dispatch(setShowShadowMasks(newValue));
+                e.currentTarget.blur();
+              }}
             />
-            <Label htmlFor="showshadows">shadow masks</Label>
+            <label htmlFor="showshadows">shadow masks</label>
           </div>
 
           <Heading>summon character:</Heading>
@@ -320,7 +318,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bag" />
+              <span className="sprite texture-bag" />
             </Button>
             <Button
               className="flex-1"
@@ -329,7 +327,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-hooter" />
+              <span className="sprite texture-hooter" />
             </Button>
             <Button
               className="flex-1"
@@ -338,7 +336,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-doughnuts" />
+              <span className="sprite texture-doughnuts" />
             </Button>
             <Button
               className="flex-1"
@@ -347,7 +345,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-cube" />
+              <span className="sprite texture-cube" />
             </Button>
             <Button
               className="flex-1"
@@ -356,7 +354,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-spring.released" />
+              <span className="sprite texture-spring.released" />
             </Button>
             <Button
               className="flex-1"
@@ -369,7 +367,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-dalek.1 hover:texture-animated-dalek" />
+              <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -380,7 +378,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.bookworld" />
+              <span className="sprite texture-crown.bookworld" />
             </Button>
             <Button
               className="flex-1"
@@ -389,7 +387,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.egyptus" />
+              <span className="sprite texture-crown.egyptus" />
             </Button>
             <Button
               className="flex-1"
@@ -398,7 +396,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.safari" />
+              <span className="sprite texture-crown.safari" />
             </Button>
             <Button
               className="flex-1"
@@ -410,7 +408,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.penitentiary" />
+              <span className="sprite texture-crown.penitentiary" />
             </Button>
             <Button
               className="flex-1"
@@ -419,7 +417,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.blacktooth" />
+              <span className="sprite texture-crown.blacktooth" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -430,8 +428,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
-              <CssSprite className="texture-hud.char.2" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.char.2" />
             </Button>
             <Button
               className="flex-1"
@@ -440,8 +438,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
-              <CssSprite className="texture-hud.shield" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.shield" />
             </Button>
             <Button
               className="flex-1"
@@ -450,8 +448,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
-              <CssSprite className="texture-hud.fastSteps" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.fastSteps" />
             </Button>
             <Button
               className="flex-1"
@@ -460,8 +458,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bunny" />
-              <CssSprite className="texture-hud.bigJumps" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.bigJumps" />
             </Button>
           </div>
 
@@ -556,8 +554,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-head.walking.right.2" />
-              <CssSprite className="texture-heels.walking.right.2" />
+              <span className="sprite texture-head.walking.right.2" />
+              <span className="sprite texture-heels.walking.right.2" />
             </Button>
           </div>
         </div>

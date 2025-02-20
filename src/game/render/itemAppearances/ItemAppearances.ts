@@ -41,6 +41,9 @@ const blockTextureId = (
   style: BlockStyle,
   disappear: boolean,
 ): TextureId => {
+  if (style === "tower") {
+    return "tower";
+  }
   if (style === "book") {
     return `book.x`;
   }
@@ -118,12 +121,12 @@ export const itemAppearances: {
   barrier: renderOnce(
     ({
       item: {
-        config: { axis },
+        config: { axis, times },
       },
     }) => {
       return createSprite({
         texture: `barrier.${axis}`,
-        //pivot: barrierPivot[axis],
+        times,
       });
     },
   ),
@@ -131,13 +134,14 @@ export const itemAppearances: {
   deadlyBlock: renderOnce(
     ({
       item: {
-        config: { style },
+        config: { style, times },
       },
       room,
     }) =>
       createSprite({
         texture: style,
         filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
+        times,
       }),
   ),
   slidingDeadly: singleRenderWithStyleAsTexture,
@@ -145,7 +149,7 @@ export const itemAppearances: {
 
   block({
     item: {
-      config: { style },
+      config: { style, times },
       state: { disappear },
     },
     room,
@@ -167,6 +171,7 @@ export const itemAppearances: {
           disappear !== null,
         ),
         filter: style === "organic" ? mainPaletteSwapFilter(room) : undefined,
+        times,
       }),
       renderProps: { disappear },
     };
@@ -298,10 +303,10 @@ export const itemAppearances: {
     }
 
     const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
-      shield: "bunny",
-      jumps: "bunny",
-      fast: "bunny",
-      "extra-life": "bunny",
+      shield: "whiteRabbit",
+      jumps: "whiteRabbit",
+      fast: "whiteRabbit",
+      "extra-life": "whiteRabbit",
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",

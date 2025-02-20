@@ -1,6 +1,6 @@
 ## CUDDLY STUFFED WHITE RABBITS
 
-![](texture-bunny?float-right)The *cute toy bunnies* magically enhance your powers. The status display at the
+![](texture-whiteRabbit?float-right)The *cute toy bunnies* magically enhance your powers. The status display at the
 bottom of the screen will keep you informed as to which powers are temporarily
 enhanced.
 

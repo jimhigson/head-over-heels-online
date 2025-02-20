@@ -45,6 +45,7 @@ export type UserSettings = {
   // optional because was introduced without a version bump in persist. Select with !!
   showFps: boolean;
   analogueControl: boolean;
+  screenRelativeControl: boolean;
 };
 
 const inBrowser = typeof globalThis.window !== "undefined";
@@ -116,7 +117,8 @@ export const initialGameMenuSliceState: GameMenusState = {
     },
 
     showFps: false,
-    analogueControl: false,
+    analogueControl: true,
+    screenRelativeControl: false,
   },
   upscale: calculateUpscale(
     inBrowser ?

@@ -3,7 +3,7 @@ import { useAppSelector } from "../../../../store/hooks";
 import { standardControllerButtonNames } from "../../../input/controllers";
 import { actionToAxis, type BooleanAction } from "../../../input/InputState";
 import type { Key } from "../../../input/keys";
-import { CssSprite, MultipleBitmapText } from "../../Sprite";
+import { MultipleBitmapText } from "../../Sprite";
 import { emptyArray } from "../../../../utils/empty";
 
 const specialCharClassName =
@@ -147,7 +147,7 @@ export const CurrentKeyAssignments = ({
         );
       })}
       {flashingCursor && (
-        <CssSprite className="texture-hud.char.space bg-[currentColor] animate-flash" />
+        <span className="sprite texture-hud.char.space bg-[currentColor] animate-flash" />
       )}
     </div>
   );

@@ -8,14 +8,10 @@ import { blockSizePx } from "../../sprites/spritePivots";
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
 export const playerWalkAcceldPixPerMsSq = {
-  head: 0.000_2,
-  heels: 0.000_2,
-};
-
-/** deceleration of playables when input stops */
-export const playerWalkStopAccelPixPerMsSq = {
-  head: 0.000_5,
-  heels: 0.000_5,
+  // keep these the same so long as we are relying on walk distance at the start of
+  // the walk to decide if we should turn around on the spot or walk a single pixel
+  head: 0.000_15,
+  heels: 0.000_15,
 };
 
 /** 

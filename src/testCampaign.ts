@@ -181,9 +181,14 @@ const rooms = {
       //   position: { x: 0, y: 3, z: 0 },
       // },
       {
-        type: "deadlyBlock",
-        config: { style: "volcano" },
-        position: { x: 0, y: 0, z: 0 },
+        type: "block",
+        config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 0, y: 3, z: 3 },
       },
       // {
       //   type: "block",

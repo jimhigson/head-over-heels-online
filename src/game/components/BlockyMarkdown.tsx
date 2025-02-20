@@ -1,6 +1,6 @@
 import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
-import { CssSprite, MultipleBitmapText } from "./Sprite";
+import { MultipleBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -67,9 +67,9 @@ const markdownComponents: CustomComponentsOption = {
     return (
       // make double-size:
       <span style={{ "--scale": scaleFactor * 2 }}>
-        <CssSprite
+        <span
           className={twMerge(
-            "float-left mr-1 mb-1 zx:sprite-revert-to-two-tone",
+            "sprite float-left mr-1 mb-1 zx:sprite-revert-to-two-tone",
             classes.join(" "),
           )}
         />

@@ -32,6 +32,7 @@ export const SpritePage = () => {
   const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];
   return (
     <div className="flex flex-wrap p-[8px] bg-pureBlack">
+      <title>Sprites</title>
       {textureIds.map((textureId) => {
         const { frame } = spriteSheet.data.frames[textureId];
         return (

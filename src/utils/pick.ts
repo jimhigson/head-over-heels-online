@@ -16,3 +16,16 @@ export const pick = <O extends object, KS extends keyof O>(
     [K in KS]: O[K];
   };
 };
+
+export const omit = <O extends object, KS extends keyof O>(
+  o: O,
+  ...ks: KS[]
+): Omit<O, KS> => {
+  const res: Partial<O> = { ...o };
+
+  for (const k of ks) {
+    delete res[k];
+  }
+
+  return res as Omit<O, KS>;
+};

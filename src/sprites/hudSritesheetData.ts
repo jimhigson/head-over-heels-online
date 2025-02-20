@@ -61,13 +61,20 @@ const punctuation = [
   "-",
   "+",
   "%",
-] as const;
-
-const brackets = ["(", ")", "[", "]", "<", ">"] as const;
-
-const arrowChars = ["⬅", "➡", "⬆", "⬇", "↖", "↘", "↗", "↙"] as const;
-
-const menuChars = [
+  "⬅",
+  "➡",
+  "⬆",
+  "⬇",
+  "↖",
+  "↘",
+  "↗",
+  "↙",
+  "(",
+  ")",
+  "[",
+  "]",
+  "<",
+  ">",
   // choose some arbitrary but fairly common keys for the menu items,
   // selected to be unlikely to be used for either game controls or to
   // appear in scroll markdown
@@ -109,22 +116,19 @@ const charFrames = <Char extends string>(
 
 export const hudSpritesheetData = {
   frames: {
-    ...charFrames(alphaNumeric, { x: 173, y: 0 }),
+    ...charFrames(alphaNumeric, { x: 151, y: 2 }),
+    ...charFrames(punctuation, { x: 151, y: 11 }),
     "hud.fastSteps": {
-      frame: { x: 497, y: 0, ...hudCharTextureSize },
+      frame: { x: 475, y: 2, ...hudCharTextureSize },
     },
     "hud.shield": {
-      frame: { x: 506, y: 0, ...hudCharTextureSize },
+      frame: { x: 484, y: 2, ...hudCharTextureSize },
     },
     "hud.bigJumps": {
-      frame: { x: 515, y: 0, ...hudCharTextureSize },
+      frame: { x: 493, y: 2, ...hudCharTextureSize },
     },
     "hud.char.🕹": {
-      frame: { x: 227, y: 27, ...hudCharTextureSize },
+      frame: { x: 502, y: 2, ...hudCharTextureSize },
     },
-    ...charFrames(punctuation, { x: 173, y: 9 }),
-    ...charFrames(arrowChars, { x: 173, y: 18 }),
-    ...charFrames(menuChars, { x: 524, y: 0 }),
-    ...charFrames(brackets, { x: 173, y: 27 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

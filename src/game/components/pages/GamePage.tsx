@@ -88,6 +88,12 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   return gameApi;
 };
 
+const useNonScrollingPage = () => {
+  useEffect(() => {
+    document.body.classList.add("overscroll-none", "overflow-hidden");
+  }, []);
+};
+
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
@@ -98,6 +104,7 @@ export const GamePage = () => {
   const gameApi = useGame();
   const { cssUpscale, canvasSize } = useAppSelector((state) => state.upscale);
 
+  useNonScrollingPage();
   useEffect(() => {
     if (gameDiv === null || gameApi === undefined) return;
 

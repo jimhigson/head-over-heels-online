@@ -1,4 +1,5 @@
 import type { GameState } from "../../gameState/GameState";
+import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
@@ -20,11 +21,17 @@ const hasShadowMask = (
 export const createItemRenderer = <
   RoomId extends string,
   ItemId extends string,
->(
-  item: UnknownItemInPlay<RoomId, ItemId>,
-  room: RoomState<SceneryName, RoomId, ItemId>,
-  gameState: GameState<RoomId>,
-): Renderer | "not-needed" => {
+>({
+  item,
+  room,
+  gameState,
+  pixiRenderer,
+}: {
+  item: UnknownItemInPlay<RoomId, ItemId>;
+  room: RoomState<SceneryName, RoomId, ItemId>;
+  gameState: GameState<RoomId>;
+  pixiRenderer: PixiRenderer;
+}): Renderer | "not-needed" => {
   const state = store.getState();
   const {
     userSettings: {
@@ -47,13 +54,13 @@ export const createItemRenderer = <
     );
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
-      itemAppearanceRenderer.container.alpha = 0.5;
+      itemAppearanceRenderer.container.alpha = 0.66;
     }
 
     // non-colourised rendering doesn't have shadows (yet) since it prevents
     // the colour revert shader from properly identifying black/non-black pixels
     if (!isPaused && colourise && hasShadowMask(item)) {
-      renderers.push(new ItemShadowRenderer(item, room));
+      renderers.push(new ItemShadowRenderer(item, room, pixiRenderer));
     }
   }
   if (renderBoundingBoxes) {
@@ -61,6 +68,7 @@ export const createItemRenderer = <
   }
 
   if (renderers.length === 0) {
+    // TODO: return a null renderer (that does nothing) instead of a special string?
     return "not-needed";
   } else {
     return new ItemPositionRenderer(item, new CompositeRenderer(renderers));

@@ -61,3 +61,9 @@ export const selectHasAllPlanetCrowns = (state: RootState) => {
     state.planetsLiberated.safari
   );
 };
+
+export const useIsScreenRelativeControl = () =>
+  useAppSelector((state) => state.userSettings.screenRelativeControl);
+
+export const useIsAnalogueControl = () =>
+  useAppSelector((state) => state.userSettings.analogueControl);

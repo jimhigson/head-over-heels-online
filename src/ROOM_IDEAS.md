@@ -9,3 +9,5 @@ tricky/puzzle rooms
 * use anvil/stepstool (heavy) to manipulate lifts (push on for example)
 
 * lifts moving in a wave
+
+* a room like the crossover (blacktooth11) but the characters enter via the same doors and have to help each other getting over by heels standing on head, and then later get back to the same room the other way, through the tunnel

@@ -1,6 +1,5 @@
 import "react";
 import type { PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 
 declare module "react" {
@@ -11,15 +10,18 @@ declare module "react" {
 }
 
 /** TODO: this could be written to the body via an effect */
-export const CssVariables = ({ children }: PropsWithChildren<EmptyObject>) => {
+export const CssVariables = ({
+  children,
+  scaleFactor: propsScaleFactor,
+}: PropsWithChildren<{ scaleFactor?: number }>) => {
   const scaleFactor = useTotalUpscale();
 
   return (
     <div
       className="contents set-spritesheet-vars"
       style={{
-        "--scale": scaleFactor,
-        "--block": `${scaleFactor * 8}px`,
+        "--scale": propsScaleFactor ?? scaleFactor,
+        "--block": `${(propsScaleFactor ?? scaleFactor) * 8}px`,
       }}
     >
       {children}

@@ -88,11 +88,11 @@ const doorFrames = <SN extends SceneryName>(
 
 export const doorSpritesheetData = {
   frames: {
-    ...doorFrames("generic", "y", { x: 380, y: 147 }),
-    ...doorFrames("generic", "x", { x: 382, y: 147 }),
-    ...doorFrames("moonbase", "y", { x: 451, y: 232 }),
-    ...doorFrames("moonbase", "x", { x: 582, y: 232 }),
-    ...doorFrames("moonbase.dark", "y", { x: 451, y: 304 }),
-    ...doorFrames("moonbase.dark", "x", { x: 582, y: 304 }),
+    ...doorFrames("generic", "y", { x: 580, y: 415 }),
+    ...doorFrames("generic", "x", { x: 581, y: 415 }),
+    ...doorFrames("moonbase", "y", { x: 451, y: 204 }),
+    ...doorFrames("moonbase", "x", { x: 582, y: 204 }),
+    ...doorFrames("moonbase.dark", "y", { x: 451, y: 276 }),
+    ...doorFrames("moonbase.dark", "x", { x: 582, y: 276 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

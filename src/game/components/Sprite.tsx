@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { MouseEventHandler, ReactElement } from "react";
 import {
   cloneElement,
   isValidElement,
@@ -19,18 +19,6 @@ export interface CssSpriteProps {
   tint?: boolean;
 }
 
-/**
- * css sprite is much lighter than using pixi, and can tint the sprite to any colour,
- * but doesn't support filters like pixi does
- */
-export const CssSprite = ({ className, tint }: CssSpriteProps) => {
-  return (
-    <span
-      className={twMerge(`sprite  ${tint ? "sprite-tinted" : ""}`, className)}
-    />
-  );
-};
-
 export interface BitmapTextProps {
   children: number | string | (string | number)[];
   /**
@@ -39,6 +27,7 @@ export interface BitmapTextProps {
   classnameCycle?: string[];
   className?: string;
   noSlitWords?: boolean;
+  onClick?: MouseEventHandler<HTMLSpanElement>;
 }
 
 export const BitmapText = ({
@@ -46,6 +35,7 @@ export const BitmapText = ({
   className,
   noSlitWords,
   classnameCycle,
+  onClick,
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
@@ -61,7 +51,7 @@ export const BitmapText = ({
     : textString.toUpperCase().split(/\s+/);
 
   return (
-    <span className={clsx(className)}>
+    <span className={clsx(className)} onClick={onClick}>
       {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
@@ -87,16 +77,21 @@ export const BitmapText = ({
                 );
               }
               const imgSpriteEle = (
-                <CssSprite
+                <span
                   key={charIndex}
-                  className={`${
+                  className={`sprite ${
                     isTextureId(textureId) ?
                       // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
                       // fine to construct dynamically:
                       `texture-${textureId}`
                     : "texture-hud.char.?"
-                  } ${classnameCycle === undefined ? "" : classnameCycle[charIndex % classnameCycle.length]}`}
-                  tint
+                  }
+                  sprite-tinted
+                  ${
+                    classnameCycle === undefined ? "" : (
+                      classnameCycle[charIndex % classnameCycle.length]
+                    )
+                  }`}
                 />
               );
 

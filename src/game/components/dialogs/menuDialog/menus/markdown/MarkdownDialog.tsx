@@ -8,12 +8,12 @@ import {
   markdownPages,
   type MarkdownPageName,
 } from "../../../../../../manual/pages";
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../ui/dialog";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;

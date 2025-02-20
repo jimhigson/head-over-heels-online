@@ -1,6 +1,6 @@
 import type { SpriteSize } from "../model/modelTypes";
 import { iterate } from "../utils/iterate";
-import type { DirectionXy4, Xy } from "../utils/vectors/vectors";
+import { addXy, type DirectionXy4, type Xy } from "../utils/vectors/vectors";
 import { range } from "iter-tools";
 import type { SpritesheetFrameData } from "pixi.js";
 
@@ -83,6 +83,46 @@ export const seriesOfNumberedTextures = <
   }
 
   return Object.fromEntries(generator()) as Record<Name, SpritesheetFrameData>;
+};
+
+export const fourDirectionsOfNumberedTextures = <
+  TName extends string,
+  N extends number,
+>(
+  name: TName,
+  n: N,
+  position: Xy,
+  textureSize: SpriteSize,
+): Record<
+  `${TName}.${DirectionXy4}.${FrameNumbers<N>}`,
+  SpritesheetFrameData
+> => {
+  const frames = {
+    ...seriesOfNumberedTextures(`${name}.left`, n, position, textureSize),
+    ...seriesOfNumberedTextures(
+      `${name}.away`,
+      n,
+      addXy(position, { x: (textureSize.w + 1) * n }),
+      textureSize,
+    ),
+    ...seriesOfNumberedTextures(
+      `${name}.towards`,
+      n,
+      addXy(position, { y: textureSize.h + 1 }),
+      textureSize,
+    ),
+    ...seriesOfNumberedTextures(
+      `${name}.right`,
+      n,
+      addXy(position, {
+        x: (textureSize.w + 1) * n,
+        y: textureSize.h + 1,
+      }),
+      textureSize,
+    ),
+  } as const;
+  // typescript needs a little help to realise these are the same:;
+  return frames as Record<keyof typeof frames, SpritesheetFrameData>;
 };
 
 export const seriesOfAnimationFrameTextureIds = <

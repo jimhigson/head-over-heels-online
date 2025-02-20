@@ -15,26 +15,27 @@ import type {
   IndividualCharacterName,
   CharacterName,
 } from "../../../model/modelTypes";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import {
   lengthXyz,
-  vectorClosestDirectionXy4,
+  vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import type { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
+import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 
 const renderSprite = ({
   name,
   action,
-  facingXy4,
+  facingXy8,
   teleporting,
   highlighted,
 }: {
   name: IndividualCharacterName;
   action: PlayableActionState;
-  facingXy4: DirectionXy4;
+  facingXy8: DirectionXy8;
   teleporting: PlayableTeleportingState | null;
   highlighted: boolean;
 }): CreateSpriteOptions => {
@@ -70,24 +71,27 @@ const renderSprite = ({
 
   if (action === "moving") {
     return {
-      animationId: `${name}.walking.${facingXy4}`,
+      animationId: `${name}.walking.${facingXy8}`,
       filter,
     };
-  } else if (
-    action === "falling" &&
-    name === "head" &&
-    (facingXy4 === "towards" || facingXy4 === "right")
-  ) {
-    return { texture: `head.falling.${facingXy4}`, filter };
-  } else {
-    if (name === "head" && (facingXy4 === "towards" || facingXy4 === "right")) {
-      return {
-        animationId: `head.idle.${facingXy4}`,
-        filter,
-      };
-    }
-    return { texture: `${name}.walking.${facingXy4}.2`, filter };
   }
+
+  if (action === "falling") {
+    const fallingTextureName = `${name}.falling.${facingXy8}`;
+
+    if (isTextureId(fallingTextureName))
+      return { texture: fallingTextureName, filter };
+  }
+
+  const idleAnimationId = `${name}.idle.${facingXy8}` as const;
+  if (isAnimationId(idleAnimationId)) {
+    // we have an idle anim for this character/direction
+    return {
+      animationId: idleAnimationId,
+      filter,
+    };
+  }
+  return { texture: `${name}.walking.${facingXy8}.2`, filter };
 };
 
 export const isHighlighted = ({
@@ -108,7 +112,7 @@ export const playableAppearance = <C extends CharacterName>({
     state: { action, facing, teleporting },
   } = item;
 
-  const facingXy4 = vectorClosestDirectionXy4(facing);
+  const facingXy8 = vectorClosestDirectionXy8(facing);
 
   const highlighted =
     item.type === "headOverHeels" ?
@@ -122,7 +126,7 @@ export const playableAppearance = <C extends CharacterName>({
   const needNewSprites =
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
-    currentlyRenderedProps.facingXy4 !== facingXy4 ||
+    currentlyRenderedProps.facingXy8 !== facingXy8 ||
     currentlyRenderedProps.teleportingPhase !== (teleporting?.phase ?? null) ||
     currentlyRenderedProps.highlighted !== highlighted;
 
@@ -134,14 +138,14 @@ export const playableAppearance = <C extends CharacterName>({
             top: renderSprite({
               name: "head",
               action,
-              facingXy4,
+              facingXy8,
               teleporting,
               highlighted,
             }),
             bottom: renderSprite({
               name: "heels",
               action,
-              facingXy4,
+              facingXy8,
               teleporting,
               highlighted,
             }),
@@ -150,14 +154,14 @@ export const playableAppearance = <C extends CharacterName>({
             renderSprite({
               name: type,
               action,
-              facingXy4,
+              facingXy8,
               teleporting,
               highlighted,
             }),
           ),
       renderProps: {
         action,
-        facingXy4,
+        facingXy8,
         teleportingPhase: teleporting?.phase ?? null,
         highlighted,
         walkSpeed,
@@ -180,7 +184,7 @@ export const playableAppearance = <C extends CharacterName>({
     container: previousRendering,
     renderProps: {
       action,
-      facingXy4,
+      facingXy8,
       teleportingPhase: teleporting?.phase ?? null,
       highlighted,
       walkSpeed,

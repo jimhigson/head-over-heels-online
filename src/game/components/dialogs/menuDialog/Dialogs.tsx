@@ -11,7 +11,7 @@ import { GameOverDialog } from "./menus/gameOver/gameOverDialog";
 import { HoldDialog } from "./menus/holdDialog";
 import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
 import { SelectKeysDialog } from "./menus/selectKeys/SelectKeysDialog";
-import { Dialog } from "../../../../components/ui/dialog";
+import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../Sprite";
 import { InputPresetDialog } from "./menus/inputPreset/InputPresetDialog";
 

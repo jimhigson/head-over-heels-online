@@ -3,7 +3,7 @@ import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsColourised } from "../../../../../../store/selectors";
-import { CssSprite, BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../Sprite";
 
 const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
   egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
@@ -38,11 +38,11 @@ export const TitledCrown = ({
 
   return (
     <div className={`flex flex-col ${className}`}>
-      <CssSprite
-        className={`block ${collected ? `${crownTextureClasses[planet]} zx:sprite-revert-zxYellow` : "texture-crown.dark colourised:opacity-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
+      <span
+        className={`sprite block ${crownTextureClasses[planet]} ${collected ? `zx:sprite-revert-zxYellow` : "colourised:opacity-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
       />
-      <CssSprite
-        className={`block texture-ball zx:sprite-revert-zxYellow mx-auto ${colourCycle[planet][0]}`}
+      <span
+        className={`sprite block texture-ball zx:sprite-revert-zxYellow mx-auto ${collected ? `` : "colourised:opacity-halfBrite"} ${colourCycle[planet][0]}`}
       />
       <BitmapText
         classnameCycle={colourised ? colourCycle[planet] : undefined}

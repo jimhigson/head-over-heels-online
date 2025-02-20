@@ -51,7 +51,10 @@ export class MainLoop<RoomId extends string> {
   #app: Application;
   #gameState: GameState<RoomId>;
 
-  constructor(app: Application, gameState: GameState<RoomId>) {
+  constructor(
+    private app: Application,
+    gameState: GameState<RoomId>,
+  ) {
     this.#app = app;
     this.#gameState = gameState;
 
@@ -67,7 +70,12 @@ export class MainLoop<RoomId extends string> {
     if (startingRoom === undefined) {
       throw new Error("main loop with no starting room");
     }
-    this.#roomRenderer = new RoomRenderer(gameState, startingRoom, false);
+    this.#roomRenderer = new RoomRenderer({
+      gameState,
+      roomState: startingRoom,
+      paused: false,
+      pixiRenderer: app.renderer,
+    });
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
     this.#hudRenderer = new HudRenderer<RoomId>();
@@ -117,11 +125,12 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer?.destroy();
 
       if (tickRoom) {
-        this.#roomRenderer = new RoomRenderer(
-          this.#gameState,
-          tickRoom,
-          isPaused,
-        );
+        this.#roomRenderer = new RoomRenderer({
+          gameState: this.#gameState,
+          roomState: tickRoom,
+          paused: isPaused,
+          pixiRenderer: this.#app.renderer,
+        });
         this.#worldContainer.addChild(this.#roomRenderer.container);
         // this isn't the ideal place to emit this from - it gets fired even if just the
         // display settings change. but only the cheats needs this currently

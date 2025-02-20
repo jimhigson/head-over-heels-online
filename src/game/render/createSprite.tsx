@@ -4,6 +4,7 @@ import type {
   PointData,
   SpritesheetFrameData,
 } from "pixi.js";
+import { Container } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 import {
   spritesheetData,
@@ -12,7 +13,9 @@ import {
 } from "../../sprites/spriteSheetData";
 import { spriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "../../originalGame";
-import type { Xy } from "../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { omit } from "../../utils/pick";
+import { projectBlockXyzToScreenXy } from "./projectToScreen";
 
 type AnimatedCreateSpriteOptions = {
   // animated
@@ -34,6 +37,7 @@ type AnimatedCreateSpriteOptions = {
    * indefinitely
    */
   playOnce?: "and-destroy" | "and-stop";
+  times?: Partial<Xyz>;
 };
 
 export type CreateSpriteOptions =
@@ -47,6 +51,7 @@ export type CreateSpriteOptions =
       x?: number;
       y?: number;
       filter?: Filter;
+      times?: Partial<Xyz>;
     }
   | AnimatedCreateSpriteOptions;
 
@@ -62,12 +67,12 @@ const isAnimatedOptions = (
   );
 
 /** utility for creating a sprite while setting several properties on it */
-export const createSprite = (options: CreateSpriteOptions): Sprite => {
+export const createSprite = (options: CreateSpriteOptions): Container => {
   if (typeof options === "string") {
     // shortcutted convenience for creating with the texture name and no other options
     return createSprite({ texture: options });
   } else {
-    const { anchor, flipX, pivot, x, y, filter } = options;
+    const { anchor, flipX, pivot, x, y, filter, times } = options;
 
     let sprite: Sprite;
 
@@ -75,6 +80,31 @@ export const createSprite = (options: CreateSpriteOptions): Sprite => {
       sprite = createAnimatedSprite(options);
     } else {
       sprite = new Sprite(spriteSheet.textures[options.texture]);
+    }
+
+    if (times !== undefined) {
+      const completeTimes = { x: 1, y: 1, z: 1, ...times };
+
+      const container = new Container({ label: "timesXyz" });
+      for (let { x } = completeTimes; x >= 1; x--) {
+        for (let { y } = completeTimes; y >= 1; y--) {
+          for (let z = 1; z <= completeTimes.z; z++) {
+            const component = createSprite(
+              omit(options, "times") as CreateSpriteOptions,
+            );
+            const displaceXy = projectBlockXyzToScreenXy({
+              x: x - 1,
+              y: y - 1,
+              z: z - 1,
+            });
+            component.x += displaceXy.x;
+            component.y += +displaceXy.y;
+
+            container.addChild(component);
+          }
+        }
+      }
+      return container;
     }
 
     if (anchor === undefined && pivot === undefined) {

@@ -6,6 +6,8 @@ import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 
 export const positionCentredInBlock = (item: UnknownJsonItem): Xyz => {
+  // this is wrong when we have times set to on!
+
   const blockPosition = blockXyzToFineXyz(item.position);
   const { aabb } = boundingBoxForItem(item);
 

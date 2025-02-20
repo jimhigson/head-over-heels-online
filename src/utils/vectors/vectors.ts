@@ -3,18 +3,18 @@ export type DirectionXy4 = (typeof directionsXy4)[number];
 
 export const directionsXyDiagonal = [
   "awayRight",
-  "rightTowards",
+  "towardsRight",
   "towardsLeft",
-  "leftAway",
+  "awayLeft",
 ] as const;
 
 export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
 
-export const directions8Xy = [
+export const directionsXy8 = [
   ...directionsXy4,
   ...directionsXyDiagonal,
 ] as const;
-export type DirectionXy8 = (typeof directions8Xy)[number];
+export type DirectionXy8 = (typeof directionsXy8)[number];
 
 // prettier-ignore
 type Matrix3x3 = [
@@ -76,6 +76,11 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   x: xy.x * scale,
   y: xy.y * scale,
   z: xy.z * scale,
+});
+export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
+  x: a.x * b.x,
+  y: a.y * b.y,
+  z: a.z * b.z,
 });
 
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.sqrt(x * x + y * y + z * z);
@@ -204,18 +209,19 @@ export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
 };
 
 const directionsXy8Octants: DirectionXy8[] = [
+  // these need to be in order clockwise
   "right",
-  "rightTowards",
+  "towardsRight",
   "towards",
   "towardsLeft",
   "left",
-  "leftAway",
+  "awayLeft",
   "away",
   "awayRight",
 ];
 
 export const vectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 => {
-  const angle = Math.atan2(-y, x); // Flip the y-axis for angle calculation
+  const angle = Math.atan2(-y, -x); // Flip the y-axis for angle calculation
   const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
 
   return directionsXy8Octants[octant];
