@@ -3,7 +3,7 @@ import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { importOnce } from "./utils/importOnce";
 import "./index.css";
-import { Border, Dialog } from "./components/ui/dialog";
+import { Border, Dialog } from "./ui/dialog";
 
 const importEsIteratorPolyfillsOnce = importOnce(
   // TODO: this could be made smaller by only importing the methods we need

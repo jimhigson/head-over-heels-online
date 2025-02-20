@@ -1,8 +1,8 @@
 import { PressToContinueBanner } from "../../PressToContinueBanner";
 import { BitmapText } from "../../../Sprite";
 import { multilineTextClass } from "../multilineTextClass";
-import { Dialog } from "../../../../../components/ui/dialog";
-import { DialogPortal } from "../../../../../components/ui/DialogPortal";
+import { Dialog } from "../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../ui/DialogPortal";
 
 export const HoldDialog = () => {
   return (

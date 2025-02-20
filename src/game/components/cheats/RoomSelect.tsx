@@ -1,12 +1,8 @@
 import type { GameApi } from "../../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 import { useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../components/ui/popover";
-import { Button } from "../../../components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import { Button } from "../../../ui/button";
 import {
   Command,
   CommandEmpty,
@@ -14,7 +10,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../../../components/ui/command";
+} from "../../../ui/command";
 import { CssVariables } from "../CssVariables";
 
 export type RoomSelectProps<RoomId extends string> = {

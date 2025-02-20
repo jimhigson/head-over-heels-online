@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { BitmapText } from "../../game/components/Sprite";
+import { BitmapText } from "../game/components/Sprite";
 import type { MouseEvent } from "react";
 
 export const Switch = ({

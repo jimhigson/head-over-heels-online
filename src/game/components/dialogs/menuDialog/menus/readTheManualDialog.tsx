@@ -1,4 +1,4 @@
-import { Border, Dialog } from "../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../ui/dialog";
 import type { ManualPageName } from "../../../../../manual/pages";
 import { manualPages, pageTitle } from "../../../../../manual/pages";
 import {
@@ -15,7 +15,7 @@ import { MenuItemSeparator } from "../MenuItemSeparator";
 import { MenuItems } from "../MenuItems";
 import { multilineTextClass } from "../multilineTextClass";
 import type { DialogId } from "../menus";
-import { DialogPortal } from "../../../../../components/ui/DialogPortal";
+import { DialogPortal } from "../../../../../ui/DialogPortal";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   const pageContent = manualPages[pageName];

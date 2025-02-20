@@ -9,10 +9,10 @@ import { MenuItems } from "../../MenuItems";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { BitmapText } from "../../../../Sprite";
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
 
 const PlayGameLabel = () => {

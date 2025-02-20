@@ -5,8 +5,8 @@ import {
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
+import { Border, Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
@@ -18,7 +18,7 @@ import {
   selectShowFps,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
-import { Switch } from "../../../../../../components/ui/Switch";
+import { Switch } from "../../../../../../ui/Switch";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 

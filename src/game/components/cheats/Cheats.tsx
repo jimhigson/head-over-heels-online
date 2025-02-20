@@ -3,7 +3,6 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { Label } from "@radix-ui/react-label";
 
 import { selectCurrentRoomState } from "../../gameState/GameState";
 import {
@@ -19,7 +18,7 @@ import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
 import { useGameApi } from "../GameApiContext";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../ui/button";
 import type {
   JsonItemType,
   JsonItemConfig,
@@ -38,7 +37,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
-import { Switch } from "../../../components/ui/Switch";
+import { Switch } from "../../../ui/Switch";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -282,7 +281,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             />
-            <Label htmlFor="showbbs">BBs</Label>
+            <label htmlFor="showbbs">BBs</label>
             <Switch
               value={showBoundingBoxes === "all"}
               onClick={(e, newValue) => {
@@ -290,7 +289,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             />
-            <Label htmlFor="showAllBbs">wall BBs</Label>
+            <label htmlFor="showAllBbs">wall BBs</label>
             <Switch
               value={showShadowMasks}
               onClick={(e, newValue) => {
@@ -298,7 +297,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             />
-            <Label htmlFor="showshadows">shadow masks</Label>
+            <label htmlFor="showshadows">shadow masks</label>
           </div>
 
           <Heading>summon character:</Heading>

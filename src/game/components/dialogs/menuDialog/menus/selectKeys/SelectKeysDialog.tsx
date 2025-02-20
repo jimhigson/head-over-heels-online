@@ -23,12 +23,12 @@ import {
 import { store } from "../../../../../../store/store";
 import { useActionTap, useInputTap } from "../../../useActionTap";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
-import { Border, Dialog } from "../../../../../../components/ui/dialog";
+import { Border, Dialog } from "../../../../../../ui/dialog";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
-import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
-import { Switch } from "../../../../../../components/ui/Switch";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 const analogueControlOffHintMarkdown =
