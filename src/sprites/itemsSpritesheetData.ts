@@ -218,7 +218,7 @@ const frames = {
     frame: {
       ...smallItemGridLocation({ x: 8, y: 4 }),
       ...smallItemTextureSize,
-      pivot: { x: 19, y: 24 },
+      pivot: { x: 17, y: 24 },
     },
   },
   "shadow.scroll": {

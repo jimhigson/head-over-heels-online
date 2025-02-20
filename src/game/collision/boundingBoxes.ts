@@ -67,7 +67,7 @@ export const boundingBoxForItem = (
 
     case "pickup":
       return item.config.gives === "scroll" ?
-          { aabb: { x: 16, y: 4, z: 12 } }
+          { aabb: { x: 16, y: 4, z: 13 } }
         : { aabb: smallItemAabb };
 
     case "charles":
