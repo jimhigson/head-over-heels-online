@@ -32,10 +32,10 @@ import { Switch } from "../../../../../../components/ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 const analogueControlOffHintMarkdown =
-  "**analog off**: true to the original with *4-way* walking";
+  "**analog off**: true to the original with *4-way* movement";
 
 const analogueControlOnHintMarkdown =
-  "**analog on**: *any* direction with analogue stick, or *8-way* with d-pad/keys";
+  "**analog on**: move in *any* direction with analogue stick, or *8-way* with d-pad/keys";
 
 const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";

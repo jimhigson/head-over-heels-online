@@ -116,9 +116,7 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="showFps"
               label="Show FPS"
-              valueElement={
-                <Switch value={useAppSelector(selectShowFps)} />
-              }
+              valueElement={<Switch value={useAppSelector(selectShowFps)} />}
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.showFps",
