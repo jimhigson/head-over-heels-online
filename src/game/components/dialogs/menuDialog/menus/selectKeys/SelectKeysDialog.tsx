@@ -28,7 +28,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchCa
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 import { DialogPortal } from "../../../../../../components/ui/DialogPortal";
-import { ValueSwitch } from "../../ValueSwitch";
+import { Switch } from "../../../../../../components/ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 const analogueControlOffHintMarkdown =
@@ -41,7 +41,7 @@ const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";
 
 const screenRelativeControlOnHintMarkdown =
-  "**screen**: Control is relative to the screen. More intuitive for people who find the directions hard in isometric games";
+  "**screen**: Control is relative to the screen. More intuitive if you find directions confusing in isometric games";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -177,7 +177,7 @@ export const SelectKeysDialog = () => {
                 <span className="sprite zx:sprite-revert-to-two-tone texture-joystick" />
               }
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.analogueControl,
                   )}

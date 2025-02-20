@@ -38,8 +38,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
-import { Switch } from "../../../components/ui/switch";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
+import { Switch } from "../../../components/ui/Switch";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -277,30 +277,27 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
           <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-1 pt-1 bg-shadow text-white">
             <Switch
-              id="showbbs"
-              checked={showBoundingBoxes !== "none"}
-              onCheckedChange={(checked) =>
-                dispatch(setShowBoundingBoxes(checked ? "non-wall" : "none"))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showBoundingBoxes !== "none"}
+              onClick={(e, newValue) => {
+                dispatch(setShowBoundingBoxes(newValue ? "non-wall" : "none"));
+                e.currentTarget.blur();
+              }}
             />
             <Label htmlFor="showbbs">BBs</Label>
             <Switch
-              id="showAllBbs"
-              checked={showBoundingBoxes === "all"}
-              onCheckedChange={(checked) =>
-                dispatch(setShowBoundingBoxes(checked ? "all" : "non-wall"))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showBoundingBoxes === "all"}
+              onClick={(e, newValue) => {
+                dispatch(setShowBoundingBoxes(newValue ? "all" : "non-wall"));
+                e.currentTarget.blur();
+              }}
             />
             <Label htmlFor="showAllBbs">wall BBs</Label>
             <Switch
-              id="showshadows"
-              checked={showShadowMasks}
-              onCheckedChange={(checked) =>
-                dispatch(setShowShadowMasks(checked))
-              }
-              onClick={(e) => e.currentTarget.blur()}
+              value={showShadowMasks}
+              onClick={(e, newValue) => {
+                dispatch(setShowShadowMasks(newValue));
+                e.currentTarget.blur();
+              }}
             />
             <Label htmlFor="showshadows">shadow masks</Label>
           </div>

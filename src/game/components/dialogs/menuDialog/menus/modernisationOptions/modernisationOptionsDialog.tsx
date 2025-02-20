@@ -18,7 +18,7 @@ import {
   selectShowFps,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
-import { ValueSwitch } from "../../ValueSwitch";
+import { Switch } from "../../../../../../components/ui/Switch";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
@@ -59,7 +59,7 @@ export const ModernisationOptionsDialog = () => {
               id="colourise"
               label="Colourise"
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.displaySettings.colourise,
                   )}
@@ -87,7 +87,7 @@ export const ModernisationOptionsDialog = () => {
                 />
               }
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.infiniteLivesPoke,
                   )}
@@ -103,7 +103,7 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="extraItems"
               label="Extra items"
-              valueElement={<ValueSwitch value={true} />}
+              valueElement={<Switch value={true} />}
               hint={
                 <BlockyMarkdown
                   className={markdownClassname}
@@ -117,7 +117,7 @@ export const ModernisationOptionsDialog = () => {
               id="showFps"
               label="Show FPS"
               valueElement={
-                <ValueSwitch value={useAppSelector(selectShowFps)} />
+                <Switch value={useAppSelector(selectShowFps)} />
               }
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
@@ -130,7 +130,7 @@ export const ModernisationOptionsDialog = () => {
               id="crtFilter"
               label="CRT TV effect"
               valueElement={
-                <ValueSwitch
+                <Switch
                   value={useAppSelector(
                     (state) => state.userSettings.displaySettings.crtFilter,
                   )}

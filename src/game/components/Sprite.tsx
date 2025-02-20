@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { MouseEventHandler, ReactElement } from "react";
 import {
   cloneElement,
   isValidElement,
@@ -41,6 +41,7 @@ export interface BitmapTextProps {
   classnameCycle?: string[];
   className?: string;
   noSlitWords?: boolean;
+  onClick?: MouseEventHandler<HTMLSpanElement>;
 }
 
 export const BitmapText = ({
@@ -48,6 +49,7 @@ export const BitmapText = ({
   className,
   noSlitWords,
   classnameCycle,
+  onClick,
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
@@ -63,7 +65,7 @@ export const BitmapText = ({
     : textString.toUpperCase().split(/\s+/);
 
   return (
-    <span className={clsx(className)}>
+    <span className={clsx(className)} onClick={onClick}>
       {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
