@@ -55,14 +55,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             doubleHeightWhenFocussed
             hidden={!isGameRunning}
           />
-          <MenuItem
-            id="quitGame"
-            label="Quit this game"
-            className="text-midRed zx:text-zxYellow"
-            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
-            doubleHeightWhenFocussed
-            hidden={!isGameRunning}
-          />
+
           <MenuItemSeparator />
           <MenuItem
             id="selectKeys"
@@ -84,6 +77,15 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             label="Read the manual"
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
+          />
+          <MenuItemSeparator />
+          <MenuItem
+            id="quitGame"
+            label="Quit this game"
+            className="text-midRed zx:text-zxYellow"
+            onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+            doubleHeightWhenFocussed
+            hidden={!isGameRunning}
           />
         </MenuItems>
         {!isGameRunning && <MainMenuFooter />}
