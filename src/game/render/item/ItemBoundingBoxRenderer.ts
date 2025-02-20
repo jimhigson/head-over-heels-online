@@ -1,5 +1,5 @@
 import type { ColorSource } from "pixi.js";
-import { Graphics, Container } from "pixi.js";
+import { Graphics, Container, Text } from "pixi.js";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Aabb } from "../../../utils/vectors/vectors";
@@ -7,8 +7,8 @@ import { isItemType } from "../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
 import type { RenderContext, Renderer } from "../Renderer";
 
-const renderBB = (aabb: Aabb, color: ColorSource) => {
-  const graphics = new Graphics()
+const cuboidBB = (aabb: Aabb, graphics: Graphics) => {
+  graphics
     // bottom:
     .poly([
       projectWorldXyzToScreenXy({}),
@@ -40,19 +40,32 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
         z: aabb.z,
       }),
       projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
-    ])
-    .stroke({
-      width: 0.5,
-      color,
-      alpha: 1,
-    });
+    ]);
+};
+
+const renderBB = (aabb: Aabb, color: ColorSource) => {
+  const graphics = new Graphics();
+  cuboidBB(aabb, graphics);
+
+  graphics.stroke({
+    width: 0.5,
+    color,
+    alpha: 1,
+  });
 
   graphics.eventMode = "static";
   graphics.on("pointerenter", () => {
     graphics.fill({ color, alpha: 0.5 });
   });
   graphics.on("pointerleave", () => {
-    graphics.fill({ color: "transparent" });
+    graphics.clear();
+    cuboidBB(aabb, graphics);
+
+    graphics.stroke({
+      width: 0.5,
+      color,
+      alpha: 1,
+    });
   });
 
   return graphics;
@@ -96,13 +109,54 @@ export class ItemBoundingBoxRenderer<
       );
     }
 
-    this.#container.addChild(new Graphics().circle(0, 0, 2).fill(color));
+    this.#container.addChild(
+      new Graphics({ label: "objectOrigin" }).circle(0, 0, 2).fill(color),
+    );
     this.#container.addChild(renderBB(item.aabb, color));
     if (item.renderAabb) {
       this.#container.addChild(
         renderBB(item.renderAabb, "rgba(184, 184, 255)"),
       );
     }
+
+    this.#container.eventMode = "static";
+    let textNode: Text | undefined;
+    this.#container.on("pointerenter", () => {
+      if (textNode !== undefined) {
+        return;
+      }
+      const text = `${item.id} ${item.type}
+@(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})}
+#(${item.aabb.x}, ${item.aabb.y}, ${item.aabb.z})}`;
+      this.#container.addChild(
+        (textNode = new Text({
+          text,
+          style: {
+            fill: color,
+            fontSize: 6,
+            fontFamily: "Menlo",
+          },
+        })),
+      );
+      textNode.resolution = 4;
+    });
+    this.#container.on("pointerleave", () => {
+      if (textNode === undefined) {
+        return;
+      }
+      this.#container.removeChild(textNode);
+      textNode = undefined;
+    });
+    /*this.#container.on("pointerleave", () => {
+      graphics.clear();
+      cuboidBB(aabb, graphics);
+  
+      graphics.stroke({
+        width: 0.5,
+        color,
+        alpha: 1,
+      });
+    });*/
   }
   tick(_renderContext: RenderContext) {}
   destroy(): void {

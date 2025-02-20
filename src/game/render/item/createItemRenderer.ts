@@ -54,7 +54,7 @@ export const createItemRenderer = <
     );
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
-      itemAppearanceRenderer.container.alpha = 0.5;
+      itemAppearanceRenderer.container.alpha = 0.66;
     }
 
     // non-colourised rendering doesn't have shadows (yet) since it prevents
