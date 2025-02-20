@@ -12,7 +12,6 @@ import {
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { RoomSelect } from "./RoomSelect";
-import { CssSprite } from "../Sprite";
 
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
@@ -143,12 +142,12 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <CssSprite className="texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
+          <span className="sprite texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
           over
-          <CssSprite className="texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
+          <span className="sprite texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
         </>
-      : <CssSprite
-          className={`texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
+      : <span
+          className={`sprite texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
         />
       }
     </Button>
@@ -228,7 +227,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <CssSprite className="texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
+        <span className="sprite texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
@@ -320,7 +319,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-bag" />
+              <span className="sprite texture-bag" />
             </Button>
             <Button
               className="flex-1"
@@ -329,7 +328,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-hooter" />
+              <span className="sprite texture-hooter" />
             </Button>
             <Button
               className="flex-1"
@@ -338,7 +337,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-doughnuts" />
+              <span className="sprite texture-doughnuts" />
             </Button>
             <Button
               className="flex-1"
@@ -347,7 +346,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-cube" />
+              <span className="sprite texture-cube" />
             </Button>
             <Button
               className="flex-1"
@@ -356,7 +355,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-spring.released" />
+              <span className="sprite texture-spring.released" />
             </Button>
             <Button
               className="flex-1"
@@ -369,7 +368,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-dalek.1 hover:texture-animated-dalek" />
+              <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -380,7 +379,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.bookworld" />
+              <span className="sprite texture-crown.bookworld" />
             </Button>
             <Button
               className="flex-1"
@@ -389,7 +388,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.egyptus" />
+              <span className="sprite texture-crown.egyptus" />
             </Button>
             <Button
               className="flex-1"
@@ -398,7 +397,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.safari" />
+              <span className="sprite texture-crown.safari" />
             </Button>
             <Button
               className="flex-1"
@@ -410,7 +409,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.penitentiary" />
+              <span className="sprite texture-crown.penitentiary" />
             </Button>
             <Button
               className="flex-1"
@@ -419,7 +418,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-crown.blacktooth" />
+              <span className="sprite texture-crown.blacktooth" />
             </Button>
           </div>
           <div className="flex flex-row items-center">
@@ -430,8 +429,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-whiteRabbit" />
-              <CssSprite className="texture-hud.char.2" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.char.2" />
             </Button>
             <Button
               className="flex-1"
@@ -440,8 +439,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-whiteRabbit" />
-              <CssSprite className="texture-hud.shield" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.shield" />
             </Button>
             <Button
               className="flex-1"
@@ -450,8 +449,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-whiteRabbit" />
-              <CssSprite className="texture-hud.fastSteps" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.fastSteps" />
             </Button>
             <Button
               className="flex-1"
@@ -460,8 +459,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-whiteRabbit" />
-              <CssSprite className="texture-hud.bigJumps" />
+              <span className="sprite texture-whiteRabbit" />
+              <span className="sprite texture-hud.bigJumps" />
             </Button>
           </div>
 
@@ -556,8 +555,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 e.currentTarget.blur();
               }}
             >
-              <CssSprite className="texture-head.walking.right.2" />
-              <CssSprite className="texture-heels.walking.right.2" />
+              <span className="sprite texture-head.walking.right.2" />
+              <span className="sprite texture-heels.walking.right.2" />
             </Button>
           </div>
         </div>

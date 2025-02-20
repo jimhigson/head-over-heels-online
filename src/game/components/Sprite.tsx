@@ -19,20 +19,6 @@ export interface CssSpriteProps {
   tint?: boolean;
 }
 
-/**
- * css sprite is much lighter than using pixi, and can tint the sprite to any colour,
- * but doesn't support filters like pixi does
- *
- * @deprecated - use tailwind classes directly instead
- */
-export const CssSprite = ({ className, tint }: CssSpriteProps) => {
-  return (
-    <span
-      className={twMerge(`sprite  ${tint ? "sprite-tinted" : ""}`, className)}
-    />
-  );
-};
-
 export interface BitmapTextProps {
   children: number | string | (string | number)[];
   /**
@@ -91,16 +77,21 @@ export const BitmapText = ({
                 );
               }
               const imgSpriteEle = (
-                <CssSprite
+                <span
                   key={charIndex}
-                  className={`${
+                  className={`sprite ${
                     isTextureId(textureId) ?
                       // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
                       // fine to construct dynamically:
                       `texture-${textureId}`
                     : "texture-hud.char.?"
-                  } ${classnameCycle === undefined ? "" : classnameCycle[charIndex % classnameCycle.length]}`}
-                  tint
+                  }
+                  sprite-tinted
+                  ${
+                    classnameCycle === undefined ? "" : (
+                      classnameCycle[charIndex % classnameCycle.length]
+                    )
+                  }`}
                 />
               );
 

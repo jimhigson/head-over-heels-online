@@ -1,6 +1,5 @@
 import type { GameApi } from "../../GameApi";
 import { useCurrentlyViewedRoom } from "./useCurrentRoom";
-import { CssSprite } from "../Sprite";
 import { useState } from "react";
 import {
   Popover,
@@ -16,6 +15,7 @@ import {
   CommandItem,
   CommandList,
 } from "../../../components/ui/command";
+import { CssVariables } from "../CssVariables";
 
 export type RoomSelectProps<RoomId extends string> = {
   gameApi?: GameApi<RoomId>;
@@ -45,39 +45,41 @@ export function RoomSelect<RoomId extends string>({
           className={`justify-between ${className}`}
         >
           {viewingRoomId || "Select a room"}
-          <CssSprite
-            className={`"ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud.char.X" : "texture-hud.char.⬇"}`}
+          <span
+            className={`sprite ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud.char.X" : "texture-hud.char.⬇"}`}
           />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
-        <Command className="w-[--radix-popper-anchor-width]">
-          <CommandInput placeholder="Room id" />
-          <CommandList>
-            <CommandEmpty>No room found</CommandEmpty>
-            <CommandGroup>
-              {roomIds.map((r) => (
-                <CommandItem
-                  key={r}
-                  value={r}
-                  className={viewingRoomId === r ? "bg-moss" : ""}
-                  onSelect={(currentValue) => {
-                    gameApi.changeRoom(currentValue as RoomId);
-                    setOpen(false);
-                  }}
-                >
-                  {gameApi.gameState.characterRooms.head?.id === r && (
-                    <CssSprite className="m-1 head.walking.towards.2" />
-                  )}
-                  {gameApi.gameState.characterRooms.heels?.id === r && (
-                    <CssSprite className="m-1 texture-heels.walking.towards.2" />
-                  )}
-                  {r}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+        <CssVariables scaleFactor={1}>
+          <Command className="w-[--radix-popper-anchor-width]">
+            <CommandInput placeholder="Room id" />
+            <CommandList>
+              <CommandEmpty>No room found</CommandEmpty>
+              <CommandGroup>
+                {roomIds.map((r) => (
+                  <CommandItem
+                    key={r}
+                    value={r}
+                    className={viewingRoomId === r ? "bg-moss" : ""}
+                    onSelect={(currentValue) => {
+                      gameApi.changeRoom(currentValue as RoomId);
+                      setOpen(false);
+                    }}
+                  >
+                    {gameApi.gameState.characterRooms.head?.id === r && (
+                      <span className="sprite m-1 texture-head.walking.towards.2" />
+                    )}
+                    {gameApi.gameState.characterRooms.heels?.id === r && (
+                      <span className="sprite m-1 texture-heels.walking.towards.2" />
+                    )}
+                    {r}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </CssVariables>
       </PopoverContent>
     </Popover>
   );
