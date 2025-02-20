@@ -18,94 +18,22 @@ export const room = inferRoomJson({
       position: { x: 6, y: 7, z: 6 },
       type: "pickup",
     },
-    mapStacka0: {
-      config: { style: "book" },
+    mapStacka: {
+      config: { style: "book", times: { z: 3 } },
       isExtra: true,
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },
-    mapStacka1: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 4, y: 7, z: 1 },
-      type: "block",
-    },
-    mapStacka2: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 4, y: 7, z: 2 },
-      type: "block",
-    },
-    mapStackb0: {
-      config: { style: "book" },
+    mapStackb: {
+      config: { style: "book", times: { z: 6 } },
       isExtra: true,
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
-    mapStackb1: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 5, y: 7, z: 1 },
-      type: "block",
-    },
-    mapStackb2: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 5, y: 7, z: 2 },
-      type: "block",
-    },
-    mapStackb3: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 5, y: 7, z: 3 },
-      type: "block",
-    },
-    mapStackb4: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 5, y: 7, z: 4 },
-      type: "block",
-    },
-    mapStackb5: {
-      config: { style: "book" },
-      isExtra: true,
-      position: { x: 5, y: 7, z: 5 },
-      type: "block",
-    },
-    mapStackc0: {
-      config: { style: "tower" },
+    mapStackc: {
+      config: { style: "tower", times: { z: 6 } },
       isExtra: true,
       position: { x: 6, y: 7, z: 0 },
-      type: "block",
-    },
-    mapStackc1: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 6, y: 7, z: 1 },
-      type: "block",
-    },
-    mapStackc2: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 6, y: 7, z: 2 },
-      type: "block",
-    },
-    mapStackc3: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 6, y: 7, z: 3 },
-      type: "block",
-    },
-    mapStackc4: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 6, y: 7, z: 4 },
-      type: "block",
-    },
-    mapStackc5: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 6, y: 7, z: 5 },
       type: "block",
     },
     "spring@4,4,0": {
