@@ -56,11 +56,23 @@ export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
   return !isUnsolid(item, toucher);
 };
 
-export const isPushable = (collisionItem: AnyItemInPlay) => {
+// a good example of where OOP would make sense, it a polymorphic isPushable method
+export const isPushable = <
+  P extends SceneryName = SceneryName,
+  RoomId extends string = string,
+>(
+  item: AnyItemInPlay<RoomId>,
+  /**
+   * if true, some pushes are allowed. Ie, a player can push another player through
+   * a door while backing-off-and re-entering the room to clear their area
+   */
+  forceful: boolean = false,
+): item is FreeItem<P, RoomId> => {
   return (
-    collisionItem.type === "portableBlock" ||
-    collisionItem.type === "spring" ||
-    isPlayableItem(collisionItem)
+    isFreeItem(item) &&
+    // can't push a player while they're autowalking - lets players walk into a room while invincible if
+    // an enemy is near the door
+    !(!forceful && isPlayableItem(item) && item.state.autoWalk)
   );
 };
 

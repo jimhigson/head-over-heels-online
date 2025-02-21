@@ -26,9 +26,9 @@ import { noFilters } from "../filters/paletteSwapFilters";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import {
   afterDeathInvulnerabilityFlashPeriod,
-  afterDeathInvulnerabilityTime,
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
+import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 
 const playableCreateSpriteOptions = ({
   name,
@@ -86,17 +86,20 @@ export const isHighlighted = ({
   gameTime: number;
 }): boolean => switchedToAt + switchCharacterHighlightTime > gameTime;
 
-export const isFlashing = ({
-  gameTime,
-  lastDiedAt,
-}: {
-  gameTime: number;
-  lastDiedAt: number;
-}): boolean => {
-  const timeSinceLastDied = gameTime - lastDiedAt;
-  if (timeSinceLastDied > afterDeathInvulnerabilityTime) {
+export const isFlashing = (playableItem: PlayableItem): boolean => {
+  if (!playerDiedRecently(playableItem)) {
     return false;
   }
+
+  const { gameTime, lastDiedAt } =
+    playableItem.type === "headOverHeels" ?
+      // in this case, both playables in symbiosis should have the same shield
+      // left, so arbitrarily choose head:
+      playableItem.state.head
+    : playableItem.state;
+
+  const timeSinceLastDied = gameTime - lastDiedAt;
+
   return (
     timeSinceLastDied % afterDeathInvulnerabilityFlashPeriod <
     afterDeathInvulnerabilityFlashPeriod * 0.15
@@ -182,12 +185,7 @@ export const playableAppearance = <C extends CharacterName>({
       isHighlighted((item as PlayableItem<"headOverHeels">).state.head)
     : isHighlighted((item as PlayableItem<"head" | "heels">).state);
 
-  const flashing =
-    item.type === "headOverHeels" ?
-      // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
-      // characters - they were switched to at the same time so it doesn't matter:
-      isFlashing((item as PlayableItem<"headOverHeels">).state.head)
-    : isFlashing((item as PlayableItem<"head" | "heels">).state);
+  const flashing = isFlashing(item as PlayableItem);
 
   const walkSpeed = lengthXyz(facing);
 
