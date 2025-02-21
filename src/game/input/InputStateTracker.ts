@@ -33,6 +33,8 @@ export type PressStatus =
   | "released";
 
 type FrameInput = {
+  /* time in ms (from the ticker) when this input was given */
+  atTime: number;
   keyboardState: KeyboardStateMap;
   gamepads: (GamepadState | null)[];
 };
@@ -61,6 +63,10 @@ const isGamepadButtonPressed = (
 
 const axisPressThreshold = 0.5;
 
+/**
+ * treats axes like buttons - either pressed or not; ie, analogue sticks
+ * (or d-pad reporting as axes) used to move through a menu
+ */
 const isGamepadAxisPressed = (
   frameInput: FrameInput,
   axis: number,
@@ -131,15 +137,20 @@ const isActionPressed = (
   return false;
 };
 
+// how long to keep buffered input for
+const bufferLengthMs = 45;
+
 /**
  * read from the given inputState (and anything else) to get the current interpretation
  * of the input, according to the
  */
 export class InputStateTracker {
-  // snapshot of the input at the start of the current frame
-  #currentFrameInput: FrameInput;
-  // snapshot of the input at the start of the previous frame, for comparison
-  #lastFrameInput: FrameInput | undefined = undefined;
+  /**
+   * snapshot of the input this frame, the previous frame, and going back as
+   * far as the buffer length. This frame is always at index 0, the previous frame at index 1,
+   * and older are kept in-order going back to as old as the buffer length
+   */
+  #frameInputBuffer: FrameInput[] = [];
   #directionVector: Xyz = originXyz;
 
   /**
@@ -149,12 +160,7 @@ export class InputStateTracker {
    */
   actionsHandled: Set<BooleanAction> = new Set();
 
-  constructor(private keyboardStateMap: KeyboardStateMap) {
-    this.#currentFrameInput = {
-      keyboardState: new Map(keyboardStateMap),
-      gamepads: extractGamepadsState(navigator.getGamepads()),
-    };
-  }
+  constructor(private keyboardStateMap: KeyboardStateMap) {}
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
   #tickUpdatedDirectionXy4 = () => {
@@ -204,14 +210,19 @@ export class InputStateTracker {
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
   #tickUpdatedDirectionAnalogue() {
-    const currentFrameInput = this.#currentFrameInput;
+    const currentFrameInput = this.#frameInputBuffer.at(0);
 
-    function* pressVectors(): Generator<Xyz> {
+    if (currentFrameInput === undefined) {
+      return originXyz;
+    }
+
+    /* vectors for the binary presses - buttons and keys */
+    function* pressVectors(input: FrameInput): Generator<Xyz> {
       for (const d of directionsXy4) {
-        if (isActionPressed(currentFrameInput, d, false)) yield unitVectors[d];
+        if (isActionPressed(input, d, false)) yield unitVectors[d];
       }
     }
-    function* axisVectors(): Generator<Xyz> {
+    function* axisVectors(input: FrameInput): Generator<Xyz> {
       const {
         userSettings: {
           inputAssignment: {
@@ -219,7 +230,7 @@ export class InputStateTracker {
           },
         },
       } = store.getState();
-      for (const gp of currentFrameInput.gamepads) {
+      for (const gp of input.gamepads) {
         if (gp === null) {
           continue;
         }
@@ -242,12 +253,14 @@ export class InputStateTracker {
       }
     }
 
-    const pressVector = addXyz(originXyz, ...pressVectors());
-
-    return addXyz(originXyz, pressVector, ...axisVectors());
+    return addXyz(
+      originXyz,
+      ...pressVectors(currentFrameInput),
+      ...axisVectors(currentFrameInput),
+    );
   }
 
-  #tick = () => {
+  #tick = ({ lastTime: atTime }: Ticker) => {
     const {
       userSettings: { analogueControl, screenRelativeControl },
     } = store.getState();
@@ -271,34 +284,71 @@ export class InputStateTracker {
       z: 0,
     };
 
-    this.#lastFrameInput = this.#currentFrameInput;
-
     // input snapshot to use for the rest of this frame (until the next call to tick)
-    this.#currentFrameInput = {
+    const currentFrameInput: FrameInput = {
       // keyboard state is modified in-place, so we need a copy:
       keyboardState: new Map(this.keyboardStateMap),
       gamepads: extractGamepadsState(navigator.getGamepads()),
+      atTime,
     };
 
+    this.#frameInputBuffer.unshift(currentFrameInput);
+
+    // remove input from the buffer starting from the first one that's older than the one
+    // after the end of the buffer length
+    const oldestTimeToKeep = atTime - bufferLengthMs;
+    const removalIndex = this.#frameInputBuffer.findIndex(
+      (b) => b.atTime < oldestTimeToKeep,
+    );
+    if (removalIndex !== -1) {
+      this.#frameInputBuffer.splice(removalIndex + 1);
+    }
+
+    /*
+    console.log(
+      "frame buffer now has length",
+      this.#frameInputBuffer.length,
+      "from",
+      this.#frameInputBuffer.at(0)?.atTime,
+      "to",
+      this.#frameInputBuffer.at(-1)?.atTime,
+      "buffer length",
+      (this.#frameInputBuffer.at(0)?.atTime ?? 0) -
+        (this.#frameInputBuffer.at(-1)?.atTime ?? 0),
+      "target buffer length",
+      bufferLengthMs,
+    );
+    */
+
+    // clear the latches for input that was handled, but now no longer is being input:
     for (const action of this.actionsHandled) {
-      if (!isActionPressed(this.#currentFrameInput, action)) {
+      if (!isActionPressed(currentFrameInput, action)) {
         this.actionsHandled.delete(action);
       }
     }
   };
 
   currentActionPress(action: BooleanAction): PressStatus {
-    const pressedNow = isActionPressed(this.#currentFrameInput, action);
+    const currentFrameInput = this.#frameInputBuffer.at(0);
+
+    if (currentFrameInput === undefined) {
+      // we are before the first frame
+      return "released";
+    }
+
+    const pressedNow = isActionPressed(currentFrameInput, action);
 
     if (this.actionsHandled.has(action)) {
       return "released"; // treat as released if was already handled
     }
 
     if (pressedNow) {
+      const previousFrameInput = this.#frameInputBuffer.at(1);
+
       const pressedLastFrame =
-        this.#lastFrameInput === undefined ?
-          false
-        : isActionPressed(this.#lastFrameInput, action);
+        previousFrameInput === undefined ? false : (
+          isActionPressed(previousFrameInput, action)
+        );
 
       if (pressedLastFrame) {
         // if (action === "towards")
@@ -315,25 +365,32 @@ export class InputStateTracker {
     return "released";
   }
 
-  /** returns any new taps since the last frame */
+  /** returns one or zero new taps since the last frame (the first one we find) */
   inputTap(): InputPress | undefined {
+    const currentFrameInput = this.#frameInputBuffer.at(0);
+    const previousFrameInput = this.#frameInputBuffer.at(1);
+
+    if (currentFrameInput === undefined) {
+      return;
+    }
+
     for (const key of this.keyboardStateMap.keys()) {
       if (
-        this.#lastFrameInput === undefined ||
-        !this.#lastFrameInput.keyboardState.has(key)
+        previousFrameInput === undefined ||
+        !previousFrameInput.keyboardState.has(key)
       ) {
         return { type: "key", input: key };
       }
     }
-    for (const gp of this.#currentFrameInput.gamepads) {
+    for (const gp of currentFrameInput.gamepads) {
       if (gp === null) {
         continue;
       }
       for (const [buttonNumber, button] of gp.buttons.entries()) {
         if (button.pressed) {
           if (
-            this.#lastFrameInput === undefined ||
-            !isGamepadButtonPressed(this.#lastFrameInput, buttonNumber)
+            previousFrameInput === undefined ||
+            !isGamepadButtonPressed(previousFrameInput, buttonNumber)
           ) {
             return { type: "gamepadButtons", input: buttonNumber };
           }
@@ -342,8 +399,8 @@ export class InputStateTracker {
       for (const [axisNumber, axisValue] of gp.axes.entries()) {
         if (Math.abs(axisValue) > axisPressThreshold) {
           if (
-            this.#lastFrameInput === undefined ||
-            !isGamepadAxisPressed(this.#lastFrameInput, axisNumber)
+            previousFrameInput === undefined ||
+            !isGamepadAxisPressed(previousFrameInput, axisNumber)
           ) {
             return { type: "gamepadAxes", input: axisNumber };
           }
