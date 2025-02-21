@@ -200,10 +200,9 @@ const gamepadAssignment: InputAssignmentPreset = {
         hold: { gamepadButtons: [standardControllerLayout.start] },
         menu_openOrExit: {
           gamepadButtons: [
-            // allow r1 because 3-6 button controllers probably won't have a start button
-            // - and, on macOS by default select opens the 'select a game' type screen so
-            // that's unusable without OS config
-            standardControllerLayout.lb,
+            // on macOS by default select opens the 'select a game' type screen and there's no way for
+            // a browser to prevent that default. so that's unusable without OS config - encourage people
+            // to turn that off I guess! Or they can use the keys
             standardControllerLayout.select,
           ],
         },
