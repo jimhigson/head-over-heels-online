@@ -95,7 +95,7 @@ export const SelectKeysDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog">
+      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog">
         <div
           className={
             "overflow-y-scroll " +
@@ -273,10 +273,10 @@ export const SelectKeysDialog = () => {
                   className={`${spriteLeaderClasses} texture-blank relative overflow-hidden`}
                 >
                   <span
-                    className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 absolute right-[50%]`}
+                    className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight absolute right-[50%]`}
                   />
                   <span
-                    className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 absolute left-[50%]`}
+                    className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight absolute left-[50%]`}
                   />
                 </span>
               }

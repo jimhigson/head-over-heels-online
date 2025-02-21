@@ -111,8 +111,10 @@ export default {
     width: {
       ...blockMultiples,
       zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,
+      wideDialog: "calc(100svw - 2 * var(--block))",
       min: "min-content",
       max: "max-content",
+      full: "100%",
     },
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
@@ -120,6 +122,7 @@ export default {
       ...blockMultiples,
       min: "min-content",
       max: "max-content",
+      full: "100%",
     },
     gridTemplateColumns: {
       // min-content - typically 2 blocks but some menus can have custom leaders
