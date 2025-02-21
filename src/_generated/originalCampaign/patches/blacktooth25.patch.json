@@ -1,0 +1,12 @@
+[
+  { "op": "replace", "path": "/items/lift@5,0,7/config/top", "value": 11 },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "conveyorBelts" },
+      "position": { "x": 3, "y": 5, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

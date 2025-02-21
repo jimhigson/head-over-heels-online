@@ -1,0 +1,12 @@
+[
+  { "op": "replace", "path": "/items/lift@7,7,0/config/top", "value": 11 },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "teleportBack" },
+      "position": { "x": 3, "y": 6, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

@@ -1,0 +1,12 @@
+[
+  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "egyptus" },
+      "position": { "x": 2, "y": 3, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "switches" },
+      "position": { "x": 4, "y": 5, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

@@ -1,0 +1,4 @@
+[
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/items/lift@5,0,0/config/top", "value": 11 }
+]

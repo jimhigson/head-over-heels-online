@@ -1,0 +1,32 @@
+[
+  {
+    "op": "add",
+    "path": "/items/block@0,5,2/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,5,4/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/items/extra1",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra2",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 1, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  }
+]

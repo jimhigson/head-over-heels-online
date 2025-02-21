@@ -1,0 +1,11 @@
+[
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "theEmperorsGuardian" },
+      "position": { "x": 7, "y": 3, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

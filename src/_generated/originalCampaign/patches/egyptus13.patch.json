@@ -1,0 +1,12 @@
+[
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  { "op": "replace", "path": "/items/lift@0,0,2/config/top", "value": 5 },
+  { "op": "replace", "path": "/walls/left/6", "value": "sarcophagus" },
+  { "op": "replace", "path": "/walls/left/5", "value": "hieroglyphics" },
+  { "op": "replace", "path": "/walls/left/3", "value": "sarcophagus" },
+  { "op": "replace", "path": "/walls/left/2", "value": "hieroglyphics" },
+  { "op": "add", "path": "/walls/left/8", "value": "hieroglyphics" },
+  { "op": "add", "path": "/walls/left/9", "value": "hieroglyphics" },
+  { "op": "replace", "path": "/size/y", "value": 10 },
+  { "op": "add", "path": "/size/z", "value": 13 }
+]

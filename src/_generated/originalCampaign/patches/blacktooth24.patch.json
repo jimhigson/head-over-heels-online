@@ -1,0 +1,42 @@
+[
+  {
+    "op": "add",
+    "path": "/items/map",
+    "value": {
+      "config": { "gives": "extra-life" },
+      "isExtra": true,
+      "position": { "x": 6, "y": 7, "z": 6 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/mapStacka",
+    "value": {
+      "config": { "style": "book", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/mapStackb",
+    "value": {
+      "config": { "style": "book", "times": { "z": 6 } },
+      "isExtra": true,
+      "position": { "x": 5, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/mapStackc",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 6 } },
+      "isExtra": true,
+      "position": { "x": 6, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  }
+]

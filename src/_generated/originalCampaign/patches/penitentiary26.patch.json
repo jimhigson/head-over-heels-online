@@ -1,0 +1,8 @@
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "replace",
+    "path": "/items/movableBlock@4,1,0/config/activated",
+    "value": "onStand"
+  }
+]

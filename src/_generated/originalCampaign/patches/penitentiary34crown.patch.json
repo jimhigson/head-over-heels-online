@@ -1,0 +1,7 @@
+[
+  {
+    "op": "replace",
+    "path": "/items/teleporter@7,5,4/config/toPosition/x",
+    "value": 15
+  }
+]

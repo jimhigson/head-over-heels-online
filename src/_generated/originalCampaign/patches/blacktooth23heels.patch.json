@@ -1,0 +1,39 @@
+[
+  { "op": "remove", "path": "/items/movableBlock@1,3,1" },
+  { "op": "remove", "path": "/items/movableBlock@1,4,1" },
+  { "op": "remove", "path": "/items/block@1,3,0" },
+  { "op": "remove", "path": "/items/block@2,3,0" },
+  { "op": "remove", "path": "/items/block@3,3,0" },
+  { "op": "remove", "path": "/items/block@1,4,0" },
+  { "op": "remove", "path": "/items/block@2,4,0" },
+  { "op": "remove", "path": "/items/block@3,4,0" },
+  {
+    "op": "add",
+    "path": "/items/heels",
+    "value": {
+      "config": { "which": "heels" },
+      "position": { "x": 3, "y": 3.5, "z": 0 },
+      "type": "player"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "head" },
+      "isExtra": true,
+      "position": { "x": 7, "y": 1, "z": 0 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scroll2",
+    "value": {
+      "config": { "gives": "scroll", "page": "heels" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

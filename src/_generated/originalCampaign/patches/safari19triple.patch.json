@@ -1,0 +1,38 @@
+[
+  {
+    "op": "add",
+    "path": "/items/keepMonsterInPlace0",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 0, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/keepMonsterInPlace1",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 1, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/keepMonsterInPlace2",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 2, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/keepMonsterInPlace3",
+    "value": {
+      "config": { "axis": "y" },
+      "position": { "x": 8, "y": 3, "z": 0 },
+      "type": "barrier"
+    }
+  }
+]

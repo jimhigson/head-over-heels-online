@@ -1,0 +1,28 @@
+[
+  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/items/switch@0,0,0/config/activates/movableBlock@0,1,0",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
+  },
+  {
+    "op": "add",
+    "path": "/items/switch@0,0,0/config/activates/switch@7,7,0",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+  },
+  {
+    "op": "replace",
+    "path": "/items/movableBlock@0,1,0/config/startDirection",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/switch@7,7,0/config/activates/movableBlock@0,1,0",
+    "value": { "left": { "activated": false }, "right": { "activated": true } }
+  },
+  {
+    "op": "add",
+    "path": "/items/switch@7,7,0/config/activates/switch@0,0,0",
+    "value": { "left": { "setting": "left" }, "right": { "setting": "right" } }
+  }
+]

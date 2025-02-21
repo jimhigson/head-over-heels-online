@@ -1,0 +1,40 @@
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/items/canary",
+    "value": {
+      "config": { "style": "cube" },
+      "position": { "x": 11, "y": 1, "z": 1 },
+      "type": "portableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/canary2",
+    "value": {
+      "config": { "style": "cube" },
+      "position": { "x": 11, "y": 1, "z": 2 },
+      "type": "portableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBlock",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 11, "y": 1, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBlock2",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 11, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  }
+]

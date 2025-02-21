@@ -1,0 +1,20 @@
+[
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "hintsAndTips" },
+      "position": { "x": 7, "y": 5, "z": 1 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scrollBlock",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 7, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  }
+]

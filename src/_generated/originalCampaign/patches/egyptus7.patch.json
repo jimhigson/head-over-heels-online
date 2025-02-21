@@ -1,0 +1,132 @@
+[
+  {
+    "op": "add",
+    "path": "/items/barrierForAnalogue",
+    "value": {
+      "config": { "axis": "x", "times": { "x": 2, "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 3, "y": 0.6, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/barrierForAnalogue2",
+    "value": {
+      "config": { "axis": "y", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 4.6, "y": 0, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/barrierForAnalogue3",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 2, "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 6.4, "y": 3, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/barrierForAnalogue4",
+    "value": {
+      "config": { "axis": "x", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 7, "y": 2.4, "z": 4 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@0,0,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@0,5,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 0, "y": 5, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@0,7,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@2,7,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 2, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@3,0,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 3, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@4,0,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 4, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@7,3,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 7, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@7,4,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 7, "y": 4, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrablock0@7,7,3",
+    "value": {
+      "config": { "style": "tower", "times": { "z": 3 } },
+      "isExtra": true,
+      "position": { "x": 7, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  }
+]

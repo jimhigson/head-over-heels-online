@@ -1,0 +1,74 @@
+[
+  {
+    "op": "add",
+    "path": "/items/towerA0",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerA1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerA2",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerA3",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 0, "z": 3 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerB0",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerB1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerB2",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerB3",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 0, "y": 7, "z": 3 },
+      "type": "block"
+    }
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "op": "add",
+    "path": "/items/extra",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 1, "z": 0 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra2",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 4, "z": 0 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra3",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 3.5, "z": 1 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra4",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 1.5, "z": 1 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra5",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 2, "z": 2 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra6",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 3, "z": 2 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra7",
+    "value": {
+      "config": { "movement": "free", "style": "stepStool" },
+      "position": { "x": 1, "y": 2.5, "z": 3 },
+      "type": "movableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "historyOfTheBlacktoothEmpire" },
+      "position": { "x": 1, "y": 2.5, "z": 4 },
+      "type": "pickup"
+    }
+  }
+]

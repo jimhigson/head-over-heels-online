@@ -1,0 +1,1 @@
+[{ "op": "replace", "path": "/items/door@3,8,1/position/z", "value": 2 }]

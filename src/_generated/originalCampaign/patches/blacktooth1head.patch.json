@@ -1,0 +1,41 @@
+[
+  {
+    "op": "add",
+    "path": "/items/colouriseSwitch",
+    "value": {
+      "config": {
+        "store": { "path": "userSettings.displaySettings.colourise" }
+      },
+      "isExtra": true,
+      "position": { "x": 5, "y": 3, "z": 0 },
+      "type": "switch"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/head",
+    "value": {
+      "config": { "which": "head" },
+      "position": { "x": 2.5, "y": 2.5, "z": 0 },
+      "type": "player"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scrollRabbit",
+    "value": {
+      "config": { "gives": "scroll", "page": "cuddlyStuffedWhiteRabbits" },
+      "position": { "x": 3, "y": 0, "z": 0 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scrollTheGame",
+    "value": {
+      "config": { "gives": "scroll", "page": "theGame" },
+      "position": { "x": 3, "y": 7, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]
