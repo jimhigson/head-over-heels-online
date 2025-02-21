@@ -22,13 +22,25 @@ export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
   const slideVector =
     part === "far" ?
       {
-        x: axis === "x" ? -Math.abs(movementVector.y) : 0,
-        y: axis === "y" ? -Math.abs(movementVector.x) : 0,
+        x:
+          axis === "x" ?
+            -Math.abs(movementVector.y)
+          : Math.abs(movementVector.y) * (direction === "left" ? -1 : 1),
+        y:
+          axis === "y" ?
+            -Math.abs(movementVector.x)
+          : Math.abs(movementVector.x) * (direction === "away" ? -1 : 1),
         z: 0,
       }
     : {
-        x: axis === "x" ? Math.abs(movementVector.y) : 0,
-        y: axis === "y" ? Math.abs(movementVector.x) : 0,
+        x:
+          axis === "x" ?
+            Math.abs(movementVector.y)
+          : Math.abs(movementVector.y) * (direction === "left" ? -1 : 1),
+        y:
+          axis === "y" ?
+            Math.abs(movementVector.x)
+          : Math.abs(movementVector.x) * (direction === "away" ? -1 : 1),
         z: 0,
       };
 
