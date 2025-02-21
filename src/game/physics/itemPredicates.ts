@@ -62,12 +62,17 @@ export const isPushable = <
   RoomId extends string = string,
 >(
   item: AnyItemInPlay<RoomId>,
+  /**
+   * if true, some pushes are allowed. Ie, a player can push another player through
+   * a door while backing-off-and re-entering the room to clear their area
+   */
+  forceful: boolean = false,
 ): item is FreeItem<P, RoomId> => {
   return (
     isFreeItem(item) &&
     // can't push a player while they're autowalking - lets players walk into a room while invincible if
     // an enemy is near the door
-    !(isPlayableItem(item) && item.state.autoWalk)
+    !(!forceful && isPlayableItem(item) && item.state.autoWalk)
   );
 };
 

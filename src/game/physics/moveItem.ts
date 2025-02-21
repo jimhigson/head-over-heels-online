@@ -206,7 +206,7 @@ export const moveItem = <RoomId extends string>({
       );
 
     // push falling (pushable) items that we intersect:
-    if (isPushable(collision) && collision !== pusher) {
+    if (isPushable(collision, forceful) && collision !== pusher) {
       const pushCoefficient =
         forceful || isSlidingItem(collision) ?
           // lifts don't slow down when stuff is on them
