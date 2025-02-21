@@ -22,18 +22,31 @@
 
 ### Details ad bugs
 
-[x] more obvious what is selected on keys menu
+[x] emperor screen on getting all crowns
 
-[x] turn around without moving for small presses (round down to zero, not up to one)
+[ ] split campaign patch up per-room
 
-[ ] move items collected into store, and show % on final screen 
- - this is selected from in tests, so would need store to be non-singleton maybe
+[ ] write an 'about this remake' page
+
+[ ] turn around without moving for small presses (round down to zero, not up to one)
+
+[?] move more state to the store?
+    [ ] is easier to render with react
+    [ ] reducers are nice
+    [ ] fast enough foreverything except room state
+    cons:    
+    [ ] in testing, easier for state to leak between tests since the store is universal        
+    [ ] tests can't run in parallel if they need the store, unless I come up with something clever to manage that 
+        - really, want a new store per-test = store can't be a singleton
+        - in react-redux, can just use a new provider
+        - would have to change *all* direct use of the store
+        - would probably have to put the store instance on GameState or pass both around together
+    [ ] move items collected into redux store, and show % on final screen 
+    - this is selected from in tests, so would need store to be non-singleton maybe
 
 [x] disable infinite lives while playing
 
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
-
-
 
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
@@ -58,17 +71,7 @@ carrying (maybe( bugs:
         * item gone forever!
     [ ] this might be fine
 
-[?] move more state to the store?
-    [ ] is easier to render with react
-    [ ] reducers are nice
-    [ ] fast enough foreverything except room state
-    cons:    
-    [ ] in testing, easier for state to leak between tests since the store is universal        
-    [ ] tests can't run in parallel if they need the store, unless I come up with something clever to manage that 
-        - really, want a new store per-test = store can't be a singleton
-        - in react-redux, can just use a new provider
-        - would have to change *all* direct use of the store
-        - would probably have to put the store instance on GameState or pass both around together
+
 
 [x] guardian can push player through floor repeatedly if in the doorway and player is respawning on top of them (other player also in room)
     * flash for a few seconds (1.5/2/?) after respawning

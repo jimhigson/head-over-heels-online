@@ -973,53 +973,9 @@
     "op": "add",
     "path": "/rooms/moonbase16/items/barier1",
     "value": {
-      "config": { "axis": "y" },
+      "config": { "axis": "y", "times": { "y": 6 } },
+      "isExtra": true,
       "position": { "x": 6, "y": 0, "z": 0 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/moonbase16/items/barier2",
-    "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6, "y": 1, "z": 0 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/moonbase16/items/barier3",
-    "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6, "y": 2, "z": 0 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/moonbase16/items/barier4",
-    "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6, "y": 3, "z": 0 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/moonbase16/items/barier5",
-    "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6, "y": 4, "z": 0 },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/rooms/moonbase16/items/barier6",
-    "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6, "y": 5, "z": 0 },
       "type": "barrier"
     }
   },
@@ -1153,11 +1109,55 @@
   },
   { "op": "replace", "path": "/rooms/finalroom/color/hue", "value": "yellow" },
   {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@11,0,0/config/startDirection",
+    "value": "awayRight"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@11,5,0/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@0,6,0/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@1,6,0/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@0,7,1/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@1,7,1/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/items/sceneryPlayer@9,7,0/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
+    "op": "add",
+    "path": "/rooms/finalroom/items/winner",
+    "value": {
+      "config": { "which": "headOverHeels", "startDirection": "right" },
+      "position": { "x": 7, "y": 2, "z": 2 },
+      "type": "sceneryPlayer"
+    }
+  },
+  {
     "op": "add",
     "path": "/rooms/finalroom/items/crownBlacktooth",
     "value": {
       "config": { "gives": "crown", "planet": "blacktooth" },
-      "position": { "x": 7, "y": 2, "z": 4 },
+      "position": { "x": 7, "y": 2, "z": 6 },
       "type": "pickup"
     }
   },
@@ -1196,6 +1196,11 @@
       "position": { "x": 7, "y": 3, "z": 1 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/rooms/finalroom/floor",
+    "value": "penitentiary"
   },
   {
     "op": "add",
@@ -2318,7 +2323,7 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth6/items/switch@6,0,1/config/activates/monster@3,0,1",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1/config/activates/extraMonster",
     "value": { "left": { "activated": true }, "right": { "activated": false } }
   },
   {
@@ -2328,7 +2333,7 @@
   },
   {
     "op": "add",
-    "path": "/rooms/blacktooth6/items/switch@6,0,1/config/activates/extraMonster",
+    "path": "/rooms/blacktooth6/items/switch@6,0,1/config/activates/monster@3,0,1",
     "value": { "left": { "activated": true }, "right": { "activated": false } }
   },
   {
@@ -2340,9 +2345,9 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
+      "isExtra": true,
       "position": { "x": 0, "y": 0, "z": 1 },
-      "type": "monster",
-      "isExtra": true
+      "type": "monster"
     }
   },
   {
@@ -2354,9 +2359,9 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
+      "isExtra": true,
       "position": { "x": 7, "y": 7, "z": 3 },
-      "type": "monster",
-      "isExtra": true
+      "type": "monster"
     }
   },
   {

@@ -1,6 +1,11 @@
 import type { MarkdownPageName } from "../../manual/pages";
 import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
-import type { DirectionXy4, Xyz, AxisXy } from "../../utils/vectors/vectors";
+import type {
+  DirectionXy4,
+  Xyz,
+  AxisXy,
+  DirectionXy8,
+} from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
   DoorFrameConfig,
@@ -115,7 +120,7 @@ export type ItemConfigMap<
   /** non-playable but looks like the playable char - for the final room */
   sceneryPlayer: {
     which: CharacterName;
-    startDirection: DirectionXy4;
+    startDirection: DirectionXy8;
   };
   lift: {
     top: number;

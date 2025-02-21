@@ -4,7 +4,7 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
-  floor: "jail",
+  floor: "penitentiary",
   id: "finalroom",
   items: {
     "block@0,2,1": {
@@ -79,7 +79,7 @@ export const room = inferRoomJson({
     },
     crownBlacktooth: {
       config: { gives: "crown", planet: "blacktooth" },
-      position: { x: 7, y: 2, z: 4 },
+      position: { x: 7, y: 2, z: 6 },
       type: "pickup",
     },
     crownBookworld: {
@@ -118,27 +118,27 @@ export const room = inferRoomJson({
       type: "sceneryPlayer",
     },
     "sceneryPlayer@0,6,0": {
-      config: { startDirection: "towards", which: "heels" },
+      config: { startDirection: "towardsLeft", which: "heels" },
       position: { x: 0, y: 6, z: 0 },
       type: "sceneryPlayer",
     },
     "sceneryPlayer@0,7,1": {
-      config: { startDirection: "towards", which: "head" },
+      config: { startDirection: "towardsLeft", which: "head" },
       position: { x: 0, y: 7, z: 1 },
       type: "sceneryPlayer",
     },
     "sceneryPlayer@1,6,0": {
-      config: { startDirection: "towards", which: "head" },
+      config: { startDirection: "towardsLeft", which: "head" },
       position: { x: 1, y: 6, z: 0 },
       type: "sceneryPlayer",
     },
     "sceneryPlayer@1,7,1": {
-      config: { startDirection: "towards", which: "head" },
+      config: { startDirection: "towardsLeft", which: "head" },
       position: { x: 1, y: 7, z: 1 },
       type: "sceneryPlayer",
     },
     "sceneryPlayer@11,0,0": {
-      config: { startDirection: "right", which: "headOverHeels" },
+      config: { startDirection: "awayRight", which: "headOverHeels" },
       position: { x: 11, y: 0, z: 0 },
       type: "sceneryPlayer",
     },
@@ -163,7 +163,7 @@ export const room = inferRoomJson({
       type: "sceneryPlayer",
     },
     "sceneryPlayer@11,5,0": {
-      config: { startDirection: "right", which: "headOverHeels" },
+      config: { startDirection: "towardsRight", which: "headOverHeels" },
       position: { x: 11, y: 5, z: 0 },
       type: "sceneryPlayer",
     },
@@ -233,8 +233,13 @@ export const room = inferRoomJson({
       type: "sceneryPlayer",
     },
     "sceneryPlayer@9,7,0": {
-      config: { startDirection: "towards", which: "headOverHeels" },
+      config: { startDirection: "towardsRight", which: "headOverHeels" },
       position: { x: 9, y: 7, z: 0 },
+      type: "sceneryPlayer",
+    },
+    winner: {
+      config: { startDirection: "right", which: "headOverHeels" },
+      position: { x: 7, y: 2, z: 2 },
       type: "sceneryPlayer",
     },
   },

@@ -16,6 +16,7 @@ export const dialogIds = [
   "crowns",
   "gameOver",
   "quitGameConfirm",
+  "proclaimEmperor",
   ...markdownDialogIds,
 ] as const;
 
