@@ -111,7 +111,7 @@ export const initialGameMenuSliceState: GameMenusState = {
     displaySettings: {
       showBoundingBoxes: "none",
       showShadowMasks: false,
-      crtFilter: true,
+      crtFilter: false,
       colourise: true,
       emulatedResolution: zxSpectrumResolution,
     },
