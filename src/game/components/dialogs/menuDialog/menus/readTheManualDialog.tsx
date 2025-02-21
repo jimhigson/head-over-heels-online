@@ -41,7 +41,7 @@ export const ReadTheManualDialog = () => {
         className="bg-midGrey zx:bg-zxCyan"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed">
+      <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed h-tallDialog">
         <div className="text-moss zx:text-zxBlack mx-auto">
           <span className="sprite texture-book.x zx:sprite-revert-to-white" />
           <BitmapText className="sprites-double-height mx-1">

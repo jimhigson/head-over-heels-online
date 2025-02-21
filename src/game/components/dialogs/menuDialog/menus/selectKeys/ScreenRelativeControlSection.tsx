@@ -5,6 +5,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchCa
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
 import { BitmapText } from "../../../../Sprite";
+import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";
@@ -38,10 +39,16 @@ const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
 };
 
 export const ScreenRelativeControlSection = () => {
+  const isScreenRelativeControl = useIsScreenRelativeControl();
   return (
     <MenuItem
       id="screenRelativeControl"
       label="axes"
+      leader={
+        <span
+          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2" : "texture-heels.walking.right.2"}`}
+        />
+      }
       valueElement={<ScreenRelativeControlValue />}
       onSelect={useDispatchActionCallback(
         toggleBoolean,
@@ -50,9 +57,9 @@ export const ScreenRelativeControlSection = () => {
       hintInline
       hint={
         <BlockyMarkdown
-          className={`text-midGrey zx:text-zxBlack`}
+          className="text-midGrey zx:text-zxBlack"
           markdown={
-            useIsScreenRelativeControl() ?
+            isScreenRelativeControl ?
               screenRelativeControlOnHintMarkdown
             : screenRelativeControlOffHintMarkdown
           }

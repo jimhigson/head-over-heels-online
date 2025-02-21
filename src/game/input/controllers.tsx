@@ -1,6 +1,5 @@
 import { transformObject } from "../../utils/entries";
 import type { Key } from "./keys";
-import type { SpritesheetPaletteColourName } from "../../../gfx/spritesheetPalette";
 
 // see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
 export const standardControllerLayout = {
@@ -26,18 +25,6 @@ export const standardControllerButtonNames = transformObject(
   standardControllerLayout,
   ([k, v]) => [v, k],
 );
-
-export const standardControllerButtonClassnames = {
-  a: "text-moss",
-  b: "text-midRed",
-  x: "text-metallicBlue",
-  y: "text-highlightBeige",
-} as const satisfies Partial<
-  Record<
-    keyof typeof standardControllerLayout,
-    `text-${SpritesheetPaletteColourName}`
-  >
->;
 
 export type MamePlayer = {
   start: Key;

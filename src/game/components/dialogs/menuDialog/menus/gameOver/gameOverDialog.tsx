@@ -52,14 +52,14 @@ export const GameOverDialog = () => {
         className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
-        <MainMenuHeading />
+        <MainMenuHeading noSubtitle />
         <BitmapText
           classnameCycle={mainMenuCycle}
           className="mt-2 block text-center mx-auto sprites-double-height"
         >
           {scoreLabel}
         </BitmapText>
-        <BitmapText className="mt-4 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+        <BitmapText className="mt-2 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
           Score {score.toLocaleString()}
         </BitmapText>
         <BitmapText className="mt-2 block text-center mx-auto text-pink zx:text-zxCyan">

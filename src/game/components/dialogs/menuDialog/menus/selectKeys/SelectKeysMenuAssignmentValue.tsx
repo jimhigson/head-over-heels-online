@@ -22,7 +22,7 @@ export const SelectKeysMenuAssignmentValue = ({
       )}
       action={action}
       keyClassName={
-        "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed"
+        "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed"
       }
       flashingCursor={assigning}
     />

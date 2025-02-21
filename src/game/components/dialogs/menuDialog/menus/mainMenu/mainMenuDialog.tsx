@@ -40,7 +40,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2">
-        <MainMenuHeading />
+        <MainMenuHeading noSubtitle={isGameRunning} />
         <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white">
           <MenuItem
             id="playGame"

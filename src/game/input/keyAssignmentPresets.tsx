@@ -144,6 +144,27 @@ const originalKeyAssignment: InputAssignmentPreset = {
   description: "closely matches zx spectrum keys",
 };
 
+const amigaKeyAssignment: InputAssignmentPreset = {
+  inputAssignment: combineInputAssignments(
+    emptyInputAssignment,
+    standardAssignment,
+    {
+      presses: {
+        carry: {
+          keys: ["F3", "F5"],
+        },
+        fire: {
+          keys: [" "],
+        },
+        jump: { keys: ["F5"] },
+        swop: { keys: ["F1"] },
+        hold: { keys: ["H"] },
+      },
+    },
+  ),
+  description: "closely matches Amiga version keys - heavy on the F-keys",
+};
+
 const gamepadAssignment: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
     emptyInputAssignment,
@@ -292,6 +313,7 @@ const mamePreset: InputAssignmentPreset = {
 export const keyAssignmentPresets = {
   default: defaultAssignment,
   "zx spectrum": originalKeyAssignment,
+  amiga: amigaKeyAssignment,
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mamePreset,
   wasd: wasdKeyAssignments,

@@ -332,6 +332,14 @@ const frames = {
     smallItemTextureSize,
   ),
 
+  // deliberately blank sprite to use as a noop
+  blank: {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+
   ...seriesOfNumberedTextures(
     "lift",
     4,

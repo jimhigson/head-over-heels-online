@@ -52,7 +52,6 @@ export const maintainKeyboardState = (state: KeyboardStateMap) => {
     }
 
     state.set(stdKey, nextOrder());
-    keyboardEvent.preventDefault();
   };
   const keyUpHandler = (keyboardEvent: KeyboardEvent): void => {
     const stdKey = stdKeyFromKeyboardEvent(keyboardEvent);
@@ -62,7 +61,6 @@ export const maintainKeyboardState = (state: KeyboardStateMap) => {
     }
 
     state.delete(stdKey);
-    keyboardEvent.preventDefault();
   };
 
   const handleWindowBlur = (): void => {
