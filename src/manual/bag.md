@@ -9,7 +9,7 @@ press the *CARRY* key.
 
 ![](texture-cube)![](texture-drum)![](texture-spring.compressed)![](texture-sticks)
 
-It is not possible to drop an object in a doorway.
+It is not possible to take items through doorways.
 
 *> head over heels manual*
 
