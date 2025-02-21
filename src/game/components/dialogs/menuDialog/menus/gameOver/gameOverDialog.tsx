@@ -22,10 +22,10 @@ const calculateScore = (
 };
 
 export const ScoreDialog = () => {
-  const planetsLiberatedCount = useAppSelector((state) =>
-    size(iterate(objectValues(state.planetsLiberated)).filter(Boolean)),
+  const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
+  const roomsExploredCount = useAppSelector((state) =>
+    size(iterate(objectValues(state.roomsExplored))),
   );
-  const roomsExploredCount = useAppSelector(selectPlanetsLiberatedCount);
 
   const score = calculateScore(roomsExploredCount, planetsLiberatedCount);
 

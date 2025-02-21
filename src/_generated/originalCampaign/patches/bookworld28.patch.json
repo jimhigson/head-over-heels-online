@@ -13,69 +13,9 @@
   },
   {
     "op": "add",
-    "path": "/items/block@3,10,0",
+    "path": "/items/extraRunway",
     "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 10, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,11,0",
-    "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 11, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,12,0",
-    "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 12, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,13,0",
-    "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 13, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,14,0",
-    "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 14, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,15,0",
-    "value": {
-      "config": { "style": "organic" },
-      "isExtra": true,
-      "position": { "x": 3, "y": 15, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@4,8,1",
-    "value": {
-      "config": { "style": "organic" },
+      "config": { "style": "organic", "times": { "y": 8 } },
       "isExtra": true,
       "position": { "x": 3, "y": 8, "z": 0 },
       "type": "block"
@@ -83,12 +23,102 @@
   },
   {
     "op": "add",
-    "path": "/items/block@4,9,1",
+    "path": "/items/test",
     "value": {
-      "config": { "style": "organic" },
+      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
       "isExtra": true,
-      "position": { "x": 3, "y": 9, "z": 0 },
+      "position": { "x": 0, "y": 14, "z": 0 },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/test2",
+    "value": {
+      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 6, "y": 14, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraStep",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 2, "z": 2 } },
+      "isExtra": true,
+      "position": { "x": 3, "y": 15, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraStep2",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 2 } },
+      "isExtra": true,
+      "position": { "x": 3, "y": 14, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 6 } },
+      "isExtra": true,
+      "position": { "x": 2.5, "y": 8, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier2",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 6 } },
+      "isExtra": true,
+      "position": { "x": 4.5, "y": 8, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier3",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 4.5, "y": 13, "z": 2 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier4",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 4.5, "y": 14, "z": 3 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier5",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 2.5, "y": 13, "z": 2 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier6",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 2.5, "y": 14, "z": 3 },
+      "type": "barrier"
     }
   },
   { "op": "add", "path": "/ceilingRelativePoint", "value": { "x": 4, "y": 4 } }
