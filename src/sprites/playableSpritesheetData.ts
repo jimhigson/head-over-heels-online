@@ -132,6 +132,18 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "head.blinking.awayRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 7, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.blinking.towardsLeft": {
+    frame: {
+      ...smallItemGridLocation({ x: 0, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
   "head.falling.towards": {
     frame: {
       ...smallItemGridLocation({ x: 0, y: 11 }),
@@ -229,6 +241,8 @@ export const playableSpritesheetData = {
     "head.idle.right": headBlinking("right", 3),
     "head.idle.towards": headBlinking("towards", 3),
     "head.idle.towardsRight": headBlinking("towardsRight", 2),
+    "head.idle.towardsLeft": headBlinking("towardsLeft", 2),
+    "head.idle.awayRight": headBlinking("awayRight", 2),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
