@@ -124,75 +124,74 @@ export const room = inferRoomJson({
       position: { x: 4, y: 8, z: 0 },
       type: "block",
     },
-    "extraRunway": {
+    extraRunway: {
       config: { style: "organic", times: { y: 8 } },
       isExtra: true,
       position: { x: 3, y: 8, z: 0 },
       type: "block",
     },
-    "test": {
+    test: {
       config: { style: "artificial", times: { x: 2, y: 2 } },
       isExtra: true,
       position: { x: 0, y: 14, z: 0 },
       type: "block",
     },
-    "test2": {
+    test2: {
       config: { style: "artificial", times: { x: 2, y: 2 } },
       isExtra: true,
       position: { x: 6, y: 14, z: 0 },
       type: "block",
     },
 
-    "extraStep": {
+    extraStep: {
       config: { style: "organic", times: { x: 2, z: 2 } },
       isExtra: true,
       position: { x: 3, y: 15, z: 1 },
       type: "block",
     },
-    "extraStep2": {
+    extraStep2: {
       config: { style: "organic", times: { x: 2 } },
       isExtra: true,
       position: { x: 3, y: 14, z: 1 },
       type: "block",
     },
 
-    "extraBarrier": {
-      config: { axis: 'y', times: { y: 6 } },
+    extraBarrier: {
+      config: { axis: "y", times: { y: 6 } },
       isExtra: true,
       position: { x: 2.5, y: 8, z: 1 },
       type: "barrier",
     },
-    "extraBarrier2": {
-      config: { axis: 'y', times: { y: 6 } },
+    extraBarrier2: {
+      config: { axis: "y", times: { y: 6 } },
       isExtra: true,
       position: { x: 4.5, y: 8, z: 1 },
       type: "barrier",
     },
-    "extraBarrier3": {
-      config: { axis: 'y', times: { y: 2 } },
+    extraBarrier3: {
+      config: { axis: "y", times: { y: 2 } },
       isExtra: true,
       position: { x: 4.5, y: 13, z: 2 },
       type: "barrier",
     },
-    "extraBarrier4": {
-      config: { axis: 'y', times: { y: 2 } },
+    extraBarrier4: {
+      config: { axis: "y", times: { y: 2 } },
       isExtra: true,
       position: { x: 4.5, y: 14, z: 3 },
       type: "barrier",
     },
-    "extraBarrier5": {
-      config: { axis: 'y', times: { y: 2 } },
+    extraBarrier5: {
+      config: { axis: "y", times: { y: 2 } },
       isExtra: true,
       position: { x: 2.5, y: 13, z: 2 },
       type: "barrier",
     },
-    "extraBarrier6": {
-      config: { axis: 'y', times: { y: 2 } },
+    extraBarrier6: {
+      config: { axis: "y", times: { y: 2 } },
       isExtra: true,
       position: { x: 2.5, y: 14, z: 3 },
       type: "barrier",
     },
-
 
     "block@4,9,0": {
       config: { style: "organic" },

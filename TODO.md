@@ -14,6 +14,9 @@
 
 [x] 8-way sprites
 
+[ ] a map
+    [ ] a mini-map
+
 [ ] level editor
 
 [ ] own levels
