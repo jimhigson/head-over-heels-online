@@ -20,9 +20,9 @@ export const QuitGameConfirmDialog = () => {
       <Border className="bg-shadow zx:bg-zxYellow" />
       <Dialog className="bg-white zx:bg-zxRed">
         <Portal.Provider>
-          <MainMenuHeading />
+          <MainMenuHeading noSubtitle />
           <BitmapText
-            className="ml-3 sprites-double-height"
+            className="ml-3 sprites-double-height mt-2"
             classnameCycle={[
               "text-redShadow zx:text-zxWhite",
               "text-midRed zx:text-zxYellow",
@@ -52,7 +52,7 @@ export const QuitGameConfirmDialog = () => {
               }
             />
           </MenuItems>
-          <SelectedItemHint className="text-shadow zx:text-zxWhite" />
+          <SelectedItemHint className="text-midGrey zx:text-zxWhite" />
         </Portal.Provider>
       </Dialog>
     </DialogPortal>

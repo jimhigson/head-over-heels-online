@@ -31,16 +31,5 @@ export const MainMenuFooter = () => (
         </div>
       </div>
     </div>
-    <div className="absolute bottom-1">
-      <BitmapText className="text-metallicBlue zx:text-zxBlack">
-        https://
-      </BitmapText>
-      <BitmapText className="text-pink zx:text-zxCyan">block</BitmapText>
-      <BitmapText className="text-highlightBeige zx:text-zxYellow">
-        stack
-      </BitmapText>
-      <BitmapText className="text-metallicBlue zx:text-zxBlack">.</BitmapText>
-      <BitmapText className="text-moss zx:text-zxWhite">ing</BitmapText>
-    </div>
   </>
 );
