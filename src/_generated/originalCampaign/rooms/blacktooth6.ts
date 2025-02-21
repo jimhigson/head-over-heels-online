@@ -52,6 +52,26 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
+    extraMonster: {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      isExtra: true,
+      position: { x: 0, y: 0, z: 1 },
+      type: "monster",
+    },
+    extraMonster2: {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      isExtra: true,
+      position: { x: 7, y: 7, z: 3 },
+      type: "monster",
+    },
     "monster@3,0,1": {
       config: {
         activated: true,
@@ -60,26 +80,6 @@ export const room = inferRoomJson({
       },
       position: { x: 3, y: 0, z: 1 },
       type: "monster",
-    },
-    "extraMonster": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 0, y: 0, z: 1 },
-      type: "monster",
-      isExtra: true
-    },
-    "extraMonster2": {
-      config: {
-        activated: true,
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 7, z: 3 },
-      type: "monster",
-      isExtra: true
     },
     "pickup@7,7,1": {
       config: { gives: "doughnuts" },
@@ -107,15 +107,15 @@ export const room = inferRoomJson({
             left: { disappear: "onStand" },
             right: { disappear: null },
           },
+          extraMonster: {
+            left: { activated: true },
+            right: { activated: false },
+          },
+          extraMonster2: {
+            left: { activated: true },
+            right: { activated: false },
+          },
           "monster@3,0,1": {
-            left: { activated: true },
-            right: { activated: false },
-          },
-          "extraMonster2": {
-            left: { activated: true },
-            right: { activated: false },
-          },
-          "extraMonster": {
             left: { activated: true },
             right: { activated: false },
           },
