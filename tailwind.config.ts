@@ -116,7 +116,7 @@ export default {
     },
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
-      tallDialog: "calc(100vh - 2 * var(--block))",
+      tallDialog: "calc(100svh - 2 * var(--block))",
       ...blockMultiples,
       min: "min-content",
       max: "max-content",

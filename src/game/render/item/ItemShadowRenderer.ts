@@ -22,7 +22,6 @@ import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
 import { isMultipliable } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { pick } from "../../../utils/pick";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -73,11 +72,15 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
     if (spriteOptions) {
       const times = isMultipliable(item) ? item.config.times : undefined;
 
+      const completedTimesXy = times && {
+        x: times.x ?? 1,
+        y: times.y ?? 1,
+      };
       const shadowMask = createSprite({
         ...(typeof spriteOptions === "string" ?
           { texture: spriteOptions }
         : spriteOptions),
-        times: times && pick(times, "x", "y"),
+        times: completedTimesXy,
       });
 
       let shadowMaskSprite: Sprite;
@@ -85,6 +88,7 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
         // simple case of using a sprite as the shadow mask:
         shadowMaskSprite = shadowMask;
       } else {
+        // the shadowmask is a container - this is the case for 'times'
         const localBounds = shadowMask.getLocalBounds();
 
         // general containers with multiple sprites can't be used as shadow masks,

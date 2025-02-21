@@ -1,11 +1,46 @@
 [
   { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@11,0,0/config/startDirection",
+    "value": "awayRight"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@11,5,0/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@0,6,0/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@1,6,0/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@0,7,1/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@1,7,1/config/startDirection",
+    "value": "towardsLeft"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@9,7,0/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
     "op": "add",
     "path": "/items/crownBlacktooth",
     "value": {
       "config": { "gives": "crown", "planet": "blacktooth" },
-      "position": { "x": 7, "y": 2, "z": 4 },
+      "position": { "x": 7, "y": 2, "z": 6 },
       "type": "pickup"
     }
   },
@@ -44,5 +79,15 @@
       "position": { "x": 7, "y": 3, "z": 1 },
       "type": "pickup"
     }
-  }
+  },
+  {
+    "op": "add",
+    "path": "/items/winner",
+    "value": {
+      "config": { "startDirection": "right", "which": "headOverHeels" },
+      "position": { "x": 7, "y": 2, "z": 2 },
+      "type": "sceneryPlayer"
+    }
+  },
+  { "op": "replace", "path": "/floor", "value": "penitentiary" }
 ]

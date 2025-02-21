@@ -2,7 +2,7 @@ import { BitmapText } from "../../../../Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuHeading = ({ noSubtitle }: { noSubtitle?: boolean }) => (
-  <div className="flex flex-col items-center me-1">
+  <div className="flex flex-col items-center">
     <div className="flex">
       <div className="flex flex-col gap-y-oneScaledPix items-center me-1">
         <BitmapText className="sprites-double-height text-metallicBlue zx:text-zxYellow">

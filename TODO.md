@@ -14,17 +14,21 @@
 
 [x] 8-way sprites
 
+[ ] a map
+    [ ] a mini-map
+
 [ ] level editor
 
 [ ] own levels
 
 [ ] switch to OOP on room state/items etc. Eg polymorphism: .isPushable() etc methods
 
+[ ] switch to devcontainers
+
 ### Details ad bugs
 
-[x] emperor screen on getting all crowns
+[x] split campaign patch up per-room
 
-[ ] split campaign patch up per-room
 
 [ ] write an 'about this remake' page
 
@@ -43,8 +47,6 @@
         - would probably have to put the store instance on GameState or pass both around together
     [ ] move items collected into redux store, and show % on final screen 
     - this is selected from in tests, so would need store to be non-singleton maybe
-
-[x] disable infinite lives while playing
 
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
 
@@ -71,11 +73,6 @@ carrying (maybe( bugs:
         * item gone forever!
     [ ] this might be fine
 
-
-
-[x] guardian can push player through floor repeatedly if in the doorway and player is respawning on top of them (other player also in room)
-    * flash for a few seconds (1.5/2/?) after respawning
-    * forcefully push when entering a doorway
 
 [ ] write test - 
     collect scroll in room
@@ -141,23 +138,14 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # Rooms
 
-#bookworld 28/29
-[ ] lift up doesn't locate properly due to rooms being stitched together
-
 # blacktooth20
 [ ] [MINOR] corner of room not shown in shadow
 
 # (heels) blacktooth35
 [ ] room positioning (scrolling) on screen is poor
 
-# egyptus7
-[ ] too easy with analogue control (jump straight to end)
-
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away
-
-# safari35
-[ ] [MINOR] sandwich should fall in the gap between blocks
 
 # penitentiary2
 [ ] this room shouldn't scroll horizontally

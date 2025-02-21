@@ -73,42 +73,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,10,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 10, z: 0 },
-      type: "block",
-    },
-    "block@3,11,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 11, z: 0 },
-      type: "block",
-    },
-    "block@3,12,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 12, z: 0 },
-      type: "block",
-    },
-    "block@3,13,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 13, z: 0 },
-      type: "block",
-    },
-    "block@3,14,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 14, z: 0 },
-      type: "block",
-    },
-    "block@3,15,0": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 15, z: 0 },
-      type: "block",
-    },
+
     "block@3,7,0": {
       config: { style: "organic" },
       position: { x: 3, y: 7, z: 0 },
@@ -159,21 +124,78 @@ export const room = inferRoomJson({
       position: { x: 4, y: 8, z: 0 },
       type: "block",
     },
-    "block@4,8,1": {
-      config: { style: "organic" },
+    extraRunway: {
+      config: { style: "organic", times: { y: 8 } },
       isExtra: true,
       position: { x: 3, y: 8, z: 0 },
       type: "block",
     },
+    test: {
+      config: { style: "artificial", times: { x: 2, y: 2 } },
+      isExtra: true,
+      position: { x: 0, y: 14, z: 0 },
+      type: "block",
+    },
+    test2: {
+      config: { style: "artificial", times: { x: 2, y: 2 } },
+      isExtra: true,
+      position: { x: 6, y: 14, z: 0 },
+      type: "block",
+    },
+
+    extraStep: {
+      config: { style: "organic", times: { x: 2, z: 2 } },
+      isExtra: true,
+      position: { x: 3, y: 15, z: 1 },
+      type: "block",
+    },
+    extraStep2: {
+      config: { style: "organic", times: { x: 2 } },
+      isExtra: true,
+      position: { x: 3, y: 14, z: 1 },
+      type: "block",
+    },
+
+    extraBarrier: {
+      config: { axis: "y", times: { y: 6 } },
+      isExtra: true,
+      position: { x: 2.5, y: 8, z: 1 },
+      type: "barrier",
+    },
+    extraBarrier2: {
+      config: { axis: "y", times: { y: 6 } },
+      isExtra: true,
+      position: { x: 4.5, y: 8, z: 1 },
+      type: "barrier",
+    },
+    extraBarrier3: {
+      config: { axis: "y", times: { y: 2 } },
+      isExtra: true,
+      position: { x: 4.5, y: 13, z: 2 },
+      type: "barrier",
+    },
+    extraBarrier4: {
+      config: { axis: "y", times: { y: 2 } },
+      isExtra: true,
+      position: { x: 4.5, y: 14, z: 3 },
+      type: "barrier",
+    },
+    extraBarrier5: {
+      config: { axis: "y", times: { y: 2 } },
+      isExtra: true,
+      position: { x: 2.5, y: 13, z: 2 },
+      type: "barrier",
+    },
+    extraBarrier6: {
+      config: { axis: "y", times: { y: 2 } },
+      isExtra: true,
+      position: { x: 2.5, y: 14, z: 3 },
+      type: "barrier",
+    },
+
     "block@4,9,0": {
       config: { style: "organic" },
       position: { x: 4, y: 9, z: 0 },
-      type: "block",
-    },
-    "block@4,9,1": {
-      config: { style: "organic" },
-      isExtra: true,
-      position: { x: 3, y: 9, z: 0 },
       type: "block",
     },
     "block@5,0,0": {
