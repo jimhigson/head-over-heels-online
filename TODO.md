@@ -29,6 +29,9 @@
 
 [x] split campaign patch up per-room
 
+[x] allow stopping on diagonals
+    [ ] for keys/buttons
+    [ ] for d-pads that report as axes
 
 [ ] write an 'about this remake' page
 

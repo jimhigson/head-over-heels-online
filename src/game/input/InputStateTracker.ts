@@ -3,10 +3,12 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import {
   addXyz,
   directionsXy4,
+  dotProductXyz,
   lengthXy,
   lengthXyz,
   originXyz,
   scaleXy,
+  xyzEqual,
 } from "../../utils/vectors/vectors";
 import type { InputPress } from "./InputState";
 import { actionToAxis, type BooleanAction } from "./InputState";
@@ -208,8 +210,8 @@ export class InputStateTracker {
     return originXyz;
   };
 
-  /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
-  #tickUpdatedDirectionAnalogue() {
+  /** gets the modernised input direction (including analogue or 8-way) */
+  #tickUpdatedDirectionAnalogueOrXy8() {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
     if (currentFrameInput === undefined) {
@@ -218,6 +220,8 @@ export class InputStateTracker {
 
     /* vectors for the binary presses - buttons and keys */
     function* pressVectors(input: FrameInput): Generator<Xyz> {
+      // TODO: consider axes at the extremes (== -1, or 1) as buttons and don't use in axisVectors
+
       for (const d of directionsXy4) {
         if (isActionPressed(input, d, false)) yield unitVectors[d];
       }
@@ -252,9 +256,45 @@ export class InputStateTracker {
         if (lengthXyz(v) > analogueDeadzone) yield v;
       }
     }
+    const pressed = [...pressVectors(currentFrameInput)];
+    let recentlyReleasedPress: Xyz | undefined = undefined;
+
+    if (pressed.length === 1) {
+      const [singlePressedNow] = pressed;
+      // if only one input is pressed, check the buffer if another, orthogonal input was only just released,
+      // in this case we keep going diagonally for a short time until that found frame is out of the buffer
+      loopOverBuffers: for (const buf of this.#frameInputBuffer) {
+        const bufferPresses = [...pressVectors(buf)];
+        if (bufferPresses.length > 2) {
+          break loopOverBuffers;
+        }
+        if (
+          bufferPresses.length === 2 &&
+          // one identical:
+          bufferPresses.some((bp) => xyzEqual(bp, singlePressedNow))
+        ) {
+          // and one orthoganal:
+          const bufferOrthogonalPress = bufferPresses.find(
+            (bp) => dotProductXyz(bp, singlePressedNow) < 0.001,
+          );
+          if (bufferOrthogonalPress !== undefined) {
+            recentlyReleasedPress = bufferOrthogonalPress;
+            break loopOverBuffers;
+          }
+        }
+      }
+    }
+
+    /*
+    if (recentlyReleasedPress) {
+      console.log(
+        "🕹️ applying a recently released press of",
+        recentlyReleasedPress,
+      );
+    }*/
 
     return addXyz(
-      originXyz,
+      recentlyReleasedPress ?? originXyz,
       ...pressVectors(currentFrameInput),
       ...axisVectors(currentFrameInput),
     );
@@ -271,7 +311,7 @@ export class InputStateTracker {
     const v = snapToCardinal(
       maybeRotate(
         analogueControl ?
-          this.#tickUpdatedDirectionAnalogue()
+          this.#tickUpdatedDirectionAnalogueOrXy8()
         : this.#tickUpdatedDirectionXy4(),
       ),
       snapAngleRadians,
@@ -305,6 +345,7 @@ export class InputStateTracker {
     }
 
     /*
+    // logging to monitor buffer health:
     console.log(
       "frame buffer now has length",
       this.#frameInputBuffer.length,
