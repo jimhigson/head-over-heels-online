@@ -76,7 +76,7 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
     <BitmapText
       className={twMerge(
         `text-nowrap`,
-        "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
+        "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed",
         className,
       )}
     >
@@ -146,7 +146,7 @@ export const SelectKeysDialog = () => {
             {useIsAnalogueControl() && <ScreenRelativeControlSection />}
 
             <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
-              keys/buttons
+              keys / buttons
             </BitmapText>
 
             <MenuItem

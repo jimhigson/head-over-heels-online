@@ -19,7 +19,7 @@ const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
       <BitmapText
         className={twMerge(
           `text-nowrap me-1`,
-          "text-pink zx:text-zxRed selectedMenuItem:text-pinkHalfbrite zx:selectedMenuItem:text-zxRed",
+          "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed",
           className,
         )}
       >
