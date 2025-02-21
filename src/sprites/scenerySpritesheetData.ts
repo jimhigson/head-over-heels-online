@@ -78,8 +78,8 @@ const backgroundFrames = <
 };
 
 const frames = {
-  ...backgroundFrames("blacktooth", 542, 29, ".dark"), // same really
-  ...backgroundFrames("blacktooth", 542, 104, ""),
+  ...backgroundFrames("blacktooth", 542, 104, ".dark"), // actually different
+  ...backgroundFrames("blacktooth", 542, 29, ""),
   ...backgroundFrames("bookworld", 408, 29, ".dark"), // same really
   ...backgroundFrames("bookworld", 408, 29, ""),
   ...backgroundFrames("egyptus", 475, 29, ""),
@@ -88,7 +88,7 @@ const frames = {
   ...backgroundFrames("jail", 440, 104, ""),
   ...backgroundFrames("market", 443, 356, ".dark"), // same really
   ...backgroundFrames("market", 443, 356, ""),
-  ...backgroundFrames("moonbase", 453, 204, ".dark"), // actually different
+  ...backgroundFrames("moonbase", 453, 276, ".dark"), // actually different
   ...backgroundFrames("moonbase", 453, 204, ""),
   ...backgroundFrames("penitentiary", 376, 357, ".dark"), // same really
   ...backgroundFrames("penitentiary", 376, 357, ""),
