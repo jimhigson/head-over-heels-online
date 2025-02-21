@@ -116,6 +116,7 @@ export default {
     },
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
+      tallDialog: "calc(100vh - 2 * var(--block))",
       ...blockMultiples,
       min: "min-content",
       max: "max-content",
@@ -137,7 +138,11 @@ export default {
       },
     },
     opacity: {
-      // use with black sprites for EHB: https://en.wikipedia.org/wiki/Amiga_Halfbrite_mode
+      // use with black background sprites for EHB: https://en.wikipedia.org/wiki/Amiga_Halfbrite_mode
+      halfBrite: "0.5",
+    },
+    brightness: {
+      // for EHB: https://en.wikipedia.org/wiki/Amiga_Halfbrite_mode
       halfBrite: "0.5",
     },
     animation: {

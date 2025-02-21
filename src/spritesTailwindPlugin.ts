@@ -49,10 +49,12 @@ export const spritesTailwindPlugin = plugin(
       ".sprite-revert-zxYellow": {
         filter:
           "brightness(1.8) grayscale(100%) contrast(999) brightness(0.5) sepia(1)  hue-rotate(30deg) saturate(5) brightness(5)",
+        mixBlendMode: "normal",
       },
       ".sprite-revert-zxMagenta": {
         filter:
           "brightness(1.8) grayscale(100%) contrast(999) brightness(0.5) sepia(1)  hue-rotate(262deg) saturate(8)",
+        mixBlendMode: "normal",
       },
 
       /**

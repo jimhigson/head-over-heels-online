@@ -18,26 +18,22 @@
 
 [ ] own levels
 
+[ ] switch to OOP on room state/items etc. Eg polymorphism: .isPushable() etc methods
+
 ### Details ad bugs
 
-[ ] turn around without moving for small presses (round down to zero, not up to one)
+[x] more obvious what is selected on keys menu
+
+[x] turn around without moving for small presses (round down to zero, not up to one)
 
 [ ] move items collected into store, and show % on final screen 
  - this is selected from in tests, so would need store to be non-singleton maybe
 
-[ ] disable infinite lives while playing
+[x] disable infinite lives while playing
 
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
 
-[ ] bug: can make a character fall off the world if on top of other character while the go through a portal
-    [?] or push through door by other char?
-    [?] should portals only work for the current char/
-    [?] make portals solid?    
 
-[x] firefox bug: manuals (and really any multi-line blocky text) shows poorly in firefox
-    * this is because `text-wrap` on words causes FF to not wrap not just the word, but
-    also to not wrap between them
-    * if words are display: inline-block this seems to somewhat fix it
 
 [ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
@@ -46,7 +42,7 @@
     - @hohjs/campaign = conversion and export of the main campaign
     - use `vite-plugin-inspect` to check why pixi is being brought into main index (first load)
 
-carrying bugs: 
+carrying (maybe( bugs: 
     [ ] carrying rules are slightly wrong/different from original:
         * original: carrying state belongs to the room
         * remake: carrying state belongs to heels and is cleared on leaving room
@@ -60,6 +56,7 @@ carrying bugs:
         * heels picks up while head in room
         * heels dies
         * item gone forever!
+    [ ] this might be fine
 
 [?] move more state to the store?
     [ ] is easier to render with react
@@ -88,7 +85,7 @@ carrying bugs:
     * menus
     * user settings
 
-[ ] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
+[x] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
     - crash because head doesn't have a renderer
 
 [ ] repeat moving on scrolls etc (hold to keep scrolling) + analogue control    
@@ -97,14 +94,13 @@ carrying bugs:
     [ ] then use small aabb for collision, medium for rendering - for player 
     [ ] ball needs a bigger render aabb
 
-[ ] bug? - both chars in room, heels picks up portable block; heels leaves - what should happen to the block?
-    - check against original
+
 [ ] bug: main index loads pixi
     [?] (maybe) just for the Color class in the hint colors - let's not do that!    
         - nope, nothing calls the Color constructor on initial load
     look into: https://www.npmjs.com/package/madge https://www.npmjs.com/package/dependency-cruiser
     - we now use the ticker, but could load just @pixi/ticker
-[ ] bug - if pushed out of a room while player is dying, their entry state contains death
+[x] bug - if pushed out of a room while player is dying, their entry state contains death
     - fix - make players non-solid while state is death      
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
@@ -112,14 +108,10 @@ carrying bugs:
 [ ] iter-tools brings in `@babel/runtime` = not good!
     - maybe drop it
     
-[ ] change from `pixi.js` package to `@pixi/*` packages
-    Import from **`pixi.js`** for a bundled version.  
-        https://chatgpt.com/c/679cecd2-71a0-8007-b3dc-2166e61c75b7
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
-[ ] original game had a score - how to calculate/reproduce this?
 [ ] sonic-like shield effect when got shield    
     [?] sunglasses?
 [ ] shadow masks/cast provided by appearance

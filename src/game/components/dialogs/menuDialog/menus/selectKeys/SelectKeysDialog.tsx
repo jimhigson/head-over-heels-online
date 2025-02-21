@@ -31,6 +31,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { ScreenRelativeControlSection } from "./ScreenRelativeControlSection";
+import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const analogueControlOffHintMarkdown =
   "**analog off**: true to the original with *4-way* movement";
@@ -51,8 +52,6 @@ const useKeyAssignmentInput = () => {
   });
   useInputTap({
     handler: useCallback((inputPress, inputStateTracker) => {
-      console.log("useKeyAssignmentInput:: got input press", inputPress);
-
       if (
         inputStateTracker.currentActionPress("menu_openOrExit") !== "released"
       ) {
@@ -96,7 +95,7 @@ export const SelectKeysDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pr-0">
+      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog">
         <div
           className={
             "overflow-y-scroll " +
@@ -105,10 +104,10 @@ export const SelectKeysDialog = () => {
             "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite "
           }
         >
-          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mx-auto mb-1">
+          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mb-1">
             control options
           </BitmapText>
-          <MenuItems className="text-metallicBlue zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlueHalfbrite zx:selectedMenuItem:text-zxGreen">
+          <MenuItems className="text-metallicBlueHalfbrite zx:text-zxBlue !gap-y-1 selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen">
             <MenuItem
               id="analogueControl"
               label={
@@ -119,7 +118,7 @@ export const SelectKeysDialog = () => {
                 </BitmapText>
               }
               leader={
-                <span className="sprite zx:sprite-revert-to-two-tone texture-joystick" />
+                <span className={`${spriteLeaderClasses} texture-joystick`} />
               }
               valueElement={
                 <Switch
@@ -146,6 +145,10 @@ export const SelectKeysDialog = () => {
             />
             {useIsAnalogueControl() && <ScreenRelativeControlSection />}
 
+            <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
+              keys/buttons
+            </BitmapText>
+
             <MenuItem
               id="preset"
               label={
@@ -163,7 +166,7 @@ export const SelectKeysDialog = () => {
               label={`Left ${isScreenRelativeControl ? "⬅" : "↖"}`}
               leader={
                 <span
-                  className={`sprite zx:sprite-revert-to-two-tone ${
+                  className={`${spriteLeaderClasses} ${
                     isScreenRelativeControl ?
                       "texture-head.walking.towardsLeft.2 selectedMenuItem:texture-animated-head.walking.towardsLeft"
                     : "texture-head.walking.left.2 selectedMenuItem:texture-animated-head.walking.left"
@@ -178,7 +181,7 @@ export const SelectKeysDialog = () => {
               label={`Right ${isScreenRelativeControl ? "➡" : "↘"}`}
               leader={
                 <span
-                  className={`sprite zx:sprite-revert-to-two-tone ${
+                  className={`${spriteLeaderClasses} ${
                     isScreenRelativeControl ?
                       "texture-head.walking.awayRight.2 selectedMenuItem:texture-animated-head.walking.awayRight"
                     : "texture-head.walking.right.2 selectedMenuItem:texture-animated-head.walking.right"
@@ -193,7 +196,7 @@ export const SelectKeysDialog = () => {
               label={`Up ${isScreenRelativeControl ? "⬆" : "↗"}`}
               leader={
                 <span
-                  className={`sprite zx:sprite-revert-to-two-tone ${
+                  className={`${spriteLeaderClasses} ${
                     isScreenRelativeControl ?
                       "texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.awayLeft"
                     : "texture-head.walking.away.2 selectedMenuItem:texture-animated-head.walking.away"
@@ -208,7 +211,7 @@ export const SelectKeysDialog = () => {
               label={`Down ${isScreenRelativeControl ? "⬇" : "↙"}`}
               leader={
                 <span
-                  className={`sprite zx:sprite-revert-to-two-tone ${
+                  className={`${spriteLeaderClasses} ${
                     isScreenRelativeControl ?
                       "texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight"
                     : "texture-head.walking.towards.2 selectedMenuItem:texture-animated-head.walking.towards"
@@ -230,15 +233,18 @@ export const SelectKeysDialog = () => {
             <MenuItem
               id="jump"
               label="Jump"
+              leader={
+                <span
+                  className={`${spriteLeaderClasses} texture-spring.released selectedMenuItem:texture-spring.compressed`}
+                />
+              }
               valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
               onSelect={useDispatchActionCallback(assignInputStart, "jump")}
             />
             <MenuItem
               id="carry"
               label="Carry"
-              leader={
-                <span className="sprite texture-bag zx:sprite-revert-to-two-tone" />
-              }
+              leader={<span className={`${spriteLeaderClasses} texture-bag`} />}
               valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
               onSelect={useDispatchActionCallback(assignInputStart, "carry")}
             />
@@ -252,7 +258,7 @@ export const SelectKeysDialog = () => {
                 </BitmapText>
               }
               leader={
-                <span className="sprite texture-doughnuts zx:sprite-revert-to-two-tone" />
+                <span className={`${spriteLeaderClasses} texture-doughnuts`} />
               }
               valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
               onSelect={useDispatchActionCallback(assignInputStart, "fire")}
@@ -262,10 +268,23 @@ export const SelectKeysDialog = () => {
               label="Swop"
               valueElement={<SelectKeysMenuAssignmentValue action="swop" />}
               onSelect={useDispatchActionCallback(assignInputStart, "swop")}
+              leader={
+                <span
+                  className={`${spriteLeaderClasses} texture-blank relative overflow-hidden`}
+                >
+                  <span
+                    className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 absolute right-[50%]`}
+                  />
+                  <span
+                    className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 absolute left-[50%]`}
+                  />
+                </span>
+              }
             />
             <MenuItem
               id="hold"
-              label="Hold"
+              // changed from hold to pause - "hold" is mistakable for carry
+              label="Pause"
               valueElement={<SelectKeysMenuAssignmentValue action="hold" />}
               onSelect={useDispatchActionCallback(assignInputStart, "hold")}
             />

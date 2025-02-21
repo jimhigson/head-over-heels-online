@@ -28,14 +28,14 @@ export const standardControllerButtonNames = transformObject(
 );
 
 export const standardControllerButtonClassnames = {
-  a: "text-moss",
-  b: "text-midRed",
-  x: "text-metallicBlue",
-  y: "text-highlightBeige",
+  a: "text-mossHalfbrite selectedMenuItem:text-moss",
+  b: "text-midRedHalfbrite selectedMenuItem:text-midRedHal",
+  x: "text-metallicBlueHalfbrite selectedMenuItem:text-metallicBlueHal",
+  y: "text-highlightBeigeHalfbrite selectedMenuItem:text-highlightBeigeHal",
 } as const satisfies Partial<
   Record<
     keyof typeof standardControllerLayout,
-    `text-${SpritesheetPaletteColourName}`
+    `text-${SpritesheetPaletteColourName}Halfbrite selectedMenuItem:text-${SpritesheetPaletteColourName}`
   >
 >;
 
