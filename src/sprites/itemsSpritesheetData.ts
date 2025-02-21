@@ -225,14 +225,14 @@ const frames = {
     frame: {
       ...smallItemGridLocation({ x: 9, y: 4 }),
       ...smallItemTextureSize,
-      pivot: { x: 19, y: 24 },
+      pivot: { x: 17, y: 24 },
     },
   },
   "shadowMask.scroll": {
     frame: {
       ...smallItemGridLocation({ x: 10, y: 4 }),
       ...smallItemTextureSize,
-      pivot: { x: 19, y: 24 },
+      pivot: { x: 17, y: 24 },
     },
   },
 
