@@ -8,33 +8,9 @@ export const room = inferRoomJson({
   id: "moonbase16",
   items: {
     barier1: {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 6 } },
+      isExtra: true,
       position: { x: 6, y: 0, z: 0 },
-      type: "barrier",
-    },
-    barier2: {
-      config: { axis: "y" },
-      position: { x: 6, y: 1, z: 0 },
-      type: "barrier",
-    },
-    barier3: {
-      config: { axis: "y" },
-      position: { x: 6, y: 2, z: 0 },
-      type: "barrier",
-    },
-    barier4: {
-      config: { axis: "y" },
-      position: { x: 6, y: 3, z: 0 },
-      type: "barrier",
-    },
-    barier5: {
-      config: { axis: "y" },
-      position: { x: 6, y: 4, z: 0 },
-      type: "barrier",
-    },
-    barier6: {
-      config: { axis: "y" },
-      position: { x: 6, y: 5, z: 0 },
       type: "barrier",
     },
     "deadlyBlock@2,0,0": {
