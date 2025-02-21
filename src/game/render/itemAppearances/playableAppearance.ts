@@ -86,9 +86,7 @@ export const isHighlighted = ({
   gameTime: number;
 }): boolean => switchedToAt + switchCharacterHighlightTime > gameTime;
 
-export const isFlashing = <C extends CharacterName>(
-  playableItem: PlayableItem,
-): boolean => {
+export const isFlashing = (playableItem: PlayableItem): boolean => {
   if (!playerDiedRecently(playableItem)) {
     return false;
   }
