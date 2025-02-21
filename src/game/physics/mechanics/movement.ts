@@ -28,6 +28,7 @@ import type { GameState } from "../../gameState/GameState";
 import { emptyObject } from "../../../utils/empty";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
+import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -119,21 +120,30 @@ const rushTowardPlayerXy4 = <RoomId extends string>(
 const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
   // find closest player in the room:
   const {
-    items: { head: headInRoom, heels: heelsInRoom },
+    items: {
+      head: headInRoom,
+      heels: heelsInRoom,
+      headOverHeels: headOverHeelsInRoom,
+    },
   } = room;
 
-  if (room.items.headOverHeels !== undefined) {
-    return room.items.headOverHeels;
+  if (headOverHeelsInRoom !== undefined) {
+    return playerDiedRecently(headOverHeelsInRoom) ? undefined : (
+        room.items.headOverHeels
+      );
   }
 
   const headDistance =
-    headInRoom === undefined ? undefined : (
-      distanceSquaredXy(headInRoom.state.position, position)
-    );
+    headInRoom === undefined ? undefined
+    : playerDiedRecently(headInRoom) ? undefined
+    : headInRoom.state.action === "death" ? undefined
+    : distanceSquaredXy(headInRoom.state.position, position);
+
   const heelsDistance =
-    heelsInRoom === undefined ? undefined : (
-      distanceSquaredXy(heelsInRoom.state.position, position)
-    );
+    heelsInRoom === undefined ? undefined
+    : playerDiedRecently(heelsInRoom) ? undefined
+    : heelsInRoom.state.action === "death" ? undefined
+    : distanceSquaredXy(heelsInRoom.state.position, position);
 
   return (
     headDistance === undefined ? heelsInRoom

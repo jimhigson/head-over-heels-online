@@ -1,4 +1,9 @@
-import { isItemType, isJoystick, isSlidingItem } from "./itemPredicates";
+import {
+  isItemType,
+  isJoystick,
+  isPushable,
+  isSlidingItem,
+} from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
@@ -201,7 +206,7 @@ export const moveItem = <RoomId extends string>({
       );
 
     // push falling (pushable) items that we intersect:
-    if (isFreeItem(collision) && collision !== pusher) {
+    if (isPushable(collision) && collision !== pusher) {
       const pushCoefficient =
         forceful || isSlidingItem(collision) ?
           // lifts don't slow down when stuff is on them

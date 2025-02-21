@@ -114,6 +114,15 @@ export const room = inferRoomJson({
       position: { x: 6, y: 3, z: 2 },
       type: "monster",
     },
+    "extraMonster": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 6, y: 3, z: 5 },
+      type: "monster",
+    },
   },
   planet: "penitentiary",
   size: { x: 8, y: 10 },

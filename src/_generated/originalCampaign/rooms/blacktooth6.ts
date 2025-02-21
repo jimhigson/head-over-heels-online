@@ -61,6 +61,26 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 1 },
       type: "monster",
     },
+    "extraMonster": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 0, y: 0, z: 1 },
+      type: "monster",
+      isExtra: true
+    },
+    "extraMonster2": {
+      config: {
+        activated: true,
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 7, z: 3 },
+      type: "monster",
+      isExtra: true
+    },
     "pickup@7,7,1": {
       config: { gives: "doughnuts" },
       position: { x: 7, y: 7, z: 1 },
@@ -88,6 +108,14 @@ export const room = inferRoomJson({
             right: { disappear: null },
           },
           "monster@3,0,1": {
+            left: { activated: true },
+            right: { activated: false },
+          },
+          "extraMonster2": {
+            left: { activated: true },
+            right: { activated: false },
+          },
+          "extraMonster": {
             left: { activated: true },
             right: { activated: false },
           },
