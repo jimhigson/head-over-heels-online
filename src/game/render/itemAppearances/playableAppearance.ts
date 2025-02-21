@@ -86,8 +86,8 @@ export const isHighlighted = ({
   gameTime: number;
 }): boolean => switchedToAt + switchCharacterHighlightTime > gameTime;
 
-export const isFlashing = (
-  playableItem: PlayableItem<CharacterName, string>,
+export const isFlashing = <C extends CharacterName>(
+  playableItem: PlayableItem,
 ): boolean => {
   if (!playerDiedRecently(playableItem)) {
     return false;
@@ -187,7 +187,7 @@ export const playableAppearance = <C extends CharacterName>({
       isHighlighted((item as PlayableItem<"headOverHeels">).state.head)
     : isHighlighted((item as PlayableItem<"head" | "heels">).state);
 
-  const flashing = isFlashing(item);
+  const flashing = isFlashing(item as PlayableItem);
 
   const walkSpeed = lengthXyz(facing);
 
