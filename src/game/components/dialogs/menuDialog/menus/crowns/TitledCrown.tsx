@@ -42,11 +42,11 @@ export const TitledCrown = ({
         className={`sprite block ${crownTextureClasses[planet]} ${collected ? `zx:sprite-revert-zxYellow` : "colourised:opacity-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
       />
       <span
-        className={`sprite block texture-ball zx:sprite-revert-zxYellow mx-auto ${collected ? `` : "colourised:opacity-halfBrite"} ${colourCycle[planet][0]}`}
+        className={`sprite block texture-ball zx:sprite-revert-zxYellow mx-auto ${collected ? `` : "colourised:brightness-halfBrite"} ${colourCycle[planet][0]}`}
       />
       <BitmapText
         classnameCycle={colourised ? colourCycle[planet] : undefined}
-        className="block mx-auto zx:text-zxMagenta"
+        className={`block mx-auto zx:text-zxMagenta ${collected ? "" : "colourised:brightness-halfBrite"}`}
       >
         {label}
       </BitmapText>

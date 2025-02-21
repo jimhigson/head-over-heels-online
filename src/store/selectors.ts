@@ -5,6 +5,7 @@ import { objectEntriesIter } from "../utils/entries";
 import { iterate } from "../utils/iterate";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
+import { size, objectValues } from "iter-tools";
 
 export const useTotalUpscale = () =>
   useAppSelector((state) => {
@@ -67,3 +68,6 @@ export const useIsScreenRelativeControl = () =>
 
 export const useIsAnalogueControl = () =>
   useAppSelector((state) => state.userSettings.analogueControl);
+
+export const selectPlanetsLiberatedCount = (state: RootState) =>
+  size(iterate(objectValues(state.planetsLiberated)).filter(Boolean));

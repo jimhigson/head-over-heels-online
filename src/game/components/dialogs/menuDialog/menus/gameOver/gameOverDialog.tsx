@@ -11,6 +11,7 @@ import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
+import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
 
 const calculateScore = (
   roomsExploredCount: number,
@@ -20,13 +21,11 @@ const calculateScore = (
   return roomsExploredCount * 160 + planetsLiberatedCount * 10_000;
 };
 
-export const GameOverDialog = () => {
+export const ScoreDialog = () => {
   const planetsLiberatedCount = useAppSelector((state) =>
     size(iterate(objectValues(state.planetsLiberated)).filter(Boolean)),
   );
-  const roomsExploredCount = useAppSelector((state) =>
-    size(iterate(objectValues(state.roomsExplored))),
-  );
+  const roomsExploredCount = useAppSelector(selectPlanetsLiberatedCount);
 
   const score = calculateScore(roomsExploredCount, planetsLiberatedCount);
 

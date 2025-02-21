@@ -7,13 +7,14 @@ import type { MarkdownPageName } from "../../../../manual/pages";
 import { CrownsDialog } from "./menus/crowns/crownsDialog";
 import { MainMenuDialog } from "./menus/mainMenu/mainMenuDialog";
 import { QuitGameConfirmDialog } from "./menus/quitGameConfirmDialog";
-import { GameOverDialog } from "./menus/gameOver/gameOverDialog";
+import { ScoreDialog } from "./menus/gameOver/gameOverDialog";
 import { HoldDialog } from "./menus/holdDialog";
 import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
 import { SelectKeysDialog } from "./menus/selectKeys/SelectKeysDialog";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../Sprite";
 import { InputPresetDialog } from "./menus/inputPreset/InputPresetDialog";
+import { ProclaimEmperorDialog } from "./menus/proclaimEmperor/proclaimEmperorDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -44,7 +45,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "crowns":
       return <CrownsDialog />;
     case "gameOver":
-      return <GameOverDialog />;
+      return <ScoreDialog />;
     case "hold":
       return <HoldDialog />;
     case "modernisationOptions":
@@ -53,6 +54,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <SelectKeysDialog />;
     case "inputPreset":
       return <InputPresetDialog />;
+    case "proclaimEmperor":
+      return <ProclaimEmperorDialog />;
     default:
       dialogId satisfies never;
       return (

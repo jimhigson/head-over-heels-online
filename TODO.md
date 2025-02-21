@@ -22,7 +22,9 @@
 
 ### Details ad bugs
 
-[ ] emperor screen on getting all crowns
+[x] emperor screen on getting all crowns
+
+[ ] split campaign patch up per-room
 
 [ ] write an 'about this remake' page
 

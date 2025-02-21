@@ -352,7 +352,20 @@ export const gameMenusSlice = createSlice({
 
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
       state.planetsLiberated[planet] = true;
-      state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
+
+      const allCrowns = Object.values(state.planetsLiberated).every((b) => b);
+
+      if (allCrowns) {
+        state.openMenus = [
+          {
+            menuId: "proclaimEmperor",
+            scrollableSelection: false,
+          },
+          { menuId: "crowns", scrollableSelection: false },
+        ];
+      } else {
+        state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
+      }
     },
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
       state.roomsExplored[roomId] = true;
