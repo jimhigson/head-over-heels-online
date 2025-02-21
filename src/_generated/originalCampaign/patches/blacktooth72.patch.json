@@ -1,0 +1,20 @@
+[
+  {
+    "op": "add",
+    "path": "/items/tower0",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 7, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/tower1",
+    "value": {
+      "config": { "style": "tower" },
+      "position": { "x": 7, "y": 3, "z": 1 },
+      "type": "block"
+    }
+  }
+]

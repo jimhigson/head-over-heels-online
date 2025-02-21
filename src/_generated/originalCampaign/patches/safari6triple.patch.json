@@ -1,0 +1,9 @@
+[
+  {
+    "op": "add",
+    "path": "/items/block@10,4,0/config/disappearing",
+    "value": "onStand"
+  },
+  { "op": "replace", "path": "/size/y", "value": 12 },
+  { "op": "replace", "path": "/size/x", "value": 12 }
+]

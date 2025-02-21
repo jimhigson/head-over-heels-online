@@ -1,13 +1,11 @@
-import patch from "../_generated/originalCampaign/patch.json";
-import type { Operation } from "fast-json-patch";
-import fastJsonPatch from "fast-json-patch";
-import { writeFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
 import { objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
 import { orderBy } from "natural-orderby";
 import type { AnyRoomJson } from "../model/RoomJson";
-import type { Campaign } from "../model/modelTypes";
+import type { Operation } from "fast-json-patch";
+import fastJsonPatch from "fast-json-patch";
 
 /* multi-line string are easier to read than single-line strings with \n */
 function convertMultilineToTemplate(jsonString: string): string {
@@ -34,30 +32,38 @@ import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
 export const room = inferRoomJson(${convertMultilineToTemplate(canonicalize(room))}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
 `;
 
-export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
+export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
   const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
+  const patchFilename = (roomId: string) =>
+    `${targetDir}/patches/${roomId}.patch.json`;
+
+  const readExtraRooms = async (): Promise<Record<string, AnyRoomJson>> => {
+    const extraRoomNames = await readdir(`${targetDir}/extraRooms`);
+    console.log("we have extra rooms", extraRoomNames);
+    const extraRoomPromises = extraRoomNames.map(async (extraRoomFilename) => [
+      extraRoomFilename.replace(/\.ts$/, ""),
+      (await import(`../../${targetDir}/extraRooms/${extraRoomFilename}`))
+        .room as AnyRoomJson,
+    ]);
+
+    const extraRooms = await Promise.all(extraRoomPromises);
+    return Object.fromEntries(extraRooms);
+  };
+  const convertedRoomsAndExtraRooms = {
+    ...convertedRooms,
+    ...(await readExtraRooms()),
+  };
 
   const writeConvertedJsonPromise = writeFile(
     jsonConvertedFilename,
-    JSON.stringify({ rooms }),
+    JSON.stringify({ rooms: convertedRooms }),
   );
 
-  let patchedCampaign: Campaign<string>;
-  try {
-    patchedCampaign = fastJsonPatch.applyPatch(
-      { rooms },
-      patch as Operation[],
-    ).newDocument;
-  } catch (e) {
-    console.error("Error applying patch", "to", { rooms }, e);
-    process.exit(1);
-  }
-
-  const roomIdsSorted = orderBy(Object.keys(patchedCampaign.rooms));
+  const roomIdsSorted = orderBy(Object.keys(convertedRoomsAndExtraRooms));
 
   const writeOriginalCampaignRoomIdType = writeFile(
     tsRoomIdsFilename,
@@ -92,8 +98,32 @@ export const writeOut = async (rooms: Record<string, AnyRoomJson>) => {
     writeTsBarrell,
     writeOriginalCampaignRoomIdType,
     writeConvertedJsonPromise,
-    ...iterate(objectValues(patchedCampaign.rooms)).map(async (room) => {
-      return writeFile(tsRoomFilename(room.id), roomTs(room));
+    ...iterate(objectValues(convertedRoomsAndExtraRooms)).map(async (room) => {
+      try {
+        if (room.id === undefined) {
+          throw new Error("room without an id");
+        }
+
+        let roomPatch: Operation[];
+        try {
+          roomPatch = JSON.parse(
+            await readFile(patchFilename(room.id), "utf8"),
+          );
+        } catch (_e) {
+          // failed to load - proably no patch exists for this room
+          roomPatch = [];
+        }
+
+        const roomPatched = fastJsonPatch.applyPatch(
+          room,
+          roomPatch as Operation[],
+        ).newDocument;
+
+        return writeFile(tsRoomFilename(room.id), roomTs(roomPatched));
+      } catch (e) {
+        console.error(e);
+        throw new Error(`Error writing room ${room.id}`, e as Error);
+      }
     }),
   ]);
 };

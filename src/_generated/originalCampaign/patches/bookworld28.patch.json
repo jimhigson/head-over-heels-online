@@ -1,0 +1,95 @@
+[
+  { "op": "replace", "path": "/items/lift@3,3,1/position/z", "value": 3 },
+  { "op": "replace", "path": "/items/lift@3,3,1/config/top", "value": 16 },
+  {
+    "op": "replace",
+    "path": "/items/block@3,0,0/config/style",
+    "value": "artificial"
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@0,3,0/config/style",
+    "value": "artificial"
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,10,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 10, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,11,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 11, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,12,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 12, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,13,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 13, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,14,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 14, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@3,15,0",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 15, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@4,8,1",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 8, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block@4,9,1",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 9, "z": 0 },
+      "type": "block"
+    }
+  },
+  { "op": "add", "path": "/ceilingRelativePoint", "value": { "x": 4, "y": 4 } }
+]

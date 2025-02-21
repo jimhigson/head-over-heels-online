@@ -1,0 +1,7 @@
+[
+  {
+    "op": "replace",
+    "path": "/items/monster@2,4,0/config/startDirection",
+    "value": "right"
+  }
+]

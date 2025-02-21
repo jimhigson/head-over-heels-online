@@ -1,0 +1,13 @@
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "teleportBack" },
+      "position": { "x": 5, "y": 6, "z": 2 },
+      "type": "pickup"
+    }
+  }
+]

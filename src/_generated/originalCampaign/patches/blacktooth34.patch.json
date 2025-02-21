@@ -1,0 +1,25 @@
+[
+  {
+    "op": "add",
+    "path": "/items/block@5,7,0/config/disappearing",
+    "value": "onStand"
+  },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "springs" },
+      "position": { "x": 2, "y": 7, "z": 1 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/scrollBlock",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 2, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "add",
+    "path": "/items/extra1",
+    "value": {
+      "config": { "style": "artificial" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 5, "z": 5 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra2",
+    "value": {
+      "config": { "style": "artificial" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 5, "z": 4 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra3",
+    "value": {
+      "config": { "style": "artificial" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 4, "z": 6 },
+      "type": "block"
+    }
+  },
+  { "op": "add", "path": "/size/z", "value": 12 }
+]

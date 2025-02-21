@@ -1,0 +1,1 @@
+[{ "op": "replace", "path": "/color/hue", "value": "magenta" }]

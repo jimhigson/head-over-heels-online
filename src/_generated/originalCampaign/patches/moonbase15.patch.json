@@ -1,0 +1,13 @@
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "hushPuppies" },
+      "position": { "x": 3, "y": 1, "z": 0 },
+      "type": "pickup"
+    }
+  }
+]

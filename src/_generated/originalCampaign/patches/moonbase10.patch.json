@@ -1,0 +1,93 @@
+[
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/items/extra0a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra1a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra2a",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 4, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrab0",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrab1",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrab2",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 3, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrac0",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrac1",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extrac2",
+    "value": {
+      "config": { "style": "tower" },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7, "z": 2 },
+      "type": "block"
+    }
+  }
+]
