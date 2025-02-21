@@ -17,7 +17,7 @@ import Portal from "@mutabazia/react-portal";
 export const QuitGameConfirmDialog = () => {
   return (
     <DialogPortal>
-      <Border className="bg-shadow zx:bg-zxYellow" />
+      <Border className="bg-midRed zx:bg-zxYellow" />
       <Dialog className="bg-white zx:bg-zxRed">
         <Portal.Provider>
           <MainMenuHeading noSubtitle />
