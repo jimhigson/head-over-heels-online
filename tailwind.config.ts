@@ -116,6 +116,10 @@ export default {
       max: "max-content",
       full: "100%",
     },
+    maxWidth: {
+      // widest dialog is 50% wider than the zx screen:
+      widestDialog: `calc(var(--scale) * ${zxSpectrumResolution.x * 1.4}px)`,
+    },
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
       tallDialog: "calc(100svh - 2 * var(--block))",

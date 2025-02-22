@@ -95,7 +95,7 @@ export const SelectKeysDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog">
+      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog max-w-widestDialog">
         <div
           className={
             "overflow-y-scroll " +
