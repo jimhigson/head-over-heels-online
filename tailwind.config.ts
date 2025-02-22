@@ -128,6 +128,9 @@ export default {
       max: "max-content",
       full: "100%",
     },
+    maxHeight: {
+      min: "min-content",
+    },
     gridTemplateColumns: {
       // min-content - typically 2 blocks but some menus can have custom leaders
       menuItems: "min-content max-content 1fr",
