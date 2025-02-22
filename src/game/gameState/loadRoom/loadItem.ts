@@ -10,7 +10,7 @@ import type {
   UnknownItemInPlay,
   ShadowMaskOptions,
 } from "../../../model/ItemInPlay";
-import type { UnknownJsonItem } from "../../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
@@ -18,7 +18,7 @@ import type { ScrollsRead } from "../../../store/gameMenusSlice";
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
-  jsonItem: UnknownJsonItem<RoomId>,
+  jsonItem: JsonItemUnion<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
@@ -83,7 +83,7 @@ export function* loadItemFromJson<RoomId extends string>(
 }
 
 const shadowMask = (
-  jsonItem: UnknownJsonItem,
+  jsonItem: JsonItemUnion,
 ): ShadowMaskOptions | undefined => {
   // charles doesn't work because can't (yet) have direction-specific (changing) maps
   switch (jsonItem.type) {
@@ -186,7 +186,7 @@ const shadowMask = (
 };
 
 const shadowCast = (
-  jsonItem: UnknownJsonItem,
+  jsonItem: JsonItemUnion,
 ): CreateSpriteOptions | undefined => {
   switch (jsonItem.type) {
     case "lift":

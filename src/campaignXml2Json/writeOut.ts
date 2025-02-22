@@ -6,6 +6,7 @@ import { orderBy } from "natural-orderby";
 import type { AnyRoomJson } from "../model/RoomJson";
 import type { Operation } from "fast-json-patch";
 import fastJsonPatch from "fast-json-patch";
+import chalk from "chalk";
 
 /* multi-line string are easier to read than single-line strings with \n */
 function convertMultilineToTemplate(jsonString: string): string {
@@ -32,14 +33,16 @@ import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
 export const room = inferRoomJson(${convertMultilineToTemplate(canonicalize(room))}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
 `;
 
+const targetDir = "src/_generated/originalCampaign/";
+const patchFilename = (roomId: string) =>
+  `${targetDir}/patches/${roomId}.patch.json`;
+
 export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
   const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
-  const patchFilename = (roomId: string) =>
-    `${targetDir}/patches/${roomId}.patch.json`;
 
   const readExtraRooms = async (): Promise<Record<string, AnyRoomJson>> => {
     const extraRoomNames = await readdir(`${targetDir}/extraRooms`);
@@ -104,19 +107,27 @@ export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
           throw new Error("room without an id");
         }
 
-        let roomPatch: Operation[];
+        let roomPatch: Operation[] | undefined;
         try {
           roomPatch = JSON.parse(
             await readFile(patchFilename(room.id), "utf8"),
           );
         } catch (_e) {
           // failed to load - proably no patch exists for this room
-          roomPatch = [];
+          roomPatch = undefined;
         }
+
+        if (!roomPatch) {
+          console.log(`❌ No patch for ${room.id}`);
+          return writeFile(tsRoomFilename(room.id), roomTs(room));
+        }
+
+        console.log("✅ will patch room", chalk.yellow(room.id), "...");
 
         const roomPatched = fastJsonPatch.applyPatch(
           room,
           roomPatch as Operation[],
+          true,
         ).newDocument;
 
         return writeFile(tsRoomFilename(room.id), roomTs(roomPatched));

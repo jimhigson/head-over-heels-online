@@ -4,7 +4,7 @@ import type {
   JsonItemType,
   JsonItemConfig,
   JsonItem,
-  UnknownJsonItem,
+  JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
@@ -41,7 +41,7 @@ export const addItemFromJsonToRoom = <
   const item = first(
     loadItemFromJson(
       itemId,
-      itemJson as UnknownJsonItem<RoomId>,
+      itemJson as JsonItemUnion<RoomId>,
       gameState.pickupsCollected[room.id],
     ),
   );

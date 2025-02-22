@@ -6,7 +6,7 @@ import { sceneryNames, scenery } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
-import type { UnknownJsonItem } from "./model/json/JsonItem.ts";
+import type { JsonItemUnion } from "./model/json/JsonItem.ts";
 import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
 
 const generateWalls = <P extends SceneryName>(
@@ -46,7 +46,7 @@ const colourRooms = () => {
     RoomJson<P, TestCampaignRoomId, string>,
   ];
 
-  const sampleItems: UnknownJsonItem<TestCampaignRoomId>[] = [
+  const sampleItems: JsonItemUnion<TestCampaignRoomId>[] = [
     {
       type: "deadlyBlock",
       config: { style: "volcano" },

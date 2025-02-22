@@ -1,7 +1,7 @@
 import type { BaseItemState } from "../../../model/ItemInPlay";
 import type { FreeItemState } from "../../../model/ItemStateMap";
 import type {
-  UnknownJsonItem,
+  JsonItemUnion,
   JsonItemType,
 } from "../../../model/json/JsonItem";
 import type { SceneryName } from "../../../sprites/planets";
@@ -30,12 +30,12 @@ export const defaultFreeItemState = () =>
     },
     latentMovement: [],
   }) satisfies Partial<FreeItemState>;
-export const initialState = (jsonItem: UnknownJsonItem) => {
+export const initialState = (jsonItem: JsonItemUnion) => {
   const free = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     ...defaultBaseState(),
-    position: positionCentredInBlock(jsonItem as UnknownJsonItem),
+    position: positionCentredInBlock(jsonItem as JsonItemUnion),
     ...(free ?
       {
         standingOn: null,

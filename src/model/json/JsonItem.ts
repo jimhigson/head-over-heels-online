@@ -89,7 +89,7 @@ export type JsonItem<
   isExtra?: true;
 };
 
-export type UnknownJsonItem<
+export type JsonItemUnion<
   RoomId extends string = string,
   ItemId extends string = string,
 > = {

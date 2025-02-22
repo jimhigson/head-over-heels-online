@@ -1,7 +1,9 @@
 import type { Floor } from "../model/modelTypes";
 import type { AnyRoomJson } from "../model/RoomJson";
+import { keyItems } from "../utils/keyItems";
+import { consolidateItems } from "./consolidateItems/consolidateItems";
 import { map, convertRoomColour } from "./convertCampaign";
-import { convertItems } from "./convertItems";
+import { convertItemsArray } from "./convertItems";
 import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertRoomId } from "./convertRoomId";
@@ -13,7 +15,7 @@ import {
 } from "./readToJson";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
-export const convertRoom = async (xmlRoomName: string) => {
+export const convertRoom = async (xmlRoomName: string): AnyRoomJson => {
   const roomXmlJson = await readRoomToXmlJson(xmlRoomName);
   const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomXmlJson;
 
@@ -36,8 +38,21 @@ export const convertRoom = async (xmlRoomName: string) => {
     mortal: "deadly",
   };
 
-  const room: AnyRoomJson = {
-    id: convertRoomId(xmlRoomName),
+  const convertedItems = keyItems([
+    ...consolidateItems(
+      await convertItemsArray(
+        map,
+        xmlRoomName,
+        roomXmlJson,
+        roomSidesWithDoors,
+      ),
+    ),
+  ]);
+
+  const roomId = convertRoomId(xmlRoomName);
+
+  return {
+    id: roomId,
     floor: floorMap[jsonFloorKind],
     planet,
     roomBelow:
@@ -51,14 +66,7 @@ export const convertRoom = async (xmlRoomName: string) => {
       away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
       left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),
     },
-    items: await convertItems(
-      map,
-      xmlRoomName,
-      roomXmlJson,
-      roomSidesWithDoors,
-    ),
+    items: convertedItems,
     color: convertRoomColour(color),
   };
-
-  return room;
 };

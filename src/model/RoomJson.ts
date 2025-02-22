@@ -1,7 +1,7 @@
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import type { Xy } from "../utils/vectors/vectors";
-import type { UnknownJsonItem } from "./json/JsonItem";
+import type { JsonItemUnion } from "./json/JsonItem";
 import type { Floor, RoomWalls } from "./modelTypes";
 
 /**
@@ -42,7 +42,7 @@ export type RoomJson<
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
    */
-  items: Record<ItemId, UnknownJsonItem<RoomId, NoInfer<ItemId>>>;
+  items: Record<ItemId, JsonItemUnion<RoomId, NoInfer<ItemId>>>;
 };
 export type AnyRoomJson = RoomJson<SceneryName, string, string>;
 
