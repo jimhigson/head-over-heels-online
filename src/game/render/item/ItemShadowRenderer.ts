@@ -1,17 +1,20 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { AlphaFilter, Container, RenderTexture, Sprite } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
+import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type { Collideable } from "../../collision/aabbCollision";
 import { collision1to1 } from "../../collision/aabbCollision";
 import { concat, objectEntries, objectValues } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  UnknownItemInPlay,
+} from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { iterate } from "../../../utils/iterate";
-import type { Xy } from "../../../utils/vectors/vectors";
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import { subXy } from "../../../utils/vectors/vectors";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
@@ -54,16 +57,14 @@ const renderContainerToSprite = (
   });
 };
 
-const createShadowCastFromItemSprite = (
+const createShadowCastOrMaskSprite = (
   pixiRenderer: PixiRenderer,
-  casterItem: SetRequired<UnknownItemInPlay, "shadowCastTexture">,
+  createSpriteOptions: CreateSpriteOptions,
+  itemTimesXyz: Partial<Xyz> | undefined,
 ): Sprite => {
-  const createSpriteOptions = casterItem.shadowCastTexture;
-  const timesXyz =
-    isMultipliedItem(casterItem) ? casterItem.config.times : undefined;
-  const timesXy: Xy | undefined = timesXyz && {
-    x: timesXyz.x ?? 1,
-    y: timesXyz.y ?? 1,
+  const timesXy: Xy | undefined = itemTimesXyz && {
+    x: itemTimesXyz.x ?? 1,
+    y: itemTimesXyz.y ?? 1,
   };
 
   const renderingContainer = createSprite({
@@ -124,27 +125,12 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
     if (spriteOptions) {
       // TODO: isn't this a check just to keep ts happy?
       const times = isMultipliedItem(item) ? item.config.times : undefined;
-      // drop the z from the times - not relevant for shadow masks:
-      const completedTimesXy: Xy | undefined = times && {
-        x: times.x ?? 1,
-        y: times.y ?? 1,
-      };
 
-      const shadowMask = createSprite({
-        ...(typeof spriteOptions === "string" ?
-          { texture: spriteOptions }
-        : spriteOptions),
-        times: completedTimesXy,
-      });
-
-      let shadowMaskSprite: Sprite;
-      if (shadowMask instanceof Sprite) {
-        // simple case of using a sprite as the shadow mask:
-        shadowMaskSprite = shadowMask;
-      } else {
-        // times case where createSprite gave us a container of sprites:
-        shadowMaskSprite = renderContainerToSprite(pixiRenderer, shadowMask);
-      }
+      const shadowMaskSprite = createShadowCastOrMaskSprite(
+        pixiRenderer,
+        spriteOptions,
+        times,
+      );
 
       if (item.shadowMask.relativeTo === "top") {
         shadowMaskSprite.y -= item.aabb.z;
@@ -226,9 +212,11 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
 
     if (bins.create)
       for (const casterItem of bins.create) {
-        const newShadowSprite = createShadowCastFromItemSprite(
+        const newShadowSprite = createShadowCastOrMaskSprite(
           this.pixiRenderer,
-          casterItem,
+          casterItem.shadowCastTexture,
+          // TODO: this check is meaningless just to keep ts happy!
+          isMultipliedItem(casterItem) ? casterItem.config.times : undefined,
         );
         newShadowSprite.label = casterItem.id;
         //newShadowSprite.filters = [new BlurFilter()];
