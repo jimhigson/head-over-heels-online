@@ -1,23 +1,30 @@
 [
-  { "op": "replace", "path": "/items/lift@3,3,1/position/z", "value": 3 },
-  { "op": "replace", "path": "/items/lift@3,3,1/config/top", "value": 16 },
   {
     "op": "replace",
-    "path": "/items/block@3,0,0/config/style",
-    "value": "artificial"
+    "path": "/items/lift@3,3,1/position/z",
+    "value": 3
   },
   {
     "op": "replace",
-    "path": "/items/block@0,3,0/config/style",
-    "value": "artificial"
+    "path": "/items/lift@3,3,1/config/top",
+    "value": 16
   },
   {
     "op": "add",
     "path": "/items/extraRunway",
     "value": {
-      "config": { "style": "organic", "times": { "y": 8 } },
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 8
+        }
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 8, "z": 0 },
+      "position": {
+        "x": 3,
+        "y": 8,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -25,9 +32,19 @@
     "op": "add",
     "path": "/items/test",
     "value": {
-      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
+      "config": {
+        "style": "artificial",
+        "times": {
+          "x": 2,
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 0, "y": 14, "z": 0 },
+      "position": {
+        "x": 0,
+        "y": 14,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -35,9 +52,19 @@
     "op": "add",
     "path": "/items/test2",
     "value": {
-      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
+      "config": {
+        "style": "artificial",
+        "times": {
+          "x": 2,
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 6, "y": 14, "z": 0 },
+      "position": {
+        "x": 6,
+        "y": 14,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -45,9 +72,19 @@
     "op": "add",
     "path": "/items/extraStep",
     "value": {
-      "config": { "style": "organic", "times": { "x": 2, "z": 2 } },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2,
+          "z": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 15, "z": 1 },
+      "position": {
+        "x": 3,
+        "y": 15,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -55,9 +92,18 @@
     "op": "add",
     "path": "/items/extraStep2",
     "value": {
-      "config": { "style": "organic", "times": { "x": 2 } },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 14, "z": 1 },
+      "position": {
+        "x": 3,
+        "y": 14,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -65,9 +111,18 @@
     "op": "add",
     "path": "/items/extraBarrier",
     "value": {
-      "config": { "axis": "y", "times": { "y": 6 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 6
+        }
+      },
       "isExtra": true,
-      "position": { "x": 2.5, "y": 8, "z": 1 },
+      "position": {
+        "x": 2.5,
+        "y": 8,
+        "z": 1
+      },
       "type": "barrier"
     }
   },
@@ -75,9 +130,18 @@
     "op": "add",
     "path": "/items/extraBarrier2",
     "value": {
-      "config": { "axis": "y", "times": { "y": 6 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 6
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4.5, "y": 8, "z": 1 },
+      "position": {
+        "x": 4.5,
+        "y": 8,
+        "z": 1
+      },
       "type": "barrier"
     }
   },
@@ -85,9 +149,18 @@
     "op": "add",
     "path": "/items/extraBarrier3",
     "value": {
-      "config": { "axis": "y", "times": { "y": 2 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4.5, "y": 13, "z": 2 },
+      "position": {
+        "x": 4.5,
+        "y": 13,
+        "z": 2
+      },
       "type": "barrier"
     }
   },
@@ -95,9 +168,18 @@
     "op": "add",
     "path": "/items/extraBarrier4",
     "value": {
-      "config": { "axis": "y", "times": { "y": 2 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4.5, "y": 14, "z": 3 },
+      "position": {
+        "x": 4.5,
+        "y": 14,
+        "z": 3
+      },
       "type": "barrier"
     }
   },
@@ -105,9 +187,18 @@
     "op": "add",
     "path": "/items/extraBarrier5",
     "value": {
-      "config": { "axis": "y", "times": { "y": 2 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 2.5, "y": 13, "z": 2 },
+      "position": {
+        "x": 2.5,
+        "y": 13,
+        "z": 2
+      },
       "type": "barrier"
     }
   },
@@ -115,11 +206,27 @@
     "op": "add",
     "path": "/items/extraBarrier6",
     "value": {
-      "config": { "axis": "y", "times": { "y": 2 } },
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 2.5, "y": 14, "z": 3 },
+      "position": {
+        "x": 2.5,
+        "y": 14,
+        "z": 3
+      },
       "type": "barrier"
     }
   },
-  { "op": "add", "path": "/ceilingRelativePoint", "value": { "x": 4, "y": 4 } }
+  {
+    "op": "add",
+    "path": "/ceilingRelativePoint",
+    "value": {
+      "x": 4,
+      "y": 4
+    }
+  }
 ]

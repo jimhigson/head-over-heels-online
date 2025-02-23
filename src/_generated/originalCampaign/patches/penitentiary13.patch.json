@@ -1,5 +1,13 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@1,0,1/config/times"
+  },
   {
     "op": "add",
     "path": "/items/block@1,0,1/config/disappearing",
@@ -7,8 +15,19 @@
   },
   {
     "op": "add",
-    "path": "/items/block@2,0,1/config/disappearing",
-    "value": "onStand"
+    "path": "/items/secondOverToaster",
+    "value": {
+      "config": {
+        "style": "artificial",
+        "dissapearing": "onStand"
+      },
+      "position": {
+        "x": 2,
+        "y": 0,
+        "z": 1
+      },
+      "type": "block"
+    }
   },
   {
     "op": "add",
@@ -24,11 +43,21 @@
     "op": "add",
     "path": "/items/extra1",
     "value": {
-      "config": { "style": "artificial" },
+      "config": {
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 5, "y": 3, "z": 0 },
+      "position": {
+        "x": 5,
+        "y": 3,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/walls/left/2", "value": "skeleton" }
+  {
+    "op": "replace",
+    "path": "/walls/left/2",
+    "value": "skeleton"
+  }
 ]

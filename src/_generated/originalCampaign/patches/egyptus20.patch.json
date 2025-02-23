@@ -1,22 +1,68 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,3,0/config/times/y",
+    "value": "2"
+  },
   {
     "op": "add",
-    "path": "/items/block@7,5,0/config/disappearing",
-    "value": "onStand"
+    "path": "/items/disappearingBlock",
+    "value": {
+      "config": {
+        "style": "organic",
+        "disappearing": "onStand"
+      },
+      "position": {
+        "x": 7,
+        "y": 5,
+        "z": 0
+      },
+      "type": "block"
+    }
   },
-  { "op": "replace", "path": "/items/block@5,7,0/position/y", "value": 9 },
-  { "op": "replace", "path": "/items/block@7,7,0/position/y", "value": 9 },
+  {
+    "op": "replace",
+    "path": "/items/block@5,7,0/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,7,0/position/y",
+    "value": 9
+  },
   {
     "op": "add",
     "path": "/items/newBlockForLongerRoom",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 7, "y": 7, "z": 0 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 7,
+        "y": 7,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "add", "path": "/walls/left/8", "value": "sarcophagus" },
-  { "op": "add", "path": "/walls/left/9", "value": "hieroglyphics" },
-  { "op": "replace", "path": "/size/y", "value": 10 }
+  {
+    "op": "add",
+    "path": "/walls/left/8",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/walls/left/9",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/size/y",
+    "value": 10
+  }
 ]
