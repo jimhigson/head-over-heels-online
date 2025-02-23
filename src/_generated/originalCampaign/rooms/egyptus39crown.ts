@@ -8,53 +8,13 @@ export const room = inferRoomJson({
   id: "egyptus39crown",
   items: {
     "block@3,3,0": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { x: 2, z: 3 } },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    "block@3,3,1": {
-      config: { style: "artificial" },
-      position: { x: 3, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@3,3,2": {
-      config: { style: "artificial" },
-      position: { x: 3, y: 3, z: 2 },
-      type: "block",
-    },
-    "block@4,3,0": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@4,3,1": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@4,3,2": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 2 },
-      type: "block",
-    },
     "block@4,3,3": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { z: 4 } },
       position: { x: 4, y: 3, z: 3 },
-      type: "block",
-    },
-    "block@4,3,4": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@4,3,5": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 5 },
-      type: "block",
-    },
-    "block@4,3,6": {
-      config: { style: "artificial" },
-      position: { x: 4, y: 3, z: 6 },
       type: "block",
     },
     "door@0,3,0": {

@@ -8,78 +8,13 @@ export const room = inferRoomJson({
   id: "bookworld14",
   items: {
     "barrier@6,3,0": {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 4, z: 3 } },
       position: { x: 6, y: 3, z: 0 },
       type: "barrier",
     },
-    "barrier@6,3,1": {
-      config: { axis: "y" },
-      position: { x: 6, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@6,3,2": {
-      config: { axis: "y" },
-      position: { x: 6, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@6,4,0": {
-      config: { axis: "y" },
-      position: { x: 6, y: 4, z: 0 },
-      type: "barrier",
-    },
-    "barrier@6,4,1": {
-      config: { axis: "y" },
-      position: { x: 6, y: 4, z: 1 },
-      type: "barrier",
-    },
-    "barrier@6,4,2": {
-      config: { axis: "y" },
-      position: { x: 6, y: 4, z: 2 },
-      type: "barrier",
-    },
-    "barrier@6,5,0": {
-      config: { axis: "y" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "barrier",
-    },
-    "barrier@6,5,1": {
-      config: { axis: "y" },
-      position: { x: 6, y: 5, z: 1 },
-      type: "barrier",
-    },
-    "barrier@6,5,2": {
-      config: { axis: "y" },
-      position: { x: 6, y: 5, z: 2 },
-      type: "barrier",
-    },
-    "barrier@6,6,0": {
-      config: { axis: "y" },
-      position: { x: 6, y: 6, z: 0 },
-      type: "barrier",
-    },
-    "barrier@6,6,1": {
-      config: { axis: "y" },
-      position: { x: 6, y: 6, z: 1 },
-      type: "barrier",
-    },
-    "barrier@6,6,2": {
-      config: { axis: "y" },
-      position: { x: 6, y: 6, z: 2 },
-      type: "barrier",
-    },
     "barrier@7,2,0": {
-      config: { axis: "x" },
+      config: { axis: "x", times: { z: 3 } },
       position: { x: 7, y: 2, z: 0 },
-      type: "barrier",
-    },
-    "barrier@7,2,1": {
-      config: { axis: "x" },
-      position: { x: 7, y: 2, z: 1 },
-      type: "barrier",
-    },
-    "barrier@7,2,2": {
-      config: { axis: "x" },
-      position: { x: 7, y: 2, z: 2 },
       type: "barrier",
     },
     "deadlyBlock@3,4,0": {

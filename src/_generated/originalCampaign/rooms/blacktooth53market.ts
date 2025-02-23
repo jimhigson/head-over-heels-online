@@ -18,13 +18,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@5,3,0": {
-      config: { style: "spikes" },
+      config: { style: "spikes", times: { y: 2 } },
       position: { x: 5, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0": {
-      config: { style: "spikes" },
-      position: { x: 5, y: 4, z: 0 },
       type: "deadlyBlock",
     },
     "door@2,0,0": {

@@ -22,11 +22,6 @@ export const room = inferRoomJson({
       position: { x: 1, y: 3, z: 4 },
       type: "block",
     },
-    "block@2,0,1": {
-      config: { disappearing: "onStand", style: "artificial" },
-      position: { x: 2, y: 0, z: 1 },
-      type: "block",
-    },
     "block@2,3,6": {
       config: { style: "artificial" },
       position: { x: 2, y: 3, z: 6 },
@@ -53,13 +48,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "deadlyBlock@1,0,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { x: 2 } },
       position: { x: 1, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,0,0": {
-      config: { style: "toaster" },
-      position: { x: 2, y: 0, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@4,3,0": {
@@ -76,6 +66,11 @@ export const room = inferRoomJson({
       config: { style: "artificial" },
       isExtra: true,
       position: { x: 5, y: 3, z: 0 },
+      type: "block",
+    },
+    secondOverToaster: {
+      config: { disappearing: "onStand", style: "artificial" },
+      position: { x: 2, y: 0, z: 1 },
       type: "block",
     },
     "spring@2,3,7": {

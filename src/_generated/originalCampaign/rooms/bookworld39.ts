@@ -8,48 +8,13 @@ export const room = inferRoomJson({
   id: "bookworld39",
   items: {
     "conveyor@0,0,0": {
-      config: { direction: "left" },
+      config: { direction: "left", times: { x: 7 } },
       position: { x: 0, y: 0, z: 0 },
       type: "conveyor",
     },
-    "conveyor@1,0,0": {
-      config: { direction: "left" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@2,0,0": {
-      config: { direction: "left" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@3,0,0": {
-      config: { direction: "left" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@4,0,0": {
-      config: { direction: "left" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@5,0,0": {
-      config: { direction: "left" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@6,0,0": {
-      config: { direction: "left" },
-      position: { x: 6, y: 0, z: 0 },
-      type: "conveyor",
-    },
     "conveyor@7,0,0": {
-      config: { direction: "away" },
+      config: { direction: "away", times: { y: 2 } },
       position: { x: 7, y: 0, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@7,1,0": {
-      config: { direction: "away" },
-      position: { x: 7, y: 1, z: 0 },
       type: "conveyor",
     },
     scroll: {

@@ -8,43 +8,13 @@ export const room = inferRoomJson({
   id: "moonbase35",
   items: {
     "deadlyBlock@0,1,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 4 } },
       position: { x: 0, y: 1, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@0,2,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,3,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,4,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@5,1,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 4 } },
       position: { x: 5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,2,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,3,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 4, z: 0 },
       type: "deadlyBlock",
     },
     "door@2,0,0": {

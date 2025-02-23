@@ -31,7 +31,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@3,7,3": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 7, z: 3 },
       type: "block",
     },
@@ -51,11 +51,6 @@ export const room = inferRoomJson({
       config: { style: "tower" },
       isExtra: true,
       position: { x: 4, y: 7, z: 2 },
-      type: "block",
-    },
-    "block@4,7,3": {
-      config: { style: "organic" },
-      position: { x: 4, y: 7, z: 3 },
       type: "block",
     },
     "block@7,2,0": {
@@ -81,33 +76,18 @@ export const room = inferRoomJson({
       type: "block",
     },
     "deadlyBlock@1,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { z: 2 } },
       position: { x: 1, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,0,1": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 0, z: 1 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@1,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { z: 2 } },
       position: { x: 1, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,2,1": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 2, z: 1 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@2,1,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { z: 2 } },
       position: { x: 2, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,1,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 1, z: 1 },
       type: "deadlyBlock",
     },
     "door@3,8,5": {

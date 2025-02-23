@@ -8,27 +8,12 @@ export const room = inferRoomJson({
   id: "moonbase33triple",
   items: {
     "deadlyBlock@0,10,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 4 } },
       position: { x: 0, y: 10, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@0,11,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,12,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 12, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,13,0": {
-      config: { style: "toaster" },
-      position: { x: 0, y: 13, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@11,1,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 5 } },
       position: { x: 11, y: 1, z: 0 },
       type: "deadlyBlock",
     },
@@ -37,89 +22,19 @@ export const room = inferRoomJson({
       position: { x: 11, y: 14, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@11,2,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@11,3,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@11,4,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@11,5,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@11,9,0": {
       config: { style: "toaster" },
       position: { x: 11, y: 9, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@5,10,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { x: 2, y: 4 } },
       position: { x: 5, y: 10, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@5,11,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,12,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 12, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,13,0": {
-      config: { style: "toaster" },
-      position: { x: 5, y: 13, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,10,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,11,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,12,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 12, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,13,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 13, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@6,2,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 4 } },
       position: { x: 6, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,3,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,4,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,0": {
-      config: { style: "toaster" },
-      position: { x: 6, y: 5, z: 0 },
       type: "deadlyBlock",
     },
     "door@12,11,0": {

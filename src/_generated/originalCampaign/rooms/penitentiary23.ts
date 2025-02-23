@@ -8,78 +8,18 @@ export const room = inferRoomJson({
   id: "penitentiary23",
   items: {
     "block@0,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
     "block@0,1,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 7 } },
       position: { x: 0, y: 1, z: 0 },
       type: "block",
     },
-    "block@0,2,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@0,3,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@0,4,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@0,5,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@0,6,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 6, z: 0 },
-      type: "block",
-    },
-    "block@0,7,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@1,0,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "block",
-    },
     "block@1,7,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 7 } },
       position: { x: 1, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@2,0,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@2,7,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@3,0,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@3,7,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@4,0,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 0, z: 0 },
       type: "block",
     },
     "block@4,4,0": {
@@ -97,69 +37,9 @@ export const room = inferRoomJson({
       position: { x: 4, y: 6, z: 0 },
       type: "block",
     },
-    "block@4,7,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@5,0,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@5,7,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@6,0,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@6,7,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@7,0,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 0, z: 0 },
-      type: "block",
-    },
     "block@7,1,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 6 } },
       position: { x: 7, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@7,2,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@7,3,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@7,4,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@7,5,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@7,6,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 6, z: 0 },
-      type: "block",
-    },
-    "block@7,7,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
     "lift@4,3,0": {

@@ -8,48 +8,13 @@ export const room = inferRoomJson({
   id: "egyptus9fish",
   items: {
     "block@2,0,4": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 2, y: 0, z: 4 },
       type: "block",
     },
-    "block@3,0,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 4 },
-      type: "block",
-    },
     "block@3,1,4": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 7 } },
       position: { x: 3, y: 1, z: 4 },
-      type: "block",
-    },
-    "block@3,2,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 2, z: 4 },
-      type: "block",
-    },
-    "block@3,3,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 3, z: 4 },
-      type: "block",
-    },
-    "block@3,4,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 4, z: 4 },
-      type: "block",
-    },
-    "block@3,5,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 5, z: 4 },
-      type: "block",
-    },
-    "block@3,6,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 6, z: 4 },
-      type: "block",
-    },
-    "block@3,7,4": {
-      config: { style: "organic" },
-      position: { x: 3, y: 7, z: 4 },
       type: "block",
     },
     "door@1,0,0": {

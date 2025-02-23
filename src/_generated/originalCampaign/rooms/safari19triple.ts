@@ -8,108 +8,18 @@ export const room = inferRoomJson({
   id: "safari19triple",
   items: {
     "barrier@13,0,0": {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 4, z: 3 } },
       position: { x: 13, y: 0, z: 0 },
       type: "barrier",
     },
-    "barrier@13,0,1": {
-      config: { axis: "y" },
-      position: { x: 13, y: 0, z: 1 },
-      type: "barrier",
-    },
-    "barrier@13,0,2": {
-      config: { axis: "y" },
-      position: { x: 13, y: 0, z: 2 },
-      type: "barrier",
-    },
-    "barrier@13,1,0": {
-      config: { axis: "y" },
-      position: { x: 13, y: 1, z: 0 },
-      type: "barrier",
-    },
-    "barrier@13,1,1": {
-      config: { axis: "y" },
-      position: { x: 13, y: 1, z: 1 },
-      type: "barrier",
-    },
-    "barrier@13,1,2": {
-      config: { axis: "y" },
-      position: { x: 13, y: 1, z: 2 },
-      type: "barrier",
-    },
-    "barrier@13,2,0": {
-      config: { axis: "y" },
-      position: { x: 13, y: 2, z: 0 },
-      type: "barrier",
-    },
-    "barrier@13,2,1": {
-      config: { axis: "y" },
-      position: { x: 13, y: 2, z: 1 },
-      type: "barrier",
-    },
-    "barrier@13,2,2": {
-      config: { axis: "y" },
-      position: { x: 13, y: 2, z: 2 },
-      type: "barrier",
-    },
-    "barrier@13,3,0": {
-      config: { axis: "y" },
-      position: { x: 13, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@13,3,1": {
-      config: { axis: "y" },
-      position: { x: 13, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@13,3,2": {
-      config: { axis: "y" },
-      position: { x: 13, y: 3, z: 2 },
-      type: "barrier",
-    },
     "block@0,9,0": {
-      config: { style: "tower" },
+      config: { style: "tower", times: { z: 6 } },
       position: { x: 0, y: 9, z: 0 },
       type: "block",
     },
-    "block@0,9,1": {
-      config: { style: "tower" },
-      position: { x: 0, y: 9, z: 1 },
-      type: "block",
-    },
-    "block@0,9,2": {
-      config: { style: "tower" },
-      position: { x: 0, y: 9, z: 2 },
-      type: "block",
-    },
-    "block@0,9,3": {
-      config: { style: "tower" },
-      position: { x: 0, y: 9, z: 3 },
-      type: "block",
-    },
-    "block@0,9,4": {
-      config: { style: "tower" },
-      position: { x: 0, y: 9, z: 4 },
-      type: "block",
-    },
-    "block@0,9,5": {
-      config: { style: "tower" },
-      position: { x: 0, y: 9, z: 5 },
-      type: "block",
-    },
     "block@6,6,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 3 } },
       position: { x: 6, y: 6, z: 0 },
-      type: "block",
-    },
-    "block@6,7,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@6,8,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 8, z: 0 },
       type: "block",
     },
     "door@16,1,0": {

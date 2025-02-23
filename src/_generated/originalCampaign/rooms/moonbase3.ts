@@ -8,18 +8,13 @@ export const room = inferRoomJson({
   id: "moonbase3",
   items: {
     "block@1,1,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 3 } },
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
     "block@2,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 3 } },
       position: { x: 2, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@2,1,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 1, z: 0 },
       type: "block",
     },
     "block@2,2,0": {
@@ -30,21 +25,6 @@ export const room = inferRoomJson({
     "block@2,4,0": {
       config: { style: "organic" },
       position: { x: 2, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@3,0,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@3,1,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@4,0,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 0, z: 0 },
       type: "block",
     },
     "charles@7,7,1": {
@@ -58,13 +38,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@1,4,1": {
-      config: { style: "spikes" },
+      config: { style: "spikes", times: { x: 2 } },
       position: { x: 1, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,4,1": {
-      config: { style: "spikes" },
-      position: { x: 2, y: 4, z: 1 },
       type: "deadlyBlock",
     },
     "deadlyBlock@7,7,0": {

@@ -8,23 +8,13 @@ export const room = inferRoomJson({
   id: "safari2",
   items: {
     "block@3,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "block@3,7,1": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 7, z: 1 },
-      type: "block",
-    },
-    "block@4,0,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@4,7,1": {
-      config: { style: "organic" },
-      position: { x: 4, y: 7, z: 1 },
       type: "block",
     },
     "block@7,4,0": {
@@ -33,13 +23,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "deadlyBlock@0,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { z: 2 } },
       position: { x: 0, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,0,1": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 0, z: 1 },
       type: "deadlyBlock",
     },
     "deadlyBlock@0,1,1": {
@@ -63,18 +48,13 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@6,0,1": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 6, y: 0, z: 1 },
       type: "deadlyBlock",
     },
     "deadlyBlock@7,0,0": {
       config: { style: "volcano" },
       position: { x: 7, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,0,1": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 0, z: 1 },
       type: "deadlyBlock",
     },
     "door@3,0,1": {

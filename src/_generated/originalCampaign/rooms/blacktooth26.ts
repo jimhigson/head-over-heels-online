@@ -8,38 +8,13 @@ export const room = inferRoomJson({
   id: "blacktooth26",
   items: {
     "conveyor@2,5,0": {
-      config: { direction: "right" },
+      config: { direction: "right", times: { x: 4 } },
       position: { x: 2, y: 5, z: 0 },
       type: "conveyor",
     },
-    "conveyor@3,5,0": {
-      config: { direction: "right" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@4,5,0": {
-      config: { direction: "right" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "conveyor",
-    },
     "conveyor@5,2,0": {
-      config: { direction: "away" },
+      config: { direction: "away", times: { y: 3 } },
       position: { x: 5, y: 2, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@5,3,0": {
-      config: { direction: "away" },
-      position: { x: 5, y: 3, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@5,4,0": {
-      config: { direction: "away" },
-      position: { x: 5, y: 4, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@5,5,0": {
-      config: { direction: "right" },
-      position: { x: 5, y: 5, z: 0 },
       type: "conveyor",
     },
     "door@2,6,2": {

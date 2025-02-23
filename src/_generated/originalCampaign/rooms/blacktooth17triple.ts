@@ -8,123 +8,63 @@ export const room = inferRoomJson({
   id: "blacktooth17triple",
   items: {
     "deadlyBlock@1,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 1, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,3,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@1,8,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 1, y: 8, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,9,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@10,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 10, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@10,3,0": {
-      config: { style: "volcano" },
-      position: { x: 10, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@2,1,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 2, y: 1, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@2,10,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 2, y: 10, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@2,4,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 2, y: 4, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@2,7,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 2, y: 7, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,1,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,10,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,4,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,7,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@4,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 4, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,3,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@4,8,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 4, y: 8, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,9,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@7,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 7, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,3,0": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@8,1,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 8, y: 1, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@8,4,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 8, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@9,1,0": {
-      config: { style: "volcano" },
-      position: { x: 9, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@9,4,0": {
-      config: { style: "volcano" },
-      position: { x: 9, y: 4, z: 0 },
       type: "deadlyBlock",
     },
     "door@0,2,0": {

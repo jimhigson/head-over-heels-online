@@ -17,41 +17,6 @@ export const room = inferRoomJson({
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
-    "deadlyBlock@1,5,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,5,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,5,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,5,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,5,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,5,0": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "door@0,3,1": {
       config: { direction: "right", toRoom: "safari36" },
       position: { x: 0, y: 3, z: 1 },

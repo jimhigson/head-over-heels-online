@@ -8,18 +8,13 @@ export const room = inferRoomJson({
   id: "blacktooth31",
   items: {
     "block@5,2,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 5, y: 2, z: 0 },
       type: "block",
     },
     "block@5,2,1": {
       config: { style: "organic" },
       position: { x: 5, y: 2, z: 1 },
-      type: "block",
-    },
-    "block@5,3,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
     "deadlyBlock@0,1,0": {
@@ -53,13 +48,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@1,5,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 1, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,6,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 6, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@4,0,0": {
@@ -73,13 +63,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@4,5,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 4, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,6,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 6, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@5,1,0": {

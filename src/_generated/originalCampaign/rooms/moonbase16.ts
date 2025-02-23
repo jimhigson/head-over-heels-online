@@ -14,63 +14,8 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     "deadlyBlock@2,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 6, z: 2 } },
       position: { x: 2, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,0,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 0, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,1,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,1,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 1, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,2,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,2,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 2, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,3,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,3,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 3, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,4,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,4,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,5,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,5,1": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 5, z: 1 },
       type: "deadlyBlock",
     },
     "door@0,2,1": {

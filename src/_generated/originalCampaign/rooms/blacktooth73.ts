@@ -8,38 +8,18 @@ export const room = inferRoomJson({
   id: "blacktooth73",
   items: {
     "block@0,2,3": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 2, z: 3 },
       type: "block",
     },
-    "block@0,3,3": {
-      config: { style: "organic" },
-      position: { x: 0, y: 3, z: 3 },
-      type: "block",
-    },
     "block@1,5,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 7 } },
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    "block@2,5,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@3,5,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "block",
-    },
     "block@3,5,1": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { z: 2 } },
       position: { x: 3, y: 5, z: 1 },
-      type: "block",
-    },
-    "block@3,5,2": {
-      config: { style: "organic" },
-      position: { x: 3, y: 5, z: 2 },
       type: "block",
     },
     "block@3,5,4": {
@@ -47,44 +27,14 @@ export const room = inferRoomJson({
       position: { x: 3, y: 5, z: 4 },
       type: "block",
     },
-    "block@4,5,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@5,5,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@6,5,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "block",
-    },
     "block@7,2,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 2, z: 0 },
       type: "block",
     },
-    "block@7,3,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@7,5,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 5, z: 0 },
-      type: "block",
-    },
     "deadlyBlock@5,5,2": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 5, y: 5, z: 2 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,2": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 5, z: 2 },
       type: "deadlyBlock",
     },
     "deadlyBlock@7,5,3": {
