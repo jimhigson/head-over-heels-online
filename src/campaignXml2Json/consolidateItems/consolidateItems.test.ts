@@ -36,6 +36,135 @@ test("can consolidate two blocks in y at the origin", () => {
   `);
 });
 
+test("does not consolidate disappearing blocks", () => {
+  // disappearing blocks need to disappear one by one, not as a multiple-block block,
+  //so they can't be consolidated
+
+  const items: JsonItemUnion[] = [
+    {
+      type: "block",
+      config: { style: "organic", disappearing: "onStand" },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    {
+      type: "block",
+      config: { style: "organic", disappearing: "onStand" },
+      position: { x: 0, y: 1, z: 0 },
+    },
+  ];
+
+  expect(consolidateItems(items)).toMatchInlineSnapshot(`
+    [
+      {
+        "config": {
+          "disappearing": "onStand",
+          "style": "organic",
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+        },
+        "type": "block",
+      },
+      {
+        "config": {
+          "disappearing": "onStand",
+          "style": "organic",
+        },
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
+        "type": "block",
+      },
+    ]
+  `);
+});
+
+test("consolidates barriers", () => {
+  // disappearing blocks need to disappear one by one, not as a multiple-block block,
+  //so they can't be consolidated
+
+  const items: JsonItemUnion[] = [
+    {
+      type: "barrier",
+      config: { axis: "y" },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    {
+      type: "barrier",
+      config: { axis: "y" },
+      position: { x: 0, y: 1, z: 0 },
+    },
+  ];
+
+  expect(consolidateItems(items)).toMatchInlineSnapshot(`
+    [
+      {
+        "config": {
+          "axis": "y",
+          "times": {
+            "y": 2,
+          },
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+        },
+        "type": "barrier",
+      },
+    ]
+  `);
+});
+test("does not consolidate disappearing barriers", () => {
+  // disappearing blocks need to disappear one by one, not as a multiple-block block,
+  //so they can't be consolidated
+
+  const items: JsonItemUnion[] = [
+    {
+      type: "barrier",
+      config: { axis: "y", disappearing: "onTouch" },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    {
+      type: "barrier",
+      config: { axis: "y" },
+      position: { x: 0, y: 1, z: 0 },
+    },
+  ];
+
+  expect(consolidateItems(items)).toMatchInlineSnapshot(`
+    [
+      {
+        "config": {
+          "axis": "y",
+        },
+        "position": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
+        "type": "barrier",
+      },
+      {
+        "config": {
+          "axis": "y",
+          "disappearing": "onTouch",
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+        },
+        "type": "barrier",
+      },
+    ]
+  `);
+});
+
 test("does not consolidate two blocks with different config", () => {
   const items: JsonItemUnion[] = [
     {

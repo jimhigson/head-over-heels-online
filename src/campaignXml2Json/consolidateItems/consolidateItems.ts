@@ -21,8 +21,10 @@ export type ConsolidatableJsonItem = Extract<
 const isConsolidatable = (
   jsonItem: JsonItemUnion,
 ): jsonItem is ConsolidatableJsonItem => {
-  return (consolidatableJsonItemTypes as JsonItemType[]).includes(
-    jsonItem.type,
+  return (
+    (consolidatableJsonItemTypes as JsonItemType[]).includes(jsonItem.type) &&
+    !(jsonItem.type === "block" && jsonItem.config.disappearing) &&
+    !(jsonItem.type === "barrier" && jsonItem.config.disappearing)
   );
 };
 

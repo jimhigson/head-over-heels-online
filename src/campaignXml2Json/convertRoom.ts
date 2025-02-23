@@ -15,7 +15,9 @@ import {
 } from "./readToJson";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
-export const convertRoom = async (xmlRoomName: string): AnyRoomJson => {
+export const convertRoom = async (
+  xmlRoomName: string,
+): Promise<AnyRoomJson> => {
   const roomXmlJson = await readRoomToXmlJson(xmlRoomName);
   const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomXmlJson;
 
