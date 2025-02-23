@@ -207,7 +207,7 @@ export const itemAppearances: {
 
   conveyor({
     item: {
-      config: { direction },
+      config: { direction, times },
       state: { stoodOnBy },
     },
     currentlyRenderedProps,
@@ -231,9 +231,11 @@ export const itemAppearances: {
           {
             animationId: `conveyor.${axis}`,
             reverse: direction === "towards" || direction === "right",
+            times,
           }
         : {
             texture: `conveyor.${axis}.6`,
+            times,
           },
       ),
     );
