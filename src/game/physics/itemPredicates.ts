@@ -1,3 +1,4 @@
+import type { ConsolidatableJsonItemType } from "../../campaignXml2Json/consolidateItems/consolidateItems";
 import type {
   ItemInPlayType,
   ItemInPlay,
@@ -7,6 +8,7 @@ import type {
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
+import type { Xyz } from "../../utils/vectors/vectors";
 
 export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
   [TI in T]: ItemInPlay<TI, SceneryName, RoomId>;
@@ -159,6 +161,16 @@ export const isDeadly = <RoomId extends string>(
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.type === "deadly");
 
+export const isMultipliedItem = <RoomId extends string>(
+  item: UnknownItemInPlay<RoomId>,
+): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
+  type ItemConfigMaybeWithMultiplication = {
+    times?: undefined | Partial<Xyz>;
+  };
+
+  return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;
+};
+
 export const isPortal = isItemType("portal");
 export const isTeleporter = isItemType("teleporter");
 export const isHeels = isItemType("heels");
@@ -174,4 +186,3 @@ export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movableBlock");
-export const isMultipliable = isItemType("block", "deadlyBlock", "barrier");

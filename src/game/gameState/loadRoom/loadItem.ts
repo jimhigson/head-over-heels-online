@@ -11,10 +11,15 @@ import type {
   ShadowMaskOptions,
 } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import type { ScrollsRead } from "../../../store/gameMenusSlice";
+
+type ItemConfigMaybeWithMultiplication = {
+  times?: undefined | Partial<Xyz>;
+};
 
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
@@ -50,11 +55,14 @@ export function* loadItemFromJson<RoomId extends string>(
       const boundingBoxes = boundingBoxForItem(jsonItem);
 
       const boundingBoxesMultiplied: typeof boundingBoxes =
-        jsonItem.type === "barrier" || jsonItem.type === "block" ?
+        (
+          (jsonItem.config as ItemConfigMaybeWithMultiplication).times !==
+          undefined
+        ) ?
           {
             aabb: multiplyBoundingBox(
               boundingBoxes.aabb,
-              jsonItem.config.times,
+              (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
             ),
             // multiplied items can't have a separate render bb:
             renderAabb: undefined,
@@ -82,9 +90,7 @@ export function* loadItemFromJson<RoomId extends string>(
   }
 }
 
-const shadowMask = (
-  jsonItem: JsonItemUnion,
-): ShadowMaskOptions | undefined => {
+const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
   // charles doesn't work because can't (yet) have direction-specific (changing) maps
   switch (jsonItem.type) {
     case "lift":

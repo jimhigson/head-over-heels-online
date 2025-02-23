@@ -1,7 +1,7 @@
 import type { FreeItem } from "../game/physics/itemPredicates";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
-import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
+import type { Aabb, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName } from "./modelTypes";
@@ -35,9 +35,6 @@ type ItemInPlayConfigMap<RoomId extends string> = {
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
-  };
-  conveyor: {
-    direction: DirectionXy4;
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
