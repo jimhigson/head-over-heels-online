@@ -39,10 +39,8 @@ function* doorLegsGenerator(
     if (inHiddenWall) {
       if (height !== 0) {
         //draw the 'floating' (no legs) threshold:
-        const pivotX = axis === "x" ? 18 : 8;
 
         const sprite = createSprite({
-          pivot: { x: pivotX, y: 12 },
           texture: `generic.door.floatingThreshold.${axis}`,
           ...addXy(offset, {
             y: -blockSizePx.h * height,
