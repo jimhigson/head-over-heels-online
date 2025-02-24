@@ -8,13 +8,8 @@ export const room = inferRoomJson({
   id: "blacktooth63",
   items: {
     "block@6,0,3": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { y: 2 } },
       position: { x: 6, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@6,1,3": {
-      config: { style: "artificial" },
-      position: { x: 6, y: 1, z: 3 },
       type: "block",
     },
     "block@7,0,3": {
@@ -38,33 +33,18 @@ export const room = inferRoomJson({
       type: "door",
     },
     "hushPuppy@3,0,0": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@3,1,0": {
-      config: {},
-      position: { x: 3, y: 1, z: 0 },
-      type: "hushPuppy",
-    },
     "hushPuppy@4,0,1": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 4, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@4,1,1": {
-      config: {},
-      position: { x: 4, y: 1, z: 1 },
-      type: "hushPuppy",
-    },
     "hushPuppy@5,0,2": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 5, y: 0, z: 2 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@5,1,2": {
-      config: {},
-      position: { x: 5, y: 1, z: 2 },
       type: "hushPuppy",
     },
     "monster@4,1,0": {

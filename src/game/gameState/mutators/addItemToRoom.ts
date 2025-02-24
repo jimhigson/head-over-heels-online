@@ -1,10 +1,10 @@
 import { first } from "iter-tools";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type {
   JsonItemType,
   JsonItemConfig,
   JsonItem,
-  UnknownJsonItem,
+  JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
@@ -41,7 +41,7 @@ export const addItemFromJsonToRoom = <
   const item = first(
     loadItemFromJson(
       itemId,
-      itemJson as UnknownJsonItem<RoomId>,
+      itemJson as JsonItemUnion<RoomId>,
       gameState.pickupsCollected[room.id],
     ),
   );
@@ -59,7 +59,7 @@ export const addItemToRoom = <RoomId extends string>({
   item,
 }: {
   room: RoomState<SceneryName, RoomId>;
-  item: UnknownItemInPlay<RoomId>;
+  item: UnionOfAllItemInPlayTypes<RoomId>;
 }) => {
   room.items[item.id] = item;
   return item;

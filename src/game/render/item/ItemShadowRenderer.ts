@@ -1,33 +1,84 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
-import {
-  AlphaFilter,
-  Container,
-  Graphics,
-  RenderTexture,
-  Sprite,
-} from "pixi.js";
+import { AlphaFilter, Container, RenderTexture, Sprite } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
+import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type { Collideable } from "../../collision/aabbCollision";
 import { collision1to1 } from "../../collision/aabbCollision";
 import { concat, objectEntries, objectValues } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { iterate } from "../../../utils/iterate";
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import { subXy } from "../../../utils/vectors/vectors";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
-import { isMultipliable } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../../sprites/spritePivots";
+import type { ConsolidatableConfig } from "../../../model/json/ItemConfigMap";
 
 type Cast = {
   /* the sprite of the shadow */
   sprite: Container;
   /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
   renderedOnProgression: number;
+};
+
+const renderContainerToSprite = (
+  pixiRenderer: PixiRenderer,
+  container: Container,
+): Sprite => {
+  // the shadowmask is a container - this is the case for 'times'
+  const localBounds = container.getLocalBounds();
+
+  // general containers with multiple sprites can't be used as shadow masks,
+  // so we need to render the shadow mask to a sprite:
+  const renderTexture = RenderTexture.create({
+    width: localBounds.maxX - localBounds.minX,
+    height: localBounds.maxY - localBounds.minY,
+    // TODO: resolution (reduce size of texture)
+  });
+
+  // displace container contents to the origin of the sprite:
+  container.x -= localBounds.minX;
+  container.y -= localBounds.minY;
+  pixiRenderer.render({ container, target: renderTexture });
+
+  return new Sprite({
+    texture: renderTexture,
+    label: "shadowMaskSprite (of renderTexture)",
+    // un-displace to the origin of the sprite so it works the same as the container
+    // we're rendering from:
+    pivot: { x: -localBounds.minX, y: -localBounds.minY },
+  });
+};
+
+const renderMultipliedXy = (
+  pixiRenderer: PixiRenderer,
+  createSpriteOptions: CreateSpriteOptions,
+  timesXyz: Partial<Xyz> | undefined,
+): Sprite => {
+  const timesXy: Xy | undefined = timesXyz && {
+    x: timesXyz.x ?? 1,
+    y: timesXyz.y ?? 1,
+  };
+
+  const renderingContainer = createSprite({
+    ...(typeof createSpriteOptions === "string" ?
+      { texture: createSpriteOptions }
+    : createSpriteOptions),
+    times: timesXy,
+  });
+
+  if (renderingContainer instanceof Sprite) {
+    // simple case where we got a sprite:
+    return renderingContainer;
+  } else {
+    // times case where createSprite gave us a container of sprites:
+    return renderContainerToSprite(pixiRenderer, renderingContainer);
+  }
 };
 
 export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
@@ -48,7 +99,10 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
 
   constructor(
     /** the item currently being rendered for = the one that the shadow is cast on  */
-    private item: SetRequired<UnknownItemInPlay<RoomId, ItemId>, "shadowMask">,
+    private item: SetRequired<
+      UnionOfAllItemInPlayTypes<RoomId, ItemId>,
+      "shadowMask"
+    >,
     private room: RoomState<SceneryName, RoomId, ItemId>,
     private pixiRenderer: PixiRenderer,
   ) {
@@ -70,53 +124,19 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
       shadowMask: { spriteOptions },
     } = item;
     if (spriteOptions) {
-      const times = isMultipliable(item) ? item.config.times : undefined;
+      const { times } = item.config as ConsolidatableConfig;
 
-      const completedTimesXy = times && {
-        x: times.x ?? 1,
-        y: times.y ?? 1,
-      };
-      const shadowMask = createSprite({
-        ...(typeof spriteOptions === "string" ?
-          { texture: spriteOptions }
-        : spriteOptions),
-        times: completedTimesXy,
-      });
-
-      let shadowMaskSprite: Sprite;
-      if (shadowMask instanceof Sprite) {
-        // simple case of using a sprite as the shadow mask:
-        shadowMaskSprite = shadowMask;
-      } else {
-        // the shadowmask is a container - this is the case for 'times'
-        const localBounds = shadowMask.getLocalBounds();
-
-        // general containers with multiple sprites can't be used as shadow masks,
-        // so we need to render the shadow mask to a sprite:
-        const renderTexture = RenderTexture.create({
-          width: localBounds.maxX - localBounds.minX,
-          height: localBounds.maxY - localBounds.minY,
-          // TODO: resolution (reduce size of texture)
-        });
-
-        // displace container contents to the origin of the sprite:
-        shadowMask.x -= localBounds.minX;
-        shadowMask.y -= localBounds.minY;
-        pixiRenderer.render({ container: shadowMask, target: renderTexture });
-
-        shadowMaskSprite = new Sprite({
-          texture: renderTexture,
-          label: "shadowMaskSprite (of renderTexture)",
-          // un-displace to the origin of the sprite:
-          x: localBounds.minX,
-          y: localBounds.minY,
-        });
-      }
+      const shadowMaskSprite = renderMultipliedXy(
+        pixiRenderer,
+        spriteOptions,
+        times,
+      );
 
       if (item.shadowMask.relativeTo === "top") {
         shadowMaskSprite.y -= item.aabb.z;
       }
       if (times) {
+        // move the shadow mast up if the item is multiplied in z:
         shadowMaskSprite.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
       }
 
@@ -127,11 +147,11 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
     }
 
     this.#container.addChild(this.#shadowsContainer);
-    this.#container.addChild(new Graphics().circle(0, 0, 2).fill(0xff0000));
+    //this.#container.addChild(new Graphics().circle(0, 0, 2).fill(0xff0000));
   }
 
   destroy() {
-    this.#container.destroy({ children: true });
+    this.#container.destroy(true);
   }
   /**
    * @returns true iff the item needs z-order resorting for the room
@@ -190,16 +210,23 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
       this.#casts[casterItem.id].renderedOnProgression = progression;
     }
 
-    for (const casterItem of concat(bins.create)) {
-      const newShadowSprite = createSprite(casterItem.shadowCastTexture);
-      newShadowSprite.label = casterItem.id;
-      //newShadowSprite.filters = [new BlurFilter()];
-      this.#shadowsContainer.addChild(newShadowSprite);
-      this.#casts[casterItem.id] = {
-        sprite: newShadowSprite,
-        renderedOnProgression: progression,
-      };
-    }
+    if (bins.create)
+      for (const casterItem of bins.create) {
+        const { times } = casterItem.config as ConsolidatableConfig;
+
+        const newShadowSprite = renderMultipliedXy(
+          this.pixiRenderer,
+          casterItem.shadowCastTexture,
+          times,
+        );
+        newShadowSprite.label = casterItem.id;
+        //newShadowSprite.filters = [new BlurFilter()];
+        this.#shadowsContainer.addChild(newShadowSprite);
+        this.#casts[casterItem.id] = {
+          sprite: newShadowSprite,
+          renderedOnProgression: progression,
+        };
+      }
 
     for (const casterItem of concat(bins.create, bins.update)) {
       const { sprite } = this.#casts[casterItem.id];
@@ -208,8 +235,10 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
         ...subXy(casterItem.state.position, this.item.state.position),
         z: this.item.aabb.z,
       });
+      // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
       sprite.x = screenXy.x;
       sprite.y = screenXy.y;
+
       //const heightDifference = casterItem.state.position.z - itemTop;
       //const [blurFilter] = shadow.container.filters as BlurFilter[];
       //blurFilter.strength = 0.5 + (8 * heightDifference) / 36;

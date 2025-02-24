@@ -4,7 +4,7 @@ import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type {
   EmptyObject,
   SwitchSetting,
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
 } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
 
@@ -28,7 +28,7 @@ export type PlayableTeleportingState =
 
 export type FreeItemState<RoomId extends string = string> = {
   /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
-  standingOn: UnknownItemInPlay<RoomId> | null;
+  standingOn: UnionOfAllItemInPlayTypes<RoomId> | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<{ moveAtRoomTime: number; positionDelta: Xyz }>;

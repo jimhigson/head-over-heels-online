@@ -8,18 +8,13 @@ export const room = inferRoomJson({
   id: "blacktooth59",
   items: {
     "block@0,1,2": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2 } },
       position: { x: 0, y: 1, z: 2 },
       type: "block",
     },
     "block@0,1,4": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2, z: 2 } },
       position: { x: 0, y: 1, z: 4 },
-      type: "block",
-    },
-    "block@0,1,5": {
-      config: { style: "book" },
-      position: { x: 0, y: 1, z: 5 },
       type: "block",
     },
     "block@0,2,1": {
@@ -33,63 +28,18 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@1,0,3": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 6 } },
       position: { x: 1, y: 0, z: 3 },
       type: "block",
     },
     "block@1,1,0": {
-      config: { style: "book" },
+      config: { style: "book", times: { z: 2 } },
       position: { x: 1, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@1,1,1": {
-      config: { style: "book" },
-      position: { x: 1, y: 1, z: 1 },
-      type: "block",
-    },
-    "block@1,1,2": {
-      config: { style: "book" },
-      position: { x: 1, y: 1, z: 2 },
       type: "block",
     },
     "block@1,1,3": {
       config: { style: "book" },
       position: { x: 1, y: 1, z: 3 },
-      type: "block",
-    },
-    "block@1,1,4": {
-      config: { style: "book" },
-      position: { x: 1, y: 1, z: 4 },
-      type: "block",
-    },
-    "block@1,1,5": {
-      config: { style: "book" },
-      position: { x: 1, y: 1, z: 5 },
-      type: "block",
-    },
-    "block@2,0,3": {
-      config: { style: "organic" },
-      position: { x: 2, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@3,0,3": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@4,0,3": {
-      config: { style: "organic" },
-      position: { x: 4, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@5,0,3": {
-      config: { style: "organic" },
-      position: { x: 5, y: 0, z: 3 },
-      type: "block",
-    },
-    "block@6,0,3": {
-      config: { style: "organic" },
-      position: { x: 6, y: 0, z: 3 },
       type: "block",
     },
     "deadlyBlock@0,0,0": {
@@ -98,13 +48,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@0,1,6": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 0, y: 1, z: 6 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,1,6": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 1, z: 6 },
       type: "deadlyBlock",
     },
     "door@3,0,4": {

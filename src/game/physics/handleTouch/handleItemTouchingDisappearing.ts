@@ -3,7 +3,7 @@ import { movingItemIsPlayable, type ItemTouchEvent } from "./ItemTouchEvent";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
 import { touchTriggersOnStand } from "./touchTriggersOnStand";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { setStandingOn } from "../../gameState/mutators/modifyStandingOn";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
@@ -23,7 +23,7 @@ export const handleItemTouchingDissapearing = <RoomId extends string>(
       //(but it will be removed very soon and this property will be gone):
       setStandingOn({
         above: e.movingItem,
-        below: e.touchedItem as UnknownItemInPlay<RoomId>,
+        below: e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>,
       });
       const controlMechanicalResults = [
         jumping(e.movingItem, e.gameState),

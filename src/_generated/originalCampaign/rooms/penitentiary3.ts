@@ -8,13 +8,8 @@ export const room = inferRoomJson({
   id: "penitentiary3",
   items: {
     "block@0,3,0": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { y: 2 } },
       position: { x: 0, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@0,4,0": {
-      config: { style: "artificial" },
-      position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
     "block@4,7,0": {
@@ -23,23 +18,13 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@7,3,0": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { y: 2 } },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,4,0": {
-      config: { style: "artificial" },
-      position: { x: 7, y: 4, z: 0 },
-      type: "block",
-    },
     "deadlyBlock@7,1,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { z: 2 } },
       position: { x: 7, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,1,1": {
-      config: { style: "toaster" },
-      position: { x: 7, y: 1, z: 1 },
       type: "deadlyBlock",
     },
     "door@0,3,1": {

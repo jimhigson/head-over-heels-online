@@ -2,7 +2,10 @@ import type { FreeItem } from "../physics/itemPredicates";
 import { isSolid } from "../physics/itemPredicates";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
-import type { AnyItemInPlay, UnknownItemInPlay } from "../../model/ItemInPlay";
+import type {
+  AnyItemInPlay,
+  UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
 import type { SceneryName } from "../../sprites/planets";
 import { iterate } from "../../utils/iterate";
 import { addXyz } from "../../utils/vectors/vectors";
@@ -93,7 +96,7 @@ export const spatiallyCheckStandingOn = <RoomId extends string>(
  */
 export const findStandingOnWithHighestPriorityAndMostOverlap = <
   RoomId extends string,
-  Item extends UnknownItemInPlay<RoomId>,
+  Item extends UnionOfAllItemInPlayTypes<RoomId>,
 >(
   item: FreeItem<SceneryName, RoomId>,
   itemsMaybeBeingStoodOn: Iterable<Item>,

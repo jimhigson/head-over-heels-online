@@ -8,93 +8,18 @@ export const room = inferRoomJson({
   id: "bookworld31",
   items: {
     "deadlyBlock@12,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 6 } },
       position: { x: 12, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@12,1,0": {
-      config: { style: "volcano" },
-      position: { x: 12, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@12,2,0": {
-      config: { style: "volcano" },
-      position: { x: 12, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@12,3,0": {
-      config: { style: "volcano" },
-      position: { x: 12, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@12,4,0": {
-      config: { style: "volcano" },
-      position: { x: 12, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@12,5,0": {
-      config: { style: "volcano" },
-      position: { x: 12, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@3,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 6 } },
       position: { x: 3, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@3,1,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,2,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,3,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,4,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,5,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@5,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 6 } },
       position: { x: 5, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,1,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,2,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,3,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,5,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 5, z: 0 },
       type: "deadlyBlock",
     },
     "door@0,2,0": {

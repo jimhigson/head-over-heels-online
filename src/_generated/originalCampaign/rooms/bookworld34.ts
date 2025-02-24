@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   id: "bookworld34",
   items: {
     "block@0,10,0": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2 } },
       position: { x: 0, y: 10, z: 0 },
       type: "block",
     },
     "block@0,10,2": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2 } },
       position: { x: 0, y: 10, z: 2 },
       type: "block",
     },
@@ -23,58 +23,23 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@0,4,0": {
-      config: { style: "book" },
+      config: { style: "book", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "block@0,5,0": {
-      config: { style: "book" },
-      position: { x: 0, y: 5, z: 0 },
-      type: "block",
-    },
     "block@0,5,1": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2 } },
       position: { x: 0, y: 5, z: 1 },
       type: "block",
     },
     "block@0,5,3": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2, y: 5 } },
       position: { x: 0, y: 5, z: 3 },
-      type: "block",
-    },
-    "block@0,6,3": {
-      config: { style: "book" },
-      position: { x: 0, y: 6, z: 3 },
-      type: "block",
-    },
-    "block@0,7,3": {
-      config: { style: "book" },
-      position: { x: 0, y: 7, z: 3 },
-      type: "block",
-    },
-    "block@0,8,3": {
-      config: { style: "book" },
-      position: { x: 0, y: 8, z: 3 },
-      type: "block",
-    },
-    "block@0,9,3": {
-      config: { style: "book" },
-      position: { x: 0, y: 9, z: 3 },
-      type: "block",
-    },
-    "block@1,10,0": {
-      config: { style: "book" },
-      position: { x: 1, y: 10, z: 0 },
       type: "block",
     },
     "block@1,10,1": {
       config: { style: "book" },
       position: { x: 1, y: 10, z: 1 },
-      type: "block",
-    },
-    "block@1,10,2": {
-      config: { style: "book" },
-      position: { x: 1, y: 10, z: 2 },
       type: "block",
     },
     "block@1,10,3": {
@@ -87,39 +52,9 @@ export const room = inferRoomJson({
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    "block@1,5,1": {
-      config: { style: "book" },
-      position: { x: 1, y: 5, z: 1 },
-      type: "block",
-    },
     "block@1,5,2": {
       config: { style: "book" },
       position: { x: 1, y: 5, z: 2 },
-      type: "block",
-    },
-    "block@1,5,3": {
-      config: { style: "book" },
-      position: { x: 1, y: 5, z: 3 },
-      type: "block",
-    },
-    "block@1,6,3": {
-      config: { style: "book" },
-      position: { x: 1, y: 6, z: 3 },
-      type: "block",
-    },
-    "block@1,7,3": {
-      config: { style: "book" },
-      position: { x: 1, y: 7, z: 3 },
-      type: "block",
-    },
-    "block@1,8,3": {
-      config: { style: "book" },
-      position: { x: 1, y: 8, z: 3 },
-      type: "block",
-    },
-    "block@1,9,3": {
-      config: { style: "book" },
-      position: { x: 1, y: 9, z: 3 },
       type: "block",
     },
     "door@0,0,0": {

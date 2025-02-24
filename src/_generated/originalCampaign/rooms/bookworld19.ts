@@ -8,33 +8,13 @@ export const room = inferRoomJson({
   id: "bookworld19",
   items: {
     "deadlyBlock@1,2,0": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 4 } },
       position: { x: 1, y: 2, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,3,0": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@1,3,1": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 2 } },
       position: { x: 1, y: 3, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,4,0": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,4,1": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,5,0": {
-      config: { style: "toaster" },
-      position: { x: 1, y: 5, z: 0 },
       type: "deadlyBlock",
     },
     "door@0,0,0": {

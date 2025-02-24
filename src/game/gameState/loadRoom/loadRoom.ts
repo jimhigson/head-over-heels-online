@@ -4,7 +4,7 @@ import { collision1toMany } from "../../collision/aabbCollision";
 import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomStateItems, RoomState } from "../../../model/modelTypes";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { SceneryName } from "../../../sprites/planets";
@@ -13,83 +13,11 @@ import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 
-// might do this again later, or use it as a template to gather other item types
-/*
-function* gatherConveyors<RoomId extends string>(
-  sorted: Iterable<UnknownItemInPlay<RoomId>>,
-): Generator<UnknownItemInPlay<RoomId>> {
-  const { conveyors = [], others = [] } = Object.groupBy(sorted, (item) =>
-    item.type === "conveyor" ? "conveyors" : "others",
-  ) as {
-    conveyors: ItemInPlay<"conveyor", SceneryName, RoomId>[] | undefined;
-    others: UnknownItemInPlay<RoomId>[] | undefined;
-  };
-
-  // group conveyors by their direction:
-  const conveyorsByDirection = Object.groupBy(
-    conveyors,
-    (conveyor) => conveyor.config.direction,
-  );
-
-  yield* others;
-
-  for (const [d, directionConveyors] of objectEntriesIter(
-    conveyorsByDirection,
-  )) {
-    const axisOfConveyorTravel = directionAxis(d as DirectionXy4);
-    const axisCrossingConveyorTravel =
-      perpendicularAxisXy(axisOfConveyorTravel);
-    const byOrdinal = Object.groupBy(
-      directionConveyors,
-      (conveyor) =>
-        `${conveyor.state.position[axisCrossingConveyorTravel]}${conveyor.state.position.z}`,
-    );
-
-    for (const conveyorsInline of objectValues(byOrdinal)) {
-      if (conveyorsInline === undefined) {
-        continue;
-      }
-
-      const conveyorPosition = (c: ItemInPlay<"conveyor">) =>
-        c.state.position[axisOfConveyorTravel];
-
-      const sortedConveyorsInLine = conveyorsInline.sort(
-        (a, b) => conveyorPosition(a) - conveyorPosition(b),
-      );
-
-      const conveyorBlocks: ItemInPlay<"conveyor", SceneryName, RoomId>[] = [];
-      for (const c of sortedConveyorsInLine) {
-        const currentBlock = conveyorBlocks.at(-1);
-
-        if (
-          currentBlock === undefined ||
-          conveyorPosition(currentBlock) +
-            currentBlock.aabb[axisOfConveyorTravel] !==
-            conveyorPosition(c)
-        ) {
-          conveyorBlocks.push(c);
-        } else {
-          // expand the current block:
-          currentBlock.aabb = {
-            ...currentBlock.aabb,
-            [axisOfConveyorTravel]:
-              currentBlock.aabb[axisOfConveyorTravel] + blockSizePx.w,
-          };
-          currentBlock.config.count = (currentBlock.config.count ?? 1) + 1;
-        }
-      }
-
-      yield* conveyorBlocks;
-    }
-  }
-}
-  */
-
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<SceneryName, RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad: boolean,
-): Generator<UnknownItemInPlay<RoomId>> {
+): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
   const { scrollsRead } = store.getState();
 
   const ent = entries(roomJson.items);
@@ -109,7 +37,7 @@ const itemsInItemObjectMap = <
   RoomId extends string,
   ItemId extends string,
 >(
-  items: Iterable<UnknownItemInPlay<RoomId>>,
+  items: Iterable<UnionOfAllItemInPlayTypes<RoomId>>,
 ): RoomStateItems<P, RoomId, ItemId> => {
   return iterate(items).reduce(
     (ac, cur) => {

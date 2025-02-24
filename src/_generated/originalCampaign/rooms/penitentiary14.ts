@@ -8,88 +8,18 @@ export const room = inferRoomJson({
   id: "penitentiary14",
   items: {
     "block@0,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
     "block@0,5,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@1,0,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@1,5,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@2,0,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
     "block@2,4,0": {
       config: { style: "organic" },
       position: { x: 2, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@2,5,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@3,0,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@3,5,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@4,0,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@4,5,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@5,0,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@5,5,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@6,0,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@6,5,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@7,0,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@7,5,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
     "lift@0,1,0": {

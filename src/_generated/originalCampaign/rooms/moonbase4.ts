@@ -8,28 +8,13 @@ export const room = inferRoomJson({
   id: "moonbase4",
   items: {
     "block@1,7,0": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { z: 2 } },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
-    "block@1,7,1": {
-      config: { style: "artificial" },
-      position: { x: 1, y: 7, z: 1 },
-      type: "block",
-    },
     "block@1,7,3": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { x: 3 } },
       position: { x: 1, y: 7, z: 3 },
-      type: "block",
-    },
-    "block@2,7,3": {
-      config: { style: "artificial" },
-      position: { x: 2, y: 7, z: 3 },
-      type: "block",
-    },
-    "block@3,7,3": {
-      config: { style: "artificial" },
-      position: { x: 3, y: 7, z: 3 },
       type: "block",
     },
     "block@7,0,0": {
@@ -63,43 +48,23 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@2,3,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 2, y: 3, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,4,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@3,2,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 3, y: 2, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@3,5,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 2 } },
       position: { x: 3, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@4,2,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,5,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@5,3,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 5, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 4, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@6,1,0": {

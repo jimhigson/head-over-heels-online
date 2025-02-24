@@ -1,8 +1,8 @@
 import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { productXyz, subXyz, type Aabb } from "../../utils/vectors/vectors";
-import type { UnknownItemInPlay } from "../../model/ItemInPlay";
-import type { UnknownJsonItem } from "../../model/json/JsonItem";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { blockSizePx, blockSizeXyzPx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
@@ -41,7 +41,7 @@ export const yAxisWallRenderAabb = {
 };
 
 export const boundingBoxForItem = (
-  item: UnknownJsonItem | UnknownItemInPlay,
+  item: JsonItemUnion | UnionOfAllItemInPlayTypes,
 ): { aabb: Aabb; renderAabb?: Aabb } => {
   switch (item.type) {
     case "spring":

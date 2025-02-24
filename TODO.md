@@ -21,11 +21,30 @@
 
 [ ] own levels
 
-[ ] switch to OOP on room state/items etc. Eg polymorphism: .isPushable() etc methods
+[ ] switch to OOP on room state/items etc. 
+    Eg polymorphism: .isPushable() etc methods
+    Eg, .times() hardcoded to return 1,1,1 for most
 
 [ ] switch to devcontainers
 
 ### Details ad bugs
+
+[x] consolidation
+    [ ] fix all patches that no longer apply
+        [x] blacktooth23 heels
+        [x] bookworld28 - needs artificial blocks putting back
+        egyptus14
+        egyptus20
+        pen2
+        pen13 - needs a second dissapearing block putting in
+    [x] check all rooms with a diff in their patch against deployed version
+    [x] conveyors don't load correctly(check #blacktoothheels1) - probably also hush puppies (check blacktooth63) and others
+    [x] toaster bbs not correct (check http://localhost:5173/?cheats=1#moonbase1)
+    [x] volcano bbs not correct (check http://localhost:5173/?cheats=1#moonbase4)
+    [x] #blacktooth74 
+        - [x] no multiplied shadows
+        - [x] threshold shadow mask is wrong
+
 
 [x] split campaign patch up per-room
 
@@ -34,6 +53,8 @@
     [ ] for d-pads that report as axes
 
 [ ] write an 'about this remake' page
+
+[ ] special names for some rooms (makes easier to find)
 
 [ ] turn around without moving for small presses (round down to zero, not up to one)
 
@@ -147,8 +168,15 @@ translate: https://hoh.helmantika.com/jon-ritman/
 # (heels) blacktooth35
 [ ] room positioning (scrolling) on screen is poor
 
+# egyptus12, others(?)
+[ ] sandwich with SOF on it seems to move him double
+[ ] SOF can land on joysticks
+
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away
+
+# egyptus35
+[ ] ceiling too low/room too easy (don't need both blocks/players)
 
 # penitentiary2
 [ ] this room shouldn't scroll horizontally

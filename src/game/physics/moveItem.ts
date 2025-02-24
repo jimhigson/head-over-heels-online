@@ -15,7 +15,10 @@ import {
   removeStandingOn,
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
-import type { UnknownItemInPlay, AnyItemInPlay } from "../../model/ItemInPlay";
+import type {
+  UnionOfAllItemInPlayTypes,
+  AnyItemInPlay,
+} from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
@@ -31,7 +34,7 @@ import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 const log = 0;
 
 type MoveItemOptions<RoomId extends string> = {
-  subjectItem: UnknownItemInPlay<RoomId>;
+  subjectItem: UnionOfAllItemInPlayTypes<RoomId>;
   posDelta: Xyz;
   gameState: GameState<RoomId> /**
    * if given, the item that pushed this item to cause it to move. This is primarily a protection

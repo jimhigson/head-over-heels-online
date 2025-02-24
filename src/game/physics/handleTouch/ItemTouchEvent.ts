@@ -2,17 +2,14 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
   ItemInPlay,
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import type { RoomState, CharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import type {
-  DeadlyItemType,
-  ItemTypeUnion,
-  PlayableItem,
-} from "../itemPredicates";
+import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
+import type { ItemTypeUnion } from "src/model/ItemInPlay";
 import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
 
 export type ItemTouchEvent<
@@ -107,5 +104,5 @@ export const touchedItemIsDeadly = <
   MovingItem,
   ItemTypeUnion<"floor" | DeadlyItemType, RoomId>
 > => {
-  return isDeadly(e.touchedItem as UnknownItemInPlay<RoomId>);
+  return isDeadly(e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>);
 };

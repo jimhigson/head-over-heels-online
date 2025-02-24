@@ -8,63 +8,8 @@ export const room = inferRoomJson({
   id: "egyptus22",
   items: {
     "barrier@2,2,0": {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 4, z: 3 } },
       position: { x: 2, y: 2, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,2,1": {
-      config: { axis: "y" },
-      position: { x: 2, y: 2, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,2,2": {
-      config: { axis: "y" },
-      position: { x: 2, y: 2, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,3,0": {
-      config: { axis: "y" },
-      position: { x: 2, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,3,1": {
-      config: { axis: "y" },
-      position: { x: 2, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,3,2": {
-      config: { axis: "y" },
-      position: { x: 2, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,4,0": {
-      config: { axis: "y" },
-      position: { x: 2, y: 4, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,4,1": {
-      config: { axis: "y" },
-      position: { x: 2, y: 4, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,4,2": {
-      config: { axis: "y" },
-      position: { x: 2, y: 4, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,5,0": {
-      config: { axis: "y" },
-      position: { x: 2, y: 5, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,5,1": {
-      config: { axis: "y" },
-      position: { x: 2, y: 5, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,5,2": {
-      config: { axis: "y" },
-      position: { x: 2, y: 5, z: 2 },
       type: "barrier",
     },
     "door@0,2,0": {

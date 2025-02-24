@@ -1,25 +1,22 @@
-import type { UnknownJsonItem } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import shortHash from "shorthash2";
 import { canonicalize } from "json-canonicalize";
 
 /** for a given item in the game, auto-produce a unique id for it */
 export const keyItems = <RoomId extends string>(
-  items: Array<UnknownJsonItem<RoomId> & { id?: string }>,
-): Record<string, UnknownJsonItem<RoomId>> => {
+  items: Array<JsonItemUnion<RoomId> & { id?: string }>,
+): Record<string, JsonItemUnion<RoomId>> => {
   return Object.fromEntries(
     items.map(
       (item) =>
-        [itemKey<RoomId>(item, items), item] as [
-          string,
-          UnknownJsonItem<RoomId>,
-        ],
+        [itemKey<RoomId>(item, items), item] as [string, JsonItemUnion<RoomId>],
     ),
   );
 };
 
 export const itemKey = <RoomId extends string>(
-  item: UnknownJsonItem<RoomId> & { id?: string },
-  items: Array<UnknownJsonItem<RoomId>>,
+  item: JsonItemUnion<RoomId> & { id?: string },
+  items: Array<JsonItemUnion<RoomId>>,
 ): string => {
   if (item.id) {
     return item.id;

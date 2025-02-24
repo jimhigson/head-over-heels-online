@@ -8,73 +8,23 @@ export const room = inferRoomJson({
   id: "finalroom",
   items: {
     "block@0,2,1": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { x: 2 } },
       position: { x: 0, y: 2, z: 1 },
       type: "block",
     },
     "block@0,7,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "block@1,2,1": {
-      config: { style: "artificial" },
-      position: { x: 1, y: 2, z: 1 },
-      type: "block",
-    },
-    "block@1,7,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@2,7,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@3,7,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@4,7,0": {
-      config: { style: "organic" },
-      position: { x: 4, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@5,7,0": {
-      config: { style: "organic" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@6,7,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "block",
-    },
     "block@7,1,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 3 } },
       position: { x: 7, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@7,2,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 2, z: 0 },
       type: "block",
     },
     "block@7,2,1": {
       config: { style: "organic" },
       position: { x: 7, y: 2, z: 1 },
-      type: "block",
-    },
-    "block@7,3,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@7,7,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
     crownBlacktooth: {

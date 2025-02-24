@@ -13,8 +13,8 @@ import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
 import { readRoomToXmlJson, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
-import { itemKey, keyItems } from "../utils/keyItems";
-import type { UnknownJsonItem } from "../model/json/JsonItem";
+import { itemKey } from "../utils/keyItems";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
 import {
   addXyz,
@@ -67,28 +67,12 @@ const monsterConversions = {
   ItemConfigMap<SceneryName, string, string>["monster"]["which"]
 >;
 
-export const convertItems = async (
+export const convertItemsArray = async (
   map: MapXml2Json,
   roomName: string,
   xml2JsonRoom: Xml2JsonRoom,
   doorMap: LooseDoorMap,
-): Promise<Record<string, UnknownJsonItem>> => {
-  const convertedItemsArray = await convertItemsArray(
-    map,
-    roomName,
-    xml2JsonRoom,
-    doorMap,
-  );
-
-  return keyItems(convertedItemsArray);
-};
-
-const convertItemsArray = async (
-  map: MapXml2Json,
-  roomName: string,
-  xml2JsonRoom: Xml2JsonRoom,
-  doorMap: LooseDoorMap,
-): Promise<UnknownJsonItem[]> => {
+): Promise<JsonItemUnion[]> => {
   return (
     await Promise.all(
       xml2JsonRoom.items.map((xml2JsonItem) =>
@@ -102,7 +86,7 @@ const convertItemsArray = async (
         }),
       ),
     )
-  ).filter((x): x is UnknownJsonItem => x !== undefined);
+  ).filter((x): x is JsonItemUnion => x !== undefined);
 };
 
 type ConvertItemParams = {
@@ -121,7 +105,7 @@ const convertItem = async ({
   roomName,
   xml2JsonItem,
   xml2JsonItems,
-}: ConvertItemParams): Promise<UnknownJsonItem | undefined> => {
+}: ConvertItemParams): Promise<JsonItemUnion | undefined> => {
   const position = convertXYZ(xml2JsonItem, xml2JsonRoom, doorMap);
 
   if (

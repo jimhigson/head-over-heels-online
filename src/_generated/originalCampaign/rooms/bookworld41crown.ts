@@ -13,28 +13,8 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     "block@3,4,1": {
-      config: { style: "book" },
+      config: { style: "book", times: { z: 5 } },
       position: { x: 3, y: 4, z: 1 },
-      type: "block",
-    },
-    "block@3,4,2": {
-      config: { style: "book" },
-      position: { x: 3, y: 4, z: 2 },
-      type: "block",
-    },
-    "block@3,4,3": {
-      config: { style: "book" },
-      position: { x: 3, y: 4, z: 3 },
-      type: "block",
-    },
-    "block@3,4,4": {
-      config: { style: "book" },
-      position: { x: 3, y: 4, z: 4 },
-      type: "block",
-    },
-    "block@3,4,5": {
-      config: { style: "book" },
-      position: { x: 3, y: 4, z: 5 },
       type: "block",
     },
     "door@2,0,0": {

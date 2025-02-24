@@ -2,12 +2,13 @@
   { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
     "op": "add",
-    "path": "/items/block@1,0,1/config/disappearing",
+    "path": "/items/block@4,3,2/config/disappearing",
     "value": "onStand"
   },
+  { "op": "remove", "path": "/items/block@1,0,1/config/times" },
   {
     "op": "add",
-    "path": "/items/block@2,0,1/config/disappearing",
+    "path": "/items/block@1,0,1/config/disappearing",
     "value": "onStand"
   },
   {
@@ -17,16 +18,20 @@
   },
   {
     "op": "add",
-    "path": "/items/block@4,3,2/config/disappearing",
-    "value": "onStand"
-  },
-  {
-    "op": "add",
     "path": "/items/extra1",
     "value": {
       "config": { "style": "artificial" },
       "isExtra": true,
       "position": { "x": 5, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/secondOverToaster",
+    "value": {
+      "config": { "disappearing": "onStand", "style": "artificial" },
+      "position": { "x": 2, "y": 0, "z": 1 },
       "type": "block"
     }
   },

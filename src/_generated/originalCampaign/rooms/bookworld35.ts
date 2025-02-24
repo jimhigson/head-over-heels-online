@@ -8,22 +8,12 @@ export const room = inferRoomJson({
   id: "bookworld35",
   items: {
     "block@1,7,3": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 3 } },
       position: { x: 1, y: 7, z: 3 },
       type: "block",
     },
-    "block@2,7,3": {
-      config: { style: "book" },
-      position: { x: 2, y: 7, z: 3 },
-      type: "block",
-    },
-    "block@3,7,3": {
-      config: { style: "book" },
-      position: { x: 3, y: 7, z: 3 },
-      type: "block",
-    },
     "block@5,1,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 3 } },
       position: { x: 5, y: 1, z: 0 },
       type: "block",
     },
@@ -37,19 +27,9 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 0 },
       type: "block",
     },
-    "block@6,1,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 1, z: 0 },
-      type: "block",
-    },
     "block@6,2,0": {
       config: { style: "organic" },
       position: { x: 6, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@7,1,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 1, z: 0 },
       type: "block",
     },
     "charles@5,7,5": {

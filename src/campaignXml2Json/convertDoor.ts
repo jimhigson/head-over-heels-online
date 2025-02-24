@@ -1,4 +1,4 @@
-import type { UnknownJsonItem } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { perpendicularAxisXy, addXy } from "../utils/vectors/vectors";
 import { autoZ } from "./convertCampaign";
@@ -22,7 +22,7 @@ export const convertDoor = (
   },
   position: { x: number; y: number; z: number },
   xml2JsonRoom: Xml2JsonRoom,
-): UnknownJsonItem => {
+): JsonItemUnion => {
   const roomOnMap = map[roomName];
   const toRoom = convertRoomId(roomNameFromXmlFilename(roomOnMap[item.where]!));
 

@@ -8,13 +8,8 @@ export const room = inferRoomJson({
   id: "bookworld27",
   items: {
     "block@0,0,0": {
-      config: { style: "book" },
+      config: { style: "book", times: { z: 2 } },
       position: { x: 0, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@0,0,1": {
-      config: { style: "book" },
-      position: { x: 0, y: 0, z: 1 },
       type: "block",
     },
     "block@0,0,3": {

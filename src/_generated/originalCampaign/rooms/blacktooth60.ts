@@ -8,108 +8,13 @@ export const room = inferRoomJson({
   id: "blacktooth60",
   items: {
     "barrier@0,3,0": {
-      config: { axis: "x" },
+      config: { axis: "x", times: { x: 3, z: 3 } },
       position: { x: 0, y: 3, z: 0 },
       type: "barrier",
     },
-    "barrier@0,3,1": {
-      config: { axis: "x" },
-      position: { x: 0, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@0,3,2": {
-      config: { axis: "x" },
-      position: { x: 0, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@1,3,0": {
-      config: { axis: "x" },
-      position: { x: 1, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@1,3,1": {
-      config: { axis: "x" },
-      position: { x: 1, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@1,3,2": {
-      config: { axis: "x" },
-      position: { x: 1, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@2,3,0": {
-      config: { axis: "x" },
-      position: { x: 2, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@2,3,1": {
-      config: { axis: "x" },
-      position: { x: 2, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@2,3,2": {
-      config: { axis: "x" },
-      position: { x: 2, y: 3, z: 2 },
-      type: "barrier",
-    },
     "barrier@3,4,0": {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 4, z: 3 } },
       position: { x: 3, y: 4, z: 0 },
-      type: "barrier",
-    },
-    "barrier@3,4,1": {
-      config: { axis: "y" },
-      position: { x: 3, y: 4, z: 1 },
-      type: "barrier",
-    },
-    "barrier@3,4,2": {
-      config: { axis: "y" },
-      position: { x: 3, y: 4, z: 2 },
-      type: "barrier",
-    },
-    "barrier@3,5,0": {
-      config: { axis: "y" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "barrier",
-    },
-    "barrier@3,5,1": {
-      config: { axis: "y" },
-      position: { x: 3, y: 5, z: 1 },
-      type: "barrier",
-    },
-    "barrier@3,5,2": {
-      config: { axis: "y" },
-      position: { x: 3, y: 5, z: 2 },
-      type: "barrier",
-    },
-    "barrier@3,6,0": {
-      config: { axis: "y" },
-      position: { x: 3, y: 6, z: 0 },
-      type: "barrier",
-    },
-    "barrier@3,6,1": {
-      config: { axis: "y" },
-      position: { x: 3, y: 6, z: 1 },
-      type: "barrier",
-    },
-    "barrier@3,6,2": {
-      config: { axis: "y" },
-      position: { x: 3, y: 6, z: 2 },
-      type: "barrier",
-    },
-    "barrier@3,7,0": {
-      config: { axis: "y" },
-      position: { x: 3, y: 7, z: 0 },
-      type: "barrier",
-    },
-    "barrier@3,7,1": {
-      config: { axis: "y" },
-      position: { x: 3, y: 7, z: 1 },
-      type: "barrier",
-    },
-    "barrier@3,7,2": {
-      config: { axis: "y" },
-      position: { x: 3, y: 7, z: 2 },
       type: "barrier",
     },
     "door@3,0,0": {

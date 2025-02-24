@@ -8,38 +8,13 @@ export const room = inferRoomJson({
   id: "safari31",
   items: {
     "block@0,3,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 4 } },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@0,4,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@0,5,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@0,6,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 6, z: 0 },
-      type: "block",
-    },
     "block@1,5,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 3 } },
       position: { x: 1, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@1,6,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 6, z: 0 },
-      type: "block",
-    },
-    "block@1,7,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
     "block@2,6,0": {
@@ -48,13 +23,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@7,3,1": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 3, z: 1 },
-      type: "block",
-    },
-    "block@7,4,1": {
-      config: { style: "organic" },
-      position: { x: 7, y: 4, z: 1 },
       type: "block",
     },
     "charles@6,6,1": {
@@ -63,73 +33,13 @@ export const room = inferRoomJson({
       type: "charles",
     },
     "deadlyBlock@0,0,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@1,0,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,0,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,0,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,0,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,0,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,0,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@6,1,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 6 } },
       position: { x: 6, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,2,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,3,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,4,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,6,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 6, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,0,0": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 0, z: 0 },
       type: "deadlyBlock",
     },
     "door@0,3,1": {

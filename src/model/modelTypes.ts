@@ -1,5 +1,5 @@
 import type { SpritesheetFrameData } from "pixi.js";
-import type { ItemInPlay, UnknownItemInPlay } from "./ItemInPlay";
+import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { Simplify } from "type-fest";
 import type { SceneryName, Wall } from "../sprites/planets";
 import type { RoomJson } from "./RoomJson";
@@ -38,7 +38,7 @@ export type RoomStateItems<
   P extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
-> = Record<ItemId, UnknownItemInPlay<RoomId>> & {
+> = Record<ItemId, UnionOfAllItemInPlayTypes<RoomId>> & {
   head?: ItemInPlay<"head", P, RoomId, "head">;
   heels?: ItemInPlay<"heels", P, RoomId, "heels">;
   headOverHeels?: ItemInPlay<"headOverHeels", P, RoomId, "headOverHeels">;

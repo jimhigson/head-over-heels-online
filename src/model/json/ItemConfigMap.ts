@@ -35,6 +35,10 @@ type MovementsSubset<U extends JsonMovement> = U;
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
+export type ConsolidatableConfig = {
+  times?: Partial<Xyz>;
+};
+
 export type ItemConfigMap<
   P extends SceneryName,
   RoomId extends string,
@@ -66,18 +70,17 @@ export type ItemConfigMap<
     // to atop another teleporter, but could be anywhere
     toPosition: Xyz;
   };
-  barrier: {
+  barrier: ConsolidatableConfig & {
     // the axis the barrier runs along
     axis: AxisXy;
     disappearing?: "onTouch";
-    times?: Partial<Xyz>;
   };
-  block: {
+  block: ConsolidatableConfig & {
     style: BlockStyle;
     disappearing?: "onStand";
     times?: Partial<Xyz>;
   };
-  deadlyBlock: {
+  deadlyBlock: ConsolidatableConfig & {
     // these don't move, and the differences are purely in their rendering:
     style: DeadlyItemStyle;
     times?: Partial<Xyz>;
@@ -90,10 +93,11 @@ export type ItemConfigMap<
     // these can move (fall, be pushed etc) and are deadly
     style: "puck";
   };
-  conveyor: {
+  conveyor: ConsolidatableConfig & {
     direction: DirectionXy4;
     disappearing?: "onStand";
   };
+  hushPuppy: ConsolidatableConfig;
   pickup:
     | {
         gives:

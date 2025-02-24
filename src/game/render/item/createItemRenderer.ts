@@ -3,7 +3,7 @@ import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
 import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
@@ -14,8 +14,8 @@ import type { SetRequired } from "type-fest";
 import { selectIsPaused } from "../../../store/selectors";
 
 const hasShadowMask = (
-  item: UnknownItemInPlay,
-): item is SetRequired<UnknownItemInPlay, "shadowMask"> =>
+  item: UnionOfAllItemInPlayTypes,
+): item is SetRequired<UnionOfAllItemInPlayTypes, "shadowMask"> =>
   item.shadowMask !== undefined;
 
 export const createItemRenderer = <
@@ -27,7 +27,7 @@ export const createItemRenderer = <
   gameState,
   pixiRenderer,
 }: {
-  item: UnknownItemInPlay<RoomId, ItemId>;
+  item: UnionOfAllItemInPlayTypes<RoomId, ItemId>;
   room: RoomState<SceneryName, RoomId, ItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;

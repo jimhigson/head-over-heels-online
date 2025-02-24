@@ -1,5 +1,5 @@
 import { smallItemAabb } from "../game/collision/boundingBoxes";
-import type { UnknownItemInPlay } from "./ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 
 /**
  * to spread over items on instantiation and cut down on typing
@@ -8,4 +8,4 @@ import type { UnknownItemInPlay } from "./ItemInPlay";
 export const defaultItemProperties = {
   renders: true,
   aabb: smallItemAabb,
-} as const satisfies Partial<UnknownItemInPlay>;
+} as const satisfies Partial<UnionOfAllItemInPlayTypes>;

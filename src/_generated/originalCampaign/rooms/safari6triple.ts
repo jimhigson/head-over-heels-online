@@ -18,13 +18,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@0,2,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@0,3,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
     "block@1,10,0": {
@@ -38,18 +33,13 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@10,2,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 10, y: 2, z: 0 },
       type: "block",
     },
     "block@10,4,0": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: "onStand", style: "organic", times: { y: 2 } },
       position: { x: 10, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@10,5,0": {
-      config: { style: "organic" },
-      position: { x: 10, y: 5, z: 0 },
       type: "block",
     },
     "block@11,0,0": {
@@ -57,19 +47,9 @@ export const room = inferRoomJson({
       position: { x: 11, y: 0, z: 0 },
       type: "block",
     },
-    "block@11,2,0": {
-      config: { style: "organic" },
-      position: { x: 11, y: 2, z: 0 },
-      type: "block",
-    },
     "block@2,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 2, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@3,0,0": {
-      config: { style: "organic" },
-      position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "block@3,2,0": {
@@ -83,12 +63,12 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@5,2,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 3 } },
       position: { x: 5, y: 2, z: 0 },
       type: "block",
     },
     "block@5,5,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
@@ -102,24 +82,9 @@ export const room = inferRoomJson({
       position: { x: 5, y: 8, z: 0 },
       type: "block",
     },
-    "block@6,2,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@6,5,0": {
-      config: { style: "organic" },
-      position: { x: 6, y: 5, z: 0 },
-      type: "block",
-    },
     "block@7,0,0": {
       config: { style: "organic" },
       position: { x: 7, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@7,2,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 2, z: 0 },
       type: "block",
     },
     "block@8,5,0": {

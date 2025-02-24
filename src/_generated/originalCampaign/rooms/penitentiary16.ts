@@ -8,43 +8,8 @@ export const room = inferRoomJson({
   id: "penitentiary16",
   items: {
     "block@7,0,0": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 8 } },
       position: { x: 7, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@7,1,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 1, z: 0 },
-      type: "block",
-    },
-    "block@7,2,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 2, z: 0 },
-      type: "block",
-    },
-    "block@7,3,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 3, z: 0 },
-      type: "block",
-    },
-    "block@7,4,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@7,5,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@7,6,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 6, z: 0 },
-      type: "block",
-    },
-    "block@7,7,0": {
-      config: { style: "organic" },
-      position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
     "lift@3,0,0": {

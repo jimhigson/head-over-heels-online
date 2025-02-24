@@ -22,7 +22,7 @@ import {
 } from "../../utils/vectors/vectors";
 import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
 import type {
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
   AnyItemInPlay,
   ItemInPlayType,
 } from "../../model/ItemInPlay";
@@ -31,7 +31,7 @@ import { otherIndividualCharacterName } from "../../model/modelTypes";
 import { emptyObject, emptySet } from "../../utils/empty";
 
 const itemHasExpired = <RoomId extends string>(
-  item: UnknownItemInPlay,
+  item: UnionOfAllItemInPlayTypes,
   room: RoomState<SceneryName, RoomId>,
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
@@ -68,8 +68,8 @@ const snapStationaryItemsToPixelGrid = <RoomId extends string>(
  * to push the lift
  */
 const itemTickOrderComparator = (
-  a: UnknownItemInPlay,
-  b: UnknownItemInPlay,
+  a: UnionOfAllItemInPlayTypes,
+  b: UnionOfAllItemInPlayTypes,
 ) => {
   const scores: Partial<Record<ItemInPlayType, number>> = {
     lift: -4, // <- highest priority

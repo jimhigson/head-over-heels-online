@@ -13,183 +13,8 @@ export const room = inferRoomJson({
       type: "ball",
     },
     "barrier@4,0,0": {
-      config: { axis: "y" },
+      config: { axis: "y", times: { y: 12, z: 3 } },
       position: { x: 4, y: 0, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,0,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 0, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,0,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 0, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,1,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 1, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,1,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 1, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,1,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 1, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,10,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 10, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,10,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 10, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,10,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 10, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,11,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 11, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,11,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 11, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,11,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 11, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,2,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 2, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,2,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 2, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,2,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 2, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,3,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,3,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 3, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,3,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,4,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 4, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,4,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 4, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,4,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 4, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,5,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 5, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,5,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 5, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,5,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 5, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,6,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 6, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,6,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 6, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,6,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 6, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,7,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 7, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,7,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 7, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,7,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 7, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,8,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 8, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,8,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 8, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,8,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 8, z: 2 },
-      type: "barrier",
-    },
-    "barrier@4,9,0": {
-      config: { axis: "y" },
-      position: { x: 4, y: 9, z: 0 },
-      type: "barrier",
-    },
-    "barrier@4,9,1": {
-      config: { axis: "y" },
-      position: { x: 4, y: 9, z: 1 },
-      type: "barrier",
-    },
-    "barrier@4,9,2": {
-      config: { axis: "y" },
-      position: { x: 4, y: 9, z: 2 },
       type: "barrier",
     },
     "block@7,0,3": {
@@ -203,38 +28,18 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@2,10,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 2, y: 10, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,11,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@2,5,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { y: 2 } },
       position: { x: 2, y: 5, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@2,6,0": {
-      config: { style: "volcano" },
-      position: { x: 2, y: 6, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@3,8,0": {
-      config: { style: "volcano" },
+      config: { style: "volcano", times: { z: 3 } },
       position: { x: 3, y: 8, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,8,1": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 8, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,8,2": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 8, z: 2 },
       type: "deadlyBlock",
     },
     "door@0,2,0": {

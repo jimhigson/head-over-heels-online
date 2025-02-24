@@ -1,11 +1,12 @@
 import type { FreeItem } from "../game/physics/itemPredicates";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
-import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
+import type { Aabb, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName } from "./modelTypes";
 
+/** types of items in-game (as opposed to in the json) - there are a few extra types */
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
   | CharacterName
@@ -35,9 +36,6 @@ type ItemInPlayConfigMap<RoomId extends string> = {
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
-  };
-  conveyor: {
-    direction: DirectionXy4;
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
@@ -135,19 +133,28 @@ export type ItemInPlay<
   fixedZIndex?: number;
 };
 
-/**
- * Force ItemInPlay into a union so that discrimination over
- * unions works
- */
-export type UnknownItemInPlay<
-  RoomId extends string = string,
-  ItemId extends string = string,
-> = {
-  [IT in ItemInPlayType]: ItemInPlay<IT, SceneryName, RoomId, ItemId>;
-}[ItemInPlayType];
-
 /** Non-union version of any item type */
 export type AnyItemInPlay<
   RoomId extends string = string,
   ItemId extends string = string,
 > = ItemInPlay<ItemInPlayType, SceneryName, RoomId, ItemId>;
+
+/**
+ * make a union of ItemInPlay<A> | ItemInPlay<B> | ItemInPlay<C> etc.
+ * By turning item types into a union, we can use type guards to discriminate
+ */
+export type ItemTypeUnion<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  ItemId extends string = string,
+> = {
+  [TI in T]: ItemInPlay<TI, SceneryName, RoomId, ItemId>;
+}[T];
+
+/**
+ * All Item types as a union
+ */
+export type UnionOfAllItemInPlayTypes<
+  RoomId extends string = string,
+  ItemId extends string = string,
+> = ItemTypeUnion<ItemInPlayType, RoomId, ItemId>;

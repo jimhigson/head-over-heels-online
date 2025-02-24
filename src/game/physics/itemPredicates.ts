@@ -1,16 +1,15 @@
+import type { ConsolidatableJsonItemType } from "../../campaignXml2Json/consolidateItems/consolidateItems";
 import type {
   ItemInPlayType,
   ItemInPlay,
   AnyItemInPlay,
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
+  ItemTypeUnion,
 } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
-
-export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
-  [TI in T]: ItemInPlay<TI, SceneryName, RoomId>;
-}[T];
+import type { Xyz } from "../../utils/vectors/vectors";
 
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
@@ -154,10 +153,20 @@ export const deadlyItemTypes = [
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
 export const isDeadly = <RoomId extends string>(
-  item: UnknownItemInPlay<RoomId>,
+  item: UnionOfAllItemInPlayTypes<RoomId>,
 ): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.type === "deadly");
+
+export const isMultipliedItem = <RoomId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId>,
+): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
+  type ItemConfigMaybeWithMultiplication = {
+    times?: undefined | Partial<Xyz>;
+  };
+
+  return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;
+};
 
 export const isPortal = isItemType("portal");
 export const isTeleporter = isItemType("teleporter");
@@ -174,4 +183,3 @@ export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movableBlock");
-export const isMultipliable = isItemType("block", "deadlyBlock", "barrier");

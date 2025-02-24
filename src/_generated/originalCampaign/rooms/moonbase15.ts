@@ -18,33 +18,18 @@ export const room = inferRoomJson({
       type: "door",
     },
     "hushPuppy@5,0,0": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 5, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@5,1,0": {
-      config: {},
-      position: { x: 5, y: 1, z: 0 },
-      type: "hushPuppy",
-    },
     "hushPuppy@6,0,1": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 6, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,1,1": {
-      config: {},
-      position: { x: 6, y: 1, z: 1 },
-      type: "hushPuppy",
-    },
     "hushPuppy@7,0,2": {
-      config: {},
+      config: { times: { y: 2 } },
       position: { x: 7, y: 0, z: 2 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@7,1,2": {
-      config: {},
-      position: { x: 7, y: 1, z: 2 },
       type: "hushPuppy",
     },
     scroll: {

@@ -8,33 +8,13 @@ export const room = inferRoomJson({
   id: "egyptus2",
   items: {
     "block@0,3,0": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { y: 2 } },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@0,4,0": {
-      config: { style: "artificial" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "block",
-    },
     "block@6,3,3": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { x: 2, y: 2 } },
       position: { x: 6, y: 3, z: 3 },
-      type: "block",
-    },
-    "block@6,4,3": {
-      config: { style: "artificial" },
-      position: { x: 6, y: 4, z: 3 },
-      type: "block",
-    },
-    "block@7,3,3": {
-      config: { style: "artificial" },
-      position: { x: 7, y: 3, z: 3 },
-      type: "block",
-    },
-    "block@7,4,3": {
-      config: { style: "artificial" },
-      position: { x: 7, y: 4, z: 3 },
       type: "block",
     },
     "door@0,3,1": {

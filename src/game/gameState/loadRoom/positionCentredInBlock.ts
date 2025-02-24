@@ -1,11 +1,11 @@
-import type { UnknownJsonItem } from "../../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 
-export const positionCentredInBlock = (item: UnknownJsonItem): Xyz => {
+export const positionCentredInBlock = (item: JsonItemUnion): Xyz => {
   // this is wrong when we have times set to on!
 
   const blockPosition = blockXyzToFineXyz(item.position);

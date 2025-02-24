@@ -7,22 +7,27 @@ import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type {
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
   ShadowMaskOptions,
 } from "../../../model/ItemInPlay";
-import type { UnknownJsonItem } from "../../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import type { ScrollsRead } from "../../../store/gameMenusSlice";
 
+type ItemConfigMaybeWithMultiplication = {
+  times?: undefined | Partial<Xyz>;
+};
+
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
-  jsonItem: UnknownJsonItem<RoomId>,
+  jsonItem: JsonItemUnion<RoomId>,
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
-): Generator<UnknownItemInPlay<RoomId>, undefined> {
+): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   if (roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
     return;
@@ -50,11 +55,14 @@ export function* loadItemFromJson<RoomId extends string>(
       const boundingBoxes = boundingBoxForItem(jsonItem);
 
       const boundingBoxesMultiplied: typeof boundingBoxes =
-        jsonItem.type === "barrier" || jsonItem.type === "block" ?
+        (
+          (jsonItem.config as ItemConfigMaybeWithMultiplication).times !==
+          undefined
+        ) ?
           {
             aabb: multiplyBoundingBox(
               boundingBoxes.aabb,
-              jsonItem.config.times,
+              (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
             ),
             // multiplied items can't have a separate render bb:
             renderAabb: undefined,
@@ -82,9 +90,7 @@ export function* loadItemFromJson<RoomId extends string>(
   }
 }
 
-const shadowMask = (
-  jsonItem: UnknownJsonItem,
-): ShadowMaskOptions | undefined => {
+const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
   // charles doesn't work because can't (yet) have direction-specific (changing) maps
   switch (jsonItem.type) {
     case "lift":
@@ -186,7 +192,7 @@ const shadowMask = (
 };
 
 const shadowCast = (
-  jsonItem: UnknownJsonItem,
+  jsonItem: JsonItemUnion,
 ): CreateSpriteOptions | undefined => {
   switch (jsonItem.type) {
     case "lift":
