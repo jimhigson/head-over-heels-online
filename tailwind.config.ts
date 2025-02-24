@@ -111,7 +111,7 @@ export default {
     width: {
       ...blockMultiples,
       zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,
-      wideDialog: "calc(100svw - 2 * var(--block))",
+      wideDialog: "calc(100dvw - 2 * var(--block))",
       min: "min-content",
       max: "max-content",
       full: "100%",
@@ -122,7 +122,7 @@ export default {
     },
     height: {
       zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
-      tallDialog: "calc(100svh - 2 * var(--block))",
+      tallDialog: "calc(100dvh - 2 * var(--block))",
       ...blockMultiples,
       min: "min-content",
       max: "max-content",

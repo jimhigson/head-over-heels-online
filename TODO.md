@@ -7,30 +7,40 @@
 ## General
 
 ### Big ideas
-[ ] add sound to the game
+[2,L] add sound to the game
     * start small:
         1 start game sound
         2 walking sound w/repeat frequency by number of stepsh
 
 [x] 8-way sprites
 
-[ ] a map
+[,XL] a map
     [ ] a mini-map
 
-[ ] level editor
+[,XL] level editor
 
-[ ] iphone playable
+[1,L] iphone playable
     * on-screen keyboared
 
-[ ] own levels
+[,?] own levels
 
-[ ] switch to devcontainers
+[3,M] switch to devcontainers
 
 [ ] switch to OOP on room state/items etc. 
     Eg polymorphism: .isPushable() etc methods
     Eg, .times() hardcoded to return 1,1,1 for most
 
-### Details ad bugs
+### mobile
+[ ] remove address bar in normal browser
+    maybe helpful? https://stackoverflow.com/questions/5206811/hide-iphone-address-bar-with-100-height - although very old!
+[x] allow use as a PWA
+[ ] on-screen controls (only on phone)
+[ ] back button on menus
+[ ] menu button while playing
+[ ] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
+[ ] text larger in dialogs - probably by increasing the scale size inside dialogs
+
+### Details and bugs
 
 [ ] bug - need to refresh page after changing input preset
 
@@ -187,10 +197,6 @@ translate: https://hoh.helmantika.com/jon-ritman/
 [ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
 [ ] room floor edge with attribute clash, hud in original colours
 
-# Menus
-[ ] css grid layout or similar for menu items
-    - should allow multi-line, eg when a loy of keys mapped
-
 # Rooms
 
 # blacktooth20
@@ -201,7 +207,8 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # egyptus12, others(?)
 [ ] sandwich with SOF on it seems to move him double
-    * can't reproduce
+    * can't reproduce - seen on rasp pi
+        * maybe only at low frame rates?
 [ ] SOF can land on joysticks
     * this is good because can skip pushing the sandwich
 

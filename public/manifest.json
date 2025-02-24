@@ -1,0 +1,15 @@
+{
+    "name": "Head over Heels",
+    "short_name": "Head over Heels",
+    "display": "standalone",
+    "start_url": "/",
+    "background_color": "#000000",
+    "theme_color": "#D68ED1",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "24x24",
+            "type": "image/png"
+        }
+    ]
+}
