@@ -89,7 +89,7 @@ const doorFrames = <SN extends SceneryName>(
 export const doorSpritesheetData = {
   frames: {
     ...doorFrames("generic", "y", { x: 580, y: 415 }),
-    ...doorFrames("generic", "x", { x: 581, y: 415 }),
+    ...doorFrames("generic", "x", { x: 582, y: 415 }),
     ...doorFrames("moonbase", "y", { x: 451, y: 204 }),
     ...doorFrames("moonbase", "x", { x: 582, y: 204 }),
     ...doorFrames("moonbase.dark", "y", { x: 451, y: 276 }),
