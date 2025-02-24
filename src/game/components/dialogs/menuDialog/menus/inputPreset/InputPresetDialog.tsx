@@ -31,7 +31,7 @@ export const InputPresetDialog = () => {
             <MenuItemSeparator />
             <BackMenuItem />
           </MenuItems>
-          <SelectedItemHint className="text-shadow zx:text-zxMagenta" />
+          <SelectedItemHint className="text-midGrey zx:text-zxMagenta" />
         </Portal.Provider>
       </Dialog>
     </DialogPortal>

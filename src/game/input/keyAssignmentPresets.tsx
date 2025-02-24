@@ -10,6 +10,7 @@ import {
 } from "./InputState";
 import type { MamePlayer } from "./controllers";
 import {
+  eightBitDoKeyboard,
   mameButtonsPlayer1,
   mameButtonsPlayer2,
   standardControllerLayout,
@@ -18,6 +19,19 @@ import {
 //standard keys that are used in all presets:
 const standardAssignment = {
   presses: {
+    right: {
+      keys: ["ArrowRight"],
+      gamepadButtons: [],
+    },
+    towards: {
+      keys: ["ArrowDown"],
+    },
+    left: {
+      keys: ["ArrowLeft"],
+    },
+    away: {
+      keys: ["ArrowUp"],
+    },
     menu_openOrExit: {
       // escape alone isn't good because it can leave fullscreen in browser sometimes - use the others!
       keys: ["Escape", "Tab", "§"],
@@ -38,10 +52,6 @@ const standardAssignment = {
     // f12 is taken in chrome/firefox - opens dev tools
     toggleColourisation: { keys: ["F10"] },
     toggleShowFps: { keys: ["F9"] },
-  },
-  axes: {
-    x: [0],
-    y: [1],
   },
 } as const satisfies PartialInputAssignment;
 
@@ -68,7 +78,6 @@ const combineWithoutDuplicates = <T,>(
 type PartialInputAssignment = PartialDeep<InputAssignment>;
 
 export function combineInputAssignments(
-  firstAssignment: InputAssignment,
   ...assignments: PartialInputAssignment[]
 ): InputAssignment {
   return {
@@ -91,18 +100,18 @@ export function combineInputAssignments(
         }
         return ac;
       },
-      structuredClone(firstAssignment.presses),
+      structuredClone(emptyInputAssignment.presses),
     ),
     axes: {
       x: Array.from(
         new Set([
-          ...firstAssignment.axes.x,
+          ...emptyInputAssignment.axes.x,
           ...assignments.map((a) => a.axes?.x ?? []).flat(),
         ]),
       ),
       y: Array.from(
         new Set([
-          ...firstAssignment.axes.y,
+          ...emptyInputAssignment.axes.y,
           ...assignments.map((a) => a.axes?.y ?? []).flat(),
         ]),
       ),
@@ -110,11 +119,62 @@ export function combineInputAssignments(
   };
 }
 
+const gamepadAssignment: InputAssignmentPreset = {
+  inputAssignment: combineInputAssignments(standardAssignment, {
+    presses: {
+      right: {
+        gamepadButtons: [standardControllerLayout.dPadRight],
+      },
+      towards: {
+        gamepadButtons: [standardControllerLayout.dPadDown],
+      },
+      left: {
+        gamepadButtons: [standardControllerLayout.dPadLeft],
+      },
+      away: {
+        gamepadButtons: [standardControllerLayout.dPadUp],
+      },
+      jump: {
+        gamepadButtons: [
+          standardControllerLayout.a,
+          standardControllerLayout.y,
+        ],
+      },
+      carry: {
+        gamepadButtons: [
+          standardControllerLayout.b,
+          standardControllerLayout.y,
+        ],
+      },
+      fire: { gamepadButtons: [standardControllerLayout.x] },
+      swop: { gamepadButtons: [standardControllerLayout.rb] },
+      hold: { gamepadButtons: [standardControllerLayout.start] },
+      menu_openOrExit: {
+        gamepadButtons: [
+          // on macOS by default select opens the 'select a game' type screen and there's no way for
+          // a browser to prevent that default. so that's unusable without OS config - encourage people
+          // to turn that off I guess! Or they can use the keys
+          standardControllerLayout.select,
+        ],
+      },
+      toggleColourisation: {
+        gamepadButtons: [standardControllerLayout.lt],
+      },
+    },
+    axes: {
+      x: [0],
+      y: [1],
+    },
+  }),
+  description:
+    "Joysticks/gamepads with at least 4 buttons, but preferably 6 or more. Inc Playstation, xbox etc",
+};
+
 // menu key can't be reconfigured:
-const originalKeyAssignment: InputAssignmentPreset = {
+const zxSpectrumKeyAssignment: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
-    emptyInputAssignment,
     standardAssignment,
+    gamepadAssignment.inputAssignment,
     {
       presses: {
         right: { keys: ["P", "7"] },
@@ -146,8 +206,8 @@ const originalKeyAssignment: InputAssignmentPreset = {
 
 const amigaKeyAssignment: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
-    emptyInputAssignment,
     standardAssignment,
+    gamepadAssignment.inputAssignment,
     {
       presses: {
         carry: {
@@ -165,79 +225,23 @@ const amigaKeyAssignment: InputAssignmentPreset = {
   description: "closely matches Amiga version keys - heavy on the F-keys",
 };
 
-const gamepadAssignment: InputAssignmentPreset = {
-  inputAssignment: combineInputAssignments(
-    emptyInputAssignment,
-    standardAssignment,
-    {
-      presses: {
-        right: {
-          gamepadButtons: [standardControllerLayout.dPadRight],
-        },
-        towards: {
-          gamepadButtons: [standardControllerLayout.dPadDown],
-        },
-        left: {
-          gamepadButtons: [standardControllerLayout.dPadLeft],
-        },
-        away: {
-          gamepadButtons: [standardControllerLayout.dPadUp],
-        },
-        jump: {
-          gamepadButtons: [
-            standardControllerLayout.a,
-            standardControllerLayout.y,
-          ],
-        },
-        carry: {
-          gamepadButtons: [
-            standardControllerLayout.b,
-            standardControllerLayout.y,
-          ],
-        },
-        fire: { gamepadButtons: [standardControllerLayout.x] },
-        swop: { gamepadButtons: [standardControllerLayout.rb] },
-        hold: { gamepadButtons: [standardControllerLayout.start] },
-        menu_openOrExit: {
-          gamepadButtons: [
-            // on macOS by default select opens the 'select a game' type screen and there's no way for
-            // a browser to prevent that default. so that's unusable without OS config - encourage people
-            // to turn that off I guess! Or they can use the keys
-            standardControllerLayout.select,
-          ],
-        },
-        toggleColourisation: {
-          gamepadButtons: [standardControllerLayout.lt],
-        },
-      },
-      axes: {
-        x: [0],
-        y: [1],
-      },
-    },
-  ),
-  description:
-    "Joysticks/gamepads with at least 4 buttons, but preferably 6 or more. Inc Playstation, xbox etc",
-};
-
 const defaultAssignment: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
-    emptyInputAssignment,
     standardAssignment,
     gamepadAssignment.inputAssignment,
     {
       presses: {
         right: {
-          keys: ["ArrowRight", "P", "Numpad6"],
+          keys: ["P", "Numpad6"],
         },
         towards: {
-          keys: ["ArrowDown", "A", "Numpad5"],
+          keys: ["A", "Numpad5"],
         },
         left: {
-          keys: ["ArrowLeft", "O", "Numpad8"],
+          keys: ["O", "Numpad8"],
         },
         away: {
-          keys: ["ArrowUp", "Q", "Numpad9"],
+          keys: ["Q", "Numpad9"],
         },
         jump: {
           keys: [" ", "`", "\\", "Numpad0", "Numpad-"],
@@ -264,8 +268,8 @@ const defaultAssignment: InputAssignmentPreset = {
 // left hand on wasd, right hand (optionally) on IOP
 const wasdKeyAssignments: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
-    emptyInputAssignment,
     standardAssignment,
+    gamepadAssignment.inputAssignment,
     {
       presses: {
         right: { keys: ["D"] },
@@ -283,6 +287,36 @@ const wasdKeyAssignments: InputAssignmentPreset = {
   description: "Modern, minimalist WASD key layout",
 };
 
+// left hand on wasd, right hand (optionally) on IOP
+const keyboardMode8BitDo: InputAssignmentPreset = {
+  inputAssignment: combineInputAssignments(
+    standardAssignment,
+    gamepadAssignment.inputAssignment,
+    {
+      presses: {
+        right: { keys: [eightBitDoKeyboard.dPadRight] },
+        towards: { keys: [eightBitDoKeyboard.dPadDown] },
+        left: { keys: [eightBitDoKeyboard.dPadLeft] },
+        away: { keys: [eightBitDoKeyboard.dPadUp] },
+        jump: {
+          keys: [eightBitDoKeyboard.a, eightBitDoKeyboard.y],
+        },
+        carry: {
+          keys: [eightBitDoKeyboard.b, eightBitDoKeyboard.y],
+        },
+        fire: { keys: [eightBitDoKeyboard.x] },
+        swop: { keys: [eightBitDoKeyboard.rb] },
+        hold: { keys: [eightBitDoKeyboard.start] },
+        menu_openOrExit: {
+          keys: [eightBitDoKeyboard.select],
+        },
+      },
+    },
+  ),
+  description:
+    "8bitdo controllers in keyboard mode (identifies to OS as a keyboard). They work as controllers even on phones that don’t support controllers",
+};
+
 const mameToHoh = (mamePlayer: MamePlayer): PartialInputAssignment => ({
   presses: {
     right: { keys: [mamePlayer.directions.right] },
@@ -294,11 +328,12 @@ const mameToHoh = (mamePlayer: MamePlayer): PartialInputAssignment => ({
     fire: { keys: [mamePlayer.buttons[2]] },
     swop: { keys: [mamePlayer.start] },
     hold: { keys: [mamePlayer.coin] },
-    menu_openOrExit: { keys: [mamePlayer.buttons[5]] },
+    menu_openOrExit: { keys: [mamePlayer.buttons[2]] },
   },
 });
 
 const mamePreset: InputAssignmentPreset = {
+  // note: mame is unusual in that it doesn't have gamepad built in
   inputAssignment: combineInputAssignments(
     emptyInputAssignment,
     standardAssignment,
@@ -311,12 +346,13 @@ const mamePreset: InputAssignmentPreset = {
 
 export const keyAssignmentPresets = {
   default: defaultAssignment,
-  "zx spectrum": originalKeyAssignment,
+  "zx spectrum": zxSpectrumKeyAssignment,
   amiga: amigaKeyAssignment,
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
   mame: mamePreset,
   wasd: wasdKeyAssignments,
-  "🕹joystick": gamepadAssignment,
+  "🕹 8bitdo keyboard mode": keyboardMode8BitDo,
+  "🕹 joystick": gamepadAssignment,
 } satisfies Record<string, InputAssignmentPreset>;
 
 export type KeyAssignmentPresetName = keyof typeof keyAssignmentPresets;

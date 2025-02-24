@@ -56,3 +56,20 @@ export const mameButtonsPlayer2: MamePlayer = {
   },
   buttons: ["A", "S", "Q", "W", "I", "K"],
 };
+
+export const eightBitDoKeyboard = {
+  dPadUp: "C",
+  dPadDown: "D",
+  dPadLeft: "E",
+  dPadRight: "F",
+  a: "J",
+  b: "G",
+  y: "H",
+  x: "I",
+  lb: "K",
+  rb: "M",
+  start: "O",
+  select: "N",
+} as const satisfies Partial<
+  Record<keyof typeof standardControllerLayout, Key>
+>;
