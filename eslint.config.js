@@ -23,7 +23,7 @@ export default tseslint.config(
     },
     rules: {
       //    "no-shadow": "error",
-      "no-console": "warn",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-useless-rename": "error",
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
