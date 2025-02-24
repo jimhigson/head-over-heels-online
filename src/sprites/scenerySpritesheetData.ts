@@ -146,10 +146,24 @@ const frames = {
     },
   },
   "generic.door.floatingThreshold.x": {
-    frame: { x: 496, y: 477, w: 26, h: 19 },
+    frame: {
+      x: 496,
+      y: 477,
+      w: 26,
+      h: 19,
+
+      pivot: { x: 18, y: 12 },
+    },
   },
   "generic.door.floatingThreshold.y": {
-    frame: { x: 469, y: 477, w: 26, h: 19 },
+    frame: {
+      x: 469,
+      y: 477,
+      w: 26,
+      h: 19,
+
+      pivot: { x: 8, y: 12 },
+    },
   },
   "shadowMask.door.floatingThreshold.double.y": {
     frame: {
@@ -157,7 +171,9 @@ const frames = {
       y: 480,
       w: 42,
       h: 21,
-      pivot: { x: 8, y: 20 },
+      // the legs are as deep as the wall is, so this pivot value is sensitive to the
+      // depth of the door legs bb:
+      pivot: { x: 24, y: 28 },
     },
   },
   "shadow.door.floatingThreshold.double.y": {
@@ -166,6 +182,8 @@ const frames = {
       y: 480,
       w: 42,
       h: 21,
+      // the legs are as deep as the wall is, so this pivot value is sensitive to the
+      // depth of the door legs bb:
       pivot: { x: 8, y: 20 },
     },
   },

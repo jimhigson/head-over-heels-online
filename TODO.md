@@ -44,6 +44,10 @@
     [x] #blacktooth74 
         - [x] no multiplied shadows
         - [x] threshold shadow mask is wrong
+    [ ] part 2
+        [ ] remove 'walls' property from json, walls are normal object
+        [ ] consolidation can consolidate walls with different configs
+        [ ] walls renderer can do multiple different textures
 
 
 [x] split campaign patch up per-room
