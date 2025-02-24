@@ -82,5 +82,6 @@ export const loadWall = (
       expires: null,
       disappear: null,
     },
+    shadowCastTexture: "shadow.wall.y",
   };
 };
