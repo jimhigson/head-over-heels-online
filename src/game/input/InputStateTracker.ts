@@ -22,9 +22,15 @@ import {
   rotateInputVector45,
   snapToCardinal,
 } from "./analogueControlAdjustments";
+import { iterate } from "../../utils/iterate";
+import { emptyArray } from "../../utils/empty";
 
 const analogueDeadzone = 0.2;
 const snapAngleRadians = 13 * (Math.PI / 180);
+
+/* how long to keep buffered input for - this is essentially a sensitivity setting
+  - this could be configurable as in the original game */
+const bufferLengthMs = 45;
 
 export type PressStatus =
   /** just started pressing this frame */
@@ -138,9 +144,6 @@ const isActionPressed = (
 
   return false;
 };
-
-// how long to keep buffered input for
-const bufferLengthMs = 45;
 
 /**
  * read from the given inputState (and anything else) to get the current interpretation
@@ -256,30 +259,46 @@ export class InputStateTracker {
         if (lengthXyz(v) > analogueDeadzone) yield v;
       }
     }
-    const pressed = [...pressVectors(currentFrameInput)];
+    let pressVs = [...pressVectors(currentFrameInput)];
     let recentlyReleasedPress: Xyz | undefined = undefined;
 
-    if (pressed.length === 1) {
-      const [singlePressedNow] = pressed;
+    if (pressVs.length === 1) {
+      const [singlePressedNow] = pressVs;
+
+      const previousFramePressVectors = [
+        ...iterate(this.#frameInputBuffer)
+          .drop(1)
+          .map((buffer) => [...pressVectors(buffer)]),
+      ];
+
       // if only one input is pressed, check the buffer if another, orthogonal input was only just released,
       // in this case we keep going diagonally for a short time until that found frame is out of the buffer
-      loopOverBuffers: for (const buf of this.#frameInputBuffer) {
-        const bufferPresses = [...pressVectors(buf)];
-        if (bufferPresses.length > 2) {
+      loopOverBuffers: for (const prevFramePressV of previousFramePressVectors) {
+        if (prevFramePressV.length > 2) {
           break loopOverBuffers;
         }
         if (
-          bufferPresses.length === 2 &&
+          prevFramePressV.length === 2 &&
           // one identical:
-          bufferPresses.some((bp) => xyzEqual(bp, singlePressedNow))
+          prevFramePressV.some((bp) => xyzEqual(bp, singlePressedNow))
         ) {
           // and one orthoganal:
-          const bufferOrthogonalPress = bufferPresses.find(
+          const bufferOrthogonalPress = prevFramePressV.find(
             (bp) => dotProductXyz(bp, singlePressedNow) < 0.001,
           );
           if (bufferOrthogonalPress !== undefined) {
             recentlyReleasedPress = bufferOrthogonalPress;
             break loopOverBuffers;
+          }
+        }
+      }
+
+      if (!recentlyReleasedPress) {
+        // check if we are starting new input from none
+        for (const prevFramePressV of previousFramePressVectors) {
+          if (prevFramePressV.length === 0) {
+            // start of input - cancel the current input until the buffer is fuller:
+            pressVs = emptyArray;
           }
         }
       }
@@ -295,7 +314,7 @@ export class InputStateTracker {
 
     return addXyz(
       recentlyReleasedPress ?? originXyz,
-      ...pressVectors(currentFrameInput),
+      ...pressVs,
       ...axisVectors(currentFrameInput),
     );
   }
