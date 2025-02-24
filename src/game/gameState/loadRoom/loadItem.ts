@@ -16,6 +16,7 @@ import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import type { ScrollsRead } from "../../../store/gameMenusSlice";
+import { loadWall } from "./loadWalls";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -50,6 +51,11 @@ export function* loadItemFromJson<RoomId extends string>(
       return;
     }
 
+    case "wall": {
+      yield loadWall(jsonItem, itemId);
+      return;
+    }
+
     // catch-all for all items that don't need special handling:
     default: {
       const boundingBoxes = boundingBoxForItem(jsonItem);
@@ -73,11 +79,6 @@ export function* loadItemFromJson<RoomId extends string>(
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
-        renders: !(
-          jsonItem.type === "wall" &&
-          (jsonItem.config.side === "right" ||
-            jsonItem.config.side === "towards")
-        ),
         shadowMask: shadowMask(jsonItem),
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,

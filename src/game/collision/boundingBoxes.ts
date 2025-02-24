@@ -12,33 +12,7 @@ export const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.h * 2,
 };
-const wallRenderHeight = 50;
 
-// can't take room height blocks times block height, or it is still possible to
-// jump over the wall in some cases in rooms without a ceiling portal
-export const wallThicknessBlocks = 1;
-
-export const xAxisWallAabb = {
-  x: blockSizePx.w,
-  y: blockSizePx.d * wallThicknessBlocks,
-  z: defaultRoomHeightBlocks * blockSizePx.h,
-};
-export const xAxisWallRenderAabb = {
-  x: xAxisWallAabb.x,
-  y: 0,
-  // for rendering it extends to the drawn height of the wall tile:
-  z: wallRenderHeight,
-};
-export const yAxisWallAabb = {
-  x: blockSizePx.w * wallThicknessBlocks,
-  y: blockSizePx.d,
-  z: defaultRoomHeightBlocks * blockSizePx.h,
-};
-export const yAxisWallRenderAabb = {
-  x: 0,
-  y: yAxisWallAabb.y,
-  z: wallRenderHeight,
-};
 
 export const boundingBoxForItem = (
   item: JsonItemUnion | UnionOfAllItemInPlayTypes,
@@ -136,10 +110,6 @@ export const boundingBoxForItem = (
           : { x: 15, y: 3, z: blockSizePx.h },
       };
     }
-    case "wall":
-      return item.config.side === "left" || item.config.side === "right" ?
-          { aabb: yAxisWallAabb, renderAabb: yAxisWallRenderAabb }
-        : { aabb: xAxisWallAabb, renderAabb: xAxisWallRenderAabb };
 
     case "sceneryPlayer":
       return item.config.which === "headOverHeels" ?

@@ -63,9 +63,24 @@ export const room = inferRoomJson({
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
+    "wall@0,0,0:2scjwz": {
+      config: { direction: "right", tiles: [], times: { y: 3 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDXu": {
+      config: { direction: "towards", tiles: [], times: { x: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,5,0": {
+      config: { direction: "right", tiles: [], times: { y: 3 } },
+      position: { x: 0, y: 5, z: 0 },
+      type: "wall",
+    },
     "wall@0,8,0": {
       config: {
-        side: "away",
+        direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
         times: { x: 6 },
       },
@@ -74,7 +89,7 @@ export const room = inferRoomJson({
     },
     "wall@6,0,0": {
       config: {
-        side: "left",
+        direction: "left",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
         times: { y: 8 },
       },

@@ -521,12 +521,12 @@ describe("walls", () => {
     const items: JsonItemUnion[] = [
       {
         type: "wall",
-        config: { side: "away", tiles: ["cowboy"] },
+        config: { direction: "away", tiles: ["cowboy"] },
         position: { x: 0, y: 0, z: 0 },
       },
       {
         type: "wall",
-        config: { side: "away", tiles: ["book"] },
+        config: { direction: "away", tiles: ["book"] },
         position: { x: 0, y: 1, z: 0 },
       },
     ];
@@ -535,7 +535,7 @@ describe("walls", () => {
       [
         {
           "config": {
-            "side": "away",
+            "direction": "away",
             "tiles": [
               "cowboy",
               "book",
@@ -558,22 +558,22 @@ describe("walls", () => {
     const items: JsonItemUnion[] = [
       {
         type: "wall",
-        config: { side: "left", tiles: ["cowboy"] },
+        config: { direction: "left", tiles: ["cowboy"] },
         position: { x: 0, y: 0, z: 0 },
       },
       {
         type: "wall",
-        config: { side: "left", tiles: ["cowboy"] },
+        config: { direction: "left", tiles: ["cowboy"] },
         position: { x: 1, y: 0, z: 0 },
       },
       {
         type: "wall",
-        config: { side: "left", tiles: ["book"] },
+        config: { direction: "left", tiles: ["book"] },
         position: { x: 2, y: 0, z: 0 },
       },
       {
         type: "wall",
-        config: { side: "left", tiles: ["book"] },
+        config: { direction: "left", tiles: ["book"] },
         position: { x: 3, y: 0, z: 0 },
       },
     ];
@@ -582,7 +582,7 @@ describe("walls", () => {
       [
         {
           "config": {
-            "side": "left",
+            "direction": "left",
             "tiles": [
               "cowboy",
               "cowboy",
@@ -607,12 +607,12 @@ describe("walls", () => {
     const items: JsonItemUnion[] = [
       {
         type: "wall",
-        config: { side: "left", tiles: ["cowboy"] },
+        config: { direction: "left", tiles: ["cowboy"] },
         position: { x: 0, y: 0, z: 0 },
       },
       {
         type: "wall",
-        config: { side: "away", tiles: ["cowboy"] },
+        config: { direction: "away", tiles: ["cowboy"] },
         position: { x: 0, y: 1, z: 0 },
       },
     ];
@@ -621,7 +621,7 @@ describe("walls", () => {
       [
         {
           "config": {
-            "side": "left",
+            "direction": "left",
             "tiles": [
               "cowboy",
             ],
@@ -635,7 +635,7 @@ describe("walls", () => {
         },
         {
           "config": {
-            "side": "away",
+            "direction": "away",
             "tiles": [
               "cowboy",
             ],

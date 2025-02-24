@@ -88,15 +88,15 @@ export const itemAppearances: {
   wall: renderOnce(
     ({
       item: {
-        config: { side, tiles },
+        config: { direction, tiles },
       },
       room,
     }) => {
-      if (side === "right" || side === "towards") {
+      if (direction === "right" || direction === "towards") {
         throw new Error("this wall should be non-rendering");
       }
 
-      const alongAxis = perpendicularAxisXy(directionAxis(side));
+      const alongAxis = perpendicularAxisXy(directionAxis(direction));
 
       const container = new Container({ label: "wallTiles" });
       for (let i = 0; i < tiles.length; i++) {
@@ -104,14 +104,14 @@ export const itemAppearances: {
           texture: wallTextureId(
             room.planet,
             tiles[i],
-            side,
+            direction,
             room.color.shade === "dimmed",
           ),
           // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
           // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
           y: 1,
           pivot:
-            side === "away" ?
+            direction === "away" ?
               {
                 x: wallTileSize.w,
                 // walls need to be rendered 1px high to match original game (original puts them 1px low, but

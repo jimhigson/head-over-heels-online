@@ -1,7 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { JsonItem } from "../../../model/json/JsonItem";
-import { doorIsInHiddenWall } from "../../../model/json/JsonItem";
+import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptySet } from "../../../utils/empty";
@@ -38,12 +37,12 @@ export function* loadDoor<RoomId extends string>(
   const axis = doorAlongAxis(direction);
   const crossAxis = perpendicularAxisXy(axis);
 
-  const inHiddenWall = doorIsInHiddenWall(jsonDoor);
+  const inHidden = inHiddenWall(jsonDoor);
 
   // doors on the left/towards side are set back half a square to embed them inside the unseen near-side wall:
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
-    [crossAxis]: inHiddenWall ? -0.5 : 0,
+    [crossAxis]: inHidden ? -0.5 : 0,
   };
 
   // bounding boxes for doors form a long tunnel-like structure longer than the door's rendering
@@ -51,7 +50,7 @@ export function* loadDoor<RoomId extends string>(
   // to not have MTVs that snag behind the door
   const doorTunnelLengthBlocks = 1;
   const tunnelSetbackBlocks = {
-    [crossAxis]: inHiddenWall ? -doorTunnelLengthBlocks : 0,
+    [crossAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
   };
   // the extra to put onto door frame AABBs to make them longer for the tunnel
   const doorTunnelAabbPx = {
@@ -70,7 +69,7 @@ export function* loadDoor<RoomId extends string>(
       id: `${id}/far`,
       config: {
         ...jsonDoor.config,
-        inHiddenWall,
+        inHiddenWall: inHidden,
         part: "far",
       },
       state: {
@@ -104,7 +103,7 @@ export function* loadDoor<RoomId extends string>(
       id: `${id}/near`,
       config: {
         ...jsonDoor.config,
-        inHiddenWall,
+        inHiddenWall: inHidden,
         part: "near",
       },
       state: {
@@ -135,7 +134,7 @@ export function* loadDoor<RoomId extends string>(
       id: `${id}/top`,
       config: {
         ...jsonDoor.config,
-        inHiddenWall,
+        inHiddenWall: inHidden,
         part: "top",
       },
       state: {
@@ -171,7 +170,8 @@ export function* loadDoor<RoomId extends string>(
       id: `${id}/wall`,
       config: {
         style: "none",
-        side: "away", // TODO: look at typings - this isn't needed for hidden walls
+        direction: "away", // TODO: look at typings - this isn't needed for hidden walls
+        tiles: [],
       },
       renders: false,
       type: "wall",
@@ -203,10 +203,10 @@ export function* loadDoor<RoomId extends string>(
       id: `${id}/portal`,
       config: {
         ...jsonDoor.config,
-        inHiddenWall,
+        inHidden,
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
-          [crossAxis]: inHiddenWall ? 0.25 : -0.25,
+          [crossAxis]: inHidden ? 0.25 : -0.25,
         }),
         direction: unitVectors[direction],
       },
@@ -218,7 +218,7 @@ export function* loadDoor<RoomId extends string>(
               position,
 
               {
-                [crossAxis]: inHiddenWall ? -0.5 : 0.5,
+                [crossAxis]: inHidden ? -0.5 : 0.5,
               },
             ),
           ),
@@ -247,18 +247,18 @@ export function* loadDoor<RoomId extends string>(
         id: `${id}/legs`,
         config: {
           ...jsonDoor.config,
-          inHiddenWall,
+          inHiddenWall: inHidden,
           style: "none",
           side: "away", // TODO: look at typings - this isn't needed for hidden walls
           height: position.z,
         },
         renders: true,
         shadowCastTexture:
-          inHiddenWall ? "shadow.door.floatingThreshold.double.y" : undefined,
+          inHidden ? "shadow.door.floatingThreshold.double.y" : undefined,
         shadowMask: {
           spriteOptions: {
             texture:
-              inHiddenWall ?
+              inHidden ?
                 "shadowMask.door.floatingThreshold.double.y"
               : "shadowMask.door.legs.threshold.double.y",
             flipX: axis === "x",

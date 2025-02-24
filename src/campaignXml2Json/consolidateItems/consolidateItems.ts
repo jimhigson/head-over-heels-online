@@ -1,7 +1,6 @@
 import { canonicalize } from "json-canonicalize";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { JsonItemType, JsonItemUnion } from "../../model/json/JsonItem";
-import { inspect } from "node:util";
 
 export const consolidatableJsonItemTypes = [
   "block",
@@ -34,7 +33,7 @@ type Grid = Set<ConsolidatableJsonItem>[][][];
 // Generate a stable hash key for the visited map
 const hashItem = (o: ConsolidatableJsonItem): string => {
   return o.type === "wall" ?
-      `wall/${o.config.side}`
+      `wall/${o.config.direction}`
     : canonicalize({ type: o.type, config: o.config });
 };
 
@@ -210,11 +209,6 @@ export const consolidateItems = (
       if (yTimes !== 1) item.config.times.y = yTimes;
       if (zTimes !== 1) item.config.times.z = zTimes;
     }
-
-    console.log(
-      `consolidating region (${startX}, ${startY}, ${startZ}) -> ${endX}, ${endY}, ${endZ}`,
-      inspect(visited, { depth: 6 }),
-    );
 
     // Clear the consolidated item from all other cells
     for (let i = startX; i <= endX; i++) {

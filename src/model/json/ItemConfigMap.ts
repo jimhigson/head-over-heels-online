@@ -63,7 +63,7 @@ export type ItemConfigMap<
   wall: ConsolidatableConfig & {
     tiles: Array<Wall<P>>;
     /** side of the room the wall is on (not the side it is facing) */
-    side: DirectionXy4;
+    direction: DirectionXy4;
   };
   teleporter: {
     toRoom: RoomId;
