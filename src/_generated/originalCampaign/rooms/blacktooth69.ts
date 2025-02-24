@@ -32,11 +32,44 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
+    "wall@0,0,0:2sckiP": {
+      config: { direction: "right", tiles: [], times: { y: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDXu": {
+      config: { direction: "towards", tiles: [], times: { x: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,6,0": {
+      config: {
+        direction: "away",
+        tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
+        times: { x: 6 },
+      },
+      position: { x: 0, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall@6,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["plain", "shield"],
+        times: { y: 2 },
+      },
+      position: { x: 6, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@6,4,0": {
+      config: {
+        direction: "left",
+        tiles: ["shield", "plain"],
+        times: { y: 2 },
+      },
+      position: { x: 6, y: 4, z: 0 },
+      type: "wall",
+    },
   },
   planet: "blacktooth",
   size: { x: 6, y: 6 },
-  walls: {
-    away: ["plain", "armour", "shield", "shield", "armour", "plain"],
-    left: ["plain", "shield", "none", "none", "shield", "plain"],
-  },
 }) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

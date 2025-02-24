@@ -96,87 +96,76 @@ export const room = inferRoomJson({
       position: { x: 3, y: 9, z: 0 },
       type: "pickup",
     },
-    "wall@10,6,0": {
-      config: { side: "away", style: "armour" },
-      position: { x: 10, y: 6, z: 0 },
+    "wall@0,0,0:2scjgO": {
+      config: { direction: "right", tiles: [], times: { y: 2 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@11,6,0": {
-      config: { side: "away", style: "plain" },
-      position: { x: 11, y: 6, z: 0 },
+    "wall@0,0,0:Za9xLq": {
+      config: { direction: "towards", tiles: [], times: { x: 12 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,12,0": {
+      config: {
+        direction: "away",
+        tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
+        times: { x: 6 },
+      },
+      position: { x: 0, y: 12, z: 0 },
+      type: "wall",
+    },
+    "wall@0,4,0": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "wall",
+    },
+    "wall@12,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["plain", "shield"],
+        times: { y: 2 },
+      },
+      position: { x: 12, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@12,4,0": {
+      config: {
+        direction: "left",
+        tiles: ["shield", "plain"],
+        times: { y: 2 },
+      },
+      position: { x: 12, y: 4, z: 0 },
       type: "wall",
     },
     "wall@6,10,0": {
-      config: { side: "left", style: "shield" },
+      config: {
+        direction: "left",
+        tiles: ["shield", "plain"],
+        times: { y: 2 },
+      },
       position: { x: 6, y: 10, z: 0 },
       type: "wall",
     },
-    "wall@6,11,0": {
-      config: { side: "left", style: "plain" },
-      position: { x: 6, y: 11, z: 0 },
-      type: "wall",
-    },
-    "wall@6,6,0:1TQrOi": {
-      config: { side: "left", style: "plain" },
+    "wall@6,6,0:Z1Jhfeq": {
+      config: {
+        direction: "away",
+        tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
+        times: { x: 6 },
+      },
       position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,6,0:Z7IKOn": {
-      config: { side: "away", style: "plain" },
+    "wall@6,6,0:Z1rag6v": {
+      config: {
+        direction: "left",
+        tiles: ["plain", "shield"],
+        times: { y: 2 },
+      },
       position: { x: 6, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@6,7,0": {
-      config: { side: "left", style: "shield" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "wall",
-    },
-    "wall@7,6,0": {
-      config: { side: "away", style: "armour" },
-      position: { x: 7, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@8,6,0": {
-      config: { side: "away", style: "shield" },
-      position: { x: 8, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@9,6,0": {
-      config: { side: "away", style: "shield" },
-      position: { x: 9, y: 6, z: 0 },
       type: "wall",
     },
   },
   planet: "blacktooth",
   size: { x: 12, y: 12 },
-  walls: {
-    away: [
-      "plain",
-      "armour",
-      "shield",
-      "shield",
-      "armour",
-      "plain",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-    left: [
-      "plain",
-      "shield",
-      "none",
-      "none",
-      "shield",
-      "plain",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-  },
 }) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

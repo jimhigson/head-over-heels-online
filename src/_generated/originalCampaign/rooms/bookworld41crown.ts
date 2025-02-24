@@ -60,11 +60,49 @@ export const room = inferRoomJson({
       position: { x: 2, y: 4, z: 0 },
       type: "slidingBlock",
     },
+    "wall@0,0,0:2sckOl": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoF0v": {
+      config: { direction: "towards", tiles: [], times: { x: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["book", "cowboy", "book", "book", "cowboy", "book"],
+        times: { x: 6 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@4,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 2 } },
+      position: { x: 4, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@6,0,0": {
+      config: {
+        direction: "left",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+        times: { y: 8 },
+      },
+      position: { x: 6, y: 0, z: 0 },
+      type: "wall",
+    },
   },
   planet: "bookworld",
   size: { x: 6, y: 8 },
-  walls: {
-    away: ["book", "cowboy", "book", "book", "cowboy", "book"],
-    left: ["book", "book", "cowboy", "book", "book", "cowboy", "book", "book"],
-  },
 }) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;

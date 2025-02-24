@@ -79,21 +79,40 @@ export const room = inferRoomJson({
       position: { x: 1, y: 2, z: 5 },
       type: "spring",
     },
+    "wall@0,0,0": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["hieroglyphics", "hieroglyphics"],
+        times: { x: 2 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@2,0,0": {
+      config: {
+        direction: "left",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+        ],
+        times: { y: 8 },
+      },
+      position: { x: 2, y: 0, z: 0 },
+      type: "wall",
+    },
   },
   planet: "egyptus",
   roomAbove: "egyptus36",
   size: { x: 2, y: 8, z: 13 },
-  walls: {
-    away: ["hieroglyphics", "hieroglyphics"],
-    left: [
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-      "hieroglyphics",
-    ],
-  },
 }) satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;

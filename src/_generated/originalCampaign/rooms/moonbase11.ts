@@ -22,20 +22,30 @@ export const room = inferRoomJson({
       position: { x: 2, y: 3, z: 0 },
       type: "door",
     },
+    "wall@0,0,0": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@2,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["window3", "coil", "window2"],
+        times: { y: 3 },
+      },
+      position: { x: 2, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@2,5,0": {
+      config: {
+        direction: "left",
+        tiles: ["window2", "coil", "window1"],
+        times: { y: 3 },
+      },
+      position: { x: 2, y: 5, z: 0 },
+      type: "wall",
+    },
   },
   planet: "moonbase",
   size: { x: 2, y: 8 },
-  walls: {
-    away: ["none", "none"],
-    left: [
-      "window3",
-      "coil",
-      "window2",
-      "none",
-      "none",
-      "window2",
-      "coil",
-      "window1",
-    ],
-  },
 }) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

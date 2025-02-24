@@ -1,6 +1,16 @@
 [
   { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
+    "op": "replace",
+    "path": "/items/wall@2,0,0/config/tiles/5",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@2,0,0/config/tiles/2",
+    "value": "hieroglyphics"
+  },
+  {
     "op": "add",
     "path": "/items/extra0",
     "value": {
@@ -20,7 +30,5 @@
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/walls/left/5", "value": "hieroglyphics" },
-  { "op": "replace", "path": "/walls/left/2", "value": "hieroglyphics" },
   { "op": "add", "path": "/size/z", "value": 13 }
 ]

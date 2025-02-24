@@ -32,29 +32,53 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 0 },
       type: "pickup",
     },
+    "wall@0,0,0:2sckOl": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDrY": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
+        times: { x: 3 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@5,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
+        times: { x: 3 },
+      },
+      position: { x: 5, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,5,0": {
+      config: {
+        direction: "left",
+        tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
   },
   planet: "egyptus",
   size: { x: 8, y: 8 },
-  walls: {
-    away: [
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "none",
-      "none",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-    ],
-    left: [
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "none",
-      "none",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-    ],
-  },
 }) satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;

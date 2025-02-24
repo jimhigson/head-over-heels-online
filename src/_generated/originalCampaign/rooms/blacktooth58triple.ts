@@ -100,121 +100,59 @@ export const room = inferRoomJson({
       position: { x: 13, y: 5, z: 1 },
       type: "pickup",
     },
-    "wall@10,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 10, y: 6, z: 0 },
+    "wall@0,0,0:3gbr1": {
+      config: { direction: "right", tiles: [], times: { y: 14 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@11,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 11, y: 6, z: 0 },
+    "wall@0,0,0:Z1XoF0v": {
+      config: { direction: "towards", tiles: [], times: { x: 2 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@12,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 12, y: 6, z: 0 },
+    "wall@0,14,0": {
+      config: { direction: "away", tiles: ["bars", "bars"], times: { x: 2 } },
+      position: { x: 0, y: 14, z: 0 },
       type: "wall",
     },
-    "wall@13,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 13, y: 6, z: 0 },
+    "wall@14,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { y: 6 },
+      },
+      position: { x: 14, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,10,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 10, z: 0 },
+    "wall@4,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 10 } },
+      position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,11,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 11, z: 0 },
+    "wall@4,14,0": {
+      config: { direction: "away", tiles: ["bars", "bars"], times: { x: 2 } },
+      position: { x: 4, y: 14, z: 0 },
       type: "wall",
     },
-    "wall@6,12,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 12, z: 0 },
-      type: "wall",
-    },
-    "wall@6,13,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 13, z: 0 },
-      type: "wall",
-    },
-    "wall@6,6,0:Z2rXegQ": {
-      config: { side: "away", style: "bars" },
+    "wall@6,6,0:13XOm9": {
+      config: {
+        direction: "away",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { x: 8 },
+      },
       position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,6,0:ZfQXkd": {
-      config: { side: "left", style: "bars" },
+    "wall@6,6,0:2e3jis": {
+      config: {
+        direction: "left",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { y: 8 },
+      },
       position: { x: 6, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@6,7,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "wall",
-    },
-    "wall@6,8,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@6,9,0": {
-      config: { side: "left", style: "bars" },
-      position: { x: 6, y: 9, z: 0 },
-      type: "wall",
-    },
-    "wall@7,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 7, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@8,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 8, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@9,6,0": {
-      config: { side: "away", style: "bars" },
-      position: { x: 9, y: 6, z: 0 },
       type: "wall",
     },
   },
   planet: "jail",
   size: { x: 14, y: 14 },
-  walls: {
-    away: [
-      "bars",
-      "bars",
-      "none",
-      "none",
-      "bars",
-      "bars",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-    left: [
-      "bars",
-      "bars",
-      "bars",
-      "bars",
-      "bars",
-      "bars",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-  },
 }) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

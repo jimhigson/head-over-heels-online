@@ -91,109 +91,77 @@ export const room = inferRoomJson({
       position: { x: 6, y: 7, z: 1 },
       type: "spring",
     },
-    "wall@10,4,0": {
-      config: { side: "away", style: "wall" },
-      position: { x: 10, y: 4, z: 0 },
+    "wall@0,0,0:3gap0": {
+      config: { direction: "right", tiles: [], times: { y: 10 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@11,4,0": {
-      config: { side: "away", style: "shield" },
-      position: { x: 11, y: 4, z: 0 },
+    "wall@0,0,0:Z1XoEJK": {
+      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@12,4,0": {
-      config: { side: "away", style: "shield" },
-      position: { x: 12, y: 4, z: 0 },
+    "wall@0,10,0": {
+      config: {
+        direction: "away",
+        tiles: ["wall", "window", "wall"],
+        times: { x: 3 },
+      },
+      position: { x: 0, y: 10, z: 0 },
       type: "wall",
     },
-    "wall@13,4,0": {
-      config: { side: "away", style: "wall" },
-      position: { x: 13, y: 4, z: 0 },
+    "wall@16,0,0": {
+      config: { direction: "left", tiles: ["wall"] },
+      position: { x: 16, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@14,4,0": {
-      config: { side: "away", style: "window" },
-      position: { x: 14, y: 4, z: 0 },
+    "wall@16,3,0": {
+      config: { direction: "left", tiles: ["wall"] },
+      position: { x: 16, y: 3, z: 0 },
       type: "wall",
     },
-    "wall@15,4,0": {
-      config: { side: "away", style: "wall" },
-      position: { x: 15, y: 4, z: 0 },
+    "wall@5,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 11 } },
+      position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,4,0:BKGHK": {
-      config: { side: "left", style: "shield" },
+    "wall@5,10,0": {
+      config: {
+        direction: "away",
+        tiles: ["wall", "window", "wall"],
+        times: { x: 3 },
+      },
+      position: { x: 5, y: 10, z: 0 },
+      type: "wall",
+    },
+    "wall@8,4,0:181COI": {
+      config: {
+        direction: "left",
+        tiles: ["shield", "wall", "window", "window", "wall", "shield"],
+        times: { y: 6 },
+      },
       position: { x: 8, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@8,4,0:Z1Jyjna": {
-      config: { side: "away", style: "wall" },
+    "wall@8,4,0:ZQBUF6": {
+      config: {
+        direction: "away",
+        tiles: [
+          "wall",
+          "window",
+          "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
+        ],
+        times: { x: 8 },
+      },
       position: { x: 8, y: 4, z: 0 },
-      type: "wall",
-    },
-    "wall@8,5,0": {
-      config: { side: "left", style: "wall" },
-      position: { x: 8, y: 5, z: 0 },
-      type: "wall",
-    },
-    "wall@8,6,0": {
-      config: { side: "left", style: "window" },
-      position: { x: 8, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@8,7,0": {
-      config: { side: "left", style: "window" },
-      position: { x: 8, y: 7, z: 0 },
-      type: "wall",
-    },
-    "wall@8,8,0": {
-      config: { side: "left", style: "wall" },
-      position: { x: 8, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@8,9,0": {
-      config: { side: "left", style: "shield" },
-      position: { x: 8, y: 9, z: 0 },
-      type: "wall",
-    },
-    "wall@9,4,0": {
-      config: { side: "away", style: "window" },
-      position: { x: 9, y: 4, z: 0 },
       type: "wall",
     },
   },
   planet: "safari",
   size: { x: 16, y: 10 },
-  walls: {
-    away: [
-      "wall",
-      "window",
-      "wall",
-      "none",
-      "none",
-      "wall",
-      "window",
-      "wall",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-    left: [
-      "wall",
-      "none",
-      "none",
-      "wall",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-    ],
-  },
 }) satisfies RoomJson<"safari", OriginalCampaignRoomId>;

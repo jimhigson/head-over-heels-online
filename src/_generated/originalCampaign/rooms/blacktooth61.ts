@@ -46,11 +46,41 @@ export const room = inferRoomJson({
       position: { x: 3, y: 7, z: 0 },
       type: "portableBlock",
     },
+    "wall@0,0,0:2sckOl": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1fRqC7": {
+      config: { direction: "towards", tiles: [] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: { direction: "away", tiles: ["bars"] },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@3,0,0": {
+      config: { direction: "towards", tiles: [] },
+      position: { x: 3, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@3,8,0": {
+      config: { direction: "away", tiles: ["bars"] },
+      position: { x: 3, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@4,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { y: 8 },
+      },
+      position: { x: 4, y: 0, z: 0 },
+      type: "wall",
+    },
   },
   planet: "jail",
   size: { x: 4, y: 8 },
-  walls: {
-    away: ["bars", "none", "none", "bars"],
-    left: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-  },
 }) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

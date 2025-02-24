@@ -27,27 +27,63 @@ export const room = inferRoomJson({
       position: { x: 4, y: 3, z: 0 },
       type: "moveableDeadly",
     },
+    "wall@0,0,0:2scjgO": {
+      config: { direction: "right", tiles: [], times: { y: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoEJK": {
+      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,4,0": {
+      config: { direction: "right", tiles: [], times: { y: 2 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "wall",
+    },
+    "wall@0,6,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall@5,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      position: { x: 5, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["hieroglyphics", "hieroglyphics"],
+        times: { y: 2 },
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,4,0": {
+      config: {
+        direction: "left",
+        tiles: ["hieroglyphics", "hieroglyphics"],
+        times: { y: 2 },
+      },
+      position: { x: 8, y: 4, z: 0 },
+      type: "wall",
+    },
   },
   planet: "egyptus",
   size: { x: 8, y: 6 },
-  walls: {
-    away: [
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics",
-    ],
-    left: [
-      "hieroglyphics",
-      "hieroglyphics",
-      "none",
-      "none",
-      "hieroglyphics",
-      "hieroglyphics",
-    ],
-  },
 }) satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;

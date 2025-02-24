@@ -57,20 +57,50 @@ export const room = inferRoomJson({
       position: { x: 0, y: 2, z: 0 },
       type: "movableBlock",
     },
+    "wall@0,0,0:2scjgO": {
+      config: { direction: "right", tiles: [], times: { y: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDrY": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,4,0": {
+      config: { direction: "right", tiles: [], times: { y: 2 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "wall",
+    },
+    "wall@0,6,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "wall",
+          "window",
+          "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: { direction: "left", tiles: ["wall", "shield"], times: { y: 2 } },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,4,0": {
+      config: { direction: "left", tiles: ["shield", "wall"], times: { y: 2 } },
+      position: { x: 8, y: 4, z: 0 },
+      type: "wall",
+    },
   },
   planet: "safari",
   size: { x: 8, y: 6 },
-  walls: {
-    away: [
-      "wall",
-      "window",
-      "wall",
-      "shield",
-      "shield",
-      "wall",
-      "window",
-      "wall",
-    ],
-    left: ["wall", "shield", "none", "none", "shield", "wall"],
-  },
 }) satisfies RoomJson<"safari", OriginalCampaignRoomId>;
