@@ -1,8 +1,8 @@
-import type { UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { iterate } from "../../utils/iterate";
 import type { Xyz } from "../../utils/vectors/vectors";
 
-export type Collideable = Pick<UnknownItemInPlay, "aabb" | "id"> & {
+export type Collideable = Pick<UnionOfAllItemInPlayTypes, "aabb" | "id"> & {
   state: { position: Xyz };
 };
 

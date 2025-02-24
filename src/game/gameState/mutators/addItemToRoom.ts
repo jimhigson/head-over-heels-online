@@ -1,5 +1,5 @@
 import { first } from "iter-tools";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type {
   JsonItemType,
   JsonItemConfig,
@@ -59,7 +59,7 @@ export const addItemToRoom = <RoomId extends string>({
   item,
 }: {
   room: RoomState<SceneryName, RoomId>;
-  item: UnknownItemInPlay<RoomId>;
+  item: UnionOfAllItemInPlayTypes<RoomId>;
 }) => {
   room.items[item.id] = item;
   return item;

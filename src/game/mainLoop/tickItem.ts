@@ -27,7 +27,7 @@ import { firing } from "../physics/mechanics/firing";
 import type {
   ItemInPlayType,
   ItemInPlay,
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
@@ -205,7 +205,7 @@ export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
 
   for (let i = 0; i < subTickCount; i++) {
     moveItem({
-      subjectItem: item as UnknownItemInPlay<RoomId>,
+      subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
       posDelta: movementPerSubTick,
       gameState,
       room,

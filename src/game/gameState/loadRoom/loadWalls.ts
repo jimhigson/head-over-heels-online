@@ -7,7 +7,7 @@ import {
   yAxisWallRenderAabb,
 } from "../../collision/boundingBoxes";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { SceneryName } from "../../../sprites/planets";
 import { emptySet } from "../../../utils/empty";
@@ -18,7 +18,7 @@ import { doorAlongAxis } from "../../../utils/vectors/vectors";
  */
 export function* loadWalls<R extends string>(
   room: RoomJson<SceneryName, R>,
-): Generator<UnknownItemInPlay<R>> {
+): Generator<UnionOfAllItemInPlayTypes<R>> {
   // left/right sides:
   for (let yi = room.size.y - 1; yi >= 0; yi--) {
     const style = room.walls.left[yi];

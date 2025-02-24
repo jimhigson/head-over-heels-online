@@ -1,5 +1,5 @@
 import type { FreeItem } from "../../physics/itemPredicates";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { SceneryName } from "../../../sprites/planets";
 
 export const removeStandingOn = <RoomId extends string>(
@@ -15,7 +15,7 @@ export const setStandingOn = <RoomId extends string>({
   below,
 }: {
   above: FreeItem<SceneryName, RoomId>;
-  below: UnknownItemInPlay<RoomId>;
+  below: UnionOfAllItemInPlayTypes<RoomId>;
 }) => {
   above.state.standingOn = below;
   below.state.stoodOnBy.add(above);

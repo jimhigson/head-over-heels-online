@@ -7,7 +7,7 @@ import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type {
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
   ShadowMaskOptions,
 } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
@@ -27,7 +27,7 @@ export function* loadItemFromJson<RoomId extends string>(
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
-): Generator<UnknownItemInPlay<RoomId>, undefined> {
+): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   if (roomPickupsCollected[itemId]) {
     // skip pickups that have already been collected
     return;

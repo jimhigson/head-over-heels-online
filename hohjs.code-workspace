@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"cSpell.words": [
+			"completionist",
+			"Consolidatable",
+			"Deadzone",
+			"subtick",
+			"superjump",
+			"Toggleable"
+		]
+	}
+}

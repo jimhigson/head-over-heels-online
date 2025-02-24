@@ -3,16 +3,13 @@ import type {
   ItemInPlayType,
   ItemInPlay,
   AnyItemInPlay,
-  UnknownItemInPlay,
+  UnionOfAllItemInPlayTypes,
+  ItemTypeUnion,
 } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
-
-export type ItemTypeUnion<T extends ItemInPlayType, RoomId extends string> = {
-  [TI in T]: ItemInPlay<TI, SceneryName, RoomId>;
-}[T];
 
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
@@ -156,13 +153,13 @@ export const deadlyItemTypes = [
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
 export const isDeadly = <RoomId extends string>(
-  item: UnknownItemInPlay<RoomId>,
+  item: UnionOfAllItemInPlayTypes<RoomId>,
 ): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.type === "deadly");
 
 export const isMultipliedItem = <RoomId extends string>(
-  item: UnknownItemInPlay<RoomId>,
+  item: UnionOfAllItemInPlayTypes<RoomId>,
 ): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
   type ItemConfigMaybeWithMultiplication = {
     times?: undefined | Partial<Xyz>;

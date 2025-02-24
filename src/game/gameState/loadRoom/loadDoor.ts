@@ -1,5 +1,5 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { UnknownItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import { doorIsInHiddenWall } from "../../../model/json/JsonItem";
 import type { SceneryName } from "../../../sprites/planets";
@@ -29,7 +29,7 @@ export const doorPostHeight = blockSizePx.h * 4;
 export function* loadDoor<RoomId extends string>(
   jsonDoor: JsonItem<"door", SceneryName, RoomId>,
   id: string,
-): Generator<UnknownItemInPlay<RoomId>> {
+): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
   const {
     config: { direction },
     position,

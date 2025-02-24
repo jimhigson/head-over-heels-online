@@ -35,7 +35,7 @@ type MovementsSubset<U extends JsonMovement> = U;
 
 /** properties of items that do not change - ie, if it is a barrier in x or y axis */
 
-type ConsolidatableConfig = {
+export type ConsolidatableConfig = {
   times?: Partial<Xyz>;
 };
 

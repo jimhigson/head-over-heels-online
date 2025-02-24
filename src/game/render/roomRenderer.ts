@@ -7,7 +7,7 @@ import type { GraphEdges } from "./sortZ/toposort/toposort";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
-import type { UnknownItemInPlay } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import { store } from "../../store/store";
@@ -117,7 +117,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
-          item: item as UnknownItemInPlay<RoomId, ItemId>,
+          item: item as UnionOfAllItemInPlayTypes<RoomId, ItemId>,
           room: this.#roomState,
           gameState: this.#gameState,
           pixiRenderer: this.#pixiRenderer,
