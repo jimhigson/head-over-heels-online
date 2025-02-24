@@ -1,1 +1,11 @@
-[]
+[
+  { "op": "replace", "path": "/items/wall@5,0,0/position/x", "value": 6 },
+  { "op": "replace", "path": "/items/wall@0,7,0/position/y", "value": 8 },
+  { "op": "replace", "path": "/items/wall@0,7,0/config/times/x", "value": 5 },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/5" },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/4" },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/3" },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/2" },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/1" },
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/0" }
+]

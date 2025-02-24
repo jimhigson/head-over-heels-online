@@ -133,7 +133,7 @@ export const room = inferRoomJson({
         tiles: ["shield", "wall", "window", "window", "wall", "shield"],
         times: { x: 6 },
       },
-      position: { x: 0, y: 13, z: 0 },
+      position: { x: 0, y: 12, z: 0 },
       type: "wall",
     },
     "wall@0,4,0": {
@@ -152,7 +152,7 @@ export const room = inferRoomJson({
         tiles: ["shield", "wall", "window", "window", "wall", "shield"],
         times: { y: 6 },
       },
-      position: { x: 13, y: 0, z: 0 },
+      position: { x: 12, y: 0, z: 0 },
       type: "wall",
     },
     "wall@6,10,0": {
