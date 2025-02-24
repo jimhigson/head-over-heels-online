@@ -88,12 +88,13 @@ export const itemAppearances: {
   wall: renderOnce(
     ({
       item: {
+        id,
         config: { direction, tiles },
       },
       room,
     }) => {
       if (direction === "right" || direction === "towards") {
-        throw new Error("this wall should be non-rendering");
+        throw new Error(`this wall should be non-rendering ${id}`);
       }
 
       const alongAxis = perpendicularAxisXy(directionAxis(direction));

@@ -52,11 +52,22 @@
         - [x] no multiplied shadows
         - [x] threshold shadow mask is wrong
     [ ] part 2
-        [ ] remove 'walls' property from json, walls are normal object
-        [ ] consolidation can consolidate walls with different configs
-        [ ] walls renderer can do multiple different textures
-        [ ] put floor overdraws back in (in floor appearance)
-        [ ] fix overdraw for triple/non-rectangular rooms: `floorOverdrawForExtraWalls`
+        [x] remove 'walls' property from json, walls are normal object
+        [x] consolidation can consolidate walls with different configs
+        [x] walls renderer can do multiple different textures
+        floor appearance: 
+            [ ] put floor overdraws back in (in floor appearance)
+            [ ] fix overdraw for triple/non-rectangular rooms: `floorOverdrawForExtraWalls`
+        [x] check rooms:
+            [x] blacktooth85 (wall tiles)
+            [x] egyptus14 (wall tiles)
+            [x] egyptus13 (wall tiles)
+            [x] egyptus19 (wall tiles)
+            [x] egyptus20 (wall tiles)
+            [x] egyptus35 (wall tiles)
+            [x] pen13
+            [x] pen2
+            [ ] pen30
 
 input tracker:
     [ ] analogue/digital input as overloading/polymorphism in input tracker

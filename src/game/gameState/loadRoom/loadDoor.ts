@@ -189,7 +189,7 @@ export function* loadDoor<RoomId extends string>(
       aabb: blockXyzToFineXyz({
         [axis]: 2,
         [crossAxis]: 0.5,
-        z: defaultRoomHeightBlocks - doorPostHeightBlocks,
+        z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
       }),
     },
   };

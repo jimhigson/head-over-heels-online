@@ -8,7 +8,7 @@ import {
   originXyz,
   perpendicularAxisXy,
 } from "../../../utils/vectors/vectors";
-import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
+import { type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { multiplyBoundingBox } from "../../collision/boundingBoxes";
@@ -53,11 +53,11 @@ export const loadWall = (
   const axis = doorAlongAxis(direction);
   const crossAxis = perpendicularAxisXy(axis);
 
-  const inHidden = inHiddenWall(jsonWall);
+  const isHidden = direction === "towards" || direction === "right";
 
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
-    [crossAxis]: inHidden ? -wallThicknessBlocks : 0,
+    [crossAxis]: isHidden ? -wallThicknessBlocks : 0,
   };
 
   return {
@@ -68,9 +68,9 @@ export const loadWall = (
       axis === "y" ? yAxisWallAabb : xAxisWallAabb,
       times,
     ),
-    renders: !inHidden,
+    renders: !isHidden,
     renderAabb:
-      inHidden ? undefined : (
+      isHidden ? undefined : (
         multiplyBoundingBox(
           axis === "y" ? yAxisWallRenderAabb : xAxisWallRenderAabb,
           times,
