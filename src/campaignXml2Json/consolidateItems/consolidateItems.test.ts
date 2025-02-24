@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { consolidateItems } from "./consolidateItems";
 
@@ -514,4 +514,140 @@ test("can consolidate runs of conveyors", () => {
       },
     ]
   `);
+});
+
+describe("walls", () => {
+  test("can consolidate two adjacent walls even if their tiles are different", () => {
+    const items: JsonItemUnion[] = [
+      {
+        type: "wall",
+        config: { side: "away", tiles: ["cowboy"] },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { side: "away", tiles: ["book"] },
+        position: { x: 0, y: 1, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "side": "away",
+            "tiles": [
+              "cowboy",
+              "book",
+            ],
+            "times": {
+              "y": 2,
+            },
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
+  test("can consolidate many adjacent walls with some tiles in common", () => {
+    const items: JsonItemUnion[] = [
+      {
+        type: "wall",
+        config: { side: "left", tiles: ["cowboy"] },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { side: "left", tiles: ["cowboy"] },
+        position: { x: 1, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { side: "left", tiles: ["book"] },
+        position: { x: 2, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { side: "left", tiles: ["book"] },
+        position: { x: 3, y: 0, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "side": "left",
+            "tiles": [
+              "cowboy",
+              "cowboy",
+              "book",
+              "book",
+            ],
+            "times": {
+              "x": 4,
+            },
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
+  test("does not consolidate two adjacent walls even if their sides are different", () => {
+    const items: JsonItemUnion[] = [
+      {
+        type: "wall",
+        config: { side: "left", tiles: ["cowboy"] },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { side: "away", tiles: ["cowboy"] },
+        position: { x: 0, y: 1, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "side": "left",
+            "tiles": [
+              "cowboy",
+            ],
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+        {
+          "config": {
+            "side": "away",
+            "tiles": [
+              "cowboy",
+            ],
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
 });
