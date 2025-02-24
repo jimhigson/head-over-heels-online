@@ -8,29 +8,11 @@ import type { Operation } from "fast-json-patch";
 import fastJsonPatch from "fast-json-patch";
 import chalk from "chalk";
 
-/* multi-line string are easier to read than single-line strings with \n */
-function convertMultilineToTemplate(jsonString: string): string {
-  // Regular expression to match strings containing `\n` within quotes
-  const multilineRegex = /"([^"\\]*(?:\\.[^"\\]*)*\\n[^"\\]*(?:\\.[^"\\]*)*)"/g;
-
-  // Replace matches with template literal syntax
-  return jsonString.replace(multilineRegex, (_match, multilineContent) => {
-    // Unescape JSON-escaped characters
-    const unescapedContent = multilineContent
-      .replace(/\\"/g, '"') // Unescape double quotes
-      .replace(/\\\\/g, "\\") // Unescape backslashes
-      .replace(/\\n/g, "\n"); // Convert escaped \n to real newlines
-
-    // Wrap in backticks for multi-line JavaScript template literals
-    return `\`${unescapedContent.replace(/`/g, "\\`")}\``; // Escape backticks
-  });
-}
-
 const roomTs = (room: AnyRoomJson): string =>
   `
 import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
-export const room = inferRoomJson(${convertMultilineToTemplate(canonicalize(room))}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
+export const room = inferRoomJson(${canonicalize(room)}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
 `;
 
 const targetDir = "src/_generated/originalCampaign/";

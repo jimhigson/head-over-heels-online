@@ -49,11 +49,34 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "teleporter",
     },
+    "wall@0,8,0": {
+      config: {
+        side: "away",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: {
+        side: "left",
+        tiles: ["bars", "bars", "bars"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,5,0": {
+      config: {
+        side: "left",
+        tiles: ["bars", "bars", "bars"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
   },
   planet: "jail",
   size: { x: 8, y: 8 },
-  walls: {
-    away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-    left: ["bars", "bars", "bars", "none", "none", "bars", "bars", "bars"],
-  },
 }) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

@@ -16,7 +16,7 @@
     "fix:format": "prettier --experimental-ternaries . --write",
     "check:test": "vitest run",
     "watch:test": "vitest watch",
-    "json": "tsx src/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign --write",
+    "json": "tsx src/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign/rooms --write",
     "jsonpatch": "tsx src/campaignXml2Json/makeCampaignDiff.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/sprites.html",
     "deploy": "gh-pages -d dist",

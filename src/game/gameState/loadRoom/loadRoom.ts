@@ -1,4 +1,3 @@
-import { loadWalls } from "./loadWalls";
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { objectValues } from "iter-tools";
@@ -60,13 +59,8 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
-    ...itemsInItemObjectMap(loadWalls(roomJson)),
     ...itemsInItemObjectMap(
-      /*gatherConveyors(*/ loadItems(
-        roomJson,
-        roomPickupsCollected,
-        isFirstLoad,
-      ) /*)*/,
+      loadItems(roomJson, roomPickupsCollected, isFirstLoad),
     ),
   };
 

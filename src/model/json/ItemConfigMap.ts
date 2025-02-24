@@ -60,8 +60,9 @@ export type ItemConfigMap<
     */
     relativePoint: Xyz;
   };
-  wall: {
-    style: Wall<P>;
+  wall: ConsolidatableConfig & {
+    tiles: Array<Wall<P>>;
+    /** side of the room the wall is on (not the side it is facing) */
     side: DirectionXy4;
   };
   teleporter: {

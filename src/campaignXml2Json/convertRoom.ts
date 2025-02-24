@@ -41,14 +41,15 @@ export const convertRoom = async (
   };
 
   const convertedItems = keyItems([
-    ...consolidateItems(
-      await convertItemsArray(
+    ...consolidateItems([
+      ...(await convertItemsArray(
         map,
         xmlRoomName,
         roomXmlJson,
         roomSidesWithDoors,
-      ),
-    ),
+      )),
+      ...convertWalls(roomXmlJson, roomSidesWithDoors),
+    ]),
   ]);
 
   const roomId = convertRoomId(xmlRoomName);
@@ -64,10 +65,6 @@ export const convertRoom = async (
       roomOnMap["above"] &&
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
-    walls: {
-      away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
-      left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),
-    },
     items: convertedItems,
     color: convertRoomColour(color),
   };

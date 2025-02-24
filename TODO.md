@@ -55,6 +55,8 @@
         [ ] remove 'walls' property from json, walls are normal object
         [ ] consolidation can consolidate walls with different configs
         [ ] walls renderer can do multiple different textures
+        [ ] put floor overdraws back in (in floor appearance)
+        [ ] fix overdraw for triple/non-rectangular rooms: `floorOverdrawForExtraWalls`
 
 input tracker:
     [ ] analogue/digital input as overloading/polymorphism in input tracker

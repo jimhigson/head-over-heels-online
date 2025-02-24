@@ -4,33 +4,40 @@ import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
 import type { Xml2JsonRoom } from "./readToJson";
 import { type SidesWithDoors } from "./xmlRoomSidesWithDoors";
-import type { AnyWall } from "../model/modelTypes";
+import type { AxisXy, Xyz } from "../utils/vectors/vectors";
+import type { JsonItem } from "../model/json/JsonItem";
 
 export const convertWalls = (
-  roomJson: Xml2JsonRoom,
-  direction: "left" | "away",
+  xml2JsonRoom: Xml2JsonRoom,
   sidesWithDoors: SidesWithDoors,
-): AnyWall[] => {
-  const dims = convertRoomDimensions(roomJson, sidesWithDoors);
-  const wallLength = direction === "away" ? dims.x : dims.y;
+): JsonItem<"wall">[] => {
+  const roomSize = convertRoomDimensions(xml2JsonRoom, sidesWithDoors);
+  const planet = convertSceneryName(xml2JsonRoom.scenery);
 
-  const xmlJsonAxis = direction === "left" ? "y" : "x";
-  const planet = convertSceneryName(roomJson.scenery);
-  const result: AnyWall[] = new Array(wallLength);
+  const wallItems = xml2JsonRoom.walls.map((xml2JsonWall): JsonItem<"wall"> => {
+    const alongAxis: AxisXy = xml2JsonWall.along;
 
-  // we expect this to be overwritten:
-  result.fill("none");
+    const position: Xyz = {
+      x:
+        alongAxis === "x" ?
+          convertX(xml2JsonWall.position, xml2JsonRoom, sidesWithDoors)
+        : roomSize.x,
+      y:
+        alongAxis === "y" ?
+          convertY(xml2JsonWall.position, xml2JsonRoom, sidesWithDoors)
+        : roomSize.y,
+      z: 0,
+    };
 
-  roomJson.walls
-    .filter((wall) => wall.along === xmlJsonAxis)
-    .forEach(({ position, picture }) => {
-      const ordinal =
-        xmlJsonAxis === "x" ?
-          convertX(position, roomJson, sidesWithDoors)
-        : convertY(position, roomJson, sidesWithDoors);
+    return {
+      type: "wall",
+      config: {
+        side: xml2JsonWall.along === "x" ? "away" : "left",
+        tiles: [convertWallName(planet, xml2JsonWall.picture)],
+      },
+      position,
+    };
+  });
 
-      return (result[ordinal] = convertWallName(planet, picture));
-    });
-
-  return result;
+  return wallItems;
 };
