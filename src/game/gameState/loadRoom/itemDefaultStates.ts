@@ -1,9 +1,6 @@
 import type { BaseItemState } from "../../../model/ItemInPlay";
 import type { FreeItemState } from "../../../model/ItemStateMap";
-import type {
-  JsonItemUnion,
-  JsonItemType,
-} from "../../../model/json/JsonItem";
+import type { JsonItemUnion, JsonItemType } from "../../../model/json/JsonItem";
 import type { SceneryName } from "../../../sprites/planets";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";

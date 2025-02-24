@@ -8,34 +8,24 @@ export const room = inferRoomJson({
   floor: "deadly",
   id: "bookworld28",
   items: {
+    afterJumpingOFf: {
+      config: { style: "organic", times: { y: 4 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "block",
+    },
+    afterJumpingOFf2: {
+      config: { style: "organic", times: { x: 4 } },
+      position: { x: 4, y: 0, z: 0 },
+      type: "block",
+    },
     "block@0,0,0": {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "jumpingOff2": {
-      config: { style: "artificial" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "block",
-    },
-    "afterJumpingOFf2": {
-      config: { style: "organic", times: { x: 4 } },
-      position: { x: 4, y: 0, z: 0 },
-      type: "block",
-    },
     "block@0,1,0": {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 1, z: 0 },
-      type: "block",
-    },
-    "jumpingOff": {
-      config: { style: "artificial" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "block",
-    },
-    "afterJumpingOFf": {
-      config: { style: "organic", times: { y: 4 } },
-      position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
     "block@1,7,0": {
@@ -124,6 +114,16 @@ export const room = inferRoomJson({
       config: { style: "organic", times: { x: 2 } },
       isExtra: true,
       position: { x: 3, y: 14, z: 1 },
+      type: "block",
+    },
+    jumpingOff: {
+      config: { style: "artificial" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "block",
+    },
+    jumpingOff2: {
+      config: { style: "artificial" },
+      position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "lift@3,3,1": {
