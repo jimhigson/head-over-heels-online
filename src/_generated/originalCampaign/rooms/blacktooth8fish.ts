@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   id: "blacktooth8fish",
   items: {
     "block@3,0,0": {
-      config: { style: "tower", times: { z: 3 } },
+      config: { style: "tower", times: { z: 4 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
@@ -33,7 +33,7 @@ export const room = inferRoomJson({
     },
     "pickup@3,0,3": {
       config: { gives: "reincarnation" },
-      position: { x: 3, y: 0, z: 3 },
+      position: { x: 3, y: 0, z: 4 },
       type: "pickup",
     },
     scroll: {

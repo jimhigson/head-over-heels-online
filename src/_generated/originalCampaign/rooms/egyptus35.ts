@@ -58,39 +58,15 @@ export const room = inferRoomJson({
       type: "door",
     },
     extra0: {
-      config: { style: "tower" },
+      config: { style: "tower", times: { y: 2, z: 4 } },
       isExtra: true,
       position: { x: 1, y: 2, z: 0 },
       type: "block",
     },
-    extra1: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 1, y: 2, z: 1 },
-      type: "block",
-    },
-    extra2: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 1, y: 2, z: 2 },
-      type: "block",
-    },
-    extra3: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 1, y: 2, z: 3 },
-      type: "block",
-    },
     extrab0: {
-      config: { style: "tower" },
+      config: { style: "tower", times: { z: 2 } },
       isExtra: true,
       position: { x: 1, y: 5, z: 0 },
-      type: "block",
-    },
-    extrab1: {
-      config: { style: "tower" },
-      isExtra: true,
-      position: { x: 1, y: 5, z: 1 },
       type: "block",
     },
     "portableBlock@0,2,0": {
@@ -106,7 +82,7 @@ export const room = inferRoomJson({
   },
   planet: "egyptus",
   roomAbove: "egyptus36",
-  size: { x: 2, y: 8 },
+  size: { x: 2, y: 8, z: 13 },
   walls: {
     away: ["hieroglyphics", "hieroglyphics"],
     left: [

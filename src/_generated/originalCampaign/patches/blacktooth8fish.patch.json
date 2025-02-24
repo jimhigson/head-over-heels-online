@@ -1,4 +1,6 @@
 [
+  { "op": "replace", "path": "/items/pickup@3,0,3/position/z", "value": 4 },
+  { "op": "replace", "path": "/items/block@3,0,0/config/times/z", "value": 4 },
   {
     "op": "add",
     "path": "/items/scroll",
