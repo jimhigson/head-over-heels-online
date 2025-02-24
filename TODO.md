@@ -19,15 +19,22 @@
 
 [ ] level editor
 
+[ ] iphone playable
+    * on-screen keyboared
+
 [ ] own levels
+
+[ ] switch to devcontainers
 
 [ ] switch to OOP on room state/items etc. 
     Eg polymorphism: .isPushable() etc methods
     Eg, .times() hardcoded to return 1,1,1 for most
 
-[ ] switch to devcontainers
-
 ### Details ad bugs
+
+[ ] bug - need to refresh page after changing input preset
+
+[x] input buffering on start to move
 
 [x] consolidation
     [ ] fix all patches that no longer apply
@@ -49,6 +56,11 @@
         [ ] consolidation can consolidate walls with different configs
         [ ] walls renderer can do multiple different textures
 
+input tracker:
+    [ ] analogue/digital input as overloading/polymorphism in input tracker
+    [ ] treat d-pad-as-axes input correctly for buffering
+
+[ ] version number/date on main menu dialog
 
 [x] split campaign patch up per-room
 
@@ -60,7 +72,7 @@
 
 [ ] special names for some rooms (makes easier to find)
 
-[ ] turn around without moving for small presses (round down to zero, not up to one)
+[x] turn around without moving for small presses (round down to zero, not up to one)
 
 [?] move more state to the store?
     [ ] is easier to render with react
@@ -174,13 +186,20 @@ translate: https://hoh.helmantika.com/jon-ritman/
 
 # egyptus12, others(?)
 [ ] sandwich with SOF on it seems to move him double
+    * can't reproduce
 [ ] SOF can land on joysticks
+    * this is good because can skip pushing the sandwich
+
+# egyptus16    
+[ ] blocks shown over player when in doorway
+    [x] fixed by splitting these blocks manually in json
+    [ ] BUT! better solution would probably be to auto-break up multiplied blocks that do this
 
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away
 
 # egyptus35
-[ ] ceiling too low/room too easy (don't need both blocks/players)
+[x] ceiling too low/room too easy (don't need both blocks/players)
 
 # penitentiary2
 [ ] this room shouldn't scroll horizontally

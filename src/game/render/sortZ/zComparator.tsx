@@ -115,6 +115,13 @@ const visuallyOverlaps = (
   return horizontalOverlap && xAxisSlopeOverlap && yAxisSlopeOverlap;
 };
 
+/** comparator suitable for ordering by z (with a topographic sort, not a normal sort)
+ *
+ *  returns:
+ *    >0 if a is in front of b
+ *    0 if neither is in front/behind the other
+ *    <0 if a is behind b
+ */
 export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
   if (
     a.renders === false ||

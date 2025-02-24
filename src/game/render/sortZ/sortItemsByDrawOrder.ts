@@ -21,6 +21,13 @@ const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
   }
 };
 
+/**
+ * returns a list of what is in front of what, ie:
+ *
+ * ```
+ *    { 'idOfItemInFront: [ 'idOfItemInBack' ] }
+ * ```
+ */
 export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
   items: Record<Tid, TItem>,
   // the nodes that have moved - nodes that did not move are not considered
@@ -45,6 +52,7 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
     }
   }
 
+  // ⚠⚠ WARNING QUADRATIC LOOPING! ⚠⚠
   for (const itemI of moved) {
     if (!itemI.renders) {
       continue;
@@ -112,6 +120,12 @@ export const sortByZPairs = <ItemId extends string>(
       // this case there is no way to render the nodes correctly using z-order and painters algorithm. All I can do is break the
       // loop by removing one link and try again.
       edges.get(cyclicItemIds[0])?.delete(cyclicItemIds[1]);
+
+      console.warn(
+        "cyclc dependency detected: ",
+        cyclicItemIds.join(" --front-of--> "),
+        `breaking link ${cyclicItemIds[0]} --front-of--> ${cyclicItemIds[1]}`,
+      );
 
       return {
         order: sortByZPairs(edges, items, retries - 1).order,
