@@ -9,7 +9,7 @@ import type { Floor } from "./modelTypes";
  */
 
 export type RoomJson<
-  P extends SceneryName,
+  S extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = {
@@ -23,7 +23,8 @@ export type RoomJson<
     // custom room height in blocks. If not set, the default room height is used. only a few rooms need this.
     z?: number;
   };
-  planet: P;
+  /** TODO: rename to scenery */
+  planet: S;
   floor: Floor;
   roomAbove?: RoomId;
   /**

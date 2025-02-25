@@ -56,7 +56,7 @@ const colourRooms = () => {
           const shade = zxSpectrumShades[iShade];
           yield [
             `${p}-${hue}-${shade}`,
-            {
+            addPerimeterWallsToRoom({
               size: { x: 8, y: 8 },
               color: { hue, shade },
               floor: p,
@@ -121,7 +121,7 @@ const colourRooms = () => {
                 ...sampleItems,
               ]),
               id: `${p}-${hue}-${shade}`,
-            },
+            }),
           ];
         }
       }
@@ -180,7 +180,7 @@ const rooms = {
     ]),
   }) satisfies RoomJson<"safari", TestCampaignRoomId>,
 
-  laboratory: {
+  laboratory: addPerimeterWallsToRoom({
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
@@ -845,9 +845,9 @@ const rooms = {
         position: { x: 17, y: 5, z: 3 },
       },
     ]),
-  } satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
+  }) satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
 
-  renderEverything: {
+  renderEverything: addPerimeterWallsToRoom({
     size: { x: 18, y: 18 },
     floor: "bookworld",
 
@@ -1229,7 +1229,7 @@ const rooms = {
     ]),
     planet: "bookworld",
     color: { hue: "magenta", shade: "basic" },
-  },
+  }),
   ...colourRooms(),
 } as Campaign<TestCampaignRoomId>["rooms"];
 

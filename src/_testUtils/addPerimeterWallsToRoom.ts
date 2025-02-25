@@ -4,7 +4,12 @@ import type { RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
 import { scenery, type SceneryName } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
-import type { DirectionXy4 } from "../utils/vectors/vectors";
+import type { Xy } from "../utils/vectors/vectors";
+import {
+  directionAxis,
+  perpendicularAxisXy,
+  type DirectionXy4,
+} from "../utils/vectors/vectors";
 
 const rotatingScenery = <S extends SceneryName>(
   sceneryName: S,
@@ -23,21 +28,25 @@ export const addPerimeterWallsToRoom = <
 ): RoomJson<S, R> => {
   const wallBlocks: JsonItem<"wall", S, R>[] = [];
 
-  const isDoorAt = (x: number, y: number, direction: DirectionXy4) =>
-    Object.values(roomJson.items).some(
+  const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
+    const axis = directionAxis(direction);
+    const crossAxis = perpendicularAxisXy(axis);
+    return Object.values(roomJson.items).some(
       (item) =>
         item.type === "door" &&
         item.config.direction === direction &&
-        (item.position.x === x || item.position.x + 1 === x) &&
-        item.position.y === y,
+        (item.position[crossAxis] === coord[crossAxis] ||
+          item.position[crossAxis] + 1 === coord[crossAxis]) &&
+        item.position[axis] === coord[axis],
     );
+  };
 
   // side towards/away
   for (let x = 0; x < roomJson.size.x; x++) {
     for (const y of [0, roomJson.size.y]) {
       const direction = y === 0 ? "towards" : "away";
 
-      if (!isDoorAt(x, y, direction)) {
+      if (!isDoorAt({ x, y }, direction)) {
         wallBlocks.push({
           type: "wall",
           config: {
@@ -54,7 +63,7 @@ export const addPerimeterWallsToRoom = <
     for (const x of [0, roomJson.size.x]) {
       const direction = x === 0 ? "right" : "left";
 
-      if (!isDoorAt(x, y, direction)) {
+      if (!isDoorAt({ x, y }, direction)) {
         wallBlocks.push({
           type: "wall",
           config: {

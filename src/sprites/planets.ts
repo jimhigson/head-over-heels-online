@@ -25,10 +25,4 @@ export const planets = [
 export type PlanetName = Subset<SceneryName, (typeof planets)[number]>;
 
 export type AllScenery = typeof scenery;
-export type Wall<P extends SceneryName> =
-  | AllScenery[P]["walls"][number]
-  /**
-   * none means render nothing in this space - if this is a mistake in the xml,
-   * override it with jsonpatch
-   */
-  | "none";
+export type Wall<S extends SceneryName> = AllScenery[S]["walls"][number];
