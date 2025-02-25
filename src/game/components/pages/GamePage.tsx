@@ -88,9 +88,13 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   return gameApi;
 };
 
-const useNonScrollingPage = () => {
+const usePageAsAnApp = () => {
   useEffect(() => {
-    document.body.classList.add("overscroll-none", "overflow-hidden");
+    document.body.classList.add(
+      "overscroll-none",
+      "overflow-hidden",
+      "select-none",
+    );
   }, []);
 };
 
@@ -104,7 +108,7 @@ export const GamePage = () => {
   const gameApi = useGame();
   const { cssUpscale, canvasSize } = useAppSelector((state) => state.upscale);
 
-  useNonScrollingPage();
+  usePageAsAnApp();
   useEffect(() => {
     if (gameDiv === null || gameApi === undefined) return;
 

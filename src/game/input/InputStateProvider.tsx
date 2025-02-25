@@ -8,6 +8,7 @@ import {
 } from "./keyboardState";
 import type { InputStateTrackerInterface } from "./InputStateTracker";
 import { InputStateTracker } from "./InputStateTracker";
+import { createEmptyHudInputState } from "./hudInputState";
 
 const InputStateTrackerContext =
   createContext<InputStateTrackerInterface | null>(null);
@@ -17,7 +18,7 @@ export const InputStateProvider = ({
 }: PropsWithChildren<EmptyObject>) => {
   const [keyboardState] = useState<KeyboardStateMap>(createEmptyKeyboardState);
   const [inputStateTracker] = useState<InputStateTrackerInterface>(
-    () => new InputStateTracker(keyboardState),
+    () => new InputStateTracker(keyboardState, createEmptyHudInputState()),
   );
 
   useEffect(() => {

@@ -78,7 +78,7 @@ export class MainLoop<RoomId extends string> {
     });
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
-    this.#hudRenderer = new HudRenderer<RoomId>();
+    this.#hudRenderer = new HudRenderer(gameState);
     app.stage.addChild(this.#hudRenderer.container);
 
     this.#initFilters();
