@@ -144,6 +144,12 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "head.falling.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 6, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
   "head.falling.towards": {
     frame: {
       ...smallItemGridLocation({ x: 0, y: 11 }),
