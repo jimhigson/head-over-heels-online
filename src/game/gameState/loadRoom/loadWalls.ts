@@ -83,6 +83,9 @@ export const loadWall = <RoomId extends string>(
       expires: null,
       disappear: null,
     },
-    shadowCastTexture: "shadow.wall.y",
+    shadowCastTexture:
+      axis === "y" ? "shadow.wall.y" : (
+        { textureId: "shadow.wall.y", flipX: true }
+      ),
   };
 };

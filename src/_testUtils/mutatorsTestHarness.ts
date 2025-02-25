@@ -35,7 +35,6 @@ export const roomProperties = {
   floor: "blacktooth",
   planet: "blacktooth",
   size: { x: 6, y: 6 },
-  walls: { away: [], left: [] },
 } as const satisfies Partial<RoomState<"blacktooth", TestCampaignRoomId>>;
 export const testCampaign = {
   rooms: {
@@ -84,11 +83,6 @@ export const testCampaign = {
     thirdRoom: {
       ...roomProperties,
       id: "thirdRoom",
-      walls: {
-        // leave gaps in the away wall for doors:
-        away: ["armour", "none", "none", "none", "none", "armour"],
-        left: [],
-      },
       items: {
         doorToHeelsStartingRoom: {
           type: "door",

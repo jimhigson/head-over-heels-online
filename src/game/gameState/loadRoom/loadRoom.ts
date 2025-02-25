@@ -78,7 +78,7 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
     );
 
     if (solidCol !== undefined) {
-      throw new Error(
+      console.error(
         `in room ${roomJson.id} item ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} is colliding with (solid item) ${solidCol.id} @${JSON.stringify(solidCol.state.position)} #${JSON.stringify(solidCol.aabb)} on loading room ${roomJson.id}`,
       );
     }
