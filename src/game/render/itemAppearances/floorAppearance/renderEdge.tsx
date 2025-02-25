@@ -62,9 +62,9 @@ export const renderEdge = (
 
       // floor edges on the walls with doors need to be set back:
       const spatialPosition =
-        alongMinX ? { ...wallPosition, x: blockXMin }
-        : alongMinY ? { ...wallPosition, y: blockYMin }
-        : wallPosition;
+        alongMinX ? { ...wallPosition, x: blockXMin, z: 0 }
+        : alongMinY ? { ...wallPosition, y: blockYMin, z: 0 }
+        : { ...wallPosition, z: 0 };
 
       const sprite = createSprite({
         label: id,
