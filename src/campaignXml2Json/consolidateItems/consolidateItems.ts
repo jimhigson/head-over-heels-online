@@ -187,6 +187,9 @@ export const consolidateItems = (
     joiner: ConsolidatableJsonItem,
   ) => {
     if (target.type === "wall") {
+      if (joiner.type !== "wall") {
+        throw new Error("only walls can join walls");
+      }
       target.config.tiles.push(...joiner.config.tiles);
     }
   };
