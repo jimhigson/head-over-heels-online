@@ -5,12 +5,16 @@ import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { objectEntries } from "iter-tools";
 import { iterate } from "../../../../utils/iterate";
 import type { Xy } from "../../../../utils/vectors/vectors";
-import { addXy } from "../../../../utils/vectors/vectors";
+import {
+  addXy,
+  directionAxis,
+  perpendicularAxisXy,
+} from "../../../../utils/vectors/vectors";
 import type { JsonItem } from "../../../../model/json/JsonItem";
 import { iterateToContainer } from "../../../iterateToContainer";
 import type { AnyRoomJson } from "../../../../model/RoomJson";
 
-export const floorOverdraws = (
+export const renderFloorOverdraws = (
   roomJson: AnyRoomJson,
   blockMin: Xy,
 ): Container => {
@@ -70,19 +74,30 @@ export const floorOverdraws = (
           id,
           {
             config: { direction },
-            position: doorPosition,
+            position,
           },
         ]): Container => {
-          // draw the corners on the floor:
-          return createSprite({
-            textureId: "floorOverdraw.behindDoor",
-            label: id,
-            ...projectBlockXyzToScreenXy(
-              addXy(doorPosition, { x: 0.5, y: 0.5 }),
-            ),
-            anchor: { x: 0, y: 1 },
-            flipX: direction === "away",
-          });
+          // draw the cut off of the floor tiles as it occurs through the doorway
+          if (position.z === 0) {
+            return createSprite({
+              textureId: "floorOverdraw.behindDoor",
+              label: id,
+              ...projectBlockXyzToScreenXy(addXy(position, { x: 0.5, y: 0.5 })),
+              anchor: { x: 0, y: 1 },
+              flipX: direction === "away",
+            });
+          } else {
+            // for heightened doors (with legs), draw a corner the same as for walls:
+            return createSprite({
+              textureId: "floorOverdraw.cornerNearWall",
+              label: id,
+              ...projectBlockXyzToScreenXy({ ...position, z: 0 }),
+              // doors are two blocks wide:
+              times: { [perpendicularAxisXy(directionAxis(direction))]: 2 },
+              anchor: { x: 0, y: 1 },
+              flipX: direction === "away",
+            });
+          }
         },
       ),
     new Container({ label: "doorOverdraws" }),

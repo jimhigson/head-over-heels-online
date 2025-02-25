@@ -10,7 +10,7 @@ import type { ItemAppearance } from "../appearanceUtils";
 import { renderOnce } from "../appearanceUtils";
 import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { originXy } from "../../../../utils/vectors/vectors";
-import { floorOverdraws } from "./floorOverdraw";
+import { renderFloorOverdraws } from "./renderfloorOverdraw";
 import { findNonPerimeterWalls } from "./findNonPerimeterWalls";
 import { findExtraWallRanges } from "./findExtraWallRanges";
 import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraWalls";
@@ -67,7 +67,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       }
 
       tilesContainer.addChild(
-        floorOverdraws(roomJson, { x: blockXMin, y: blockYMin }),
+        renderFloorOverdraws(roomJson, { x: blockXMin, y: blockYMin }),
       );
 
       const tilesMask = new Graphics()
