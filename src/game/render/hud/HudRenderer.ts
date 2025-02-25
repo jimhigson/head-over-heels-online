@@ -56,7 +56,7 @@ function* numberSprites(n: number | string) {
     const textureId = `hud.char.${chars[i]}`;
     assertIsTextureId(textureId);
     yield createSprite({
-      texture: textureId,
+      textureId,
       x: (i + 0.5 - l / 2) * hudCharTextureSize.w,
     });
   }

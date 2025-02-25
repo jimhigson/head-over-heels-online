@@ -1,148 +1,91 @@
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
-import {
-  wallThicknessBlocks,
-  xAxisWallAabb,
-  xAxisWallRenderAabb,
-  yAxisWallAabb,
-  yAxisWallRenderAabb,
-} from "../../collision/boundingBoxes";
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomJson } from "../../../model/RoomJson";
-import type { SceneryName } from "../../../sprites/planets";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { emptySet } from "../../../utils/empty";
-import { doorAlongAxis } from "../../../utils/vectors/vectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  doorAlongAxis,
+  originXyz,
+  perpendicularAxisXy,
+} from "../../../utils/vectors/vectors";
+import { type JsonItem } from "../../../model/json/JsonItem";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import { multiplyBoundingBox } from "../../collision/boundingBoxes";
+import type { SceneryName } from "../../../sprites/planets";
 
-/**
- * convert a room's walls into normal items (that can be collided with as with any other item)
- */
-export function* loadWalls<R extends string>(
-  room: RoomJson<SceneryName, R>,
-): Generator<UnionOfAllItemInPlayTypes<R>> {
-  // left/right sides:
-  for (let yi = room.size.y - 1; yi >= 0; yi--) {
-    const style = room.walls.left[yi];
-    // visible wall - gaps for doors are explicitly given with "none"
-    if (style !== "none") {
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "wall",
-          id: `wall-left-${yi}`,
-          config: { side: "left", style },
-          state: {
-            position: {
-              ...blockXyzToFineXyz({ x: room.size.x, y: yi, z: 0 }),
-              z: 0,
-            },
-            expires: null,
-            stoodOnBy: emptySet,
-            disappear: null,
-          },
-          aabb: yAxisWallAabb,
-          renderAabb: yAxisWallRenderAabb,
-        },
-      };
-    }
+const wallRenderHeight = 50;
 
-    // hidden wall - gaps with door are implicit
-    // this lookup is slow, but is only done on room load:
-    const hasDoorAtThisWall =
-      Object.values(room.items).find(
-        (i) =>
-          i.type === "door" &&
-          doorAlongAxis(i.config.direction) === "y" &&
-          i.position.x === 0 &&
-          (i.position.y === yi || i.position.y + 1 === yi),
-      ) !== undefined;
+// can't take room height blocks times block height, or it is still possible to
+// jump over the wall in some cases in rooms without a ceiling portal
+export const wallThicknessBlocks = 1;
 
-    if (!hasDoorAtThisWall) {
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "wall",
-          id: `wall-right-${yi}`,
-          config: { side: "right", style: "none" },
-          shadowCastTexture: "shadow.wall.y",
-          state: {
-            position: blockXyzToFineXyz({
-              x: -wallThicknessBlocks,
-              y: yi,
-              z: 0,
-            }),
-            expires: null,
-            stoodOnBy: emptySet,
-            disappear: null,
-          },
-          aabb: yAxisWallAabb,
-          renders: false,
-        },
-      };
-    }
-  }
+export const xAxisWallAabb = {
+  x: blockSizePx.w,
+  y: blockSizePx.d * wallThicknessBlocks,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
+};
+export const xAxisWallRenderAabb = {
+  x: xAxisWallAabb.x,
+  y: 0,
+  // for rendering it extends to the drawn height of the wall tile:
+  z: wallRenderHeight,
+};
+export const yAxisWallAabb = {
+  x: blockSizePx.w * wallThicknessBlocks,
+  y: blockSizePx.d,
+  z: defaultRoomHeightBlocks * blockSizePx.h,
+};
+export const yAxisWallRenderAabb = {
+  x: 0,
+  y: yAxisWallAabb.y,
+  z: wallRenderHeight,
+};
 
-  // towards/away sides:
-  for (let xi = room.size.x - 1; xi >= 0; xi--) {
-    // visible wall - gaps for doors are explicitly given with "none"
-    const style = room.walls.away[xi];
-    if (style !== "none") {
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "wall",
-          id: `wall-away-${xi}`,
-          config: { side: "away", style },
-          state: {
-            position: {
-              ...blockXyzToFineXyz({ x: xi, y: room.size.y, z: 0 }),
-              z: 0,
-            },
-            expires: null,
-            stoodOnBy: emptySet,
-            disappear: null,
-          },
-          aabb: xAxisWallAabb,
-          renderAabb: xAxisWallRenderAabb,
-        },
-      };
-    }
+export const loadWall = <RoomId extends string>(
+  jsonWall: JsonItem<"wall", SceneryName, RoomId>,
+  id: string,
+): ItemInPlay<"wall", SceneryName, RoomId> => {
+  const {
+    config: { direction, times },
+    position,
+  } = jsonWall;
 
-    // hidden wall - gaps with door are implicit
-    const hasDoorInHiddenWall =
-      Object.values(room.items).find(
-        (i) =>
-          i.type === "door" &&
-          doorAlongAxis(i.config.direction) === "x" &&
-          (i.position.x === xi || i.position.x + 1 === xi) &&
-          i.position.y === 0,
-      ) !== undefined;
+  const axis = doorAlongAxis(direction);
+  const crossAxis = perpendicularAxisXy(axis);
 
-    if (!hasDoorInHiddenWall) {
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "wall",
-          id: `wall-towards-${xi}`,
-          config: { side: "towards", style: "none" },
-          shadowCastTexture: {
-            texture: "shadow.wall.y",
-            flipX: true,
-          },
-          state: {
-            position: blockXyzToFineXyz({
-              x: xi,
-              y: -wallThicknessBlocks,
-              z: 0,
-            }),
-            expires: null,
-            stoodOnBy: emptySet,
-            disappear: null,
-          },
-          aabb: xAxisWallAabb,
-          // invisible walls are never rendered so give no renderAabb
-          renders: false,
-        },
-      };
-    }
-  }
-}
+  const isHidden = direction === "towards" || direction === "right";
+
+  const invisibleWallSetBackBlocks: Xyz = {
+    ...originXyz,
+    [crossAxis]: isHidden ? -wallThicknessBlocks : 0,
+  };
+
+  return {
+    type: "wall",
+    id,
+    config: jsonWall.config,
+    aabb: multiplyBoundingBox(
+      axis === "y" ? yAxisWallAabb : xAxisWallAabb,
+      times,
+    ),
+    renders: !isHidden,
+    renderAabb:
+      isHidden ? undefined : (
+        multiplyBoundingBox(
+          axis === "y" ? yAxisWallRenderAabb : xAxisWallRenderAabb,
+          times,
+        )
+      ),
+    state: {
+      position: blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
+      stoodOnBy: emptySet,
+      expires: null,
+      disappear: null,
+    },
+    shadowCastTexture:
+      axis === "y" ? "shadow.wall.y" : (
+        { textureId: "shadow.wall.y", flipX: true }
+      ),
+  };
+};

@@ -47,20 +47,30 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 0 },
       type: "movableBlock",
     },
+    "wall@0,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,2,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
   },
   planet: "penitentiary",
   size: { x: 8, y: 2 },
-  walls: {
-    away: [
-      "loop",
-      "loop",
-      "skeleton",
-      "loop",
-      "loop",
-      "skeleton",
-      "loop",
-      "loop",
-    ],
-    left: ["none", "none"],
-  },
 }) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;

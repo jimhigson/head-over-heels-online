@@ -62,20 +62,50 @@ export const room = inferRoomJson({
       position: { x: 4, y: 0, z: 6 },
       type: "portableBlock",
     },
+    "wall@0,0,0:Z1Ibm7P": {
+      config: { direction: "right", tiles: [] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDrY": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,3,0": {
+      config: { direction: "right", tiles: [] },
+      position: { x: 0, y: 3, z: 0 },
+      type: "wall",
+    },
+    "wall@0,4,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "plain",
+          "armour",
+          "plain",
+          "shield",
+          "shield",
+          "plain",
+          "armour",
+          "plain",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 4, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: { direction: "left", tiles: ["shield"] },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,3,0": {
+      config: { direction: "left", tiles: ["shield"] },
+      position: { x: 8, y: 3, z: 0 },
+      type: "wall",
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 4 },
-  walls: {
-    away: [
-      "plain",
-      "armour",
-      "plain",
-      "shield",
-      "shield",
-      "plain",
-      "armour",
-      "plain",
-    ],
-    left: ["shield", "none", "none", "shield"],
-  },
 }) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

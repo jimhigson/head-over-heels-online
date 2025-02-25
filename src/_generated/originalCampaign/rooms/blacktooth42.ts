@@ -33,20 +33,30 @@ export const room = inferRoomJson({
       position: { x: 1, y: 1, z: 0 },
       type: "spring",
     },
+    "wall@0,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,2,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "plain",
+          "armour",
+          "plain",
+          "shield",
+          "shield",
+          "plain",
+          "armour",
+          "plain",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
   },
   planet: "blacktooth",
   size: { x: 8, y: 2 },
-  walls: {
-    away: [
-      "plain",
-      "armour",
-      "plain",
-      "shield",
-      "shield",
-      "plain",
-      "armour",
-      "plain",
-    ],
-    left: ["none", "none"],
-  },
 }) satisfies RoomJson<"blacktooth", OriginalCampaignRoomId>;

@@ -40,15 +40,21 @@ export const convertRoom = async (
     mortal: "deadly",
   };
 
-  const convertedItems = keyItems([
-    ...consolidateItems(
-      await convertItemsArray(
-        map,
-        xmlRoomName,
+  const convertedItems = await convertItemsArray(
+    map,
+    xmlRoomName,
+    roomXmlJson,
+    roomSidesWithDoors,
+  );
+  const items = keyItems([
+    ...consolidateItems([
+      ...convertedItems,
+      ...convertWalls(
         roomXmlJson,
         roomSidesWithDoors,
+        convertedItems.filter((i) => i.type === "door"),
       ),
-    ),
+    ]),
   ]);
 
   const roomId = convertRoomId(xmlRoomName);
@@ -64,11 +70,7 @@ export const convertRoom = async (
       roomOnMap["above"] &&
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     size: roomDimensions,
-    walls: {
-      away: convertWalls(roomXmlJson, "away", roomSidesWithDoors),
-      left: convertWalls(roomXmlJson, "left", roomSidesWithDoors),
-    },
-    items: convertedItems,
+    items,
     color: convertRoomColour(color),
   };
 };

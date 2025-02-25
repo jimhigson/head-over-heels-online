@@ -2,14 +2,14 @@ import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import type { Xy } from "../utils/vectors/vectors";
 import type { JsonItemUnion } from "./json/JsonItem";
-import type { Floor, RoomWalls } from "./modelTypes";
+import type { Floor } from "./modelTypes";
 
 /**
  * serialisation format of a room to be stored in while not in play
  */
 
 export type RoomJson<
-  P extends SceneryName,
+  S extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = {
@@ -23,7 +23,8 @@ export type RoomJson<
     // custom room height in blocks. If not set, the default room height is used. only a few rooms need this.
     z?: number;
   };
-  planet: P;
+  /** TODO: rename to scenery */
+  planet: S;
   floor: Floor;
   roomAbove?: RoomId;
   /**
@@ -33,7 +34,6 @@ export type RoomJson<
    */
   ceilingRelativePoint?: Xy;
   roomBelow?: RoomId;
-  walls: RoomWalls<P>;
   // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
   // colours in each room
   color: ZxSpectrumRoomColour;

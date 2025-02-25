@@ -41,10 +41,10 @@ export type RenderItemType = JsonItemType | "door-front" | "door-back";
  * test for if a door is embedded in an undrawn wall - ie, is on the right or towards
  * edge of the room and needs extra space for it
  */
-export const doorIsInHiddenWall = ({
+export const inHiddenWall = ({
   config: { direction },
   position,
-}: JsonItem<"door", SceneryName, string>) =>
+}: JsonItem<"door" | "wall", SceneryName, string>) =>
   (direction === "right" && position.x === 0) ||
   (direction === "towards" && position.y === 0);
 

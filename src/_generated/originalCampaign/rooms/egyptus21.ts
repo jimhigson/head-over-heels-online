@@ -17,20 +17,30 @@ export const room = inferRoomJson({
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
+    "wall@0,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,2,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
   },
   planet: "egyptus",
   size: { x: 8, y: 2 },
-  walls: {
-    away: [
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics",
-    ],
-    left: ["none", "none"],
-  },
 }) satisfies RoomJson<"egyptus", OriginalCampaignRoomId>;

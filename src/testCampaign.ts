@@ -1,35 +1,12 @@
 import type { Campaign } from "./model/modelTypes.ts";
-import { type RoomWalls } from "./model/modelTypes.ts";
 import { type RoomJson } from "./model/RoomJson.ts";
-import type { SceneryName, Wall } from "./sprites/planets.ts";
-import { sceneryNames, scenery } from "./sprites/planets.ts";
+import type { SceneryName } from "./sprites/planets.ts";
+import { sceneryNames } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { JsonItemUnion } from "./model/json/JsonItem.ts";
-import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
-
-const generateWalls = <P extends SceneryName>(
-  roomSize: Xy,
-  planet: P,
-  skip?: Record<AxisXy, number[]>,
-): RoomWalls<P> => {
-  const { walls } = scenery[planet];
-
-  function* gen(axis: AxisXy): Generator<Wall<P>> {
-    const n = walls.length;
-
-    for (let i = 0; ; i++) {
-      if (skip?.[axis]?.includes(i)) yield "none";
-      else yield walls[i % n];
-    }
-  }
-
-  return {
-    away: [...gen("x").take(roomSize.x)],
-    left: [...gen("y").take(roomSize.y)],
-  };
-};
+import { addPerimeterWallsToRoom } from "./_testUtils/addPerimeterWallsToRoom.ts";
 
 type ColorRoomIds = `${SceneryName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
@@ -79,12 +56,8 @@ const colourRooms = () => {
           const shade = zxSpectrumShades[iShade];
           yield [
             `${p}-${hue}-${shade}`,
-            {
+            addPerimeterWallsToRoom({
               size: { x: 8, y: 8 },
-              walls: generateWalls({ x: 8, y: 8 }, p, {
-                x: [4, 5],
-                y: [1, 2, 4, 5],
-              }),
               color: { hue, shade },
               floor: p,
               planet: p,
@@ -148,7 +121,7 @@ const colourRooms = () => {
                 ...sampleItems,
               ]),
               id: `${p}-${hue}-${shade}`,
-            },
+            }),
           ];
         }
       }
@@ -161,11 +134,10 @@ const colourRooms = () => {
 };
 
 const rooms = {
-  lift: {
+  lift: addPerimeterWallsToRoom({
     size: { x: 4, y: 4 },
     planet: "safari",
     color: { hue: "yellow", shade: "dimmed" },
-    walls: generateWalls({ x: 4, y: 4 }, "safari"),
     floor: "safari",
 
     id: "lift",
@@ -206,13 +178,12 @@ const rooms = {
         position: { x: 0, y: 0, z: 1 },
       },
     ]),
-  } satisfies RoomJson<"safari", TestCampaignRoomId>,
+  }) satisfies RoomJson<"safari", TestCampaignRoomId>,
 
-  laboratory: {
+  laboratory: addPerimeterWallsToRoom({
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
-    walls: generateWalls({ x: 18, y: 14 }, "egyptus", { x: [5, 6], y: [] }),
     floor: "egyptus",
 
     id: "laboratory",
@@ -267,12 +238,7 @@ const rooms = {
       {
         type: "conveyor",
         position: { x: 0, y: 0, z: 0 },
-        config: { direction: "away" },
-      },
-      {
-        type: "conveyor",
-        position: { x: 0, y: 1, z: 0 },
-        config: { direction: "away" },
+        config: { direction: "away", times: { y: 2 } },
       },
 
       // stack of items to test pushing stacks:
@@ -448,62 +414,22 @@ const rooms = {
       // circle of conveyors
       {
         type: "conveyor",
-        config: { direction: "away" },
+        config: { direction: "away", times: { y: 3 } },
         position: { x: 3, y: 6, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "away" },
-        position: { x: 3, y: 7, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "away" },
-        position: { x: 3, y: 8, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "left" },
+        config: { direction: "left", times: { x: 3 } },
         position: { x: 3, y: 9, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "left" },
-        position: { x: 4, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "left" },
-        position: { x: 5, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
-        position: { x: 6, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
-        position: { x: 6, y: 8, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
+        config: { direction: "towards", times: { y: 3 } },
         position: { x: 6, y: 7, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "right" },
-        position: { x: 6, y: 6, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "right" },
-        position: { x: 5, y: 6, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "right" },
+        config: { direction: "right", times: { x: 3 } },
         position: { x: 4, y: 6, z: 0 },
       },
       {
@@ -742,15 +668,9 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
+          times: { z: 2 },
         },
         position: { x: 14, y: 3, z: 0 },
-      },
-      {
-        type: "block",
-        config: {
-          style: "tower",
-        },
-        position: { x: 14, y: 3, z: 1 },
       },
       {
         type: "portableBlock",
@@ -906,17 +826,17 @@ const rooms = {
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 4 } },
         position: { x: 17, y: 2, z: 0 },
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 3 } },
         position: { x: 17, y: 3, z: 1 },
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 2 } },
         position: { x: 17, y: 4, z: 2 },
       },
       {
@@ -925,11 +845,10 @@ const rooms = {
         position: { x: 17, y: 5, z: 3 },
       },
     ]),
-  } satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
+  }) satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
 
-  renderEverything: {
+  renderEverything: addPerimeterWallsToRoom({
     size: { x: 18, y: 18 },
-    walls: generateWalls({ x: 18, y: 18 }, "bookworld"),
     floor: "bookworld",
 
     id: "renderEverything",
@@ -1189,13 +1108,8 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "tower" },
+        config: { style: "tower", times: { z: 2 } },
         position: { x: 7, y: 7, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "tower" },
-        position: { x: 7, y: 7, z: 1 },
       },
       {
         type: "movableBlock",
@@ -1315,7 +1229,7 @@ const rooms = {
     ]),
     planet: "bookworld",
     color: { hue: "magenta", shade: "basic" },
-  },
+  }),
   ...colourRooms(),
 } as Campaign<TestCampaignRoomId>["rooms"];
 

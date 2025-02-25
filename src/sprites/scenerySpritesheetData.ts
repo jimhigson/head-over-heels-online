@@ -77,6 +77,9 @@ const backgroundFrames = <
   ) as Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData>;
 };
 
+const floorEdgeSize = { w: 16, h: 13 };
+const floorEdgeHalfSize = { w: 8, h: 9 };
+
 const frames = {
   ...backgroundFrames("blacktooth", 542, 104, ".dark"), // actually different
   ...backgroundFrames("blacktooth", 542, 29, ""),
@@ -96,21 +99,21 @@ const frames = {
   ...backgroundFrames("safari", 542, 357, ""),
 
   "floorEdge.right": {
-    frame: { x: 423, y: 442, w: 8, h: 9 },
+    frame: { x: 418, y: 466, ...floorEdgeSize, pivot: { x: 0, y: 4 } },
   },
   "floorEdge.towards": {
-    frame: { x: 414, y: 442, w: 8, h: 9 },
+    frame: { x: 401, y: 466, ...floorEdgeSize, pivot: { x: 15, y: 4 } },
   },
-  "floorOverdraw.right": {
-    frame: { x: 423, y: 432, w: 8, h: 9 },
+  "floorEdge.half.right": {
+    frame: { x: 418, y: 470, ...floorEdgeHalfSize, pivot: { x: 0, y: 0 } },
   },
-  "floorOverdraw.towards": {
-    frame: { x: 414, y: 432, w: 8, h: 9 },
+  "floorEdge.half.towards": {
+    frame: { x: 401, y: 466, ...floorEdgeHalfSize, pivot: { x: 7, y: 0 } },
   },
-  "generic.floor.overdraw": {
+  "floorOverdraw.cornerNearWall": {
     frame: { x: 435, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
-  "generic.wall.overdraw": {
+  "floorOverdraw.behindDoor": {
     frame: { x: 452, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "shadow.wall.y": {

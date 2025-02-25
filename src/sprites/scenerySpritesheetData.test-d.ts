@@ -6,8 +6,6 @@ test("generating frame number types", () => {
   type EgyptusDark = BackgroundTextureId<"egyptus", ".dark">;
 
   expectTypeOf<Blacktooth>().toEqualTypeOf<
-    | "blacktooth.wall.none.left"
-    | "blacktooth.wall.none.away"
     | "blacktooth.wall.armour.left"
     | "blacktooth.wall.shield.left"
     | "blacktooth.wall.plain.left"
@@ -18,8 +16,6 @@ test("generating frame number types", () => {
   >();
 
   expectTypeOf<EgyptusDark>().toEqualTypeOf<
-    | "egyptus.dark.wall.none.left"
-    | "egyptus.dark.wall.none.away"
     | "egyptus.dark.wall.sarcophagus.left"
     | "egyptus.dark.wall.hieroglyphics.left"
     | "egyptus.dark.wall.sarcophagus.away"

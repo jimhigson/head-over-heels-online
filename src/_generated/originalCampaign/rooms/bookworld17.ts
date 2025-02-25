@@ -35,11 +35,45 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 0 },
       type: "spring",
     },
+    "wall@0,0,0:2sckiP": {
+      config: { direction: "right", tiles: [], times: { y: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDrY": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,6,0": {
+      config: {
+        direction: "away",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: { direction: "left", tiles: ["book", "book"], times: { y: 2 } },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,4,0": {
+      config: { direction: "left", tiles: ["book", "book"], times: { y: 2 } },
+      position: { x: 8, y: 4, z: 0 },
+      type: "wall",
+    },
   },
   planet: "bookworld",
   size: { x: 8, y: 6 },
-  walls: {
-    away: ["book", "book", "cowboy", "book", "book", "cowboy", "book", "book"],
-    left: ["book", "book", "none", "none", "book", "book"],
-  },
 }) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;

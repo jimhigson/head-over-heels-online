@@ -11,3 +11,6 @@ tricky/puzzle rooms
 * lifts moving in a wave
 
 * a room like the crossover (blacktooth11) but the characters enter via the same doors and have to help each other getting over by heels standing on head, and then later get back to the same room the other way, through the tunnel
+
+* a room with lots of walls (ie jsonitem type='wall') making a kind of maze instead of blocks to dmarkate - needs the
+walls inside a room to have a thinner bounding box

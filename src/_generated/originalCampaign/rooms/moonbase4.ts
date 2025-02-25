@@ -105,29 +105,53 @@ export const room = inferRoomJson({
       position: { x: 5, y: 2, z: 0 },
       type: "monster",
     },
+    "wall@0,0,0:2sckOl": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoDrY": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["window3", "coil", "window2"],
+        times: { x: 3 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@5,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["window2", "coil", "window1"],
+        times: { x: 3 },
+      },
+      position: { x: 5, y: 8, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["window3", "coil", "window2"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,5,0": {
+      config: {
+        direction: "left",
+        tiles: ["window2", "coil", "window1"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
   },
   planet: "moonbase",
   size: { x: 8, y: 8 },
-  walls: {
-    away: [
-      "window3",
-      "coil",
-      "window2",
-      "none",
-      "none",
-      "window2",
-      "coil",
-      "window1",
-    ],
-    left: [
-      "window3",
-      "coil",
-      "window2",
-      "none",
-      "none",
-      "window2",
-      "coil",
-      "window1",
-    ],
-  },
 }) satisfies RoomJson<"moonbase", OriginalCampaignRoomId>;

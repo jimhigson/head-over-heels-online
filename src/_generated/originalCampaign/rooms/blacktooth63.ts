@@ -61,11 +61,21 @@ export const room = inferRoomJson({
       position: { x: 5, y: 1, z: 3 },
       type: "pickup",
     },
+    "wall@0,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,2,0": {
+      config: {
+        direction: "away",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { x: 8 },
+      },
+      position: { x: 0, y: 2, z: 0 },
+      type: "wall",
+    },
   },
   planet: "jail",
   size: { x: 8, y: 2 },
-  walls: {
-    away: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-    left: ["none", "none"],
-  },
 }) satisfies RoomJson<"jail", OriginalCampaignRoomId>;

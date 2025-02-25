@@ -1,4 +1,3 @@
-import { loadWalls } from "./loadWalls";
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { objectValues } from "iter-tools";
@@ -60,13 +59,8 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
 ): RoomState<P, RoomId> => {
   const loadedItems: RoomStateItems<P, RoomId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
-    ...itemsInItemObjectMap(loadWalls(roomJson)),
     ...itemsInItemObjectMap(
-      /*gatherConveyors(*/ loadItems(
-        roomJson,
-        roomPickupsCollected,
-        isFirstLoad,
-      ) /*)*/,
+      loadItems(roomJson, roomPickupsCollected, isFirstLoad),
     ),
   };
 
@@ -84,8 +78,8 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
     );
 
     if (solidCol !== undefined) {
-      throw new Error(
-        `item ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} is colliding with (solid item) ${solidCol.id} @${JSON.stringify(solidCol.state.position)} #${JSON.stringify(solidCol.aabb)} on loading room ${roomJson.id}`,
+      console.error(
+        `in room ${roomJson.id} item ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} is colliding with (solid item) ${solidCol.id} @${JSON.stringify(solidCol.state.position)} #${JSON.stringify(solidCol.aabb)} on loading room ${roomJson.id}`,
       );
     }
   }

@@ -8,101 +8,14 @@ import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 
 import type { ItemAppearance } from "../appearanceUtils";
 import { renderOnce } from "../appearanceUtils";
-import { objectValues } from "iter-tools";
-import type { UnknownRoomState } from "../../../../model/modelTypes";
-import { iterate } from "../../../../utils/iterate";
-import type { DirectionXy4, Xy } from "../../../../utils/vectors/vectors";
-import {
-  axesXy,
-  perpendicularAxisXy,
-  originXy,
-} from "../../../../utils/vectors/vectors";
-import { iterateToContainer } from "../../../iterateToContainer";
-import type { RoomJson } from "../../../../model/RoomJson";
-import type { SceneryName } from "../../../../sprites/planets";
-import type { JsonItem } from "../../../../model/json/JsonItem";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
+import { originXy } from "../../../../utils/vectors/vectors";
+import { renderFloorOverdraws } from "./renderfloorOverdraw";
+import { findNonPerimeterWalls } from "./findNonPerimeterWalls";
 import { findExtraWallRanges } from "./findExtraWallRanges";
-import { edges } from "./edges";
 import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraWalls";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
-
-function* generateFloorOverdraws(
-  room: UnknownRoomState,
-  blockMin: Xy,
-  sidesWithDoors: SidesWithDoors,
-): Generator<Container> {
-  for (const axis of axesXy) {
-    const crossAxis = perpendicularAxisXy(axis);
-
-    const nearSide = axis === "x" ? "towards" : "right";
-    const farSide = axis === "x" ? "away" : "left";
-
-    // render the right-angle cutting off of the floor tiles along the back
-    // walls. In the original game this was rendered by the walls
-    // themselves, but it breaks our z-ordering if the walls over-render
-    // their bounding boxes by so much
-    for (let ia = 0; ia <= room.size[axis]; ia++) {
-      let overdrawType: "corner-on-floor" | "behind-door" | "none";
-
-      if (room.walls[farSide][ia] === "none") {
-        const doorJsonAtLocation = iterate(
-          objectValues(room.roomJson.items),
-        ).find(
-          (item) =>
-            item.type === "door" &&
-            item.config.direction === farSide &&
-            (item.position[axis] === ia || item.position[axis] + 1 === ia) &&
-            item.position[crossAxis] === room.size[crossAxis],
-        );
-
-        if (doorJsonAtLocation === undefined) {
-          overdrawType = "none";
-        } else if (doorJsonAtLocation.position.z === 0) {
-          overdrawType = "behind-door";
-        } else {
-          overdrawType = "corner-on-floor";
-        }
-      } else {
-        // normal wall
-        overdrawType = "corner-on-floor";
-      }
-
-      if (overdrawType !== "none") {
-        yield moveContainerToBlockXyz(
-          {
-            [axis]: ia - blockMin[axis],
-            [crossAxis]:
-              room.size[crossAxis] +
-              (sidesWithDoors[nearSide] ? 0.5 : 0) +
-              (overdrawType === "behind-door" ? 0.5 : 0),
-          } as Xy,
-          createSprite(
-            overdrawType === "behind-door" ?
-              {
-                anchor: { x: 0, y: 1 },
-                texture: "generic.wall.overdraw",
-                flipX: axis === "x",
-              }
-            : {
-                anchor: { x: 0, y: 1 },
-                texture: "generic.floor.overdraw",
-                flipX: axis === "x",
-              },
-          ),
-        );
-      }
-    }
-  }
-}
-
-export const findExtraWalls = (
-  items: RoomJson<SceneryName, string, string>["items"],
-): Iterable<JsonItem<"wall">> => {
-  return [
-    ...iterate(objectValues(items)).filter((item) => item.type === "wall"),
-  ];
-};
 
 export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
   ({ item, room }) => {
@@ -121,7 +34,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     const {
       floor: floorType,
       color: { shade },
-      roomJson: { items: jsonItems },
+      roomJson,
     } = room;
 
     const container = new Container({ label: `floor(${room.id})` });
@@ -146,19 +59,15 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
                 y: iy + (sidesWithDoors.towards ? -0.5 : 0),
               },
               createSprite({
-                texture: floorTileTexture,
+                textureId: floorTileTexture,
               }),
             ),
           );
         }
       }
-      iterateToContainer(
-        generateFloorOverdraws(
-          room,
-          { x: blockXMin, y: blockYMin },
-          sidesWithDoors,
-        ),
-        tilesContainer,
+
+      tilesContainer.addChild(
+        renderFloorOverdraws(roomJson, { x: blockXMin, y: blockYMin }),
       );
 
       const tilesMask = new Graphics()
@@ -185,18 +94,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
       container.addChild(tilesContainer);
     }
 
-    const extraWalls = findExtraWalls(jsonItems);
-    const { towards: towardsOverdraw, right: rightOverdraw } = edges({
-      blockXExtent,
-      blockYExtent,
-      blockXMin,
-      blockYMin,
-      type: "floorOverdraw",
-      extraWalls,
-    });
-
-    container.addChild(towardsOverdraw);
-    container.addChild(rightOverdraw);
+    const nonPerimeterWalls = findNonPerimeterWalls(roomJson);
 
     // rendering strategy differs slightly from original here - we don't render floors added in for near-side
     // doors all the way to their (extended) edge - we cut the (inaccessible) corners of the room off
@@ -215,7 +113,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
 
     container.addChild(floorMaskCutOffLeftAndRight);
 
-    const extraWallRanges = findExtraWallRanges([...extraWalls]);
+    const extraWallRanges = findExtraWallRanges(nonPerimeterWalls);
 
     if (extraWallRanges !== undefined) {
       const floorOverdrawForExtraWalls = createFloorOverdrawForExtraWalls({

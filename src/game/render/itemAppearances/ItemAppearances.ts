@@ -24,8 +24,10 @@ import {
   smallItemTextureSize,
 } from "../../../sprites/textureSizes";
 import { iterate } from "../../../utils/iterate";
+import type { Xy } from "../../../utils/vectors/vectors";
 import {
   directionAxis,
+  perpendicularAxisXy,
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
@@ -35,6 +37,7 @@ import {
 } from "./createStackedSprites";
 import { store } from "../../../store/store";
 import { getAtPath } from "../../../utils/getAtPath";
+import { projectBlockXyzToScreenXy } from "../projectToScreen";
 
 const blockTextureId = (
   isDark: boolean,
@@ -85,36 +88,53 @@ export const itemAppearances: {
   wall: renderOnce(
     ({
       item: {
-        config: { side, style },
+        id,
+        config: { direction, tiles },
       },
       room,
     }) => {
-      if (side === "right" || side === "towards") {
-        throw new Error("this wall should be non-rendering");
+      if (direction === "right" || direction === "towards") {
+        throw new Error(`this wall should be non-rendering ${id}`);
       }
 
-      return createSprite({
-        texture: wallTextureId(
-          room.planet,
-          style,
-          side,
-          room.color.shade === "dimmed",
-        ),
-        // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
-        // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
-        y: 1,
-        pivot:
-          side === "away" ?
-            {
-              x: wallTileSize.w,
-              // walls need to be rendered 1px high to match original game (original puts them 1px low, but
-              // we already position them (in world space) 2px low to match original rendering while keeping
-              // bounding boxes correct
-              y: wallTileSize.h + 1,
-            }
-          : { x: 0, y: wallTileSize.h + 1 },
-        filter: mainPaletteSwapFilter(room),
-      });
+      const alongAxis = perpendicularAxisXy(directionAxis(direction));
+
+      const container = new Container({ label: "wallTiles" });
+      for (let i = 0; i < tiles.length; i++) {
+        const tileSprite = createSprite({
+          textureId: wallTextureId(
+            room.planet,
+            tiles[i],
+            direction,
+            room.color.shade === "dimmed",
+          ),
+          // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
+          // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
+          y: 1,
+          pivot:
+            direction === "away" ?
+              {
+                x: wallTileSize.w,
+                // walls need to be rendered 1px high to match original game (original puts them 1px low, but
+                // we already position them (in world space) 2px low to match original rendering while keeping
+                // bounding boxes correct
+                y: wallTileSize.h + 1,
+              }
+            : { x: 0, y: wallTileSize.h + 1 },
+          filter: mainPaletteSwapFilter(room),
+        });
+
+        const tileRenderPosition: Xy = projectBlockXyzToScreenXy({
+          [alongAxis]: i,
+        });
+
+        tileSprite.x += tileRenderPosition.x;
+        tileSprite.y += tileRenderPosition.y;
+
+        container.addChild(tileSprite);
+      }
+
+      return container;
     },
   ),
 
@@ -125,7 +145,7 @@ export const itemAppearances: {
       },
     }) => {
       return createSprite({
-        texture: `barrier.${axis}`,
+        textureId: `barrier.${axis}`,
         times,
       });
     },
@@ -139,7 +159,7 @@ export const itemAppearances: {
       room,
     }) =>
       createSprite({
-        texture: style,
+        textureId: style,
         filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
         times,
       }),
@@ -165,7 +185,7 @@ export const itemAppearances: {
 
     return {
       container: createSprite({
-        texture: blockTextureId(
+        textureId: blockTextureId(
           room.color.shade === "dimmed",
           style,
           disappear !== null,
@@ -234,7 +254,7 @@ export const itemAppearances: {
             times,
           }
         : {
-            texture: `conveyor.${axis}.6`,
+            textureId: `conveyor.${axis}.6`,
             times,
           },
       ),
@@ -260,7 +280,7 @@ export const itemAppearances: {
       }),
     );
 
-    rendering.addChild(createSprite({ texture: "lift.static", pivot }));
+    rendering.addChild(createSprite({ textureId: "lift.static", pivot }));
 
     return rendering;
   }),
@@ -300,7 +320,7 @@ export const itemAppearances: {
   pickup: renderOnce(({ item: { config }, room }) => {
     if (config.gives === "crown") {
       return createSprite({
-        texture: `crown.${config.planet}`,
+        textureId: `crown.${config.planet}`,
       });
     }
 
@@ -312,7 +332,7 @@ export const itemAppearances: {
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",
-      scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
+      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room) },
       reincarnation: {
         animationId: "fish",
       },
@@ -391,7 +411,7 @@ export const itemAppearances: {
             // directional, style, no anim
             return {
               container: createSprite({
-                texture: `${config.which}.${config.style}.${facingXy4}`,
+                textureId: `${config.which}.${config.style}.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -400,7 +420,7 @@ export const itemAppearances: {
             // directional, no style, no anim
             return {
               container: createSprite({
-                texture: `elephant.${facingXy4}`,
+                textureId: `elephant.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -416,7 +436,7 @@ export const itemAppearances: {
                     filter,
                   })
                 : createSprite({
-                    texture: `${config.which}.${facingXy4}.1`,
+                    textureId: `${config.which}.${facingXy4}.1`,
                     filter,
                   }),
               renderProps,
@@ -429,14 +449,14 @@ export const itemAppearances: {
                 state.activated || state.busyLickingDoughnutsOffFace ?
                   createStackedSprites({
                     top: {
-                      texture: `${config.which}.${facingXy4}`,
+                      textureId: `${config.which}.${facingXy4}`,
                       filter: filter || mainPaletteSwapFilter(room),
                     },
                     bottom: itemRidingOnBubblesSpritesOptions,
                   })
                   // charging on a toaster
                 : createSprite({
-                    texture: `${config.which}.${facingXy4}`,
+                    textureId: `${config.which}.${facingXy4}`,
                     filter,
                   }),
               renderProps,
@@ -494,7 +514,7 @@ export const itemAppearances: {
                     animationId: config.which,
                     filter,
                   }
-                : { texture: `${config.which}.1`, filter },
+                : { textureId: `${config.which}.1`, filter },
               ),
               renderProps,
             };
@@ -503,7 +523,7 @@ export const itemAppearances: {
             // not directional, not animated
             return {
               filter,
-              container: createSprite({ texture: config.which, filter }),
+              container: createSprite({ textureId: config.which, filter }),
               renderProps,
             };
 
@@ -584,7 +604,7 @@ export const itemAppearances: {
 
     return {
       container: createSprite({
-        texture: style,
+        textureId: style,
         filter,
       }),
       renderProps: { highlighted },
@@ -628,7 +648,7 @@ export const itemAppearances: {
             filter,
           })
         : createSprite({
-            texture: compressed ? "spring.compressed" : "spring.released",
+            textureId: compressed ? "spring.compressed" : "spring.released",
             filter,
           }),
 
@@ -663,11 +683,11 @@ export const itemAppearances: {
       container:
         which === "headOverHeels" ?
           createStackedSprites({
-            top: { texture: `head.walking.${startDirection}.2`, filter },
-            bottom: { texture: `heels.walking.${startDirection}.2`, filter },
+            top: { textureId: `head.walking.${startDirection}.2`, filter },
+            bottom: { textureId: `heels.walking.${startDirection}.2`, filter },
           })
         : createSprite({
-            texture: `${which}.walking.${startDirection}.2`,
+            textureId: `${which}.walking.${startDirection}.2`,
             filter,
           }),
       renderProps: { highlighted },

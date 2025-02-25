@@ -126,14 +126,14 @@ const convertItem = async ({
     return {
       type: "wall",
       config: {
-        side:
+        direction:
           parsedWallName.axis === "x" ?
             parsedWallName.isInvisible ?
               "towards"
             : "away"
           : parsedWallName.isInvisible ? "right"
           : "left",
-        style: convertWallName(planetName, xml2JsonItem.kind),
+        tiles: [convertWallName(planetName, xml2JsonItem.kind)],
       },
       position,
     };

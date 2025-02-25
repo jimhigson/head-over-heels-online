@@ -31,20 +31,30 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "monster",
     },
+    "wall@0,0,0": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@2,0,0": {
+      config: {
+        direction: "left",
+        tiles: [
+          "wall",
+          "window",
+          "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
+        ],
+        times: { y: 8 },
+      },
+      position: { x: 2, y: 0, z: 0 },
+      type: "wall",
+    },
   },
   planet: "safari",
   size: { x: 2, y: 8 },
-  walls: {
-    away: ["none", "none"],
-    left: [
-      "wall",
-      "window",
-      "wall",
-      "shield",
-      "shield",
-      "wall",
-      "window",
-      "wall",
-    ],
-  },
 }) satisfies RoomJson<"safari", OriginalCampaignRoomId>;

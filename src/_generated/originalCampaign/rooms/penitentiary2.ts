@@ -86,31 +86,58 @@ export const room = inferRoomJson({
       position: { x: 6, y: 3, z: 2 },
       type: "monster",
     },
+    "wall@0,0,0:2sckOl": {
+      config: { direction: "right", tiles: [], times: { y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,0,0:Z1XoEJK": {
+      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@0,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["loop", "skeleton", "loop"],
+        times: { x: 3 },
+      },
+      position: { x: 0, y: 10, z: 0 },
+      type: "wall",
+    },
+    "wall@5,0,0": {
+      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      position: { x: 5, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@5,8,0": {
+      config: {
+        direction: "away",
+        tiles: ["loop", "skeleton", "loop"],
+        times: { x: 3 },
+      },
+      position: { x: 5, y: 10, z: 0 },
+      type: "wall",
+    },
+    "wall@8,0,0": {
+      config: {
+        direction: "left",
+        tiles: ["loop", "skeleton", "loop"],
+        times: { y: 3 },
+      },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    "wall@8,5,0": {
+      config: {
+        direction: "left",
+        tiles: ["loop", "loop", "skeleton", "loop", "loop"],
+        times: { y: 5 },
+      },
+      position: { x: 8, y: 5, z: 0 },
+      type: "wall",
+    },
   },
   planet: "penitentiary",
   size: { x: 8, y: 10 },
-  walls: {
-    away: [
-      "loop",
-      "skeleton",
-      "loop",
-      "none",
-      "none",
-      "loop",
-      "skeleton",
-      "loop",
-    ],
-    left: [
-      "loop",
-      "skeleton",
-      "loop",
-      "none",
-      "none",
-      "loop",
-      "loop",
-      "skeleton",
-      "loop",
-      "loop",
-    ],
-  },
 }) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;

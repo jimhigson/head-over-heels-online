@@ -1,7 +1,5 @@
-import shortHash from "shorthash2";
 import { canonicalize } from "json-canonicalize";
 import type { Xyz } from "../../utils/vectors/vectors";
-import nanoEqual from "nano-equal";
 import type { JsonItemType, JsonItemUnion } from "../../model/json/JsonItem";
 
 export const consolidatableJsonItemTypes = [
@@ -10,6 +8,7 @@ export const consolidatableJsonItemTypes = [
   "barrier",
   "conveyor",
   "hushPuppy",
+  "wall",
 ] as const satisfies JsonItemType[];
 export type ConsolidatableJsonItemType =
   (typeof consolidatableJsonItemTypes)[number];
@@ -32,8 +31,11 @@ const isConsolidatable = (
 type Grid = Set<ConsolidatableJsonItem>[][][];
 
 // Generate a stable hash key for the visited map
-const hashItem = (o: { type: string; config: object }): string =>
-  shortHash(canonicalize(o));
+const hashItem = (o: ConsolidatableJsonItem): string => {
+  return o.type === "wall" ?
+      `wall/${o.config.direction}`
+    : canonicalize({ type: o.type, config: o.config });
+};
 
 const createGrid = (
   items: Iterable<JsonItemUnion>,
@@ -105,7 +107,7 @@ export const consolidateItems = (
     for (let y = 0; y < gridSize.y; y++) {
       for (let z = 0; z < gridSize.z; z++) {
         for (const item of grid[x][y][z]) {
-          const key = hashItem({ type: item.type, config: item.config });
+          const key = hashItem(item);
           if (!visited.has(key)) {
             visited.set(
               key,
@@ -126,13 +128,11 @@ export const consolidateItems = (
     { x, y, z }: Xyz,
     item: ConsolidatableJsonItem,
   ): boolean => {
-    const key = hashItem({ type: item.type, config: item.config });
+    const key = hashItem(item);
     return (
       !visited.get(key)![x][y][z] &&
       Array.from(grid[x][y][z]).some(
-        (cellItem) =>
-          cellItem.type === item.type &&
-          nanoEqual(cellItem.config, item.config),
+        (cellItem) => hashItem(cellItem) === hashItem(item),
       )
     );
   };
@@ -182,13 +182,25 @@ export const consolidateItems = (
     return end;
   };
 
+  const combineInto = (
+    target: ConsolidatableJsonItem,
+    joiner: ConsolidatableJsonItem,
+  ) => {
+    if (target.type === "wall") {
+      if (joiner.type !== "wall") {
+        throw new Error("only walls can join walls");
+      }
+      target.config.tiles.push(...joiner.config.tiles);
+    }
+  };
+
   // Mark cells as visited and consolidate the region in the grid
   const consolidateRegion = (
     { x: startX, y: startY, z: startZ }: Xyz,
     { x: endX, y: endY, z: endZ }: Xyz,
     item: ConsolidatableJsonItem,
   ): void => {
-    const key = hashItem({ type: item.type, config: item.config });
+    const key = hashItem(item);
 
     const xTimes = endX - startX + 1;
     const yTimes = endY - startY + 1;
@@ -209,11 +221,9 @@ export const consolidateItems = (
           if (i !== startX || j !== startY || k !== startZ) {
             const cell = grid[i][j][k];
             removeItemFromCell: for (const cellItem of cell) {
-              const cellItemHash = hashItem({
-                type: cellItem.type,
-                config: cellItem.config,
-              });
+              const cellItemHash = hashItem(cellItem);
               if (cellItemHash === key) {
+                combineInto(item, cellItem);
                 cell.delete(cellItem);
                 break removeItemFromCell;
               }
@@ -229,7 +239,7 @@ export const consolidateItems = (
     for (let y = 0; y < gridSize.y; y++) {
       for (let z = 0; z < gridSize.z; z++) {
         for (const item of grid[x][y][z]) {
-          const key = hashItem({ type: item.type, config: item.config });
+          const key = hashItem(item);
           if (!visited.get(key)![x][y][z]) {
             const end = findCuboid({ x, y, z }, item);
 

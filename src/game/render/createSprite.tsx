@@ -14,7 +14,6 @@ import {
 import { spriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "../../originalGame";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
-import { omit } from "../../utils/pick";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 
 type AnimatedCreateSpriteOptions = {
@@ -38,6 +37,7 @@ type AnimatedCreateSpriteOptions = {
    */
   playOnce?: "and-destroy" | "and-stop";
   times?: Partial<Xyz>;
+  label?: string;
 };
 
 export type CreateSpriteOptions =
@@ -47,11 +47,12 @@ export type CreateSpriteOptions =
       anchor?: PointData;
       pivot?: PointData;
       flipX?: boolean;
-      texture: TextureId;
+      textureId: TextureId;
       x?: number;
       y?: number;
       filter?: Filter | Filter[];
       times?: Partial<Xyz>;
+      label?: string;
     }
   | AnimatedCreateSpriteOptions;
 
@@ -70,28 +71,30 @@ const isAnimatedOptions = (
 export const createSprite = (options: CreateSpriteOptions): Container => {
   if (typeof options === "string") {
     // shortcutted convenience for creating with the texture name and no other options
-    return createSprite({ texture: options });
+    return createSprite({ textureId: options });
   } else {
-    const { anchor, flipX, pivot, x, y, filter, times } = options;
+    const { anchor, flipX, pivot, x, y, filter, times, label } = options;
 
     let sprite: Sprite;
 
     if (isAnimatedOptions(options)) {
       sprite = createAnimatedSprite(options);
     } else {
-      sprite = new Sprite(spriteSheet.textures[options.texture]);
+      sprite = new Sprite(spriteSheet.textures[options.textureId]);
     }
 
     if (times !== undefined) {
       const completeTimes = { x: 1, y: 1, z: 1, ...times };
 
-      const container = new Container({ label: "timesXyz" });
+      const container = new Container({ label: label ?? "timesXyz" });
       for (let { x } = completeTimes; x >= 1; x--) {
         for (let { y } = completeTimes; y >= 1; y--) {
           for (let z = 1; z <= completeTimes.z; z++) {
-            const component = createSprite(
-              omit(options, "times") as CreateSpriteOptions,
-            );
+            const component = createSprite({
+              ...options,
+              times: undefined,
+              label: `(${x},${y},${z})`,
+            });
             const displaceXy = projectBlockXyzToScreenXy({
               x: x - 1,
               y: y - 1,
@@ -110,7 +113,7 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
     if (anchor === undefined && pivot === undefined) {
       if (!isAnimatedOptions(options)) {
         // I allow a non-standard pivot property on my sprites:
-        const spriteDataFrame = spriteSheet.data.frames[options.texture]
+        const spriteDataFrame = spriteSheet.data.frames[options.textureId]
           .frame as SpritesheetFrameData["frame"] & { pivot: Xy };
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
@@ -137,6 +140,10 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
 
     if (filter !== undefined) {
       sprite.filters = filter;
+    }
+
+    if (label !== undefined) {
+      sprite.label = label;
     }
 
     sprite.eventMode = "static";

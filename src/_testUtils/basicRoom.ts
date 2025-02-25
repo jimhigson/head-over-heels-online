@@ -1,6 +1,6 @@
-import { produce } from "immer";
 import { initGameState } from "../game/gameState/initGameState";
 import type { RoomJson } from "../model/RoomJson";
+import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 
@@ -23,32 +23,12 @@ const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
   floor: "blacktooth",
   items: {},
   size: { x: 8, y: 8 },
-  walls: {
-    // TODO: need to not have walls where there are doors
-    left: new Array(8).fill("armour"),
-    away: new Array(8).fill("armour"),
-  },
 });
 const basicEmptyRoomWithItems = (
   id: TestRoomId,
   items: ItemsInTestRoomJson,
 ): TestRoomJson => {
   const emptyRoom = basicEmptyRoom(id);
-
-  // set walls to none where there are doors:
-  emptyRoom.walls = produce(emptyRoom.walls, (wallsDraft) => {
-    Object.values(items).forEach((item) => {
-      if (item.type === "door") {
-        if (item.config.direction === "left") {
-          wallsDraft.left[item.position.y] = "none";
-          wallsDraft.left[item.position.y + 1] = "none";
-        } else if (item.config.direction === "right") {
-          wallsDraft.away[item.position.x] = "none";
-          wallsDraft.away[item.position.x + 1] = "none";
-        }
-      }
-    });
-  });
 
   return {
     ...emptyRoom,
@@ -81,14 +61,14 @@ export const basicGameState = ({
 }: BasicGameStateOptions): GameStateWithMockInput => {
   const campaign = {
     rooms: {
-      [firstRoomId]: {
+      [firstRoomId]: addPerimeterWallsToRoom({
         ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),
         ...firstRoomProps,
-      },
-      [secondRoomId]: {
+      }),
+      [secondRoomId]: addPerimeterWallsToRoom({
         ...basicEmptyRoomWithItems(secondRoomId, secondRoomItems),
         ...secondRoomProps,
-      },
+      }),
     },
   };
   const gameState = initGameState<TestRoomId>({

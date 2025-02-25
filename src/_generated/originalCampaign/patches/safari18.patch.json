@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "op": "add",
+    "path": "/items/extraSupports",
+    "value": {
+      "config": { "style": "tower", "times": { "y": 4, "z": 2 } },
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "block"
+    }
+  }
+]
