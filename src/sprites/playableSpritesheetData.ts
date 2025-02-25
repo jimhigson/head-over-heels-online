@@ -144,9 +144,21 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "head.falling.left": {
+    frame: {
+      ...smallItemGridLocation({ x: 1, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
   "head.falling.away": {
     frame: {
       ...smallItemGridLocation({ x: 6, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "head.falling.awayLeft": {
+    frame: {
+      ...smallItemGridLocation({ x: 3, y: 7 }),
       ...smallItemTextureSize,
     },
   },

@@ -21,6 +21,7 @@
 
 [1,L] iphone playable
     * on-screen keyboared
+    * tap on hud to change character
 
 [,?] own levels
 
