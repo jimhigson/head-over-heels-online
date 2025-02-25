@@ -41,7 +41,7 @@ function* doorLegsGenerator(
         //draw the 'floating' (no legs) threshold:
 
         const sprite = createSprite({
-          texture: `generic.door.floatingThreshold.${axis}`,
+          textureId: `generic.door.floatingThreshold.${axis}`,
           ...addXy(offset, {
             y: -blockSizePx.h * height,
           }),
@@ -56,14 +56,14 @@ function* doorLegsGenerator(
     } else {
       yield createSprite({
         pivot: { x: pivotX, y: 9 },
-        texture: "generic.door.legs.base",
+        textureId: "generic.door.legs.base",
         ...addXy(offset, {}),
       });
 
       for (let h = 1; h < height; h++) {
         yield createSprite({
           pivot: { x: pivotX, y: 9 },
-          texture: "generic.door.legs.pillar",
+          textureId: "generic.door.legs.pillar",
           ...addXy(offset, {
             y: -h * blockSizePx.h,
           }),
@@ -78,7 +78,7 @@ function* doorLegsGenerator(
     // non-floating threshold
     yield createSprite({
       pivot: { x: 16, y: blockSizePx.h * height + 13 },
-      texture: `generic.door.legs.threshold.double.${axis}`,
+      textureId: `generic.door.legs.threshold.double.${axis}`,
       ...projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }),
     });
   }
@@ -127,7 +127,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
   }) => {
     const axis = doorAlongAxis(direction);
     return createSprite({
-      texture: doorTexture(room, axis, part),
+      textureId: doorTexture(room, axis, part),
       filter: mainPaletteSwapFilter(room),
       ...xyToTranslateToInsideOfRoom(direction, aabb),
     });

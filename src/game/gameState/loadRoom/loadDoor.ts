@@ -257,7 +257,7 @@ export function* loadDoor<RoomId extends string>(
           inHidden ? "shadow.door.floatingThreshold.double.y" : undefined,
         shadowMask: {
           spriteOptions: {
-            texture:
+            textureId:
               inHidden ?
                 "shadowMask.door.floatingThreshold.double.y"
               : "shadowMask.door.legs.threshold.double.y",

@@ -102,7 +102,7 @@ const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
     case "conveyor":
       return {
         spriteOptions: {
-          texture: "shadowMask.conveyor",
+          textureId: "shadowMask.conveyor",
           flipX: directionAxis(jsonItem.config.direction) === "x",
         },
         relativeTo: "origin",
@@ -110,7 +110,7 @@ const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
     case "barrier":
       return {
         spriteOptions: {
-          texture: "shadowMask.barrier.y",
+          textureId: "shadowMask.barrier.y",
           flipX: jsonItem.config.axis === "x",
         },
         relativeTo: "origin",
@@ -200,12 +200,12 @@ const shadowCast = (
       return "shadow.smallBlock";
     case "conveyor":
       return {
-        texture: "shadow.fullBlock",
+        textureId: "shadow.fullBlock",
         flipX: directionAxis(jsonItem.config.direction) === "x",
       };
     case "barrier":
       return {
-        texture: "shadow.barrier.y",
+        textureId: "shadow.barrier.y",
         flipX: jsonItem.config.axis === "x",
       };
     case "spring":

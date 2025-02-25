@@ -65,7 +65,8 @@ const playableCreateSpriteOptions = ({
   if (action === "falling") {
     const fallingTextureName = `${name}.falling.${facingXy8}`;
 
-    if (isTextureId(fallingTextureName)) return { texture: fallingTextureName };
+    if (isTextureId(fallingTextureName))
+      return { textureId: fallingTextureName };
   }
 
   const idleAnimationId = `${name}.idle.${facingXy8}` as const;
@@ -75,7 +76,7 @@ const playableCreateSpriteOptions = ({
       animationId: idleAnimationId,
     };
   }
-  return { texture: `${name}.walking.${facingXy8}.2` };
+  return { textureId: `${name}.walking.${facingXy8}.2` };
 };
 
 export const isHighlighted = ({

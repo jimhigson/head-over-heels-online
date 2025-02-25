@@ -67,7 +67,7 @@ const renderMultipliedXy = (
 
   const renderingContainer = createSprite({
     ...(typeof createSpriteOptions === "string" ?
-      { texture: createSpriteOptions }
+      { textureId: createSpriteOptions }
     : createSpriteOptions),
     times: timesXy,
   });

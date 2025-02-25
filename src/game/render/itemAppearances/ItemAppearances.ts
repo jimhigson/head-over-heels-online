@@ -102,7 +102,7 @@ export const itemAppearances: {
       const container = new Container({ label: "wallTiles" });
       for (let i = 0; i < tiles.length; i++) {
         const tileSprite = createSprite({
-          texture: wallTextureId(
+          textureId: wallTextureId(
             room.planet,
             tiles[i],
             direction,
@@ -145,7 +145,7 @@ export const itemAppearances: {
       },
     }) => {
       return createSprite({
-        texture: `barrier.${axis}`,
+        textureId: `barrier.${axis}`,
         times,
       });
     },
@@ -159,7 +159,7 @@ export const itemAppearances: {
       room,
     }) =>
       createSprite({
-        texture: style,
+        textureId: style,
         filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
         times,
       }),
@@ -185,7 +185,7 @@ export const itemAppearances: {
 
     return {
       container: createSprite({
-        texture: blockTextureId(
+        textureId: blockTextureId(
           room.color.shade === "dimmed",
           style,
           disappear !== null,
@@ -254,7 +254,7 @@ export const itemAppearances: {
             times,
           }
         : {
-            texture: `conveyor.${axis}.6`,
+            textureId: `conveyor.${axis}.6`,
             times,
           },
       ),
@@ -280,7 +280,7 @@ export const itemAppearances: {
       }),
     );
 
-    rendering.addChild(createSprite({ texture: "lift.static", pivot }));
+    rendering.addChild(createSprite({ textureId: "lift.static", pivot }));
 
     return rendering;
   }),
@@ -320,7 +320,7 @@ export const itemAppearances: {
   pickup: renderOnce(({ item: { config }, room }) => {
     if (config.gives === "crown") {
       return createSprite({
-        texture: `crown.${config.planet}`,
+        textureId: `crown.${config.planet}`,
       });
     }
 
@@ -332,7 +332,7 @@ export const itemAppearances: {
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",
-      scroll: { texture: "scroll", filter: mainPaletteSwapFilter(room) },
+      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room) },
       reincarnation: {
         animationId: "fish",
       },
@@ -411,7 +411,7 @@ export const itemAppearances: {
             // directional, style, no anim
             return {
               container: createSprite({
-                texture: `${config.which}.${config.style}.${facingXy4}`,
+                textureId: `${config.which}.${config.style}.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -420,7 +420,7 @@ export const itemAppearances: {
             // directional, no style, no anim
             return {
               container: createSprite({
-                texture: `elephant.${facingXy4}`,
+                textureId: `elephant.${facingXy4}`,
                 filter,
               }),
               renderProps,
@@ -436,7 +436,7 @@ export const itemAppearances: {
                     filter,
                   })
                 : createSprite({
-                    texture: `${config.which}.${facingXy4}.1`,
+                    textureId: `${config.which}.${facingXy4}.1`,
                     filter,
                   }),
               renderProps,
@@ -449,14 +449,14 @@ export const itemAppearances: {
                 state.activated || state.busyLickingDoughnutsOffFace ?
                   createStackedSprites({
                     top: {
-                      texture: `${config.which}.${facingXy4}`,
+                      textureId: `${config.which}.${facingXy4}`,
                       filter: filter || mainPaletteSwapFilter(room),
                     },
                     bottom: itemRidingOnBubblesSpritesOptions,
                   })
                   // charging on a toaster
                 : createSprite({
-                    texture: `${config.which}.${facingXy4}`,
+                    textureId: `${config.which}.${facingXy4}`,
                     filter,
                   }),
               renderProps,
@@ -514,7 +514,7 @@ export const itemAppearances: {
                     animationId: config.which,
                     filter,
                   }
-                : { texture: `${config.which}.1`, filter },
+                : { textureId: `${config.which}.1`, filter },
               ),
               renderProps,
             };
@@ -523,7 +523,7 @@ export const itemAppearances: {
             // not directional, not animated
             return {
               filter,
-              container: createSprite({ texture: config.which, filter }),
+              container: createSprite({ textureId: config.which, filter }),
               renderProps,
             };
 
@@ -604,7 +604,7 @@ export const itemAppearances: {
 
     return {
       container: createSprite({
-        texture: style,
+        textureId: style,
         filter,
       }),
       renderProps: { highlighted },
@@ -648,7 +648,7 @@ export const itemAppearances: {
             filter,
           })
         : createSprite({
-            texture: compressed ? "spring.compressed" : "spring.released",
+            textureId: compressed ? "spring.compressed" : "spring.released",
             filter,
           }),
 
@@ -683,11 +683,11 @@ export const itemAppearances: {
       container:
         which === "headOverHeels" ?
           createStackedSprites({
-            top: { texture: `head.walking.${startDirection}.2`, filter },
-            bottom: { texture: `heels.walking.${startDirection}.2`, filter },
+            top: { textureId: `head.walking.${startDirection}.2`, filter },
+            bottom: { textureId: `heels.walking.${startDirection}.2`, filter },
           })
         : createSprite({
-            texture: `${which}.walking.${startDirection}.2`,
+            textureId: `${which}.walking.${startDirection}.2`,
             filter,
           }),
       renderProps: { highlighted },
