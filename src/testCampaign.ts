@@ -267,12 +267,7 @@ const rooms = {
       {
         type: "conveyor",
         position: { x: 0, y: 0, z: 0 },
-        config: { direction: "away" },
-      },
-      {
-        type: "conveyor",
-        position: { x: 0, y: 1, z: 0 },
-        config: { direction: "away" },
+        config: { direction: "away", times: { y: 2 } },
       },
 
       // stack of items to test pushing stacks:
@@ -448,62 +443,22 @@ const rooms = {
       // circle of conveyors
       {
         type: "conveyor",
-        config: { direction: "away" },
+        config: { direction: "away", times: { y: 3 } },
         position: { x: 3, y: 6, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "away" },
-        position: { x: 3, y: 7, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "away" },
-        position: { x: 3, y: 8, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "left" },
+        config: { direction: "left", times: { x: 3 } },
         position: { x: 3, y: 9, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "left" },
-        position: { x: 4, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "left" },
-        position: { x: 5, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
-        position: { x: 6, y: 9, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
-        position: { x: 6, y: 8, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "towards" },
+        config: { direction: "towards", times: { y: 3 } },
         position: { x: 6, y: 7, z: 0 },
       },
       {
         type: "conveyor",
-        config: { direction: "right" },
-        position: { x: 6, y: 6, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "right" },
-        position: { x: 5, y: 6, z: 0 },
-      },
-      {
-        type: "conveyor",
-        config: { direction: "right" },
+        config: { direction: "right", times: { x: 3 } },
         position: { x: 4, y: 6, z: 0 },
       },
       {
@@ -742,15 +697,9 @@ const rooms = {
         type: "block",
         config: {
           style: "tower",
+          times: { z: 2 },
         },
         position: { x: 14, y: 3, z: 0 },
-      },
-      {
-        type: "block",
-        config: {
-          style: "tower",
-        },
-        position: { x: 14, y: 3, z: 1 },
       },
       {
         type: "portableBlock",
@@ -906,17 +855,17 @@ const rooms = {
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 4 } },
         position: { x: 17, y: 2, z: 0 },
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 3 } },
         position: { x: 17, y: 3, z: 1 },
       },
       {
         type: "deadlyBlock",
-        config: { style: "volcano" },
+        config: { style: "volcano", times: { y: 2 } },
         position: { x: 17, y: 4, z: 2 },
       },
       {
@@ -1189,13 +1138,8 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "tower" },
+        config: { style: "tower", times: { z: 2 } },
         position: { x: 7, y: 7, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "tower" },
-        position: { x: 7, y: 7, z: 1 },
       },
       {
         type: "movableBlock",
