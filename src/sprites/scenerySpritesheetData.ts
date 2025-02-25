@@ -107,10 +107,10 @@ const frames = {
   "floorOverdraw.towards": {
     frame: { x: 414, y: 432, w: 8, h: 9 },
   },
-  "generic.floor.overdraw": {
+  "floorOverdraw.cornerNearWall": {
     frame: { x: 435, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
-  "generic.wall.overdraw": {
+  "floorOverdraw.behindDoor": {
     frame: { x: 452, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
   },
   "shadow.wall.y": {
