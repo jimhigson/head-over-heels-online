@@ -92,8 +92,8 @@ export const room = inferRoomJson({
       position: { x: 5, y: 1, z: 2 },
       type: "slidingDeadly",
     },
-    "leftWall": {
-      config: { direction: "left", tiles: ['loop', 'loop'], times: { y: 2 } },
+    leftWall: {
+      config: { direction: "left", tiles: ["loop", "loop"], times: { y: 2 } },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },

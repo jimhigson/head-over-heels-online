@@ -1,4 +1,3 @@
-import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { productXyz, subXyz, type Aabb } from "../../utils/vectors/vectors";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
@@ -12,7 +11,6 @@ export const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.h * 2,
 };
-
 
 export const boundingBoxForItem = (
   item: JsonItemUnion | UnionOfAllItemInPlayTypes,
