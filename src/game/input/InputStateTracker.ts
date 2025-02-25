@@ -24,6 +24,7 @@ import {
 } from "./analogueControlAdjustments";
 import { iterate } from "../../utils/iterate";
 import { emptyArray } from "../../utils/empty";
+import type { HudInputState } from "./hudInputState";
 
 const analogueDeadzone = 0.2;
 const snapAngleRadians = 13 * (Math.PI / 180);
@@ -44,6 +45,7 @@ type FrameInput = {
   /* time in ms (from the ticker) when this input was given */
   atTime: number;
   keyboardState: KeyboardStateMap;
+  hudInputState: HudInputState;
   gamepads: (GamepadState | null)[];
 };
 
@@ -112,6 +114,12 @@ const isActionPressed = (
 
   const inputAssignmentForAction = inputAssignment.presses[action];
 
+  if (frameInput.hudInputState[action]) {
+    // frame input is very simple since it doesn't have any mappings
+    // to different keys/buttons - it is direct to actions:
+    return true;
+  }
+
   for (const key of inputAssignmentForAction.keys) {
     if (isKeyPressed(frameInput, key)) {
       return true;
@@ -165,7 +173,10 @@ export class InputStateTracker {
    */
   actionsHandled: Set<BooleanAction> = new Set();
 
-  constructor(private keyboardStateMap: KeyboardStateMap) {}
+  constructor(
+    private keyboardStateMap: KeyboardStateMap,
+    public hudInputState: HudInputState,
+  ) {}
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
   #tickUpdatedDirectionXy4 = () => {
@@ -347,6 +358,8 @@ export class InputStateTracker {
     const currentFrameInput: FrameInput = {
       // keyboard state is modified in-place, so we need a copy:
       keyboardState: new Map(this.keyboardStateMap),
+      // hud input state is also modified in-place - make a copy:
+      hudInputState: { ...this.hudInputState },
       gamepads: extractGamepadsState(navigator.getGamepads()),
       atTime,
     };
@@ -493,5 +506,6 @@ export type InputStateTrackerInterface = Pick<
   | "directionVector"
   | "startTicking"
   | "stopTicking"
+  | "hudInputState"
   | "actionsHandled"
 >;

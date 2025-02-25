@@ -170,7 +170,7 @@ export class HudRenderer<RoomId extends string> {
     fps: this.#makeText({ label: "fps", outline: true }),
   };
 
-  constructor() {
+  constructor(private gameState: GameState<RoomId>) {
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].sprite);
@@ -191,6 +191,27 @@ export class HudRenderer<RoomId extends string> {
     ];
     this.#hudElements.fps.y = hudCharTextureSize.h;
     this.#hudElements.fps.x = hudCharTextureSize.w * 2;
+
+    this.#initInteractivity();
+  }
+
+  #initInteractivity() {
+    const {
+      inputStateTracker: { hudInputState },
+    } = this.gameState;
+    for (const character of individualCharacterNames) {
+      const { sprite } = this.#hudElements[character];
+      sprite.eventMode = "static";
+      sprite.on("pointerdown", () => {
+        hudInputState.swop = true;
+      });
+      sprite.on("pointerup", () => {
+        hudInputState.swop = false;
+      });
+      sprite.on("pointerleave", () => {
+        hudInputState.swop = false;
+      });
+    }
   }
 
   #iconWithNumber({

@@ -44,6 +44,12 @@
 ### Details and bugs
 
 [ ] bug - need to refresh page after changing input preset
+    - sometimes?
+
+[ ] hold a button to lock to axes
+
+[ ] bug - in #blacktooth24 (maybe others) come out of symbiosis near left wall - head will sometimes
+    be hidden
 
 [x] input buffering on start to move
 

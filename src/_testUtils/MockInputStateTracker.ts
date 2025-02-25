@@ -9,6 +9,7 @@ import { originXyz } from "../utils/vectors/vectors";
 import type { GameState } from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";
 import { unitVectors } from "../utils/vectors/unitVectors";
+import type { HudInputState } from "../game/input/hudInputState";
 
 export class MockInputStateTracker implements InputStateTrackerInterface {
   /** returns any new taps since the last frame */
@@ -72,6 +73,10 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
 
       return "released";
     });
+
+  get hudInputState() {
+    return {} as HudInputState;
+  }
 }
 export type GameStateWithMockInput = Omit<
   GameState<TestRoomId>,
