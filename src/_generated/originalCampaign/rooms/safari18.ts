@@ -27,11 +27,6 @@ export const room = inferRoomJson({
       position: { x: 1, y: 12, z: 0 },
       type: "block",
     },
-    "extraSupports": {
-      config: { style: "tower", times: { y: 4, z: 2 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "block",
-    },
     "block@1,13,0": {
       config: { disappearing: "onStand", style: "organic" },
       position: { x: 1, y: 13, z: 0 },
@@ -61,6 +56,11 @@ export const room = inferRoomJson({
       config: { direction: "away", toRoom: "safari19triple" },
       position: { x: 0, y: 16, z: 2 },
       type: "door",
+    },
+    extraSupports: {
+      config: { style: "tower", times: { y: 4, z: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
     },
     "wall@0,0,0": {
       config: { direction: "right", tiles: [], times: { y: 16 } },

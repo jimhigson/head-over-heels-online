@@ -3,7 +3,7 @@ import { edgePaletteSwapFilters } from "../../filters/paletteSwapFilters";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, renderOnce } from "../appearanceUtils";
-import { renderEdge } from "./edges";
+import { renderEdge } from "./renderEdge";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
   ({ room, onHold, displaySettings }) => {

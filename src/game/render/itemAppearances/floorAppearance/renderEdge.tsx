@@ -40,7 +40,7 @@ export const renderEdge = (
     y: -blockYMin,
   });
 
-  const result = {
+  const sideEdges = {
     towards: new Container({ label: "towards", ...originDisplacement }),
     right: new Container({ label: "right", ...originDisplacement }),
   };
@@ -76,11 +76,11 @@ export const renderEdge = (
           : { [perpendicularAxisXy(directionAxis(direction))]: 2 },
       });
 
-      result[direction].addChild(sprite);
+      sideEdges[direction].addChild(sprite);
 
       // add an extra half to join with set-back walls (if needed)
       if (direction === "right" && wallPosition.y === 0 && blockYMin < 0) {
-        result[direction].addChild(
+        sideEdges[direction].addChild(
           createSprite({
             label: `${id}-wxtraHalf`,
             textureId: `floorEdge.half.${direction}`,
@@ -89,7 +89,7 @@ export const renderEdge = (
         );
       }
       if (direction === "towards" && wallPosition.x === 0 && blockXMin < 0) {
-        result[direction].addChild(
+        sideEdges[direction].addChild(
           createSprite({
             label: `${id}-wxtraHalf`,
             textureId: `floorEdge.half.${direction}`,
@@ -99,5 +99,5 @@ export const renderEdge = (
       }
     });
 
-  return result;
+  return sideEdges;
 };
