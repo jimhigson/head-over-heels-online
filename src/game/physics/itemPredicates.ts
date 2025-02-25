@@ -159,7 +159,7 @@ export const isDeadly = <RoomId extends string>(
   (item.type === "floor" && item.config.type === "deadly");
 
 export const isMultipliedItem = <RoomId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomId>,
+  item: AnyItemInPlay<RoomId>,
 ): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
   type ItemConfigMaybeWithMultiplication = {
     times?: undefined | Partial<Xyz>;

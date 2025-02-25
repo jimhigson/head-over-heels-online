@@ -110,4 +110,4 @@ export const originalGameStartingLives = 8;
 
 export const switchCharacterHighlightTime = 750;
 export const afterDeathInvulnerabilityTime = 2_500;
-export const afterDeathInvulnerabilityFlashPeriod = 150;
+export const afterDeathInvulnerabilityFlashPeriod = 200;

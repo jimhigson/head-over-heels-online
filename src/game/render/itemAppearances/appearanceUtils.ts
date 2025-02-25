@@ -5,11 +5,12 @@ import type {
   ItemInPlayTypesWithoutRenderProps,
   ItemRenderProps,
 } from "./ItemRenderProps";
-import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
+import type { ItemInPlayType, ItemTypeUnion } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
 import type { DisplaySettings } from "../../../store/gameMenusSlice";
+import { isMultipliedItem } from "../../physics/itemPredicates";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -29,7 +30,7 @@ export type ItemAppearanceOptions<
   RoomId extends string,
 > = {
   // appearances don't care about the romId generic so give it string
-  item: ItemInPlay<T, SceneryName, RoomId>;
+  item: ItemTypeUnion<T, RoomId>;
   room: RoomState<SceneryName, RoomId>;
   /**
    * the render props that the item rendering is currently rendered with; so the appearance can check if
@@ -60,7 +61,19 @@ export const staticSpriteAppearance = <
   T extends ItemInPlayTypesWithoutRenderProps,
 >(
   createSpriteOptions: CreateSpriteOptions,
-): ItemAppearance<T> => renderOnce(() => createSprite(createSpriteOptions));
+): ItemAppearance<T> =>
+  renderOnce(({ item }) => {
+    if (isMultipliedItem(item)) {
+      return createSprite({
+        ...(typeof createSpriteOptions === "string" ?
+          { textureId: createSpriteOptions }
+        : createSpriteOptions),
+        times: item.config.times,
+      });
+    } else {
+      return createSprite(createSpriteOptions);
+    }
+  });
 
 /**
  * plenty of items never need to be re-rendered and have no render props - convenience for that case
