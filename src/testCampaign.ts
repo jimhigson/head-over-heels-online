@@ -1,35 +1,12 @@
 import type { Campaign } from "./model/modelTypes.ts";
-import { type RoomWalls } from "./model/modelTypes.ts";
 import { type RoomJson } from "./model/RoomJson.ts";
-import type { SceneryName, Wall } from "./sprites/planets.ts";
-import { sceneryNames, scenery } from "./sprites/planets.ts";
+import type { SceneryName } from "./sprites/planets.ts";
+import { sceneryNames } from "./sprites/planets.ts";
 import type { ZxSpectrumShade, ZxSpectrumRoomHue } from "./originalGame.ts";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "./originalGame.ts";
 import { keyItems } from "./utils/keyItems.ts";
 import type { JsonItemUnion } from "./model/json/JsonItem.ts";
-import type { AxisXy, Xy } from "./utils/vectors/vectors.ts";
-
-const generateWalls = <P extends SceneryName>(
-  roomSize: Xy,
-  planet: P,
-  skip?: Record<AxisXy, number[]>,
-): RoomWalls<P> => {
-  const { walls } = scenery[planet];
-
-  function* gen(axis: AxisXy): Generator<Wall<P>> {
-    const n = walls.length;
-
-    for (let i = 0; ; i++) {
-      if (skip?.[axis]?.includes(i)) yield "none";
-      else yield walls[i % n];
-    }
-  }
-
-  return {
-    away: [...gen("x").take(roomSize.x)],
-    left: [...gen("y").take(roomSize.y)],
-  };
-};
+import { addPerimeterWallsToRoom } from "./_testUtils/addPerimeterWallsToRoom.ts";
 
 type ColorRoomIds = `${SceneryName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 
@@ -81,10 +58,6 @@ const colourRooms = () => {
             `${p}-${hue}-${shade}`,
             {
               size: { x: 8, y: 8 },
-              walls: generateWalls({ x: 8, y: 8 }, p, {
-                x: [4, 5],
-                y: [1, 2, 4, 5],
-              }),
               color: { hue, shade },
               floor: p,
               planet: p,
@@ -161,11 +134,10 @@ const colourRooms = () => {
 };
 
 const rooms = {
-  lift: {
+  lift: addPerimeterWallsToRoom({
     size: { x: 4, y: 4 },
     planet: "safari",
     color: { hue: "yellow", shade: "dimmed" },
-    walls: generateWalls({ x: 4, y: 4 }, "safari"),
     floor: "safari",
 
     id: "lift",
@@ -206,13 +178,12 @@ const rooms = {
         position: { x: 0, y: 0, z: 1 },
       },
     ]),
-  } satisfies RoomJson<"safari", TestCampaignRoomId>,
+  }) satisfies RoomJson<"safari", TestCampaignRoomId>,
 
   laboratory: {
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
-    walls: generateWalls({ x: 18, y: 14 }, "egyptus", { x: [5, 6], y: [] }),
     floor: "egyptus",
 
     id: "laboratory",
@@ -878,7 +849,6 @@ const rooms = {
 
   renderEverything: {
     size: { x: 18, y: 18 },
-    walls: generateWalls({ x: 18, y: 18 }, "bookworld"),
     floor: "bookworld",
 
     id: "renderEverything",
