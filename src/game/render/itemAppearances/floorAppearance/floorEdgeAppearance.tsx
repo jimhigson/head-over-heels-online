@@ -3,8 +3,7 @@ import { edgePaletteSwapFilters } from "../../filters/paletteSwapFilters";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, renderOnce } from "../appearanceUtils";
-import { edges } from "./edges";
-import { findExtraWalls } from "./floorAppearance";
+import { renderEdge } from "./edges";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
   ({ room, onHold, displaySettings }) => {
@@ -40,14 +39,14 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
     overDrawToHideFallenItems.y = 8;
     container.addChild(overDrawToHideFallenItems);
 
-    const { towards: towardsEdgeContainer, right: rightEdgeContainer } = edges({
-      blockXExtent,
-      blockYExtent,
-      blockXMin,
-      blockYMin,
-      type: "floorEdge",
-      extraWalls: findExtraWalls(room.roomJson.items),
-    });
+    const { towards: towardsEdgeContainer, right: rightEdgeContainer } =
+      renderEdge(
+        {
+          blockXMin,
+          blockYMin,
+        },
+        room.roomJson,
+      );
 
     const colourise = !onHold && displaySettings.colourise;
     towardsEdgeContainer.filters = edgePaletteSwapFilters(

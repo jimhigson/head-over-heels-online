@@ -1,72 +1,103 @@
 import { Container } from "pixi.js";
 import type { JsonItem } from "../../../../model/json/JsonItem";
+import type { AnyRoomJson } from "../../../../model/RoomJson";
 import { iterate } from "../../../../utils/iterate";
+import { objectEntries } from "iter-tools";
 import { createSprite } from "../../createSprite";
-import { moveContainerToBlockXyz } from "../../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../../projectToScreen";
+import {
+  addXyz,
+  directionAxis,
+  perpendicularAxisXy,
+} from "../../../../utils/vectors/vectors";
 
-type EdgesOptions = {
-  blockXExtent: number;
-  blockYExtent: number;
+type BlockMins = {
   blockXMin: number;
   blockYMin: number;
-  type: "floorOverdraw" | "floorEdge";
-  extraWalls: Iterable<JsonItem<"wall">>;
 };
 /**
  * creates the floor edge sprites - either the actual edge, or the overdraw for the edges
  s*/
-export const edges = ({
-  blockXExtent,
-  blockYExtent,
-  blockXMin,
-  blockYMin,
-  type,
-  extraWalls,
-}: EdgesOptions): { right: Container; towards: Container } => {
-  const towards = new Container({ label: "towards" });
-  for (let ix = 0; ix <= blockXExtent; ix += 0.5) {
-    // for moonbase33 really - the only room with an edge caused by 'extra' walls:
-    const worldX = ix + blockXMin + 0.5;
-    const wall = iterate(extraWalls).find(
-      (w) =>
-        w.config.side === "towards" &&
-        w.position.x <= worldX &&
-        w.position.x >= worldX - 1,
-    );
-    const y = wall === undefined ? 0 : wall.position.y + 1 - blockYMin;
+export const renderEdge = (
+  { blockXMin, blockYMin }: BlockMins,
+  roomJson: AnyRoomJson,
+): { towards: Container; right: Container } => {
+  const isOnNearSide = (
+    entry: [string, JsonItem<"wall"> | JsonItem<"door">],
+  ): entry is [
+    string,
+    (JsonItem<"wall"> | JsonItem<"door">) & {
+      config: { direction: "towards" | "right" };
+    },
+  ] =>
+    entry[1].config.direction === "towards" ||
+    entry[1].config.direction === "right";
 
-    const blockXy = { x: ix, y };
-    const pivot = { x: 7, y: 0 };
-    towards.addChild(
-      moveContainerToBlockXyz(
-        blockXy,
-        createSprite({
-          pivot,
-          texture: `${type}.towards`,
-        }),
-      ),
-    );
-  }
-  const right = new Container({ label: "right" });
-  for (let iy = 0; iy <= blockYExtent; iy += 0.5) {
-    const worldY = iy + blockYMin + 0.5;
-    const wall = iterate(extraWalls).find(
-      (w) =>
-        w.config.side === "right" &&
-        w.position.y <= worldY &&
-        w.position.y >= worldY - 1,
-    );
-    const x = wall === undefined ? 0 : wall.position.x + 1 - blockXMin;
+  // move the origin to the true origin of the room, not the origin of the floor object - this
+  // makes positioning things easier:
+  const originDisplacement = projectBlockXyzToScreenXy({
+    x: -blockXMin,
+    y: -blockYMin,
+  });
 
-    right.addChild(
-      moveContainerToBlockXyz(
-        { x, y: iy },
-        createSprite({
-          pivot: { x: 0, y: 0 },
-          texture: `${type}.right`,
-        }),
-      ),
-    );
-  }
-  return { right, towards };
+  const result = {
+    towards: new Container({ label: "towards", ...originDisplacement }),
+    right: new Container({ label: "right", ...originDisplacement }),
+  };
+
+  iterate(objectEntries(roomJson.items))
+    .filter(
+      (entry): entry is [string, JsonItem<"wall"> | JsonItem<"door">] =>
+        entry[1].type === "wall" || entry[1].type === "door",
+    )
+    .filter(isOnNearSide)
+    .forEach(([id, wallOrDoor]) => {
+      const {
+        config: { direction },
+        position: wallPosition,
+      } = wallOrDoor;
+
+      const alongMinX = direction === "right" && wallPosition.x === 0;
+      const alongMinY = direction === "towards" && wallPosition.y === 0;
+
+      // floor edges on the walls with doors need to be set back:
+      const spatialPosition =
+        alongMinX ? { ...wallPosition, x: blockXMin }
+        : alongMinY ? { ...wallPosition, y: blockYMin }
+        : wallPosition;
+
+      const sprite = createSprite({
+        label: id,
+        textureId: `floorEdge.${direction}`,
+        ...projectBlockXyzToScreenXy(spatialPosition),
+        times:
+          wallOrDoor.type === "wall" ?
+            wallOrDoor.config.times
+          : { [perpendicularAxisXy(directionAxis(direction))]: 2 },
+      });
+
+      result[direction].addChild(sprite);
+
+      // add an extra half to join with set-back walls (if needed)
+      if (direction === "right" && wallPosition.y === 0 && blockYMin < 0) {
+        result[direction].addChild(
+          createSprite({
+            label: `${id}-wxtraHalf`,
+            textureId: `floorEdge.half.${direction}`,
+            ...projectBlockXyzToScreenXy(addXyz(spatialPosition, { y: -0.5 })),
+          }),
+        );
+      }
+      if (direction === "towards" && wallPosition.x === 0 && blockXMin < 0) {
+        result[direction].addChild(
+          createSprite({
+            label: `${id}-wxtraHalf`,
+            textureId: `floorEdge.half.${direction}`,
+            ...projectBlockXyzToScreenXy(addXyz(spatialPosition, { x: -0.5 })),
+          }),
+        );
+      }
+    });
+
+  return result;
 };

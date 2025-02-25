@@ -15,7 +15,7 @@ export type ExtraWallRanges =
       towards: [number, number];
     };
 
-// get min/max of the extra walls
+/** get min/max of the 'extra' (non-perimeter) walls */
 export const findExtraWallRanges = (
   extraWalls: Array<JsonItem<"wall">>,
 ): ExtraWallRanges | undefined => {
@@ -27,18 +27,24 @@ export const findExtraWallRanges = (
 
   for (const wall of extraWalls) {
     const {
-      config: { side },
+      config: { direction, times },
       position: { x, y },
     } = wall;
 
-    if (side === "left" || side === "right") {
-      if (!ranges[side]) ranges[side] = [Infinity, -Infinity];
-      ranges[side][0] = Math.min(ranges[side][0], y);
-      ranges[side][1] = Math.max(ranges[side][1], y);
-    } else if (side === "towards" || side === "away") {
-      if (!ranges[side]) ranges[side] = [Infinity, -Infinity];
-      ranges[side][0] = Math.min(ranges[side][0], x);
-      ranges[side][1] = Math.max(ranges[side][1], x);
+    if (direction === "left" || direction === "right") {
+      if (!ranges[direction]) ranges[direction] = [Infinity, -Infinity];
+      ranges[direction][0] = Math.min(ranges[direction][0], y);
+      ranges[direction][1] = Math.max(
+        ranges[direction][1],
+        y + (times?.y ?? 1) - 1,
+      );
+    } else if (direction === "towards" || direction === "away") {
+      if (!ranges[direction]) ranges[direction] = [Infinity, -Infinity];
+      ranges[direction][0] = Math.min(ranges[direction][0], x);
+      ranges[direction][1] = Math.max(
+        ranges[direction][1],
+        x + (times?.x ?? 1) - 1,
+      );
     }
   }
 

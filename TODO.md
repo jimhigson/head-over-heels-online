@@ -67,7 +67,9 @@
             [x] egyptus35 (wall tiles)
             [x] pen13
             [x] pen2
-            [ ] pen30
+            [x] pen30
+            [x] blacktooth11 = no wall shadows for near-walls
+
 
 input tracker:
     [ ] analogue/digital input as overloading/polymorphism in input tracker
@@ -222,7 +224,7 @@ translate: https://hoh.helmantika.com/jon-ritman/
     [ ] does but scrolling is poor
 [ ] monsters don't wake up
 [x] hidden wall shouldn't render
-[ ] render extra floor edge
+[x] render extra floor edge
 
 # finalroom
     - in space of lives, should say FREEDOM in hud
