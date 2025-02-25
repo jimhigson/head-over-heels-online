@@ -1,11 +1,26 @@
 [
   { "op": "replace", "path": "/items/wall@5,0,0/position/x", "value": 6 },
   { "op": "replace", "path": "/items/wall@0,7,0/position/y", "value": 8 },
-  { "op": "replace", "path": "/items/wall@0,7,0/config/times/x", "value": 5 },
   { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/5" },
   { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/4" },
   { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/3" },
   { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/2" },
   { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/1" },
-  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/0" }
+  { "op": "remove", "path": "/items/wall@0,7,0/config/tiles/0" },
+  { "op": "replace", "path": "/items/wall@0,0,0:3gbWw/position/y", "value": 8 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:3gbWw/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:Z1XoDrY/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:Z1XoDrY/config/times/x",
+    "value": 2
+  }
 ]
