@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { type BooleanAction } from "src/game/input/BooleanAction";
+import { type BooleanAction } from "src/game/input/actions";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";
 
 export const SelectKeysMenuAssignmentValue = ({

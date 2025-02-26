@@ -256,6 +256,24 @@ export const playableSpritesheetData = {
   animations: {
     ...walkingFrames("head"),
     ...walkingFrames("heels"),
+    "heels.screenDirections": withSpeed(
+      [
+        "heels.walking.towardsRight.2",
+        "heels.walking.towardsLeft.2",
+        "heels.walking.awayLeft.2",
+        "heels.walking.awayRight.2",
+      ] as const,
+      1 / 16,
+    ),
+    "heels.worldDirections": withSpeed(
+      [
+        "heels.walking.towards.2",
+        "heels.walking.left.2",
+        "heels.walking.away.2",
+        "heels.walking.right.2",
+      ] as const,
+      1 / 16,
+    ),
     "head.idle.right": headBlinking("right", 3),
     "head.idle.towards": headBlinking("towards", 3),
     "head.idle.towardsRight": headBlinking("towardsRight", 2),

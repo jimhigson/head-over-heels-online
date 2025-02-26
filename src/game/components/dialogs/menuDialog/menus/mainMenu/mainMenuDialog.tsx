@@ -58,10 +58,10 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
 
           <MenuItemSeparator />
           <MenuItem
-            id="selectKeys"
+            id="controlOptions"
             label="Control options"
             doubleHeightWhenFocussed
-            onSelect={useDispatchActionCallback(goToSubmenu, "selectKeys")}
+            onSelect={useDispatchActionCallback(goToSubmenu, "controlOptions")}
           />
           <MenuItem
             id="modernisationOptions"

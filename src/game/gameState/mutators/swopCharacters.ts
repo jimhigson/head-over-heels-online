@@ -37,13 +37,13 @@ export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
 
 const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
+  toPlayable?: IndividualCharacterName,
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
   const headOverHeels = selectPlayableItem(gameState, "headOverHeels")!;
 
-  const switchingToCharacter = otherIndividualCharacterName(
-    gameState.previousPlayable!,
-  );
+  const switchingToCharacter =
+    toPlayable ?? otherIndividualCharacterName(gameState.previousPlayable!);
 
   const { head, heels } = uncombinePlayablesFromSymbiosis(headOverHeels);
 
@@ -77,14 +77,25 @@ const highlightCurrentPlayable = <RoomId extends string>(
   }
 };
 
+/**
+ * @param toPlayable override the original's cycling through players to go directly to
+ * one of the characters (from symbiosis maybe)
+ */
 export const swopPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
+  toPlayable?: IndividualCharacterName,
 ) => {
-  if (selectCanCombine(gameState)) {
+  if (
+    selectCanCombine(gameState) &&
+    // if requesting to go to the other playable, don't combine
+    (!toPlayable ||
+      // but if selecting to go to the already-selected character, that's a request to combine
+      toPlayable === gameState.currentCharacterName)
+  ) {
     swopFromUncombinedToCombinedPlayables(gameState);
   } else if (gameState.currentCharacterName === "headOverHeels") {
-    swopFromCombinedToUncombinedPlayables(gameState);
-  } else {
+    swopFromCombinedToUncombinedPlayables(gameState, toPlayable);
+  } else if (!toPlayable || toPlayable !== gameState.currentCharacterName) {
     // normal swop - one player for another
     if (
       selectPlayableItem(
@@ -103,5 +114,7 @@ export const swopPlayables = <RoomId extends string>(
     );
   }
 
+  // even if no switch happened (which can only happen if toPlayable was given),
+  // highlight the character that was requested to switch to to give some feedback
   highlightCurrentPlayable(gameState);
 };

@@ -4,7 +4,7 @@ import { standardControllerButtonNames } from "../../../input/controllers";
 import type { Key } from "../../../input/keys";
 import { MultipleBitmapText } from "../../Sprite";
 import { emptyArray } from "../../../../utils/empty";
-import type { BooleanAction } from "../../../input/BooleanAction";
+import type { BooleanAction } from "../../../input/actions";
 import { actionToAxis } from "../../../input/actionToAxis";
 
 const specialCharClassName =

@@ -1,5 +1,5 @@
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
-import type { BooleanAction } from "./BooleanAction";
+import type { BooleanAction } from "./actions";
 import type { Key } from "./keys";
 
 export type ActionInputAssignment = {

@@ -1,5 +1,5 @@
 import type { AxisXy } from "../../utils/vectors/vectors";
-import type { BooleanAction } from "./BooleanAction";
+import type { BooleanAction } from "./actions";
 
 // for actions with an axis equivalent, get the axis and direction of the action:
 

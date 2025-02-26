@@ -46,7 +46,7 @@ export const ScreenRelativeControlSection = () => {
       label="axes"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2" : "texture-heels.walking.right.2"}`}
+          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.screenDirections" : "texture-heels.walking.right.2 selectedMenuItem:texture-animated-heels.worldDirections"}`}
         />
       }
       valueElement={<ScreenRelativeControlValue />}

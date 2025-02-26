@@ -11,6 +11,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
 import type { DisplaySettings } from "../../../store/gameMenusSlice";
 import { isMultipliedItem } from "../../physics/itemPredicates";
+import type { GameState } from "../../gameState/GameState";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -42,6 +43,8 @@ export type ItemAppearanceOptions<
   previousRendering: Container | null;
 
   displaySettings: DisplaySettings;
+
+  gameState: GameState<RoomId>;
 
   /** are we on hold (paused) right now? */
   onHold: boolean;
@@ -89,7 +92,14 @@ export const renderOnce =
     ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({ item, room, currentlyRenderedProps, displaySettings, onHold }) => {
+  ({
+    item,
+    room,
+    currentlyRenderedProps,
+    displaySettings,
+    onHold,
+    gameState,
+  }) => {
     if (currentlyRenderedProps === undefined) {
       return {
         container: renderWith({
@@ -97,6 +107,7 @@ export const renderOnce =
           room,
           displaySettings,
           onHold,
+          gameState,
           previousRendering: null,
         }),
         renderProps: emptyObject as ItemRenderProps<T>,

@@ -203,13 +203,13 @@ export class HudRenderer<RoomId extends string> {
       const { sprite } = this.#hudElements[character];
       sprite.eventMode = "static";
       sprite.on("pointerdown", () => {
-        hudInputState.swop = true;
+        hudInputState[`swop.${character}`] = true;
       });
       sprite.on("pointerup", () => {
-        hudInputState.swop = false;
+        hudInputState[`swop.${character}`] = false;
       });
       sprite.on("pointerleave", () => {
-        hudInputState.swop = false;
+        hudInputState[`swop.${character}`] = false;
       });
     }
   }

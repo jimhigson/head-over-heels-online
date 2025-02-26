@@ -147,6 +147,12 @@ export const _progressGameState = <RoomId extends string>(
   if (inputStateTracker.currentActionPress("swop") === "tap") {
     swopPlayables(gameState);
   }
+  if (inputStateTracker.currentActionPress("swop.head") === "tap") {
+    swopPlayables(gameState, "head");
+  }
+  if (inputStateTracker.currentActionPress("swop.heels") === "tap") {
+    swopPlayables(gameState, "heels");
+  }
 
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, room)) {

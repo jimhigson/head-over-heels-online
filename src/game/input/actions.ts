@@ -1,11 +1,12 @@
-import { directionsXy4 } from "../../utils/vectors/vectors";
-
+import { directionsXy4, type DirectionXy4 } from "../../utils/vectors/vectors";
 
 export const booleanActions = [
   "jump",
   "fire",
   "carry",
   "swop",
+  "swop.head",
+  "swop.heels",
   "hold", // aka pause in modern games
   "toggleColourisation",
   "toggleShowFps",
@@ -19,3 +20,7 @@ export const booleanActions = [
   ...directionsXy4,
 ] as const;
 export type BooleanAction = (typeof booleanActions)[number];
+export const allActions: (BooleanAction | DirectionXy4)[] = [
+  ...booleanActions,
+  ...directionsXy4,
+];
