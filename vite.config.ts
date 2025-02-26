@@ -21,8 +21,6 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      // for shadcn: https://ui.shadcn.com/docs/installation/vite
-      "@": path.resolve(__dirname, "./src"),
       gfx: path.resolve(__dirname, "./gfx"),
     },
   },
@@ -30,5 +28,10 @@ export default defineConfig({
   server: {
     // want to test on my iphone
     host: true,
+    // want to connect using (computername).local, not just the ip
+    // @ts-expect-error - the typings don't have this setting (but it exists and works!)
+    allowedHosts: [".local"],
+    // consistent port number for this project (not vite default)
+    port: 5200,
   },
 });
