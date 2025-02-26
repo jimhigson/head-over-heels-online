@@ -32,10 +32,11 @@
     Eg, .times() hardcoded to return 1,1,1 for most
 
 ### mobile
+[ ] "turn to landscape" screen
 [ ] remove address bar in normal browser
     maybe helpful? https://stackoverflow.com/questions/5206811/hide-iphone-address-bar-with-100-height - although very old!
 [x] allow use as a PWA
-[ ] on-screen controls (only on phone)
+[ ] hud input controls (only on phone)
 [ ] back button on menus
 [ ] menu button while playing
 [ ] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
@@ -46,10 +47,9 @@
 [ ] bug - need to refresh page after changing input preset
     - sometimes?
 
-[ ] hold a button to lock to axes
+[ ] put text in for search engines etc
 
-[ ] bug - in #blacktooth24 (maybe others) come out of symbiosis near left wall - head will sometimes
-    be hidden
+[ ] hold a button to lock to axes
 
 [x] input buffering on start to move
 
@@ -205,6 +205,8 @@ translate: https://hoh.helmantika.com/jon-ritman/
 [ ] room floor edge with attribute clash, hud in original colours
 
 # Rooms
+
+[ ] blacktooth14 - render issues with barriers z-order
 
 # blacktooth20
 [ ] [MINOR] corner of room not shown in shadow
