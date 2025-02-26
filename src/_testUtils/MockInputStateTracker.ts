@@ -1,4 +1,5 @@
-import { type BooleanAction, type InputPress } from "../game/input/InputState";
+import { type InputPress } from "../game/input/InputState";
+import { type BooleanAction } from "src/game/input/BooleanAction";
 import type {
   InputStateTrackerInterface,
   PressStatus,

@@ -2,12 +2,9 @@ import type { PartialDeep } from "type-fest";
 import { fromAllEntries } from "../../utils/entries";
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import { directionsXy4 } from "../../utils/vectors/vectors";
-import type { BooleanAction } from "./InputState";
-import {
-  booleanActions,
-  type InputAssignment,
-  type InputAssignmentPreset,
-} from "./InputState";
+import type { BooleanAction } from "./BooleanAction";
+import { type InputAssignment, type InputAssignmentPreset } from "./InputState";
+import { booleanActions } from "./BooleanAction";
 import type { MamePlayer } from "./controllers";
 import {
   eightBitDoKeyboard,

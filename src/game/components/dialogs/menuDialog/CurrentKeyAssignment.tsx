@@ -1,7 +1,8 @@
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { standardControllerButtonNames } from "../../../input/controllers";
-import { actionToAxis, type BooleanAction } from "../../../input/InputState";
+import { actionToAxis } from "src/game/input/actionToAxis";
+import { type BooleanAction } from "src/game/input/BooleanAction";
 import type { Key } from "../../../input/keys";
 import { MultipleBitmapText } from "../../Sprite";
 import { emptyArray } from "../../../../utils/empty";
