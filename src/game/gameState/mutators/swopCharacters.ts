@@ -96,22 +96,20 @@ export const swopPlayables = <RoomId extends string>(
   } else if (gameState.currentCharacterName === "headOverHeels") {
     swopFromCombinedToUncombinedPlayables(gameState, toPlayable);
   } else if (!toPlayable || toPlayable !== gameState.currentCharacterName) {
-    // normal swop - one player for another
-    if (
+    // normal swop - one player for another (so long as we have the other to switch to)
+    const otherCharInGame =
       selectPlayableItem(
         gameState,
         otherIndividualCharacterName(gameState.currentCharacterName),
-      ) === undefined
-    ) {
-      // other player isn't in the game - can't swop to them
-      return;
+      ) !== undefined;
+
+    if (otherCharInGame) {
+      gameState.currentCharacterName = otherIndividualCharacterName(
+        gameState.currentCharacterName,
+      );
     }
 
     // TODO: don't allow to swop if the current character is playing death animation
-
-    gameState.currentCharacterName = otherIndividualCharacterName(
-      gameState.currentCharacterName,
-    );
   }
 
   // even if no switch happened (which can only happen if toPlayable was given),
