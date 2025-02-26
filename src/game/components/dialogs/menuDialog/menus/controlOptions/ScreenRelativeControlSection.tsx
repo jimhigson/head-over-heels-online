@@ -10,8 +10,9 @@ import { spriteLeaderClasses } from "./spriteLeaderClasses";
 const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";
 
-const screenRelativeControlOnHintMarkdown =
-  "**screen**: Control is relative to the screen. More intuitive if you find directions confusing in isometric games";
+const screenRelativeControlOnHintMarkdown = `**screen**: Control is relative to the screen.
+
+More intuitive if you find directions confusing in isometric games, but requires inputting diagonals a lot`;
 
 const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   return (
@@ -46,7 +47,7 @@ export const ScreenRelativeControlSection = () => {
       label="axes"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2" : "texture-heels.walking.right.2"}`}
+          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.screenDirections" : "texture-heels.walking.right.2 selectedMenuItem:texture-animated-heels.worldDirections"}`}
         />
       }
       valueElement={<ScreenRelativeControlValue />}

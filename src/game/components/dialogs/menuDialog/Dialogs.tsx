@@ -10,7 +10,7 @@ import { QuitGameConfirmDialog } from "./menus/quitGameConfirmDialog";
 import { ScoreDialog } from "./menus/gameOver/gameOverDialog";
 import { HoldDialog } from "./menus/holdDialog";
 import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
-import { SelectKeysDialog } from "./menus/selectKeys/SelectKeysDialog";
+import { ControlOptionsDialog } from "./menus/controlOptions/ControlOptionsDialog";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../Sprite";
 import { InputPresetDialog } from "./menus/inputPreset/InputPresetDialog";
@@ -50,8 +50,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <HoldDialog />;
     case "modernisationOptions":
       return <ModernisationOptionsDialog />;
-    case "selectKeys":
-      return <SelectKeysDialog />;
+    case "controlOptions":
+      return <ControlOptionsDialog />;
     case "inputPreset":
       return <InputPresetDialog />;
     case "proclaimEmperor":

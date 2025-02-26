@@ -1,6 +1,6 @@
 import { fromAllEntries } from "../../utils/entries";
 import { originXyz, type Xyz } from "../../utils/vectors/vectors";
-import { booleanActions, type BooleanAction } from "./InputState";
+import { booleanActions, type BooleanAction } from "./actions";
 
 /**
  * the state of input given via the on-screen hud (mostly for phones) - this

@@ -37,13 +37,13 @@ export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
 
 const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
+  toPlayable?: IndividualCharacterName,
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
   const headOverHeels = selectPlayableItem(gameState, "headOverHeels")!;
 
-  const switchingToCharacter = otherIndividualCharacterName(
-    gameState.previousPlayable!,
-  );
+  const switchingToCharacter =
+    toPlayable ?? otherIndividualCharacterName(gameState.previousPlayable!);
 
   const { head, heels } = uncombinePlayablesFromSymbiosis(headOverHeels);
 
@@ -77,31 +77,42 @@ const highlightCurrentPlayable = <RoomId extends string>(
   }
 };
 
+/**
+ * @param toPlayable override the original's cycling through players to go directly to
+ * one of the characters (from symbiosis maybe)
+ */
 export const swopPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
+  toPlayable?: IndividualCharacterName,
 ) => {
-  if (selectCanCombine(gameState)) {
+  if (
+    selectCanCombine(gameState) &&
+    // if requesting to go to the other playable, don't combine
+    (!toPlayable ||
+      // but if selecting to go to the already-selected character, that's a request to combine
+      toPlayable === gameState.currentCharacterName)
+  ) {
     swopFromUncombinedToCombinedPlayables(gameState);
   } else if (gameState.currentCharacterName === "headOverHeels") {
-    swopFromCombinedToUncombinedPlayables(gameState);
-  } else {
-    // normal swop - one player for another
-    if (
+    swopFromCombinedToUncombinedPlayables(gameState, toPlayable);
+  } else if (!toPlayable || toPlayable !== gameState.currentCharacterName) {
+    // normal swop - one player for another (so long as we have the other to switch to)
+    const otherCharInGame =
       selectPlayableItem(
         gameState,
         otherIndividualCharacterName(gameState.currentCharacterName),
-      ) === undefined
-    ) {
-      // other player isn't in the game - can't swop to them
-      return;
+      ) !== undefined;
+
+    if (otherCharInGame) {
+      gameState.currentCharacterName = otherIndividualCharacterName(
+        gameState.currentCharacterName,
+      );
     }
 
     // TODO: don't allow to swop if the current character is playing death animation
-
-    gameState.currentCharacterName = otherIndividualCharacterName(
-      gameState.currentCharacterName,
-    );
   }
 
+  // even if no switch happened (which can only happen if toPlayable was given),
+  // highlight the character that was requested to switch to to give some feedback
   highlightCurrentPlayable(gameState);
 };

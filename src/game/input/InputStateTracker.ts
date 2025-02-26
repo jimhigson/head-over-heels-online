@@ -11,7 +11,8 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import type { InputPress } from "./InputState";
-import { actionToAxis, type BooleanAction } from "./InputState";
+import { actionToAxis } from "./actionToAxis";
+import { type BooleanAction } from "./actions";
 import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";

@@ -79,13 +79,23 @@ const playableCreateSpriteOptions = ({
   return { textureId: `${name}.walking.${facingXy8}.2` };
 };
 
-export const isHighlighted = ({
-  gameTime,
-  switchedToAt,
-}: {
-  switchedToAt: number;
-  gameTime: number;
-}): boolean => switchedToAt + switchCharacterHighlightTime > gameTime;
+export const isHighlighted = (
+  {
+    gameTime,
+    switchedToAt,
+  }: {
+    switchedToAt: number;
+    gameTime: number;
+  },
+  characterName: CharacterName,
+  currentCharacterName: CharacterName,
+): boolean => {
+  return (
+    (characterName === "headOverHeels" ||
+      characterName === currentCharacterName) &&
+    switchedToAt + switchCharacterHighlightTime > gameTime
+  );
+};
 
 export const isFlashing = (playableItem: PlayableItem): boolean => {
   if (!playerDiedRecently(playableItem)) {
@@ -167,11 +177,15 @@ const applyFilters = (
   }
 };
 
-export const playableAppearance = <C extends CharacterName>({
+export const playableAppearance = <
+  C extends CharacterName,
+  RoomId extends string,
+>({
   item,
   currentlyRenderedProps,
   previousRendering,
-}: ItemAppearanceOptions<C, string>): ItemAppearanceReturn<CharacterName> => {
+  gameState,
+}: ItemAppearanceOptions<C, RoomId>): ItemAppearanceReturn<CharacterName> => {
   const {
     type,
     state: { action, facing, teleporting },
@@ -183,8 +197,16 @@ export const playableAppearance = <C extends CharacterName>({
     item.type === "headOverHeels" ?
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
-      isHighlighted((item as PlayableItem<"headOverHeels">).state.head)
-    : isHighlighted((item as PlayableItem<"head" | "heels">).state);
+      isHighlighted(
+        (item as PlayableItem<"headOverHeels">).state.head,
+        "headOverHeels",
+        "headOverHeels",
+      )
+    : isHighlighted(
+        (item as PlayableItem<"head" | "heels">).state,
+        item.type,
+        gameState.currentCharacterName,
+      );
 
   const flashing = isFlashing(item as PlayableItem);
 
@@ -236,13 +258,13 @@ export const playableAppearance = <C extends CharacterName>({
       "head",
       renderProps,
       needNewSprites ? undefined : currentlyRenderedProps,
-      outputContainer.getChildAt(0),
+      outputContainer.getChildAt(1),
     );
     applyFilters(
       "heels",
       renderProps,
       needNewSprites ? undefined : currentlyRenderedProps,
-      outputContainer.getChildAt(1),
+      outputContainer.getChildAt(0),
     );
   } else {
     applyFilters(

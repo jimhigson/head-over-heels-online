@@ -58,16 +58,14 @@ const blockTextureId = (
 
 const carryableOutlineColour = spritesheetPalette.moss;
 
-const singleRenderWithStyleAsTexture = renderOnce<
-  "deadlyBlock" | "slidingDeadly" | "slidingBlock",
-  string
->(
-  ({
-    item: {
-      config: { style },
-    },
-  }) => createSprite(style === "book" ? "book.y" : style),
-);
+const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
+  renderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+    ({
+      item: {
+        config: { style },
+      },
+    }) => createSprite(style === "book" ? "book.y" : style),
+  );
 
 export const itemAppearances: {
   [T in ItemInPlayType]: ItemAppearance<T>;
@@ -164,8 +162,8 @@ export const itemAppearances: {
         times,
       }),
   ),
-  slidingDeadly: singleRenderWithStyleAsTexture,
-  slidingBlock: singleRenderWithStyleAsTexture,
+  slidingDeadly: singleRenderWithStyleAsTexture(),
+  slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
     item: {

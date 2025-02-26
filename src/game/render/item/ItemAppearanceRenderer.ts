@@ -41,7 +41,7 @@ export class ItemAppearanceRenderer<
   constructor(
     item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
     room: RoomState<SceneryName, RoomId, ItemId>,
-    gameState: GameState<RoomId>,
+    private gameState: GameState<RoomId>,
   ) {
     this.#item = item;
     this.#room = room;
@@ -71,6 +71,7 @@ export class ItemAppearanceRenderer<
       displaySettings: renderContext.displaySettings,
       previousRendering: this.#container.children.at(0) ?? null,
       onHold: renderContext.onHold,
+      gameState: this.gameState,
     });
 
     if (rendering !== "no-update") {

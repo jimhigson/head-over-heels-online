@@ -1,13 +1,4 @@
-import type { PartialDeep } from "type-fest";
-import { fromAllEntries } from "../../utils/entries";
-import type { DirectionXy4 } from "../../utils/vectors/vectors";
-import { directionsXy4 } from "../../utils/vectors/vectors";
-import type { BooleanAction } from "./InputState";
-import {
-  booleanActions,
-  type InputAssignment,
-  type InputAssignmentPreset,
-} from "./InputState";
+import { type InputAssignmentPreset } from "./InputState";
 import type { MamePlayer } from "./controllers";
 import {
   eightBitDoKeyboard,
@@ -15,6 +6,9 @@ import {
   mameButtonsPlayer2,
   standardControllerLayout,
 } from "./controllers";
+import type { PartialInputAssignment } from "./combineInputAssignments";
+import { combineInputAssignments } from "./combineInputAssignments";
+import { emptyInputAssignment } from "./emptyInputAssignment";
 
 //standard keys that are used in all presets:
 const standardAssignment = {
@@ -55,70 +49,6 @@ const standardAssignment = {
   },
 } as const satisfies PartialInputAssignment;
 
-const allActions: (BooleanAction | DirectionXy4)[] = [
-  ...booleanActions,
-  ...directionsXy4,
-];
-
-const emptyInputAssignment: InputAssignment = {
-  presses: fromAllEntries(
-    allActions.map((action) => [
-      action,
-      { keys: [], gamepadAxes: [], gamepadButtons: [] },
-    ]),
-  ),
-  axes: { x: [], y: [] },
-};
-
-const combineWithoutDuplicates = <T,>(
-  a: T[] | undefined,
-  b: T[] | undefined,
-): T[] => Array.from(new Set([...(a ?? []), ...(b ?? [])]));
-
-type PartialInputAssignment = PartialDeep<InputAssignment>;
-
-export function combineInputAssignments(
-  ...assignments: PartialInputAssignment[]
-): InputAssignment {
-  return {
-    presses: assignments.reduce(
-      (
-        ac: InputAssignment["presses"],
-        curAssignment,
-      ): InputAssignment["presses"] => {
-        for (const action of allActions) {
-          ac[action] = {
-            keys: combineWithoutDuplicates(
-              ac[action]?.keys,
-              curAssignment?.presses?.[action]?.keys,
-            ),
-            gamepadButtons: combineWithoutDuplicates(
-              ac[action]?.gamepadButtons,
-              curAssignment?.presses?.[action]?.gamepadButtons,
-            ),
-          };
-        }
-        return ac;
-      },
-      structuredClone(emptyInputAssignment.presses),
-    ),
-    axes: {
-      x: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.x,
-          ...assignments.map((a) => a.axes?.x ?? []).flat(),
-        ]),
-      ),
-      y: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.y,
-          ...assignments.map((a) => a.axes?.y ?? []).flat(),
-        ]),
-      ),
-    },
-  };
-}
-
 const gamepadAssignment: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(standardAssignment, {
     presses: {
@@ -148,6 +78,12 @@ const gamepadAssignment: InputAssignmentPreset = {
       },
       fire: { gamepadButtons: [standardControllerLayout.x] },
       swop: { gamepadButtons: [standardControllerLayout.rb] },
+      ["swop.head"]: {
+        gamepadButtons: [standardControllerLayout.l3],
+      },
+      ["swop.heels"]: {
+        gamepadButtons: [standardControllerLayout.r3],
+      },
       hold: { gamepadButtons: [standardControllerLayout.start] },
       menu_openOrExit: {
         gamepadButtons: [
@@ -254,6 +190,12 @@ const defaultAssignment: InputAssignmentPreset = {
         },
         swop: {
           keys: ["Enter", "S", "Numpad+"],
+        },
+        "swop.head": {
+          keys: ["["],
+        },
+        "swop.heels": {
+          keys: ["]"],
         },
         hold: {
           keys: ["F8", "H", "Numpad."],

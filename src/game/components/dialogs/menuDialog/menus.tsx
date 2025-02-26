@@ -8,7 +8,7 @@ const markdownDialogIds = keys(markdownPages).map(
 
 export const dialogIds = [
   "mainMenu",
-  "selectKeys",
+  "controlOptions",
   "modernisationOptions",
   "inputPreset",
   "readTheManual",

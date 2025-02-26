@@ -85,7 +85,7 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
   );
 };
 
-export const SelectKeysDialog = () => {
+export const ControlOptionsDialog = () => {
   useKeyAssignmentInput();
   const isScreenRelativeControl = useIsScreenRelativeControl();
 
@@ -146,7 +146,7 @@ export const SelectKeysDialog = () => {
             {useIsAnalogueControl() && <ScreenRelativeControlSection />}
 
             <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
-              keys / buttons
+              Select the keys
             </BitmapText>
 
             <MenuItem
@@ -247,6 +247,13 @@ export const SelectKeysDialog = () => {
               leader={<span className={`${spriteLeaderClasses} texture-bag`} />}
               valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
               onSelect={useDispatchActionCallback(assignInputStart, "carry")}
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**heels only**. requires the bag`}
+                />
+              }
+              hintInline
             />
             <MenuItem
               id="fire"
@@ -260,6 +267,13 @@ export const SelectKeysDialog = () => {
               leader={
                 <span className={`${spriteLeaderClasses} texture-doughnuts`} />
               }
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**head only**. requires the hooter`}
+                />
+              }
+              hintInline
               valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
               onSelect={useDispatchActionCallback(assignInputStart, "fire")}
             />
@@ -268,6 +282,13 @@ export const SelectKeysDialog = () => {
               label="Swop"
               valueElement={<SelectKeysMenuAssignmentValue action="swop" />}
               onSelect={useDispatchActionCallback(assignInputStart, "swop")}
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`Like the swop key from the original game; *cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
+                />
+              }
+              hintInline
               leader={
                 <span
                   className={`${spriteLeaderClasses} texture-blank relative overflow-hidden`}
@@ -279,6 +300,67 @@ export const SelectKeysDialog = () => {
                     className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight absolute left-[50%]`}
                   />
                 </span>
+              }
+            />
+            <MenuItem
+              id="swopHead"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  Swop to head
+                </BitmapText>
+              }
+              valueElement={
+                <SelectKeysMenuAssignmentValue action="swop.head" />
+              }
+              onSelect={useDispatchActionCallback(
+                assignInputStart,
+                "swop.head",
+              )}
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**shortcut**: go *directly* to *head*, avoiding cycling if in symbiosis`}
+                />
+              }
+              hintInline
+              leader={
+                <span
+                  className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight`}
+                />
+              }
+            />
+            <MenuItem
+              id="swopHeels"
+              label={
+                <div className={`w-6 ${multilineTextClass}`}>
+                  <BitmapText className={`me-1`}>Swop to</BitmapText>
+                  <BitmapText
+                    className={`text-pinkHalfbrite selectedMenuItem:text-pink`}
+                  >
+                    heels
+                  </BitmapText>
+                </div>
+              }
+              valueElement={
+                <SelectKeysMenuAssignmentValue action="swop.heels" />
+              }
+              onSelect={useDispatchActionCallback(
+                assignInputStart,
+                "swop.heels",
+              )}
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**shortcut**: go *directly* to *heels*, avoiding cycling if in symbiosis`}
+                />
+              }
+              hintInline
+              leader={
+                <span
+                  className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight`}
+                />
               }
             />
             <MenuItem

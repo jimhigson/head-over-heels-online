@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
 import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
 import type {
-  BooleanAction,
   ActionInputAssignment,
   InputAssignment,
   InputPress,
 } from "../game/input/InputState";
+import type { BooleanAction } from "src/game/input/actions";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";

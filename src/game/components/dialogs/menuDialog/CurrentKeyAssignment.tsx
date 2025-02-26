@@ -1,10 +1,11 @@
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { standardControllerButtonNames } from "../../../input/controllers";
-import { actionToAxis, type BooleanAction } from "../../../input/InputState";
 import type { Key } from "../../../input/keys";
 import { MultipleBitmapText } from "../../Sprite";
 import { emptyArray } from "../../../../utils/empty";
+import type { BooleanAction } from "../../../input/actions";
+import { actionToAxis } from "../../../input/actionToAxis";
 
 const specialCharClassName =
   "text-mossHalfbrite zx:text-zxGreen selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen";
