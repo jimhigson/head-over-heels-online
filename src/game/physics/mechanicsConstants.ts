@@ -111,3 +111,9 @@ export const originalGameStartingLives = 8;
 export const switchCharacterHighlightTime = 750;
 export const afterDeathInvulnerabilityTime = 2_500;
 export const afterDeathInvulnerabilityFlashPeriod = 200;
+
+/**
+ * the deepest recursion in the game can go - ie, the longest chain of
+ * items pushing items pushing items
+ */
+export const maxPushRecursionDepth = 8;

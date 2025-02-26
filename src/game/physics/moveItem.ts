@@ -30,6 +30,7 @@ import {
   scaleXyz,
 } from "../../utils/vectors/vectors";
 import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
+import { maxPushRecursionDepth } from "./mechanicsConstants";
 
 const log = 0;
 
@@ -77,12 +78,6 @@ export const moveItem = <RoomId extends string>({
 }: MoveItemOptions<RoomId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     return;
-  }
-
-  if (recursionDepth > 24) {
-    throw new Error(
-      "this probably means a non-terminating issue, or you're testing by adding an unreasonable number of items to a room",
-    );
   }
 
   const {
@@ -234,18 +229,21 @@ export const moveItem = <RoomId extends string>({
           with push coefficient of ${pushCoefficient}`,
         );
 
-      // recursively apply push to pushed item
-      moveItem({
-        subjectItem: collision,
-        posDelta: forwardPushVector,
-        pusher: subjectItem,
-        gameState,
-        room,
-        deltaMS,
-        forceful,
-        recursionDepth: recursionDepth + 1,
-        onTouch,
-      });
+      if (recursionDepth < maxPushRecursionDepth) {
+        // recursively apply push to pushed item
+        // (but only if we didn't already recurse down to the maximum depth)
+        moveItem({
+          subjectItem: collision,
+          posDelta: forwardPushVector,
+          pusher: subjectItem,
+          gameState,
+          room,
+          deltaMS,
+          forceful,
+          recursionDepth: recursionDepth + 1,
+          onTouch,
+        });
+      }
 
       // it is possible we pushed the other item out of the room:
       if (room.items[collision.id] === undefined) {
