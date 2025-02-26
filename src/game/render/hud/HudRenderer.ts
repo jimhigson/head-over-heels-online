@@ -23,7 +23,6 @@ import {
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { selectCurrentRoomState } from "../../gameState/GameState";
-import { selectCanCombine } from "../../gameState/gameStateSelectors/selectCanCombine";
 import {
   shieldRemaining,
   fastStepsRemaining,
@@ -72,8 +71,6 @@ type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 export class HudRenderer<RoomId extends string> {
   #container = new Container({ label: "HudRenderer" });
   #uncurrentSpriteFilter: RevertColouriseFilter = new RevertColouriseFilter();
-  #uncurrentButHighlightedSpriteFilter: RevertColouriseFilter =
-    new RevertColouriseFilter();
   #iconFilter = new RevertColouriseFilter();
   #textFilter = new RevertColouriseFilter();
   #fpsColourFilter = new RevertColouriseFilter(spritesheetPalette.moss);
@@ -418,13 +415,7 @@ export class HudRenderer<RoomId extends string> {
       characterSprite.filters =
         colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
     } else {
-      const highlight = selectCanCombine(gameState);
-
-      if (highlight) {
-        characterSprite.filters = this.#uncurrentButHighlightedSpriteFilter;
-      } else {
-        characterSprite.filters = this.#uncurrentSpriteFilter;
-      }
+      characterSprite.filters = this.#uncurrentSpriteFilter;
     }
 
     characterSprite.x =
@@ -464,8 +455,6 @@ export class HudRenderer<RoomId extends string> {
       colorScheme.hud.dimmed[colourise ? "basic" : "original"];
     this.#iconFilter.targetColor =
       colorScheme.hud.icons[colourise ? "basic" : "original"];
-    this.#uncurrentButHighlightedSpriteFilter.targetColor =
-      colorScheme.hud.dimmed[colourise ? "basic" : "original"];
 
     this.#livesOrActiveCharacterOriginalColorFilter.targetColor =
       colorScheme.hud.lives.original;
