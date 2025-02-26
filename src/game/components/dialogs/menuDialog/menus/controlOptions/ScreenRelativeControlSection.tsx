@@ -10,8 +10,9 @@ import { spriteLeaderClasses } from "./spriteLeaderClasses";
 const screenRelativeControlOffHintMarkdown =
   "**world**: Control is relative to directions in the isometric world";
 
-const screenRelativeControlOnHintMarkdown =
-  "**screen**: Control is relative to the screen. More intuitive if you find directions confusing in isometric games";
+const screenRelativeControlOnHintMarkdown = `**screen**: Control is relative to the screen.
+
+More intuitive if you find directions confusing in isometric games, but requires inputting diagonals a lot`;
 
 const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   return (

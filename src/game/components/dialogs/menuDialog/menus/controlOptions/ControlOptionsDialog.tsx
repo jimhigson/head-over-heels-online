@@ -247,6 +247,13 @@ export const ControlOptionsDialog = () => {
               leader={<span className={`${spriteLeaderClasses} texture-bag`} />}
               valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
               onSelect={useDispatchActionCallback(assignInputStart, "carry")}
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**heels only**. requires the bag`}
+                />
+              }
+              hintInline
             />
             <MenuItem
               id="fire"
@@ -260,6 +267,13 @@ export const ControlOptionsDialog = () => {
               leader={
                 <span className={`${spriteLeaderClasses} texture-doughnuts`} />
               }
+              hint={
+                <BlockyMarkdown
+                  className="text-midGrey zx:text-zxBlack"
+                  markdown={`**head only**. requires the hooter`}
+                />
+              }
+              hintInline
               valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
               onSelect={useDispatchActionCallback(assignInputStart, "fire")}
             />
@@ -271,7 +285,7 @@ export const ControlOptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className="text-midGrey zx:text-zxBlack"
-                  markdown={`cycle through the characters. Moves in and out of symbiosis if head is on top of heels`}
+                  markdown={`Like the swop key from the original game; *cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
                 />
               }
               hintInline
@@ -307,7 +321,7 @@ export const ControlOptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className="text-midGrey zx:text-zxBlack"
-                  markdown={`goes *directly* to *head*, avoiding cycling if in symbiosis`}
+                  markdown={`**shortcut**: go *directly* to *head*, avoiding cycling if in symbiosis`}
                 />
               }
               hintInline
@@ -322,7 +336,11 @@ export const ControlOptionsDialog = () => {
               label={
                 <div className={`w-6 ${multilineTextClass}`}>
                   <BitmapText className={`me-1`}>Swop to</BitmapText>
-                  <BitmapText className={`text-pink`}>heels</BitmapText>
+                  <BitmapText
+                    className={`text-pinkHalfbrite selectedMenuItem:text-pink`}
+                  >
+                    heels
+                  </BitmapText>
                 </div>
               }
               valueElement={
@@ -335,7 +353,7 @@ export const ControlOptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className="text-midGrey zx:text-zxBlack"
-                  markdown={`goes *directly* to *heels*, avoiding cycling if in symbiosis`}
+                  markdown={`**shortcut**: go *directly* to *heels*, avoiding cycling if in symbiosis`}
                 />
               }
               hintInline
