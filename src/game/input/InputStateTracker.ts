@@ -328,6 +328,7 @@ export class InputStateTracker {
       recentlyReleasedPress ?? originXyz,
       ...pressVs,
       ...axisVectors(currentFrameInput),
+      this.hudInputState.directionVector,
     );
   }
 

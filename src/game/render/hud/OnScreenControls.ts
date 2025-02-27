@@ -1,5 +1,3 @@
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import type { Sprite } from "pixi.js";
 import { Container } from "pixi.js";
 
 import type {
@@ -9,163 +7,27 @@ import type {
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 
-import type { Subset } from "../../../utils/subset";
-import type { BooleanAction } from "../../input/actions";
 import type { TickOptions } from "./HudRenderer";
-import { createSprite } from "../createSprite";
-import { replaceWithHalfbriteFilter } from "../filters/standardFilters";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { zxSpectrumColors } from "../../../originalGame";
-import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { objectValues } from "iter-tools";
-import {
-  spritesheetData,
-  type TextureId,
-} from "../../../sprites/spriteSheetData";
-import { spriteSheet } from "../../../sprites/spriteSheet";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { OnScreenJoystick } from "./OnScreenJoystick";
+import type { OnScreenButtonName } from "./OnScreenButton";
+import { OnScreenButton, buttonSpriteSize } from "./OnScreenButton";
 
 const mainButtonsSpreadPx = 14;
-
-type OnScreenButtonName =
-  | Subset<BooleanAction, "jump" | "carry" | "fire" | "menu_openOrExit">
-  | "carryAndJump";
-
-type ButtonColour = "red" | "blue" | "yellow" | "green";
-
-const buttonSpriteSize = spritesheetData.frames.button.frame;
-
-const buttonColourFilters = {
-  colourised: {
-    red: replaceWithHalfbriteFilter(spritesheetPalette.midRed),
-    blue: replaceWithHalfbriteFilter(spritesheetPalette.metallicBlue),
-    yellow: replaceWithHalfbriteFilter(spritesheetPalette.highlightBeige),
-    green: replaceWithHalfbriteFilter(spritesheetPalette.moss),
-  },
-  zx: {
-    red: new RevertColouriseFilter(zxSpectrumColors.zxRed),
-    blue: new RevertColouriseFilter(zxSpectrumColors.zxBlue),
-    yellow: new RevertColouriseFilter(zxSpectrumColors.zxYellow),
-    green: new RevertColouriseFilter(zxSpectrumColors.zxGreen),
-  },
-};
-
-class OnScreenButton {
-  container: Sprite;
-
-  constructor(
-    private actions: BooleanAction[],
-    private inputStateTracker: InputStateTrackerInterface,
-    private colour?: ButtonColour,
-    private textureId: TextureId = "button",
-    private pressedTextureId: TextureId = "button.pressed",
-  ) {
-    const sprite = (this.container = createSprite(textureId) as Sprite);
-
-    const { hudInputState } = inputStateTracker;
-
-    sprite.eventMode = "static";
-    sprite.on("pointerdown", () => {
-      for (const a of actions) {
-        hudInputState[a] = true;
-      }
-    });
-    sprite.on("pointerup", () => {
-      for (const a of actions) {
-        hudInputState[a] = false;
-      }
-    });
-    sprite.on("pointerleave", () => {
-      for (const a of actions) {
-        hudInputState[a] = false;
-      }
-    });
-  }
-
-  #updateColours(colourised: boolean) {
-    if (!this.colour) return;
-
-    if (colourised) {
-      this.container.filters = buttonColourFilters.colourised[this.colour];
-    } else {
-      this.container.filters = buttonColourFilters.zx[this.colour];
-    }
-  }
-
-  #updateSprite() {
-    const pressed = this.actions.every(
-      (a) => this.inputStateTracker.currentActionPress(a) !== "released",
-    );
-    this.container.texture =
-      spriteSheet.textures[pressed ? this.pressedTextureId : this.textureId];
-  }
-
-  update(colourised: boolean) {
-    this.#updateColours(colourised);
-    this.#updateSprite();
-  }
-}
-
-const joystickArrowOffset = 13;
-class OnScreenJoystick {
-  container = new Container({ label: "OnScreenJoystick" });
-
-  static #unpressedArrowFilter = new RevertColouriseFilter(
-    spritesheetPalette.midGrey,
-  );
-
-  arrowSprites = {
-    away: createSprite({
-      textureId: "hud.char.↗",
-      anchor: { x: 0.5, y: 0.5 },
-      x: joystickArrowOffset,
-      y: -joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
-    }),
-    towards: createSprite({
-      textureId: "hud.char.↙",
-      anchor: { x: 0.5, y: 0.5 },
-      x: -joystickArrowOffset,
-      y: joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
-    }),
-    left: createSprite({
-      textureId: "hud.char.↖",
-      anchor: { x: 0.5, y: 0.5 },
-      x: -joystickArrowOffset,
-      y: -joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
-    }),
-    right: createSprite({
-      textureId: "hud.char.↘",
-      anchor: { x: 0.5, y: 0.5 },
-      x: joystickArrowOffset,
-      y: joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
-    }),
-  };
-
-  constructor() {
-    this.container.addChild(
-      createSprite({ textureId: "joystick", anchor: { x: 0.5, y: 0.5 }, y: 1 }),
-    );
-    this.container.addChild(this.arrowSprites.away);
-    this.container.addChild(this.arrowSprites.towards);
-    this.container.addChild(this.arrowSprites.left);
-    this.container.addChild(this.arrowSprites.right);
-  }
-}
 
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
 
-  #hudElements = {
-    mainButtonNest: new Container({ label: "mainButtonNest" }),
-    buttons: {} as Record<OnScreenButtonName, OnScreenButton>,
-    joystick: new OnScreenJoystick(),
-  };
+  #hudElements;
 
   constructor(private gameState: GameState<RoomId>) {
+    this.#hudElements = {
+      mainButtonNest: new Container({ label: "mainButtonNest" }),
+      buttons: {} as Record<OnScreenButtonName, OnScreenButton>,
+      joystick: new OnScreenJoystick(gameState.inputStateTracker),
+    };
+
     const buttons = (this.#hudElements.buttons = {
       menu_openOrExit: new OnScreenButton(
         ["menu_openOrExit"],
@@ -212,8 +74,8 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements.mainButtonNest.x = screenSize.x - offsetFromSides;
     this.#hudElements.mainButtonNest.y = screenSize.y - 14;
 
-    this.#hudElements.joystick.container.x = offsetFromSides - 20;
-    this.#hudElements.joystick.container.y = screenSize.y - 20;
+    this.#hudElements.joystick.container.x = offsetFromSides - 10;
+    this.#hudElements.joystick.container.y = screenSize.y - 24;
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */

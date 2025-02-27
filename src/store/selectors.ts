@@ -7,13 +7,13 @@ import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { size, objectValues } from "iter-tools";
 
-export const useTotalUpscale = () =>
-  useAppSelector((state) => {
-    const {
-      upscale: { cssUpscale, gameEngineUpscale },
-    } = state;
-    return cssUpscale * gameEngineUpscale;
-  });
+export const selectTotalUpscale = (state: RootState): number => {
+  const {
+    upscale: { cssUpscale, gameEngineUpscale },
+  } = state;
+  return cssUpscale * gameEngineUpscale;
+};
+export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
 export const useInputAssignment = () =>
   useAppSelector((state) => state.userSettings.inputAssignment);
