@@ -72,11 +72,11 @@ const gamepadAssignment: InputAssignmentPreset = {
       },
       carry: {
         gamepadButtons: [
-          standardControllerLayout.b,
+          standardControllerLayout.x,
           standardControllerLayout.y,
         ],
       },
-      fire: { gamepadButtons: [standardControllerLayout.x] },
+      fire: { gamepadButtons: [standardControllerLayout.b] },
       swop: { gamepadButtons: [standardControllerLayout.rb] },
       ["swop.head"]: {
         gamepadButtons: [standardControllerLayout.l3],

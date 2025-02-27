@@ -1,26 +1,27 @@
 import { useEffect, useState, lazy, Suspense } from "react";
-import { type GameApi } from "../../GameApi.tsx";
+import { type GameApi } from "../game/GameApi.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
-import { GameApiProvider } from "../GameApiContext.tsx";
-import type Cheats from "../cheats/Cheats.tsx";
-import { useAppSelector } from "../../../store/hooks.ts";
-import { ConnectInputToStore } from "../../../store/storeFlow/ConnectInputToStore.tsx";
-import { Dialogs } from "../dialogs/menuDialog/Dialogs.tsx";
-import { useInputStateTracker } from "../../input/InputStateProvider.tsx";
-import { useCheatsOn, useIsGameRunning } from "../../../store/selectors.ts";
-import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
-import { importOnce } from "../../../utils/importOnce.ts";
+import { GameApiProvider } from "../game/components/GameApiContext.tsx";
+import type Cheats from "../game/components/cheats/Cheats.tsx";
+import { useAppSelector } from "../store/hooks.ts";
+import { ConnectInputToStore } from "../store/storeFlow/ConnectInputToStore.tsx";
+import { Dialogs } from "../game/components/dialogs/menuDialog/Dialogs.tsx";
+import { useInputStateTracker } from "../game/input/InputStateProvider.tsx";
+import { useCheatsOn, useIsGameRunning } from "../store/selectors.ts";
+import type { OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId.ts";
+import { importOnce } from "../utils/importOnce.ts";
+import { detectDeviceType } from "../utils/detectDeviceType.tsx";
 
-const importCheats = importOnce(() => import("../cheats/Cheats.tsx"));
-const importGameMain = importOnce(() => import("../../gameMain.ts"));
+const importCheats = importOnce(
+  () => import("../game/components/cheats/Cheats.tsx"),
+);
+const importGameMain = importOnce(() => import("../game/gameMain.ts"));
 const importOriginalCampaign = importOnce(
-  () => import("../../../_generated/originalCampaign/campaign.ts"),
+  () => import("../_generated/originalCampaign/campaign.ts"),
 );
-const importTestCampaign = importOnce(() => import("../../../testCampaign.ts"));
-const importSpritesheet = importOnce(
-  () => import("../../../sprites/spriteSheet.ts"),
-);
+const importTestCampaign = importOnce(() => import("../testCampaign.ts"));
+const importSpritesheet = importOnce(() => import("../sprites/spriteSheet.ts"));
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -94,6 +95,7 @@ const usePageAsAnApp = () => {
       "overscroll-none",
       "overflow-hidden",
       "select-none",
+      detectDeviceType(),
     );
   }, []);
 };

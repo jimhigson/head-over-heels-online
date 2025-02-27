@@ -42,7 +42,7 @@ const revertToOriginalStateMigration = (
 
 const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 7,
+  version: 8,
   migrate: createMigrate(
     {
       1: revertToOriginalStateMigration,
@@ -52,6 +52,7 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
       5: revertToOriginalStateMigration,
       6: revertToOriginalStateMigration,
       7: revertToOriginalStateMigration,
+      8: revertToOriginalStateMigration,
     },
     { debug: true },
   ),

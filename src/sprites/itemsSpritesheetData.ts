@@ -508,6 +508,18 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
+  button: {
+    frame: {
+      ...largeItemGridLocation({ x: 9, y: 2 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "button.pressed": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 2 }),
+      ...largeItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "conveyor.y",
     7,

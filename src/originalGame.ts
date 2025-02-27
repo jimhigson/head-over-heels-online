@@ -18,6 +18,7 @@ export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
 export const amigaLowResPal = { x: 320, y: 256 };
 export const amigaHiResPal = { x: 640, y: 512 };
 export const zxSpectrumResolution = { x: 256, y: 192 };
+export const smallerResolution = { x: 200, y: 150 };
 
 export const zxSpectrumColors = {
   // zx-spectrum colours:

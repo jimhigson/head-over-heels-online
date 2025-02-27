@@ -114,6 +114,9 @@ export const initialGameMenuSliceState: GameMenusState = {
       crtFilter: false,
       colourise: true,
       emulatedResolution: zxSpectrumResolution,
+      /*detectDeviceType() === "mobile" ? smallerResolution : (
+          zxSpectrumResolution
+        ),*/
     },
 
     showFps: false,

@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { type TextureId } from "../../../../sprites/spriteSheetData";
-import { mainPaletteSwapFilter } from "../../filters/paletteSwapFilters";
+import { mainPaletteSwapFilter } from "../../filters/standardFilters";
 import { createSprite } from "../../createSprite";
 import { moveContainerToBlockXyz } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";

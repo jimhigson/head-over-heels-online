@@ -44,6 +44,8 @@
 
 ### Details and bugs
 
+[ ] include version number on main menu screen
+
 [ ] bug - need to refresh page after changing input preset
     - sometimes?
 

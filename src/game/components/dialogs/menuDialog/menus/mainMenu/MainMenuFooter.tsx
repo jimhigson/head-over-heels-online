@@ -1,3 +1,4 @@
+import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 import { BitmapText } from "../../../../Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
@@ -31,5 +32,6 @@ export const MainMenuFooter = () => (
         </div>
       </div>
     </div>
+    <BitmapText className="text-metallicBlue">{detectDeviceType()}</BitmapText>
   </>
 );

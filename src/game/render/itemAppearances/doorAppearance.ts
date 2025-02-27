@@ -10,7 +10,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
-} from "../filters/paletteSwapFilters";
+} from "../filters/standardFilters";
 import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
 import {
   doorAlongAxis,

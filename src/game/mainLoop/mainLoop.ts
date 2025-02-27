@@ -11,6 +11,7 @@ import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import { selectIsPaused } from "../../store/selectors";
 import type { DisplaySettings } from "../../store/gameMenusSlice";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -78,7 +79,7 @@ export class MainLoop<RoomId extends string> {
     });
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
-    this.#hudRenderer = new HudRenderer(gameState);
+    this.#hudRenderer = new HudRenderer(gameState, detectDeviceType());
     app.stage.addChild(this.#hudRenderer.container);
 
     this.#initFilters();

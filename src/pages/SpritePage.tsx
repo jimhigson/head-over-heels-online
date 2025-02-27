@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { load, spriteSheet } from "../../../sprites/spriteSheet";
-import {
-  spritesheetData,
-  type TextureId,
-} from "../../../sprites/spriteSheetData";
+import { load, spriteSheet } from "../sprites/spriteSheet";
+import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
 
 declare module "react" {
   interface CSSProperties {
