@@ -6,16 +6,12 @@ import {
   spritesheetData,
   type TextureId,
 } from "../../../sprites/spriteSheetData";
-import type { Subset } from "../../../utils/subset";
 import type { BooleanAction } from "../../input/actions";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { createSprite } from "../createSprite";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { replaceWithHalfbriteFilter } from "../filters/standardFilters";
 
-export type OnScreenButtonName =
-  | Subset<BooleanAction, "jump" | "carry" | "fire" | "menu_openOrExit">
-  | "carryAndJump";
 type ButtonColour = "red" | "blue" | "yellow" | "green";
 export const buttonSpriteSize = spritesheetData.frames.button.frame;
 const buttonColourFilters = {

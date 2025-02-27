@@ -1,3 +1,4 @@
+import type { FederatedPointerEvent } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { createSprite } from "../createSprite";
@@ -5,10 +6,17 @@ import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { store } from "../../../store/store";
 import { selectTotalUpscale } from "../../../store/selectors";
 import { objectValues } from "iter-tools";
-import { originXyz, type DirectionXy8 } from "../../../utils/vectors/vectors";
+import {
+  originXyz,
+  scaleXyz,
+  type DirectionXy8,
+} from "../../../utils/vectors/vectors";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import { rotateInputVector45 } from "../../input/analogueControlAdjustments";
 
 const joystickArrowOffset = 13;
+const sensitivity = 2;
+
 export class OnScreenJoystick {
   container = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
@@ -71,7 +79,7 @@ export class OnScreenJoystick {
     }),
   };
 
-  constructor(inputStateTracker: InputStateTrackerInterface) {
+  constructor(private inputStateTracker: InputStateTrackerInterface) {
     this.container.addChild(
       createSprite({ textureId: "joystick", anchor: { x: 0.5, y: 0.5 }, y: 1 }),
     );
@@ -81,28 +89,39 @@ export class OnScreenJoystick {
       this.container.addChild(arrowSprite);
     }
 
-    this.container.on("pointermove", (e) => {
-      const scale = selectTotalUpscale(store.getState());
+    this.container.on("pointerenter", (e) => {
+      // allows tapping without movement:
+      this.trackMovement(e);
+      this.container.on("globalpointermove", this.trackMovement);
 
-      const { x: containerX, y: containerY } = this.container;
-      const { x: eventX, y: eventY } = e;
-
-      const { width: containerWidth, height: containerHeight } =
-        this.container.getLocalBounds();
-
-      const dx = (eventX / scale - containerX) / (containerWidth / 2);
-      const dy = (eventY / scale - containerY) / (containerHeight / 2);
-
-      const directionVector = { x: -dx, y: -dy, z: 0 };
-
-      inputStateTracker.hudInputState.directionVector = directionVector;
-    });
-
-    this.container.on("pointerup", () => {
-      inputStateTracker.hudInputState.directionVector = originXyz;
-    });
-    this.container.on("pointerupoutside", () => {
-      inputStateTracker.hudInputState.directionVector = originXyz;
+      this.container.on("pointerup", () => {
+        this.container.off("globalpointermove", this.trackMovement);
+        inputStateTracker.hudInputState.directionVector = originXyz;
+      });
+      this.container.on("pointerupoutside", () => {
+        this.container.off("globalpointermove", this.trackMovement);
+        inputStateTracker.hudInputState.directionVector = originXyz;
+      });
     });
   }
+
+  trackMovement = (e: FederatedPointerEvent) => {
+    const scale = selectTotalUpscale(store.getState());
+
+    const { x: containerX, y: containerY } = this.container;
+    const { x: eventX, y: eventY } = e;
+
+    const { width: containerWidth, height: containerHeight } =
+      this.container.getLocalBounds();
+
+    const dx = (eventX / scale - containerX) / (containerWidth / 2);
+    const dy = (eventY / scale - containerY) / (containerHeight / 2);
+
+    const directionVector = scaleXyz(
+      rotateInputVector45({ x: -dx, y: -dy, z: 0 }),
+      sensitivity,
+    );
+
+    this.inputStateTracker.hudInputState.directionVector = directionVector;
+  };
 }

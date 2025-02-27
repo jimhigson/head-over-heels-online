@@ -21,7 +21,7 @@
 
 [1,L] iphone playable
     * on-screen keyboared
-    * tap on hud to change character
+    * tap on hud to change character    
 
 [,?] own levels
 
@@ -33,14 +33,16 @@
 
 ### mobile
 [ ] "turn to landscape" screen
-[ ] remove address bar in normal browser
+[x] remove address bar in normal browser
     maybe helpful? https://stackoverflow.com/questions/5206811/hide-iphone-address-bar-with-100-height - although very old!
+    - can't but can do as a PQA
 [x] allow use as a PWA
-[ ] hud input controls (only on phone)
+[x] hud input controls (only on phone)
 [ ] back button on menus
-[ ] menu button while playing
+[x] menu button while playing
 [ ] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
 [ ] text larger in dialogs - probably by increasing the scale size inside dialogs
+[ ] hitting hte joystick with a tap sometimes moves <1px
 
 ### Details and bugs
 
