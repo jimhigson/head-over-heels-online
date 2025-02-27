@@ -216,6 +216,10 @@ translate: https://hoh.helmantika.com/jon-ritman/
 # (heels) blacktooth35
 [ ] room positioning (scrolling) on screen is poor
 
+# (heels) blacktooth42
+push spring in front of head - as it gets pushed it can phase in and out
+of existence
+
 # egyptus12, others(?)
 [ ] sandwich with SOF on it seems to move him double
     * can't reproduce - seen on rasp pi
