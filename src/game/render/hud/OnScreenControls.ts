@@ -106,12 +106,63 @@ class OnScreenButton {
   }
 }
 
+const joystickArrowOffset = 13;
+class OnScreenJoystick {
+  container = new Container({ label: "OnScreenJoystick" });
+
+  static #unpressedArrowFilter = new RevertColouriseFilter(
+    spritesheetPalette.midGrey,
+  );
+
+  arrowSprites = {
+    away: createSprite({
+      textureId: "hud.char.↗",
+      anchor: { x: 0.5, y: 0.5 },
+      x: joystickArrowOffset,
+      y: -joystickArrowOffset,
+      filter: OnScreenJoystick.#unpressedArrowFilter,
+    }),
+    towards: createSprite({
+      textureId: "hud.char.↙",
+      anchor: { x: 0.5, y: 0.5 },
+      x: -joystickArrowOffset,
+      y: joystickArrowOffset,
+      filter: OnScreenJoystick.#unpressedArrowFilter,
+    }),
+    left: createSprite({
+      textureId: "hud.char.↖",
+      anchor: { x: 0.5, y: 0.5 },
+      x: -joystickArrowOffset,
+      y: -joystickArrowOffset,
+      filter: OnScreenJoystick.#unpressedArrowFilter,
+    }),
+    right: createSprite({
+      textureId: "hud.char.↘",
+      anchor: { x: 0.5, y: 0.5 },
+      x: joystickArrowOffset,
+      y: joystickArrowOffset,
+      filter: OnScreenJoystick.#unpressedArrowFilter,
+    }),
+  };
+
+  constructor() {
+    this.container.addChild(
+      createSprite({ textureId: "joystick", anchor: { x: 0.5, y: 0.5 }, y: 1 }),
+    );
+    this.container.addChild(this.arrowSprites.away);
+    this.container.addChild(this.arrowSprites.towards);
+    this.container.addChild(this.arrowSprites.left);
+    this.container.addChild(this.arrowSprites.right);
+  }
+}
+
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
 
   #hudElements = {
     mainButtonNest: new Container({ label: "mainButtonNest" }),
     buttons: {} as Record<OnScreenButtonName, OnScreenButton>,
+    joystick: new OnScreenJoystick(),
   };
 
   constructor(private gameState: GameState<RoomId>) {
@@ -132,7 +183,7 @@ export class OnScreenControls<RoomId extends string> {
       ),
     });
 
-    const { mainButtonNest } = this.#hudElements;
+    const { mainButtonNest, joystick } = this.#hudElements;
     mainButtonNest.addChild(buttons.jump.container);
     mainButtonNest.addChild(buttons.carry.container);
     mainButtonNest.addChild(buttons.fire.container);
@@ -143,8 +194,12 @@ export class OnScreenControls<RoomId extends string> {
     buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
     buttons.fire.container.x = mainButtonsSpreadPx * 2;
 
+    buttons.menu_openOrExit.container.x = 12;
+    buttons.menu_openOrExit.container.y = 12;
+
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(buttons.menu_openOrExit.container);
+    this.#container.addChild(joystick.container);
 
     this.#initInteractivity();
   }
@@ -153,9 +208,12 @@ export class OnScreenControls<RoomId extends string> {
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
   #updateElementPositions(screenSize: Xy) {
-    this.#hudElements.mainButtonNest.x =
-      screenSize.x - buttonSpriteSize.w - mainButtonsSpreadPx;
-    this.#hudElements.mainButtonNest.y = screenSize.y - 20;
+    const offsetFromSides = buttonSpriteSize.w + mainButtonsSpreadPx;
+    this.#hudElements.mainButtonNest.x = screenSize.x - offsetFromSides;
+    this.#hudElements.mainButtonNest.y = screenSize.y - 14;
+
+    this.#hudElements.joystick.container.x = offsetFromSides - 20;
+    this.#hudElements.joystick.container.y = screenSize.y - 20;
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */

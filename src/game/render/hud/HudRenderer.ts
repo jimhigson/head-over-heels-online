@@ -13,7 +13,6 @@ import type {
   IndividualCharacterName,
 } from "../../../model/modelTypes";
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import {
@@ -28,45 +27,42 @@ import {
   fastStepsRemaining,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
 import type { DeviceType } from "../../../utils/detectDeviceType";
 import { OnScreenControls } from "./OnScreenControls";
+import { showNumberInContainer } from "./showNumberInContainer";
 
 const fpsUpdatePeriod = 250;
 
-const livesTextFromCentre = 24;
-const playableIconFromCentre = 56;
-const smallIconsFromCentre = 80;
+const livesTextFromCentre: Record<DeviceType, number> = {
+  desktop: 24,
+  tablet: 24,
+  mobile: 16,
+};
+const playableIconFromCentre: Record<DeviceType, number> = {
+  desktop: 56,
+  tablet: 56,
+  mobile: 38,
+};
+const smallIconsFromCentre: Record<DeviceType, number> = {
+  desktop: 80,
+  tablet: 80,
+  mobile: 60,
+};
+const extraSkillFromBottom: Record<DeviceType, number> = {
+  desktop: 24,
+  tablet: 16,
+  mobile: 18,
+};
+// bag/hooter/doughnuts etc - how far to render the icon from the screen centre::
 const playersIconsFromCentre = 112;
 
 const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
-
-function* numberSprites(n: number | string) {
-  const chars =
-    typeof n === "string" ? n.split("")
-    : Number.isFinite(n) ? n.toString().split("")
-    : "-";
-  const l = chars.length;
-  for (let i = 0; i < l; i++) {
-    const textureId = `hud.char.${chars[i]}`;
-    assertIsTextureId(textureId);
-    yield createSprite({
-      textureId,
-      x: (i + 0.5 - l / 2) * hudCharTextureSize.w,
-    });
-  }
-}
-
-function showNumberInContainer(container: Container, n: number | string) {
-  container.removeChildren();
-  iterateToContainer(numberSprites(n), container);
-}
 
 type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 
@@ -190,10 +186,12 @@ export class HudRenderer<RoomId extends string> {
         this.#hudElements[character].extraSkill.container,
       );
     }
-    this.#container.addChild(this.#hudElements.head.doughnuts.container);
-    this.#container.addChild(this.#hudElements.head.hooter.container);
-    this.#container.addChild(this.#hudElements.heels.bag.container);
-    this.#container.addChild(this.#hudElements.heels.carrying.container);
+    if (this.deviceType !== "mobile") {
+      this.#container.addChild(this.#hudElements.head.doughnuts.container);
+      this.#container.addChild(this.#hudElements.head.hooter.container);
+      this.#container.addChild(this.#hudElements.heels.bag.container);
+      this.#container.addChild(this.#hudElements.heels.carrying.container);
+    }
 
     this.#container.addChild(this.#hudElements.fps);
     this.#hudElements.fps.filters = [
@@ -390,25 +388,37 @@ export class HudRenderer<RoomId extends string> {
 
     const { text: shieldText, container: shieldContainer } =
       this.#hudElements[characterName].shield;
-    const { text: skillText, container: skillContainer } =
+    const { text: skillText, container: extraSkillContainer } =
       this.#hudElements[characterName].extraSkill;
 
-    skillContainer.x = shieldContainer.x =
+    const shieldNumber = shieldRemaining(abilities);
+    const shieldVisible = shieldNumber > 0 || this.deviceType !== "mobile";
+    shieldContainer.visible = shieldVisible;
+
+    if (shieldVisible) {
+      showNumberInContainer(shieldText, shieldNumber);
+      shieldContainer.y = screenSize.y;
+    }
+
+    extraSkillContainer.x = shieldContainer.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * smallIconsFromCentre;
+      sideMultiplier(characterName) * smallIconsFromCentre[this.deviceType];
 
-    showNumberInContainer(shieldText, shieldRemaining(abilities));
-    shieldContainer.y = screenSize.y;
-
-    showNumberInContainer(
-      skillText,
+    const extraSkillNumber =
       abilities === undefined ? 0
       : characterName === "head" ?
         fastStepsRemaining(abilities as HeadAbilities)
-      : (abilities as HeelsAbilities<RoomId>).bigJumps,
-    );
+      : (abilities as HeelsAbilities<RoomId>).bigJumps;
 
-    skillContainer.y = screenSize.y - 24;
+    const extraSkillVisible =
+      extraSkillNumber > 0 || this.deviceType !== "mobile";
+    extraSkillContainer.visible = extraSkillVisible;
+
+    if (extraSkillVisible) {
+      showNumberInContainer(skillText, extraSkillNumber);
+      extraSkillContainer.y =
+        screenSize.y - extraSkillFromBottom[this.deviceType];
+    }
   }
 
   #characterIsActive(
@@ -440,7 +450,7 @@ export class HudRenderer<RoomId extends string> {
 
     characterSprite.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * playableIconFromCentre;
+      sideMultiplier(characterName) * playableIconFromCentre[this.deviceType];
 
     characterSprite.y = screenSize.y - smallItemTextureSize.h;
   }
@@ -455,7 +465,8 @@ export class HudRenderer<RoomId extends string> {
 
     const livesTextContainer = this.#hudElements[characterName].livesText;
     livesTextContainer.x =
-      (screenSize.x >> 1) + sideMultiplier(characterName) * livesTextFromCentre;
+      (screenSize.x >> 1) +
+      sideMultiplier(characterName) * livesTextFromCentre[this.deviceType];
     livesTextContainer.y = screenSize.y;
 
     showNumberInContainer(livesTextContainer, lives ?? 0);
