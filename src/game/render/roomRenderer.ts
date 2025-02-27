@@ -16,7 +16,7 @@ import type { Upscale } from "./calculateUpscale";
 import type { RenderContext, Renderer } from "./Renderer";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
-import { noFilters } from "./filters/paletteSwapFilters";
+import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 
 export class RoomRenderer<RoomId extends string, ItemId extends string>

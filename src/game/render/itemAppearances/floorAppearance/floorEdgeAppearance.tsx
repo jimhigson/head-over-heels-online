@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { edgePaletteSwapFilters } from "../../filters/paletteSwapFilters";
+import { edgePaletteSwapFilters } from "../../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, renderOnce } from "../appearanceUtils";

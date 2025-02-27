@@ -14,7 +14,7 @@ import {
   doughnuttedFilter,
   greyFilter,
   mainPaletteSwapFilter,
-} from "../filters/paletteSwapFilters";
+} from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
 import type { ItemInPlayType } from "../../../model/ItemInPlay";

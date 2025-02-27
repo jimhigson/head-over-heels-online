@@ -30,9 +30,11 @@ import {
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
-import { noFilters } from "../filters/paletteSwapFilters";
+import { noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
+import type { DeviceType } from "../../../utils/detectDeviceType";
+import { OnScreenControls } from "./OnScreenControls";
 
 const fpsUpdatePeriod = 250;
 
@@ -68,6 +70,12 @@ function showNumberInContainer(container: Container, n: number | string) {
 
 type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 
+export type TickOptions<RoomId extends string> = {
+  gameState: GameState<RoomId>;
+  screenSize: Xy;
+  colourise: boolean;
+};
+
 export class HudRenderer<RoomId extends string> {
   #container = new Container({ label: "HudRenderer" });
   #uncurrentSpriteFilter: RevertColouriseFilter = new RevertColouriseFilter();
@@ -75,6 +83,9 @@ export class HudRenderer<RoomId extends string> {
   #textFilter = new RevertColouriseFilter();
   #fpsColourFilter = new RevertColouriseFilter(spritesheetPalette.moss);
 
+  #controls: OnScreenControls<RoomId> | undefined = undefined;
+
+  /** a black outline so that the hud elements stand out when the room is rendered under them */
   #outlineFilter = new OutlineFilter(
     spritesheetPalette.pureBlack,
     store.getState().upscale.gameEngineUpscale,
@@ -167,7 +178,10 @@ export class HudRenderer<RoomId extends string> {
     fps: this.#makeText({ label: "fps", outline: true }),
   };
 
-  constructor(private gameState: GameState<RoomId>) {
+  constructor(
+    private gameState: GameState<RoomId>,
+    private deviceType: DeviceType,
+  ) {
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].sprite);
@@ -187,9 +201,13 @@ export class HudRenderer<RoomId extends string> {
       //this.#outlineFilter,
     ];
     this.#hudElements.fps.y = hudCharTextureSize.h;
-    this.#hudElements.fps.x = hudCharTextureSize.w * 2;
 
     this.#initInteractivity();
+
+    if (deviceType !== "desktop") {
+      this.#controls = new OnScreenControls(gameState);
+      this.#container.addChild(this.#controls.container);
+    }
   }
 
   #initInteractivity() {
@@ -296,6 +314,8 @@ export class HudRenderer<RoomId extends string> {
 
     this.#hudElements.heels.bag.container.y =
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
+
+    this.#hudElements.fps.x = screenSize.x - hudCharTextureSize.w * 2;
   }
 
   #createCarriedSprite(carrying: CarriedItem<string>) {
@@ -494,15 +514,9 @@ export class HudRenderer<RoomId extends string> {
     }
   }
 
-  tick({
-    gameState,
-    screenSize,
-    colourise,
-  }: {
-    gameState: GameState<RoomId>;
-    screenSize: Xy;
-    colourise: boolean;
-  }) {
+  tick(tickOptions: TickOptions<RoomId>) {
+    const { gameState, screenSize, colourise } = tickOptions;
+
     this.#updateColours(gameState, colourise);
 
     for (const character of individualCharacterNames) {
@@ -516,6 +530,8 @@ export class HudRenderer<RoomId extends string> {
     this.#tickBagAndCarrying(gameState, colourise);
 
     this.#updateFps();
+
+    this.#controls?.tick(tickOptions);
   }
 
   get container() {

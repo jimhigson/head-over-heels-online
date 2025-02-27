@@ -22,7 +22,7 @@ import { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import type { ItemRenderProps } from "./ItemRenderProps";
-import { noFilters } from "../filters/paletteSwapFilters";
+import { noFilters } from "../filters/standardFilters";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import {
   afterDeathInvulnerabilityFlashPeriod,

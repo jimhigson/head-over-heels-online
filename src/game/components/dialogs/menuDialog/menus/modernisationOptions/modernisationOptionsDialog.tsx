@@ -121,7 +121,7 @@ export const ModernisationOptionsDialog = () => {
                 toggleBoolean,
                 "userSettings.showFps",
               )}
-              hint={`show frame rate (frames per second) in the top-left corner`}
+              hint={`show frame rate (frames per second) in the top-right corner`}
             />
             <MenuItem
               doubleHeightWhenFocussed

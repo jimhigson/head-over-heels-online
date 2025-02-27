@@ -1,4 +1,5 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { Color } from "pixi.js";
 import { type Filter } from "pixi.js";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
 import { PaletteSwapFilter } from "./PaletteSwapFilter";
@@ -40,6 +41,15 @@ export const doughnuttedFilter = new PaletteSwapFilter({
   replaceDark: spritesheetPalette.midRed,
   replaceLight: spritesheetPalette.lightBeige,
 });
+
+const halfBrite = (c: Color) => {
+  const [r, g, b] = c.toUint8RgbArray();
+  const hb = new Color({ r: r / 2, g: g / 2, b: b / 2 });
+  return hb;
+};
+
+export const replaceWithHalfbriteFilter = (c: Color) =>
+  new PaletteSwapFilter({ replaceLight: c, replaceDark: halfBrite(c) });
 
 export const edgePaletteSwapFilters = (
   room: UnknownRoomState,

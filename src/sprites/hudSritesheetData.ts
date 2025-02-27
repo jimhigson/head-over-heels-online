@@ -82,8 +82,9 @@ const punctuation = [
   "⁌",
   "⁍",
   // currently unused
-  //"EnterFullscreen",
-  //"ExitFullscreen",
+  "EnterFullscreen",
+  "ExitFullscreen",
+  "Menu",
 ] as const;
 
 export type CharSpriteTextureId<C extends string> =
