@@ -11,7 +11,10 @@ import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import { store } from "../../store/store";
-import type { DisplaySettings } from "../../store/gameMenusSlice";
+import {
+  defaultUserSettings,
+  type DisplaySettings,
+} from "../../store/gameMenusSlice";
 import type { Upscale } from "./calculateUpscale";
 import type { RenderContext, Renderer } from "./Renderer";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
@@ -75,9 +78,17 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
 
     this.#container.label = `RoomRenderer(${roomState.id})`;
 
-    this.initFilters(!paused && displaySettings.colourise, roomState.color);
+    const colourise =
+      displaySettings?.colourise ??
+      defaultUserSettings.displaySettings.colourise;
 
-    if (displaySettings.showBoundingBoxes !== "none") {
+    this.initFilters(!paused && colourise, roomState.color);
+
+    const showBoundingBoxes =
+      displaySettings?.showBoundingBoxes ??
+      defaultUserSettings.displaySettings.showBoundingBoxes;
+
+    if (showBoundingBoxes !== "none") {
       // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
       // any more switches:
       this.#container.addChild(showRoomScrollBounds(roomState.roomJson));

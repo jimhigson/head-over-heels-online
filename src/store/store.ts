@@ -15,7 +15,6 @@ import {
   persistStore,
   createMigrate,
 } from "redux-persist";
-import { pick } from "../utils/pick";
 
 /**
  * A non-migration migration - just throws the user's config away and reverts to
@@ -24,12 +23,12 @@ import { pick } from "../utils/pick";
 const revertToOriginalStateMigration = (
   state: PersistedState,
 ): PersistedState => {
-  const migrateTo = pick(initialGameMenuSliceState, "userSettings");
+  const migrateTo = initialGameMenuSliceState.userSettings;
 
   console.log(
     "migrating state: persisted is:",
     state,
-    "am reverting to initial (partial) state:",
+    "am reverting to initial/default state:",
     migrateTo,
   );
 
@@ -42,7 +41,7 @@ const revertToOriginalStateMigration = (
 
 const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 8,
+  version: 10,
   migrate: createMigrate(
     {
       1: revertToOriginalStateMigration,
@@ -53,6 +52,8 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
       6: revertToOriginalStateMigration,
       7: revertToOriginalStateMigration,
       8: revertToOriginalStateMigration,
+      9: revertToOriginalStateMigration,
+      10: revertToOriginalStateMigration,
     },
     { debug: true },
   ),

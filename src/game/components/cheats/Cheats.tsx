@@ -33,11 +33,15 @@ import {
   setShowBoundingBoxes,
   setShowShadowMasks,
 } from "../../../store/gameMenusSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useAppDispatch } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
 import { Switch } from "../../../ui/Switch";
+import {
+  useShowBoundingBoxes,
+  useShowShadowMasks,
+} from "../../../store/selectors";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -185,9 +189,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   useDebugClickOnItem();
 
-  const { showBoundingBoxes, showShadowMasks } = useAppSelector(
-    (state) => state.userSettings.displaySettings,
-  );
+  const showBoundingBoxes = useShowBoundingBoxes();
+  const showShadowMasks = useShowShadowMasks();
   const dispatch = useAppDispatch();
 
   useLevelSelectByUrlHash(gameApi);

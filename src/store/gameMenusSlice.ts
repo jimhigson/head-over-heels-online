@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
+import type { RequiredDeep, ValueOf } from "type-fest";
 import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
 import type {
   ActionInputAssignment,
@@ -12,12 +12,14 @@ import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
 import { calculateUpscale } from "../game/render/calculateUpscale";
-import { zxSpectrumResolution } from "../originalGame";
-import { directionsXy4, type Xy } from "../utils/vectors/vectors";
+import type { ResolutionName } from "../originalGame";
+import { resolutions } from "../originalGame";
+import { directionsXy4 } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath, setAtPath } from "../utils/getAtPath";
+import { detectDeviceType } from "../utils/detectDeviceType";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -31,24 +33,24 @@ export type OpenMenu = {
 };
 
 export type DisplaySettings = {
-  emulatedResolution: Xy;
-  crtFilter: boolean;
-  colourise: boolean;
-  showBoundingBoxes: ShowBoundingBoxes;
-  showShadowMasks: boolean;
+  emulatedResolution?: ResolutionName;
+  crtFilter?: boolean;
+  colourise?: boolean;
+  showBoundingBoxes?: ShowBoundingBoxes;
+  showShadowMasks?: boolean;
 };
 
 export type UserSettings = {
-  inputAssignment: InputAssignment;
+  inputAssignment?: InputAssignment;
   displaySettings: DisplaySettings;
-  infiniteLivesPoke: boolean;
+  infiniteLivesPoke?: boolean;
   // optional because was introduced without a version bump in persist. Select with !!
-  showFps: boolean;
-  analogueControl: boolean;
-  screenRelativeControl: boolean;
+  showFps?: boolean;
+  analogueControl?: boolean;
+  screenRelativeControl?: boolean;
 };
 
-const inBrowser = typeof globalThis.window !== "undefined";
+const inBrowser = detectDeviceType() !== "server";
 const cheatsOn =
   inBrowser ?
     // in a browser
@@ -77,6 +79,8 @@ export type GameMenusState = {
       }
     | undefined;
 
+  /* all user settings are optional - if not stated in the store, the selector's
+    job is to use a default instead */
   userSettings: UserSettings;
   upscale: Upscale;
 
@@ -103,32 +107,35 @@ const noPlanetsLiberated = {
   safari: false,
 };
 
+export const defaultUserSettings: RequiredDeep<UserSettings> = {
+  inputAssignment: keyAssignmentPresets.default.inputAssignment,
+  infiniteLivesPoke: false,
+
+  displaySettings: {
+    showBoundingBoxes: "none",
+    showShadowMasks: false,
+    crtFilter: false,
+    colourise: true,
+    emulatedResolution:
+      detectDeviceType() === "mobile" ? "gameBoy" : "amigaHiResPal",
+  },
+
+  showFps: false,
+  analogueControl: true,
+  screenRelativeControl: false,
+};
+
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
-    inputAssignment: keyAssignmentPresets.default.inputAssignment,
-    infiniteLivesPoke: false,
-
-    displaySettings: {
-      showBoundingBoxes: "none",
-      showShadowMasks: false,
-      crtFilter: false,
-      colourise: true,
-      emulatedResolution: zxSpectrumResolution,
-      /*detectDeviceType() === "mobile" ? smallerResolution : (
-          zxSpectrumResolution
-        ),*/
-    },
-
-    showFps: false,
-    analogueControl: true,
-    screenRelativeControl: false,
+    displaySettings: {},
   },
   upscale: calculateUpscale(
     inBrowser ?
       { x: globalThis.window.innerWidth, y: globalThis.window.innerHeight }
       // use zx spectrum resolution as a default for node (running tests under vitest)
-    : zxSpectrumResolution,
-    zxSpectrumResolution,
+    : resolutions.zxSpectrum,
+    // use the default for initial upscale:
+    defaultUserSettings.displaySettings.emulatedResolution,
     1,
   ),
 
@@ -166,7 +173,7 @@ export const gameMenusSlice = createSlice({
     },
     setEmulatedResolution(
       state,
-      { payload: emulatedResolution }: PayloadAction<Xy>,
+      { payload: emulatedResolution }: PayloadAction<ResolutionName>,
     ) {
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
@@ -228,15 +235,23 @@ export const gameMenusSlice = createSlice({
         actionInput.gamepadButtons.length +
         axes.length;
 
+      const inputAssignment =
+        state.userSettings.inputAssignment === undefined ?
+          // user didn't previously have any keys set - copy the defaults in
+          (state.userSettings.inputAssignment = structuredClone(
+            keyAssignmentPresets.default.inputAssignment,
+          ))
+        : state.userSettings.inputAssignment;
+
       if (totalInputs > 0) {
         // the user inputted something - use the boolean actions:
-        state.userSettings.inputAssignment.presses[action] = actionInput;
+        inputAssignment.presses[action] = actionInput;
         // copy axes if we're assigning something that can use them
         if (action === "left" || action === "right") {
-          state.userSettings.inputAssignment.axes.x = axes;
+          inputAssignment.axes.x = axes;
         }
         if (action === "towards" || action === "away") {
-          state.userSettings.inputAssignment.axes.y = axes;
+          inputAssignment.axes.y = axes;
         }
       }
       state.assigningInput = undefined;

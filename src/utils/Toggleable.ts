@@ -6,7 +6,7 @@ type StringObject = object;
 
 // properties, at any depth in the slice state:
 type PathsOfBooleansNodesOrObjectsWithBooleans<T extends StringObject> = Paths<
-  ConditionalPickDeep<T, boolean>
+  ConditionalPickDeep<T, boolean | undefined>
 > &
   string;
 type PathsSplit<T extends StringObject> = Split<
@@ -18,5 +18,5 @@ type PathsSplitWithMultipleNodes<T extends StringObject> = PathsSplit<T> &
 export type ToggleablePaths<
   T extends StringObject,
   TAllPaths = PathsOfBooleansNodesOrObjectsWithBooleans<T>,
-  TExcluePaths = PathsSplitWithMultipleNodes<T>[0],
-> = Exclude<TAllPaths, TExcluePaths>;
+  TExcludePaths = PathsSplitWithMultipleNodes<T>[0],
+> = Exclude<TAllPaths, TExcludePaths>;

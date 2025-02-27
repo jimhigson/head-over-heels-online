@@ -1,3 +1,4 @@
+import { resolutions, type ResolutionName } from "../../originalGame";
 import type { Xy } from "../../utils/vectors/vectors";
 import { scaleXy } from "../../utils/vectors/vectors";
 
@@ -22,15 +23,17 @@ export const maximumCanvasUpscale = 4;
 export const calculateUpscale = (
   /** size of the dom element, window, etc we want to render into */
   renderAreaSize: Xy,
-  emulatedScreenSize: Xy,
+  emulatedResolutionName: ResolutionName,
   devicePixelRatio: number,
 ): Upscale => {
+  const emulatedResolution = resolutions[emulatedResolutionName];
+
   const devicePixels = scaleXy(renderAreaSize, devicePixelRatio);
 
   const scaleFactor = Math.floor(
     Math.min(
-      devicePixels.x / emulatedScreenSize.x,
-      devicePixels.y / emulatedScreenSize.y,
+      devicePixels.x / emulatedResolution.x,
+      devicePixels.y / emulatedResolution.y,
     ),
   );
   const gameEngineScreenSize = {

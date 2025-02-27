@@ -3,13 +3,10 @@ import { setUpscale } from "../gameMenusSlice";
 import { store } from "../store";
 import { useAppDispatch } from "../hooks";
 import { calculateUpscale } from "../../game/render/calculateUpscale";
+import { selectEmulatedResolutionName } from "../selectors";
 
 const updateSize = () => {
-  const {
-    userSettings: {
-      displaySettings: { emulatedResolution },
-    },
-  } = store.getState();
+  const emulatedResolution = selectEmulatedResolutionName(store.getState());
 
   const upscale = calculateUpscale(
     { x: window.innerWidth, y: window.innerHeight },

@@ -120,13 +120,7 @@ export const ControlOptionsDialog = () => {
               leader={
                 <span className={`${spriteLeaderClasses} texture-joystick`} />
               }
-              valueElement={
-                <Switch
-                  value={useAppSelector(
-                    (state) => state.userSettings.analogueControl,
-                  )}
-                />
-              }
+              valueElement={<Switch value={useIsAnalogueControl()} />}
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.analogueControl",

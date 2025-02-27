@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 import spritesheetPalette from "./gfx/spritesheetPalette.json";
-import { zxSpectrumColors, zxSpectrumResolution } from "./src/originalGame";
+import { zxSpectrumColors, resolutions } from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 
 import scrollbar from "tailwind-scrollbar";
@@ -110,7 +110,7 @@ export default {
     },
     width: {
       ...blockMultiples,
-      zx: `calc(var(--scale) * ${zxSpectrumResolution.x}px)`,
+      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.x}px)`,
       wideDialog: "calc(100dvw - 2 * var(--block))",
       min: "min-content",
       max: "max-content",
@@ -118,10 +118,10 @@ export default {
     },
     maxWidth: {
       // widest dialog is 50% wider than the zx screen:
-      widestDialog: `calc(var(--scale) * ${zxSpectrumResolution.x * 1.4}px)`,
+      widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,
     },
     height: {
-      zx: `calc(var(--scale) * ${zxSpectrumResolution.y}px)`,
+      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.y}px)`,
       tallDialog: "calc(100dvh - 2 * var(--block))",
       ...blockMultiples,
       min: "min-content",

@@ -6,6 +6,7 @@ import { MultipleBitmapText } from "../../Sprite";
 import { emptyArray } from "../../../../utils/empty";
 import type { BooleanAction } from "../../../input/actions";
 import { actionToAxis } from "../../../input/actionToAxis";
+import { selectInputAssignment } from "../../../../store/selectors";
 
 const specialCharClassName =
   "text-mossHalfbrite zx:text-zxGreen selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen";
@@ -118,7 +119,7 @@ export const CurrentKeyAssignments = ({
     state.assigningInput?.action === action ?
       // assigning input so show provisional:
       state.assigningInput?.presses
-    : state.userSettings.inputAssignment.presses[action],
+    : selectInputAssignment(state).presses[action],
   );
 
   const axisAssignments = useAppSelector((state) => {
@@ -129,7 +130,7 @@ export const CurrentKeyAssignments = ({
     if (state.assigningInput?.action === action) {
       return state.assigningInput.axes;
     } else {
-      return state.userSettings.inputAssignment.axes[axisForAction.axis];
+      return selectInputAssignment(state).axes[axisForAction.axis];
     }
   });
 

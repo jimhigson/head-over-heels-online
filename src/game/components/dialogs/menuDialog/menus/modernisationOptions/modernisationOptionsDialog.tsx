@@ -15,7 +15,10 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import {
+  selectIsCrtFilter,
+  selectIsInfiniteLivesPoke,
   selectShowFps,
+  useIsColourised,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
 import { Switch } from "../../../../../../ui/Switch";
@@ -58,13 +61,7 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="colourise"
               label="Colourise"
-              valueElement={
-                <Switch
-                  value={useAppSelector(
-                    (state) => state.userSettings.displaySettings.colourise,
-                  )}
-                />
-              }
+              valueElement={<Switch value={useIsColourised()} />}
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.displaySettings.colourise",
@@ -87,11 +84,7 @@ export const ModernisationOptionsDialog = () => {
                 />
               }
               valueElement={
-                <Switch
-                  value={useAppSelector(
-                    (state) => state.userSettings.infiniteLivesPoke,
-                  )}
-                />
+                <Switch value={useAppSelector(selectIsInfiniteLivesPoke)} />
               }
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
@@ -128,11 +121,7 @@ export const ModernisationOptionsDialog = () => {
               id="crtFilter"
               label="CRT TV effect"
               valueElement={
-                <Switch
-                  value={useAppSelector(
-                    (state) => state.userSettings.displaySettings.crtFilter,
-                  )}
-                />
+                <Switch value={useAppSelector(selectIsCrtFilter)} />
               }
               onSelect={useDispatchActionCallback(
                 toggleBoolean,

@@ -6,17 +6,15 @@ import { CssVariables } from "./CssVariables.tsx";
 import { GamePage } from "../../pages/GamePage.tsx";
 import { store } from "../../store/store.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
-import { useAppSelector } from "../../store/hooks.ts";
 import { useEffect } from "react";
+import { useIsColourised } from "../../store/selectors.ts";
 
 const AppInner = () => {
-  const revertColours = useAppSelector(
-    (state) => !state.userSettings.displaySettings.colourise,
-  );
+  const colourised = useIsColourised();
   useEffect(() => {
-    document.body.classList.toggle("zx", revertColours);
-    document.body.classList.toggle("colourised", !revertColours);
-  }, [revertColours]);
+    document.body.classList.toggle("zx", !colourised);
+    document.body.classList.toggle("colourised", colourised);
+  }, [colourised]);
 
   return (
     <CssVariables>

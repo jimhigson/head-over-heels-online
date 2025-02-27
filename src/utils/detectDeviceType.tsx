@@ -1,12 +1,16 @@
-export type DeviceType = "mobile" | "tablet" | "desktop";
-
-const deviceTypeOverride = (new URLSearchParams(window.location.search).get(
-  "device",
-) ?? undefined) as DeviceType | undefined;
+export type DeviceType = "mobile" | "tablet" | "desktop" | "server";
 
 export const detectDeviceType = (): DeviceType => {
-  if (deviceTypeOverride !== undefined) {
-    return deviceTypeOverride;
+  if (typeof globalThis.window === "undefined") {
+    return "desktop"; // probably running some tests
+  }
+
+  const deviceTypeOverride = new URLSearchParams(window.location.search).get(
+    "device",
+  );
+
+  if (deviceTypeOverride !== null) {
+    return deviceTypeOverride as DeviceType;
   }
 
   const ua = navigator.userAgent;

@@ -10,7 +10,10 @@ import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
 import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import { selectIsPaused } from "../../store/selectors";
-import type { DisplaySettings } from "../../store/gameMenusSlice";
+import {
+  defaultUserSettings,
+  type DisplaySettings,
+} from "../../store/gameMenusSlice";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const topLevelFilters = (
@@ -105,7 +108,10 @@ export class MainLoop<RoomId extends string> {
     this.#hudRenderer.tick({
       gameState: this.#gameState,
       screenSize: tickUpscale.gameEngineScreenSize,
-      colourise: !isPaused && tickDisplaySettings.colourise,
+      colourise:
+        !isPaused &&
+        (tickDisplaySettings?.colourise ??
+          defaultUserSettings.displaySettings.colourise),
     });
 
     // note that progressing the game state can change/reload the room,
