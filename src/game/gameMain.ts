@@ -29,6 +29,14 @@ export const gameMain = async <RoomId extends string>(
     background: "#000000",
     // run on the shared ticker to keep in sync with the input state tracker
     sharedTicker: true,
+    // https://pixijs.com/8.x/guides/components/interaction
+    eventFeatures: {
+      move: true,
+      /** disables the global move events which can be very expensive in large scenes */
+      globalMove: false,
+      click: true,
+      wheel: true,
+    },
   });
 
   const gameState = initGameState({
