@@ -67,7 +67,7 @@ export const MarkdownDialog = ({
         className="bg-midGrey zx:bg-zxWhiteDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack">
+      <Dialog className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack mobile:h-full">
         <div
           className={twMerge(
             "overflow-y-scroll h-full " +

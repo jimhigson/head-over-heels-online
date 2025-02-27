@@ -86,6 +86,10 @@ export class HudRenderer<RoomId extends string> {
     spritesheetPalette.pureBlack,
     store.getState().upscale.gameEngineUpscale,
   );
+  #uncurrentAndOutlinedFilter = [
+    this.#uncurrentSpriteFilter,
+    this.#outlineFilter,
+  ];
 
   /**
    * without colourisation, the active character gets the same colour as the lives text
@@ -494,13 +498,13 @@ export class HudRenderer<RoomId extends string> {
       colourise ?
         this.#characterIsActive(gameState, "head") ?
           this.#livesTextFilter.colourised.head
-        : this.#uncurrentSpriteFilter
+        : this.#uncurrentAndOutlinedFilter
       : this.#livesTextFilter.original;
     this.#hudElements.heels.livesText.filters =
       colourise ?
         this.#characterIsActive(gameState, "heels") ?
           this.#livesTextFilter.colourised.heels
-        : this.#uncurrentSpriteFilter
+        : this.#uncurrentAndOutlinedFilter
       : this.#livesTextFilter.original;
   }
 

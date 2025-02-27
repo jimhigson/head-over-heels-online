@@ -11,10 +11,19 @@ import type { TickOptions } from "./HudRenderer";
 import { objectValues } from "iter-tools";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { OnScreenJoystick } from "./OnScreenJoystick";
-import type { OnScreenButtonName } from "./OnScreenButton";
 import { OnScreenButton, buttonSpriteSize } from "./OnScreenButton";
+import type { Subset } from "../../../utils/subset";
+import type { BooleanAction } from "../../input/actions";
+import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { OutlineFilter } from "../filters/outlineFilter";
+import { store } from "../../../store/store";
 
 const mainButtonsSpreadPx = 14;
+export type OnScreenButtonName =
+  | Subset<BooleanAction, "jump" | "carry" | "fire">
+  | "menu"
+  | "carryAndJump";
 
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
@@ -29,7 +38,7 @@ export class OnScreenControls<RoomId extends string> {
     };
 
     const buttons = (this.#hudElements.buttons = {
-      menu_openOrExit: new OnScreenButton(
+      menu: new OnScreenButton(
         ["menu_openOrExit"],
         gameState.inputStateTracker,
         undefined,
@@ -56,11 +65,19 @@ export class OnScreenControls<RoomId extends string> {
     buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
     buttons.fire.container.x = mainButtonsSpreadPx * 2;
 
-    buttons.menu_openOrExit.container.x = 12;
-    buttons.menu_openOrExit.container.y = 12;
+    buttons.menu.container.x = 24;
+    buttons.menu.container.y = 24;
+    buttons.menu.container.scale = 2;
+    buttons.menu.container.filters = [
+      new RevertColouriseFilter(spritesheetPalette.lightGrey),
+      new OutlineFilter(
+        spritesheetPalette.pureBlack,
+        store.getState().upscale.gameEngineUpscale,
+      ),
+    ];
 
     this.#container.addChild(mainButtonNest);
-    this.#container.addChild(buttons.menu_openOrExit.container);
+    this.#container.addChild(buttons.menu.container);
     this.#container.addChild(joystick.container);
 
     this.#initInteractivity();

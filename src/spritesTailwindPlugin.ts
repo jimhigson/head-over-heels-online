@@ -141,6 +141,12 @@ export const spritesTailwindPlugin = plugin(
     // add a variant for zx-spectrum-colour palette
     // this can be done differently in tw4: https://tailwindcss.com/docs/adding-custom-styles#adding-custom-variants
     addVariant("zx", ".zx &");
+
+    // for different screen size things:
+    addVariant("mobile", ".mobile &");
+    addVariant("desktop", ".desktop &");
+    addVariant("tablet", ".tablet &");
+
     addVariant("colourised", ".colourised &");
     // for changing the colour of selected menu items:
     addVariant("selectedMenuItem", [

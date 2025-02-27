@@ -328,7 +328,6 @@ export class InputStateTracker {
       recentlyReleasedPress ?? originXyz,
       ...pressVs,
       ...axisVectors(currentFrameInput),
-      this.hudInputState.directionVector,
     );
   }
 
@@ -341,16 +340,20 @@ export class InputStateTracker {
     const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
     const v = snapToCardinal(
-      maybeRotate(
-        analogueControl ?
-          this.#tickUpdatedDirectionAnalogueOrXy8()
-        : this.#tickUpdatedDirectionXy4(),
+      addXyz(
+        maybeRotate(
+          analogueControl ?
+            this.#tickUpdatedDirectionAnalogueOrXy8()
+          : this.#tickUpdatedDirectionXy4(),
+        ),
+        // hudinput is never rotated
+        this.hudInputState.directionVector,
       ),
       snapAngleRadians,
     );
 
+    // ensure length is not > 1
     const vl = lengthXy(v);
-
     this.#directionVector = {
       ...(vl > 1 ? scaleXy(v, 1 / vl) : v),
       z: 0,

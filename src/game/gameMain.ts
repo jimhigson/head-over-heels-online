@@ -32,10 +32,9 @@ export const gameMain = async <RoomId extends string>(
     // https://pixijs.com/8.x/guides/components/interaction
     eventFeatures: {
       move: true,
-      /** disables the global move events which can be very expensive in large scenes */
-      globalMove: false,
+      globalMove: true,
       click: true,
-      wheel: true,
+      wheel: false,
     },
   });
 

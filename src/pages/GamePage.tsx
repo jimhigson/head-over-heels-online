@@ -115,6 +115,11 @@ export const GamePage = () => {
     if (gameDiv === null || gameApi === undefined) return;
 
     gameApi.renderIn(gameDiv);
+
+    // disable the ios magnifier/text select thing on double-tap (withing the game only)
+    gameDiv.addEventListener("touchstart", (e) => e.preventDefault(), {
+      passive: false,
+    });
   }, [gameApi, gameDiv]);
 
   useEffect(() => {
