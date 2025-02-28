@@ -157,10 +157,12 @@ const applyFilters = (
   if (highlighted && !currentlyHighlighted) {
     addFilterToContainer(
       container,
-      new OutlineFilter(
-        highlightColours[name],
-        store.getState().upscale.gameEngineUpscale,
-      ),
+      new OutlineFilter({
+        outlineColor: highlightColours[name],
+        upscale: store.getState().upscale.gameEngineUpscale,
+        // player can move between pixels:
+        lowRes: false,
+      }),
     );
   } else if (!highlighted && currentlyHighlighted) {
     removeFilterFromContainer(container, OutlineFilter);

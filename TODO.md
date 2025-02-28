@@ -55,6 +55,9 @@
 
 [ ] hold a button to lock to axes
 
+[ ] add lowres setting (like outline filter) to all filters and use when appropriate - ie anything that
+    doesn't need between-pixel rendering
+
 [x] input buffering on start to move
 
 [x] consolidation

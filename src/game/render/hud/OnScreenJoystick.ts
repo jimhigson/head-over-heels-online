@@ -7,12 +7,19 @@ import { store } from "../../../store/store";
 import { selectTotalUpscale } from "../../../store/selectors";
 import { objectValues } from "iter-tools";
 import {
+  lengthXyz,
   originXyz,
   scaleXyz,
+  vectorClosestDirectionXy8,
   type DirectionXy8,
 } from "../../../utils/vectors/vectors";
-import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import {
+  analogueDeadzone,
+  type InputStateTrackerInterface,
+} from "../../input/InputStateTracker";
 import { rotateInputVector45 } from "../../input/analogueControlAdjustments";
+import { hudOutlineFilter } from "./hudOutlineFilter";
+import { entries } from "../../../utils/entries";
 
 const joystickArrowOffset = 13;
 const sensitivity = 2;
@@ -20,9 +27,14 @@ const sensitivity = 2;
 export class OnScreenJoystick {
   container = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
-  static #unpressedArrowFilter = new RevertColouriseFilter(
-    spritesheetPalette.midGrey,
-  );
+  static #unpressedArrowFilter = [
+    new RevertColouriseFilter(spritesheetPalette.metallicBlue),
+    hudOutlineFilter,
+  ];
+  static #pressedArrowFilter = [
+    new RevertColouriseFilter(spritesheetPalette.highlightBeige),
+    hudOutlineFilter,
+  ];
 
   arrowSprites: Record<DirectionXy8, Container> = {
     away: createSprite({
@@ -91,21 +103,21 @@ export class OnScreenJoystick {
 
     this.container.on("pointerenter", (e) => {
       // allows tapping without movement:
-      this.trackMovement(e);
-      this.container.on("globalpointermove", this.trackMovement);
+      this.handlePointer(e);
+      this.container.on("globalpointermove", this.handlePointer);
 
       this.container.on("pointerup", () => {
-        this.container.off("globalpointermove", this.trackMovement);
+        this.container.off("globalpointermove", this.handlePointer);
         inputStateTracker.hudInputState.directionVector = originXyz;
       });
       this.container.on("pointerupoutside", () => {
-        this.container.off("globalpointermove", this.trackMovement);
+        this.container.off("globalpointermove", this.handlePointer);
         inputStateTracker.hudInputState.directionVector = originXyz;
       });
     });
   }
 
-  trackMovement = (e: FederatedPointerEvent) => {
+  handlePointer = (e: FederatedPointerEvent) => {
     const scale = selectTotalUpscale(store.getState());
 
     const { x: containerX, y: containerY } = this.container;
@@ -124,4 +136,20 @@ export class OnScreenJoystick {
 
     this.inputStateTracker.hudInputState.directionVector = directionVector;
   };
+
+  tick() {
+    const { directionVector } = this.inputStateTracker;
+
+    const highlightDirectionXy8 =
+      lengthXyz(directionVector) > analogueDeadzone ?
+        vectorClosestDirectionXy8(directionVector)
+      : undefined;
+
+    for (const [directionXy8, sprite] of entries(this.arrowSprites)) {
+      sprite.filters =
+        directionXy8 === highlightDirectionXy8 ?
+          OnScreenJoystick.#pressedArrowFilter
+        : OnScreenJoystick.#unpressedArrowFilter;
+    }
+  }
 }

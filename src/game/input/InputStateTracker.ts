@@ -32,7 +32,7 @@ import {
   selectScreenRelativeControl,
 } from "../../store/selectors";
 
-const analogueDeadzone = 0.2;
+export const analogueDeadzone = 0.2;
 const snapAngleRadians = 13 * (Math.PI / 180);
 
 /* how long to keep buffered input for - this is essentially a sensitivity setting

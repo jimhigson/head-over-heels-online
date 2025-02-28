@@ -3,11 +3,21 @@ import { Filter, GlProgram } from "pixi.js";
 import { vertex } from "./defaults";
 import fragment from "./outline.frag?raw";
 
-export class OutlineFilter extends Filter {
+export type OutlineFilterOptions = {
+  outlineColor: Color;
   /**
-   * @param options - Options for the OutlineFilter constructor.
+   * the width of the outline - since the outline is always 1px, it need to (in practice)
+   * be bigger when we are upscaled
    */
-  constructor(outlineColor: Color, upscale: number) {
+  upscale: number;
+  /**
+   * if given true, the resolution of the filter will be dropped to the inverse of the upscale.
+   * This only works if the thing being rendered is strictly on the pixel grid.
+   */
+  lowRes: boolean;
+};
+export class OutlineFilter extends Filter {
+  constructor({ outlineColor, upscale, lowRes }: OutlineFilterOptions) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
@@ -45,7 +55,10 @@ export class OutlineFilter extends Filter {
 
     // this means easier rendering, in actual unscaled sprite space, but
     // also that the sprite can't smoothly transition by being rendered 'between' pixels
-    //this.resolution = 1 / upscale;
-    //this.padding = 1;
+    if (lowRes) {
+      this.resolution = 1 / upscale;
+      this.padding = upscale;
+      uniforms.uOutlineWidth[0] = 1;
+    }
   }
 }

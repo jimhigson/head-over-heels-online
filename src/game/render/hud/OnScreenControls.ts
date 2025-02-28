@@ -16,8 +16,7 @@ import type { Subset } from "../../../utils/subset";
 import type { BooleanAction } from "../../input/actions";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { OutlineFilter } from "../filters/outlineFilter";
-import { store } from "../../../store/store";
+import { hudOutlineFilter } from "./hudOutlineFilter";
 
 const mainButtonsSpreadPx = 14;
 export type OnScreenButtonName =
@@ -70,10 +69,7 @@ export class OnScreenControls<RoomId extends string> {
     buttons.menu.container.scale = 2;
     buttons.menu.container.filters = [
       new RevertColouriseFilter(spritesheetPalette.lightGrey),
-      new OutlineFilter(
-        spritesheetPalette.pureBlack,
-        store.getState().upscale.gameEngineUpscale,
-      ),
+      hudOutlineFilter,
     ];
 
     this.#container.addChild(mainButtonNest);
@@ -134,6 +130,7 @@ export class OnScreenControls<RoomId extends string> {
       b.update(colourise);
     }
     this.#updateShowAndHide();
+    this.#hudElements.joystick.tick();
   }
 
   get container() {

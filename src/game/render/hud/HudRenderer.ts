@@ -38,21 +38,25 @@ import { showNumberInContainer } from "./showNumberInContainer";
 const fpsUpdatePeriod = 250;
 
 const livesTextFromCentre: Record<DeviceType, number> = {
+  server: 24,
   desktop: 24,
   tablet: 24,
   mobile: 16,
 };
 const playableIconFromCentre: Record<DeviceType, number> = {
+  server: 56,
   desktop: 56,
   tablet: 56,
   mobile: 38,
 };
 const smallIconsFromCentre: Record<DeviceType, number> = {
+  server: 80,
   desktop: 80,
   tablet: 80,
   mobile: 60,
 };
 const extraSkillFromBottom: Record<DeviceType, number> = {
+  server: 24,
   desktop: 24,
   tablet: 16,
   mobile: 18,
@@ -82,10 +86,11 @@ export class HudRenderer<RoomId extends string> {
   #controls: OnScreenControls<RoomId> | undefined = undefined;
 
   /** a black outline so that the hud elements stand out when the room is rendered under them */
-  #outlineFilter = new OutlineFilter(
-    spritesheetPalette.pureBlack,
-    store.getState().upscale.gameEngineUpscale,
-  );
+  #outlineFilter = new OutlineFilter({
+    outlineColor: spritesheetPalette.pureBlack,
+    upscale: store.getState().upscale.gameEngineUpscale,
+    lowRes: true,
+  });
   #uncurrentAndOutlinedFilter = [
     this.#uncurrentSpriteFilter,
     this.#outlineFilter,

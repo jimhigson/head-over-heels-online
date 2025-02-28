@@ -98,12 +98,12 @@ export const useIsAnalogueControl = (): boolean =>
 export const selectPlanetsLiberatedCount = (state: RootState) =>
   size(iterate(objectValues(state.planetsLiberated)).filter(Boolean));
 
+export const selectShowBoundingBoxes = (state: RootState): ShowBoundingBoxes =>
+  state.userSettings.displaySettings.showBoundingBoxes ??
+  defaultUserSettings.displaySettings.showBoundingBoxes;
+
 export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
-  return useAppSelector(
-    (state: RootState) =>
-      state.userSettings.displaySettings.showBoundingBoxes ??
-      defaultUserSettings.displaySettings.showBoundingBoxes,
-  );
+  return useAppSelector(selectShowBoundingBoxes);
 };
 
 export const useShowShadowMasks = (): boolean => {
