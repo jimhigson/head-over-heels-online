@@ -2,7 +2,7 @@ export type DeviceType = "mobile" | "tablet" | "desktop" | "server";
 
 export const detectDeviceType = (): DeviceType => {
   if (typeof globalThis.window === "undefined") {
-    return "desktop"; // probably running some tests
+    return "server"; // probably running some tests
   }
 
   const deviceTypeOverride = new URLSearchParams(window.location.search).get(
