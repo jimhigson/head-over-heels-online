@@ -18,8 +18,15 @@ import {
   type InputStateTrackerInterface,
 } from "../../input/InputStateTracker";
 import { rotateInputVector45 } from "../../input/analogueControlAdjustments";
-import { hudOutlineFilter } from "./hudOutlineFilter";
+import {
+  hudHighlightAndOutlineFilters,
+  hudLowlightAndOutlineFilters,
+  hudLowlightedFilter,
+  hudOutlineFilter,
+} from "./hudFilters";
 import { entries } from "../../../utils/entries";
+import type { OutlineFilter } from "../filters/outlineFilter";
+import { noFilters } from "../filters/standardFilters";
 
 const joystickArrowOffset = 13;
 const sensitivity = 2;
@@ -30,11 +37,11 @@ export class OnScreenJoystick {
   static #unpressedArrowFilter = [
     new RevertColouriseFilter(spritesheetPalette.metallicBlue),
     hudOutlineFilter,
-  ];
+  ] as [RevertColouriseFilter, OutlineFilter];
   static #pressedArrowFilter = [
     new RevertColouriseFilter(spritesheetPalette.highlightBeige),
     hudOutlineFilter,
-  ];
+  ] as [RevertColouriseFilter, OutlineFilter];
 
   arrowSprites: Record<DirectionXy8, Container> = {
     away: createSprite({
@@ -91,10 +98,14 @@ export class OnScreenJoystick {
     }),
   };
 
+  #joystickSprite = createSprite({
+    textureId: "joystick",
+    anchor: { x: 0.5, y: 0.5 },
+    y: 1,
+  });
+
   constructor(private inputStateTracker: InputStateTrackerInterface) {
-    this.container.addChild(
-      createSprite({ textureId: "joystick", anchor: { x: 0.5, y: 0.5 }, y: 1 }),
-    );
+    this.container.addChild(this.#joystickSprite);
 
     this.container.addChild(new Graphics().circle(0, 0, 24).fill("#00000000"));
     for (const arrowSprite of objectValues(this.arrowSprites)) {
@@ -137,7 +148,7 @@ export class OnScreenJoystick {
     this.inputStateTracker.hudInputState.directionVector = directionVector;
   };
 
-  tick() {
+  tick(colourise: boolean) {
     const { directionVector } = this.inputStateTracker;
 
     const highlightDirectionXy8 =
@@ -148,8 +159,12 @@ export class OnScreenJoystick {
     for (const [directionXy8, sprite] of entries(this.arrowSprites)) {
       sprite.filters =
         directionXy8 === highlightDirectionXy8 ?
-          OnScreenJoystick.#pressedArrowFilter
-        : OnScreenJoystick.#unpressedArrowFilter;
+          colourise ? OnScreenJoystick.#pressedArrowFilter
+          : hudHighlightAndOutlineFilters
+        : colourise ? OnScreenJoystick.#unpressedArrowFilter
+        : hudLowlightAndOutlineFilters;
     }
+
+    this.#joystickSprite.filters = colourise ? noFilters : hudLowlightedFilter;
   }
 }

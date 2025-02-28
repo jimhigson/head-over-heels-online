@@ -46,6 +46,9 @@
 
 ### Details and bugs
 
+[ ] destroy and recreate hud renderer when display settings change (like room renderer is) - this way
+    it can not care about colourisation (or anything else) changing when it ticks
+
 [ ] include version number on main menu screen
 
 [ ] bug - need to refresh page after changing input preset
