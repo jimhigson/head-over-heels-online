@@ -110,8 +110,10 @@ export class MainLoop<RoomId extends string> {
       screenSize: tickUpscale.gameEngineScreenSize,
       colourise:
         !isPaused &&
-        (tickDisplaySettings?.colourise ??
-          defaultUserSettings.displaySettings.colourise),
+        !(
+          tickDisplaySettings?.uncolourised ??
+          defaultUserSettings.displaySettings.uncolourised
+        ),
     });
 
     // note that progressing the game state can change/reload the room,

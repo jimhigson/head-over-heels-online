@@ -65,8 +65,10 @@ export const useIsGameRunning = () =>
   useAppSelector((state: RootState): boolean => state.gameRunning);
 
 export const selectIsColourised = (state: RootState): boolean =>
-  state.userSettings.displaySettings.colourise ??
-  defaultUserSettings.displaySettings.colourise;
+  !(
+    state.userSettings.displaySettings.uncolourised ??
+    defaultUserSettings.displaySettings.uncolourised
+  );
 
 export const useIsColourised = () => useAppSelector(selectIsColourised);
 

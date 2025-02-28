@@ -35,7 +35,8 @@ export type OpenMenu = {
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
-  colourise?: boolean;
+  // all settings named after the opposite of the default - hence, uncolourised, not colourised
+  uncolourised?: false;
   showBoundingBoxes?: ShowBoundingBoxes;
   showShadowMasks?: boolean;
 };
@@ -115,7 +116,7 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
     showBoundingBoxes: "none",
     showShadowMasks: false,
     crtFilter: false,
-    colourise: true,
+    uncolourised: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "gameBoy" : "amigaHiResPal",
   },

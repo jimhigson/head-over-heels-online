@@ -64,7 +64,7 @@ export const ModernisationOptionsDialog = () => {
               valueElement={<Switch value={useIsColourised()} />}
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
-                "userSettings.displaySettings.colourise",
+                "userSettings.displaySettings.uncolourised",
               )}
               hint={
                 <BlockyMarkdown

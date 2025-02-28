@@ -78,9 +78,10 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
 
     this.#container.label = `RoomRenderer(${roomState.id})`;
 
-    const colourise =
-      displaySettings?.colourise ??
-      defaultUserSettings.displaySettings.colourise;
+    const colourise = !(
+      displaySettings?.uncolourised ??
+      defaultUserSettings.displaySettings.uncolourised
+    );
 
     this.initFilters(!paused && colourise, roomState.color);
 

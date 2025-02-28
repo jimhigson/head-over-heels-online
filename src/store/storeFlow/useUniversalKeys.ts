@@ -52,7 +52,7 @@ export const useUniversalKeys = () => {
     action: "toggleColourisation",
     handler: useDispatchActionCallback(
       toggleBoolean,
-      "userSettings.displaySettings.colourise",
+      "userSettings.displaySettings.uncolourised",
     ),
     disabled: assigningKeys,
   });

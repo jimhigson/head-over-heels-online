@@ -51,8 +51,10 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
 
     const colourise: boolean =
       !onHold &&
-      (displaySettings.colourise ??
-        defaultUserSettings.displaySettings.colourise);
+      !(
+        displaySettings.uncolourised ??
+        defaultUserSettings.displaySettings.uncolourised
+      );
     towardsEdgeContainer.filters = edgePaletteSwapFilters(
       room,
       "towards",
