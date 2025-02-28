@@ -23,8 +23,8 @@ export const resolutions = {
   // there was never really a gameboy port, but this is a small 3:4 ratio screen
   gameboy: { x: 160, y: 120 },
 };
-
 export type ResolutionName = keyof typeof resolutions;
+export const resolutionNames = Object.keys(resolutions) as ResolutionName[];
 
 export const zxSpectrumColors = {
   // zx-spectrum colours:

@@ -1,8 +1,14 @@
 import { BitmapText } from "../../../../Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
-export const MainMenuHeading = ({ noSubtitle }: { noSubtitle?: boolean }) => (
-  <div className="flex flex-col items-center">
+export const MainMenuHeading = ({
+  noSubtitle,
+  className,
+}: {
+  noSubtitle?: boolean;
+  className?: string;
+}) => (
+  <div className={`flex flex-col items-center ${className}`}>
     <div className="flex">
       <div className="flex flex-col resGameboy:flex-row resGameboy:gap-1 gap-y-oneScaledPix items-center me-1">
         <BitmapText className="sprites-double-height text-metallicBlue zx:text-zxYellow resGameboy:mt-1">

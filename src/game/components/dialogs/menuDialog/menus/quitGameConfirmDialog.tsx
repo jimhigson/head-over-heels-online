@@ -9,7 +9,6 @@ import { BlockyMarkdown } from "../../../BlockyMarkdown";
 import { BitmapText } from "../../../Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
-import { MenuItemSeparator } from "../MenuItemSeparator";
 import { SelectedItemHint } from "../SelectedItemHint";
 import { MainMenuHeading } from "./mainMenu/MainMenuHeading";
 import Portal from "@mutabazia/react-portal";
@@ -22,7 +21,7 @@ export const QuitGameConfirmDialog = () => {
         <Portal.Provider>
           <MainMenuHeading noSubtitle />
           <BitmapText
-            className="ml-3 sprites-double-height mt-2"
+            className="ml-3 sprites-double-height mt-2 resGameboy:mt-0"
             classnameCycle={[
               "text-redShadow zx:text-zxWhite",
               "text-midRed zx:text-zxYellow",
@@ -30,8 +29,7 @@ export const QuitGameConfirmDialog = () => {
           >
             Quit the game?
           </BitmapText>
-          <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow">
-            <MenuItemSeparator />
+          <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resGameboy:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resGameboy:!gap-y-1">
             <MenuItem
               doubleHeightWhenFocussed
               id="no"
@@ -52,7 +50,7 @@ export const QuitGameConfirmDialog = () => {
               }
             />
           </MenuItems>
-          <SelectedItemHint className="text-midGrey zx:text-zxWhite" />
+          <SelectedItemHint className="text-midGrey zx:text-zxWhite resGameboy:hidden" />
         </Portal.Provider>
       </Dialog>
     </DialogPortal>

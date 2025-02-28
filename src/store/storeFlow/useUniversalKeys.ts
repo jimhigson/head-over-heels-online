@@ -1,6 +1,7 @@
 import {
   holdPressed,
   menuOpenOrExitPressed,
+  setEmulatedResolution,
   toggleBoolean,
 } from "../gameMenusSlice";
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
@@ -53,6 +54,15 @@ export const useUniversalKeys = () => {
     handler: useDispatchActionCallback(
       toggleBoolean,
       "userSettings.displaySettings.uncolourised",
+    ),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
+    action: "cycleResolution",
+    handler: useDispatchActionCallback(
+      setEmulatedResolution,
+      /* undefined means cycle*/ undefined,
     ),
     disabled: assigningKeys,
   });

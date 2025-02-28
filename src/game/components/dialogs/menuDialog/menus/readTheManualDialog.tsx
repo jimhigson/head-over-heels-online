@@ -41,7 +41,7 @@ export const ReadTheManualDialog = () => {
         className="bg-midGrey zx:bg-zxCyan"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed !h-tallDialog mobile:!h-full max-h-[calc(var(--block)*40)]">
+      <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed !h-tallDialog mobile:!h-full max-h-[calc(var(--block)*40)] resGameboy:py-0">
         <div className="text-moss zx:text-zxBlack mx-auto">
           <span className="sprite texture-book.x zx:sprite-revert-to-white" />
           <BitmapText className="sprites-double-height mx-1">
@@ -55,7 +55,9 @@ export const ReadTheManualDialog = () => {
             "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
             "overflow-y-scroll scrollbar scrollbar-w-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed"
+            "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed " +
+            // more of a gap on touch devices, or the areas are hard to hit:
+            "mobile:!gap-y-1"
           }
         >
           {[

@@ -51,10 +51,10 @@ export const ScoreDialog = () => {
         className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
-        <MainMenuHeading noSubtitle />
+        <MainMenuHeading noSubtitle className="resGameboy:hidden" />
         <BitmapText
           classnameCycle={mainMenuCycle}
-          className="mt-2 resGameboy:mt-1 block text-center mx-auto sprites-double-height"
+          className="mt-2 resGameboy:mt-3 block text-center mx-auto sprites-double-height"
         >
           {scoreLabel}
         </BitmapText>

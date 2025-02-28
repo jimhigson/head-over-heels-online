@@ -16,7 +16,7 @@ import {
   calculateUpscaleForCurrentDevice,
 } from "../game/render/calculateUpscale";
 import type { ResolutionName } from "../originalGame";
-import { resolutions } from "../originalGame";
+import { resolutionNames, resolutions } from "../originalGame";
 import { directionsXy4 } from "../utils/vectors/vectors";
 import type { MarkdownPageName } from "../manual/pages";
 import type { PlanetName } from "../sprites/planets";
@@ -177,8 +177,20 @@ export const gameMenusSlice = createSlice({
     },
     setEmulatedResolution(
       state,
-      { payload: emulatedResolution }: PayloadAction<ResolutionName>,
+      { payload }: PayloadAction<ResolutionName | undefined>,
     ) {
+      let emulatedResolution;
+      if (payload === undefined) {
+        const currentResolution =
+          state.userSettings.displaySettings.emulatedResolution ??
+          defaultUserSettings.displaySettings.emulatedResolution;
+        const curIndex = resolutionNames.indexOf(currentResolution);
+        emulatedResolution =
+          resolutionNames[(curIndex + 1) % resolutionNames.length];
+      } else {
+        emulatedResolution = payload;
+      }
+
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
 
