@@ -95,7 +95,7 @@ export const ControlOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog max-w-widestDialog">
+      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog max-w-widestDialog resGameboy:!w-full resGameboy:!h-full">
         <div
           className={
             "overflow-y-scroll " +
