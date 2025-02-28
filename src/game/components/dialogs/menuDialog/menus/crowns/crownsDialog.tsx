@@ -11,7 +11,7 @@ export const CrownsDialog = () => {
     <DialogPortal>
       <Border className="bg-pureBlack zx:bg-zxBlack" />
       <Dialog
-        className="bg-pureBlack w-zx h-full block p-0"
+        className="bg-pureBlack w-zx resGameboy:w-full h-full block p-0"
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
         <FiveCrownsDisplay />

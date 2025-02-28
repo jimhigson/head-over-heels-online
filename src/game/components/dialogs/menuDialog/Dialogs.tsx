@@ -7,7 +7,7 @@ import type { MarkdownPageName } from "../../../../manual/pages";
 import { CrownsDialog } from "./menus/crowns/crownsDialog";
 import { MainMenuDialog } from "./menus/mainMenu/mainMenuDialog";
 import { QuitGameConfirmDialog } from "./menus/quitGameConfirmDialog";
-import { ScoreDialog } from "./menus/gameOver/gameOverDialog";
+import { ScoreDialog } from "./menus/score/ScoreDialog";
 import { HoldDialog } from "./menus/holdDialog";
 import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
 import { ControlOptionsDialog } from "./menus/controlOptions/ControlOptionsDialog";
@@ -15,6 +15,7 @@ import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../Sprite";
 import { InputPresetDialog } from "./menus/inputPreset/InputPresetDialog";
 import { ProclaimEmperorDialog } from "./menus/proclaimEmperor/proclaimEmperorDialog";
+import { EmulatedResolutionDialog } from "./menus/emulatedResolution/EmulatedResolutionDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -44,12 +45,14 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <ReadTheManualDialog />;
     case "crowns":
       return <CrownsDialog />;
-    case "gameOver":
+    case "score":
       return <ScoreDialog />;
     case "hold":
       return <HoldDialog />;
     case "modernisationOptions":
       return <ModernisationOptionsDialog />;
+    case "emulatedResolution":
+      return <EmulatedResolutionDialog />;
     case "controlOptions":
       return <ControlOptionsDialog />;
     case "inputPreset":

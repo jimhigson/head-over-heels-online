@@ -29,7 +29,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
 
   const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");
-  const showStats = useDispatchActionCallback(goToSubmenu, "gameOver");
+  const showStats = useDispatchActionCallback(goToSubmenu, "score");
 
   const showProgress = useCallback(() => {
     showCrowns();
@@ -39,7 +39,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
-      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2">
+      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resGameboy:gap-y-1">
         <MainMenuHeading noSubtitle={isGameRunning} />
         <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white">
           <MenuItem

@@ -116,6 +116,10 @@ export default {
       max: "max-content",
       full: "100%",
     },
+    top: blockMultiples,
+    left: blockMultiples,
+    right: blockMultiples,
+    bottom: blockMultiples,
     maxWidth: {
       // widest dialog is 50% wider than the zx screen:
       widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,

@@ -8,10 +8,15 @@ import { useAppSelector } from "../store/hooks.ts";
 import { ConnectInputToStore } from "../store/storeFlow/ConnectInputToStore.tsx";
 import { Dialogs } from "../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../game/input/InputStateProvider.tsx";
-import { useCheatsOn, useIsGameRunning } from "../store/selectors.ts";
+import {
+  useCheatsOn,
+  useEmulatedResolutionName,
+  useIsGameRunning,
+} from "../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 import { importOnce } from "../utils/importOnce.ts";
 import { detectDeviceType } from "../utils/detectDeviceType.tsx";
+import { resolutions } from "../originalGame.ts";
 
 const importCheats = importOnce(
   () => import("../game/components/cheats/Cheats.tsx"),
@@ -89,7 +94,12 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   return gameApi;
 };
 
+const resClassName = (str: string) =>
+  `res${str[0].toUpperCase()}${str.slice(1)}`;
+
 const usePageAsAnApp = () => {
+  const resolutionName = useEmulatedResolutionName();
+
   useEffect(() => {
     document.body.classList.add(
       "overscroll-none",
@@ -98,6 +108,12 @@ const usePageAsAnApp = () => {
       detectDeviceType(),
     );
   }, []);
+  useEffect(() => {
+    for (const res of Object.keys(resolutions)) {
+      document.body.classList.remove(resClassName(res));
+    }
+    document.body.classList.add(resClassName(resolutionName));
+  }, [resolutionName]);
 };
 
 /**

@@ -11,7 +11,10 @@ import type { BooleanAction } from "src/game/input/actions";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
-import { calculateUpscale } from "../game/render/calculateUpscale";
+import {
+  calculateUpscale,
+  calculateUpscaleForCurrentDevice,
+} from "../game/render/calculateUpscale";
 import type { ResolutionName } from "../originalGame";
 import { resolutions } from "../originalGame";
 import { directionsXy4 } from "../utils/vectors/vectors";
@@ -118,7 +121,7 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
     crtFilter: false,
     uncolourised: false,
     emulatedResolution:
-      detectDeviceType() === "mobile" ? "gameBoy" : "amigaHiResPal",
+      detectDeviceType() === "mobile" ? "gameboy" : "zxSpectrum",
   },
 
   showFps: false,
@@ -178,6 +181,10 @@ export const gameMenusSlice = createSlice({
     ) {
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
+
+      if (detectDeviceType() !== "server") {
+        state.upscale = calculateUpscaleForCurrentDevice(emulatedResolution);
+      }
     },
     scrollRead(
       state,
@@ -392,7 +399,7 @@ export const gameMenusSlice = createSlice({
     gameOver(state) {
       state.gameRunning = false;
       state.openMenus = [
-        { menuId: "gameOver", scrollableSelection: false },
+        { menuId: "score", scrollableSelection: false },
         { menuId: "mainMenu", scrollableSelection: true },
       ];
     },
@@ -419,14 +426,14 @@ export const {
   inputAddedDuringAssignment,
   keyAssignmentPresetChosen,
   menuOpenOrExitPressed,
+  roomExplored,
+  scrollRead,
   setEmulatedResolution,
   setFocussedMenuItemId,
   setShowBoundingBoxes,
   setShowShadowMasks,
   setUpscale,
-  scrollRead,
   toggleBoolean,
-  roomExplored,
 } = gameMenusSlice.actions;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;

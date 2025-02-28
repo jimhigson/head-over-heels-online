@@ -60,6 +60,8 @@ export const selectEmulatedResolutionName = (
     defaultUserSettings.displaySettings.emulatedResolution
   );
 };
+export const useEmulatedResolutionName = () =>
+  useAppSelector(selectEmulatedResolutionName);
 
 export const useIsGameRunning = () =>
   useAppSelector((state: RootState): boolean => state.gameRunning);

@@ -1,5 +1,6 @@
 import {
   backToParentMenu,
+  goToSubmenu,
   toggleBoolean,
 } from "../../../../../../store/gameMenusSlice";
 import { BitmapText } from "../../../../Sprite";
@@ -39,10 +40,6 @@ const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 
 **on**: *extra items* slightly modernisess the gameplay.
 none of these fundamentally change how the rooms play.`;
-
-const resolutionHintMarkdown = `*zx spectrum* (**256**x**192**)
-
-*Amiga*/*c64*/*Atari-ST* PAL (**320**x**256**)`;
 
 export const ModernisationOptionsDialog = () => {
   return (
@@ -133,14 +130,10 @@ export const ModernisationOptionsDialog = () => {
               doubleHeightWhenFocussed
               id="emulatedResolution"
               label="Emulated resolution"
-              valueElement={<BitmapText className="mr-1">specy</BitmapText>}
-              hint={
-                <BlockyMarkdown
-                  className={markdownClassname}
-                  markdown={resolutionHintMarkdown}
-                />
-              }
-              disabled={true}
+              onSelect={useDispatchActionCallback(
+                goToSubmenu,
+                "emulatedResolution",
+              )}
             />
             <MenuItemSeparator />
             <BackMenuItem />

@@ -39,7 +39,7 @@ export const TitledCrown = ({
   return (
     <div className={`flex flex-col ${className}`}>
       <span
-        className={`sprite block ${crownTextureClasses[planet]} ${collected ? `zx:sprite-revert-zxYellow` : "colourised:opacity-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
+        className={`sprite block ${crownTextureClasses[planet]} ${collected ? `zx:sprite-revert-zxYellow` : "colourised:brightness-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
       />
       <span
         className={`sprite block texture-ball zx:sprite-revert-zxYellow mx-auto ${collected ? `` : "colourised:brightness-halfBrite"} ${colourCycle[planet][0]}`}
