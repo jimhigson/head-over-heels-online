@@ -58,15 +58,22 @@ export const calculateUpscale = (
   };
 };
 
+const currentScreenSize = () => {
+  const deviceType = detectDeviceType();
+  return deviceType === "server" ?
+      resolutions.zxSpectrum
+      // see also: window.visualViewport
+      //: window.screen ? { x: window.screen.width, y: window.screen.height }
+    : { x: window.innerWidth, y: window.innerHeight };
+};
+
 export const calculateUpscaleForCurrentDevice = (
   emulatedResolution: ResolutionName,
 ) => {
   const deviceType = detectDeviceType();
 
   return calculateUpscale(
-    deviceType === "server" ?
-      resolutions.zxSpectrum
-    : { x: window.innerWidth, y: window.innerHeight },
+    currentScreenSize(),
     emulatedResolution,
     deviceType === "server" ? 1 : window.devicePixelRatio,
   );

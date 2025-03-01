@@ -5,7 +5,7 @@ import { useAppDispatch } from "../hooks";
 import { calculateUpscaleForCurrentDevice } from "../../game/render/calculateUpscale";
 import { selectEmulatedResolutionName } from "../selectors";
 
-const updateSize = () => {
+export const updateUpscaleNow = () => {
   store.dispatch(
     setUpscale(
       calculateUpscaleForCurrentDevice(
@@ -20,12 +20,12 @@ export const useUpdateUpscaleWhenWindowResizes = (): void => {
 
   useLayoutEffect(() => {
     // on first load, put the correct size in the store:
-    updateSize();
+    updateUpscaleNow();
   }, []);
 
   useLayoutEffect(() => {
     // on every resize, update the store with the correct size:
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    window.addEventListener("resize", updateUpscaleNow);
+    return () => window.removeEventListener("resize", updateUpscaleNow);
   }, [dispatch]);
 };
