@@ -104,6 +104,7 @@ export class OnScreenJoystick {
     y: 1,
   });
 
+  #curPointerId: number | undefined;
   constructor(private inputStateTracker: InputStateTrackerInterface) {
     this.container.addChild(this.#joystickSprite);
 
@@ -114,21 +115,26 @@ export class OnScreenJoystick {
 
     this.container.on("pointerenter", (e) => {
       // allows tapping without movement:
+      this.#curPointerId = e.pointerId;
       this.handlePointer(e);
       this.container.on("globalpointermove", this.handlePointer);
 
       this.container.on("pointerup", () => {
         this.container.off("globalpointermove", this.handlePointer);
+        this.#curPointerId = undefined;
         inputStateTracker.hudInputState.directionVector = originXyz;
       });
       this.container.on("pointerupoutside", () => {
         this.container.off("globalpointermove", this.handlePointer);
+        this.#curPointerId = undefined;
         inputStateTracker.hudInputState.directionVector = originXyz;
       });
     });
   }
 
   handlePointer = (e: FederatedPointerEvent) => {
+    if (e.pointerId !== this.#curPointerId) return;
+
     const scale = selectTotalUpscale(store.getState());
 
     const { x: containerX, y: containerY } = this.container;
