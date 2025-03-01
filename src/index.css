@@ -62,6 +62,8 @@
 @layer base {
   body {
     @apply bg-shadow text-white;
+    /* Prevent touch actions like scroll and pinch-to-zoom: */
+    touch-action: none;
   }
 
   *:focus {
