@@ -11,7 +11,11 @@ import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import type { SetRequired } from "type-fest";
-import { selectIsPaused } from "../../../store/selectors";
+import {
+  selectIsColourised,
+  selectIsPaused,
+  selectShowBoundingBoxes,
+} from "../../../store/selectors";
 
 const hasShadowMask = (
   item: UnionOfAllItemInPlayTypes,
@@ -33,11 +37,9 @@ export const createItemRenderer = <
   pixiRenderer: PixiRenderer;
 }): Renderer | "not-needed" => {
   const state = store.getState();
-  const {
-    userSettings: {
-      displaySettings: { showBoundingBoxes, colourise },
-    },
-  } = state;
+  const showBoundingBoxes = selectShowBoundingBoxes(state);
+  const colourise = selectIsColourised(state);
+
   const isPaused = selectIsPaused(state);
 
   const renderBoundingBoxes =

@@ -11,12 +11,14 @@ import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
+      // <div className="flex flex-row items-start justify-start gap-1">
       <h2
         // multiline: "history of the blacktooth empire" is a title that needs two lines
         className={`mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue ${multilineTextClass}`}
       >
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </h2>
+      // </div>
     );
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {

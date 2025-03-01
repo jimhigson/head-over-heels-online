@@ -16,14 +16,18 @@ import type { Subset } from "../../../utils/subset";
 import type { BooleanAction } from "../../input/actions";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { OutlineFilter } from "../filters/outlineFilter";
-import { store } from "../../../store/store";
+import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 
 const mainButtonsSpreadPx = 14;
 export type OnScreenButtonName =
   | Subset<BooleanAction, "jump" | "carry" | "fire">
   | "menu"
   | "carryAndJump";
+
+const colourisedFilters = [
+  new RevertColouriseFilter(spritesheetPalette.lightGrey),
+  hudOutlineFilter,
+];
 
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
@@ -68,13 +72,7 @@ export class OnScreenControls<RoomId extends string> {
     buttons.menu.container.x = 24;
     buttons.menu.container.y = 24;
     buttons.menu.container.scale = 2;
-    buttons.menu.container.filters = [
-      new RevertColouriseFilter(spritesheetPalette.lightGrey),
-      new OutlineFilter(
-        spritesheetPalette.pureBlack,
-        store.getState().upscale.gameEngineUpscale,
-      ),
-    ];
+    buttons.menu.container.filters = colourisedFilters;
 
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(buttons.menu.container);
@@ -134,6 +132,10 @@ export class OnScreenControls<RoomId extends string> {
       b.update(colourise);
     }
     this.#updateShowAndHide();
+    this.#hudElements.joystick.tick(colourise);
+
+    this.#hudElements.buttons.menu.container.filters =
+      colourise ? colourisedFilters : hudLowlightAndOutlineFilters;
   }
 
   get container() {

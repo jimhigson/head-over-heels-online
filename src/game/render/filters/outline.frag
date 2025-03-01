@@ -9,66 +9,68 @@ uniform vec3 uOutline;
 uniform float uOutlineWidth;
 
 void main(void) {
-    vec4 c = texture(uTexture, vTextureCoord);
 
-    if( c.a != 0.0 ) {
-        finalColor = c;
+    vec4 sampledColour = texture(uTexture, vTextureCoord);
+
+    if(sampledColour.a != 0.0f) {
+        // can only outline at transparent pixels
+        finalColor = sampledColour;
         return;
     }
 
-    vec2 texelSize = vec2(1.0) / vec2(textureSize(uTexture, 0));
+    vec2 texelSize = vec2(1.0f) / vec2(textureSize(uTexture, 0));
 
     // right
-    if( vTextureCoord.x + texelSize.x * uOutlineWidth >= 1.0 ) {
-        finalColor = c;
+    if(vTextureCoord.x + texelSize.x * uOutlineWidth >= 1.0f) {
+        //original 
+        finalColor = sampledColour;
         return;
     }
-    vec4 cRight = texture(uTexture, vec2(vTextureCoord.x + texelSize.x * uOutlineWidth, vTextureCoord.y));
+    vec4 colourToRight = texture(uTexture, vec2(vTextureCoord.x + texelSize.x * uOutlineWidth, vTextureCoord.y));
 
-    if( cRight.a != 0.0 ) {
+    if(colourToRight.a != 0.0f) {
         finalColor = vec4(uOutline, 1);
         return;
     }
 
     // left
-    if( vTextureCoord.x - texelSize.x <= 0.0 ) {
-        finalColor = c;
+    if(vTextureCoord.x - texelSize.x < 0.0f) {
+        finalColor = sampledColour;
         return;
     }
 
-    vec4 cLeft = texture(uTexture, vec2(vTextureCoord.x - texelSize.x * uOutlineWidth, vTextureCoord.y));
+    vec4 colourToLeft = texture(uTexture, vec2(vTextureCoord.x - texelSize.x * uOutlineWidth, vTextureCoord.y));
 
-    if( cLeft.a != 0.0 ) {
+    if(colourToLeft.a != 0.0f) {
         finalColor = vec4(uOutline, 1);
         return;
     }
 
-
-    // down
-    if( vTextureCoord.y + texelSize.y * uOutlineWidth > 1.0 ) {
-        finalColor = c;
+    // below
+    if(vTextureCoord.y + texelSize.y * uOutlineWidth > 1.0f) {
+        finalColor = sampledColour;
         return;
     }
 
-    vec4 cDown = texture(uTexture, vec2(vTextureCoord.x, vTextureCoord.y + texelSize.y * uOutlineWidth));
+    vec4 colourBelow = texture(uTexture, vec2(vTextureCoord.x, vTextureCoord.y + texelSize.y * uOutlineWidth));
 
-    if( cDown.a != 0.0 ) {
+    if(colourBelow.a != 0.0f) {
         finalColor = vec4(uOutline, 1);
         return;
     }
 
-    // up
-    if( vTextureCoord.y - texelSize.y * uOutlineWidth < 0.0 ) {
-        finalColor = c;
+    // above
+    if(vTextureCoord.y - texelSize.y * uOutlineWidth < 0.0f) {
+        finalColor = sampledColour;
         return;
     }
 
-    vec4 cUp = texture(uTexture, vec2(vTextureCoord.x, vTextureCoord.y - texelSize.y * uOutlineWidth));
+    vec4 colourAbove = texture(uTexture, vec2(vTextureCoord.x, vTextureCoord.y - texelSize.y * uOutlineWidth));
 
-    if( cUp.a != 0.0 ) {
+    if(colourAbove.a != 0.0f) {
         finalColor = vec4(uOutline, 1);
         return;
-    }    
+    }
 
-    finalColor = c;
+    finalColor = sampledColour;
 }

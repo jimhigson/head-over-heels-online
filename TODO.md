@@ -46,6 +46,9 @@
 
 ### Details and bugs
 
+[ ] destroy and recreate hud renderer when display settings change (like room renderer is) - this way
+    it can not care about colourisation (or anything else) changing when it ticks
+
 [ ] include version number on main menu screen
 
 [ ] bug - need to refresh page after changing input preset
@@ -54,6 +57,9 @@
 [ ] put text in for search engines etc
 
 [ ] hold a button to lock to axes
+
+[ ] add lowres setting (like outline filter) to all filters and use when appropriate - ie anything that
+    doesn't need between-pixel rendering
 
 [x] input buffering on start to move
 

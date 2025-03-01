@@ -4,6 +4,7 @@ import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, renderOnce } from "../appearanceUtils";
 import { renderEdge } from "./renderEdge";
+import { defaultUserSettings } from "../../../../store/gameMenusSlice";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
   ({ room, onHold, displaySettings }) => {
@@ -48,7 +49,12 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
         room.roomJson,
       );
 
-    const colourise = !onHold && displaySettings.colourise;
+    const colourise: boolean =
+      !onHold &&
+      !(
+        displaySettings.uncolourised ??
+        defaultUserSettings.displaySettings.uncolourised
+      );
     towardsEdgeContainer.filters = edgePaletteSwapFilters(
       room,
       "towards",

@@ -1,7 +1,5 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container, Sprite, Ticker } from "pixi.js";
-import { OutlineFilter } from "../filters/outlineFilter";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { getColorScheme } from "../../hintColours";
 import type {
   CarriedItem,
@@ -34,25 +32,40 @@ import { selectShowFps } from "../../../store/selectors";
 import type { DeviceType } from "../../../utils/detectDeviceType";
 import { OnScreenControls } from "./OnScreenControls";
 import { showNumberInContainer } from "./showNumberInContainer";
+import {
+  hudFpsColourFilter,
+  hudIconFilter,
+  hudHighligtedFilter,
+  hudLivesTextFilter,
+  hudOutlinedTextFilters,
+  hudOutlineFilter,
+  hudTextFilter,
+  hudLowlightAndOutlineFilters,
+  hudLowlightedFilter,
+} from "./hudFilters";
 
 const fpsUpdatePeriod = 250;
 
 const livesTextFromCentre: Record<DeviceType, number> = {
+  server: 24,
   desktop: 24,
   tablet: 24,
   mobile: 16,
 };
 const playableIconFromCentre: Record<DeviceType, number> = {
+  server: 56,
   desktop: 56,
   tablet: 56,
   mobile: 38,
 };
 const smallIconsFromCentre: Record<DeviceType, number> = {
+  server: 80,
   desktop: 80,
   tablet: 80,
   mobile: 60,
 };
 const extraSkillFromBottom: Record<DeviceType, number> = {
+  server: 24,
   desktop: 24,
   tablet: 16,
   mobile: 18,
@@ -64,8 +77,6 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
-
 export type TickOptions<RoomId extends string> = {
   gameState: GameState<RoomId>;
   screenSize: Xy;
@@ -74,48 +85,8 @@ export type TickOptions<RoomId extends string> = {
 
 export class HudRenderer<RoomId extends string> {
   #container = new Container({ label: "HudRenderer" });
-  #uncurrentSpriteFilter: RevertColouriseFilter = new RevertColouriseFilter();
-  #iconFilter = new RevertColouriseFilter();
-  #textFilter = new RevertColouriseFilter();
-  #fpsColourFilter = new RevertColouriseFilter(spritesheetPalette.moss);
 
   #controls: OnScreenControls<RoomId> | undefined = undefined;
-
-  /** a black outline so that the hud elements stand out when the room is rendered under them */
-  #outlineFilter = new OutlineFilter(
-    spritesheetPalette.pureBlack,
-    store.getState().upscale.gameEngineUpscale,
-  );
-  #uncurrentAndOutlinedFilter = [
-    this.#uncurrentSpriteFilter,
-    this.#outlineFilter,
-  ];
-
-  /**
-   * without colourisation, the active character gets the same colour as the lives text
-   */
-  #livesOrActiveCharacterOriginalColorFilter = new RevertColouriseFilter();
-
-  #outlinedTextFilters = [
-    this.#outlineFilter,
-    this.#textFilter,
-  ] as OutlineAndColouriseFilter;
-  #livesTextFilter = {
-    original: [
-      this.#outlineFilter,
-      this.#livesOrActiveCharacterOriginalColorFilter,
-    ] as OutlineAndColouriseFilter,
-    colourised: {
-      head: [
-        this.#outlineFilter,
-        new RevertColouriseFilter(spritesheetPalette.metallicBlue),
-      ] as OutlineAndColouriseFilter,
-      heels: [
-        this.#outlineFilter,
-        new RevertColouriseFilter(spritesheetPalette.pink),
-      ] as OutlineAndColouriseFilter,
-    },
-  };
 
   #hudElements = {
     head: {
@@ -199,7 +170,7 @@ export class HudRenderer<RoomId extends string> {
 
     this.#container.addChild(this.#hudElements.fps);
     this.#hudElements.fps.filters = [
-      this.#fpsColourFilter,
+      hudFpsColourFilter,
       //this.#outlineFilter,
     ];
     this.#hudElements.fps.y = hudCharTextureSize.h;
@@ -250,7 +221,7 @@ export class HudRenderer<RoomId extends string> {
     const icon = new Sprite({
       texture: spriteSheet.textures[textureId],
       anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
-      filters: this.#iconFilter,
+      filters: hudIconFilter,
       y: textOnTop ? 0 : 8,
     });
     container.addChild(icon);
@@ -266,7 +237,7 @@ export class HudRenderer<RoomId extends string> {
     }
 
     if (outline === true) {
-      container.filters = this.#outlineFilter;
+      container.filters = hudOutlineFilter;
     }
 
     return {
@@ -295,7 +266,7 @@ export class HudRenderer<RoomId extends string> {
   }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) {
     return new Container({
       label,
-      filters: outline ? this.#outlinedTextFilters : this.#textFilter,
+      filters: outline ? hudOutlinedTextFilters : hudTextFilter,
       scale: { x: 1, y: doubleHeight ? 2 : 1 },
     });
   }
@@ -335,8 +306,8 @@ export class HudRenderer<RoomId extends string> {
     return (
       highlighted ?
         colourise ? noFilters
-        : this.#livesOrActiveCharacterOriginalColorFilter
-      : this.#uncurrentSpriteFilter
+        : hudHighligtedFilter
+      : hudLowlightedFilter
     );
   }
 
@@ -446,10 +417,9 @@ export class HudRenderer<RoomId extends string> {
     const characterSprite = this.#hudElements[characterName].sprite;
 
     if (isActive) {
-      characterSprite.filters =
-        colourise ? noFilters : this.#livesOrActiveCharacterOriginalColorFilter;
+      characterSprite.filters = colourise ? noFilters : hudHighligtedFilter;
     } else {
-      characterSprite.filters = this.#uncurrentSpriteFilter;
+      characterSprite.filters = hudLowlightedFilter;
     }
 
     characterSprite.x =
@@ -484,28 +454,27 @@ export class HudRenderer<RoomId extends string> {
     }
     const colorScheme = getColorScheme(room.color);
 
-    this.#uncurrentSpriteFilter.targetColor =
+    hudLowlightedFilter.targetColor =
       colorScheme.hud.dimmed[colourise ? "dimmed" : "original"];
-    this.#textFilter.targetColor =
+    hudTextFilter.targetColor =
       colorScheme.hud.dimmed[colourise ? "basic" : "original"];
-    this.#iconFilter.targetColor =
+    hudIconFilter.targetColor =
       colorScheme.hud.icons[colourise ? "basic" : "original"];
 
-    this.#livesOrActiveCharacterOriginalColorFilter.targetColor =
-      colorScheme.hud.lives.original;
+    hudHighligtedFilter.targetColor = colorScheme.hud.lives.original;
 
     this.#hudElements.head.livesText.filters =
       colourise ?
         this.#characterIsActive(gameState, "head") ?
-          this.#livesTextFilter.colourised.head
-        : this.#uncurrentAndOutlinedFilter
-      : this.#livesTextFilter.original;
+          hudLivesTextFilter.colourised.head
+        : hudLowlightAndOutlineFilters
+      : hudLivesTextFilter.original;
     this.#hudElements.heels.livesText.filters =
       colourise ?
         this.#characterIsActive(gameState, "heels") ?
-          this.#livesTextFilter.colourised.heels
-        : this.#uncurrentAndOutlinedFilter
-      : this.#livesTextFilter.original;
+          hudLivesTextFilter.colourised.heels
+        : hudLowlightAndOutlineFilters
+      : hudLivesTextFilter.original;
   }
 
   #fpsLastUpdated: number = Number.NEGATIVE_INFINITY;
@@ -515,7 +484,7 @@ export class HudRenderer<RoomId extends string> {
         const fpsValue = Ticker.shared.FPS;
         showNumberInContainer(this.#hudElements.fps, Math.round(fpsValue));
 
-        this.#fpsColourFilter.targetColor =
+        hudFpsColourFilter.targetColor =
           fpsValue > 56 ? spritesheetPalette.moss
           : fpsValue > 50 ? spritesheetPalette.metallicBlue
           : fpsValue > 40 ? spritesheetPalette.pink

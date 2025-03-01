@@ -14,6 +14,8 @@ import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 
 const scrollLinesAtOnce = 4;
 const charHeight = hudCharTextureSize.h;
@@ -77,6 +79,7 @@ export const MarkdownDialog = ({
           )}
           ref={contentRef}
         >
+          {isTouchDevice() && <MobileStyleBackButton className="pb-1" />}
           <BlockyMarkdown markdown={markdown} />
         </div>
         <MenuItems className="hidden">

@@ -26,8 +26,13 @@ import {
 import { iterate } from "../../utils/iterate";
 import { emptyArray } from "../../utils/empty";
 import type { HudInputState } from "./hudInputState";
+import {
+  selectAnalogueControl,
+  selectInputAssignment,
+  selectScreenRelativeControl,
+} from "../../store/selectors";
 
-const analogueDeadzone = 0.2;
+export const analogueDeadzone = 0.2;
 const snapAngleRadians = 13 * (Math.PI / 180);
 
 /* how long to keep buffered input for - this is essentially a sensitivity setting
@@ -111,7 +116,7 @@ const isActionPressed = (
   action: BooleanAction,
   useAxes: boolean = true,
 ): boolean => {
-  const { inputAssignment } = store.getState().userSettings;
+  const inputAssignment = selectInputAssignment(store.getState());
 
   const inputAssignmentForAction = inputAssignment.presses[action];
 
@@ -243,12 +248,9 @@ export class InputStateTracker {
     }
     function* axisVectors(input: FrameInput): Generator<Xyz> {
       const {
-        userSettings: {
-          inputAssignment: {
-            axes: { x: axesX, y: axesY },
-          },
-        },
-      } = store.getState();
+        axes: { x: axesX, y: axesY },
+      } = selectInputAssignment(store.getState());
+
       for (const gp of input.gamepads) {
         if (gp === null) {
           continue;
@@ -332,9 +334,8 @@ export class InputStateTracker {
   }
 
   #tick = ({ lastTime: atTime }: Ticker) => {
-    const {
-      userSettings: { analogueControl, screenRelativeControl },
-    } = store.getState();
+    const analogueControl = selectAnalogueControl(store.getState());
+    const screenRelativeControl = selectScreenRelativeControl(store.getState());
 
     const shouldRotate = screenRelativeControl && analogueControl;
     const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;

@@ -14,6 +14,7 @@ import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
+import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -29,7 +30,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
 
   const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");
-  const showStats = useDispatchActionCallback(goToSubmenu, "gameOver");
+  const showStats = useDispatchActionCallback(goToSubmenu, "score");
 
   const showProgress = useCallback(() => {
     showCrowns();
@@ -39,8 +40,11 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
-      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2">
-        <MainMenuHeading noSubtitle={isGameRunning} />
+      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resGameboy:gap-y-1">
+        <MainMenuHeading
+          noSubtitle={isGameRunning}
+          className={isGameRunning ? "resGameboy:hidden" : ""}
+        />
         <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white">
           <MenuItem
             id="playGame"
@@ -56,16 +60,13 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             hidden={!isGameRunning}
           />
 
-          <MenuItemSeparator />
-          <MenuItem
-            id="controlOptions"
-            label="Control options"
-            doubleHeightWhenFocussed
-            onSelect={useDispatchActionCallback(goToSubmenu, "controlOptions")}
-          />
+          {/* mobile menus are already quite spaced out so don't give them the separator */}
+          {detectDeviceType() !== "mobile" && isGameRunning && (
+            <MenuItemSeparator />
+          )}
           <MenuItem
             id="modernisationOptions"
-            label="Modernisation Options"
+            label="Options"
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(
               goToSubmenu,

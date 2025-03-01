@@ -5,7 +5,7 @@ import { useRef, type ReactElement } from "react";
 import { useActionTap } from "../useActionTap";
 import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
-import { MenuItemLeader } from "./menus/MenuItemLeader";
+import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import Portal from "@mutabazia/react-portal";
 import { multilineTextClass } from "./multilineTextClass";
 

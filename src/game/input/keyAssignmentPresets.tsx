@@ -42,10 +42,12 @@ const standardAssignment = {
     // f5 is reload in most browsers
     // f6 in firefox is taken - focusses the address bar
     // f7 is taken in chrome/firefox - toggles caret browsing
+    // f8 in chrome pauses script execution (if devtools open)
     // f11 clashes with macos defaults, and browser fullscreen!
     // f12 is taken in chrome/firefox - opens dev tools
     toggleColourisation: { keys: ["F10"] },
     toggleShowFps: { keys: ["F9"] },
+    cycleResolution: { keys: ["0"] },
   },
 } as const satisfies PartialInputAssignment;
 

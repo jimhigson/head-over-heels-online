@@ -594,10 +594,11 @@ export const itemAppearances: {
 
     const filter =
       highlighted ?
-        new OutlineFilter(
-          carryableOutlineColour,
-          store.getState().upscale.gameEngineUpscale,
-        )
+        new OutlineFilter({
+          outlineColor: carryableOutlineColour,
+          lowRes: false,
+          upscale: store.getState().upscale.gameEngineUpscale,
+        })
       : undefined;
 
     return {
@@ -631,10 +632,11 @@ export const itemAppearances: {
 
     const filter =
       highlighted ?
-        new OutlineFilter(
-          carryableOutlineColour,
-          store.getState().upscale.gameEngineUpscale,
-        )
+        new OutlineFilter({
+          outlineColor: carryableOutlineColour,
+          lowRes: false,
+          upscale: store.getState().upscale.gameEngineUpscale,
+        })
       : undefined;
 
     return {
@@ -671,10 +673,12 @@ export const itemAppearances: {
 
     const filter =
       highlighted ?
-        new OutlineFilter(
-          carryableOutlineColour,
-          store.getState().upscale.gameEngineUpscale,
-        )
+        new OutlineFilter({
+          outlineColor: carryableOutlineColour,
+          upscale: store.getState().upscale.gameEngineUpscale,
+          // they might get pushed between pixels so can't skip the res
+          lowRes: false,
+        })
       : undefined;
 
     return {

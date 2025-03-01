@@ -15,11 +15,16 @@ export type ZxSpectrumRoomColour = {
 };
 export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interlaced frames, hoh was at 25fps
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
-export const amigaLowResPal = { x: 320, y: 256 };
-export const amigaHiResPal = { x: 640, y: 512 };
-export const zxSpectrumResolution = { x: 256, y: 192 };
-// there was never really a gameboy port, but this is a small 3:4 ratio screen
-export const gameBoyResolution = { x: 160, y: 120 };
+
+export const resolutions = {
+  //amigaHiResPal: { x: 640, y: 512 },
+  amigaLowResPal: { x: 320, y: 256 },
+  zxSpectrum: { x: 256, y: 192 },
+  // there was never really a gameboy port, but this is a small 3:4 ratio screen
+  gameboy: { x: 160, y: 120 },
+};
+export type ResolutionName = keyof typeof resolutions;
+export const resolutionNames = Object.keys(resolutions) as ResolutionName[];
 
 export const zxSpectrumColors = {
   // zx-spectrum colours:

@@ -2,25 +2,17 @@ import { useLayoutEffect } from "react";
 import { setUpscale } from "../gameMenusSlice";
 import { store } from "../store";
 import { useAppDispatch } from "../hooks";
-import { calculateUpscale } from "../../game/render/calculateUpscale";
+import { calculateUpscaleForCurrentDevice } from "../../game/render/calculateUpscale";
+import { selectEmulatedResolutionName } from "../selectors";
 
 const updateSize = () => {
-  const {
-    userSettings: {
-      displaySettings: { emulatedResolution },
-    },
-  } = store.getState();
-
-  const upscale = calculateUpscale(
-    { x: window.innerWidth, y: window.innerHeight },
-    emulatedResolution,
-    window.devicePixelRatio,
+  store.dispatch(
+    setUpscale(
+      calculateUpscaleForCurrentDevice(
+        selectEmulatedResolutionName(store.getState()),
+      ),
+    ),
   );
-  console.log(
-    `changing upscale to ${JSON.stringify(upscale)}x for ${window.innerWidth}x${window.innerHeight} window`,
-  );
-
-  store.dispatch(setUpscale(upscale));
 };
 
 export const useUpdateUpscaleWhenWindowResizes = (): void => {

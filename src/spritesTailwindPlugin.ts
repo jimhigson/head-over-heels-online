@@ -68,6 +68,9 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-double-height": {
         "--doubleHeight": "2",
       },
+      ".sprites-normal-height": {
+        "--doubleHeight": "1",
+      },
     };
 
     utilities[".loading-border"] = {
@@ -146,6 +149,10 @@ export const spritesTailwindPlugin = plugin(
     addVariant("mobile", ".mobile &");
     addVariant("desktop", ".desktop &");
     addVariant("tablet", ".tablet &");
+
+    addVariant("resAmiga", ".resAmigaLowResPal &");
+    addVariant("resZx", ".resSpectrum &");
+    addVariant("resGameboy", ".resGameboy &");
 
     addVariant("colourised", ".colourised &");
     // for changing the colour of selected menu items:

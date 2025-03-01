@@ -8,10 +8,11 @@ import type { AnyRoomJson } from "../../model/RoomJson";
 import { wallTileSize } from "../../sprites/textureSizes";
 import type { Xy } from "../../utils/vectors/vectors";
 import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const scrollLimit = 0.33;
 // how much to move the room up (at home position) to bring off the hud
-const worldBottomMargin = 16;
+const worldBottomMargin = detectDeviceType() === "mobile" ? -4 : 16;
 
 // the height without the width - ie, the height from wall bottom on a x-coord of the sprite
 // to the wall top on the same x-coord column

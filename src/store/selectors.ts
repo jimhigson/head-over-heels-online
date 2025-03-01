@@ -6,6 +6,10 @@ import { iterate } from "../utils/iterate";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { size, objectValues } from "iter-tools";
+import type { ShowBoundingBoxes } from "./gameMenusSlice";
+import { defaultUserSettings } from "./gameMenusSlice";
+import type { ResolutionName } from "../originalGame";
+import type { InputAssignment } from "../game/input/InputState";
 
 export const selectTotalUpscale = (state: RootState): number => {
   const {
@@ -15,8 +19,10 @@ export const selectTotalUpscale = (state: RootState): number => {
 };
 export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
-export const useInputAssignment = () =>
-  useAppSelector((state) => state.userSettings.inputAssignment);
+export const selectInputAssignment = (state: RootState): InputAssignment =>
+  state.userSettings.inputAssignment ?? defaultUserSettings.inputAssignment;
+
+export const useInputAssignment = () => useAppSelector(selectInputAssignment);
 
 export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;
 
@@ -44,15 +50,36 @@ export const selectCurrentInputPreset = (
 };
 
 export const selectShowFps = (state: RootState): boolean =>
-  state.userSettings.showFps;
+  state.userSettings.showFps ?? defaultUserSettings.showFps;
+
+export const selectEmulatedResolutionName = (
+  state: RootState,
+): ResolutionName => {
+  return (
+    state.userSettings.displaySettings.emulatedResolution ??
+    defaultUserSettings.displaySettings.emulatedResolution
+  );
+};
+export const useEmulatedResolutionName = () =>
+  useAppSelector(selectEmulatedResolutionName);
 
 export const useIsGameRunning = () =>
   useAppSelector((state: RootState): boolean => state.gameRunning);
 
-export const useIsColourised = () =>
-  useAppSelector(
-    (state: RootState): boolean => state.userSettings.displaySettings.colourise,
+export const selectIsColourised = (state: RootState): boolean =>
+  !(
+    state.userSettings.displaySettings.uncolourised ??
+    defaultUserSettings.displaySettings.uncolourised
   );
+
+export const useIsColourised = () => useAppSelector(selectIsColourised);
+
+export const selectIsCrtFilter = (state: RootState): boolean =>
+  state.userSettings.displaySettings.crtFilter ??
+  defaultUserSettings.displaySettings.crtFilter;
+
+export const selectIsInfiniteLivesPoke = (state: RootState): boolean =>
+  state.userSettings.infiniteLivesPoke ?? defaultUserSettings.infiniteLivesPoke;
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
@@ -66,8 +93,34 @@ export const selectHasAllPlanetCrowns = (state: RootState) => {
 export const useIsScreenRelativeControl = () =>
   useAppSelector((state) => state.userSettings.screenRelativeControl);
 
-export const useIsAnalogueControl = () =>
-  useAppSelector((state) => state.userSettings.analogueControl);
+export const useIsAnalogueControl = (): boolean =>
+  useAppSelector(
+    (state) =>
+      state.userSettings.analogueControl ?? defaultUserSettings.analogueControl,
+  );
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
   size(iterate(objectValues(state.planetsLiberated)).filter(Boolean));
+
+export const selectShowBoundingBoxes = (state: RootState): ShowBoundingBoxes =>
+  state.userSettings.displaySettings.showBoundingBoxes ??
+  defaultUserSettings.displaySettings.showBoundingBoxes;
+
+export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
+  return useAppSelector(selectShowBoundingBoxes);
+};
+
+export const useShowShadowMasks = (): boolean => {
+  return useAppSelector(
+    (state: RootState) =>
+      state.userSettings.displaySettings.showShadowMasks ??
+      defaultUserSettings.displaySettings.showShadowMasks,
+  );
+};
+
+export const selectAnalogueControl = (state: RootState): boolean =>
+  state.userSettings.analogueControl ?? defaultUserSettings.analogueControl;
+
+export const selectScreenRelativeControl = (state: RootState): boolean =>
+  state.userSettings.screenRelativeControl ??
+  defaultUserSettings.screenRelativeControl;
