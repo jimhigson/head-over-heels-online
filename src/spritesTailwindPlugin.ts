@@ -68,6 +68,9 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-double-height": {
         "--doubleHeight": "2",
       },
+      ".sprites-normal-height": {
+        "--doubleHeight": "1",
+      },
     };
 
     utilities[".loading-border"] = {

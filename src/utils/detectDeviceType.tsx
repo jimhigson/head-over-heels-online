@@ -1,5 +1,9 @@
 export type DeviceType = "mobile" | "tablet" | "desktop" | "server";
 
+export const isTouchDevice = () => {
+  return detectDeviceType() === "mobile" || detectDeviceType() === "tablet";
+};
+
 export const detectDeviceType = (): DeviceType => {
   if (typeof globalThis.window === "undefined") {
     return "server"; // probably running some tests

@@ -36,7 +36,7 @@ export const MainMenuHeading = ({
       </div>
     </div>
     {noSubtitle || (
-      <div className="mt-1 w-max">
+      <div className="mt-1 w-max resGameboy:hidden">
         <BitmapText className="text-pink zx:text-zxCyan">block</BitmapText>
         <BitmapText className="text-highlightBeige zx:text-zxYellow">
           stack

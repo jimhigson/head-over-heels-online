@@ -1,21 +1,21 @@
 import type { EmptyObject } from "type-fest";
 import { useAppSelector } from "../../../../store/hooks";
-import { ReadTheManualDialog } from "./menus/readTheManualDialog";
+import { ReadTheManualDialog } from "./dialogs/readTheManualDialog";
 import type { DialogId } from "./menus";
-import { MarkdownDialog } from "./menus/markdown/MarkdownDialog";
+import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
 import type { MarkdownPageName } from "../../../../manual/pages";
-import { CrownsDialog } from "./menus/crowns/crownsDialog";
-import { MainMenuDialog } from "./menus/mainMenu/mainMenuDialog";
-import { QuitGameConfirmDialog } from "./menus/quitGameConfirmDialog";
-import { ScoreDialog } from "./menus/score/ScoreDialog";
-import { HoldDialog } from "./menus/holdDialog";
-import { ModernisationOptionsDialog } from "./menus/modernisationOptions/modernisationOptionsDialog";
-import { ControlOptionsDialog } from "./menus/controlOptions/ControlOptionsDialog";
+import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
+import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
+import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirmDialog";
+import { ScoreDialog } from "./dialogs/score/ScoreDialog";
+import { HoldDialog } from "./dialogs/holdDialog";
+import { ModernisationOptionsDialog } from "./dialogs/modernisationOptions/modernisationOptionsDialog";
+import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../Sprite";
-import { InputPresetDialog } from "./menus/inputPreset/InputPresetDialog";
-import { ProclaimEmperorDialog } from "./menus/proclaimEmperor/proclaimEmperorDialog";
-import { EmulatedResolutionDialog } from "./menus/emulatedResolution/EmulatedResolutionDialog";
+import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
+import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
+import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
