@@ -1,9 +1,22 @@
 import { useEffect } from "react";
 import { backToParentMenu, goToSubmenu } from "../gameMenusSlice";
 import { store } from "../store";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const orientationNow = () =>
-  screen.orientation.type.startsWith("portrait") ? "portrait" : "landscape";
+  // desktops are always assumed to have a capable display - so call it landscape no matter what the actual window dimensions
+  detectDeviceType() === "desktop" ? "landscape"
+  : screen.orientation.type.startsWith("portrait") ? "portrait"
+  : window.innerHeight > window.innerWidth ? "portrait"
+  : (
+    window.matchMedia("(display-mode: fullscreen)").matches &&
+    // screen.width reports the width of the screen in portrait, regardless of orientation.
+    // if the inner height is less than the screen width while in fullscreen, we're in portrait or
+    // a broken half-and-half mode iOS sometimes loads PWAs into.
+    window.innerHeight < screen.width
+  ) ?
+    "portrait"
+  : "landscape";
 
 export const useShowDialogWhenInPortrait = (): void => {
   useEffect(() => {
@@ -12,8 +25,6 @@ export const useShowDialogWhenInPortrait = (): void => {
       const currentlyShownDialog = store.getState().openMenus.at(0)?.menuId;
 
       const o = orientationNow();
-
-      console.log(o);
 
       if (o === "portrait" && currentlyShownDialog !== "wrongOrientation") {
         store.dispatch(goToSubmenu("wrongOrientation"));
