@@ -25,15 +25,18 @@ export const hudFpsColourFilter = new RevertColouriseFilter(
  */
 export const hudHighligtedFilter = new RevertColouriseFilter();
 
+/* for either colourised or original (colours will be changed by HudRenderer) */
 export const hudLowlightAndOutlineFilters = [
   hudLowlightedFilter,
   hudOutlineFilter,
 ];
+/* for either colourised or original (colours will be changed by HudRenderer) */
 export const hudHighlightAndOutlineFilters = [
   hudHighligtedFilter,
   hudOutlineFilter,
 ];
 
+/* for either colourised or original (colours will be changed by HudRenderer) */
 export const hudOutlinedTextFilters = [
   hudOutlineFilter,
   hudTextFilter,

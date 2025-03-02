@@ -1,1 +1,49 @@
-[{ "op": "replace", "path": "/color/shade", "value": "dimmed" }]
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "add",
+    "path": "/items/hintAboveR",
+    "value": {
+      "type": "block",
+      "position": { "x": -1, "y": -1, "z": 14 },
+      "config": { "style": "organic", "times": { "y": 8 } }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveT",
+    "value": {
+      "type": "block",
+      "position": { "x": 0, "y": -1, "z": 14 },
+      "config": { "style": "organic", "times": { "x": 6 } }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveA",
+    "value": {
+      "type": "block",
+      "position": { "x": 0, "y": 6, "z": 14 },
+      "config": { "style": "organic", "times": { "x": 6 } }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveL",
+    "value": {
+      "type": "block",
+      "position": { "x": 6, "y": -1, "z": 14 },
+      "config": { "style": "organic", "times": { "y": 8 } }
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveSingle",
+    "value": {
+      "type": "block",
+      "position": { "x": 0, "y": 0, "z": 14 },
+      "config": { "style": "organic", "disappearing": "onStand" }
+    }
+  },
+  { "op": "add", "path": "/size/z", "value": 14 }
+]

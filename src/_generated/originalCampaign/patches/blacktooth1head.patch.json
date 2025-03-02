@@ -4,7 +4,7 @@
     "path": "/items/colouriseSwitch",
     "value": {
       "config": {
-        "store": { "path": "userSettings.displaySettings.colourise" }
+        "store": { "path": "userSettings.displaySettings.uncolourised" }
       },
       "isExtra": true,
       "position": { "x": 5, "y": 3, "z": 0 },

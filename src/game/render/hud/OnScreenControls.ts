@@ -14,20 +14,13 @@ import { OnScreenJoystick } from "./OnScreenJoystick";
 import { OnScreenButton, buttonSpriteSize } from "./OnScreenButton";
 import type { Subset } from "../../../utils/subset";
 import type { BooleanAction } from "../../input/actions";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
+import { hudLowlightAndOutlineFilters } from "./hudFilters";
 
 const mainButtonsSpreadPx = 14;
 export type OnScreenButtonName =
   | Subset<BooleanAction, "jump" | "carry" | "fire">
   | "menu"
   | "carryAndJump";
-
-const colourisedFilters = [
-  new RevertColouriseFilter(spritesheetPalette.lightGrey),
-  hudOutlineFilter,
-];
 
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
@@ -72,7 +65,7 @@ export class OnScreenControls<RoomId extends string> {
     buttons.menu.container.x = 24;
     buttons.menu.container.y = 24;
     buttons.menu.container.scale = 2;
-    buttons.menu.container.filters = colourisedFilters;
+    buttons.menu.container.filters = hudLowlightAndOutlineFilters;
 
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(buttons.menu.container);
@@ -89,8 +82,8 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements.mainButtonNest.x = screenSize.x - offsetFromSides;
     this.#hudElements.mainButtonNest.y = screenSize.y - 14;
 
-    this.#hudElements.joystick.container.x = offsetFromSides - 10;
-    this.#hudElements.joystick.container.y = screenSize.y - 24;
+    this.#hudElements.joystick.container.x = offsetFromSides - 6;
+    this.#hudElements.joystick.container.y = screenSize.y - 28;
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
@@ -133,9 +126,6 @@ export class OnScreenControls<RoomId extends string> {
     }
     this.#updateShowAndHide();
     this.#hudElements.joystick.tick(colourise);
-
-    this.#hudElements.buttons.menu.container.filters =
-      colourise ? colourisedFilters : hudLowlightAndOutlineFilters;
   }
 
   get container() {

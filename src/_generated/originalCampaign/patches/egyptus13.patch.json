@@ -38,6 +38,11 @@
     "value": "hieroglyphics"
   },
   { "op": "replace", "path": "/items/wall@0,8,0/position/y", "value": 10 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:2sckOl/config/times/y",
+    "value": 10
+  },
   { "op": "replace", "path": "/size/y", "value": 10 },
   { "op": "add", "path": "/size/z", "value": 13 }
 ]

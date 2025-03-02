@@ -50,19 +50,19 @@ const livesTextFromCentre: Record<DeviceType, number> = {
   server: 24,
   desktop: 24,
   tablet: 24,
-  mobile: 16,
+  mobile: 12,
 };
 const playableIconFromCentre: Record<DeviceType, number> = {
   server: 56,
   desktop: 56,
   tablet: 56,
-  mobile: 38,
+  mobile: 32,
 };
 const smallIconsFromCentre: Record<DeviceType, number> = {
   server: 80,
   desktop: 80,
   tablet: 80,
-  mobile: 60,
+  mobile: 40,
 };
 const extraSkillFromBottom: Record<DeviceType, number> = {
   server: 24,
