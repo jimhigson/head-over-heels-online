@@ -7,6 +7,7 @@ const markdownDialogIds = keys(markdownPages).map(
 ) as `markdown/${MarkdownPageName}`[];
 
 export const dialogIds = [
+  "wrongOrientation",
   "mainMenu",
   "controlOptions",
   "inputPreset",

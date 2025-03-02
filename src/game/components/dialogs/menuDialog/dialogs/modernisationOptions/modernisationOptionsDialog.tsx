@@ -40,10 +40,12 @@ const infiniteLivesMarkdown = `pokes can’t be set mid-game
 
 const controlOptionsMarkdown = `*select the keys*, etc`;
 
+/*
 const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 
 **on**: *extra items* slightly modernisess the gameplay.
 none of these fundamentally change how the rooms play.`;
+*/
 
 export const ModernisationOptionsDialog = () => {
   return (
@@ -120,7 +122,7 @@ export const ModernisationOptionsDialog = () => {
                 )}
                 disabled={useIsGameRunning()}
               />
-              <MenuItem
+              {/* <MenuItem
                 doubleHeightWhenFocussed
                 id="extraItems"
                 label="Extra items"
@@ -132,7 +134,7 @@ export const ModernisationOptionsDialog = () => {
                   />
                 }
                 disabled={true}
-              />
+              /> */}
               <MenuItem
                 doubleHeightWhenFocussed
                 id="showFps"
