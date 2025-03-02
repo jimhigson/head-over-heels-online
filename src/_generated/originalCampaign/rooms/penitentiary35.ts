@@ -67,6 +67,11 @@ export const room = inferRoomJson({
       position: { x: 5, y: 1, z: 0 },
       type: "block",
     },
+    leftWall: {
+      config: { direction: "left", tiles: ["loop", "loop"], times: { y: 2 } },
+      position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
     "portableBlock@1,1,1": {
       config: { style: "sticks" },
       position: { x: 1, y: 1, z: 1 },
@@ -91,11 +96,6 @@ export const room = inferRoomJson({
       config: { style: "puck" },
       position: { x: 5, y: 1, z: 2 },
       type: "slidingDeadly",
-    },
-    leftWall: {
-      config: { direction: "left", tiles: ["loop", "loop"], times: { y: 2 } },
-      position: { x: 8, y: 0, z: 0 },
-      type: "wall",
     },
     "wall@0,0,0:2scjgO": {
       config: { direction: "right", tiles: [], times: { y: 2 } },

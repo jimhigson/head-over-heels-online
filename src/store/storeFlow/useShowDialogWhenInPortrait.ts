@@ -6,6 +6,11 @@ import { detectDeviceType } from "../../utils/detectDeviceType";
 const orientationNow = () =>
   // desktops are always assumed to have a capable display - so call it landscape no matter what the actual window dimensions
   detectDeviceType() === "desktop" ? "landscape"
+    // allow orientation check to be skipped for testing
+  : (
+    new URLSearchParams(window.location.search).get("skipOrientation") !== null
+  ) ?
+    "landscape"
   : screen.orientation.type.startsWith("portrait") ? "portrait"
   : window.innerHeight > window.innerWidth ? "portrait"
   : (

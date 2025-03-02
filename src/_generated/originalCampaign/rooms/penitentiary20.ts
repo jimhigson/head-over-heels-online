@@ -7,6 +7,31 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary20",
   items: {
+    hintAboveA: {
+      config: { style: "organic", times: { x: 6 } },
+      position: { x: 0, y: 6, z: 14 },
+      type: "block",
+    },
+    hintAboveL: {
+      config: { style: "organic", times: { y: 8 } },
+      position: { x: 6, y: -1, z: 14 },
+      type: "block",
+    },
+    hintAboveR: {
+      config: { style: "organic", times: { y: 8 } },
+      position: { x: -1, y: -1, z: 14 },
+      type: "block",
+    },
+    hintAboveSingle: {
+      config: { disappearing: "onStand", style: "organic" },
+      position: { x: 0, y: 0, z: 14 },
+      type: "block",
+    },
+    hintAboveT: {
+      config: { style: "organic", times: { x: 6 } },
+      position: { x: 0, y: -1, z: 14 },
+      type: "block",
+    },
     "monster@2,3,1": {
       config: {
         activated: true,
@@ -87,5 +112,5 @@ export const room = inferRoomJson({
   },
   planet: "penitentiary",
   roomAbove: "penitentiary21",
-  size: { x: 6, y: 6 },
+  size: { x: 6, y: 6, z: 14 },
 }) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;

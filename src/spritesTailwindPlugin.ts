@@ -4,7 +4,7 @@ import { spritesheetData } from "./sprites/spriteSheetData";
 import { objectEntriesIter } from "./utils/entries";
 import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
-import { zxSpectrumFrameRate } from "./originalGame";
+import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
@@ -85,6 +85,10 @@ export const spritesTailwindPlugin = plugin(
       // smooth scrolling effect:
       backgroundSize: "100% calc(2 * var(--stripeWidth))",
       animation: "spectrum-load 0.5s linear infinite",
+    };
+    utilities[".zx-loading-border"] = {
+      "--c1": zxSpectrumColors.zxRed,
+      "--c2": zxSpectrumColors.zxCyan,
     };
     animations["@keyframes spectrum-load"] = {
       from: {

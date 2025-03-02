@@ -8,9 +8,9 @@ export const room = inferRoomJson({
   id: "blacktooth17triple",
   items: {
     "deadlyBlock@1,2,0": {
-      config: { style: "volcano", times: { y: 2 } },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 1, y: 2, z: 0 },
-      type: "deadlyBlock",
+      type: "block",
     },
     "deadlyBlock@1,8,0": {
       config: { style: "volcano", times: { y: 2 } },

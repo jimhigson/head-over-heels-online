@@ -6,8 +6,8 @@ import { multilineTextClass } from "../../multilineTextClass";
 export const WrongOrientationDialog = () => {
   return (
     <DialogPortal>
-      <Border className="loading-border" />
-      <Dialog className="bg-pink text-zxBlack !h-tallDialog !w-wideDialog !py-1">
+      <Border className="loading-border zx:zx-loading-border" />
+      <Dialog className="bg-pink zx:bg-zxMagenta text-zxBlack !h-tallDialog !w-wideDialog !py-1">
         <div className={`flex flex-col gap-y-1 ${multilineTextClass}`}>
           <BitmapText className="sprites-double-height text-white">
             Wrong Orientation!

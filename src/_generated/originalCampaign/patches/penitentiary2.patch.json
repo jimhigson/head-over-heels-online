@@ -22,6 +22,11 @@
   { "op": "replace", "path": "/items/hushPuppy@1,7,0/position/y", "value": 9 },
   { "op": "replace", "path": "/items/wall@0,8,0/position/y", "value": 10 },
   {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:2sckOl/config/times/y",
+    "value": 10
+  },
+  {
     "op": "add",
     "path": "/items/extra0",
     "value": {

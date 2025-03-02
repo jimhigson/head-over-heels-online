@@ -1,8 +1,6 @@
 import type { FederatedPointerEvent } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { createSprite } from "../createSprite";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { store } from "../../../store/store";
 import { selectTotalUpscale } from "../../../store/selectors";
 import { objectValues } from "iter-tools";
@@ -22,10 +20,8 @@ import {
   hudHighlightAndOutlineFilters,
   hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
-  hudOutlineFilter,
 } from "./hudFilters";
 import { entries } from "../../../utils/entries";
-import type { OutlineFilter } from "../filters/outlineFilter";
 import { noFilters } from "../filters/standardFilters";
 
 const joystickArrowOffset = 13;
@@ -34,67 +30,58 @@ const sensitivity = 2;
 export class OnScreenJoystick {
   container = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
-  static #unpressedArrowFilter = [
-    new RevertColouriseFilter(spritesheetPalette.metallicBlue),
-    hudOutlineFilter,
-  ] as [RevertColouriseFilter, OutlineFilter];
-  static #pressedArrowFilter = [
-    new RevertColouriseFilter(spritesheetPalette.highlightBeige),
-    hudOutlineFilter,
-  ] as [RevertColouriseFilter, OutlineFilter];
-
   arrowSprites: Record<DirectionXy8, Container> = {
     away: createSprite({
       textureId: "hud.char.↗",
       anchor: { x: 0.5, y: 0.5 },
       x: joystickArrowOffset,
       y: -joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     awayRight: createSprite({
       textureId: "hud.char.➡",
       anchor: { x: 0.5, y: 0.5 },
       x: joystickArrowOffset * Math.SQRT2,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     right: createSprite({
       textureId: "hud.char.↘",
       anchor: { x: 0.5, y: 0.5 },
       x: joystickArrowOffset,
       y: joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     towardsRight: createSprite({
       textureId: "hud.char.⬇",
       anchor: { x: 0.5, y: 0.5 },
       y: joystickArrowOffset * Math.SQRT2,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     towards: createSprite({
       textureId: "hud.char.↙",
       anchor: { x: 0.5, y: 0.5 },
       x: -joystickArrowOffset,
       y: joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     towardsLeft: createSprite({
       textureId: "hud.char.⬅",
       anchor: { x: 0.5, y: 0.5 },
       x: -joystickArrowOffset * Math.SQRT2,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     left: createSprite({
       textureId: "hud.char.↖",
       anchor: { x: 0.5, y: 0.5 },
       x: -joystickArrowOffset,
       y: -joystickArrowOffset,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
     awayLeft: createSprite({
       textureId: "hud.char.⬆",
       anchor: { x: 0.5, y: 0.5 },
       y: -joystickArrowOffset * Math.SQRT2,
-      filter: OnScreenJoystick.#unpressedArrowFilter,
+      filter: hudLowlightAndOutlineFilters,
     }),
   };
 
@@ -165,9 +152,7 @@ export class OnScreenJoystick {
     for (const [directionXy8, sprite] of entries(this.arrowSprites)) {
       sprite.filters =
         directionXy8 === highlightDirectionXy8 ?
-          colourise ? OnScreenJoystick.#pressedArrowFilter
-          : hudHighlightAndOutlineFilters
-        : colourise ? OnScreenJoystick.#unpressedArrowFilter
+          hudHighlightAndOutlineFilters
         : hudLowlightAndOutlineFilters;
     }
 

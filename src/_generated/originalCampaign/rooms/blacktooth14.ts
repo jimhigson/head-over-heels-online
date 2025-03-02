@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   id: "blacktooth14",
   items: {
     "barrier@4,0,0": {
-      config: { axis: "y", times: { y: 6 } },
+      config: { axis: "y", times: { y: 2 } },
       position: { x: 4, y: 0, z: 0 },
       type: "barrier",
     },
@@ -23,13 +23,13 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     "barrier@4,1,2": {
-      config: { axis: "y", times: { y: 5 } },
+      config: { axis: "y" },
       position: { x: 4, y: 1, z: 2 },
       type: "barrier",
     },
-    "barrier@4,2,1": {
-      config: { axis: "y", times: { y: 4 } },
-      position: { x: 4, y: 2, z: 1 },
+    "barrier@4,2,0": {
+      config: { axis: "y", times: { y: 4, z: 3 } },
+      position: { x: 4, y: 2, z: 0 },
       type: "barrier",
     },
     "door@0,2,0": {

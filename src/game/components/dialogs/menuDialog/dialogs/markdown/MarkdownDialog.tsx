@@ -69,7 +69,11 @@ export const MarkdownDialog = ({
         className="bg-midGrey zx:bg-zxWhiteDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack mobile:h-full">
+      <Dialog
+        className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack mobile:h-full"
+        // although we have a back button, you can actually click/tap anywhere to exit
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      >
         <div
           className={twMerge(
             "overflow-y-scroll h-full " +
