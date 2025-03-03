@@ -7,7 +7,7 @@ import { imageSize } from "image-size";
 import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
 
-const spritesheetSize = imageSize("gfx/sprites.png");
+const spritesheetSize = imageSize("src/assets/sprites.png");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
@@ -61,7 +61,6 @@ export const spritesTailwindPlugin = plugin(
        * sets the (unchanging during run time) vars to describe the spritesheet
        */
       ".set-spritesheet-vars": {
-        "--spritesheetUrl": `url('gfx/sprites.png')`,
         "--spritesheetW": `${spritesheetSize.width}px`,
         "--spritesheetH": `${spritesheetSize.height}px`,
       },

@@ -20,7 +20,15 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["./gfx/sprites.png"],
+      // https://adueck.github.io/blog/caching-everything-for-totally-offline-pwa-vite-react/
+
+      // add this to cache all the imports
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png}"],
+      },
+      // add this to cache all the
+      includeAssets: ["/src/assets/sprites.png"],
+
       manifest: {
         background_color: "#000000",
         theme_color: "#000000",
@@ -31,6 +39,11 @@ export default defineConfig({
         scope: "/",
         start_url: "/",
         icons: [
+          {
+            src: "/icon.png",
+            sizes: "24x24",
+            type: "image/png",
+          },
           {
             src: "/icon-192.png",
             sizes: "192x192",

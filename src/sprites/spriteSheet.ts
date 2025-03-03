@@ -1,5 +1,5 @@
 import { Assets, Spritesheet, Texture } from "pixi.js";
-import spritesheetUrl from "../../gfx/sprites.png";
+import spritesheetUrl from "../assets/sprites.png";
 
 import { spritesheetData } from "./spriteSheetData";
 

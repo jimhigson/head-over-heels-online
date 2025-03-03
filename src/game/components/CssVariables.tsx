@@ -1,11 +1,13 @@
 import "react";
 import type { PropsWithChildren } from "react";
 import { useTotalUpscale } from "../../store/selectors";
+import spritesheetUrl from "../../assets/sprites.png";
 
 declare module "react" {
   interface CSSProperties {
     [`--scale`]?: number | string;
     [`--block`]?: number | string;
+    [`--spritesheetUrl`]?: string;
   }
 }
 
@@ -20,6 +22,7 @@ export const CssVariables = ({
     <div
       className="contents set-spritesheet-vars"
       style={{
+        "--spritesheetUrl": `url('${spritesheetUrl}')`,
         "--scale": propsScaleFactor ?? scaleFactor,
         "--block": `${(propsScaleFactor ?? scaleFactor) * 8}px`,
       }}
