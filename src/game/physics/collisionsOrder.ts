@@ -76,10 +76,6 @@ export const obstaclePointEarliestPointInVector = (
  * Lower is sooner.
  */
 export const typeOrderPreference: Record<ItemInPlayType, number> = {
-  // by putting doorframe earlier than wall, doors are easier to walk through
-  // since the automatic slide into doorways is easier to trip
-  doorFrame: 2,
-
   // least impactful to touch:
   stopAutowalk: 5,
   portal: 5,
@@ -90,6 +86,12 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
   switch: 10,
+
+  // putting doorframe earlier than wall would make doorways easier to walk into
+  // (since hitting both a doorframe and wall simultaneously would preferentially
+  // collide with the doorframe) - but it also means that when sliding down walls,
+  // it is possible to stand on top of the doorframe
+  doorFrame: 15,
 
   block: 20,
   barrier: 20,

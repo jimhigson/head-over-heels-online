@@ -457,6 +457,49 @@ describe("doors", () => {
     expect(headState(gameState).standingOn?.id).toBe("floor");
     expect(heelsState(gameState).standingOn?.id).toBe("floor");
   });
+
+  test("character can slide down a wall and through a door", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: {
+            x: 3,
+            y: 2.5,
+            // high in the air
+            z: 12,
+          },
+          config: {
+            which: "head",
+          },
+        },
+        doorToSecondRoom: {
+          type: "door",
+          position: { x: 0, y: 2, z: 0 },
+          config: { direction: "right", toRoom: secondRoomId },
+        },
+      },
+      secondRoomItems: {
+        doorToFirstRoom: {
+          type: "door",
+          position: { x: 8, y: 2, z: 0 },
+          config: { direction: "left", toRoom: firstRoomId },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      until(gameState) {
+        return (
+          gameState.characterRooms.head?.id === "secondRoom" &&
+          headState(gameState).standingOn !== null
+        );
+      },
+    });
+  });
 });
 
 describe("scrolls", () => {
