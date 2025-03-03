@@ -1,5 +1,3 @@
-import { lazy } from "react";
-import type Cheats from "./game/components/cheats/Cheats";
 import { importOnce } from "./utils/importOnce";
 
 /**
@@ -11,7 +9,7 @@ export const importEsIteratorPolyfillsOnce = importOnce(
   () => import("es-iterator-helpers/auto"),
 );
 export const importAppOnce = importOnce(() => import("./game/components/App"));
-const importCheats = importOnce(
+export const importCheats = importOnce(
   () => import("./game/components/cheats/Cheats.tsx"),
 );
 export const importGameMain = importOnce(() => import("./game/gameMain.ts"));
@@ -22,4 +20,3 @@ export const importTestCampaign = importOnce(() => import("./testCampaign.ts"));
 export const importSpritesheet = importOnce(
   () => import("./sprites/spriteSheet.ts"),
 );
-export const LazyCheats = lazy(importCheats) as typeof Cheats;

@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { type GameApi } from "../game/GameApi.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
@@ -20,8 +20,11 @@ import {
   importGameMain,
   importOriginalCampaign,
   importTestCampaign,
-  LazyCheats,
+  importCheats,
 } from "../dynamicImports.ts";
+import type Cheats from "../game/components/cheats/Cheats.tsx";
+
+const LazyCheats = lazy(importCheats) as typeof Cheats;
 
 const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const [gameApi, setGameApi] = useState<
