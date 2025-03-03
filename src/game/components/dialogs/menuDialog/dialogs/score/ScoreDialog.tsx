@@ -10,8 +10,9 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
-import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
 import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
+import { use } from "react";
+import { importOriginalCampaign } from "../../../../../../_generated/originalCampaign/campaign.import";
 
 const calculateScore = (
   roomsExploredCount: number,
@@ -22,6 +23,8 @@ const calculateScore = (
 };
 
 export const ScoreDialog = () => {
+  const { campaign } = use(importOriginalCampaign());
+
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
   const roomsExploredCount = useAppSelector((state) =>
     size(iterate(objectValues(state.roomsExplored))),

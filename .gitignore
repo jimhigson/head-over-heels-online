@@ -13,3 +13,6 @@ dist-ssr
 *.local
 
 .DS_Store
+
+#vite-pwa dist for in dev
+dev-dist
