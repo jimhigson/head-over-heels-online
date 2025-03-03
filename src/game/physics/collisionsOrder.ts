@@ -71,50 +71,56 @@ export const obstaclePointEarliestPointInVector = (
       : obstacle.state.position.z + obstacle.aabb.z,
   };
 };
-/** when hitting two items simultaneously, the order for which to collide with first */
+/**
+ * When hitting two items simultaneously, the order for which to collide with first.
+ * Lower is sooner.
+ */
 export const typeOrderPreference: Record<ItemInPlayType, number> = {
-  // least impactful to touch:
-  stopAutowalk: 0,
-  portal: 0,
-  wall: 0,
-  doorLegs: 0,
-  sceneryPlayer: 0,
-  bubbles: 0, // actually never solid so won't collide
-
-  // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
-  switch: 1,
-
-  block: 2,
-  barrier: 2,
-  floor: 2,
-  floorEdge: 2, // not actually possible to touch
-  hushPuppy: 2,
-  teleporter: 2,
+  // by putting doorframe earlier than wall, doors are easier to walk through
+  // since the automatic slide into doorways is easier to trip
   doorFrame: 2,
 
-  lift: 3,
-  movableBlock: 3,
-  portableBlock: 3,
-  slidingBlock: 3,
-  spring: 3,
+  // least impactful to touch:
+  stopAutowalk: 5,
+  portal: 5,
+  wall: 5,
+  doorLegs: 5,
+  sceneryPlayer: 5,
+  bubbles: 5, // actually never solid so won't collide
 
-  ball: 4,
-  joystick: 4,
-  charles: 4,
-  conveyor: 4,
+  // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
+  switch: 10,
 
-  head: 5,
-  heels: 5,
-  headOverHeels: 5,
+  block: 20,
+  barrier: 20,
+  floor: 20,
+  floorEdge: 20, // not actually possible to touch
+  hushPuppy: 20,
+  teleporter: 20,
 
-  pickup: 8,
+  lift: 30,
+  movableBlock: 30,
+  portableBlock: 30,
+  slidingBlock: 30,
+  spring: 30,
 
-  firedDoughnut: 9,
+  ball: 40,
+  joystick: 40,
+  charles: 40,
+  conveyor: 40,
 
-  slidingDeadly: 10,
-  moveableDeadly: 10,
-  deadlyBlock: 10,
-  monster: 10, // most impactful to touch
+  head: 50,
+  heels: 50,
+  headOverHeels: 50,
+
+  pickup: 80,
+
+  firedDoughnut: 90,
+
+  slidingDeadly: 100,
+  moveableDeadly: 100,
+  deadlyBlock: 100,
+  monster: 100, // most impactful to touch
 };
 
 export const collisionsPriorityComparator = <I extends SortableObstacle>(
