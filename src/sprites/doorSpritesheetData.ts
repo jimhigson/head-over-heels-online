@@ -76,7 +76,10 @@ const doorFrames = <SN extends SceneryName>(
             y: -1,
             w: 15,
             h: 36,
-            pivot: { x: 0, y: 36 },
+            // the .5 is because the doortop happens to be positioned relative to the door near and
+            // far at a position that means it renders vertically on the half-pixel, so this brings it
+            // back to lining up with the pixels from the other door parts
+            pivot: { x: 0, y: 36.5 },
           }),
         },
       },
