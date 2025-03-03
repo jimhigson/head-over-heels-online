@@ -520,6 +520,12 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
+  "button.surfaceMask": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 2 }),
+      ...largeItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "conveyor.y",
     7,

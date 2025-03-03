@@ -30,26 +30,46 @@ export class OnScreenControls<RoomId extends string> {
   constructor(private gameState: GameState<RoomId>) {
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
-      buttons: {} as Record<OnScreenButtonName, OnScreenButton>,
+      buttons: {
+        menu: new OnScreenButton({
+          actions: ["menu_openOrExit"],
+          inputStateTracker: gameState.inputStateTracker,
+          colour: undefined,
+          gameState,
+          textureId: "hud.char.Menu",
+        }),
+        jump: new OnScreenButton({
+          actions: ["jump"],
+          inputStateTracker: gameState.inputStateTracker,
+          gameState,
+          colour: "blue",
+          surfaceTextureId: () => "spring.released",
+        }),
+        carry: new OnScreenButton({
+          actions: ["carry"],
+          inputStateTracker: gameState.inputStateTracker,
+          colour: "green",
+          gameState,
+          surfaceTextureId: () => "bag",
+        }),
+        fire: new OnScreenButton({
+          actions: ["fire"],
+          inputStateTracker: gameState.inputStateTracker,
+          colour: "red",
+          gameState,
+          surfaceTextureId: () => "hooter",
+        }),
+        carryAndJump: new OnScreenButton({
+          actions: ["carry", "jump"],
+          inputStateTracker: gameState.inputStateTracker,
+          gameState,
+          colour: "yellow",
+        }),
+      } satisfies Record<OnScreenButtonName, OnScreenButton<RoomId>>,
       joystick: new OnScreenJoystick(gameState.inputStateTracker),
     };
 
-    const buttons = (this.#hudElements.buttons = {
-      menu: new OnScreenButton(
-        ["menu_openOrExit"],
-        gameState.inputStateTracker,
-        undefined,
-        "hud.char.Menu",
-      ),
-      jump: new OnScreenButton(["jump"], gameState.inputStateTracker, "green"),
-      carry: new OnScreenButton(["carry"], gameState.inputStateTracker, "blue"),
-      fire: new OnScreenButton(["fire"], gameState.inputStateTracker, "red"),
-      carryAndJump: new OnScreenButton(
-        ["carry", "jump"],
-        gameState.inputStateTracker,
-        "yellow",
-      ),
-    });
+    const { buttons } = this.#hudElements;
 
     const { mainButtonNest, joystick } = this.#hudElements;
     mainButtonNest.addChild(buttons.jump.container);

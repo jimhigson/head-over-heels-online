@@ -1,4 +1,5 @@
 import type { Sprite } from "pixi.js";
+import { Container } from "pixi.js";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { zxSpectrumColors } from "../../../originalGame";
 import { spriteSheet } from "../../../sprites/spriteSheet";
@@ -11,49 +12,107 @@ import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { createSprite } from "../createSprite";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { replaceWithHalfbriteFilter } from "../filters/standardFilters";
+import type { SetRequired } from "type-fest";
+import type { GameState } from "../../gameState/GameState";
+
+const buttonColours = {
+  colourised: {
+    red: spritesheetPalette.midRed,
+    blue: spritesheetPalette.metallicBlue,
+    yellow: spritesheetPalette.highlightBeige,
+    green: spritesheetPalette.moss,
+  },
+  zx: {
+    red: zxSpectrumColors.zxRed,
+    blue: zxSpectrumColors.zxBlue,
+    yellow: zxSpectrumColors.zxYellow,
+    green: zxSpectrumColors.zxGreen,
+  },
+};
 
 type ButtonColour = "red" | "blue" | "yellow" | "green";
 export const buttonSpriteSize = spritesheetData.frames.button.frame;
 const buttonColourFilters = {
   colourised: {
-    red: replaceWithHalfbriteFilter(spritesheetPalette.midRed),
-    blue: replaceWithHalfbriteFilter(spritesheetPalette.metallicBlue),
-    yellow: replaceWithHalfbriteFilter(spritesheetPalette.highlightBeige),
-    green: replaceWithHalfbriteFilter(spritesheetPalette.moss),
+    red: replaceWithHalfbriteFilter(buttonColours.colourised.red),
+    blue: replaceWithHalfbriteFilter(buttonColours.colourised.blue),
+    yellow: replaceWithHalfbriteFilter(buttonColours.colourised.yellow),
+    green: replaceWithHalfbriteFilter(buttonColours.colourised.green),
   },
   zx: {
-    red: new RevertColouriseFilter(zxSpectrumColors.zxRed),
-    blue: new RevertColouriseFilter(zxSpectrumColors.zxBlue),
-    yellow: new RevertColouriseFilter(zxSpectrumColors.zxYellow),
-    green: new RevertColouriseFilter(zxSpectrumColors.zxGreen),
+    red: new RevertColouriseFilter(buttonColours.zx.red),
+    blue: new RevertColouriseFilter(buttonColours.zx.blue),
+    yellow: new RevertColouriseFilter(buttonColours.zx.yellow),
+    green: new RevertColouriseFilter(buttonColours.zx.green),
   },
 };
-export class OnScreenButton {
-  container: Sprite;
 
-  constructor(
-    private actions: BooleanAction[],
-    private inputStateTracker: InputStateTrackerInterface,
-    private colour?: ButtonColour,
-    private textureId: TextureId = "button",
-    private pressedTextureId: TextureId = "button.pressed",
-  ) {
-    const sprite = (this.container = createSprite(textureId) as Sprite);
+type OnScreenButtonOptions<RoomId extends string> = {
+  actions: BooleanAction[];
+  inputStateTracker: InputStateTrackerInterface;
+  textureId?: TextureId;
+  colour?: ButtonColour;
+  gameState: GameState<RoomId>;
+  pressedTextureId?: TextureId;
+  surfaceTextureId?: (gameState: GameState<RoomId>) => TextureId;
+};
+
+const defaultOptions = {
+  textureId: "button",
+  pressedTextureId: "button.pressed",
+} as const satisfies Partial<OnScreenButtonOptions<string>>;
+
+export class OnScreenButton<RoomId extends string> {
+  #buttonSprite: Sprite;
+  #container = new Container();
+  #surface: Container | undefined;
+  options: SetRequired<OnScreenButtonOptions<RoomId>, "textureId">;
+
+  constructor(options: OnScreenButtonOptions<RoomId>) {
+    this.options = { ...defaultOptions, ...options };
+
+    const {
+      actions,
+      inputStateTracker,
+      textureId,
+      surfaceTextureId,
+      gameState,
+    } = this.options;
 
     const { hudInputState } = inputStateTracker;
 
-    sprite.eventMode = "static";
-    sprite.on("pointerdown", () => {
+    this.#buttonSprite = createSprite(textureId) as Sprite;
+
+    this.#container.addChild(this.#buttonSprite);
+
+    if (surfaceTextureId) {
+      this.#surface = new Container();
+      const surfaceMask = createSprite("button.surfaceMask");
+      this.#surface.addChild(surfaceMask);
+      this.#surface.mask = surfaceMask;
+      const surfaceSprite = createSprite({
+        textureId: surfaceTextureId(gameState),
+        y: -1,
+      });
+      /*surfaceSprite.filters = new RevertColouriseFilter(
+        colour ? buttonColours.colourised[colour] : undefined,
+      );*/
+      this.#surface.addChild(surfaceSprite);
+      this.#container.addChild(this.#surface);
+    }
+
+    this.#container.eventMode = "static";
+    this.#container.on("pointerdown", () => {
       for (const a of actions) {
         hudInputState[a] = true;
       }
     });
-    sprite.on("pointerup", () => {
+    this.#container.on("pointerup", () => {
       for (const a of actions) {
         hudInputState[a] = false;
       }
     });
-    sprite.on("pointerleave", () => {
+    this.#container.on("pointerleave", () => {
       for (const a of actions) {
         hudInputState[a] = false;
       }
@@ -61,25 +120,39 @@ export class OnScreenButton {
   }
 
   #updateColours(colourised: boolean) {
-    if (!this.colour) return;
+    const { colour } = this.options;
+
+    if (!colour) return;
 
     if (colourised) {
-      this.container.filters = buttonColourFilters.colourised[this.colour];
+      this.#container.filters = buttonColourFilters.colourised[colour];
     } else {
-      this.container.filters = buttonColourFilters.zx[this.colour];
+      this.#container.filters = buttonColourFilters.zx[colour];
     }
   }
 
   #updateSprite() {
-    const pressed = this.actions.every(
-      (a) => this.inputStateTracker.currentActionPress(a) !== "released",
+    const { actions, inputStateTracker, textureId, pressedTextureId } =
+      this.options;
+
+    const pressed = actions.every(
+      (a) => inputStateTracker.currentActionPress(a) !== "released",
     );
-    this.container.texture =
-      spriteSheet.textures[pressed ? this.pressedTextureId : this.textureId];
+
+    if (pressedTextureId !== undefined) {
+      this.#buttonSprite.texture =
+        spriteSheet.textures[pressed ? pressedTextureId : textureId];
+    }
+
+    if (this.#surface) this.#surface.y = pressed ? 1 : 0;
   }
 
   update(colourised: boolean) {
     this.#updateColours(colourised);
     this.#updateSprite();
+  }
+
+  get container() {
+    return this.#container;
   }
 }
