@@ -11,7 +11,8 @@ const orientationNow = () =>
     new URLSearchParams(window.location.search).get("skipOrientation") !== null
   ) ?
     "landscape"
-  : screen.orientation.type.startsWith("portrait") ? "portrait"
+    // the reported orientation is too unreliable - ignore it:
+    //: screen.orientation.type.startsWith("portrait") ? "portrait"
   : window.innerHeight > window.innerWidth ? "portrait"
   : (
     window.matchMedia("(display-mode: fullscreen)").matches &&
@@ -26,10 +27,27 @@ const orientationNow = () =>
 export const useShowDialogWhenInPortrait = (): void => {
   useEffect(() => {
     let addedDialog = false;
-    const handleOrientation = () => {
+    let retryTimeout: number | undefined;
+    /**
+     * @param andRepeat if not given as false, will check a 2nd time after a short delay
+     * @returns
+     */
+    const handleOrientation = (_e?: Event, andRepeat = true) => {
       const currentlyShownDialog = store.getState().openMenus.at(0)?.menuId;
 
       const o = orientationNow();
+
+      if (retryTimeout !== undefined) {
+        window.clearTimeout(retryTimeout);
+        retryTimeout = undefined;
+      }
+      if (andRepeat) {
+        retryTimeout = window.setTimeout(() => {
+          // under iOS, the orientation change event sometimes comes before the device is ready
+          // to be queried for its size.
+          handleOrientation(undefined, false);
+        }, 500);
+      }
 
       if (o === "portrait" && currentlyShownDialog !== "wrongOrientation") {
         store.dispatch(goToSubmenu("wrongOrientation"));
@@ -44,6 +62,7 @@ export const useShowDialogWhenInPortrait = (): void => {
     };
 
     screen.orientation.addEventListener("change", handleOrientation);
+    console.log("listening for orientation");
     handleOrientation(); // may have started in wrong orientation
 
     return () => {
@@ -51,6 +70,9 @@ export const useShowDialogWhenInPortrait = (): void => {
       if (addedDialog) {
         // cleaning up means removing everything we added to state:
         store.dispatch(backToParentMenu());
+      }
+      if (retryTimeout !== undefined) {
+        window.clearTimeout(retryTimeout);
       }
     };
   }, []);
