@@ -20,7 +20,9 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["./gfx/sprites.png"],
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png}"],
+      },
       manifest: {
         background_color: "#000000",
         theme_color: "#000000",
