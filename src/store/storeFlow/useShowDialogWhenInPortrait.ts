@@ -62,7 +62,6 @@ export const useShowDialogWhenInPortrait = (): void => {
     };
 
     screen.orientation.addEventListener("change", handleOrientation);
-    console.log("listening for orientation");
     handleOrientation(); // may have started in wrong orientation
 
     return () => {
