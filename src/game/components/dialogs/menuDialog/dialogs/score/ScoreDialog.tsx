@@ -12,7 +12,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchCa
 import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
 import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
 import { use } from "react";
-import { importOriginalCampaign } from "../../../../../../dynamicImports";
+import { importOriginalCampaign } from "../../../../../../_generated/originalCampaign/campaign.import";
 
 const calculateScore = (
   roomsExploredCount: number,

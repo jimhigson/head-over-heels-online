@@ -15,14 +15,12 @@ import {
 import type { OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 import { detectDeviceType } from "../utils/detectDeviceType.tsx";
 import { resolutions } from "../originalGame.ts";
-import {
-  importSpritesheet,
-  importGameMain,
-  importOriginalCampaign,
-  importTestCampaign,
-  importCheats,
-} from "../dynamicImports.ts";
 import type Cheats from "../game/components/cheats/Cheats.tsx";
+import { importOriginalCampaign } from "../_generated/originalCampaign/campaign.import.ts";
+import { importCheats } from "../game/components/cheats/Cheats.import.ts";
+import { importGameMain } from "../game/gameMain.import.ts";
+import { importSpritesheet } from "../sprites/spriteSheet.import.ts";
+import { importTestCampaign } from "../testCampaign.import.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 

@@ -3,7 +3,13 @@ import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { Border, Dialog } from "./ui/dialog";
-import { importEsIteratorPolyfillsOnce, importAppOnce } from "./dynamicImports";
+import { importAppOnce } from "./game/components/App.import";
+import { importOnce } from "./utils/importOnce";
+
+const importEsIteratorPolyfillsOnce = importOnce(
+  // TODO: this could be made smaller by only importing the methods we need
+  () => import("es-iterator-helpers/auto"),
+);
 
 const loadPolyfillIfNeeded = async () => {
   const polyfillNeeded =
