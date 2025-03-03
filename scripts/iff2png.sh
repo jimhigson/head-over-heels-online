@@ -27,9 +27,11 @@ echo "⏱️ at $(date)"
 OUT_DIR="gfx"
 # write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
+TMP_DIR_ICONS="icon_temp"
 
 echo "🤖 creating temp dir at $TMP_DIR"
 mkdir $TMP_DIR
+mkdir $TMP_DIR_ICONS
 
 # curves are trying to approximate the iff colour space transition to png:
 # https://chatgpt.com/share/6720c751-1dfc-8007-815f-6b1d156962ef
@@ -89,22 +91,30 @@ pngquant -vf --quality 100-100 \
 #make the sprite:
 ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)
 echo "🤖 ✂️ cutting out icon at frame (XxY+W+H) is $ICON_FRAME"
-magick $TMP_DIR/sprites.png -crop $ICON_FRAME +repage $TMP_DIR/icon.png
+# crop out
+magick $TMP_DIR/sprites.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
+# move to centre of icon (if it doesn't fill the whole frame)
+magick $TMP_DIR_ICONS/icon.png -trim -gravity center -background transparent -extent 24x24 $TMP_DIR_ICONS/icon.png
 # remove transparency and put in fixed background:
-ICON_BG=`jq -r '.pink' gfx/spritesheetPalette.json`
+ICON_BG=`jq -r '.moss' gfx/spritesheetPalette.json`
 printf "\e[48;2;$(printf '%d;%d;%d' 0x${ICON_BG:1:2} 0x${ICON_BG:3:2} 0x${ICON_BG:5:2})m ICON_BACKGROUND \e[0m\n"
-magick $TMP_DIR/icon.png -background $ICON_BG -alpha remove $TMP_DIR/icon.png
+magick $TMP_DIR_ICONS/icon.png -background $ICON_BG -alpha remove $TMP_DIR_ICONS/icon.png
 # scale with nearest neighbour up so it remains pixelated after phone/tablet/etc scales it up:
-magick $TMP_DIR/icon.png -filter point -resize 800% $TMP_DIR/icon.png
+magick $TMP_DIR_ICONS/icon.png -filter point -resize 192x192 $TMP_DIR_ICONS/icon-192.png
+magick $TMP_DIR_ICONS/icon.png -filter point -resize 512x512 $TMP_DIR_ICONS/icon-512.png
 pngquant -vf --quality 100-100 \
     --ext .png \
-    -- "$TMP_DIR/icon.png" 
+    -- $TMP_DIR_ICONS/icon-{192,512}.png
 
 echo "🤖 moving temp to real"
 cp $TMP_DIR/* $OUT_DIR
+rm public/icon*.png
+cp $TMP_DIR_ICONS/*.png public
 
 echo "🤖 deleting the temp dir"
 rm -fR $TMP_DIR
+rm -fR $TMP_DIR_ICONS
 
 echo "🤖 what we have now:"
 ls -lh $OUT_DIR/*.png
+ls -lh public/*.png

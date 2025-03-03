@@ -20,6 +20,21 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      manifest: {
+        background_color: "#000000",
+        theme_color: "#000000",
+        name: "Head over Heels",
+        short_name: "Head over Heels",
+        orientation: "landscape",
+        display: "fullscreen",
+        icons: [
+          {
+            src: "/icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+        ],
+      },
     }),
   ],
 
