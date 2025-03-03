@@ -56,4 +56,7 @@ export default defineConfig({
     // consistent port number for this project (not vite default)
     port: 5200,
   },
+  preview: {
+    port: 5201,
+  },
 });

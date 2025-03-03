@@ -1,9 +1,8 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { type GameApi } from "../game/GameApi.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { GameApiProvider } from "../game/components/GameApiContext.tsx";
-import type Cheats from "../game/components/cheats/Cheats.tsx";
 import { useAppSelector } from "../store/hooks.ts";
 import { ConnectInputToStore } from "../store/storeFlow/ConnectInputToStore.tsx";
 import { Dialogs } from "../game/components/dialogs/menuDialog/Dialogs.tsx";
@@ -14,21 +13,15 @@ import {
   useIsGameRunning,
 } from "../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId.ts";
-import { importOnce } from "../utils/importOnce.ts";
 import { detectDeviceType } from "../utils/detectDeviceType.tsx";
 import { resolutions } from "../originalGame.ts";
-
-const importCheats = importOnce(
-  () => import("../game/components/cheats/Cheats.tsx"),
-);
-const importGameMain = importOnce(() => import("../game/gameMain.ts"));
-const importOriginalCampaign = importOnce(
-  () => import("../_generated/originalCampaign/campaign.ts"),
-);
-const importTestCampaign = importOnce(() => import("../testCampaign.ts"));
-const importSpritesheet = importOnce(() => import("../sprites/spriteSheet.ts"));
-
-const LazyCheats = lazy(importCheats) as typeof Cheats;
+import {
+  importSpritesheet,
+  importGameMain,
+  importOriginalCampaign,
+  importTestCampaign,
+  LazyCheats,
+} from "../dynamicImports.ts";
 
 const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const [gameApi, setGameApi] = useState<
