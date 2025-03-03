@@ -76,7 +76,6 @@ export class OnScreenButton<RoomId extends string> {
       inputStateTracker,
       textureId,
       surfaceTextureId,
-      colour,
       gameState,
     } = this.options;
 
