@@ -56,6 +56,16 @@ export type Appearance<S extends RenderSubject, RP extends RenderProps> = <
   options: AppearanceOptions<S, RP, RoomId>,
 ) => AppearanceReturn<RP>;
 
+/**
+ * sometimes it is useful to be able to cast Appearance to a version that
+ * knows the room id before the callsite
+ */
+export type AppearanceWithKnownRoomId<
+  S extends RenderSubject,
+  RP extends RenderProps,
+  RoomId extends string,
+> = (options: AppearanceOptions<S, RP, RoomId>) => AppearanceReturn<RP>;
+
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;
 };

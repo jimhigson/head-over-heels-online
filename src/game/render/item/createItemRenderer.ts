@@ -3,11 +3,7 @@ import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import { type SceneryName } from "../../../sprites/planets";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlay";
+import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
 import { ItemAppearanceRenderer } from "./AppearanceRenderer";
@@ -21,10 +17,15 @@ import {
 } from "../../../store/selectors";
 import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { SetRequired } from "type-fest";
+import type { ItemAppearanceWithKnownRoomId } from "../itemAppearances/ItemAppearance";
 
-const hasShadowMask = (
-  item: UnionOfAllItemInPlayTypes,
-): item is SetRequired<UnionOfAllItemInPlayTypes, "shadowMask"> =>
+const hasShadowMask = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  ItemId extends string,
+>(
+  item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
+): item is SetRequired<typeof item, "shadowMask"> =>
   item.shadowMask !== undefined;
 
 export const createItemRenderer = <
@@ -55,11 +56,18 @@ export const createItemRenderer = <
   const renderers: Renderer[] = [];
 
   if (item.renders) {
+    const appearance = itemAppearances[
+      item.type
+    ] as /* narrow down ItemAppearance to the version that already has our roomid baked in */ ItemAppearanceWithKnownRoomId<
+      T,
+      RoomId
+    >;
+
     const itemAppearanceRenderer = new ItemAppearanceRenderer<
       T,
       RoomId,
       ItemId
-    >(item, room, gameState, itemAppearances[item.type]);
+    >(item, room, gameState, appearance);
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
       itemAppearanceRenderer.container.alpha = 0.66;

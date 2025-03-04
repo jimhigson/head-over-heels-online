@@ -35,6 +35,17 @@ export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>(
   options: ItemAppearanceOptions<T, RoomId>,
 ) => AppearanceReturn<ItemRenderProps<T>>;
 
+/**
+ * sometimes it is useful to be able to cast ItemAppearance to a version that
+ * knows the room id before the callsite
+ */
+export type ItemAppearanceWithKnownRoomId<
+  T extends ItemInPlayType,
+  RoomId extends string,
+> = (
+  options: ItemAppearanceOptions<T, RoomId>,
+) => AppearanceReturn<ItemRenderProps<T>>;
+
 export const itemStaticSpriteAppearance = <
   T extends ItemInPlayTypesWithoutRenderProps,
 >(

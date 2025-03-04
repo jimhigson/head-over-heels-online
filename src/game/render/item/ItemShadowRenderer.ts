@@ -8,7 +8,11 @@ import { collision1to1 } from "../../collision/aabbCollision";
 import { concat, objectEntries, objectValues } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { iterate } from "../../../utils/iterate";
@@ -81,8 +85,11 @@ const renderMultipliedXy = (
   }
 };
 
-export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
-  implements Renderer
+export class ItemShadowRenderer<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  ItemId extends string,
+> implements Renderer
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -100,7 +107,7 @@ export class ItemShadowRenderer<RoomId extends string, ItemId extends string>
   constructor(
     /** the item currently being rendered for = the one that the shadow is cast on  */
     private item: SetRequired<
-      UnionOfAllItemInPlayTypes<RoomId, ItemId>,
+      ItemInPlay<T, SceneryName, RoomId, ItemId>,
       "shadowMask"
     >,
     private room: RoomState<SceneryName, RoomId, ItemId>,
