@@ -64,8 +64,8 @@ export class ItemAppearanceRenderer<
       throw new Error("should not have a renderer for non-rendering item");
     }
 
-    const rendering = this.#appearance({
-      item: this.#item,
+    const rendering = this.#appearance<RoomId>({
+      subject: this.#item,
       room: this.#room,
       currentlyRenderedProps: this.#currentlyRenderedProps,
       displaySettings: renderContext.displaySettings,

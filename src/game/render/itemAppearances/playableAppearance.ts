@@ -183,7 +183,7 @@ export const playableAppearance = <
   C extends CharacterName,
   RoomId extends string,
 >({
-  item,
+  subject,
   currentlyRenderedProps,
   previousRendering,
   gameState,
@@ -191,26 +191,26 @@ export const playableAppearance = <
   const {
     type,
     state: { action, facing, teleporting },
-  } = item;
+  } = subject;
 
   const facingXy8 = vectorClosestDirectionXy8(facing);
 
   const highlighted =
-    item.type === "headOverHeels" ?
+    subject.type === "headOverHeels" ?
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
       isHighlighted(
-        (item as PlayableItem<"headOverHeels">).state.head,
+        (subject as PlayableItem<"headOverHeels">).state.head,
         "headOverHeels",
         "headOverHeels",
       )
     : isHighlighted(
-        (item as PlayableItem<"head" | "heels">).state,
-        item.type,
+        (subject as PlayableItem<"head" | "heels">).state,
+        subject.type,
         gameState.currentCharacterName,
       );
 
-  const flashing = isFlashing(item as PlayableItem);
+  const flashing = isFlashing(subject as PlayableItem);
 
   const walkSpeed = lengthXyz(facing);
 

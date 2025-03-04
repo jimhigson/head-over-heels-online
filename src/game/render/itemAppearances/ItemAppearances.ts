@@ -6,7 +6,7 @@ import { wallTextureId } from "../wallTextureId";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { playableAppearance } from "./playableAppearance";
 import type { ItemAppearance } from "./appearanceUtils";
-import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
+import { renderItemOnce, staticSpriteAppearance } from "./appearanceUtils";
 import type { ItemRenderProps } from "./ItemRenderProps";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
@@ -59,9 +59,9 @@ const blockTextureId = (
 const carryableOutlineColour = spritesheetPalette.moss;
 
 const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
-  renderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+  renderItemOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style === "book" ? "book.y" : style),
@@ -83,9 +83,9 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall: renderOnce(
+  wall: renderItemOnce(
     ({
-      item: {
+      subject: {
         id,
         config: { direction, tiles },
       },
@@ -136,9 +136,9 @@ export const itemAppearances: {
     },
   ),
 
-  barrier: renderOnce(
+  barrier: renderItemOnce(
     ({
-      item: {
+      subject: {
         config: { axis, times },
       },
     }) => {
@@ -149,9 +149,9 @@ export const itemAppearances: {
     },
   ),
 
-  deadlyBlock: renderOnce(
+  deadlyBlock: renderItemOnce(
     ({
-      item: {
+      subject: {
         config: { style, times },
       },
       room,
@@ -166,12 +166,12 @@ export const itemAppearances: {
   slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
-    item: {
+    subject: {
       config: { style, times },
       state: { disappear },
     },
-    room,
     currentlyRenderedProps,
+    room,
   }) {
     const render =
       currentlyRenderedProps === undefined ||
@@ -196,7 +196,7 @@ export const itemAppearances: {
   },
 
   switch({
-    item: {
+    subject: {
       state: { setting: stateSetting },
       config: { store: switchStoreConfig },
     },
@@ -224,7 +224,7 @@ export const itemAppearances: {
   },
 
   conveyor({
-    item: {
+    subject: {
       config: { direction, times },
       state: { stoodOnBy },
     },
@@ -264,7 +264,7 @@ export const itemAppearances: {
     };
   },
 
-  lift: renderOnce(() => {
+  lift: renderItemOnce(() => {
     const rendering = new Container();
 
     const pivot = {
@@ -284,7 +284,7 @@ export const itemAppearances: {
   }),
 
   teleporter({
-    item: {
+    subject: {
       state: { stoodOnBy },
     },
     currentlyRenderedProps,
@@ -315,7 +315,7 @@ export const itemAppearances: {
     };
   },
 
-  pickup: renderOnce(({ item: { config }, room }) => {
+  pickup: renderItemOnce(({ subject: { config }, room }) => {
     if (config.gives === "crown") {
       return createSprite({
         textureId: `crown.${config.planet}`,
@@ -330,7 +330,7 @@ export const itemAppearances: {
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",
-      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room) },
+      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
       reincarnation: {
         animationId: "fish",
       },
@@ -340,16 +340,16 @@ export const itemAppearances: {
     return createSprite(createOptions);
   }),
 
-  moveableDeadly: renderOnce(
+  moveableDeadly: renderItemOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
   charles({
-    item: {
+    subject: {
       state: { facing },
     },
     currentlyRenderedProps,
@@ -369,12 +369,12 @@ export const itemAppearances: {
     };
   },
 
-  monster({ item: { config, state }, room, currentlyRenderedProps }) {
+  monster({ subject: { config, state }, currentlyRenderedProps, room }) {
     const { activated, busyLickingDoughnutsOffFace } = state;
 
     const filter =
       busyLickingDoughnutsOffFace ? doughnuttedFilter
-      : !activated ? greyFilter(room)
+      : !activated ? greyFilter(room!)
       : undefined;
 
     switch (config.which) {
@@ -569,16 +569,16 @@ export const itemAppearances: {
 
   joystick: staticSpriteAppearance("joystick"),
 
-  movableBlock: renderOnce(
+  movableBlock: renderItemOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style),
   ),
 
   portableBlock({
-    item: {
+    subject: {
       config: { style },
       state: { wouldPickUpNext: highlighted },
     },
@@ -611,7 +611,7 @@ export const itemAppearances: {
   },
 
   spring({
-    item: {
+    subject: {
       state: { stoodOnBy, wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
@@ -657,7 +657,7 @@ export const itemAppearances: {
   },
 
   sceneryPlayer({
-    item: {
+    subject: {
       config: { which, startDirection },
       state: { wouldPickUpNext: highlighted },
     },
@@ -698,9 +698,9 @@ export const itemAppearances: {
 
   hushPuppy: staticSpriteAppearance("hushPuppy"),
 
-  bubbles: renderOnce(
+  bubbles: renderItemOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => {

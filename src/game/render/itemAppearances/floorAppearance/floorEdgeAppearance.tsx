@@ -2,11 +2,11 @@ import { Container, Graphics } from "pixi.js";
 import { edgePaletteSwapFilters } from "../../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
-import { type ItemAppearance, renderOnce } from "../appearanceUtils";
+import { type ItemAppearance, renderItemOnce } from "../appearanceUtils";
 import { renderEdge } from "./renderEdge";
 import { defaultUserSettings } from "../../../../store/gameMenusSlice";
 
-export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderOnce(
+export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = renderItemOnce(
   ({ room, onHold, displaySettings }) => {
     const {
       blockXMin,
