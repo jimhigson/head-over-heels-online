@@ -3,7 +3,7 @@ import { createSprite } from "../createSprite";
 import type {
   ItemAppearanceOptions,
   ItemAppearanceReturn,
-} from "./appearanceUtils";
+} from "./ItemAppearance";
 import { stackSprites } from "./createStackedSprites";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";

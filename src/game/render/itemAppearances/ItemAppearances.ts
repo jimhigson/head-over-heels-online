@@ -5,8 +5,8 @@ import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { playableAppearance } from "./playableAppearance";
-import type { ItemAppearance } from "./appearanceUtils";
-import { renderItemOnce, staticSpriteAppearance } from "./appearanceUtils";
+import type { ItemAppearance } from "./ItemAppearance";
+import { itemRenderOnce, itemStaticSpriteAppearance } from "./ItemAppearance";
 import type { ItemRenderProps } from "./ItemRenderProps";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
@@ -59,7 +59,7 @@ const blockTextureId = (
 const carryableOutlineColour = spritesheetPalette.moss;
 
 const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
-  renderItemOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+  itemRenderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
     ({
       subject: {
         config: { style },
@@ -83,7 +83,7 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall: renderItemOnce(
+  wall: itemRenderOnce(
     ({
       subject: {
         id,
@@ -136,7 +136,7 @@ export const itemAppearances: {
     },
   ),
 
-  barrier: renderItemOnce(
+  barrier: itemRenderOnce(
     ({
       subject: {
         config: { axis, times },
@@ -149,7 +149,7 @@ export const itemAppearances: {
     },
   ),
 
-  deadlyBlock: renderItemOnce(
+  deadlyBlock: itemRenderOnce(
     ({
       subject: {
         config: { style, times },
@@ -264,7 +264,7 @@ export const itemAppearances: {
     };
   },
 
-  lift: renderItemOnce(() => {
+  lift: itemRenderOnce(() => {
     const rendering = new Container();
 
     const pivot = {
@@ -315,7 +315,7 @@ export const itemAppearances: {
     };
   },
 
-  pickup: renderItemOnce(({ subject: { config }, room }) => {
+  pickup: itemRenderOnce(({ subject: { config }, room }) => {
     if (config.gives === "crown") {
       return createSprite({
         textureId: `crown.${config.planet}`,
@@ -340,7 +340,7 @@ export const itemAppearances: {
     return createSprite(createOptions);
   }),
 
-  moveableDeadly: renderItemOnce(
+  moveableDeadly: itemRenderOnce(
     ({
       subject: {
         config: { style },
@@ -567,9 +567,9 @@ export const itemAppearances: {
     }
   },
 
-  joystick: staticSpriteAppearance("joystick"),
+  joystick: itemStaticSpriteAppearance("joystick"),
 
-  movableBlock: renderItemOnce(
+  movableBlock: itemRenderOnce(
     ({
       subject: {
         config: { style },
@@ -696,9 +696,9 @@ export const itemAppearances: {
     };
   },
 
-  hushPuppy: staticSpriteAppearance("hushPuppy"),
+  hushPuppy: itemStaticSpriteAppearance("hushPuppy"),
 
-  bubbles: renderItemOnce(
+  bubbles: itemRenderOnce(
     ({
       subject: {
         config: { style },
@@ -709,11 +709,11 @@ export const itemAppearances: {
       });
     },
   ),
-  firedDoughnut: staticSpriteAppearance({
+  firedDoughnut: itemStaticSpriteAppearance({
     animationId: "bubbles.doughnut",
   }),
 
-  ball: staticSpriteAppearance("ball"),
+  ball: itemStaticSpriteAppearance("ball"),
 
   floor: floorAppearance,
   floorEdge: floorEdgeAppearance,

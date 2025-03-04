@@ -7,7 +7,7 @@ import type {
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
-import type { ItemAppearance } from "../itemAppearances/appearanceUtils";
+import type { ItemAppearance } from "../itemAppearances/ItemAppearance";
 import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { ItemRenderProps } from "../itemAppearances/ItemRenderProps";
 import type { Renderer, RenderContext } from "../Renderer";

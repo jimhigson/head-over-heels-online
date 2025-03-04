@@ -6,8 +6,8 @@ import { moveContainerToBlockXyz } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 
-import type { ItemAppearance } from "../appearanceUtils";
-import { renderItemOnce } from "../appearanceUtils";
+import type { ItemAppearance } from "../ItemAppearance";
+import { itemRenderOnce } from "../ItemAppearance";
 import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { originXy } from "../../../../utils/vectors/vectors";
 import { renderFloorOverdraws } from "./renderfloorOverdraw";
@@ -17,7 +17,7 @@ import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraW
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
-export const floorAppearance: ItemAppearance<"floor"> = renderItemOnce(
+export const floorAppearance: ItemAppearance<"floor"> = itemRenderOnce(
   ({ subject, room }) => {
     const {
       blockXMin,
