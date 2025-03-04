@@ -4,7 +4,8 @@ import type { SceneryName } from "../../../sprites/planets";
 import type { DisplaySettings } from "../../../store/gameMenusSlice";
 import type { GameState } from "../../gameState/GameState";
 
-export type RenderSubject = unknown;
+/** anything that can be rendered by the appearance system */
+export type RenderSubject = { id: string };
 export type RenderProps = Record<string, unknown>;
 
 export type AppearanceReturn<RP extends RenderProps> =

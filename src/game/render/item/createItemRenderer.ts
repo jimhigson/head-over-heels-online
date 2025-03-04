@@ -2,20 +2,25 @@ import type { GameState } from "../../gameState/GameState";
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type SceneryName } from "../../../sprites/planets";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 import type { RenderContext, Renderer } from "../Renderer";
-import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
+import { ItemAppearanceRenderer } from "./AppearanceRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
-import type { SetRequired } from "type-fest";
 import {
   selectIsColourised,
   selectIsPaused,
   selectShowBoundingBoxes,
 } from "../../../store/selectors";
+import { itemAppearances } from "../itemAppearances/ItemAppearances";
+import type { SetRequired } from "type-fest";
 
 const hasShadowMask = (
   item: UnionOfAllItemInPlayTypes,
@@ -23,6 +28,7 @@ const hasShadowMask = (
   item.shadowMask !== undefined;
 
 export const createItemRenderer = <
+  T extends ItemInPlayType,
   RoomId extends string,
   ItemId extends string,
 >({
@@ -31,7 +37,7 @@ export const createItemRenderer = <
   gameState,
   pixiRenderer,
 }: {
-  item: UnionOfAllItemInPlayTypes<RoomId, ItemId>;
+  item: ItemInPlay<T, SceneryName, RoomId, ItemId>;
   room: RoomState<SceneryName, RoomId, ItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;
@@ -49,11 +55,11 @@ export const createItemRenderer = <
   const renderers: Renderer[] = [];
 
   if (item.renders) {
-    const itemAppearanceRenderer = new ItemAppearanceRenderer(
-      item,
-      room,
-      gameState,
-    );
+    const itemAppearanceRenderer = new ItemAppearanceRenderer<
+      T,
+      RoomId,
+      ItemId
+    >(item, room, gameState, itemAppearances[item.type]);
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
       itemAppearanceRenderer.container.alpha = 0.66;
