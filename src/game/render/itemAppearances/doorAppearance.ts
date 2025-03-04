@@ -20,8 +20,8 @@ import {
 } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
-import type { ItemAppearance } from "./appearanceUtils";
-import { renderOnce } from "./appearanceUtils";
+import type { ItemAppearance } from "./ItemAppearance";
+import { itemRenderOnce } from "./ItemAppearance";
 
 function* doorLegsGenerator(
   { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,
@@ -102,8 +102,8 @@ const xyToTranslateToInsideOfRoom = (
     : originXy;
 };
 
-export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
-  ({ item: doorLegsItem, room }) => {
+export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
+  ({ subject: doorLegsItem, room }) => {
     return iterateToContainer(
       doorLegsGenerator(doorLegsItem, room),
       new Container({
@@ -117,9 +117,9 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = renderOnce(
   },
 );
 
-export const doorFrameAppearance: ItemAppearance<"doorFrame"> = renderOnce(
+export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
   ({
-    item: {
+    subject: {
       config: { direction, part },
       aabb,
     },

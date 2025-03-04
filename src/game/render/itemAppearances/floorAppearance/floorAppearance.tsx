@@ -6,8 +6,8 @@ import { moveContainerToBlockXyz } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 
-import type { ItemAppearance } from "../appearanceUtils";
-import { renderOnce } from "../appearanceUtils";
+import type { ItemAppearance } from "../ItemAppearance";
+import { itemRenderOnce } from "../ItemAppearance";
 import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import { originXy } from "../../../../utils/vectors/vectors";
 import { renderFloorOverdraws } from "./renderfloorOverdraw";
@@ -17,8 +17,8 @@ import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraW
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
-export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
-  ({ item, room }) => {
+export const floorAppearance: ItemAppearance<"floor"> = itemRenderOnce(
+  ({ subject, room }) => {
     const {
       blockXMin,
       blockYMin,
@@ -128,7 +128,7 @@ export const floorAppearance: ItemAppearance<"floor"> = renderOnce(
     container.mask = floorMaskCutOffLeftAndRight;
 
     // render on the top surface of the floor:
-    container.y = -item.aabb.z;
+    container.y = -subject.aabb.z;
 
     // the floor never changes rendering so can cache to optimise:
     container.cacheAsTexture(true);

@@ -5,16 +5,11 @@ import { createSprite } from "../createSprite";
 import { wallTextureId } from "../wallTextureId";
 import { doorFrameAppearance, doorLegsAppearance } from "./doorAppearance";
 import { playableAppearance } from "./playableAppearance";
-import type { ItemAppearance } from "./appearanceUtils";
-import { renderOnce, staticSpriteAppearance } from "./appearanceUtils";
-import type { ItemRenderProps } from "./ItemRenderProps";
+import type { ItemAppearance } from "./ItemAppearance";
+import { itemRenderOnce, itemStaticSpriteAppearance } from "./ItemAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
-import {
-  doughnuttedFilter,
-  greyFilter,
-  mainPaletteSwapFilter,
-} from "../filters/standardFilters";
+import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
@@ -31,13 +26,11 @@ import {
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
-import {
-  createStackedSprites,
-  itemRidingOnBubblesSpritesOptions,
-} from "./createStackedSprites";
+import { createStackedSprites } from "./createStackedSprites";
 import { store } from "../../../store/store";
 import { getAtPath } from "../../../utils/getAtPath";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
+import { monsterAppearance } from "./monsterAppearance";
 
 const blockTextureId = (
   isDark: boolean,
@@ -59,9 +52,9 @@ const blockTextureId = (
 const carryableOutlineColour = spritesheetPalette.moss;
 
 const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
-  renderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+  itemRenderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style === "book" ? "book.y" : style),
@@ -75,6 +68,7 @@ export const itemAppearances: {
   headOverHeels: playableAppearance,
   doorFrame: doorFrameAppearance,
   doorLegs: doorLegsAppearance,
+  monster: monsterAppearance,
 
   stopAutowalk() {
     throw new Error("these should always be non-rendering");
@@ -83,9 +77,9 @@ export const itemAppearances: {
     throw new Error("these should always be non-rendering");
   },
 
-  wall: renderOnce(
+  wall: itemRenderOnce(
     ({
-      item: {
+      subject: {
         id,
         config: { direction, tiles },
       },
@@ -136,9 +130,9 @@ export const itemAppearances: {
     },
   ),
 
-  barrier: renderOnce(
+  barrier: itemRenderOnce(
     ({
-      item: {
+      subject: {
         config: { axis, times },
       },
     }) => {
@@ -149,9 +143,9 @@ export const itemAppearances: {
     },
   ),
 
-  deadlyBlock: renderOnce(
+  deadlyBlock: itemRenderOnce(
     ({
-      item: {
+      subject: {
         config: { style, times },
       },
       room,
@@ -166,12 +160,12 @@ export const itemAppearances: {
   slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
-    item: {
+    subject: {
       config: { style, times },
       state: { disappear },
     },
-    room,
     currentlyRenderedProps,
+    room,
   }) {
     const render =
       currentlyRenderedProps === undefined ||
@@ -196,7 +190,7 @@ export const itemAppearances: {
   },
 
   switch({
-    item: {
+    subject: {
       state: { setting: stateSetting },
       config: { store: switchStoreConfig },
     },
@@ -224,7 +218,7 @@ export const itemAppearances: {
   },
 
   conveyor({
-    item: {
+    subject: {
       config: { direction, times },
       state: { stoodOnBy },
     },
@@ -264,7 +258,7 @@ export const itemAppearances: {
     };
   },
 
-  lift: renderOnce(() => {
+  lift: itemRenderOnce(() => {
     const rendering = new Container();
 
     const pivot = {
@@ -284,7 +278,7 @@ export const itemAppearances: {
   }),
 
   teleporter({
-    item: {
+    subject: {
       state: { stoodOnBy },
     },
     currentlyRenderedProps,
@@ -315,7 +309,7 @@ export const itemAppearances: {
     };
   },
 
-  pickup: renderOnce(({ item: { config }, room }) => {
+  pickup: itemRenderOnce(({ subject: { config }, room }) => {
     if (config.gives === "crown") {
       return createSprite({
         textureId: `crown.${config.planet}`,
@@ -330,7 +324,7 @@ export const itemAppearances: {
       bag: "bag",
       doughnuts: "doughnuts",
       hooter: "hooter",
-      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room) },
+      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
       reincarnation: {
         animationId: "fish",
       },
@@ -340,16 +334,16 @@ export const itemAppearances: {
     return createSprite(createOptions);
   }),
 
-  moveableDeadly: renderOnce(
+  moveableDeadly: itemRenderOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
   charles({
-    item: {
+    subject: {
       state: { facing },
     },
     currentlyRenderedProps,
@@ -369,216 +363,18 @@ export const itemAppearances: {
     };
   },
 
-  monster({ item: { config, state }, room, currentlyRenderedProps }) {
-    const { activated, busyLickingDoughnutsOffFace } = state;
+  joystick: itemStaticSpriteAppearance("joystick"),
 
-    const filter =
-      busyLickingDoughnutsOffFace ? doughnuttedFilter
-      : !activated ? greyFilter(room)
-      : undefined;
-
-    switch (config.which) {
-      case "skiHead":
-      case "turtle":
-      case "cyberman":
-      case "computerBot":
-      case "elephant":
-      case "elephantHead":
-      case "monkey": {
-        const facingXy4 = vectorClosestDirectionXy4(state.facing);
-
-        const render =
-          currentlyRenderedProps === undefined ||
-          activated !== currentlyRenderedProps.activated ||
-          busyLickingDoughnutsOffFace !==
-            currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-          facingXy4 !== currentlyRenderedProps.facingXy4;
-
-        if (!render) {
-          return "no-update";
-        }
-        const renderProps: ItemRenderProps<"monster"> = {
-          facingXy4,
-          activated,
-          busyLickingDoughnutsOffFace,
-        };
-
-        // rendering is directional (xy4)
-        switch (config.which) {
-          case "skiHead":
-            // directional, style, no anim
-            return {
-              container: createSprite({
-                textureId: `${config.which}.${config.style}.${facingXy4}`,
-                filter,
-              }),
-              renderProps,
-            };
-          case "elephantHead":
-            // directional, no style, no anim
-            return {
-              container: createSprite({
-                textureId: `elephant.${facingXy4}`,
-                filter,
-              }),
-              renderProps,
-            };
-          case "turtle": {
-            // directional, anim:
-            const animate = activated && !busyLickingDoughnutsOffFace;
-            return {
-              container:
-                animate ?
-                  createSprite({
-                    animationId: `${config.which}.${facingXy4}`,
-                    filter,
-                  })
-                : createSprite({
-                    textureId: `${config.which}.${facingXy4}.1`,
-                    filter,
-                  }),
-              renderProps,
-            };
-          }
-          case "cyberman":
-            // directional, animated, stacked (bubbles):
-            return {
-              container:
-                state.activated || state.busyLickingDoughnutsOffFace ?
-                  createStackedSprites({
-                    top: {
-                      textureId: `${config.which}.${facingXy4}`,
-                      filter: filter || mainPaletteSwapFilter(room),
-                    },
-                    bottom: itemRidingOnBubblesSpritesOptions,
-                  })
-                  // charging on a toaster
-                : createSprite({
-                    textureId: `${config.which}.${facingXy4}`,
-                    filter,
-                  }),
-              renderProps,
-            };
-          case "computerBot":
-          case "elephant":
-          case "monkey":
-            // directional, not animated, stacked (base)
-            return {
-              container: createStackedSprites({
-                top: `${config.which}.${facingXy4}`,
-                filter,
-              }),
-              renderProps,
-            };
-          default:
-            config satisfies never;
-            throw new Error(`unexpected monster ${config}`);
-        }
-        break;
-      }
-
-      case "helicopterBug":
-      case "emperor":
-      case "dalek":
-      case "homingBot":
-      case "bubbleRobot":
-      case "emperorsGuardian": {
-        // not directional
-        const render =
-          currentlyRenderedProps === undefined ||
-          busyLickingDoughnutsOffFace !==
-            currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-          activated !== currentlyRenderedProps.activated;
-
-        if (!render) {
-          return "no-update";
-        }
-
-        const renderProps: ItemRenderProps<"monster"> = {
-          activated,
-          busyLickingDoughnutsOffFace,
-        };
-
-        // rendering is uni-directional
-        switch (config.which) {
-          case "helicopterBug":
-          case "dalek": {
-            const animate = activated && !busyLickingDoughnutsOffFace;
-            // not directional, animated
-            return {
-              container: createSprite(
-                animate ?
-                  {
-                    animationId: config.which,
-                    filter,
-                  }
-                : { textureId: `${config.which}.1`, filter },
-              ),
-              renderProps,
-            };
-          }
-          case "homingBot":
-            // not directional, not animated
-            return {
-              filter,
-              container: createSprite({ textureId: config.which, filter }),
-              renderProps,
-            };
-
-          case "bubbleRobot":
-            //not directional, animated, stacked (base):
-            return {
-              container: createStackedSprites({
-                top: itemRidingOnBubblesSpritesOptions,
-                filter,
-              }),
-              renderProps,
-            };
-
-          case "emperorsGuardian":
-            //not directional, stacked (bubbles):
-            return {
-              container: createStackedSprites({
-                top: `ball`,
-                bottom: itemRidingOnBubblesSpritesOptions,
-                filter,
-              }),
-              renderProps,
-            };
-
-          case "emperor":
-            return {
-              container: createSprite({
-                animationId: "bubbles.cold",
-                filter,
-              }),
-              renderProps,
-            };
-          default:
-            config satisfies never;
-            throw new Error(`unexpected monster ${config}`);
-        }
-        break;
-      }
-
-      default:
-        config satisfies never;
-        throw new Error(`unexpected monster ${config}`);
-    }
-  },
-
-  joystick: staticSpriteAppearance("joystick"),
-
-  movableBlock: renderOnce(
+  movableBlock: itemRenderOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => createSprite(style),
   ),
 
   portableBlock({
-    item: {
+    subject: {
       config: { style },
       state: { wouldPickUpNext: highlighted },
     },
@@ -611,7 +407,7 @@ export const itemAppearances: {
   },
 
   spring({
-    item: {
+    subject: {
       state: { stoodOnBy, wouldPickUpNext: highlighted },
     },
     currentlyRenderedProps,
@@ -657,7 +453,7 @@ export const itemAppearances: {
   },
 
   sceneryPlayer({
-    item: {
+    subject: {
       config: { which, startDirection },
       state: { wouldPickUpNext: highlighted },
     },
@@ -696,11 +492,11 @@ export const itemAppearances: {
     };
   },
 
-  hushPuppy: staticSpriteAppearance("hushPuppy"),
+  hushPuppy: itemStaticSpriteAppearance("hushPuppy"),
 
-  bubbles: renderOnce(
+  bubbles: itemRenderOnce(
     ({
-      item: {
+      subject: {
         config: { style },
       },
     }) => {
@@ -709,11 +505,11 @@ export const itemAppearances: {
       });
     },
   ),
-  firedDoughnut: staticSpriteAppearance({
+  firedDoughnut: itemStaticSpriteAppearance({
     animationId: "bubbles.doughnut",
   }),
 
-  ball: staticSpriteAppearance("ball"),
+  ball: itemStaticSpriteAppearance("ball"),
 
   floor: floorAppearance,
   floorEdge: floorEdgeAppearance,

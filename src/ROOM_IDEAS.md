@@ -14,3 +14,13 @@ tricky/puzzle rooms
 
 * a room with lots of walls (ie jsonitem type='wall') making a kind of maze instead of blocks to dmarkate - needs the
 walls inside a room to have a thinner bounding box
+
+* a "mojo factory" - conveyor belt with them coming out of a production line, but really
+going back up a hidden lift in a loop (conveyor drops them onto the lift maybe)
+
+* items on circular conveyors to collect
+
+* a room with the floor full of dozens of mojos, and a thin bridge over them (like a
+spiky floor but more interesting)
+
+* a room where charles has to move on top of a mojo to get somewhere (or a turtle)

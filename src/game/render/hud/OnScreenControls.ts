@@ -21,7 +21,6 @@ export type OnScreenButtonName =
   | Subset<BooleanAction, "jump" | "carry" | "fire">
   | "menu"
   | "carryAndJump";
-
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
 

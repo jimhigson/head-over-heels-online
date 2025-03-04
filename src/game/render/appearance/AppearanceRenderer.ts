@@ -1,17 +1,15 @@
 import { Container } from "pixi.js";
-import type {
-  ItemInPlayType,
-  ItemInPlay,
-  AnyItemInPlay,
-} from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
-import type { ItemAppearance } from "../itemAppearances/appearanceUtils";
-import { itemAppearances } from "../itemAppearances/ItemAppearances";
-import type { ItemRenderProps } from "../itemAppearances/ItemRenderProps";
 import type { Renderer, RenderContext } from "../Renderer";
+import type {
+  RenderSubject,
+  RenderProps,
+  AppearanceWithKnownRoomId,
+} from "./Appearance";
 
+/*
 const assignMouseActions = <RoomId extends string>(
   item: AnyItemInPlay<RoomId>,
   container: Container,
@@ -24,35 +22,32 @@ const assignMouseActions = <RoomId extends string>(
     });
   }
 };
+*/
+/**
+ * track changes of a subject over time, updating the rendering as necessary using a pluggable
+ * appearance function.
+ */
 
-export class ItemAppearanceRenderer<
-  T extends ItemInPlayType,
+export class AppearanceRenderer<
+  S extends RenderSubject,
+  RP extends RenderProps,
   RoomId extends string,
-  ItemId extends string,
 > implements Renderer
 {
-  #item: ItemInPlay<T, SceneryName, RoomId, ItemId>;
-  #room: RoomState<SceneryName, RoomId, ItemId>;
-  #currentlyRenderedProps: ItemRenderProps<T> | undefined = undefined;
+  #currentlyRenderedProps: RP | undefined = undefined;
   #container: Container;
-  //#itemShadowRenderer: ItemShadowRenderer<T, RoomId, ItemId> | undefined;
-  #appearance: ItemAppearance<T>;
 
   constructor(
-    item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
-    room: RoomState<SceneryName, RoomId, ItemId>,
+    private subject: S,
+    private room: RoomState<SceneryName, RoomId>,
     private gameState: GameState<RoomId>,
+    private appearance: AppearanceWithKnownRoomId<S, RP, RoomId>,
   ) {
-    this.#item = item;
-    this.#room = room;
-
     this.#container = new Container({
-      label: `ItemAppearanceRenderer ${item.id}`,
+      label: `AppearanceRenderer ${subject.id}`,
     });
 
-    assignMouseActions(item, this.#container, gameState);
-
-    this.#appearance = itemAppearances[item.type];
+    //assignMouseActions(subject, this.#container, gameState);
   }
 
   destroy() {
@@ -60,13 +55,9 @@ export class ItemAppearanceRenderer<
   }
 
   tick(renderContext: RenderContext) {
-    if (!this.#item.renders) {
-      throw new Error("should not have a renderer for non-rendering item");
-    }
-
-    const rendering = this.#appearance({
-      item: this.#item,
-      room: this.#room,
+    const rendering = this.appearance({
+      subject: this.subject,
+      room: this.room,
       currentlyRenderedProps: this.#currentlyRenderedProps,
       displaySettings: renderContext.displaySettings,
       previousRendering: this.#container.children.at(0) ?? null,
