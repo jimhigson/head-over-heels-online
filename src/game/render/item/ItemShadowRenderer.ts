@@ -8,11 +8,7 @@ import { collision1to1 } from "../../collision/aabbCollision";
 import { concat, objectEntries, objectValues } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlay";
+import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { iterate } from "../../../utils/iterate";
