@@ -52,14 +52,14 @@ export type RoomStateItems<
  * room)
  */
 export type RoomState<
-  P extends SceneryName,
+  ScN extends SceneryName,
   RoomId extends string,
   ItemId extends string = string,
 > = Simplify<
-  Omit<RoomJson<P, RoomId>, "items"> & {
-    items: RoomStateItems<P, RoomId, ItemId>;
+  Omit<RoomJson<ScN, RoomId>, "items"> & {
+    items: RoomStateItems<ScN, RoomId, ItemId>;
     /** the json this room was loaded from */
-    roomJson: RoomJson<P, RoomId, ItemId>;
+    roomJson: RoomJson<ScN, RoomId, ItemId>;
     /**
      * how long (in ms) this room has been in play for - only advanced while the room
      * is the current room

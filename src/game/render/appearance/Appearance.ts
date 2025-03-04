@@ -1,7 +1,5 @@
 import type { Container } from "pixi.js";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import type { DisplaySettings } from "../../../store/gameMenusSlice";
+import type { RenderContext } from "../Renderer";
 import type { GameState } from "../../gameState/GameState";
 
 /** anything that can be rendered by the appearance system */
@@ -25,6 +23,7 @@ export type AppearanceOptions<
   S extends RenderSubject,
   RP extends RenderProps,
   RoomId extends string,
+  RC extends RenderContext,
 > = {
   subject: S;
   /**
@@ -36,24 +35,21 @@ export type AppearanceOptions<
   /** the rendering that already exists for this item, or null if it was not rendered previously */
   previousRendering: Container | null;
 
-  displaySettings: DisplaySettings;
-
-  room: RoomState<SceneryName, RoomId>;
-
   gameState: GameState<RoomId>;
 
-  /** are we on hold (paused) right now? */
-  onHold: boolean;
+  renderContext: RC;
 };
 
 /**
  * generic type for rendering and re-rendering the appearance of anything. For Item-specific
  * appearances, see ItemAppearance
  */
-export type Appearance<S extends RenderSubject, RP extends RenderProps> = <
-  RoomId extends string,
->(
-  options: AppearanceOptions<S, RP, RoomId>,
+export type Appearance<
+  S extends RenderSubject,
+  RP extends RenderProps,
+  RC extends RenderContext,
+> = <RoomId extends string>(
+  options: AppearanceOptions<S, RP, RoomId, RC>,
 ) => AppearanceReturn<RP>;
 
 /**
@@ -64,7 +60,8 @@ export type AppearanceWithKnownRoomId<
   S extends RenderSubject,
   RP extends RenderProps,
   RoomId extends string,
-> = (options: AppearanceOptions<S, RP, RoomId>) => AppearanceReturn<RP>;
+  RC extends RenderContext,
+> = (options: AppearanceOptions<S, RP, RoomId, RC>) => AppearanceReturn<RP>;
 
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;

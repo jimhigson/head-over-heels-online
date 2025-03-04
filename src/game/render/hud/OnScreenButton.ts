@@ -14,6 +14,135 @@ import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { replaceWithHalfbriteFilter } from "../filters/standardFilters";
 import type { SetRequired } from "type-fest";
 import type { GameState } from "../../gameState/GameState";
+import type { Appearance } from "../appearance/Appearance";
+import type { ItemTypeUnion } from "../../../model/ItemInPlay";
+import type { PortableItemType } from "../../physics/itemPredicates";
+import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { showTextInContainer } from "./showNumberInContainer";
+import type { ButtonRenderingContainer } from "./createButtonRendering";
+import {
+  createButtonRendering,
+  buttonSpriteSym,
+  surfaceContentSym,
+} from "./createButtonRendering";
+import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
+
+type ButtonType = "jump" | "carry" | "fire" | "carryAndJump";
+
+type Button<Which extends ButtonType> = {
+  id: string;
+  which: Which;
+  actions: BooleanAction[];
+  colour: "red" | "blue" | "yellow" | "green";
+};
+
+type CommonButtonRenderProps = {
+  pressed: boolean;
+};
+
+type ButtonRenderProps = {
+  jump: CommonButtonRenderProps & {
+    standingOnTeleporter: boolean;
+  };
+  carry: CommonButtonRenderProps & {
+    bag: boolean;
+    item: ItemTypeUnion<PortableItemType, string>;
+  };
+  fire: CommonButtonRenderProps & {
+    doughnuts: number;
+    hasHooter: boolean;
+  };
+  carryAndJump: CommonButtonRenderProps & {
+    showing: "teleporter" | "jump-text";
+    bag: boolean;
+    item: ItemTypeUnion<PortableItemType, string>;
+  };
+};
+
+type ButtonRenderContext = {
+  colourised: boolean;
+};
+
+const buttonAppearances: {
+  [BT in ButtonType]: Appearance<
+    Button<BT>,
+    ButtonRenderProps[BT],
+    ButtonRenderContext
+  >;
+} = {
+  jump({
+    subject: { actions },
+    gameState,
+    currentlyRenderedProps,
+    previousRendering,
+  }) {
+    const { inputStateTracker } = gameState;
+
+    const playable = selectCurrentPlayableItem(gameState);
+
+    const standingOnTeleporter =
+      playable?.state.standingOn?.type === "teleporter";
+
+    const pressed = actions.every(
+      (a) => inputStateTracker.currentActionPress(a) !== "released",
+    );
+
+    const needsRender =
+      currentlyRenderedProps !== undefined &&
+      pressed !== currentlyRenderedProps.pressed &&
+      standingOnTeleporter !== currentlyRenderedProps.standingOnTeleporter;
+
+    if (!needsRender) {
+      return "no-update";
+    }
+
+    const container =
+      previousRendering === null ?
+        createButtonRendering()
+      : (previousRendering as ButtonRenderingContainer);
+
+    if (currentlyRenderedProps.pressed !== pressed) {
+      container[buttonSpriteSym].texture =
+        spriteSheet.textures[pressed ? "button.pressed" : "button"];
+      container[surfaceContentSym].y = pressed ? 1 : 0;
+    }
+
+    if (standingOnTeleporter !== currentlyRenderedProps.standingOnTeleporter) {
+      container[surfaceContentSym].removeChildren();
+      if (standingOnTeleporter) {
+        const teleporterSprite = createSprite("teleporter");
+        container[surfaceContentSym].addChild(teleporterSprite);
+      } else {
+        const jumpTextContainer = showTextInContainer(new Container(), "JUMP");
+        container[surfaceContentSym].addChild(jumpTextContainer);
+      }
+    }
+
+    return {
+      container,
+      renderProps: { pressed, standingOnTeleporter },
+    };
+  },
+  carry() {
+    return "no-update";
+  },
+  fire() {
+    return "no-update";
+  },
+  carryAndJump() {
+    return "no-update";
+  },
+};
+
+export class ButtonAppearanceRenderer<
+  BT extends ButtonType,
+  RoomId extends string,
+> extends AppearanceRenderer<
+  Button<BT>,
+  ButtonRenderProps[BT],
+  RoomId,
+  ButtonRenderContext
+> {}
 
 const buttonColours = {
   colourised: {

@@ -83,7 +83,7 @@ export const itemAppearances: {
         id,
         config: { direction, tiles },
       },
-      room,
+      renderContext: { room },
     }) => {
       if (direction === "right" || direction === "towards") {
         throw new Error(`this wall should be non-rendering ${id}`);
@@ -148,7 +148,7 @@ export const itemAppearances: {
       subject: {
         config: { style, times },
       },
-      room,
+      renderContext: { room },
     }) =>
       createSprite({
         textureId: style,
@@ -165,7 +165,7 @@ export const itemAppearances: {
       state: { disappear },
     },
     currentlyRenderedProps,
-    room,
+    renderContext: { room },
   }) {
     const render =
       currentlyRenderedProps === undefined ||
@@ -309,7 +309,7 @@ export const itemAppearances: {
     };
   },
 
-  pickup: itemRenderOnce(({ subject: { config }, room }) => {
+  pickup: itemRenderOnce(({ subject: { config }, renderContext: { room } }) => {
     if (config.gives === "crown") {
       return createSprite({
         textureId: `crown.${config.planet}`,

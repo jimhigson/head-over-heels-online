@@ -15,7 +15,7 @@ import { iterate } from "../../../utils/iterate";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import { subXy } from "../../../utils/vectors/vectors";
 import { store } from "../../../store/store";
-import type { RenderContext, Renderer } from "../Renderer";
+import type { ItemRenderContext, Renderer } from "../Renderer";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "../../../model/json/ItemConfigMap";
 
@@ -85,7 +85,7 @@ export class ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   ItemId extends string,
-> implements Renderer
+> implements Renderer<ItemRenderContext<RoomId>>
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -159,7 +159,7 @@ export class ItemShadowRenderer<
   /**
    * @returns true iff the item needs z-order resorting for the room
    */
-  tick({ movedItems, progression }: RenderContext) {
+  tick({ movedItems, progression }: ItemRenderContext<RoomId>) {
     const surfaceMoved = movedItems.has(this.item);
     const itemTop = this.item.state.position.z + this.item.aabb.z;
 

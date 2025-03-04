@@ -12,6 +12,7 @@ import type {
   AppearanceOptions,
   AppearanceReturn,
 } from "../appearance/Appearance";
+import type { ItemRenderContext } from "../Renderer";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -29,7 +30,12 @@ export type ItemAppearanceReturn<T extends ItemInPlayType> =
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
   RoomId extends string,
-> = AppearanceOptions<ItemTypeUnion<T, RoomId>, ItemRenderProps<T>, RoomId>;
+> = AppearanceOptions<
+  ItemTypeUnion<T, RoomId>,
+  ItemRenderProps<T>,
+  RoomId,
+  ItemRenderContext<RoomId>
+>;
 
 export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>(
   options: ItemAppearanceOptions<T, RoomId>,
@@ -78,23 +84,14 @@ export const itemRenderOnce =
     ) => Container,
   ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({
-    subject,
-    currentlyRenderedProps,
-    displaySettings,
-    onHold,
-    room,
-    gameState,
-  }) => {
+  ({ subject, currentlyRenderedProps, gameState, renderContext }) => {
     if (currentlyRenderedProps === undefined) {
       return {
         container: renderWith({
-          room,
           subject,
-          displaySettings,
-          onHold,
           gameState,
           previousRendering: null,
+          renderContext,
         }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };

@@ -5,8 +5,8 @@ import type { RoomState } from "../../../model/modelTypes";
 import { type SceneryName } from "../../../sprites/planets";
 import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
-import type { RenderContext, Renderer } from "../Renderer";
-import { ItemAppearanceRenderer } from "./AppearanceRenderer";
+import type { ItemRenderContext, Renderer } from "../Renderer";
+import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
@@ -42,7 +42,7 @@ export const createItemRenderer = <
   room: RoomState<SceneryName, RoomId, ItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;
-}): Renderer | "not-needed" => {
+}): Renderer<ItemRenderContext<RoomId>> | "not-needed" => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = selectIsColourised(state);
@@ -53,7 +53,7 @@ export const createItemRenderer = <
     showBoundingBoxes === "all" ||
     (showBoundingBoxes === "non-wall" && item.type !== "wall");
 
-  const renderers: Renderer[] = [];
+  const renderers: Renderer<ItemRenderContext<RoomId>>[] = [];
 
   if (item.renders) {
     const appearance = itemAppearances[
@@ -67,7 +67,7 @@ export const createItemRenderer = <
       T,
       RoomId,
       ItemId
-    >(item, room, gameState, appearance);
+    >(item, gameState, appearance);
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
       itemAppearanceRenderer.container.alpha = 0.66;
@@ -87,18 +87,20 @@ export const createItemRenderer = <
     // TODO: return a null renderer (that does nothing) instead of a special string?
     return "not-needed";
   } else {
-    return new ItemPositionRenderer(item, new CompositeRenderer(renderers));
+    return new ItemPositionRenderer(item, new CompositeItemRenderer(renderers));
   }
 };
 
-class CompositeRenderer implements Renderer {
-  #componentRenderers: Renderer[];
+class CompositeItemRenderer<RoomId extends string>
+  implements Renderer<ItemRenderContext<RoomId>>
+{
+  #componentRenderers: Renderer<ItemRenderContext<RoomId>>[];
   #container: Container = new Container({ label: "CompositeRenderer" });
-  constructor(componentRenderers: Renderer[]) {
+  constructor(componentRenderers: Renderer<ItemRenderContext<RoomId>>[]) {
     this.#componentRenderers = componentRenderers;
     this.#container.addChild(...componentRenderers.map((r) => r.container));
   }
-  tick(renderContext: RenderContext) {
+  tick(renderContext: ItemRenderContext<RoomId>) {
     for (const componentRenderer of this.#componentRenderers) {
       componentRenderer.tick(renderContext);
     }

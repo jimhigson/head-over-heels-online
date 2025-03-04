@@ -1,14 +1,19 @@
 import { Container } from "pixi.js";
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
-import type { Renderer, RenderContext } from "../Renderer";
+import type { Renderer, ItemRenderContext } from "../Renderer";
 
-export class ItemPositionRenderer implements Renderer {
+export class ItemPositionRenderer<RoomId extends string>
+  implements Renderer<ItemRenderContext<RoomId>>
+{
   #item: AnyItemInPlay;
   #container: Container;
-  #wrappedRenderer?: Renderer;
+  #wrappedRenderer?: Renderer<ItemRenderContext<RoomId>>;
 
-  constructor(item: AnyItemInPlay, wrappedRenderer: Renderer) {
+  constructor(
+    item: AnyItemInPlay,
+    wrappedRenderer: Renderer<ItemRenderContext<RoomId>>,
+  ) {
     this.#container = new Container({
       label: `ItemPositionRenderer ${item.id}`,
       children: [wrappedRenderer.container],
@@ -25,7 +30,7 @@ export class ItemPositionRenderer implements Renderer {
     this.#container.y = projectionXy.y;
   }
 
-  tick(renderContext: RenderContext) {
+  tick(renderContext: ItemRenderContext<RoomId>) {
     this.#wrappedRenderer?.tick(renderContext);
 
     if (renderContext.movedItems.has(this.#item)) {

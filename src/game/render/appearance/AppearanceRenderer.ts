@@ -1,6 +1,4 @@
 import { Container } from "pixi.js";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
 import type { Renderer, RenderContext } from "../Renderer";
 import type {
@@ -32,16 +30,16 @@ export class AppearanceRenderer<
   S extends RenderSubject,
   RP extends RenderProps,
   RoomId extends string,
-> implements Renderer
+  RC extends RenderContext,
+> implements Renderer<RC>
 {
   #currentlyRenderedProps: RP | undefined = undefined;
   #container: Container;
 
   constructor(
     private subject: S,
-    private room: RoomState<SceneryName, RoomId>,
     private gameState: GameState<RoomId>,
-    private appearance: AppearanceWithKnownRoomId<S, RP, RoomId>,
+    private appearance: AppearanceWithKnownRoomId<S, RP, RoomId, RC>,
   ) {
     this.#container = new Container({
       label: `AppearanceRenderer ${subject.id}`,
@@ -54,14 +52,12 @@ export class AppearanceRenderer<
     this.#container.destroy({ children: true });
   }
 
-  tick(renderContext: RenderContext) {
+  tick(renderContext: RC) {
     const rendering = this.appearance({
       subject: this.subject,
-      room: this.room,
       currentlyRenderedProps: this.#currentlyRenderedProps,
-      displaySettings: renderContext.displaySettings,
       previousRendering: this.#container.children.at(0) ?? null,
-      onHold: renderContext.onHold,
+      renderContext,
       gameState: this.gameState,
     });
 

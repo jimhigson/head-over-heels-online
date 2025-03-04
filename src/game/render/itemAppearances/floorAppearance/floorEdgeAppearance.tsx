@@ -7,7 +7,7 @@ import { renderEdge } from "./renderEdge";
 import { defaultUserSettings } from "../../../../store/gameMenusSlice";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
-  ({ room, onHold, displaySettings }) => {
+  ({ renderContext: { displaySettings, onHold, room } }) => {
     const {
       blockXMin,
       blockYMin,
