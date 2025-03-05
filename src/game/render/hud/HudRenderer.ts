@@ -2,7 +2,6 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container, Sprite, Ticker } from "pixi.js";
 import { getColorScheme } from "../../hintColours";
 import type {
-  CarriedItem,
   HeadAbilities,
   HeelsAbilities,
 } from "../../../model/ItemStateMap";
@@ -25,7 +24,6 @@ import {
   fastStepsRemaining,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
@@ -43,6 +41,7 @@ import {
   hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
 } from "./hudFilters";
+import { createCarriedSprite } from "./createCarriedSprite";
 
 const fpsUpdatePeriod = 250;
 
@@ -291,17 +290,6 @@ export class HudRenderer<RoomId extends string> {
     this.#hudElements.fps.x = screenSize.x - hudCharTextureSize.w * 2;
   }
 
-  #createCarriedSprite(carrying: CarriedItem<string>) {
-    return createSprite(
-      carrying.type === "spring" ? "spring.released"
-      : carrying.type === "sceneryPlayer" ?
-        carrying.config.which === "head" ?
-          "head.walking.towards.2"
-        : "heels.walking.away.2"
-      : carrying.config.style,
-    );
-  }
-
   #itemFilter(highlighted: boolean, colourise: boolean) {
     return (
       highlighted ?
@@ -327,7 +315,7 @@ export class HudRenderer<RoomId extends string> {
       }
     }
     if (carrying !== null && !hasSprite) {
-      carryingContainer.addChild(this.#createCarriedSprite(carrying));
+      carryingContainer.addChild(createCarriedSprite(carrying));
     }
     carryingContainer.filters = this.#itemFilter(true, colourise);
 

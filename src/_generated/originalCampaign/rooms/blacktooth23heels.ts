@@ -32,6 +32,36 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3.5, z: 0 },
       type: "player",
     },
+    b: {
+      type: 'pickup',
+      position: { x: 2, y: 3, z: 0 },
+      config: { gives: "bag" },
+    },
+    b2: {
+      type: 'portableBlock',
+      position: { x: 2, y: 3, z: 1 },
+      config: { style: 'cube' },
+    },
+    b3: {
+      type: 'portableBlock',
+      position: { x: 2, y: 3, z: 2 },
+      config: { style: 'drum' },
+    },
+    b4: {
+      type: 'portableBlock',
+      position: { x: 2, y: 3, z: 3 },
+      config: { style: 'sticks' },
+    },
+    b5: {
+      type: 'spring',
+      position: { x: 2, y: 3, z: 4 },
+      config: {},
+    },
+    b6: {
+      type: 'sceneryPlayer',
+      position: { x: 2, y: 3, z: 4 },
+      config: { which: 'head', startDirection: 'right' },
+    },
     scroll: {
       config: { gives: "scroll", page: "head" },
       isExtra: true,

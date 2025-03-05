@@ -37,6 +37,10 @@ export type AppearanceOptions<
 
   gameState: GameState<RoomId>;
 
+  /**
+   * some context that this subject is being rendered in, for example the room
+   * that is being rendered, or the current display settings
+   */
   renderContext: RC;
 };
 

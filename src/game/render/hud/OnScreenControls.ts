@@ -1,20 +1,15 @@
 import { Container } from "pixi.js";
 
-import type {
-  CharacterName,
-  IndividualCharacterName,
-} from "../../../model/modelTypes";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 
 import type { TickOptions } from "./HudRenderer";
 import { objectValues } from "iter-tools";
-import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { OnScreenJoystick } from "./OnScreenJoystick";
-import { OnScreenButton, buttonSpriteSize } from "./OnScreenButton";
+import { ButtonAppearanceRenderer } from "./OnScreenButton";
 import type { Subset } from "../../../utils/subset";
 import type { BooleanAction } from "../../input/actions";
-import { hudLowlightAndOutlineFilters } from "./hudFilters";
+import { spritesheetData } from "../../../sprites/spriteSheetData";
 
 const mainButtonsSpreadPx = 14;
 export type OnScreenButtonName =
@@ -30,64 +25,62 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
       buttons: {
-        menu: new OnScreenButton({
-          actions: ["menu_openOrExit"],
-          inputStateTracker: gameState.inputStateTracker,
-          colour: undefined,
+        // menu: new OnScreenButton({
+        //   actions: ["menu_openOrExit"],
+        //   inputStateTracker: gameState.inputStateTracker,
+        //   colour: undefined,
+        //   gameState,
+        //   textureId: "hud.char.Menu",
+        // }),
+        jump: new ButtonAppearanceRenderer(
+          { colour: "blue", actions: ["jump"], id: "jump", which: "jump" },
           gameState,
-          textureId: "hud.char.Menu",
-        }),
-        jump: new OnScreenButton({
-          actions: ["jump"],
-          inputStateTracker: gameState.inputStateTracker,
+        ),
+        fire: new ButtonAppearanceRenderer(
+          { colour: "red", actions: ["fire"], id: "fire", which: "fire" },
           gameState,
-          colour: "blue",
-          surfaceTextureId: () => "spring.released",
-        }),
-        carry: new OnScreenButton({
-          actions: ["carry"],
-          inputStateTracker: gameState.inputStateTracker,
-          colour: "green",
+        ),
+        carry: new ButtonAppearanceRenderer(
+          { colour: "green", actions: ["carry"], id: "carry", which: "carry" },
           gameState,
-          surfaceTextureId: () => "bag",
-        }),
-        fire: new OnScreenButton({
-          actions: ["fire"],
-          inputStateTracker: gameState.inputStateTracker,
-          colour: "red",
-          gameState,
-          surfaceTextureId: () => "hooter",
-        }),
-        carryAndJump: new OnScreenButton({
-          actions: ["carry", "jump"],
-          inputStateTracker: gameState.inputStateTracker,
-          gameState,
-          colour: "yellow",
-        }),
-      } satisfies Record<OnScreenButtonName, OnScreenButton<RoomId>>,
+        ),
+        // fire: new OnScreenButton({
+        //   actions: ["fire"],
+        //   inputStateTracker: gameState.inputStateTracker,
+        //   colour: "red",
+        //   gameState,
+        //   surfaceTextureId: () => "hooter",
+        // }),
+        // carryAndJump: new OnScreenButton({
+        //   actions: ["carry", "jump"],
+        //   inputStateTracker: gameState.inputStateTracker,
+        //   gameState,
+        //   colour: "yellow",
+        // }),
+      }, //satisfies Record<OnScreenButtonName, OnScreenButton<RoomId>>,
       joystick: new OnScreenJoystick(gameState.inputStateTracker),
     };
 
     const { buttons } = this.#hudElements;
 
     const { mainButtonNest, joystick } = this.#hudElements;
-    mainButtonNest.addChild(buttons.jump.container);
-    mainButtonNest.addChild(buttons.carry.container);
-    mainButtonNest.addChild(buttons.fire.container);
-    mainButtonNest.addChild(buttons.carryAndJump.container);
+
+    for (const b of objectValues(buttons)) {
+      mainButtonNest.addChild(b.container);
+    }
 
     buttons.jump.container.y = mainButtonsSpreadPx;
     buttons.carry.container.x = -mainButtonsSpreadPx * 2;
-    buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
+    // buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
     buttons.fire.container.x = mainButtonsSpreadPx * 2;
 
-    buttons.menu.container.x = 24;
-    buttons.menu.container.y = 24;
-    buttons.menu.container.scale = 2;
-    buttons.menu.container.filters = hudLowlightAndOutlineFilters;
+    // buttons.menu.container.x = 24;
+    // buttons.menu.container.y = 24;
+    // buttons.menu.container.scale = 2;
+    // buttons.menu.container.filters = hudLowlightAndOutlineFilters;
 
     this.#container.addChild(mainButtonNest);
-    this.#container.addChild(buttons.menu.container);
+    // this.#container.addChild(buttons.menu.container);
     this.#container.addChild(joystick.container);
 
     this.#initInteractivity();
@@ -106,9 +99,13 @@ export class OnScreenControls<RoomId extends string> {
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
+  /*
   #updateShowAndHide() {
     const { currentCharacterName } = this.gameState;
 
+    return;
+
+    
     const heelsAbilities = selectAbilities(this.gameState, "heels");
     const headAbilities = selectAbilities(this.gameState, "head");
 
@@ -126,6 +123,7 @@ export class OnScreenControls<RoomId extends string> {
       false;
 
     this.#hudElements.buttons.fire.container.visible = fireVisible;
+    
   }
 
   #characterIsActive(
@@ -137,13 +135,14 @@ export class OnScreenControls<RoomId extends string> {
       currentCharacterName === "headOverHeels"
     );
   }
+    */
 
   tick({ screenSize, colourise }: TickOptions<RoomId>): void {
     this.#updateElementPositions(screenSize);
     for (const b of objectValues(this.#hudElements.buttons)) {
-      b.update(colourise);
+      b.tick({ colourise });
     }
-    this.#updateShowAndHide();
+    //this.#updateShowAndHide();
     this.#hudElements.joystick.tick(colourise);
   }
 
@@ -155,3 +154,4 @@ export class OnScreenControls<RoomId extends string> {
     this.#container.destroy();
   }
 }
+export const buttonSpriteSize = spritesheetData.frames.button.frame;

@@ -121,7 +121,7 @@ const pickUpItem = <RoomId extends string, T extends PortableItemType>(
   deleteItemFromRoom({ room, item: itemToPickup });
 };
 
-const findItemToPickup = <RoomId extends string>(
+export const findItemToPickup = <RoomId extends string>(
   carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
   room: RoomState<SceneryName, RoomId>,
 ) => {
