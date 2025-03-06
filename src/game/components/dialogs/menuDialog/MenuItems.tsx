@@ -10,22 +10,22 @@ import {
 } from "./MenuItem";
 import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
 
-const findMenuItems = (container: HTMLDivElement) => {
-  const menuItemsDom = container.querySelectorAll(
+const findMenuItems = () => {
+  const menuItemsDom = document.body.querySelectorAll(
     `[${menuItemDataAttributeId}]`,
   );
   return Array.from(menuItemsDom);
 };
 
 /** @returns true iff declined to handle */
-const moveFocus = (container: HTMLDivElement, direction: 1 | -1) => {
+const moveFocus = (direction: 1 | -1) => {
   const curFocusId = store.getState().openMenus[0].focussedItemId;
 
   if (curFocusId === undefined) {
     return true; // nothing is selected yet, so can't move the selection up
   }
 
-  const menuItemsDom = findMenuItems(container);
+  const menuItemsDom = findMenuItems();
 
   if (menuItemsDom.length <= 1) {
     return true; // no menu items to select, or just one item so no movement possible
@@ -70,7 +70,7 @@ const useMenuNavigationInput = (
     handler: useCallback(() => {
       if (containerRef.current === null) return;
 
-      return moveFocus(containerRef.current, -1);
+      return moveFocus(-1);
     }, [containerRef]),
     disabled,
   });
@@ -80,7 +80,7 @@ const useMenuNavigationInput = (
     handler: useCallback(() => {
       if (containerRef.current === null) return;
 
-      return moveFocus(containerRef.current, 1);
+      return moveFocus(1);
     }, [containerRef]),
     disabled,
   });
@@ -102,7 +102,7 @@ export const MenuItems = ({
       return;
     }
 
-    const menuItemsDom = findMenuItems(ref.current);
+    const menuItemsDom = findMenuItems();
 
     store.dispatch(
       setFocussedMenuItemId({

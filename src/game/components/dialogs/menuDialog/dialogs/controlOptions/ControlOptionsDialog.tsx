@@ -37,10 +37,10 @@ import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 
 const analogueControlOffHintMarkdown =
-  "**analog off**: true to the original with *4-way* movement";
+  "**analogue off**: true to the original with *4-way* movement";
 
 const analogueControlOnHintMarkdown =
-  "**analog on**: move in *any* direction with analogue stick, or *8-way* with d-pad/keys";
+  "**analogue on**: move in *any* direction with analogue stick, or *8-way* with d-pad/keys";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -92,11 +92,7 @@ const AnalogueControlMenuItem = () => {
   return (
     <MenuItem
       id="analogueControl"
-      label={
-        <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-          Analog/ 8-way control
-        </BitmapText>
-      }
+      label="Analogue/ 8-way control"
       leader={<span className={`${spriteLeaderClasses} texture-joystick`} />}
       valueElement={<Switch value={useIsAnalogueControl()} />}
       onSelect={useDispatchActionCallback(
@@ -122,11 +118,7 @@ const OnScreenControlsMenuItem = () => {
   return (
     <MenuItem
       id="controlOptions"
-      label={
-        <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-          on- screen controls
-        </BitmapText>
-      }
+      label="on-screen controls"
       valueElement={<Switch value={useIsOnScreenControls()} />}
       onSelect={useDispatchActionCallback(
         toggleBoolean,
@@ -138,22 +130,22 @@ const OnScreenControlsMenuItem = () => {
 
 const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
   return (
-    <>
-      <BitmapText className={`col-span-3 ${multilineTextClass}`}>
+    <div className="text-metallicBlueHalfbrite zx:text-zxBlue">
+      <BitmapText className={`block mb-1 ${multilineTextClass}`}>
         Detected that you are on a phone or tablet
       </BitmapText>
-      <BitmapText className={`col-span-3 ${multilineTextClass}`}>
+      <BitmapText className={`block mb-1 ${multilineTextClass}`}>
         Additional settings for keys and gamepad buttons are designed for
         desktop/laptops, but you can use them on phones/tablets if you have a
         keyboard or gamepad connected
       </BitmapText>
       <BitmapText
-        className={`col-span-3 text-midRed zx:text-zxRed ${multilineTextClass} mb-1`}
+        className={`block mb-1 text-midRed zx:text-zxRed ${multilineTextClass} mb-1`}
         onClick={showAll}
       >
         Tap here to show all settings
       </BitmapText>
-    </>
+    </div>
   );
 };
 
@@ -406,6 +398,7 @@ export const ControlOptionsDialog = () => {
       <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog max-w-widestDialog resGameboy:!w-full resGameboy:!h-full">
         <div
           className={
+            "flex flex-col gap-y-1 " +
             "overflow-y-scroll " +
             "scrollbar  scrollbar-w-1 " +
             "scrollbar-thumb-midGrey scrollbar-track-white " +
@@ -413,30 +406,30 @@ export const ControlOptionsDialog = () => {
           }
         >
           {isTouchDevice() && <MobileStyleBackButton className="mb-1" />}
-          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mb-1">
+          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block">
             control options
           </BitmapText>
 
           <MenuItems className={controlOptionsMenuItemsClass}>
             <AnalogueControlMenuItem />
             <OnScreenControlsMenuItem />
-
-            {showAll ?
-              <>
-                {isAnalogueControl && <ScreenRelativeControlSection />}
-
-                <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
-                  Select the keys
-                </BitmapText>
-
-                <SelectTheKeysMenuItems />
-              </>
-            : <>
-                <ExpandToShowAll showAll={() => setShowAll(true)} />
-              </>
-            }
-            {isTouchDevice() || <BackMenuItem />}
+            {isAnalogueControl && showAll && <ScreenRelativeControlSection />}
           </MenuItems>
+
+          {showAll ?
+            <>
+              <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
+                Select the keys
+              </BitmapText>
+              <MenuItems className={controlOptionsMenuItemsClass}>
+                <SelectTheKeysMenuItems />
+                {isTouchDevice() || <BackMenuItem />}
+              </MenuItems>
+            </>
+          : <>
+              <ExpandToShowAll showAll={() => setShowAll(true)} />
+            </>
+          }
         </div>
         <SelectKeysMenuFooter />
       </Dialog>
