@@ -12,7 +12,7 @@ const directions4HintMarkdown =
 const directions8HintMarkdown =
   "**8-way**: the original with *4-way* movement, plus *diagonals*";
 const analogueDirectionsHintMarkdown =
-  "**analogue on**: move in *any* direction with analogue stick, or *8-way* with d-pad/keys";
+  "**analogue**: move in *any* direction with analogue stick";
 export const InputDirectionModeMenuItem = () => {
   const inputDirectionMode = useInputDirectionMode();
   return (
