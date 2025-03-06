@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { RequiredDeep, ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
 import type {
   ActionInputAssignment,
@@ -27,6 +27,7 @@ import {
   selectEmulatedResolutionName,
   selectInputDirectionMode,
 } from "./selectors";
+import { defaultUserSettings } from "./defaultUserSettings";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -117,26 +118,6 @@ const noPlanetsLiberated = {
   egyptus: false,
   penitentiary: false,
   safari: false,
-};
-
-export const defaultUserSettings: RequiredDeep<UserSettings> = {
-  inputAssignment: keyAssignmentPresets.default.inputAssignment,
-  infiniteLivesPoke: false,
-
-  displaySettings: {
-    showBoundingBoxes: "none",
-    showShadowMasks: false,
-    crtFilter: false,
-    uncolourised: false,
-    emulatedResolution:
-      detectDeviceType() === "mobile" ? "gameboy" : "zxSpectrum",
-  },
-
-  showFps: false,
-  onScreenControls:
-    detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
-  inputDirectionMode: "8-way",
-  screenRelativeControl: false,
 };
 
 export const initialGameMenuSliceState: GameMenusState = {

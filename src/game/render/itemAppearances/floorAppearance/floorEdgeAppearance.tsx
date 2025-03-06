@@ -4,7 +4,7 @@ import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, itemRenderOnce } from "../ItemAppearance";
 import { renderEdge } from "./renderEdge";
-import { defaultUserSettings } from "../../../../store/gameMenusSlice";
+import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
   ({ renderContext: { displaySettings, onHold, room } }) => {
