@@ -5,10 +5,14 @@ import {
   noFilters,
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
-import type { ButtonColor } from "./buttonColours";
 import { buttonColours } from "./buttonColours";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
+import { showTextInContainer } from "./showNumberInContainer";
+import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { halfBrite } from "../../../utils/colour/halfBrite";
+import type { Button } from "./OnScreenButton";
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
 export const surfaceContentSym: unique symbol = Symbol();
 export const buttonSpriteSym: unique symbol = Symbol();
@@ -30,10 +34,10 @@ export type ButtonRenderingContainer = Container & {
  */
 export const arcadeStyleButtonRendering = ({
   colourise,
-  colour,
+  button: { colour },
 }: {
   colourise: boolean;
-  colour: ButtonColor;
+  button: Button;
 }): ButtonRenderingContainer => {
   // a container so that the whole button can move down together
   // to show the 'pressed' effect
@@ -100,4 +104,19 @@ export const setDisabled = (
   if (colourise) {
     button.filters = disabled ? greyFilter() : noFilters;
   }
+};
+
+export const createTextForButtonSurface = (
+  { colour }: Button,
+  colourise: boolean,
+  text: string,
+): Container => {
+  const jumpTextContainer = showTextInContainer(new Container(), text);
+  jumpTextContainer.filters = new PaletteSwapFilter({
+    white:
+      colourise ?
+        halfBrite(buttonColours.colourised[colour])
+      : spritesheetPalette.pureBlack,
+  });
+  return jumpTextContainer;
 };

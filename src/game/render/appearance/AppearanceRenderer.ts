@@ -31,15 +31,22 @@ export class AppearanceRenderer<
   RP extends RenderProps,
   RoomId extends string,
   RC extends RenderContext,
+  RenderObject extends Container = Container,
 > implements Renderer<RC>
 {
   #currentlyRenderedProps: RP | undefined = undefined;
-  #container: Container;
+  #container: Container<RenderObject>;
 
   constructor(
     private subject: S,
     private gameState: GameState<RoomId>,
-    private appearance: AppearanceWithKnownRoomId<S, RP, RoomId, RC>,
+    private appearance: AppearanceWithKnownRoomId<
+      S,
+      RP,
+      RoomId,
+      RC,
+      RenderObject
+    >,
   ) {
     this.#container = new Container({
       label: `AppearanceRenderer ${subject.id}`,

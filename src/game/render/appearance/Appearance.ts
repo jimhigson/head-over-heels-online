@@ -6,13 +6,16 @@ import type { GameState } from "../../gameState/GameState";
 export type RenderSubject = { id: string };
 export type RenderProps = Record<string, unknown>;
 
-export type AppearanceReturn<RP extends RenderProps> =
+export type AppearanceReturn<
+  RP extends RenderProps,
+  RenderObject extends Container = Container,
+> =
   | {
       /**
        * a new rendering, since one is required - null to explicitly change the item's rendering
        * to nothing
        */
-      container: Container | null;
+      container: RenderObject | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: RP;
     }
@@ -24,6 +27,7 @@ export type AppearanceOptions<
   RP extends RenderProps,
   RoomId extends string,
   RC extends RenderContext,
+  RenderObject extends Container = Container,
 > = {
   subject: S;
   /**
@@ -33,7 +37,7 @@ export type AppearanceOptions<
   currentlyRenderedProps: RP | undefined;
 
   /** the rendering that already exists for this item, or null if it was not rendered previously */
-  previousRendering: Container | null;
+  previousRendering: RenderObject | null;
 
   gameState: GameState<RoomId>;
 
@@ -52,9 +56,10 @@ export type Appearance<
   S extends RenderSubject,
   RP extends RenderProps,
   RC extends RenderContext,
+  RenderObject extends Container = Container,
 > = <RoomId extends string>(
-  options: AppearanceOptions<S, RP, RoomId, RC>,
-) => AppearanceReturn<RP>;
+  options: AppearanceOptions<S, RP, RoomId, RC, RenderObject>,
+) => AppearanceReturn<RP, RenderObject>;
 
 /**
  * sometimes it is useful to be able to cast Appearance to a version that
@@ -65,7 +70,10 @@ export type AppearanceWithKnownRoomId<
   RP extends RenderProps,
   RoomId extends string,
   RC extends RenderContext,
-> = (options: AppearanceOptions<S, RP, RoomId, RC>) => AppearanceReturn<RP>;
+  RenderObject extends Container = Container,
+> = (
+  options: AppearanceOptions<S, RP, RoomId, RC, RenderObject>,
+) => AppearanceReturn<RP, RenderObject>;
 
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;
