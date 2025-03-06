@@ -43,22 +43,6 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
-    dn: {
-      config: { gives: 'doughnuts' },
-      position: { x: 1, y: 1, z: 0 },
-      type: "pickup",
-    },
-    dn2: {
-      config: { gives: 'doughnuts' },
-      position: { x: 1, y: 1, z: 1 },
-      type: "pickup",
-    },
-    hoo: {
-      config: { gives: 'hooter' },
-      position: { x: 2, y: 1, z: 1 },
-      type: "pickup",
-    },
-
     "pickup@5,0,7": {
       config: { gives: "extra-life" },
       position: { x: 5, y: 0, z: 7 },
