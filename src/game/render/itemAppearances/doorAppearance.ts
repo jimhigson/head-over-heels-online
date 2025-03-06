@@ -103,7 +103,7 @@ const xyToTranslateToInsideOfRoom = (
 };
 
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
-  ({ subject: doorLegsItem, room }) => {
+  ({ subject: doorLegsItem, renderContext: { room } }) => {
     return iterateToContainer(
       doorLegsGenerator(doorLegsItem, room),
       new Container({
@@ -123,7 +123,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
       config: { direction, part },
       aabb,
     },
-    room,
+    renderContext: { room },
   }) => {
     const axis = doorAlongAxis(direction);
     return createSprite({

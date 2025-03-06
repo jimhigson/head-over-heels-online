@@ -4,7 +4,7 @@ import { hudCharTextureSize } from "../../../sprites/textureSizes";
 import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
 
-function* numberSprites(n: number | string) {
+function* characterSprites(n: number | string) {
   const chars =
     typeof n === "string" ? n.split("")
     : Number.isFinite(n) ? n.toString().split("")
@@ -24,10 +24,11 @@ export function showNumberInContainer(
   n: number | string,
 ) {
   container.removeChildren();
-  iterateToContainer(numberSprites(n), container);
+  iterateToContainer(characterSprites(n), container);
 }
 
 export function showTextInContainer(container: Container, n: number | string) {
   container.removeChildren();
-  iterateToContainer(numberSprites(n), container);
+  iterateToContainer(characterSprites(n), container);
+  return container;
 }

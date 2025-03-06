@@ -124,3 +124,10 @@ export const selectAnalogueControl = (state: RootState): boolean =>
 export const selectScreenRelativeControl = (state: RootState): boolean =>
   state.userSettings.screenRelativeControl ??
   defaultUserSettings.screenRelativeControl;
+
+export const selectOnScreenControls = (state: RootState): boolean =>
+  state.userSettings.onScreenControls ?? defaultUserSettings.onScreenControls;
+
+export const useIsOnScreenControls = () => {
+  return useAppSelector(selectOnScreenControls);
+};

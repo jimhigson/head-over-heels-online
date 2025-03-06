@@ -32,17 +32,27 @@
     Eg, .times() hardcoded to return 1,1,1 for most
 
 ### mobile
-[ ] "turn to landscape" screen
+[x] "turn to landscape" screen
 [x] remove address bar in normal browser
     maybe helpful? https://stackoverflow.com/questions/5206811/hide-iphone-address-bar-with-100-height - although very old!
     - can't but can do as a PQA
 [x] allow use as a PWA
 [x] hud input controls (only on phone)
-[ ] back button on menus
+[x] back button on menus
 [x] menu button while playing
-[ ] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
-[ ] text larger in dialogs - probably by increasing the scale size inside dialogs
+[x] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
+[x] text larger in dialogs - probably by increasing the scale size inside dialogs
 [ ] hitting hte joystick with a tap sometimes moves <1px
+
+### menus
+[ ] control menus - allow different column width for non-select keys options
+    (multiple <MenuItems /> components)
+
+### Controls
+
+[ ] joystick/pads that declare the d-pad as axes - treat like buttons
+[ ] 8-way mode (make default on touch devices)
+
 
 ### Details and bugs
 

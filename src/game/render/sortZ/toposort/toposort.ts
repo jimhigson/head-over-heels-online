@@ -19,8 +19,8 @@ export type GraphEdges<NodeId> = Map<NodeId, Set<NodeId>>;
 
 export class CyclicDependencyError<T> extends Error {
   constructor(
-    public cyclicDependency: Array<T>,
-    public hasClosedCycle: boolean,
+    public readonly cyclicDependency: Array<T>,
+    public readonly hasClosedCycle: boolean,
     options?: ErrorOptions,
   ) {
     super(

@@ -52,6 +52,7 @@ export type UserSettings = {
   showFps?: boolean;
   analogueControl?: boolean;
   screenRelativeControl?: boolean;
+  onScreenControls?: boolean;
 };
 
 const inBrowser = detectDeviceType() !== "server";
@@ -125,6 +126,8 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
   },
 
   showFps: false,
+  onScreenControls:
+    detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
   analogueControl: true,
   screenRelativeControl: false,
 };

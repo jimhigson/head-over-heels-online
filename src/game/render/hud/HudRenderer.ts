@@ -2,7 +2,6 @@ import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container, Sprite, Ticker } from "pixi.js";
 import { getColorScheme } from "../../hintColours";
 import type {
-  CarriedItem,
   HeadAbilities,
   HeelsAbilities,
 } from "../../../model/ItemStateMap";
@@ -25,11 +24,9 @@ import {
   fastStepsRemaining,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { createSprite } from "../createSprite";
 import { noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
-import type { DeviceType } from "../../../utils/detectDeviceType";
 import { OnScreenControls } from "./OnScreenControls";
 import { showNumberInContainer } from "./showNumberInContainer";
 import {
@@ -43,33 +40,20 @@ import {
   hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
 } from "./hudFilters";
+import { createCarriedSprite } from "./createCarriedSprite";
 
 const fpsUpdatePeriod = 250;
 
-const livesTextFromCentre: Record<DeviceType, number> = {
-  server: 24,
-  desktop: 24,
-  tablet: 24,
-  mobile: 12,
-};
-const playableIconFromCentre: Record<DeviceType, number> = {
-  server: 56,
-  desktop: 56,
-  tablet: 56,
-  mobile: 32,
-};
-const smallIconsFromCentre: Record<DeviceType, number> = {
-  server: 80,
-  desktop: 80,
-  tablet: 80,
-  mobile: 40,
-};
-const extraSkillFromBottom: Record<DeviceType, number> = {
-  server: 24,
-  desktop: 24,
-  tablet: 16,
-  mobile: 18,
-};
+const livesTextFromCentre = (onScreenControls: boolean) =>
+  onScreenControls ? 12 : 24;
+const playableIconFromCentre = (onScreenControls: boolean) =>
+  onScreenControls ? 32 : 56;
+
+const smallIconsFromCentre = (onScreenControls: boolean) =>
+  onScreenControls ? 40 : 80;
+const extraSkillFromBottom = (onScreenControls: boolean) =>
+  onScreenControls ? 18 : 24;
+
 // bag/hooter/doughnuts etc - how far to render the icon from the screen centre::
 const playersIconsFromCentre = 112;
 
@@ -77,10 +61,9 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-export type TickOptions<RoomId extends string> = {
+export type HudRendererTickOptions<RoomId extends string> = {
   gameState: GameState<RoomId>;
   screenSize: Xy;
-  colourise: boolean;
 };
 
 export class HudRenderer<RoomId extends string> {
@@ -151,7 +134,8 @@ export class HudRenderer<RoomId extends string> {
 
   constructor(
     private gameState: GameState<RoomId>,
-    private deviceType: DeviceType,
+    public readonly onScreenControls: boolean,
+    public readonly colourise: boolean,
   ) {
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].livesText);
@@ -161,7 +145,7 @@ export class HudRenderer<RoomId extends string> {
         this.#hudElements[character].extraSkill.container,
       );
     }
-    if (this.deviceType !== "mobile") {
+    if (!onScreenControls) {
       this.#container.addChild(this.#hudElements.head.doughnuts.container);
       this.#container.addChild(this.#hudElements.head.hooter.container);
       this.#container.addChild(this.#hudElements.heels.bag.container);
@@ -177,8 +161,8 @@ export class HudRenderer<RoomId extends string> {
 
     this.#initInteractivity();
 
-    if (deviceType !== "desktop") {
-      this.#controls = new OnScreenControls(gameState);
+    if (onScreenControls) {
+      this.#controls = new OnScreenControls(gameState, this.colourise);
       this.#container.addChild(this.#controls.container);
     }
   }
@@ -291,17 +275,6 @@ export class HudRenderer<RoomId extends string> {
     this.#hudElements.fps.x = screenSize.x - hudCharTextureSize.w * 2;
   }
 
-  #createCarriedSprite(carrying: CarriedItem<string>) {
-    return createSprite(
-      carrying.type === "spring" ? "spring.released"
-      : carrying.type === "sceneryPlayer" ?
-        carrying.config.which === "head" ?
-          "head.walking.towards.2"
-        : "heels.walking.away.2"
-      : carrying.config.style,
-    );
-  }
-
   #itemFilter(highlighted: boolean, colourise: boolean) {
     return (
       highlighted ?
@@ -312,7 +285,7 @@ export class HudRenderer<RoomId extends string> {
   }
 
   /** update the carrying element for heel's bag contents */
-  #tickBagAndCarrying(gameState: GameState<RoomId>, colourise: boolean) {
+  #tickBagAndCarrying(gameState: GameState<RoomId>) {
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;
 
@@ -327,17 +300,17 @@ export class HudRenderer<RoomId extends string> {
       }
     }
     if (carrying !== null && !hasSprite) {
-      carryingContainer.addChild(this.#createCarriedSprite(carrying));
+      carryingContainer.addChild(createCarriedSprite(carrying));
     }
-    carryingContainer.filters = this.#itemFilter(true, colourise);
+    carryingContainer.filters = this.#itemFilter(true, this.colourise);
 
     this.#hudElements.heels.bag.icon.filters = this.#itemFilter(
       hasBag,
-      colourise,
+      this.colourise,
     );
   }
 
-  #tickHooterAndDoughnuts(gameState: GameState<RoomId>, colourise: boolean) {
+  #tickHooterAndDoughnuts(gameState: GameState<RoomId>) {
     const headAbilities = selectAbilities(gameState, "head");
 
     const hasHooter = headAbilities?.hasHooter ?? false;
@@ -345,11 +318,11 @@ export class HudRenderer<RoomId extends string> {
 
     this.#hudElements.head.hooter.icon.filters = this.#itemFilter(
       hasHooter,
-      colourise,
+      this.colourise,
     );
     this.#hudElements.head.doughnuts.icon.filters = this.#itemFilter(
       doughnutCount !== 0,
-      colourise,
+      this.colourise,
     );
     showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
   }
@@ -367,7 +340,7 @@ export class HudRenderer<RoomId extends string> {
       this.#hudElements[characterName].extraSkill;
 
     const shieldNumber = shieldRemaining(abilities);
-    const shieldVisible = shieldNumber > 0 || this.deviceType !== "mobile";
+    const shieldVisible = shieldNumber > 0 || !this.onScreenControls;
     shieldContainer.visible = shieldVisible;
 
     if (shieldVisible) {
@@ -377,7 +350,8 @@ export class HudRenderer<RoomId extends string> {
 
     extraSkillContainer.x = shieldContainer.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * smallIconsFromCentre[this.deviceType];
+      sideMultiplier(characterName) *
+        smallIconsFromCentre(this.onScreenControls);
 
     const extraSkillNumber =
       abilities === undefined ? 0
@@ -385,14 +359,13 @@ export class HudRenderer<RoomId extends string> {
         fastStepsRemaining(abilities as HeadAbilities)
       : (abilities as HeelsAbilities<RoomId>).bigJumps;
 
-    const extraSkillVisible =
-      extraSkillNumber > 0 || this.deviceType !== "mobile";
+    const extraSkillVisible = extraSkillNumber > 0 || !this.onScreenControls;
     extraSkillContainer.visible = extraSkillVisible;
 
     if (extraSkillVisible) {
       showNumberInContainer(skillText, extraSkillNumber);
       extraSkillContainer.y =
-        screenSize.y - extraSkillFromBottom[this.deviceType];
+        screenSize.y - extraSkillFromBottom(this.onScreenControls);
     }
   }
 
@@ -410,21 +383,22 @@ export class HudRenderer<RoomId extends string> {
   #updateCharacterSprite(
     gameState: GameState<RoomId>,
     screenSize: Xy,
-    colourise: boolean,
     characterName: IndividualCharacterName,
   ) {
     const isActive = this.#characterIsActive(gameState, characterName);
     const characterSprite = this.#hudElements[characterName].sprite;
 
     if (isActive) {
-      characterSprite.filters = colourise ? noFilters : hudHighligtedFilter;
+      characterSprite.filters =
+        this.colourise ? noFilters : hudHighligtedFilter;
     } else {
       characterSprite.filters = hudLowlightedFilter;
     }
 
     characterSprite.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * playableIconFromCentre[this.deviceType];
+      sideMultiplier(characterName) *
+        playableIconFromCentre(this.onScreenControls);
 
     characterSprite.y = screenSize.y - smallItemTextureSize.h;
   }
@@ -440,13 +414,14 @@ export class HudRenderer<RoomId extends string> {
     const livesTextContainer = this.#hudElements[characterName].livesText;
     livesTextContainer.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * livesTextFromCentre[this.deviceType];
+      sideMultiplier(characterName) *
+        livesTextFromCentre(this.onScreenControls);
     livesTextContainer.y = screenSize.y;
 
     showNumberInContainer(livesTextContainer, lives ?? 0);
   }
 
-  #updateColours(gameState: GameState<RoomId>, colourise: boolean) {
+  #updateColours(gameState: GameState<RoomId>) {
     const room = selectCurrentRoomState(gameState);
     if (room === undefined) {
       // game over, keep current colours
@@ -455,22 +430,22 @@ export class HudRenderer<RoomId extends string> {
     const colorScheme = getColorScheme(room.color);
 
     hudLowlightedFilter.targetColor =
-      colorScheme.hud.dimmed[colourise ? "dimmed" : "original"];
+      colorScheme.hud.dimmed[this.colourise ? "dimmed" : "original"];
     hudTextFilter.targetColor =
-      colorScheme.hud.dimmed[colourise ? "basic" : "original"];
+      colorScheme.hud.dimmed[this.colourise ? "basic" : "original"];
     hudIconFilter.targetColor =
-      colorScheme.hud.icons[colourise ? "basic" : "original"];
+      colorScheme.hud.icons[this.colourise ? "basic" : "original"];
 
     hudHighligtedFilter.targetColor = colorScheme.hud.lives.original;
 
     this.#hudElements.head.livesText.filters =
-      colourise ?
+      this.colourise ?
         this.#characterIsActive(gameState, "head") ?
           hudLivesTextFilter.colourised.head
         : hudLowlightAndOutlineFilters
       : hudLivesTextFilter.original;
     this.#hudElements.heels.livesText.filters =
-      colourise ?
+      this.colourise ?
         this.#characterIsActive(gameState, "heels") ?
           hudLivesTextFilter.colourised.heels
         : hudLowlightAndOutlineFilters
@@ -498,20 +473,20 @@ export class HudRenderer<RoomId extends string> {
     }
   }
 
-  tick(tickOptions: TickOptions<RoomId>) {
-    const { gameState, screenSize, colourise } = tickOptions;
+  tick(tickOptions: HudRendererTickOptions<RoomId>) {
+    const { gameState, screenSize } = tickOptions;
 
-    this.#updateColours(gameState, colourise);
+    this.#updateColours(gameState);
 
     for (const character of individualCharacterNames) {
       this.#updateLivesText(gameState, screenSize, character);
-      this.#updateCharacterSprite(gameState, screenSize, colourise, character);
+      this.#updateCharacterSprite(gameState, screenSize, character);
       this.#updateAbilitiesIcons(gameState, screenSize, character);
     }
 
     this.#updateElementPositions(screenSize);
-    this.#tickHooterAndDoughnuts(gameState, colourise);
-    this.#tickBagAndCarrying(gameState, colourise);
+    this.#tickHooterAndDoughnuts(gameState);
+    this.#tickBagAndCarrying(gameState);
 
     this.#updateFps();
 

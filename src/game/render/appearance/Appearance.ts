@@ -1,20 +1,21 @@
 import type { Container } from "pixi.js";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import type { DisplaySettings } from "../../../store/gameMenusSlice";
+import type { RenderContext } from "../Renderer";
 import type { GameState } from "../../gameState/GameState";
 
 /** anything that can be rendered by the appearance system */
 export type RenderSubject = { id: string };
 export type RenderProps = Record<string, unknown>;
 
-export type AppearanceReturn<RP extends RenderProps> =
+export type AppearanceReturn<
+  RP extends RenderProps,
+  RenderObject extends Container = Container,
+> =
   | {
       /**
        * a new rendering, since one is required - null to explicitly change the item's rendering
        * to nothing
        */
-      container: Container | null;
+      container: RenderObject | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: RP;
     }
@@ -25,6 +26,8 @@ export type AppearanceOptions<
   S extends RenderSubject,
   RP extends RenderProps,
   RoomId extends string,
+  RC extends RenderContext,
+  RenderObject extends Container = Container,
 > = {
   subject: S;
   /**
@@ -34,27 +37,29 @@ export type AppearanceOptions<
   currentlyRenderedProps: RP | undefined;
 
   /** the rendering that already exists for this item, or null if it was not rendered previously */
-  previousRendering: Container | null;
-
-  displaySettings: DisplaySettings;
-
-  room: RoomState<SceneryName, RoomId>;
+  previousRendering: RenderObject | null;
 
   gameState: GameState<RoomId>;
 
-  /** are we on hold (paused) right now? */
-  onHold: boolean;
+  /**
+   * some context that this subject is being rendered in, for example the room
+   * that is being rendered, or the current display settings
+   */
+  renderContext: RC;
 };
 
 /**
  * generic type for rendering and re-rendering the appearance of anything. For Item-specific
  * appearances, see ItemAppearance
  */
-export type Appearance<S extends RenderSubject, RP extends RenderProps> = <
-  RoomId extends string,
->(
-  options: AppearanceOptions<S, RP, RoomId>,
-) => AppearanceReturn<RP>;
+export type Appearance<
+  S extends RenderSubject,
+  RP extends RenderProps,
+  RC extends RenderContext,
+  RenderObject extends Container = Container,
+> = <RoomId extends string>(
+  options: AppearanceOptions<S, RP, RoomId, RC, RenderObject>,
+) => AppearanceReturn<RP, RenderObject>;
 
 /**
  * sometimes it is useful to be able to cast Appearance to a version that
@@ -64,7 +69,11 @@ export type AppearanceWithKnownRoomId<
   S extends RenderSubject,
   RP extends RenderProps,
   RoomId extends string,
-> = (options: AppearanceOptions<S, RP, RoomId>) => AppearanceReturn<RP>;
+  RC extends RenderContext,
+  RenderObject extends Container = Container,
+> = (
+  options: AppearanceOptions<S, RP, RoomId, RC, RenderObject>,
+) => AppearanceReturn<RP, RenderObject>;
 
 export const renderedBefore = (renderContainer: Container) => {
   return renderContainer.children.length > 0;

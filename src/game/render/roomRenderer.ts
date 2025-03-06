@@ -16,14 +16,18 @@ import {
   type DisplaySettings,
 } from "../../store/gameMenusSlice";
 import type { Upscale } from "./calculateUpscale";
-import type { RenderContext, Renderer } from "./Renderer";
+import type {
+  ItemRenderContext,
+  Renderer,
+  RoomRenderContext,
+} from "./Renderer";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
 import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 
 export class RoomRenderer<RoomId extends string, ItemId extends string>
-  implements Renderer
+  implements Renderer<RoomRenderContext>
 {
   /**
    * renders all items *except* the floor edge, since the floor edge is the only
@@ -41,7 +45,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
     ItemId,
-    | Renderer
+    | Renderer<ItemRenderContext<RoomId>>
     // createItemRenderer explicitly declined to create an instance for this item
     | "not-needed"
   > = new Map();
@@ -113,7 +117,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
       );
   }
 
-  #tickItems(renderContext: RenderContext) {
+  #tickItems(renderContext: ItemRenderContext<RoomId>) {
     for (const item of objectValues(this.#roomState.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as ItemId);
 
@@ -163,7 +167,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     }
   }
 
-  #tickItemsZIndex(renderContext: RenderContext) {
+  #tickItemsZIndex(renderContext: ItemRenderContext<RoomId>) {
     const { order } = sortByZPairs(
       zEdges(
         this.#roomState.items,
@@ -184,7 +188,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     }
   }
 
-  tick(givenRenderContext: RenderContext) {
+  tick(givenRenderContext: RoomRenderContext) {
     const renderContext =
       this.#everRendered ? givenRenderContext : (
         {
@@ -200,10 +204,15 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
       !this.#everRendered,
     );
 
-    this.#tickItems(renderContext);
+    const itemRenderContext = {
+      ...renderContext,
+      room: this.#roomState,
+    };
+
+    this.#tickItems(itemRenderContext);
 
     if (!this.#everRendered || renderContext.movedItems.size > 0) {
-      this.#tickItemsZIndex(renderContext);
+      this.#tickItemsZIndex(itemRenderContext);
     }
 
     this.#everRendered = true;
