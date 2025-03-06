@@ -24,7 +24,7 @@ import {
   fastStepsRemaining,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { noFilters } from "../filters/standardFilters";
+import { halfBriteFilter, noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
 import { OnScreenControls } from "./OnScreenControls";
@@ -398,7 +398,8 @@ export class HudRenderer<RoomId extends string> {
       characterSprite.filters =
         this.colourise ? noFilters : hudHighligtedFilter;
     } else {
-      characterSprite.filters = hudLowlightedFilter;
+      characterSprite.filters =
+        this.colourise ? halfBriteFilter : hudLowlightedFilter;
     }
 
     characterSprite.x =
@@ -466,7 +467,9 @@ export class HudRenderer<RoomId extends string> {
         showNumberInContainer(this.#hudElements.fps, Math.round(fpsValue));
 
         hudFpsColourFilter.targetColor =
-          fpsValue > 56 ? spritesheetPalette.moss
+          fpsValue > 100 ? spritesheetPalette.white
+          : fpsValue > 58 ? spritesheetPalette.moss
+          : fpsValue > 55 ? spritesheetPalette.pastelBlue
           : fpsValue > 50 ? spritesheetPalette.metallicBlue
           : fpsValue > 40 ? spritesheetPalette.pink
           : spritesheetPalette.midRed;

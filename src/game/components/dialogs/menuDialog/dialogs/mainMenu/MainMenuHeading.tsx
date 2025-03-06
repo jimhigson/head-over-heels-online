@@ -11,7 +11,7 @@ export const MainMenuHeading = ({
   <div className={`flex flex-col items-center ${className}`}>
     <div className="flex">
       <div className="flex flex-col resGameboy:flex-row resGameboy:gap-1 gap-y-oneScaledPix items-center me-1">
-        <BitmapText className="sprites-double-height text-metallicBlue zx:text-zxYellow resGameboy:mt-1">
+        <BitmapText className="sprites-double-height text-pastelBlue zx:text-zxYellow resGameboy:mt-1">
           Head
         </BitmapText>
         <div className="mt-1 resGameboy:mt-0 relative">
@@ -41,7 +41,7 @@ export const MainMenuHeading = ({
         <BitmapText className="text-highlightBeige zx:text-zxYellow">
           stack
         </BitmapText>
-        <BitmapText className="text-metallicBlue zx:text-zxBlack">.</BitmapText>
+        <BitmapText className="text-pastelBlue zx:text-zxBlack">.</BitmapText>
         <BitmapText className="text-moss zx:text-zxWhite">ing</BitmapText>
         <BitmapText classnameCycle={mainMenuCycle}> remake</BitmapText>
       </div>

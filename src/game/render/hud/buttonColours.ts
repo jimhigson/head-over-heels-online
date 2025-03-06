@@ -3,7 +3,7 @@ import { zxSpectrumColors } from "../../../originalGame";
 
 export const buttonColours = {
   colourised: {
-    jump: spritesheetPalette.metallicBlue,
+    jump: spritesheetPalette.pastelBlue,
     fire: spritesheetPalette.highlightBeige,
     carry: spritesheetPalette.moss,
     carryAndJump: spritesheetPalette.midRed,

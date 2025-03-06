@@ -1,41 +1,41 @@
 import { Color } from "pixi.js";
-import type {
-  ZxSpectrumShade,
-  ZxSpectrumRoomColour,
-  ZxSpectrumRoomHue,
+import {
+  type ZxSpectrumShade,
+  type ZxSpectrumRoomColour,
+  type ZxSpectrumRoomHue,
+  zxSpectrumColors,
 } from "../originalGame";
 import { spritesheetPalette } from "../../gfx/spritesheetPalette";
+import { halfBrite } from "../utils/colour/halfBrite";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
-  original: new Color("rgb(255, 255, 255)"),
-  basic: new Color("rgb(210, 210, 210)"),
-  dimmed: new Color("rgb(120, 120, 120)"),
+  original: new Color(zxSpectrumColors.zxWhite),
+  basic: spritesheetPalette.white,
+  dimmed: spritesheetPalette.lightGrey,
 };
 export const yellowShades = {
-  original: new Color("rgb(255, 255, 0)"),
-  basic: new Color("hsl(50,65%,70%)"),
+  original: new Color(zxSpectrumColors.zxYellow),
+  basic: spritesheetPalette.midRed,
   dimmed: spritesheetPalette.redShadow,
-  //dimmed: new Color("hsl(30,20%,40%)"), // dark yellow has to bend towards orange or it looks too green
 };
 export const magentaShades = {
-  original: new Color("rgb(255, 0, 255)"),
+  original: new Color(zxSpectrumColors.zxMagenta),
   basic: spritesheetPalette.pink,
-  //basic: new Color("hsl(290,50%, 50%)"),
-  dimmed: new Color("hsl(290,35%,38%)"),
+  dimmed: halfBrite(spritesheetPalette.pink),
 };
 export const cyanShades = {
-  original: new Color("rgb(0, 255, 255)"),
-  basic: new Color("hsl(183, 50%, 50%)"),
+  original: new Color(zxSpectrumColors.zxCyan),
+  basic: spritesheetPalette.pastelBlue,
   //dimmed: spritesheetPalette.shadow,
-  dimmed: new Color("hsl(183, 50%, 25%)"), // trying to be halfway between basic and spritesheet shadow
+  dimmed: halfBrite(spritesheetPalette.pastelBlue), // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
-  original: new Color("rgb(0, 255, 0)"),
+  original: new Color(zxSpectrumColors.zxGreen),
   basic: spritesheetPalette.moss,
-  dimmed: new Color("hsl(73,50%,25%)"),
+  dimmed: halfBrite(spritesheetPalette.moss),
 };
 
 export type ColorScheme = {

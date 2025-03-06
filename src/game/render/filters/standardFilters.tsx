@@ -9,6 +9,7 @@ import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
 import { halfBrite } from "../../../utils/colour/halfBrite";
+import { HalfBriteFilter } from "./HalfBriteFilter";
 
 const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
   replaceLight: basic,
@@ -62,5 +63,7 @@ export const edgePaletteSwapFilters = (
 
 export const mainPaletteSwapFilter = (room: UnknownRoomState): Filter =>
   new PaletteSwapFilter(replaceMapForRoom(room));
+
+export const halfBriteFilter = new HalfBriteFilter();
 
 export const noFilters: Filter[] = emptyArray;
