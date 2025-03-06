@@ -88,6 +88,75 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
   );
 };
 
+const AnalogueControlMenuItem = () => {
+  return (
+    <MenuItem
+      id="analogueControl"
+      label={
+        <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          Analog/ 8-way control
+        </BitmapText>
+      }
+      leader={<span className={`${spriteLeaderClasses} texture-joystick`} />}
+      valueElement={<Switch value={useIsAnalogueControl()} />}
+      onSelect={useDispatchActionCallback(
+        toggleBoolean,
+        "userSettings.analogueControl",
+      )}
+      hintInline
+      hint={
+        <BlockyMarkdown
+          className="text-midGrey zx:text-zxBlack"
+          markdown={
+            useIsAnalogueControl() ?
+              analogueControlOnHintMarkdown
+            : analogueControlOffHintMarkdown
+          }
+        />
+      }
+    />
+  );
+};
+
+const OnScreenControlsMenuItem = () => {
+  return (
+    <MenuItem
+      id="controlOptions"
+      label={
+        <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          on- screen controls
+        </BitmapText>
+      }
+      valueElement={<Switch value={useIsOnScreenControls()} />}
+      onSelect={useDispatchActionCallback(
+        toggleBoolean,
+        "userSettings.onScreenControls",
+      )}
+    />
+  );
+};
+
+const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
+  return (
+    <>
+      <BitmapText className={`col-span-3 ${multilineTextClass}`}>
+        Detected that you are on a phone or tablet
+      </BitmapText>
+      <BitmapText className={`col-span-3 ${multilineTextClass}`}>
+        Additional settings for keys and gamepad buttons are designed for
+        desktop/laptops, but you can use them on phones/tablets if you have a
+        keyboard or gamepad connected
+      </BitmapText>
+      <BitmapText
+        className={`col-span-3 text-midRed zx:text-zxRed ${multilineTextClass} mb-1`}
+        onClick={showAll}
+      >
+        Tap here to show all settings
+      </BitmapText>
+    </>
+  );
+};
+
 const SelectTheKeysMenuItems = () => {
   const isScreenRelativeControl = useIsScreenRelativeControl();
 
@@ -315,6 +384,13 @@ const SelectTheKeysMenuItems = () => {
   );
 };
 
+const controlOptionsMenuItemsClass =
+  "text-metallicBlueHalfbrite zx:text-zxBlue selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen " +
+  // a lot of these menu items run multi-line, so always have a block gap between:
+  "!gap-y-1 " +
+  // on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're big enough already
+  "!sprites-normal-height";
+
 export const ControlOptionsDialog = () => {
   useKeyAssignmentInput();
 
@@ -340,59 +416,11 @@ export const ControlOptionsDialog = () => {
           <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block mb-1">
             control options
           </BitmapText>
-          <MenuItems
-            className={
-              "text-metallicBlueHalfbrite zx:text-zxBlue selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen " +
-              // a lot of these menu items run multi-line, so always have a block gap between:
-              "!gap-y-1 " +
-              // on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're bit enough already
-              "!sprites-normal-height"
-            }
-          >
-            <MenuItem
-              id="analogueControl"
-              label={
-                <BitmapText
-                  className={`inline-block w-6 ${multilineTextClass}`}
-                >
-                  Analog/ 8-way control
-                </BitmapText>
-              }
-              leader={
-                <span className={`${spriteLeaderClasses} texture-joystick`} />
-              }
-              valueElement={<Switch value={useIsAnalogueControl()} />}
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.analogueControl",
-              )}
-              hintInline
-              hint={
-                <BlockyMarkdown
-                  className="text-midGrey zx:text-zxBlack"
-                  markdown={
-                    isAnalogueControl ?
-                      analogueControlOnHintMarkdown
-                    : analogueControlOffHintMarkdown
-                  }
-                />
-              }
-            />
-            <MenuItem
-              id="controlOptions"
-              label={
-                <BitmapText
-                  className={`inline-block w-6 ${multilineTextClass}`}
-                >
-                  on- screen controls
-                </BitmapText>
-              }
-              valueElement={<Switch value={useIsOnScreenControls()} />}
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.onScreenControls",
-              )}
-            />
+
+          <MenuItems className={controlOptionsMenuItemsClass}>
+            <AnalogueControlMenuItem />
+            <OnScreenControlsMenuItem />
+
             {showAll ?
               <>
                 {isAnalogueControl && <ScreenRelativeControlSection />}
@@ -404,26 +432,7 @@ export const ControlOptionsDialog = () => {
                 <SelectTheKeysMenuItems />
               </>
             : <>
-                <BitmapText
-                  className={`col-span-3 ${multilineTextClass}`}
-                  onClick={() => setShowAll(true)}
-                >
-                  Detected that you are on a phone or tablet
-                </BitmapText>
-                <BitmapText
-                  className={`col-span-3 ${multilineTextClass}`}
-                  onClick={() => setShowAll(true)}
-                >
-                  Additional settings for keys and gamepad buttons are designed
-                  for desktop/laptops, but you can use them on phones/tablets if
-                  you have a keyboard or gamepad connected
-                </BitmapText>
-                <BitmapText
-                  className={`col-span-3 text-midRed zx:text-zxRed ${multilineTextClass} mb-1`}
-                  onClick={() => setShowAll(true)}
-                >
-                  Tap here to show all settings
-                </BitmapText>
+                <ExpandToShowAll showAll={() => setShowAll(true)} />
               </>
             }
             {isTouchDevice() || <BackMenuItem />}
