@@ -6,6 +6,8 @@
         
 ## General
 
+[ ] error catch/reporting + option to refresh
+
 ### Big ideas
 [2,L] add sound to the game
     * start small:

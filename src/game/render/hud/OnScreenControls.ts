@@ -10,8 +10,8 @@ import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
 
-const mainButtonsSpreadXPx = 28;
-const mainButtonsSpreadYPx = 14;
+const mainButtonsSpreadXPx = 26;
+const mainButtonsSpreadYPx = 13;
 
 export class OnScreenControls<RoomId extends string> {
   #container = new Container({ label: "OnScreenControls" });
@@ -115,11 +115,10 @@ export class OnScreenControls<RoomId extends string> {
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
   #updateElementPositions(screenSize: Xy) {
-    const offsetFromSides = buttonSpriteSize.w + mainButtonsSpreadXPx;
-    this.#hudElements.mainButtonNest.x = screenSize.x - offsetFromSides;
+    this.#hudElements.mainButtonNest.x = screenSize.x - 40;
     this.#hudElements.mainButtonNest.y = screenSize.y - 14;
 
-    this.#hudElements.joystick.container.x = offsetFromSides - 6;
+    this.#hudElements.joystick.container.x = 32;
     this.#hudElements.joystick.container.y = screenSize.y - 28;
   }
 
