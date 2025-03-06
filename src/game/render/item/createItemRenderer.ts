@@ -3,7 +3,11 @@ import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import type { RoomState } from "../../../model/modelTypes";
 import { type SceneryName } from "../../../sprites/planets";
-import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
+import type {
+  AnyItemInPlay,
+  ItemInPlay,
+  ItemInPlayType,
+} from "../../../model/ItemInPlay";
 import { store } from "../../../store/store";
 import type { ItemRenderContext, Renderer } from "../Renderer";
 import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
@@ -18,6 +22,20 @@ import {
 import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { SetRequired } from "type-fest";
 import type { ItemAppearanceWithKnownRoomId } from "../itemAppearances/ItemAppearance";
+
+/** for debugging */
+const assignPointerActions = <RoomId extends string>(
+  item: AnyItemInPlay<RoomId>,
+  container: Container,
+  gameState: GameState<RoomId>,
+) => {
+  if (container !== undefined) {
+    container.eventMode = "static";
+    container.on("pointertap", () => {
+      gameState.events.emit("itemClicked", { item, container });
+    });
+  }
+};
 
 const hasShadowMask = <
   T extends ItemInPlayType,
@@ -86,9 +104,16 @@ export const createItemRenderer = <
   if (renderers.length === 0) {
     // TODO: return a null renderer (that does nothing) instead of a special string?
     return "not-needed";
-  } else {
-    return new ItemPositionRenderer(item, new CompositeItemRenderer(renderers));
   }
+
+  const compositeRenderer =
+    renderers.length === 1 ?
+      renderers[0]
+    : new CompositeItemRenderer(renderers);
+
+  assignPointerActions(item, compositeRenderer.container, gameState);
+
+  return new ItemPositionRenderer(item, compositeRenderer);
 };
 
 class CompositeItemRenderer<RoomId extends string>
