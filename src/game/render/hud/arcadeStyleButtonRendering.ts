@@ -5,7 +5,7 @@ import {
   noFilters,
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
-import type { ButtonColor } from "./OnScreenButton";
+import type { ButtonColor } from "./buttonColours";
 import { buttonColours } from "./buttonColours";
 import { spriteSheet } from "../../../sprites/spriteSheet";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";

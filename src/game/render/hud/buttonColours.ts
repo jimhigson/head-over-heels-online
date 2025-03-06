@@ -15,3 +15,4 @@ export const buttonColours = {
     green: zxSpectrumColors.zxGreen,
   },
 };
+export type ButtonColor = "red" | "blue" | "yellow" | "green";

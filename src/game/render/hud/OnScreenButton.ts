@@ -1,18 +1,11 @@
 import { Container } from "pixi.js";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { zxSpectrumColors } from "../../../originalGame";
-import type { BooleanAction } from "../../input/actions";
+import { type BooleanAction } from "../../input/actions";
 import { createSprite } from "../createSprite";
-import {
-  selectCurrentRoomState,
-  type GameState,
-} from "../../gameState/GameState";
+import type { GameState } from "../../gameState/GameState";
+import { selectCurrentRoomState } from "../../gameState/GameState";
 import type { Appearance } from "../appearance/Appearance";
-import type { ItemTypeUnion } from "../../../model/ItemInPlay";
-import type {
-  PlayableItem,
-  PortableItemType,
-} from "../../physics/itemPredicates";
+import type { PlayableItem } from "../../physics/itemPredicates";
 import {
   selectCurrentPlayableItem,
   selectHeadAbilities,
@@ -35,10 +28,10 @@ import { findItemToPickup } from "../../physics/mechanics/carrying";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
+import type { ButtonColor } from "./buttonColours";
+import { buttonColours } from "./buttonColours";
 
 type ButtonType = "jump" | "carry" | "fire" | "carryAndJump";
-
-export type ButtonColor = "red" | "blue" | "yellow" | "green";
 
 type Button<Which extends ButtonType> = {
   id: string;
@@ -66,9 +59,10 @@ type ButtonRenderProps = {
     hasHooter: boolean;
   };
   carryAndJump: CommonButtonRenderProps & {
-    showing: "teleporter" | "jump-text";
-    bag: boolean;
-    item: ItemTypeUnion<PortableItemType, string>;
+    standingOnTeleporter: boolean;
+    hasBag: boolean;
+    carrying: CarriedItem<string> | null;
+    disabled: boolean;
   };
 };
 
@@ -310,8 +304,95 @@ const buttonAppearances: {
       renderProps: { pressed, colourise, doughnuts, hasHooter },
     };
   },
-  carryAndJump() {
-    return "no-update";
+  carryAndJump({
+    subject: { actions, colour },
+    gameState,
+    currentlyRenderedProps,
+    previousRendering,
+    renderContext: { colourise },
+  }) {
+    const { inputStateTracker } = gameState;
+
+    const playable = selectCurrentPlayableItem(gameState)!;
+
+    const heelsAbilities = selectHeelsAbilities(playable);
+    const hasBag = heelsAbilities?.hasBag ?? false;
+    const carrying = heelsAbilities?.carrying ?? null;
+    const toPick = findItemToPickup(
+      playable as PlayableItem<"heels" | "headOverHeels", string>,
+      selectCurrentRoomState(gameState) as RoomState<SceneryName, string>,
+    );
+
+    const standingOnTeleporter =
+      playable?.state.standingOn?.type === "teleporter";
+
+    const pressed = actions.every(
+      (a) => inputStateTracker.currentActionPress(a) !== "released",
+    );
+
+    const disabled = toPick === undefined && carrying === null;
+
+    const needsRender =
+      currentlyRenderedProps === undefined ||
+      pressed !== currentlyRenderedProps.pressed ||
+      colourise !== currentlyRenderedProps.colourise ||
+      hasBag !== currentlyRenderedProps.hasBag ||
+      carrying !== currentlyRenderedProps.carrying ||
+      disabled !== currentlyRenderedProps.disabled;
+
+    if (!needsRender) {
+      return "no-update";
+    }
+
+    const container =
+      previousRendering === null ?
+        arcadeStyleButtonRendering({
+          colourise,
+          colour,
+        })
+      : (previousRendering as ButtonRenderingContainer);
+
+    if (!hasBag) {
+      container.visible = false;
+    } else {
+      if (disabled !== currentlyRenderedProps?.disabled) {
+        setDisabled(container, disabled, colourise);
+      }
+
+      container.visible = true;
+      if (currentlyRenderedProps?.pressed !== pressed) {
+        setPressed(container, pressed);
+      }
+
+      if (
+        hasBag !== currentlyRenderedProps?.hasBag ||
+        carrying !== currentlyRenderedProps?.carrying
+      ) {
+        let bgSprite: Container | undefined;
+        if (carrying !== null) {
+          bgSprite = createCarriedSprite(carrying);
+        } else if (hasBag) {
+          bgSprite = createSprite({
+            textureId: "bag",
+            y: -2,
+          }) as Container;
+        }
+
+        showOnSurface(container, bgSprite);
+      }
+    }
+
+    return {
+      container,
+      renderProps: {
+        pressed,
+        hasBag,
+        colourise,
+        carrying,
+        disabled,
+        standingOnTeleporter,
+      },
+    };
   },
 };
 
@@ -324,22 +405,14 @@ export class ButtonAppearanceRenderer<
   RoomId,
   ButtonRenderContext
 > {
-  constructor(button: Button<BT>, gameState: GameState<RoomId>) {
-    super(button, gameState, buttonAppearances[button.which]);
+  constructor(
+    gameState: GameState<RoomId>,
+    which: BT,
+    colour: ButtonColor,
+    // this is potentially unsafe
+    actions = [which] as BooleanAction[],
+    id = which,
+  ) {
+    super({ which, id, actions, colour }, gameState, buttonAppearances[which]);
   }
 }
-
-const buttonColours = {
-  colourised: {
-    red: spritesheetPalette.midRed,
-    blue: spritesheetPalette.metallicBlue,
-    yellow: spritesheetPalette.highlightBeige,
-    green: spritesheetPalette.moss,
-  },
-  zx: {
-    red: zxSpectrumColors.zxRed,
-    blue: zxSpectrumColors.zxBlue,
-    yellow: zxSpectrumColors.zxYellow,
-    green: zxSpectrumColors.zxGreen,
-  },
-};

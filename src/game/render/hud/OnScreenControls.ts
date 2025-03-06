@@ -32,31 +32,15 @@ export class OnScreenControls<RoomId extends string> {
         //   gameState,
         //   textureId: "hud.char.Menu",
         // }),
-        jump: new ButtonAppearanceRenderer(
-          { colour: "blue", actions: ["jump"], id: "jump", which: "jump" },
+        jump: new ButtonAppearanceRenderer(gameState, "jump", "blue"),
+        fire: new ButtonAppearanceRenderer(gameState, "fire", "red"),
+        carry: new ButtonAppearanceRenderer(gameState, "carry", "green"),
+        carryAndJump: new ButtonAppearanceRenderer(
           gameState,
+          "carryAndJump",
+          "yellow",
+          ["carry", "jump"],
         ),
-        fire: new ButtonAppearanceRenderer(
-          { colour: "red", actions: ["fire"], id: "fire", which: "fire" },
-          gameState,
-        ),
-        carry: new ButtonAppearanceRenderer(
-          { colour: "green", actions: ["carry"], id: "carry", which: "carry" },
-          gameState,
-        ),
-        // fire: new OnScreenButton({
-        //   actions: ["fire"],
-        //   inputStateTracker: gameState.inputStateTracker,
-        //   colour: "red",
-        //   gameState,
-        //   surfaceTextureId: () => "hooter",
-        // }),
-        // carryAndJump: new OnScreenButton({
-        //   actions: ["carry", "jump"],
-        //   inputStateTracker: gameState.inputStateTracker,
-        //   gameState,
-        //   colour: "yellow",
-        // }),
       }, //satisfies Record<OnScreenButtonName, OnScreenButton<RoomId>>,
       joystick: new OnScreenJoystick(gameState.inputStateTracker),
     };
@@ -71,7 +55,7 @@ export class OnScreenControls<RoomId extends string> {
 
     buttons.jump.container.y = mainButtonsSpreadPx;
     buttons.carry.container.x = -mainButtonsSpreadPx * 2;
-    // buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
+    buttons.carryAndJump.container.y = -mainButtonsSpreadPx;
     buttons.fire.container.x = mainButtonsSpreadPx * 2;
 
     // buttons.menu.container.x = 24;
