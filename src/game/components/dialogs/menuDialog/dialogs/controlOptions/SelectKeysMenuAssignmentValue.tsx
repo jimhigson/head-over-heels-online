@@ -2,6 +2,7 @@ import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { type BooleanAction } from "src/game/input/actions";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";
+import { controlMenuValueClass } from "./controlMenuValueClass";
 
 export const SelectKeysMenuAssignmentValue = ({
   className,
@@ -21,9 +22,7 @@ export const SelectKeysMenuAssignmentValue = ({
         className,
       )}
       action={action}
-      keyClassName={
-        "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed"
-      }
+      keyClassName={controlMenuValueClass}
       flashingCursor={assigning}
     />
   );

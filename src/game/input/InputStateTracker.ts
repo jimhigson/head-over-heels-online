@@ -27,7 +27,7 @@ import { iterate } from "../../utils/iterate";
 import { emptyArray } from "../../utils/empty";
 import type { HudInputState } from "./hudInputState";
 import {
-  selectAnalogueControl,
+  selectInputDirectionMode,
   selectInputAssignment,
   selectScreenRelativeControl,
 } from "../../store/selectors";
@@ -334,7 +334,7 @@ export class InputStateTracker {
   }
 
   #tick = ({ lastTime: atTime }: Ticker) => {
-    const analogueControl = selectAnalogueControl(store.getState());
+    const analogueControl = selectInputDirectionMode(store.getState());
     const screenRelativeControl = selectScreenRelativeControl(store.getState());
 
     const shouldRotate = screenRelativeControl && analogueControl;
