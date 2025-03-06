@@ -45,7 +45,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           noSubtitle={isGameRunning}
           className={isGameRunning ? "resGameboy:hidden" : ""}
         />
-        <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white">
+        <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white w-max mx-auto">
           <MenuItem
             id="playGame"
             label={<PlayGameLabel />}
