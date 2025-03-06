@@ -28,7 +28,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
 import type { ButtonColor } from "./buttonColours";
 
-type ButtonType = "jump" | "carry" | "fire" | "carryAndJump";
+export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump"; // | "menu"
 
 export type Button<Which extends ButtonType = ButtonType> = {
   id: string;
@@ -347,13 +347,9 @@ export class ButtonAppearanceRenderer<
   ButtonRenderingContainer
 > {
   constructor(
+    public button: Button<BT>,
     gameState: GameState<RoomId>,
-    which: BT,
-    colour: ButtonColor,
-    // this is potentially unsafe
-    actions = [which] as BooleanAction[],
-    id = which,
   ) {
-    super({ which, id, actions, colour }, gameState, buttonAppearances[which]);
+    super(button, gameState, buttonAppearances[button.which]);
   }
 }
