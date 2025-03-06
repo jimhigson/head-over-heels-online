@@ -1,3 +1,5 @@
+import { veryClose } from "../veryClose";
+
 export const directionsXy4 = ["away", "towards", "left", "right"] as const;
 export type DirectionXy4 = (typeof directionsXy4)[number];
 
@@ -192,7 +194,14 @@ export const xyOnlyMatrix : Matrix3x3 = [
   0, 0, 0, // Row 3
 ];
 
-export const vectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 => {
+export const vectorClosestDirectionXy4 = ({
+  x,
+  y,
+}: Xy): DirectionXy4 | undefined => {
+  if (veryClose(x, 0) && veryClose(y, 0)) {
+    return undefined;
+  }
+
   if (y > x) {
     if (y > -x) {
       return "away";
@@ -220,8 +229,15 @@ const directionsXy8Octants: DirectionXy8[] = [
   "awayRight",
 ];
 
-export const vectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 => {
-  const angle = Math.atan2(-y, -x); // Flip the y-axis for angle calculation
+export const vectorClosestDirectionXy8 = ({
+  x,
+  y,
+}: Xy): DirectionXy8 | undefined => {
+  if (veryClose(x, 0) && veryClose(y, 0)) {
+    return undefined;
+  }
+
+  const angle = Math.atan2(-y, -x);
   const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
 
   return directionsXy8Octants[octant];

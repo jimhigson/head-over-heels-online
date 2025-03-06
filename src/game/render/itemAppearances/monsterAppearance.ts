@@ -32,7 +32,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
     case "elephant":
     case "elephantHead":
     case "monkey": {
-      const facingXy4 = vectorClosestDirectionXy4(state.facing);
+      const facingXy4 = vectorClosestDirectionXy4(state.facing) ?? "towards";
 
       const render =
         currentlyRenderedProps === undefined ||

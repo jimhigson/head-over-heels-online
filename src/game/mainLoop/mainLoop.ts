@@ -10,14 +10,13 @@ import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
 import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import {
+  selectInputDirectionMode,
   selectIsColourised,
   selectIsPaused,
   selectOnScreenControls,
 } from "../../store/selectors";
-import {
-  defaultUserSettings,
-  type DisplaySettings,
-} from "../../store/gameMenusSlice";
+import { type DisplaySettings } from "../../store/gameMenusSlice";
+import { defaultUserSettings } from "../../store/defaultUserSettings";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -90,6 +89,7 @@ export class MainLoop<RoomId extends string> {
       gameState,
       selectOnScreenControls(storeState),
       selectIsColourised(storeState),
+      selectInputDirectionMode(storeState),
     );
     app.stage.addChild(this.#hudRenderer.container);
 
@@ -122,13 +122,17 @@ export class MainLoop<RoomId extends string> {
 
     if (
       this.#hudRenderer.colourise !== colouriseHud ||
-      this.#hudRenderer.onScreenControls !== selectOnScreenControls(tickState)
+      this.#hudRenderer.onScreenControls !==
+        selectOnScreenControls(tickState) ||
+      this.#hudRenderer.inputDirectionMode !==
+        selectInputDirectionMode(tickState)
     ) {
       this.#hudRenderer.destroy();
       this.#hudRenderer = new HudRenderer(
         this.#gameState,
         selectOnScreenControls(tickState),
         colouriseHud,
+        selectInputDirectionMode(tickState),
       );
       this.#app.stage.addChild(this.#hudRenderer.container);
     }

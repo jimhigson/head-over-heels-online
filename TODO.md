@@ -33,6 +33,9 @@
     Eg polymorphism: .isPushable() etc methods
     Eg, .times() hardcoded to return 1,1,1 for most
 
+### ui
+[ ] game ui colours when not colourised from real palette (even if not close to original colours)
+
 ### mobile
 [x] "turn to landscape" screen
 [x] remove address bar in normal browser

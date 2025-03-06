@@ -6,8 +6,8 @@ import { iterate } from "../utils/iterate";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { size, objectValues } from "iter-tools";
-import type { ShowBoundingBoxes } from "./gameMenusSlice";
-import { defaultUserSettings } from "./gameMenusSlice";
+import type { InputDirectionMode, ShowBoundingBoxes } from "./gameMenusSlice";
+import { defaultUserSettings } from "./defaultUserSettings";
 import type { ResolutionName } from "../originalGame";
 import type { InputAssignment } from "../game/input/InputState";
 
@@ -93,11 +93,14 @@ export const selectHasAllPlanetCrowns = (state: RootState) => {
 export const useIsScreenRelativeControl = () =>
   useAppSelector((state) => state.userSettings.screenRelativeControl);
 
-export const useIsAnalogueControl = (): boolean =>
-  useAppSelector(
-    (state) =>
-      state.userSettings.analogueControl ?? defaultUserSettings.analogueControl,
-  );
+export const selectInputDirectionMode = (
+  state: RootState,
+): InputDirectionMode =>
+  state.userSettings.inputDirectionMode ??
+  defaultUserSettings.inputDirectionMode;
+
+export const useInputDirectionMode = (): InputDirectionMode =>
+  useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
   size(iterate(objectValues(state.planetsLiberated)).filter(Boolean));
@@ -117,9 +120,6 @@ export const useShowShadowMasks = (): boolean => {
       defaultUserSettings.displaySettings.showShadowMasks,
   );
 };
-
-export const selectAnalogueControl = (state: RootState): boolean =>
-  state.userSettings.analogueControl ?? defaultUserSettings.analogueControl;
 
 export const selectScreenRelativeControl = (state: RootState): boolean =>
   state.userSettings.screenRelativeControl ??

@@ -38,7 +38,7 @@ const infiniteLivesMarkdown = `pokes can’t be set mid-game
 
 *A true hero leaves this* **off**`;
 
-const controlOptionsMarkdown = `*select the keys*, etc`;
+const controlOptionsMarkdown = `everything to *select the keys* and other input settings`;
 
 /*
 const extraItemsMarkdown = `**off**: *faithful* to the original rooms

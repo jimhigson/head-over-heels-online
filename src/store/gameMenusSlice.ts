@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { RequiredDeep, ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
 import type {
   ActionInputAssignment,
@@ -23,6 +23,11 @@ import type { PlanetName } from "../sprites/planets";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath, setAtPath } from "../utils/getAtPath";
 import { detectDeviceType } from "../utils/detectDeviceType";
+import {
+  selectEmulatedResolutionName,
+  selectInputDirectionMode,
+} from "./selectors";
+import { defaultUserSettings } from "./defaultUserSettings";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -44,13 +49,16 @@ export type DisplaySettings = {
   showShadowMasks?: boolean;
 };
 
+export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
+export type InputDirectionMode = (typeof inputDirectionModes)[number];
+
 export type UserSettings = {
   inputAssignment?: InputAssignment;
   displaySettings: DisplaySettings;
   infiniteLivesPoke?: boolean;
   // optional because was introduced without a version bump in persist. Select with !!
   showFps?: boolean;
-  analogueControl?: boolean;
+  inputDirectionMode?: InputDirectionMode;
   screenRelativeControl?: boolean;
   onScreenControls?: boolean;
 };
@@ -112,26 +120,6 @@ const noPlanetsLiberated = {
   safari: false,
 };
 
-export const defaultUserSettings: RequiredDeep<UserSettings> = {
-  inputAssignment: keyAssignmentPresets.default.inputAssignment,
-  infiniteLivesPoke: false,
-
-  displaySettings: {
-    showBoundingBoxes: "none",
-    showShadowMasks: false,
-    crtFilter: false,
-    uncolourised: false,
-    emulatedResolution:
-      detectDeviceType() === "mobile" ? "gameboy" : "zxSpectrum",
-  },
-
-  showFps: false,
-  onScreenControls:
-    detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
-  analogueControl: true,
-  screenRelativeControl: false,
-};
-
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     displaySettings: {},
@@ -167,6 +155,11 @@ export const initialGameMenuSliceState: GameMenusState = {
   cheatsOn,
 };
 
+const nextInCycle = <T>(arr: T[] | Readonly<T[]>, current: T) => {
+  const curIndex = arr.indexOf(current);
+  return arr[(curIndex + 1) % arr.length];
+};
+
 /**
  * a slice for all the state that is controlled in react-land
  * (most state is controlled in the game itself and not touched here)
@@ -184,12 +177,10 @@ export const gameMenusSlice = createSlice({
     ) {
       let emulatedResolution;
       if (payload === undefined) {
-        const currentResolution =
-          state.userSettings.displaySettings.emulatedResolution ??
-          defaultUserSettings.displaySettings.emulatedResolution;
-        const curIndex = resolutionNames.indexOf(currentResolution);
-        emulatedResolution =
-          resolutionNames[(curIndex + 1) % resolutionNames.length];
+        emulatedResolution = nextInCycle(
+          resolutionNames,
+          selectEmulatedResolutionName(state),
+        );
       } else {
         emulatedResolution = payload;
       }
@@ -212,6 +203,12 @@ export const gameMenusSlice = createSlice({
           scrollableSelection: false,
         },
       ];
+    },
+    nextInputDirectionMode(state) {
+      state.userSettings.inputDirectionMode = nextInCycle(
+        inputDirectionModes,
+        selectInputDirectionMode(state),
+      );
     },
     /** adds another input to the currently being assigned action */
     inputAddedDuringAssignment(state, { payload }: PayloadAction<InputPress>) {
@@ -441,6 +438,7 @@ export const {
   inputAddedDuringAssignment,
   keyAssignmentPresetChosen,
   menuOpenOrExitPressed,
+  nextInputDirectionMode,
   roomExplored,
   scrollRead,
   setEmulatedResolution,

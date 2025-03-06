@@ -41,7 +41,7 @@ const revertToOriginalStateMigration = (
 
 const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 10,
+  version: 11,
   migrate: createMigrate(
     {
       1: revertToOriginalStateMigration,
@@ -54,6 +54,7 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
       8: revertToOriginalStateMigration,
       9: revertToOriginalStateMigration,
       10: revertToOriginalStateMigration,
+      11: revertToOriginalStateMigration,
     },
     { debug: true },
   ),
@@ -80,6 +81,11 @@ export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = Omit<
+  ReturnType<typeof store.getState>,
+  // inside the app (ie, in selectors etc), we never actually care about this _persist type
+  // and keeping it sometimes makes it hard to pass values to selectors
+  "_persist"
+>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;

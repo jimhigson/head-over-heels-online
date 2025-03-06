@@ -39,12 +39,12 @@ const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   );
 };
 
-export const ScreenRelativeControlSection = () => {
+export const ScreenRelativeControlMenuItem = () => {
   const isScreenRelativeControl = useIsScreenRelativeControl();
   return (
     <MenuItem
       id="screenRelativeControl"
-      label="axes"
+      label="input axes"
       leader={
         <span
           className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.screenDirections" : "texture-heels.walking.right.2 selectedMenuItem:texture-animated-heels.worldDirections"}`}
