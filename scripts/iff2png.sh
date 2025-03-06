@@ -47,7 +47,7 @@ done
 cd ..
 
 echo "🤖 sampling palette -> ts"
-colorNames=(pureBlack lightBlack shadow midGrey lightGrey white metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
+colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
 
 echo "import { Color } from 'pixi.js';" >> "$TMP_DIR/spritesheetPalette.ts"
 echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> "$TMP_DIR/spritesheetPalette.ts"

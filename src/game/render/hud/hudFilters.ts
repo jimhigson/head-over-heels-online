@@ -50,7 +50,7 @@ export const hudLivesTextFilter = {
   colourised: {
     head: [
       hudOutlineFilter,
-      new RevertColouriseFilter(spritesheetPalette.metallicBlue),
+      new RevertColouriseFilter(spritesheetPalette.pastelBlue),
     ] as OutlineAndColouriseFilter,
     heels: [
       hudOutlineFilter,

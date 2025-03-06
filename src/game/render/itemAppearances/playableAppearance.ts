@@ -118,7 +118,7 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
 };
 
 const highlightColours = {
-  head: spritesheetPalette.metallicBlue,
+  head: spritesheetPalette.pastelBlue,
   heels: spritesheetPalette.pink,
 };
 
