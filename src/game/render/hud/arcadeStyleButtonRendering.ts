@@ -11,7 +11,7 @@ import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { showTextInContainer } from "./showNumberInContainer";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { halfBrite } from "../../../utils/colour/halfBrite";
-import type { Button } from "./OnScreenButton";
+import type { Button } from "./OnScreenButtonRenderer";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
 export const surfaceContentSym: unique symbol = Symbol();
@@ -34,7 +34,7 @@ export type ButtonRenderingContainer = Container & {
  */
 export const arcadeStyleButtonRendering = ({
   colourise,
-  button: { colour },
+  button: { which },
 }: {
   colourise: boolean;
   button: Button;
@@ -52,10 +52,10 @@ export const arcadeStyleButtonRendering = ({
 
   if (colourise) {
     buttonSprite.filters = replaceWithHalfbriteFilter(
-      buttonColours.colourised[colour],
+      buttonColours.colourised[which],
     );
   } else {
-    rootContainer.filters = new RevertColouriseFilter(buttonColours.zx[colour]);
+    rootContainer.filters = new RevertColouriseFilter(buttonColours.zx[which]);
   }
 
   depressContainer.addChild(buttonSprite);
@@ -108,7 +108,7 @@ export const setDisabled = (
 };
 
 export const createTextForButtonSurface = (
-  { colour }: Button,
+  { which }: Button,
   colourise: boolean,
   text: string,
 ): Container => {
@@ -116,7 +116,7 @@ export const createTextForButtonSurface = (
   jumpTextContainer.filters = new PaletteSwapFilter({
     white:
       colourise ?
-        halfBrite(buttonColours.colourised[colour])
+        halfBrite(buttonColours.colourised[which])
       : spritesheetPalette.pureBlack,
   });
   return jumpTextContainer;

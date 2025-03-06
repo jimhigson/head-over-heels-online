@@ -3,16 +3,17 @@ import { zxSpectrumColors } from "../../../originalGame";
 
 export const buttonColours = {
   colourised: {
-    red: spritesheetPalette.midRed,
-    blue: spritesheetPalette.metallicBlue,
-    yellow: spritesheetPalette.highlightBeige,
-    green: spritesheetPalette.moss,
+    jump: spritesheetPalette.metallicBlue,
+    fire: spritesheetPalette.highlightBeige,
+    carry: spritesheetPalette.moss,
+    carryAndJump: spritesheetPalette.midRed,
+    menu: spritesheetPalette.lightGrey,
   },
   zx: {
-    red: zxSpectrumColors.zxRed,
-    blue: zxSpectrumColors.zxBlue,
-    yellow: zxSpectrumColors.zxYellow,
-    green: zxSpectrumColors.zxGreen,
+    jump: zxSpectrumColors.zxBlue,
+    fire: zxSpectrumColors.zxYellow,
+    carry: zxSpectrumColors.zxGreen,
+    carryAndJump: zxSpectrumColors.zxRed,
+    menu: zxSpectrumColors.zxWhite,
   },
 };
-export type ButtonColor = "red" | "blue" | "yellow" | "green";

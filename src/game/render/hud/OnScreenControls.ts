@@ -6,9 +6,10 @@ import type { GameState } from "../../gameState/GameState";
 import type { TickOptions } from "./HudRenderer";
 import { objectValues } from "iter-tools";
 import { OnScreenJoystick } from "./OnScreenJoystick";
-import type { ButtonType } from "./OnScreenButton";
-import { ButtonAppearanceRenderer } from "./OnScreenButton";
+import type { ButtonType } from "./OnScreenButtonRenderer";
+import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { hudLowlightAndOutlineFilters } from "./hudFilters";
 
 const mainButtonsSpreadXPx = 28;
 const mainButtonsSpreadYPx = 14;
@@ -22,29 +23,36 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
       buttons: {
-        jump: new ButtonAppearanceRenderer(
-          { which: "jump", actions: ["jump"], colour: "blue", id: "jump" },
+        jump: new OnScreenButtonRenderer(
+          { which: "jump", actions: ["jump"], id: "jump" },
           gameState,
         ),
-        fire: new ButtonAppearanceRenderer(
-          { which: "fire", actions: ["fire"], colour: "yellow", id: "fire" },
+        fire: new OnScreenButtonRenderer(
+          { which: "fire", actions: ["fire"], id: "fire" },
           gameState,
         ),
-        carry: new ButtonAppearanceRenderer(
-          { which: "carry", actions: ["carry"], colour: "green", id: "carry" },
+        carry: new OnScreenButtonRenderer(
+          { which: "carry", actions: ["carry"], id: "carry" },
           gameState,
         ),
-        carryAndJump: new ButtonAppearanceRenderer(
+        carryAndJump: new OnScreenButtonRenderer(
           {
             which: "carryAndJump",
             actions: ["carry", "jump"],
-            colour: "red",
             id: "carryAndJump",
           },
           gameState,
         ),
+        menu: new OnScreenButtonRenderer(
+          {
+            which: "menu",
+            actions: ["menu_openOrExit"],
+            id: "menu",
+          },
+          gameState,
+        ),
       } satisfies {
-        [N in ButtonType]: ButtonAppearanceRenderer<N, RoomId>;
+        [N in ButtonType]: OnScreenButtonRenderer<N, RoomId>;
       },
       joystick: new OnScreenJoystick(gameState.inputStateTracker),
     };
@@ -54,7 +62,11 @@ export class OnScreenControls<RoomId extends string> {
     const { mainButtonNest, joystick } = this.#hudElements;
 
     for (const b of objectValues(buttons)) {
-      mainButtonNest.addChild(b.container);
+      if (b.button.which === "menu") {
+        this.#container.addChild(buttons.menu.container);
+      } else {
+        mainButtonNest.addChild(b.container);
+      }
     }
 
     buttons.jump.container.y = mainButtonsSpreadYPx;
@@ -62,15 +74,11 @@ export class OnScreenControls<RoomId extends string> {
     buttons.carryAndJump.container.y = -mainButtonsSpreadYPx;
     buttons.fire.container.x = mainButtonsSpreadXPx;
 
-    // buttons.menu.container.x = 24;
-    // buttons.menu.container.y = 24;
-    // buttons.menu.container.scale = 2;
-    // buttons.menu.container.filters = hudLowlightAndOutlineFilters;
+    buttons.menu.container.x = 24;
+    buttons.menu.container.y = 24;
 
     this.#container.addChild(mainButtonNest);
-    // this.#container.addChild(buttons.menu.container);
     this.#container.addChild(joystick.container);
-
     this.#initInteractivity();
   }
 

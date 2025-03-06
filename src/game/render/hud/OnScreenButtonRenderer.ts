@@ -20,21 +20,21 @@ import {
   showOnSurface,
 } from "./arcadeStyleButtonRendering";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
-import { hudOutlineFilter } from "./hudFilters";
+import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
 import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
-import type { ButtonColor } from "./buttonColours";
+import type { EmptyObject } from "type-fest";
+import { emptyObject } from "../../../utils/empty";
 
-export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump"; // | "menu"
+export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
 
 export type Button<Which extends ButtonType = ButtonType> = {
   id: string;
   which: Which;
   actions: BooleanAction[];
-  colour: ButtonColor;
 };
 
 type CommonButtonRenderProps = {
@@ -58,6 +58,7 @@ type ButtonRenderProps = {
   carryAndJump: CommonButtonRenderProps & {
     hasBag: boolean;
   };
+  menu: EmptyObject;
 };
 
 type ButtonRenderContext = {
@@ -70,7 +71,7 @@ const buttonAppearances: {
     Button<BT>,
     ButtonRenderProps[BT],
     ButtonRenderContext,
-    ButtonRenderingContainer
+    BT extends "menu" ? Container : ButtonRenderingContainer
   >;
 } = {
   jump({
@@ -334,9 +335,23 @@ const buttonAppearances: {
       },
     };
   },
+  menu({ previousRendering }) {
+    if (previousRendering !== null) {
+      return "no-update";
+    }
+
+    const sprite = createSprite("hud.char.Menu");
+    sprite.scale = 2;
+    sprite.filters = hudLowlightAndOutlineFilters;
+
+    return {
+      container: sprite,
+      renderProps: emptyObject,
+    };
+  },
 };
 
-export class ButtonAppearanceRenderer<
+export class OnScreenButtonRenderer<
   BT extends ButtonType,
   RoomId extends string,
 > extends AppearanceRenderer<
@@ -344,7 +359,7 @@ export class ButtonAppearanceRenderer<
   ButtonRenderProps[BT],
   RoomId,
   ButtonRenderContext,
-  ButtonRenderingContainer
+  BT extends "menu" ? Container : ButtonRenderingContainer
 > {
   constructor(
     public button: Button<BT>,
