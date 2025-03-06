@@ -10,6 +10,7 @@ import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
 import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import {
+  selectInputDirectionMode,
   selectIsColourised,
   selectIsPaused,
   selectOnScreenControls,
@@ -120,13 +121,17 @@ export class MainLoop<RoomId extends string> {
 
     if (
       this.#hudRenderer.colourise !== colouriseHud ||
-      this.#hudRenderer.onScreenControls !== selectOnScreenControls(tickState)
+      this.#hudRenderer.onScreenControls !==
+        selectOnScreenControls(tickState) ||
+      this.#hudRenderer.inputDirectionMode !==
+        selectInputDirectionMode(tickState)
     ) {
       this.#hudRenderer.destroy();
       this.#hudRenderer = new HudRenderer(
         this.#gameState,
         selectOnScreenControls(tickState),
         colouriseHud,
+        selectInputDirectionMode(tickState),
       );
       this.#app.stage.addChild(this.#hudRenderer.container);
     }

@@ -9,6 +9,7 @@ import { OnScreenJoystick } from "./OnScreenJoystick";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
+import type { InputDirectionMode } from "../../../store/gameMenusSlice";
 
 const mainButtonsSpreadXPx = 28;
 const mainButtonsSpreadYPx = 14;
@@ -21,6 +22,7 @@ export class OnScreenControls<RoomId extends string> {
   constructor(
     private gameState: GameState<RoomId>,
     private colourise: boolean,
+    private inputDirectionMode: InputDirectionMode,
   ) {
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
@@ -56,7 +58,10 @@ export class OnScreenControls<RoomId extends string> {
       } satisfies {
         [N in ButtonType]: OnScreenButtonRenderer<N, RoomId>;
       },
-      joystick: new OnScreenJoystick(gameState.inputStateTracker),
+      joystick: new OnScreenJoystick(
+        gameState.inputStateTracker,
+        inputDirectionMode,
+      ),
     };
 
     const { buttons } = this.#hudElements;

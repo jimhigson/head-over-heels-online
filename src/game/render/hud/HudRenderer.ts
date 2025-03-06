@@ -41,6 +41,7 @@ import {
   hudLowlightedFilter,
 } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
+import type { InputDirectionMode } from "../../../store/gameMenusSlice";
 
 const fpsUpdatePeriod = 250;
 
@@ -136,6 +137,7 @@ export class HudRenderer<RoomId extends string> {
     private gameState: GameState<RoomId>,
     public readonly onScreenControls: boolean,
     public readonly colourise: boolean,
+    public readonly inputDirectionMode: InputDirectionMode,
   ) {
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].livesText);
@@ -162,7 +164,11 @@ export class HudRenderer<RoomId extends string> {
     this.#initInteractivity();
 
     if (onScreenControls) {
-      this.#controls = new OnScreenControls(gameState, this.colourise);
+      this.#controls = new OnScreenControls(
+        gameState,
+        this.colourise,
+        inputDirectionMode,
+      );
       this.#container.addChild(this.#controls.container);
     }
   }

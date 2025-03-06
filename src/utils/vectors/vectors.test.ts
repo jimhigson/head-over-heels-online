@@ -49,13 +49,32 @@ describe("vectorClosestDirectionXy8", () => {
     [{ x: 0, y: -1 }, "towards"],
     [{ x: 1, y: -1 }, "towardsLeft"],
     [{ x: 1, y: 0 }, "left"],
+    [{ x: 1, y: 0 }, "left"],
     [{ x: 1, y: 1 }, "awayLeft"],
     [{ x: 0, y: 1 }, "away"],
     [{ x: -1, y: 1 }, "awayRight"],
-    [{ x: -0.707, y: -0.707 }, "towardsRight"], // Close to 45 degrees
-    [{ x: 0.707, y: -0.707 }, "towardsLeft"], // Close to 135 degrees
-    [{ x: 0.707, y: 0.707 }, "awayLeft"], // Close to 225 degrees
-    [{ x: -0.707, y: 0.707 }, "awayRight"], // Close to 315 degrees
+
+    // not quite a limit:
+    [{ x: -0.7, y: 0 }, "right"],
+    [{ x: -0.7, y: -0.7 }, "towardsRight"],
+    [{ x: 0, y: -0.7 }, "towards"],
+    [{ x: 0.7, y: -0.7 }, "towardsLeft"],
+    [{ x: 0.7, y: 0 }, "left"],
+    [{ x: 0.7, y: 0 }, "left"],
+    [{ x: 0.7, y: 0.7 }, "awayLeft"],
+    [{ x: 0, y: 0.7 }, "away"],
+    [{ x: -0.7, y: 0.7 }, "awayRight"],
+
+    // smaller signal
+    [{ x: -0.1, y: 0 }, "right"],
+    [{ x: -0.1, y: -0.1 }, "towardsRight"],
+    [{ x: 0, y: -0.1 }, "towards"],
+    [{ x: 0.1, y: -0.1 }, "towardsLeft"],
+    [{ x: 0.1, y: 0 }, "left"],
+    [{ x: 0.1, y: 0 }, "left"],
+    [{ x: 0.1, y: 0.1 }, "awayLeft"],
+    [{ x: 0, y: 0.1 }, "away"],
+    [{ x: -0.1, y: 0.1 }, "awayRight"],
   ])("given input %o, returns %s", (input, expected) => {
     expect(vectorClosestDirectionXy8(input)).toBe(expected);
   });

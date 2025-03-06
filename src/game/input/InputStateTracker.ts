@@ -334,18 +334,18 @@ export class InputStateTracker {
   }
 
   #tick = ({ lastTime: atTime }: Ticker) => {
-    const analogueControl = selectInputDirectionMode(store.getState());
+    const inputDirectionMode = selectInputDirectionMode(store.getState());
     const screenRelativeControl = selectScreenRelativeControl(store.getState());
 
-    const shouldRotate = screenRelativeControl && analogueControl;
+    const shouldRotate = screenRelativeControl && inputDirectionMode;
     const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
     const v = snapToCardinal(
       addXyz(
         maybeRotate(
-          analogueControl ?
-            this.#tickUpdatedDirectionAnalogueOrXy8()
-          : this.#tickUpdatedDirectionXy4(),
+          inputDirectionMode === "4-way" ?
+            this.#tickUpdatedDirectionXy4()
+          : this.#tickUpdatedDirectionAnalogueOrXy8(),
         ),
         // hudinput is never rotated
         this.hudInputState.directionVector,

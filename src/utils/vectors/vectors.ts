@@ -221,7 +221,7 @@ const directionsXy8Octants: DirectionXy8[] = [
 ];
 
 export const vectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 => {
-  const angle = Math.atan2(-y, -x); // Flip the y-axis for angle calculation
+  const angle = Math.atan2(-y, -x);
   const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
 
   return directionsXy8Octants[octant];
